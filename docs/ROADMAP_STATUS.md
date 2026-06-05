@@ -30,6 +30,8 @@ Current slice:
 - Phase 1 vertical-slice example.
 - MVP kernel family definition.
 - Triton compatibility matrix.
+- Data-movement-aware HAC-IR annotations for MVP kernels.
+- HS-IR movement summaries for future runtime planning.
 
 ## Next
 
@@ -38,3 +40,4 @@ Current slice:
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - Backend API v0.1 documentation for external authors.
+- Backend memory-domain capability schema and transfer-edge costing.

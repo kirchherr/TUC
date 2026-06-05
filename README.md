@@ -6,8 +6,9 @@ The goal is to keep Triton-style developer ergonomics while exploring a compiler
 and runtime architecture that can target heterogeneous AI accelerators:
 conventional GPUs first, then simulator-backed photonic and neuromorphic targets.
 
-TUC is currently in Phase 0. The repository is being shaped as a serious
-open-source project before deep compiler implementation begins.
+TUC is currently moving through Phase 1. The repository is being shaped as a
+serious open-source project while the first compiler pipeline skeleton becomes
+real.
 
 ## What TUC Is Trying To Prove
 
@@ -24,6 +25,7 @@ The current prototype contains:
 - Backend capability metadata.
 - A simulator backend for linear algebra operations.
 - Rule-based runtime partitioning.
+- Data-movement-aware HAC-IR metadata for MVP kernels.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.
@@ -75,6 +77,12 @@ Run the Phase 1 IR pipeline skeleton:
 python examples/phase1_ir_pipeline.py
 ```
 
+Inspect data-movement metadata:
+
+```bash
+python examples/data_movement_ir.py
+```
+
 ## Local Python Setup
 
 The Docker environment is recommended. If you already have Python 3.11+:
@@ -93,6 +101,7 @@ pytest -q
 - [MVP definition](docs/MVP.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
+- [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
 - [Roadmap status](docs/ROADMAP_STATUS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Governance](GOVERNANCE.md)
@@ -100,7 +109,7 @@ pytest -q
 ## Project Status
 
 TUC is pre-alpha. APIs, IR names, backend contracts, and runtime behavior are
-expected to change as the project moves through Phase 0.
+expected to change as the project moves through Phase 1.
 
 ## License
 

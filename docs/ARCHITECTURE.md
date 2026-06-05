@@ -4,10 +4,10 @@ TUC is organized around a small number of compiler and runtime boundaries.
 
 ## Frontend
 
-The frontend preserves Triton-style developer ergonomics. During Phase 0, the
-frontend work is represented by `CompilationHints`: optional metadata such as
-noise robustness, sparsity preference, analog linear preference, and error
-budgets.
+The frontend preserves Triton-style developer ergonomics. During the early
+prototype phases, frontend work is represented by `CompilationHints`: optional
+metadata such as noise robustness, sparsity preference, analog linear
+preference, and error budgets.
 
 Hints must never change mathematical correctness. They only inform lowering,
 tuning, partitioning, and diagnostics.
@@ -35,8 +35,31 @@ The model contains:
   and softmax.
 - `ComputeOperation`: ordered compute nodes.
 - `ComputeGraph`: an ordered hardware-agnostic graph.
+- `MovementEstimate`: per-operation bytes read, bytes written, arithmetic
+  operations, arithmetic intensity, preferred memory domain, and layout.
 
 This is the conceptual seed for HAC-IR.
+
+## Data Movement Awareness
+
+HAC-IR now records data movement as an explicit compiler fact. The pass in
+`tuc.compiler.movement` estimates read bytes, written bytes, arithmetic
+operations, arithmetic intensity, preferred memory domain, and layout constraints
+for the MVP operation family.
+
+This is the first compiler hook for addressing the memory wall and the von
+Neumann bottleneck. It keeps future placement, transfer, and runtime scheduling
+decisions tied to inspectable IR data rather than hidden backend behavior.
+
+Movement metadata is secure by design:
+
+- It is declarative and deterministic.
+- Unknown dtypes and invalid shapes are rejected.
+- Estimator resource limits bound tensor rank, tensor count, element count, and
+  byte size.
+- Compiler-produced movement attributes overwrite user-supplied `tuc.*`
+  movement keys.
+- Summaries fail closed when required attributes are missing.
 
 ## Backend Capability Model
 
@@ -100,5 +123,5 @@ Triton-like frontend
   -> backend artifact or runtime execution plan
 ```
 
-Phase 0 exists to make those boundaries testable before native compiler
-implementation begins.
+The Python prototype exists to make those boundaries testable before native
+compiler implementation begins.

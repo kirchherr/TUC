@@ -8,6 +8,9 @@ on:
       - master
       - "codex/**"
 
+permissions:
+  contents: read
+
 jobs:
   python:
     runs-on: ubuntu-24.04
@@ -28,3 +31,5 @@ jobs:
         run: python examples/phase0_vertical_slice.py
       - name: Phase 1 pipeline example
         run: python examples/phase1_ir_pipeline.py
+      - name: Data movement IR example
+        run: python examples/data_movement_ir.py

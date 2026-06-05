@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import replace
 from typing import Any
 
+from tuc.compiler.movement import annotate_graph_movement, summarize_graph_movement
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind
 from tuc.ir.modules import IRModule, IRStage
 from tuc.runtime.partitioning import PartitionPlan
@@ -25,16 +26,18 @@ def lower_tlir_to_hac(tlir: IRModule) -> IRModule:
     if tlir.stage is not IRStage.TLIR:
         raise ValueError(f"expected TLIR module, got {tlir.stage.value}")
 
-    operations = tuple(_normalize_operation(operation) for operation in tlir.graph.operations)
     metadata = {
         **tlir.graph.metadata,
         **tlir.metadata,
         "lowered_from": tlir.stage.value,
-        "mvp_operation_count": len(operations),
+        "mvp_operation_count": len(tlir.graph.operations),
     }
+    operations = tuple(_normalize_operation(operation) for operation in tlir.graph.operations)
+    graph = ComputeGraph(name=tlir.graph.name, operations=operations, metadata=metadata)
+    movement_graph = annotate_graph_movement(graph)
     return IRModule(
         stage=IRStage.HAC_IR,
-        graph=ComputeGraph(name=tlir.graph.name, operations=operations, metadata=metadata),
+        graph=movement_graph,
         metadata={"dialect_version": "hac-ir.v0"},
     )
 
@@ -57,6 +60,7 @@ def lower_hac_to_hs(hac_ir: IRModule, partition_plan: PartitionPlan) -> IRModule
         **hac_ir.graph.metadata,
         "lowered_from": hac_ir.stage.value,
         "backend_assignments": assignments,
+        "movement_summary": summarize_graph_movement(hac_ir.graph),
     }
     return IRModule(
         stage=IRStage.HS_IR,

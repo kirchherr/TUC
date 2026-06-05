@@ -37,7 +37,19 @@ def test_pipeline_lowers_through_all_three_ir_stages() -> None:
     assert result.partition_plan.backend_for("projection") == "linear-sim"
     assert result.partition_plan.backend_for("activation") == "gpu"
     assert result.hac_ir.graph.operations[0].attributes["tuc.linearity"] == "linear"
+    assert result.hac_ir.graph.operations[0].attributes["tuc.bytes_read"] == 3072
+    assert result.hac_ir.graph.operations[0].attributes["tuc.bytes_written"] == 512
+    assert result.hac_ir.graph.metadata["movement_model"] == "movement.v0"
     assert result.hs_ir.graph.operations[0].attributes["tuc.assigned_backend"] == "linear-sim"
+    assert result.hs_ir.graph.operations[0].attributes["tuc.bytes_read"] == 3072
+    assert result.hs_ir.graph.metadata["movement_summary"] == {
+        "arithmetic_intensity": 8320 / 4608,
+        "movement_model": "movement.v0",
+        "operation_count": 2,
+        "total_arithmetic_ops": 8320,
+        "total_bytes_read": 3584,
+        "total_bytes_written": 1024,
+    }
     assert "projection->linear-sim:preferred_for:matmul" in result.diagnostics
 
 
