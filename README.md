@@ -32,6 +32,7 @@ The current prototype contains:
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
 - Prototype Triton-like metadata adapter for frontend ingestion.
+- CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.
@@ -95,6 +96,12 @@ Run the Triton-like metadata adapter example:
 python examples/triton_metadata_adapter.py
 ```
 
+Run the baseline benchmark harness:
+
+```bash
+python scripts/benchmark.py --iterations 2 --warmup 1
+```
+
 Inspect example backend and transfer manifests:
 
 ```text
@@ -121,6 +128,7 @@ pytest -q
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
+- [Benchmarking](docs/BENCHMARKING.md)
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
 - [Runtime transfer plan](docs/RUNTIME_PLAN.md)
 - [Security baseline](docs/SECURITY_BASELINE.md)

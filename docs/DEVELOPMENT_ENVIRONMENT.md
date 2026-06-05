@@ -46,6 +46,17 @@ Or:
 
 The check prints Python, Clang, LLVM, MLIR, PyTorch, Triton, NumPy, and whether PyTorch sees CUDA.
 
+## Run Baseline Benchmarks
+
+The baseline benchmark harness runs in the default CPU container:
+
+```powershell
+docker compose run --rm dev python scripts/benchmark.py --iterations 2 --warmup 1
+```
+
+CUDA is reported as explicit capability status until an executable CUDA backend
+contract exists.
+
 ## Optional GPU Shell
 
 If Docker Desktop has NVIDIA GPU support configured, use:

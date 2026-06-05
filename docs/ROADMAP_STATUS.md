@@ -48,10 +48,10 @@ Current slice:
 - Calibrated transfer-cost profile files.
 - Golden-kernel correctness suite.
 - Prototype frontend adapter for Triton-like kernel metadata.
+- Baseline benchmark harness that can run with or without CUDA.
 
 ## Next
 
-- Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - Backend API v0.1 documentation for external authors.
 - Branch protection and required CI/security checks on `main`.
