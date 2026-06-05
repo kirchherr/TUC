@@ -1,6 +1,6 @@
 # TUC Governance
 
-TUC is being structured as a serious open-source project from Phase 0 onward.
+TUC is being structured as a serious open-source project from Phase 1 onward.
 This governance model is intentionally lightweight until the project has a
 larger contributor base.
 
@@ -15,6 +15,7 @@ Maintainers are responsible for:
 - Protecting compatibility and project scope.
 - Maintaining CI, tests, documentation, and release quality.
 - Coordinating backend and runtime design decisions.
+- Enforcing secure-by-design review gates.
 
 ### Contributors
 
@@ -42,8 +43,8 @@ that it is:
 Phase 0 has no stable public API. Compatibility promises begin only after an API
 or RFC is explicitly marked as stable.
 
-## License Decision
+## License
 
-The final open-source license is not yet selected. This must be resolved before
-public release, wide contributor onboarding, or accepting significant external
-contributions.
+TUC is licensed under Apache-2.0. Contributions intentionally submitted to the
+project are accepted under the same license unless a separate written agreement
+states otherwise.

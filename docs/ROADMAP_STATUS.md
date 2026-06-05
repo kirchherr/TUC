@@ -32,6 +32,10 @@ Current slice:
 - Triton compatibility matrix.
 - Data-movement-aware HAC-IR annotations for MVP kernels.
 - HS-IR movement summaries for future runtime planning.
+- Secure IR validation and immutable metadata baseline.
+- Backend capability validation and memory-domain metadata.
+- Transfer-byte-aware partition plan diagnostics.
+- Apache-2.0 license and initial supply-chain security workflows.
 
 ## Next
 
@@ -40,4 +44,6 @@ Current slice:
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - Backend API v0.1 documentation for external authors.
-- Backend memory-domain capability schema and transfer-edge costing.
+- Explicit runtime transfer-edge objects and layout-conversion costing.
+- Branch protection and required CI/security checks on `main`.
+- Release provenance, SBOM, and signed artifacts before first package release.

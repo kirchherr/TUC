@@ -1,7 +1,7 @@
 # Contributing To TUC
 
-TUC is currently in Phase 0. Contributions should focus on turning the concept
-into a small, testable compiler and runtime prototype.
+TUC is currently moving through Phase 1. Contributions should focus on turning
+the concept into a small, testable, secure compiler and runtime prototype.
 
 ## Development Principles
 
@@ -49,6 +49,14 @@ Architectural changes should start as RFCs when they affect:
 - Governance, release, or compatibility policy.
 
 Use [rfcs/0000-template.md](rfcs/0000-template.md).
+
+## Security Requirements
+
+Compiler and runtime changes must follow
+[docs/SECURITY_BASELINE.md](docs/SECURITY_BASELINE.md). Treat source text,
+serialized IR, graph metadata, backend capabilities, plugin manifests, and
+runtime plans as untrusted until validated. Add negative tests for malformed or
+malicious input whenever an input boundary changes.
 
 ## Commit Style
 

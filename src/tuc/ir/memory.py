@@ -81,8 +81,11 @@ class LayoutConstraint:
 
     def __post_init__(self) -> None:
         _require_enum(self.layout, LayoutKind, "layout")
-        if any(dimension <= 0 for dimension in self.tile_shape):
-            raise ValueError("layout tile dimensions must be positive")
+        if any(
+            not isinstance(dimension, int) or isinstance(dimension, bool) or dimension <= 0
+            for dimension in self.tile_shape
+        ):
+            raise ValueError("layout tile dimensions must be positive integers")
         _require_positive_int(self.alignment_bytes, "alignment_bytes")
 
 

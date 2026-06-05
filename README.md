@@ -102,6 +102,7 @@ pytest -q
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
+- [Security baseline](docs/SECURITY_BASELINE.md)
 - [Roadmap status](docs/ROADMAP_STATUS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Governance](GOVERNANCE.md)
@@ -113,6 +114,4 @@ expected to change as the project moves through Phase 1.
 
 ## License
 
-TUC is intended to become an open-source project. The final license is still a
-Phase 0 decision and must be selected before a public release or broad
-contributor onboarding.
+TUC is licensed under the [Apache License 2.0](LICENSE).

@@ -40,6 +40,12 @@ The model contains:
 
 This is the conceptual seed for HAC-IR.
 
+IR objects validate and canonicalize their own boundary data: names are
+identifier-safe, tensor ranks and dimensions are bounded, graph operation names
+must be unique, tensor bindings must be consistent, and attributes/metadata are
+immutable mappings with type, depth, key-count, string-size, and total-size
+budgets.
+
 ## Data Movement Awareness
 
 HAC-IR now records data movement as an explicit compiler fact. The pass in
@@ -88,14 +94,19 @@ linear algebra operations and emits a textual artifact.
 
 ## Runtime Partitioning
 
-The Phase 0 runtime uses simple rule-based partitioning:
+The early runtime uses simple rule-based partitioning:
 
 1. Prefer backends that explicitly prefer an operation kind.
 2. Otherwise choose any backend that supports the operation.
-3. Otherwise fall back to the default backend, currently named `gpu`.
+3. Break ties by minimizing cross-domain transfer bytes.
+4. Otherwise fall back to the default backend, currently named `gpu`.
 
-This is intentionally simple. Later phases can replace the rule set with cost
-models, transfer estimates, noise simulation, and calibration-aware scheduling.
+This is intentionally simple. Later phases can replace the rule set with richer
+cost models, transfer estimates, noise simulation, and calibration-aware
+scheduling.
+
+Partition plans now expose backend assignments, memory domains, and estimated
+transfer bytes, so runtime decisions stay inspectable.
 
 ## Compiler Pipeline
 

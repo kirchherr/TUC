@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from tuc.backends.base import BackendCapability, LoweringResult
+from tuc.ir.memory import MemoryDomainKind
 from tuc.ir.model import ComputeGraph, OperationKind
 
 
@@ -17,6 +18,7 @@ class LinearAlgebraSimulatorBackend:
             supports_calibration=True,
             preferred_for=frozenset({OperationKind.MATMUL}),
             max_error_budget=0.05,
+            memory_domain=MemoryDomainKind.ANALOG_WEIGHT_BANK,
         )
 
     @property

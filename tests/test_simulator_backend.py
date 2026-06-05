@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from tuc.backends import LinearAlgebraSimulatorBackend
+from tuc.backends.base import BackendCapability
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 
 
@@ -47,3 +48,30 @@ def test_simulator_rejects_unsupported_operation() -> None:
 
     with pytest.raises(ValueError, match="cannot lower"):
         LinearAlgebraSimulatorBackend().lower(graph)
+
+
+def test_backend_capability_rejects_invalid_error_budget_attribute() -> None:
+    operation = ComputeOperation(
+        name="matmul",
+        kind=OperationKind.MATMUL,
+        inputs=(TensorRef("a", (8, 8)), TensorRef("b", (8, 8))),
+        outputs=(TensorRef("c", (8, 8)),),
+        attributes={"max_error_budget": "0.01"},
+    )
+    capability = BackendCapability(
+        name="linear",
+        supported_ops=frozenset({OperationKind.MATMUL}),
+        max_error_budget=0.05,
+    )
+
+    with pytest.raises(ValueError, match="finite non-negative number"):
+        capability.supports(operation)
+
+
+def test_backend_capability_rejects_inconsistent_preference() -> None:
+    with pytest.raises(ValueError, match="preferred_for must be a subset"):
+        BackendCapability(
+            name="bad",
+            supported_ops=frozenset({OperationKind.ELEMENTWISE}),
+            preferred_for=frozenset({OperationKind.MATMUL}),
+        )

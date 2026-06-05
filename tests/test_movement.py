@@ -51,15 +51,8 @@ def test_matmul_movement_estimate_rejects_shape_mismatch() -> None:
 
 
 def test_movement_estimate_rejects_bool_dimensions() -> None:
-    operation = ComputeOperation(
-        name="bad_tensor",
-        kind=OperationKind.ELEMENTWISE,
-        inputs=(TensorRef("x", (True, 8)),),
-        outputs=(TensorRef("y", (1, 8)),),
-    )
-
-    with pytest.raises(ValueError, match="positive integers"):
-        estimate_operation_movement(operation)
+    with pytest.raises(ValueError, match="positive bounded integers"):
+        TensorRef("x", (True, 8))
 
 
 def test_movement_annotations_preserve_declarative_backend_hints() -> None:

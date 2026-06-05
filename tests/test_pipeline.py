@@ -50,7 +50,10 @@ def test_pipeline_lowers_through_all_three_ir_stages() -> None:
         "total_bytes_read": 3584,
         "total_bytes_written": 1024,
     }
-    assert "projection->linear-sim:preferred_for:matmul" in result.diagnostics
+    assert any(
+        diagnostic.startswith("projection->linear-sim:preferred_for:matmul")
+        for diagnostic in result.diagnostics
+    )
 
 
 def test_pipeline_dumps_are_keyed_by_stage_name() -> None:
