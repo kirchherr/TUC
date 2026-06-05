@@ -43,6 +43,7 @@ Current slice:
 - Stable runtime plan dump.
 - Backend produced-layout schema.
 - Validated in-memory transfer-cost profiles.
+- Runtime plan golden dumps.
 
 ## Next
 
@@ -53,6 +54,5 @@ Current slice:
 - Backend API v0.1 documentation for external authors.
 - Schema-versioned backend manifest files.
 - Calibrated transfer-cost profile files.
-- Runtime plan golden dumps.
 - Branch protection and required CI/security checks on `main`.
 - Release provenance, SBOM, and signed artifacts before first package release.

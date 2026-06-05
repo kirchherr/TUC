@@ -33,6 +33,17 @@ The first runtime plan objects live in `tuc.runtime.plan`:
 - Estimated total transfer latency.
 - Estimated total transfer energy.
 
+## Golden Dumps
+
+Runtime plan text dumps are covered by golden fixtures in
+`tests/golden/runtime_plans/`. The current fixtures cover default transfer
+costing, backend-produced layout conversion, and calibrated transfer-cost
+profiles.
+
+Fixture updates are intentional compiler-contract changes. They should stay
+small, readable, and tied to typed in-memory graph construction rather than
+external generators.
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:
@@ -65,5 +76,4 @@ This is still a prototype:
 1. Include buffer lifetime and reuse in runtime planning.
 2. Add schema-versioned backend manifest files.
 3. Add calibrated transfer-cost profile files.
-4. Add runtime-plan golden dumps.
-5. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
+4. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
