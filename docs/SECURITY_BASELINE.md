@@ -72,6 +72,9 @@ Implemented now:
 - Read-only default GitHub workflow permissions.
 - Dependabot configuration for GitHub Actions, Python, and Docker updates.
 - CodeQL, dependency review, and OpenSSF Scorecard workflows.
+- Branch protection policy for `main` requiring pull requests, review,
+  conversation resolution, strict `python`, `CodeQL`, and `Dependency Review`
+  checks, and disabled force pushes/deletions.
 - Apache-2.0 license and NOTICE file.
 
 ## Supply Chain Baseline

@@ -31,6 +31,7 @@ The current prototype contains:
 - Backend API v0.1 authoring guide for external prototype backends.
 - Backend author certification checklist and negative-test template.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
+- Branch protection policy for `main` and required CI/security checks.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
@@ -156,6 +157,7 @@ pytest -q
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
 - [Runtime transfer plan](docs/RUNTIME_PLAN.md)
 - [Security baseline](docs/SECURITY_BASELINE.md)
+- [Branch protection policy](docs/BRANCH_PROTECTION.md)
 - [Roadmap status](docs/ROADMAP_STATUS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Governance](GOVERNANCE.md)

@@ -55,8 +55,8 @@ Current slice:
 - Backend API v0.1 authoring guide for external prototype backends.
 - Backend author certification checklist and negative-test template.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
+- Branch protection policy for `main` and expanded required CI smoke surface.
 
 ## Next
 
-- Branch protection and required CI/security checks on `main`.
 - Release provenance, SBOM, and signed artifacts before first package release.

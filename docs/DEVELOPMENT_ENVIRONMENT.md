@@ -57,6 +57,22 @@ docker compose run --rm dev python scripts/benchmark.py --iterations 2 --warmup 
 CUDA is reported as explicit capability status until an executable CUDA backend
 contract exists.
 
+## Run The CI Smoke Surface Locally
+
+The required `python` CI job runs:
+
+```powershell
+docker compose run --rm dev ruff check .
+docker compose run --rm dev mypy src/tuc
+docker compose run --rm dev pytest -q
+docker compose run --rm dev python examples/phase0_vertical_slice.py
+docker compose run --rm dev python examples/phase1_ir_pipeline.py
+docker compose run --rm dev python examples/data_movement_ir.py
+docker compose run --rm dev python examples/triton_metadata_adapter.py
+docker compose run --rm dev python examples/backend_api_v0.py
+docker compose run --rm dev python scripts/benchmark.py --iterations 1 --warmup 0
+```
+
 ## Run The Backend API Example
 
 ```powershell
