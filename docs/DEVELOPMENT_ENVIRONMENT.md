@@ -77,6 +77,15 @@ The template covers malicious manifest fields, duplicate manifest keys,
 unsupported schema versions, false capability claims, unsupported layouts, and
 lower-time operation rejection.
 
+## Verify Backend Conformance Fixtures
+
+```powershell
+docker compose run --rm dev pytest -q tests/test_backend_conformance.py
+```
+
+The conformance fixtures check capability/lowering agreement, semantic artifact
+markers, and bounded diagnostics for trusted in-process prototype backends.
+
 ## Verify The MLIR Design Spike
 
 ```powershell

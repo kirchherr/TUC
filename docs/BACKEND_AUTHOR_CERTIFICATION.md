@@ -94,6 +94,23 @@ At minimum, their tests must prove:
 
 These tests should be submitted before any backend-specific lowering code.
 
+## Conformance Fixture Requirements
+
+Backend authors must also add a positive/rejection conformance test using:
+
+```python
+from tuc.backends.conformance import assert_backend_conformance
+
+
+def test_backend_conformance() -> None:
+    assert_backend_conformance(backend)
+```
+
+The reusable fixtures are documented in
+[Backend Conformance Fixtures](BACKEND_CONFORMANCE.md). They verify that
+declared capability data and lower-time behavior agree for MVP operation
+fixtures.
+
 ## Review Outcome
 
 Maintainers should block a backend proposal when:

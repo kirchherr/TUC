@@ -116,6 +116,11 @@ contract for trusted in-process prototypes and declarative manifests, not a
 plugin ABI. TUC does not auto-discover backends or execute backend code during
 capability checks, manifest loading, IR validation, partitioning, or dumping.
 
+Backend conformance fixtures in `tuc.backends.conformance` check that trusted
+prototype backends lower only operations accepted by their capability data,
+reject unsupported operations, and return bounded, inspectable artifacts and
+diagnostics.
+
 ## Backend Lowering
 
 Backends implement a minimal protocol:

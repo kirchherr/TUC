@@ -209,6 +209,10 @@ Backend proposals should also follow the dedicated
 copy the executable negative-test template from
 `tests/test_backend_author_negative_template.py`.
 
+Prototype backends should also run the reusable
+[Backend Conformance Fixtures](BACKEND_CONFORMANCE.md) through
+`assert_backend_conformance`.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:

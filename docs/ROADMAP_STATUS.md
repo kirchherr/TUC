@@ -54,9 +54,9 @@ Current slice:
 - HS-IR v0 contracts for backend assignments, produced layouts, and runtime-transfer summaries.
 - Backend API v0.1 authoring guide for external prototype backends.
 - Backend author certification checklist and negative-test template.
+- Backend conformance fixtures for prototype operation semantics and diagnostics.
 
 ## Next
 
-- Backend conformance fixtures for operation semantics and diagnostics.
 - Branch protection and required CI/security checks on `main`.
 - Release provenance, SBOM, and signed artifacts before first package release.

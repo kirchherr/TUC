@@ -30,6 +30,7 @@ The current prototype contains:
 - Validated transfer-cost profiles and backend-produced layout metadata.
 - Backend API v0.1 authoring guide for external prototype backends.
 - Backend author certification checklist and negative-test template.
+- Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
@@ -148,6 +149,7 @@ pytest -q
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend author certification](docs/BACKEND_AUTHOR_CERTIFICATION.md)
+- [Backend conformance fixtures](docs/BACKEND_CONFORMANCE.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)
 - [HAC-IR dialect contract](docs/HAC_IR_DIALECT.md)
 - [HS-IR dialect contract](docs/HS_IR_DIALECT.md)

@@ -64,6 +64,9 @@ Implemented now:
 - Backend author certification requires negative tests for plugin-like manifest
   fields, duplicate keys, unsupported schemas, false capability claims,
   unsupported layouts, and lower-time operation rejection.
+- Backend conformance fixtures check trusted in-process backends without plugin
+  discovery, imports, subprocesses, dynamic libraries, device access, file I/O,
+  or artifact execution.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.
