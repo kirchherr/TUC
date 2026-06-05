@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 
@@ -63,3 +64,27 @@ def test_write_artifact_checksums_excludes_output_file(tmp_path: Path) -> None:
         f"{expected_sdist}  sample-1.2.3.tar.gz",
     ]
     assert "SHA256SUMS" not in output.read_text(encoding="utf-8")
+
+
+def test_release_workflow_actions_are_sha_pinned() -> None:
+    workflow_path = (
+        Path(__file__).resolve().parents[1] / ".github" / "workflows" / "release-artifacts.yml"
+    )
+    workflow_text = workflow_path.read_text(encoding="utf-8")
+    action_refs = re.findall(
+        r"uses:\s+(actions/[A-Za-z0-9_.-]+)@([0-9a-f]{40})(?:\s+#\s+v[0-9.]+)?",
+        workflow_text,
+    )
+    unpinned_action_refs = re.findall(
+        r"uses:\s+actions/[A-Za-z0-9_.-]+@(v[0-9][A-Za-z0-9_.-]*)",
+        workflow_text,
+    )
+
+    assert not unpinned_action_refs
+    assert action_refs == [
+        ("actions/checkout", "de0fac2e4500dabe0009e67214ff5f5447ce83dd"),
+        ("actions/setup-python", "a309ff8b426b58ec0e2a45f0f869d46889d02405"),
+        ("actions/attest", "59d89421af93a897026c735860bf21b6eb4f7b26"),
+        ("actions/attest", "59d89421af93a897026c735860bf21b6eb4f7b26"),
+        ("actions/upload-artifact", "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"),
+    ]

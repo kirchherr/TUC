@@ -26,6 +26,7 @@ Current controls:
 
 - Release workflow permissions are least-privilege by default.
 - Only the release job receives `id-token: write` and `attestations: write`.
+- Release workflow actions are pinned to reviewed commit SHAs.
 - The workflow uses GitHub OIDC-backed artifact attestations rather than stored
   signing secrets.
 - The workflow builds artifacts from repository source and does not run dynamic
@@ -38,11 +39,13 @@ Current controls:
 Before TUC publishes to any registry:
 
 1. Protect release tags or restrict tag creation to maintainers.
-2. Pin high-risk release actions to reviewed commit SHAs.
-3. Add a release approval process for public package publication.
-4. Decide whether package publication uses PyPI trusted publishing or another
+2. Add a release approval process for public package publication.
+3. Decide whether package publication uses PyPI trusted publishing or another
    OIDC-based mechanism.
-5. Document the package verification command in the release notes.
+4. Document the package verification command in the release notes.
+
+See [Release governance](RELEASE_GOVERNANCE.md) for the required GitHub tag
+ruleset and publishing-environment policy.
 
 ## Verification
 

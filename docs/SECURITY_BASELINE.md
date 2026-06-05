@@ -78,6 +78,8 @@ Implemented now:
 - Pre-publish release artifact workflow with least-privilege OIDC-backed
   GitHub attestations, CycloneDX SBOM generation, SHA-256 checksums, and no
   registry publishing permissions.
+- Release workflow action SHA pinning and release governance policy for tag
+  rulesets, publishing environments, and PyPI Trusted Publishing.
 - Apache-2.0 license and NOTICE file.
 
 ## Supply Chain Baseline
@@ -92,9 +94,10 @@ Development:
 
 Pre-release requirements:
 
-1. Pin release workflows and high-risk third-party actions to commit SHAs.
+1. Apply GitHub tag rulesets and publishing environments before any public
+   release.
 2. Produce release artifacts only from protected branches or tags.
-3. Add maintainer approval and OIDC-based publishing policy before any PyPI,
+3. Add maintainer approval and OIDC-based publishing workflow before any PyPI,
    GHCR, or external registry release.
 4. Add native-code sanitizers and fuzzers before accepting native parsers,
    deserializers, or backends.

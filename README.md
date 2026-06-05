@@ -34,6 +34,8 @@ The current prototype contains:
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and
   GitHub artifact attestations.
+- Release governance policy with SHA-pinned release actions and publishing
+  approval requirements.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
@@ -169,6 +171,7 @@ pytest -q
 - [Security baseline](docs/SECURITY_BASELINE.md)
 - [Branch protection policy](docs/BRANCH_PROTECTION.md)
 - [Release security](docs/RELEASE_SECURITY.md)
+- [Release governance](docs/RELEASE_GOVERNANCE.md)
 - [Roadmap status](docs/ROADMAP_STATUS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Governance](GOVERNANCE.md)
