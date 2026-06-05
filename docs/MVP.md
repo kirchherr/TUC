@@ -18,6 +18,7 @@ capabilities, and lower supported operations into a backend artifact.
 - Rule-based runtime partitioning.
 - Tests for correctness of metadata, capability matching, partitioning, and
   backend lowering.
+- Golden-kernel fixtures for the MVP operation families.
 - Reproducible Docker development environment.
 
 ## Excluded From MVP
@@ -34,4 +35,5 @@ capabilities, and lower supported operations into a backend artifact.
 - The repository builds and tests inside Docker.
 - The Phase 0 example runs end to end.
 - Backend capability and partitioning behavior are inspectable.
+- MVP kernel semantics are covered by deterministic golden reference tests.
 - The next implementation step toward MLIR is clear and documented.

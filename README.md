@@ -30,6 +30,7 @@ The current prototype contains:
 - Validated transfer-cost profiles and backend-produced layout metadata.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
+- Golden-kernel correctness fixtures for MVP operation semantics.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.
@@ -110,6 +111,7 @@ pytest -q
 - [Phase 0 plan](docs/PHASE_0.md)
 - [MVP definition](docs/MVP.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
+- [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
 - [Runtime transfer plan](docs/RUNTIME_PLAN.md)

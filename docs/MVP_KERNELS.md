@@ -19,6 +19,7 @@ and runtime boundaries before performance work begins.
 - Hints can be attached as metadata without changing correctness.
 - The pipeline can dump TLIR, HAC-IR, and HS-IR views.
 - Backend assignment decisions are visible in HS-IR.
+- Each MVP family has a deterministic golden reference fixture.
 
 ## Out Of Scope
 
@@ -29,6 +30,6 @@ and runtime boundaries before performance work begins.
 
 ## Next Kernel Work
 
-The next useful slice is a golden-kernel suite with small tensor shapes and
-reference NumPy/PyTorch results. That suite should become the first correctness
-gate before native MLIR lowering starts.
+The next useful slice is to connect executable backend outputs to the golden
+reference suite once backend execution exists. Until then, the suite anchors
+MVP operation semantics before native MLIR lowering starts.
