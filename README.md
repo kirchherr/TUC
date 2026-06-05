@@ -32,6 +32,8 @@ The current prototype contains:
 - Backend author certification checklist and negative-test template.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
+- Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and
+  GitHub artifact attestations.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
@@ -121,6 +123,14 @@ Verify the MLIR design-spike artifact:
 python scripts/verify_mlir_spike.py
 ```
 
+Prepare local release artifacts:
+
+```bash
+python -m build
+python scripts/generate_sbom.py --output dist/tuc.cdx.json
+python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
+```
+
 Inspect example backend and transfer manifests:
 
 ```text
@@ -158,6 +168,7 @@ pytest -q
 - [Runtime transfer plan](docs/RUNTIME_PLAN.md)
 - [Security baseline](docs/SECURITY_BASELINE.md)
 - [Branch protection policy](docs/BRANCH_PROTECTION.md)
+- [Release security](docs/RELEASE_SECURITY.md)
 - [Roadmap status](docs/ROADMAP_STATUS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Governance](GOVERNANCE.md)

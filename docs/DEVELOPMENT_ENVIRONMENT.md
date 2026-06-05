@@ -6,7 +6,7 @@ This repository ships a Docker-based TUC development environment. The default im
 
 - Ubuntu 24.04
 - Python virtual environment in `/opt/tuc-venv`
-- Python developer tooling: pytest, ruff, mypy, hypothesis, pybind11, lit, FileCheck
+- Python developer tooling: build, pytest, ruff, mypy, hypothesis, pybind11, lit, FileCheck
 - LLVM 18, Clang 18, LLD 18, LLDB 18
 - MLIR 18 tools and CMake packages
 - PyTorch installed through a configurable wheel index
@@ -110,6 +110,20 @@ docker compose run --rm dev python scripts/verify_mlir_spike.py
 
 The verifier checks the repository-owned MLIR spike artifact with `mlir-opt` and
 the unregistered dialect path.
+
+## Prepare Release Artifacts Locally
+
+After rebuilding the development image with current dependencies:
+
+```powershell
+docker compose run --rm dev python -m build
+docker compose run --rm dev python scripts/generate_sbom.py --output dist/tuc.cdx.json
+docker compose run --rm dev python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
+```
+
+The GitHub release-artifact workflow also creates provenance and SBOM
+attestations. Local runs generate the distributions, CycloneDX SBOM, and
+checksum manifest only.
 
 ## Verify HAC-IR Dialect Contracts
 

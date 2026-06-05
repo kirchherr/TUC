@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=70", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,14 +8,14 @@ version = "0.1.0"
 description = "Experimental Triton Universal Compiler prototype."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { file = "LICENSE" }
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
 authors = [
   { name = "TUC contributors" }
 ]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python :: 3",
   "Topic :: Software Development :: Compilers"
 ]
@@ -23,8 +23,14 @@ dependencies = [
   "numpy>=1.26"
 ]
 
+[project.urls]
+Homepage = "https://github.com/kirchherr/TUC"
+Repository = "https://github.com/kirchherr/TUC"
+Issues = "https://github.com/kirchherr/TUC/issues"
+
 [project.optional-dependencies]
 dev = [
+  "build",
   "hypothesis",
   "mypy",
   "pytest",

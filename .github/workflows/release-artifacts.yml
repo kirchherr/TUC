@@ -1,0 +1,72 @@
+name: Release Artifacts
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build-attested-artifacts
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install package
+        run: python -m pip install -e ".[dev]"
+      - name: Ruff
+        run: ruff check .
+      - name: Mypy
+        run: mypy src/tuc
+      - name: Pytest
+        run: pytest -q
+      - name: Build distributions
+        run: python -m build
+      - name: Verify wheel import
+        run: |
+          unset PYTHONPATH
+          wheel_path="$(ls "${GITHUB_WORKSPACE}"/dist/*.whl)"
+          python -m venv /tmp/tuc-release-check
+          cd /tmp
+          /tmp/tuc-release-check/bin/python -m pip install "${wheel_path}"
+          /tmp/tuc-release-check/bin/python -c "import importlib.metadata; import tuc; print(importlib.metadata.version('tuc'))"
+      - name: Generate CycloneDX SBOM
+        run: python scripts/generate_sbom.py --output dist/tuc.cdx.json
+      - name: Write SHA-256 checksums
+        run: python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
+      - name: Attest distribution provenance
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            dist/*.whl
+            dist/*.tar.gz
+      - name: Attest SBOM
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            dist/*.whl
+            dist/*.tar.gz
+          sbom-path: dist/tuc.cdx.json
+      - name: Upload release artifact bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: tuc-release-artifacts
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/*.cdx.json
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 30

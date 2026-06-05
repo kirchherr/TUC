@@ -75,6 +75,9 @@ Implemented now:
 - Branch protection policy for `main` requiring pull requests, review,
   conversation resolution, strict `python`, `CodeQL`, and `Dependency Review`
   checks, and disabled force pushes/deletions.
+- Pre-publish release artifact workflow with least-privilege OIDC-backed
+  GitHub attestations, CycloneDX SBOM generation, SHA-256 checksums, and no
+  registry publishing permissions.
 - Apache-2.0 license and NOTICE file.
 
 ## Supply Chain Baseline
@@ -91,9 +94,9 @@ Pre-release requirements:
 
 1. Pin release workflows and high-risk third-party actions to commit SHAs.
 2. Produce release artifacts only from protected branches or tags.
-3. Generate and publish provenance or GitHub artifact attestations.
-4. Publish an SBOM or dependency inventory for release artifacts.
-5. Add native-code sanitizers and fuzzers before accepting native parsers,
+3. Add maintainer approval and OIDC-based publishing policy before any PyPI,
+   GHCR, or external registry release.
+4. Add native-code sanitizers and fuzzers before accepting native parsers,
    deserializers, or backends.
 
 ## Review Gates

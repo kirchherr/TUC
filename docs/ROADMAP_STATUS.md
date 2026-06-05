@@ -56,7 +56,10 @@ Current slice:
 - Backend author certification checklist and negative-test template.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and expanded required CI smoke surface.
+- Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, wheel import
+  check, and GitHub provenance/SBOM attestations.
 
 ## Next
 
-- Release provenance, SBOM, and signed artifacts before first package release.
+- Release tag protection, release action SHA pinning, and package-publishing
+  approval policy before any public package release.
