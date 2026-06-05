@@ -111,6 +111,12 @@ Schema-versioned JSON manifests are loaded through `tuc.manifests`. Manifest
 loading is explicit, bounded, duplicate-key rejecting, and does not scan for or
 execute backend plugins.
 
+`tuc.backends.registry` adds an explicit backend capability registry. It accepts
+trusted in-memory capabilities or caller-provided manifest paths, enforces
+unique bounded backend names, and exposes capability tuples for partitioning.
+It does not perform directory scanning, entry-point discovery, imports, device
+access, backend lowering, or artifact execution.
+
 Backend API v0.1 is documented in `docs/BACKEND_API.md`. It is an authoring
 contract for trusted in-process prototypes and declarative manifests, not a
 plugin ABI. TUC does not auto-discover backends or execute backend code during

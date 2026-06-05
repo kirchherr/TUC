@@ -10,6 +10,11 @@ from tuc.backends.conformance import (
     build_conformance_graph,
     run_backend_conformance,
 )
+from tuc.backends.registry import (
+    BackendRegistration,
+    BackendRegistry,
+    BackendRegistryError,
+)
 from tuc.backends.simulator import LinearAlgebraSimulatorBackend
 
 __all__ = [
@@ -18,6 +23,9 @@ __all__ = [
     "BackendConformanceError",
     "BackendConformanceIssue",
     "BackendConformanceReport",
+    "BackendRegistration",
+    "BackendRegistry",
+    "BackendRegistryError",
     "LinearAlgebraSimulatorBackend",
     "LoweringResult",
     "MVP_CONFORMANCE_OPERATION_KINDS",

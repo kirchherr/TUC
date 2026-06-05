@@ -1,5 +1,6 @@
 """TUC, the experimental Triton Universal Compiler prototype."""
 
+from tuc.backends import BackendRegistration, BackendRegistry, BackendRegistryError
 from tuc.compiler import CompilationResult, CompilerPipeline, compile_graph
 from tuc.frontend import (
     CompilationHints,
@@ -26,6 +27,9 @@ from tuc.manifests import (
 )
 
 __all__ = [
+    "BackendRegistration",
+    "BackendRegistry",
+    "BackendRegistryError",
     "CompilationHints",
     "CompilationResult",
     "ComputeGraph",

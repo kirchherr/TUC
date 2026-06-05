@@ -25,7 +25,7 @@ MAX_MANIFEST_STRING_BYTES = 4096
 MAX_MANIFEST_INTEGER_ABS = 2**63 - 1
 MAX_MANIFEST_FLOAT_ABS = 1.0e308
 
-_MANIFEST_NAME_RE = re.compile(r"^[A-Za-z0-9_.:-]+$")
+_MANIFEST_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$")
 _BACKEND_CAPABILITY_KEYS = frozenset(
     {
         "schema_version",

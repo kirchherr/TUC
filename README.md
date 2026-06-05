@@ -29,6 +29,7 @@ The current prototype contains:
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
 - Backend API v0.1 authoring guide for external prototype backends.
+- Explicit backend capability registry for manifest-loaded planning data.
 - Backend author certification checklist and negative-test template.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
@@ -117,6 +118,12 @@ Run the Backend API v0.1 authoring example:
 python examples/backend_api_v0.py
 ```
 
+Run the explicit backend registry example:
+
+```bash
+python examples/backend_registry.py
+```
+
 Run the baseline benchmark harness:
 
 ```bash
@@ -165,6 +172,7 @@ pytest -q
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
+- [Backend capability registry](docs/BACKEND_REGISTRY.md)
 - [Backend author certification](docs/BACKEND_AUTHOR_CERTIFICATION.md)
 - [Backend conformance fixtures](docs/BACKEND_CONFORMANCE.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)
