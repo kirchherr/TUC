@@ -1,7 +1,13 @@
 """TUC, the experimental Triton Universal Compiler prototype."""
 
 from tuc.compiler import CompilationResult, CompilerPipeline, compile_graph
-from tuc.frontend.hints import CompilationHints
+from tuc.frontend import (
+    CompilationHints,
+    TritonKernelMetadata,
+    TritonOperationMetadata,
+    TritonTensorMetadata,
+    triton_metadata_to_compute_graph,
+)
 from tuc.ir.memory import (
     LayoutConstraint,
     LayoutKind,
@@ -35,9 +41,13 @@ __all__ = [
     "MovementEstimate",
     "OperationKind",
     "TensorRef",
+    "TritonKernelMetadata",
+    "TritonOperationMetadata",
+    "TritonTensorMetadata",
     "TransferEdge",
     "compile_graph",
     "dtype_size_bytes",
     "load_backend_capability_manifest",
     "load_transfer_cost_profile_manifest",
+    "triton_metadata_to_compute_graph",
 ]

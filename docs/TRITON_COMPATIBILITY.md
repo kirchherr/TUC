@@ -17,12 +17,13 @@ compatibility on day one.
 
 | Feature | Level | Notes |
 | --- | --- | --- |
-| `@triton.jit` syntax | L0 | Preserved as a design goal; no parser or adapter yet. |
+| `@triton.jit` syntax | L0 | Preserved as a design goal; no Python source parser yet. |
+| Triton-like metadata adapter | L3 | Declarative metadata can be converted into `ComputeGraph`; no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
-| MatMul | L1 | Lowered through TLIR -> HAC-IR -> HS-IR. |
-| Elementwise | L1 | Lowered and assigned to fallback backend by default. |
-| Reduction | L1 | Represented and supported by the linear simulator backend. |
-| Softmax-like operation | L1 | Represented as an operation family; decomposition is future work. |
+| MatMul | L2 | Lowered through TLIR -> HAC-IR -> HS-IR and covered by golden correctness fixtures. |
+| Elementwise | L2 | Lowered and assigned to fallback backend by default; ReLU reference fixture covers semantics. |
+| Reduction | L2 | Represented, supported by the linear simulator backend, and covered by a sum-reduction fixture. |
+| Softmax-like operation | L2 | Represented as an operation family and covered by a softmax reference fixture; decomposition is future work. |
 | GPU backend | L0 | Represented as fallback backend name only. |
 | Photonic backend | L0 | Captured as roadmap target; simulator work comes later. |
 | Neuromorphic backend | L0 | Captured as roadmap target; simulator work comes later. |
@@ -36,4 +37,5 @@ compatibility on day one.
 
 ## Next Step
 
-Move MatMul and Elementwise from L1 to L2 by adding golden correctness tests.
+Connect executable backend outputs to the golden-kernel reference suite once
+backend execution exists.

@@ -12,6 +12,11 @@ preference, and error budgets.
 Hints must never change mathematical correctness. They only inform lowering,
 tuning, partitioning, and diagnostics.
 
+The first frontend adapter accepts Triton-like kernel metadata as declarative
+data and converts it into `ComputeGraph`. It does not parse Python source,
+execute `@triton.jit` functions, import user modules, or trust reserved `tuc.*`
+attributes from frontend input.
+
 ## IR Stages
 
 Phase 1 has an explicit Python-level IR skeleton with three stages:

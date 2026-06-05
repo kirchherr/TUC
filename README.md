@@ -31,6 +31,7 @@ The current prototype contains:
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
+- Prototype Triton-like metadata adapter for frontend ingestion.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.
@@ -88,6 +89,12 @@ Inspect data-movement metadata:
 python examples/data_movement_ir.py
 ```
 
+Run the Triton-like metadata adapter example:
+
+```bash
+python examples/triton_metadata_adapter.py
+```
+
 Inspect example backend and transfer manifests:
 
 ```text
@@ -112,6 +119,7 @@ pytest -q
 - [MVP definition](docs/MVP.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
+- [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
 - [Runtime transfer plan](docs/RUNTIME_PLAN.md)
