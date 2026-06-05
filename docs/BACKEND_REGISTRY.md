@@ -18,6 +18,7 @@ The registry answers:
 - Which capability data belongs to each name?
 - Which backends claim support for an operation family?
 - Which backends accept a concrete operation through pure data checks?
+- Why a backend accepts or rejects a concrete operation.
 
 It does not answer:
 
@@ -63,6 +64,30 @@ registry = BackendRegistry.from_capabilities([backend.capability])
 This still registers only the `BackendCapability`; it does not store or invoke
 the backend object.
 
+## Support Diagnostics
+
+Backend authors and compiler reviewers can ask the registry to explain support
+decisions before partitioning:
+
+```python
+for diagnostic in registry.diagnose_operation_support(operation):
+    print(diagnostic.backend_name, diagnostic.supported, diagnostic.reason)
+```
+
+Current reason codes include:
+
+- `accepted`
+- `unsupported_operation_kind`
+- `unsupported_layout`
+- `invalid_layout_attribute`
+- `invalid_error_budget_attribute`
+- `error_budget_exceeds_backend_limit`
+
+Diagnostics are intentionally compact. They include backend name, operation
+name, operation kind, support status, reason code, and a short detail string.
+They do not include host paths, imported module names, device identifiers, or
+backend execution output.
+
 ## Validation
 
 The registry enforces:
@@ -87,9 +112,9 @@ The registry keeps backend onboarding capability-first:
 - Manifest fields cannot contain plugin modules, import paths, commands,
   device paths, or dynamic-library names.
 - Registry diagnostics use short source labels rather than full host paths.
-- Capability filtering calls only `BackendCapability.supports`; it does not
-  call backend `lower`, import modules, spawn processes, access devices, or
-  execute artifacts.
+- Capability filtering and support diagnostics inspect only capability fields
+  and already-validated operation data. They do not call backend `lower`,
+  import modules, spawn processes, access devices, or execute artifacts.
 
 This allows TUC to grow toward backend extensibility without opening a compiler
 attack surface around plugin discovery.

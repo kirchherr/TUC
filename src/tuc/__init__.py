@@ -1,6 +1,11 @@
 """TUC, the experimental Triton Universal Compiler prototype."""
 
-from tuc.backends import BackendRegistration, BackendRegistry, BackendRegistryError
+from tuc.backends import (
+    BackendRegistration,
+    BackendRegistry,
+    BackendRegistryError,
+    BackendSupportDiagnostic,
+)
 from tuc.compiler import CompilationResult, CompilerPipeline, compile_graph
 from tuc.frontend import (
     CompilationHints,
@@ -30,6 +35,7 @@ __all__ = [
     "BackendRegistration",
     "BackendRegistry",
     "BackendRegistryError",
+    "BackendSupportDiagnostic",
     "CompilationHints",
     "CompilationResult",
     "ComputeGraph",

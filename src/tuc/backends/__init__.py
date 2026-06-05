@@ -14,6 +14,7 @@ from tuc.backends.registry import (
     BackendRegistration,
     BackendRegistry,
     BackendRegistryError,
+    BackendSupportDiagnostic,
 )
 from tuc.backends.simulator import LinearAlgebraSimulatorBackend
 
@@ -26,6 +27,7 @@ __all__ = [
     "BackendRegistration",
     "BackendRegistry",
     "BackendRegistryError",
+    "BackendSupportDiagnostic",
     "LinearAlgebraSimulatorBackend",
     "LoweringResult",
     "MVP_CONFORMANCE_OPERATION_KINDS",
