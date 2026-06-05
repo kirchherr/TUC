@@ -12,9 +12,20 @@ budgets.
 Hints must never change mathematical correctness. They only inform lowering,
 tuning, partitioning, and diagnostics.
 
+## IR Stages
+
+Phase 1 has an explicit Python-level IR skeleton with three stages:
+
+- TLIR: Triton-like high-level intent.
+- HAC-IR: hardware-agnostic compute intent and constraints.
+- HS-IR: hardware-specific IR with backend assignments.
+
+These modules are implemented in `tuc.ir.modules` and are dumped through
+`tuc.ir.dump`.
+
 ## Hardware-Agnostic Compute IR
 
-The Phase 0 IR is a Python model, not an MLIR dialect yet. It exists to make the
+The current IR is a Python model, not an MLIR dialect yet. It exists to make the
 contracts precise before native MLIR implementation begins.
 
 The model contains:
@@ -62,6 +73,20 @@ The Phase 0 runtime uses simple rule-based partitioning:
 
 This is intentionally simple. Later phases can replace the rule set with cost
 models, transfer estimates, noise simulation, and calibration-aware scheduling.
+
+## Compiler Pipeline
+
+`tuc.compiler.pipeline` provides the current end-to-end skeleton:
+
+```text
+ComputeGraph
+  -> TLIR module
+  -> HAC-IR module
+  -> PartitionPlan
+  -> HS-IR module
+```
+
+The pipeline emits diagnostics and deterministic text dumps at each stage.
 
 ## Future MLIR Shape
 

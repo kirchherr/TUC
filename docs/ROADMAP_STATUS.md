@@ -1,0 +1,40 @@
+# Roadmap Status
+
+This file tracks concrete progress against the roadmap. It is deliberately
+shorter and more operational than `ROADMAP.md`.
+
+## Completed
+
+### Phase 0: Project Foundation
+
+- Open-source repository structure.
+- Docker development environment.
+- Governance, contribution, security, issue, PR, and RFC scaffolding.
+- Initial Python package under `src/tuc`.
+- Prototype backend capability model.
+- Linear algebra simulator backend.
+- Rule-based runtime partitioning.
+- Unit tests and Phase 0 vertical-slice example.
+- Initial commit pushed to GitHub.
+
+## In Progress
+
+### Phase 1: Triton Compatibility And IR Skeleton
+
+Current slice:
+
+- Explicit `tlir`, `hac-ir`, and `hs-ir` module stages.
+- TLIR -> HAC-IR lowering.
+- HAC-IR -> HS-IR lowering with backend assignments.
+- Stable text dumps for debugging and tests.
+- Phase 1 vertical-slice example.
+- MVP kernel family definition.
+- Triton compatibility matrix.
+
+## Next
+
+- Golden-kernel correctness suite.
+- Prototype frontend adapter for Triton-like kernel metadata.
+- Baseline benchmark harness that can run with or without CUDA.
+- First native MLIR design spike.
+- Backend API v0.1 documentation for external authors.

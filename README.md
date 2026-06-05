@@ -69,6 +69,12 @@ Run the Phase 0 vertical slice:
 python examples/phase0_vertical_slice.py
 ```
 
+Run the Phase 1 IR pipeline skeleton:
+
+```bash
+python examples/phase1_ir_pipeline.py
+```
+
 ## Local Python Setup
 
 The Docker environment is recommended. If you already have Python 3.11+:
@@ -85,6 +91,9 @@ pytest -q
 - [Architecture](docs/ARCHITECTURE.md)
 - [Phase 0 plan](docs/PHASE_0.md)
 - [MVP definition](docs/MVP.md)
+- [MVP kernels](docs/MVP_KERNELS.md)
+- [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
+- [Roadmap status](docs/ROADMAP_STATUS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Governance](GOVERNANCE.md)
 

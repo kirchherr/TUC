@@ -26,3 +26,5 @@ jobs:
         run: pytest -q
       - name: Example
         run: python examples/phase0_vertical_slice.py
+      - name: Phase 1 pipeline example
+        run: python examples/phase1_ir_pipeline.py
