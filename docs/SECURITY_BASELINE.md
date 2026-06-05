@@ -47,8 +47,10 @@ Implemented now:
 - Immutable, canonical IR attributes and graph metadata.
 - Attribute type, nesting, key-count, string-size, and total-size budgets.
 - Backend capability validation for operation sets, preferences, error budgets,
-  and memory domains.
+  memory domains, accepted layouts, and produced layouts.
 - Movement-aware partition plan metadata with transfer-byte accounting.
+- Validated in-memory transfer-cost profiles with finite numeric bounds and no
+  executable backend hooks.
 - Read-only default GitHub workflow permissions.
 - Dependabot configuration for GitHub Actions, Python, and Docker updates.
 - CodeQL, dependency review, and OpenSSF Scorecard workflows.

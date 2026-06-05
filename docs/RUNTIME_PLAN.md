@@ -19,6 +19,8 @@ The first runtime plan objects live in `tuc.runtime.plan`:
   operation can consume a tensor.
 - `TransferCostEstimate`: deterministic prototype bandwidth, latency, and
   energy estimate for a transfer edge.
+- `TransferCostProfile`: validated per-domain transfer parameters that can be
+  loaded from plain manifest data before runtime planning.
 
 `PartitionPlan` now carries:
 
@@ -39,15 +41,19 @@ Runtime plan objects are declarative data:
 - Memory domains and layouts are typed enums.
 - Transfer and conversion byte counts must be positive and bounded.
 - Transfer cost numbers must be finite and validated.
+- Transfer-cost manifests are accepted only as bounded plain `dict`, `list`, and
+  `tuple` data.
 - Same-domain transfer edges are rejected.
 - No plugin, backend, subprocess, import, or filesystem path is executed while
-  constructing a plan.
+  constructing a plan or validating a transfer profile.
 
 ## Current Limitations
 
 This is still a prototype:
 
 - Transfer cost uses a coarse deterministic prototype profile.
+- Optional calibrated profiles are in-memory manifest objects; schema-versioned
+  profile files are future work.
 - Layout conversion cost is byte-count based only.
 - Synchronization, buffer lifetime, contention, calibration, and overlapping
   transfer/compute are future work.
@@ -57,7 +63,7 @@ This is still a prototype:
 ## Next Work
 
 1. Include buffer lifetime and reuse in runtime planning.
-2. Let backends declare produced layouts separately from accepted layouts.
-3. Add calibrated transfer-cost profiles from validated backend manifests.
+2. Add schema-versioned backend manifest files.
+3. Add calibrated transfer-cost profile files.
 4. Add runtime-plan golden dumps.
 5. Add benchmark hooks that compare transfer-aware and transfer-blind plans.

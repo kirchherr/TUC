@@ -27,6 +27,7 @@ The current prototype contains:
 - Rule-based runtime partitioning.
 - Data-movement-aware HAC-IR metadata for MVP kernels.
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
+- Validated transfer-cost profiles and backend-produced layout metadata.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.

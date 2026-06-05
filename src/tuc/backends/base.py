@@ -24,6 +24,9 @@ class BackendCapability:
     supported_layouts: frozenset[LayoutKind] = field(
         default_factory=lambda: frozenset({LayoutKind.ROW_MAJOR})
     )
+    produced_layouts: frozenset[LayoutKind] = field(
+        default_factory=lambda: frozenset({LayoutKind.ROW_MAJOR})
+    )
 
     def __post_init__(self) -> None:
         if not self.name:
@@ -42,6 +45,7 @@ class BackendCapability:
         if not isinstance(self.memory_domain, MemoryDomainKind):
             raise TypeError("memory_domain must be MemoryDomainKind")
         _validate_layout_set(self.supported_layouts, "supported_layouts")
+        _validate_layout_set(self.produced_layouts, "produced_layouts")
 
     def supports(self, operation: ComputeOperation) -> bool:
         if operation.kind not in self.supported_ops:
@@ -57,6 +61,14 @@ class BackendCapability:
             raise ValueError("max_error_budget attribute must be a finite non-negative number")
         _validate_non_negative_finite_float(requested_budget, "max_error_budget")
         return requested_budget <= self.max_error_budget
+
+    def produced_layout_for(self, operation: ComputeOperation) -> LayoutKind:
+        """Return the layout this backend will produce for an operation."""
+
+        requested_layout = _operation_layout(operation)
+        if requested_layout in self.produced_layouts:
+            return requested_layout
+        return sorted(self.produced_layouts, key=lambda layout: layout.value)[0]
 
 
 @dataclass(frozen=True)

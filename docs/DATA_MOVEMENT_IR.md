@@ -80,8 +80,7 @@ These rules are part of the compiler attack-surface reduction strategy.
 The next increments should be:
 
 1. Attach validated backend memory-domain capabilities.
-2. Let backend capabilities advertise produced layouts separately from accepted
-   layouts.
-3. Let partitioning consider movement summary and operation intensity.
-4. Add calibrated backend transfer-cost profiles.
+2. Let partitioning consider movement summary and operation intensity.
+3. Add schema-versioned backend manifest files.
+4. Add calibrated backend transfer-cost profile files.
 5. Add fuzz tests for serialized IR and malicious backend capability metadata.

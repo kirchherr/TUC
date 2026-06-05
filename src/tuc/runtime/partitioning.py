@@ -10,7 +10,7 @@ from typing import NamedTuple
 from tuc.backends.base import BackendCapability
 from tuc.ir.memory import LayoutKind, MemoryDomainKind, dtype_size_bytes
 from tuc.ir.model import ComputeGraph, ComputeOperation, TensorRef
-from tuc.runtime.plan import LayoutConversionCost, RuntimeTransferEdge
+from tuc.runtime.plan import LayoutConversionCost, RuntimeTransferEdge, TransferCostProfile
 
 
 @dataclass(frozen=True)
@@ -21,6 +21,7 @@ class Assignment:
     backend_name: str
     reason: str
     memory_domain: MemoryDomainKind
+    produced_layout: LayoutKind
     transfer_bytes: int = 0
     layout_conversion_bytes: int = 0
 
@@ -78,6 +79,7 @@ def partition_graph(
     graph: ComputeGraph,
     backends: Iterable[BackendCapability],
     fallback_backend: str = "gpu",
+    transfer_cost_profile: TransferCostProfile | None = None,
 ) -> PartitionPlan:
     """Assign operations using backend preference and capability metadata."""
 
@@ -92,11 +94,13 @@ def partition_graph(
             capabilities,
             fallback_backend,
             tensor_locations,
+            transfer_cost_profile,
         )
         transfers, conversions = _movement_requirements(
             operation=operation,
             assignment=assignment,
             tensor_locations=tensor_locations,
+            transfer_cost_profile=transfer_cost_profile,
         )
         if transfers or conversions:
             assignment = _with_movement_costs(assignment, transfers, conversions)
@@ -108,7 +112,7 @@ def partition_graph(
                 producer_operation=operation.name,
                 backend_name=assignment.backend_name,
                 memory_domain=assignment.memory_domain,
-                layout=_operation_layout(operation),
+                layout=assignment.produced_layout,
             )
     return PartitionPlan(
         graph_name=graph.name,
@@ -123,6 +127,7 @@ def _assign_operation(
     capabilities: tuple[BackendCapability, ...],
     fallback_backend: str,
     tensor_locations: dict[str, TensorLocation],
+    transfer_cost_profile: TransferCostProfile | None,
 ) -> Assignment:
     preferred = tuple(
         capability
@@ -135,6 +140,7 @@ def _assign_operation(
             candidates=preferred,
             tensor_locations=tensor_locations,
             reason_prefix=f"preferred_for:{operation.kind.value}",
+            transfer_cost_profile=transfer_cost_profile,
         )
 
     supported = tuple(capability for capability in capabilities if capability.supports(operation))
@@ -144,6 +150,7 @@ def _assign_operation(
             candidates=supported,
             tensor_locations=tensor_locations,
             reason_prefix=f"supported:{operation.kind.value}",
+            transfer_cost_profile=transfer_cost_profile,
         )
 
     transfer_bytes = _transfer_bytes_for_domain(
@@ -166,6 +173,7 @@ def _assign_operation(
             f"layout_conversion_bytes={layout_conversion_bytes}"
         ),
         memory_domain=MemoryDomainKind.GPU_HBM,
+        produced_layout=_operation_layout(operation),
         transfer_bytes=transfer_bytes,
         layout_conversion_bytes=layout_conversion_bytes,
     )
@@ -176,36 +184,39 @@ def _select_lowest_transfer_candidate(
     candidates: tuple[BackendCapability, ...],
     tensor_locations: dict[str, TensorLocation],
     reason_prefix: str,
+    transfer_cost_profile: TransferCostProfile | None,
 ) -> Assignment:
     scored = tuple(
         (
-            _transfer_bytes_for_domain(
+            _transfer_score_for_domain(
                 operation,
                 capability.memory_domain,
                 tensor_locations,
-            )
-            + _layout_conversion_bytes_for_layout(
-                operation,
-                _operation_layout(operation),
-                tensor_locations,
+                transfer_cost_profile,
             ),
-            _transfer_bytes_for_domain(operation, capability.memory_domain, tensor_locations),
             _layout_conversion_bytes_for_layout(
                 operation,
                 _operation_layout(operation),
                 tensor_locations,
             ),
+            _transfer_bytes_for_domain(operation, capability.memory_domain, tensor_locations),
+            not _domain_match(operation, capability.memory_domain),
+            capability.name,
             capability,
         )
         for capability in candidates
     )
-    _, transfer_bytes, layout_conversion_bytes, capability = min(scored, key=lambda item: item[0])
+    _, layout_conversion_bytes, transfer_bytes, _, _, capability = min(
+        scored,
+        key=lambda item: item[:5],
+    )
     domain_match = _domain_match(operation, capability.memory_domain)
     reason_parts = [
         reason_prefix,
         f"domain={capability.memory_domain.value}",
         f"transfer_bytes={transfer_bytes}",
         f"layout_conversion_bytes={layout_conversion_bytes}",
+        f"produced_layout={capability.produced_layout_for(operation).value}",
     ]
     if domain_match:
         reason_parts.append("preferred_memory_domain_match")
@@ -214,6 +225,7 @@ def _select_lowest_transfer_candidate(
         backend_name=capability.name,
         reason=";".join(reason_parts),
         memory_domain=capability.memory_domain,
+        produced_layout=capability.produced_layout_for(operation),
         transfer_bytes=transfer_bytes,
         layout_conversion_bytes=layout_conversion_bytes,
     )
@@ -230,6 +242,28 @@ def _transfer_bytes_for_domain(
         if location is not None and location.memory_domain != target_domain:
             transfer_bytes += _tensor_nbytes(tensor)
     return transfer_bytes
+
+
+def _transfer_score_for_domain(
+    operation: ComputeOperation,
+    target_domain: MemoryDomainKind,
+    tensor_locations: dict[str, TensorLocation],
+    transfer_cost_profile: TransferCostProfile | None,
+) -> float:
+    score = 0.0
+    for tensor in operation.inputs:
+        location = tensor_locations.get(tensor.name)
+        if location is not None and location.memory_domain != target_domain:
+            tensor_bytes = _tensor_nbytes(tensor)
+            if transfer_cost_profile is None:
+                score += tensor_bytes
+            else:
+                score += transfer_cost_profile.estimate(
+                    bytes_moved=tensor_bytes,
+                    source_domain=location.memory_domain,
+                    target_domain=target_domain,
+                ).estimated_latency_ns
+    return score
 
 
 def _layout_conversion_bytes_for_layout(
@@ -249,6 +283,7 @@ def _movement_requirements(
     operation: ComputeOperation,
     assignment: Assignment,
     tensor_locations: dict[str, TensorLocation],
+    transfer_cost_profile: TransferCostProfile | None,
 ) -> tuple[tuple[RuntimeTransferEdge, ...], tuple[LayoutConversionCost, ...]]:
     transfers: list[RuntimeTransferEdge] = []
     conversions: list[LayoutConversionCost] = []
@@ -272,6 +307,15 @@ def _movement_requirements(
                     source_layout=source_layout,
                     target_layout=target_layout,
                     bytes_moved=tensor_bytes,
+                    cost_estimate=(
+                        transfer_cost_profile.estimate(
+                            bytes_moved=tensor_bytes,
+                            source_domain=location.memory_domain,
+                            target_domain=assignment.memory_domain,
+                        )
+                        if transfer_cost_profile is not None
+                        else None
+                    ),
                 )
             )
 
@@ -308,6 +352,7 @@ def _with_movement_costs(
         backend_name=assignment.backend_name,
         reason=reason,
         memory_domain=assignment.memory_domain,
+        produced_layout=assignment.produced_layout,
         transfer_bytes=transfer_bytes,
         layout_conversion_bytes=layout_conversion_bytes,
     )

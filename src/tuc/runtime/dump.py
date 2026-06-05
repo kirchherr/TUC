@@ -50,6 +50,7 @@ def _format_assignment(assignment: Assignment) -> str:
     return (
         f"{assignment.operation_name} -> {assignment.backend_name}"
         f" domain={assignment.memory_domain.value}"
+        f" produced_layout={assignment.produced_layout.value}"
         f" transfer_bytes={assignment.transfer_bytes}"
         f" layout_conversion_bytes={assignment.layout_conversion_bytes}"
         f' reason="{assignment.reason}"'

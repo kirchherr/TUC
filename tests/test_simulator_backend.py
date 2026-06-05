@@ -87,6 +87,15 @@ def test_backend_capability_rejects_empty_layout_set() -> None:
         )
 
 
+def test_backend_capability_rejects_empty_produced_layout_set() -> None:
+    with pytest.raises(ValueError, match="produced_layouts"):
+        BackendCapability(
+            name="bad",
+            supported_ops=frozenset({OperationKind.ELEMENTWISE}),
+            produced_layouts=frozenset(),
+        )
+
+
 def test_backend_capability_checks_operation_layout() -> None:
     operation = ComputeOperation(
         name="activation",
@@ -102,3 +111,21 @@ def test_backend_capability_checks_operation_layout() -> None:
     )
 
     assert capability.supports(operation) is False
+
+
+def test_backend_capability_reports_produced_layout() -> None:
+    operation = ComputeOperation(
+        name="activation",
+        kind=OperationKind.ELEMENTWISE,
+        inputs=(TensorRef("x", (8, 8)),),
+        outputs=(TensorRef("y", (8, 8)),),
+        attributes={"tuc.layout": LayoutKind.BLOCKED.value},
+    )
+    capability = BackendCapability(
+        name="blocked_in_row_out",
+        supported_ops=frozenset({OperationKind.ELEMENTWISE}),
+        supported_layouts=frozenset({LayoutKind.BLOCKED}),
+        produced_layouts=frozenset({LayoutKind.ROW_MAJOR}),
+    )
+
+    assert capability.produced_layout_for(operation) is LayoutKind.ROW_MAJOR

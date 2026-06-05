@@ -5,6 +5,7 @@ from __future__ import annotations
 from tuc import CompilationHints, ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
+from tuc.runtime import TransferCostProfile
 
 
 def build_graph() -> ComputeGraph:
@@ -38,7 +39,30 @@ def build_graph() -> ComputeGraph:
 
 
 def main() -> None:
-    result = compile_graph(build_graph(), [LinearAlgebraSimulatorBackend().capability])
+    transfer_profile = TransferCostProfile.from_manifest(
+        {
+            "name": "example_profile",
+            "fallback": {
+                "bandwidth_gb_s": 16.0,
+                "base_latency_ns": 20000.0,
+                "energy_pj_per_byte": 100.0,
+            },
+            "edges": (
+                {
+                    "source_domain": "analog_weight_bank",
+                    "target_domain": "gpu_hbm",
+                    "bandwidth_gb_s": 128.0,
+                    "base_latency_ns": 2500.0,
+                    "energy_pj_per_byte": 12.0,
+                },
+            ),
+        }
+    )
+    result = compile_graph(
+        build_graph(),
+        [LinearAlgebraSimulatorBackend().capability],
+        transfer_cost_profile=transfer_profile,
+    )
 
     print("== movement summary ==")
     for key, value in sorted(result.hs_ir.graph.metadata["movement_summary"].items()):

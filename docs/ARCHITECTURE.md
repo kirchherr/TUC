@@ -75,6 +75,7 @@ Capabilities include:
 
 - Supported operation kinds.
 - Supported tensor layouts.
+- Produced tensor layouts.
 - Backend memory domain.
 - Preferred operation kinds.
 - Whether the backend supports noise modeling.
@@ -83,6 +84,10 @@ Capabilities include:
 
 This lets the runtime reason about a backend without knowing its implementation.
 Capability checks are pure data checks and must not execute backend plugin code.
+
+Transfer-cost profiles can be supplied as validated declarative manifests. The
+runtime uses them for transfer-edge estimates and candidate scoring without
+executing backend code or trusting backend-provided behavior.
 
 ## Backend Lowering
 
@@ -109,12 +114,12 @@ cost models, transfer estimates, noise simulation, and calibration-aware
 scheduling.
 
 Partition plans now expose backend assignments, memory domains, runtime transfer
-edges, layout conversions, and estimated byte costs, so runtime decisions stay
-inspectable.
+edges, layout conversions, produced layouts, and estimated byte costs, so
+runtime decisions stay inspectable.
 
 Runtime transfer edges also carry coarse prototype bandwidth, latency, and
-energy estimates. These estimates are deterministic planning data, not hardware
-certification claims.
+energy estimates, or estimates from a validated transfer-cost profile. These
+estimates are deterministic planning data, not hardware certification claims.
 
 ## Compiler Pipeline
 

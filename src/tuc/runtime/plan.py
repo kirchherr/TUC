@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 from math import isfinite
+from typing import cast
 
 from tuc.ir.memory import LayoutKind, MemoryDomainKind
 
 MAX_RUNTIME_TRANSFER_BYTES = 2**63 - 1
+MAX_TRANSFER_PROFILE_EDGES = 64
 _PLAN_NAME_RE = re.compile(r"^[A-Za-z0-9_.:-]+$")
 
 
@@ -41,6 +44,107 @@ class TransferCostEstimate:
         """Return energy estimate in picojoules."""
 
         return self.bytes_moved * self.energy_pj_per_byte
+
+
+@dataclass(frozen=True)
+class TransferCostParameters:
+    """Validated per-domain-pair transfer cost parameters."""
+
+    bandwidth_gb_s: float
+    base_latency_ns: float
+    energy_pj_per_byte: float
+
+    def __post_init__(self) -> None:
+        _require_positive_finite_float(self.bandwidth_gb_s, "bandwidth_gb_s")
+        _require_non_negative_finite_float(self.base_latency_ns, "base_latency_ns")
+        _require_non_negative_finite_float(
+            self.energy_pj_per_byte,
+            "energy_pj_per_byte",
+        )
+
+    def estimate(self, bytes_moved: int) -> TransferCostEstimate:
+        """Estimate transfer cost for a concrete byte count."""
+
+        return TransferCostEstimate(
+            bytes_moved=bytes_moved,
+            bandwidth_gb_s=self.bandwidth_gb_s,
+            base_latency_ns=self.base_latency_ns,
+            energy_pj_per_byte=self.energy_pj_per_byte,
+        )
+
+
+@dataclass(frozen=True)
+class TransferCostProfile:
+    """Validated transfer-cost profile, suitable for backend manifest data."""
+
+    name: str
+    fallback: TransferCostParameters
+    entries: Mapping[tuple[MemoryDomainKind, MemoryDomainKind], TransferCostParameters]
+
+    def __post_init__(self) -> None:
+        _require_name(self.name, "transfer_cost_profile.name")
+        if not isinstance(self.fallback, TransferCostParameters):
+            raise TypeError("transfer_cost_profile.fallback must be TransferCostParameters")
+        if type(self.entries) is not dict:
+            raise TypeError("transfer_cost_profile.entries must be a plain mapping")
+        if len(self.entries) > MAX_TRANSFER_PROFILE_EDGES:
+            raise ValueError("transfer cost profile exceeds edge limit")
+
+        normalized: dict[tuple[MemoryDomainKind, MemoryDomainKind], TransferCostParameters] = {}
+        for edge, parameters in self.entries.items():
+            if not isinstance(edge, tuple) or len(edge) != 2:
+                raise TypeError("transfer cost profile edge keys must be domain pairs")
+            source_domain, target_domain = edge
+            _require_enum(source_domain, MemoryDomainKind, "source_domain")
+            _require_enum(target_domain, MemoryDomainKind, "target_domain")
+            if source_domain == target_domain:
+                raise ValueError("transfer cost profile edges must cross domains")
+            if not isinstance(parameters, TransferCostParameters):
+                raise TypeError("transfer cost profile values must be TransferCostParameters")
+            normalized[(source_domain, target_domain)] = parameters
+        object.__setattr__(self, "entries", normalized)
+
+    def estimate(
+        self,
+        bytes_moved: int,
+        source_domain: MemoryDomainKind,
+        target_domain: MemoryDomainKind,
+    ) -> TransferCostEstimate:
+        """Estimate transfer cost for one domain crossing."""
+
+        _require_transfer_bytes(bytes_moved, "bytes_moved")
+        _require_enum(source_domain, MemoryDomainKind, "source_domain")
+        _require_enum(target_domain, MemoryDomainKind, "target_domain")
+        if source_domain == target_domain:
+            raise ValueError("transfer cost requires different domains")
+        parameters = self.entries.get((source_domain, target_domain), self.fallback)
+        return parameters.estimate(bytes_moved)
+
+    @classmethod
+    def from_manifest(cls, manifest: object) -> TransferCostProfile:
+        """Create a validated profile from untrusted declarative manifest data."""
+
+        manifest_dict = _require_plain_mapping(manifest, "transfer cost manifest")
+        name = _require_manifest_string(manifest_dict, "name")
+        fallback = _parameters_from_manifest(
+            _require_manifest_mapping(manifest_dict, "fallback")
+        )
+        edges = _require_plain_sequence(
+            manifest_dict.get("edges", ()),
+            "transfer cost manifest edges",
+        )
+        if len(edges) > MAX_TRANSFER_PROFILE_EDGES:
+            raise ValueError("transfer cost manifest exceeds edge limit")
+
+        entries: dict[tuple[MemoryDomainKind, MemoryDomainKind], TransferCostParameters] = {}
+        for edge_value in edges:
+            edge = _require_mapping(edge_value, "transfer cost edge")
+            source_domain = _domain_from_manifest(edge, "source_domain")
+            target_domain = _domain_from_manifest(edge, "target_domain")
+            if (source_domain, target_domain) in entries:
+                raise ValueError("transfer cost manifest contains duplicate domain pair")
+            entries[(source_domain, target_domain)] = _parameters_from_manifest(edge)
+        return cls(name=name, fallback=fallback, entries=entries)
 
 
 @dataclass(frozen=True)
@@ -155,32 +259,110 @@ def estimate_default_transfer_cost(
     if source_domain == target_domain:
         raise ValueError("default transfer cost requires different domains")
 
-    bandwidth_gb_s, base_latency_ns, energy_pj_per_byte = _DEFAULT_TRANSFER_COSTS.get(
-        (source_domain, target_domain),
-        _FALLBACK_TRANSFER_COST,
-    )
-    return TransferCostEstimate(
+    return DEFAULT_TRANSFER_COST_PROFILE.estimate(
         bytes_moved=bytes_moved,
-        bandwidth_gb_s=bandwidth_gb_s,
-        base_latency_ns=base_latency_ns,
-        energy_pj_per_byte=energy_pj_per_byte,
+        source_domain=source_domain,
+        target_domain=target_domain,
     )
 
 
-_FALLBACK_TRANSFER_COST = (16.0, 20_000.0, 100.0)
-_DEFAULT_TRANSFER_COSTS = {
-    (MemoryDomainKind.ANALOG_WEIGHT_BANK, MemoryDomainKind.GPU_HBM): (64.0, 5_000.0, 20.0),
-    (MemoryDomainKind.GPU_HBM, MemoryDomainKind.ANALOG_WEIGHT_BANK): (64.0, 5_000.0, 20.0),
-    (MemoryDomainKind.GPU_HBM, MemoryDomainKind.DEVICE_SRAM): (1_000.0, 100.0, 2.0),
-    (MemoryDomainKind.DEVICE_SRAM, MemoryDomainKind.GPU_HBM): (1_000.0, 100.0, 2.0),
-    (MemoryDomainKind.HOST_RAM, MemoryDomainKind.GPU_HBM): (32.0, 10_000.0, 50.0),
-    (MemoryDomainKind.GPU_HBM, MemoryDomainKind.HOST_RAM): (32.0, 10_000.0, 50.0),
-}
+def _parameters_from_manifest(manifest: Mapping[str, object]) -> TransferCostParameters:
+    return TransferCostParameters(
+        bandwidth_gb_s=_require_manifest_number(manifest, "bandwidth_gb_s"),
+        base_latency_ns=_require_manifest_number(manifest, "base_latency_ns"),
+        energy_pj_per_byte=_require_manifest_number(manifest, "energy_pj_per_byte"),
+    )
+
+
+def _domain_from_manifest(
+    manifest: Mapping[str, object],
+    key: str,
+) -> MemoryDomainKind:
+    value = _require_manifest_string(manifest, key)
+    try:
+        return MemoryDomainKind(value)
+    except ValueError as exc:
+        raise ValueError(f"unsupported memory domain in transfer cost manifest: {value!r}") from exc
+
+
+def _require_manifest_mapping(
+    manifest: Mapping[str, object],
+    key: str,
+) -> dict[str, object]:
+    value = manifest.get(key)
+    return _require_mapping(value, f"transfer cost manifest {key}")
+
+
+def _require_mapping(value: object, label: str) -> dict[str, object]:
+    return _require_plain_mapping(value, label)
+
+
+def _require_plain_mapping(value: object, label: str) -> dict[str, object]:
+    if type(value) is not dict:
+        raise TypeError(f"{label} must be a plain mapping")
+    if any(not isinstance(key, str) for key in value):
+        raise TypeError(f"{label} keys must be strings")
+    return cast(dict[str, object], value)
+
+
+def _require_plain_sequence(value: object, label: str) -> tuple[object, ...]:
+    if type(value) is list:
+        return tuple(cast(list[object], value))
+    if type(value) is tuple:
+        return cast(tuple[object, ...], value)
+    raise TypeError(f"{label} must be a plain sequence")
+
+
+def _require_manifest_string(manifest: Mapping[str, object], key: str) -> str:
+    value = manifest.get(key)
+    if not isinstance(value, str) or not _PLAN_NAME_RE.fullmatch(value):
+        raise ValueError(f"transfer cost manifest {key} must be a simple name")
+    return value
+
+
+def _require_manifest_number(manifest: Mapping[str, object], key: str) -> float:
+    value = manifest.get(key)
+    if not isinstance(value, int | float) or isinstance(value, bool):
+        raise TypeError(f"transfer cost manifest {key} must be a number")
+    return float(value)
+
+
+DEFAULT_TRANSFER_COST_PROFILE = TransferCostProfile(
+    name="prototype",
+    fallback=TransferCostParameters(
+        bandwidth_gb_s=16.0,
+        base_latency_ns=20_000.0,
+        energy_pj_per_byte=100.0,
+    ),
+    entries={
+        (MemoryDomainKind.ANALOG_WEIGHT_BANK, MemoryDomainKind.GPU_HBM): (
+            TransferCostParameters(64.0, 5_000.0, 20.0)
+        ),
+        (MemoryDomainKind.GPU_HBM, MemoryDomainKind.ANALOG_WEIGHT_BANK): (
+            TransferCostParameters(64.0, 5_000.0, 20.0)
+        ),
+        (MemoryDomainKind.GPU_HBM, MemoryDomainKind.DEVICE_SRAM): (
+            TransferCostParameters(1_000.0, 100.0, 2.0)
+        ),
+        (MemoryDomainKind.DEVICE_SRAM, MemoryDomainKind.GPU_HBM): (
+            TransferCostParameters(1_000.0, 100.0, 2.0)
+        ),
+        (MemoryDomainKind.HOST_RAM, MemoryDomainKind.GPU_HBM): (
+            TransferCostParameters(32.0, 10_000.0, 50.0)
+        ),
+        (MemoryDomainKind.GPU_HBM, MemoryDomainKind.HOST_RAM): (
+            TransferCostParameters(32.0, 10_000.0, 50.0)
+        ),
+    },
+)
 
 
 __all__ = [
     "LayoutConversionCost",
     "RuntimeTransferEdge",
+    "TransferCostParameters",
     "TransferCostEstimate",
+    "TransferCostProfile",
+    "DEFAULT_TRANSFER_COST_PROFILE",
     "estimate_default_transfer_cost",
 ]
