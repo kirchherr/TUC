@@ -62,7 +62,10 @@ Current slice:
   tests, and required GitHub/PyPI publishing controls.
 - PyPI Trusted Publishing job gated by protected `v*` tags, artifact-build
   success, and the `pypi` environment.
+- CODEOWNERS-backed review policy for compiler, runtime, backend, governance,
+  and release trust boundaries.
 
 ## Next
 
-- CODEOWNERS, maintainer teams, and required owner review policy.
+- Maintainer teams or organization-backed owner groups before broad external
+  contribution.

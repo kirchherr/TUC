@@ -23,6 +23,7 @@ Enable:
 - Require a pull request before merging.
 - Require at least 1 approving review.
 - Dismiss stale pull request approvals when new commits are pushed.
+- Require review from Code Owners.
 - Require conversation resolution before merging.
 - Require linear history.
 - Include administrators or prevent bypassing the ruleset.
@@ -63,12 +64,11 @@ under explicit recovery procedures.
 Consider enabling these once contributor tooling is ready:
 
 - Require signed commits.
-- Require CODEOWNERS review.
 - Require merge queue.
 - Restrict pushes to named maintainer teams.
 
 These are not required in v0 because the repository does not yet define
-CODEOWNERS, release signing, or maintainer teams.
+release signing or maintainer teams.
 
 ## GitHub UI Setup
 

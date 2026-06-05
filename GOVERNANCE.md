@@ -12,6 +12,7 @@ Maintainers are responsible for:
 
 - Reviewing pull requests.
 - Accepting or rejecting RFCs.
+- Maintaining CODEOWNERS and enforcing owner review for critical paths.
 - Protecting compatibility and project scope.
 - Maintaining CI, tests, documentation, and release quality.
 - Coordinating backend and runtime design decisions.
@@ -37,6 +38,10 @@ that it is:
 - Testable.
 - Narrow enough to implement.
 - Compatible with the current MVP scope or explicitly expands it.
+
+Security-sensitive, release-sensitive, compiler-boundary, backend-boundary, or
+runtime-boundary changes require owner review as defined in
+[docs/REVIEW_POLICY.md](docs/REVIEW_POLICY.md).
 
 ## Compatibility
 

@@ -82,6 +82,8 @@ Implemented now:
   rulesets, publishing environments, and PyPI Trusted Publishing.
 - Isolated PyPI publishing job with OIDC Trusted Publishing, no stored PyPI
   token, `v*` tag gating, and `pypi` environment approval.
+- CODEOWNERS and review policy for compiler, runtime, backend, governance, and
+  release trust-boundary changes.
 - Apache-2.0 license and NOTICE file.
 
 ## Supply Chain Baseline

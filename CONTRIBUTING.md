@@ -37,6 +37,20 @@ mypy src/tuc
 pytest -q
 ```
 
+## Reviews
+
+TUC uses [CODEOWNERS](.github/CODEOWNERS) and
+[Review policy](docs/REVIEW_POLICY.md) to protect compiler, runtime, backend,
+governance, and release trust boundaries.
+
+Pull requests that change critical paths should explain:
+
+- Which trust boundary changed.
+- Which invariants are validated before lowering, planning, or publishing.
+- Which tests or golden artifacts cover the behavior.
+- Whether the change adds imports, subprocesses, dynamic libraries, network
+  access, generated-code execution, or filesystem writes.
+
 ## RFCs
 
 Architectural changes should start as RFCs when they affect:

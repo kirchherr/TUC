@@ -38,6 +38,8 @@ The current prototype contains:
   approval requirements.
 - PyPI Trusted Publishing job gated by protected `v*` tags and the `pypi`
   environment.
+- CODEOWNERS-backed review policy for compiler, runtime, backend, governance,
+  and release trust boundaries.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
@@ -172,6 +174,7 @@ pytest -q
 - [Runtime transfer plan](docs/RUNTIME_PLAN.md)
 - [Security baseline](docs/SECURITY_BASELINE.md)
 - [Branch protection policy](docs/BRANCH_PROTECTION.md)
+- [Review policy](docs/REVIEW_POLICY.md)
 - [Release security](docs/RELEASE_SECURITY.md)
 - [Release governance](docs/RELEASE_GOVERNANCE.md)
 - [Roadmap status](docs/ROADMAP_STATUS.md)

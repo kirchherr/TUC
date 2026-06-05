@@ -1,0 +1,45 @@
+# TUC code ownership.
+#
+# GitHub uses the last matching pattern for a file. Keep specific trust-boundary
+# rules below the default rule.
+
+* @kirchherr
+
+# Repository governance and supply-chain controls.
+/.github/CODEOWNERS @kirchherr
+/.github/dependabot.yml @kirchherr
+/.github/workflows/ @kirchherr
+/docker/ @kirchherr
+/docker-compose.yml @kirchherr
+/pyproject.toml @kirchherr
+/requirements/ @kirchherr
+/CONTRIBUTING.md @kirchherr
+/GOVERNANCE.md @kirchherr
+/SECURITY.md @kirchherr
+/docs/BRANCH_PROTECTION.md @kirchherr
+/docs/RELEASE_GOVERNANCE.md @kirchherr
+/docs/RELEASE_SECURITY.md @kirchherr
+/docs/SECURITY_BASELINE.md @kirchherr
+
+# Compiler and runtime trust boundaries.
+/src/tuc/backends/ @kirchherr
+/src/tuc/compiler/ @kirchherr
+/src/tuc/frontend/ @kirchherr
+/src/tuc/ir/ @kirchherr
+/src/tuc/runtime/ @kirchherr
+/src/tuc/manifests.py @kirchherr
+/examples/manifests/ @kirchherr
+/tests/golden/ @kirchherr
+
+# Architecture decisions and external contracts.
+/docs/ARCHITECTURE.md @kirchherr
+/docs/BACKEND_API.md @kirchherr
+/docs/BACKEND_AUTHOR_CERTIFICATION.md @kirchherr
+/docs/BACKEND_CONFORMANCE.md @kirchherr
+/docs/DATA_MOVEMENT_IR.md @kirchherr
+/docs/HAC_IR_DIALECT.md @kirchherr
+/docs/HS_IR_DIALECT.md @kirchherr
+/docs/MLIR_DESIGN_SPIKE.md @kirchherr
+/docs/RUNTIME_PLAN.md @kirchherr
+/docs/TRITON_COMPATIBILITY.md @kirchherr
+/rfcs/ @kirchherr
