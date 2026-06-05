@@ -26,6 +26,7 @@ The current prototype contains:
 - A simulator backend for linear algebra operations.
 - Rule-based runtime partitioning.
 - Data-movement-aware HAC-IR metadata for MVP kernels.
+- Runtime transfer-plan dumps with prototype transfer-cost estimates.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.

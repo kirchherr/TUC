@@ -51,12 +51,15 @@ def test_pipeline_lowers_through_all_three_ir_stages() -> None:
         "total_bytes_written": 1024,
     }
     assert result.hs_ir.graph.metadata["runtime_transfer_summary"] == {
+        "estimated_transfer_energy_pj": 10240.0,
+        "estimated_transfer_latency_ns": 5008.0,
         "layout_conversion_count": 0,
         "total_data_movement_bytes": 512,
         "total_layout_conversion_bytes": 0,
         "total_transfer_bytes": 512,
         "transfer_edge_count": 1,
     }
+    assert "runtime.plan @mlp" in result.dump_runtime_plan()
     assert any(
         diagnostic.startswith("projection->linear-sim:preferred_for:matmul")
         for diagnostic in result.diagnostics

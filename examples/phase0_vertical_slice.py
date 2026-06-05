@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from tuc import CompilationHints, ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.backends import LinearAlgebraSimulatorBackend
-from tuc.runtime import partition_graph
+from tuc.runtime import dump_partition_plan, partition_graph
 
 
 def build_graph() -> ComputeGraph:
@@ -42,6 +42,8 @@ def main() -> None:
     print("Partition plan")
     for assignment in plan.assignments:
         print(f"- {assignment.operation_name}: {assignment.backend_name} ({assignment.reason})")
+    print()
+    print(dump_partition_plan(plan))
     if plan.transfer_edges:
         print()
         print("Runtime transfers")

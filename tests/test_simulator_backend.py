@@ -5,6 +5,7 @@ import pytest
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
+from tuc.ir.memory import LayoutKind
 
 
 def test_simulator_lowers_supported_graph() -> None:
@@ -75,3 +76,29 @@ def test_backend_capability_rejects_inconsistent_preference() -> None:
             supported_ops=frozenset({OperationKind.ELEMENTWISE}),
             preferred_for=frozenset({OperationKind.MATMUL}),
         )
+
+
+def test_backend_capability_rejects_empty_layout_set() -> None:
+    with pytest.raises(ValueError, match="supported_layouts"):
+        BackendCapability(
+            name="bad",
+            supported_ops=frozenset({OperationKind.ELEMENTWISE}),
+            supported_layouts=frozenset(),
+        )
+
+
+def test_backend_capability_checks_operation_layout() -> None:
+    operation = ComputeOperation(
+        name="activation",
+        kind=OperationKind.ELEMENTWISE,
+        inputs=(TensorRef("x", (8, 8)),),
+        outputs=(TensorRef("y", (8, 8)),),
+        attributes={"tuc.layout": LayoutKind.BLOCKED.value},
+    )
+    capability = BackendCapability(
+        name="row_major_only",
+        supported_ops=frozenset({OperationKind.ELEMENTWISE}),
+        supported_layouts=frozenset({LayoutKind.ROW_MAJOR}),
+    )
+
+    assert capability.supports(operation) is False

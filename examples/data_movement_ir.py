@@ -51,11 +51,19 @@ def main() -> None:
     if result.partition_plan.transfer_edges:
         print("\n== runtime transfers ==")
         for edge in result.partition_plan.transfer_edges:
+            cost = edge.cost_estimate
+            if cost is None:
+                raise RuntimeError("runtime transfer is missing a cost estimate")
             print(
                 f"%{edge.tensor_name}: {edge.source_backend}/{edge.source_domain.value}"
                 f" -> {edge.target_backend}/{edge.target_domain.value}"
-                f" ({edge.bytes_moved} bytes)"
+                f" ({edge.bytes_moved} bytes, "
+                f"{cost.estimated_latency_ns:.3f} ns, "
+                f"{cost.estimated_energy_pj:.3f} pJ)"
             )
+
+    print("\n== runtime plan ==")
+    print(result.dump_runtime_plan())
 
     print("\n== hs-ir ==")
     print(result.dump(result.hs_ir.stage))

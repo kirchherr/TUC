@@ -74,12 +74,15 @@ Backends declare what they can accept through `BackendCapability`.
 Capabilities include:
 
 - Supported operation kinds.
+- Supported tensor layouts.
+- Backend memory domain.
 - Preferred operation kinds.
 - Whether the backend supports noise modeling.
 - Whether calibration is required or supported.
 - Maximum error budget constraints.
 
 This lets the runtime reason about a backend without knowing its implementation.
+Capability checks are pure data checks and must not execute backend plugin code.
 
 ## Backend Lowering
 
@@ -108,6 +111,10 @@ scheduling.
 Partition plans now expose backend assignments, memory domains, runtime transfer
 edges, layout conversions, and estimated byte costs, so runtime decisions stay
 inspectable.
+
+Runtime transfer edges also carry coarse prototype bandwidth, latency, and
+energy estimates. These estimates are deterministic planning data, not hardware
+certification claims.
 
 ## Compiler Pipeline
 

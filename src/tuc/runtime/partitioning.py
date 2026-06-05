@@ -55,6 +55,24 @@ class PartitionPlan:
 
         return self.total_transfer_bytes() + self.total_layout_conversion_bytes()
 
+    def total_estimated_transfer_latency_ns(self) -> float:
+        """Return estimated transfer latency across all explicit transfer edges."""
+
+        return sum(
+            edge.cost_estimate.estimated_latency_ns
+            for edge in self.transfer_edges
+            if edge.cost_estimate is not None
+        )
+
+    def total_estimated_transfer_energy_pj(self) -> float:
+        """Return estimated transfer energy across all explicit transfer edges."""
+
+        return sum(
+            edge.cost_estimate.estimated_energy_pj
+            for edge in self.transfer_edges
+            if edge.cost_estimate is not None
+        )
+
 
 def partition_graph(
     graph: ComputeGraph,

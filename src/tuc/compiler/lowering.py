@@ -62,6 +62,8 @@ def lower_hac_to_hs(hac_ir: IRModule, partition_plan: PartitionPlan) -> IRModule
         "backend_assignments": assignments,
         "movement_summary": summarize_graph_movement(hac_ir.graph),
         "runtime_transfer_summary": {
+            "estimated_transfer_energy_pj": partition_plan.total_estimated_transfer_energy_pj(),
+            "estimated_transfer_latency_ns": partition_plan.total_estimated_transfer_latency_ns(),
             "layout_conversion_count": len(partition_plan.layout_conversions),
             "total_data_movement_bytes": partition_plan.total_data_movement_bytes(),
             "total_layout_conversion_bytes": partition_plan.total_layout_conversion_bytes(),

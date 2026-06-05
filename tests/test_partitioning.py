@@ -6,7 +6,7 @@ from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.ir.memory import LayoutKind, MemoryDomainKind
-from tuc.runtime import partition_graph
+from tuc.runtime import dump_partition_plan, partition_graph
 
 
 def test_partitioning_prefers_linear_simulator_for_matmul() -> None:
@@ -49,6 +49,9 @@ def test_partitioning_prefers_linear_simulator_for_matmul() -> None:
     assert edge.source_domain is MemoryDomainKind.ANALOG_WEIGHT_BANK
     assert edge.target_domain is MemoryDomainKind.GPU_HBM
     assert plan.total_data_movement_bytes() == 16 * 16 * 4
+    assert plan.total_estimated_transfer_latency_ns() == pytest.approx(5016.0)
+    assert plan.total_estimated_transfer_energy_pj() == pytest.approx(20480.0)
+    assert "bandwidth_gb_s=64" in dump_partition_plan(plan)
 
 
 def test_partitioning_selects_supported_backend_with_lower_transfer_cost() -> None:
@@ -88,6 +91,37 @@ def test_partitioning_selects_supported_backend_with_lower_transfer_cost() -> No
     assert plan.backend_for("first") == "gpu"
     assert plan.backend_for("second") == "gpu"
     assert plan.total_transfer_bytes() == 0
+
+
+def test_partitioning_respects_backend_layout_capabilities() -> None:
+    x = TensorRef("x", (8, 8))
+    y = TensorRef("y", (8, 8))
+    graph = ComputeGraph(
+        name="layout_capability",
+        operations=(
+            ComputeOperation(
+                name="blocked_activation",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(x,),
+                outputs=(y,),
+                attributes={"tuc.layout": LayoutKind.BLOCKED.value},
+            ),
+        ),
+    )
+    row_major_backend = BackendCapability(
+        name="row_major_backend",
+        supported_ops=frozenset({OperationKind.ELEMENTWISE}),
+        supported_layouts=frozenset({LayoutKind.ROW_MAJOR}),
+    )
+    blocked_backend = BackendCapability(
+        name="blocked_backend",
+        supported_ops=frozenset({OperationKind.ELEMENTWISE}),
+        supported_layouts=frozenset({LayoutKind.BLOCKED}),
+    )
+
+    plan = partition_graph(graph, [row_major_backend, blocked_backend])
+
+    assert plan.backend_for("blocked_activation") == "blocked_backend"
 
 
 def test_partitioning_records_layout_conversion_costs() -> None:

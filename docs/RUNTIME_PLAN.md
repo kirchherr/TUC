@@ -17,6 +17,8 @@ The first runtime plan objects live in `tuc.runtime.plan`:
 - `RuntimeTransferEdge`: a tensor transfer between two backend memory domains.
 - `LayoutConversionCost`: a tensor layout conversion required before an
   operation can consume a tensor.
+- `TransferCostEstimate`: deterministic prototype bandwidth, latency, and
+  energy estimate for a transfer edge.
 
 `PartitionPlan` now carries:
 
@@ -26,6 +28,8 @@ The first runtime plan objects live in `tuc.runtime.plan`:
 - Total transfer bytes.
 - Total layout conversion bytes.
 - Total explicit data movement bytes.
+- Estimated total transfer latency.
+- Estimated total transfer energy.
 
 ## Security Invariants
 
@@ -34,6 +38,7 @@ Runtime plan objects are declarative data:
 - Names are validated.
 - Memory domains and layouts are typed enums.
 - Transfer and conversion byte counts must be positive and bounded.
+- Transfer cost numbers must be finite and validated.
 - Same-domain transfer edges are rejected.
 - No plugin, backend, subprocess, import, or filesystem path is executed while
   constructing a plan.
@@ -42,17 +47,17 @@ Runtime plan objects are declarative data:
 
 This is still a prototype:
 
-- Transfer cost is byte-count based only.
+- Transfer cost uses a coarse deterministic prototype profile.
 - Layout conversion cost is byte-count based only.
-- Bandwidth, latency, energy, synchronization, buffer lifetime, and overlapping
+- Synchronization, buffer lifetime, contention, calibration, and overlapping
   transfer/compute are future work.
 - Graph input locations are assumed to start in row-major layout unless a
   future frontend/runtime contract states otherwise.
 
 ## Next Work
 
-1. Add explicit transfer-edge bandwidth, latency, and energy estimates.
-2. Include buffer lifetime and reuse in runtime planning.
-3. Emit a stable runtime plan dump.
-4. Let backend capability metadata advertise accepted layouts.
+1. Include buffer lifetime and reuse in runtime planning.
+2. Let backends declare produced layouts separately from accepted layouts.
+3. Add calibrated transfer-cost profiles from validated backend manifests.
+4. Add runtime-plan golden dumps.
 5. Add benchmark hooks that compare transfer-aware and transfer-blind plans.

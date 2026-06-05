@@ -10,7 +10,7 @@ from tuc.compiler.lowering import lower_hac_to_hs, lower_tlir_to_hac
 from tuc.ir.dump import dump_module
 from tuc.ir.model import ComputeGraph
 from tuc.ir.modules import IRModule, IRStage
-from tuc.runtime import PartitionPlan, partition_graph
+from tuc.runtime import PartitionPlan, dump_partition_plan, partition_graph
 
 
 @dataclass(frozen=True)
@@ -38,6 +38,11 @@ class CompilationResult:
             self.hac_ir.stage.value: dump_module(self.hac_ir),
             self.hs_ir.stage.value: dump_module(self.hs_ir),
         }
+
+    def dump_runtime_plan(self) -> str:
+        """Return a deterministic runtime partition and transfer-plan dump."""
+
+        return dump_partition_plan(self.partition_plan)
 
 
 class CompilerPipeline:

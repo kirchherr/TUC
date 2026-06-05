@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from math import isfinite
 from typing import Protocol
 
-from tuc.ir.memory import MemoryDomainKind
+from tuc.ir.memory import LayoutKind, MemoryDomainKind
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind
 
 
@@ -21,6 +21,9 @@ class BackendCapability:
     preferred_for: frozenset[OperationKind] = field(default_factory=frozenset)
     max_error_budget: float | None = None
     memory_domain: MemoryDomainKind = MemoryDomainKind.GPU_HBM
+    supported_layouts: frozenset[LayoutKind] = field(
+        default_factory=lambda: frozenset({LayoutKind.ROW_MAJOR})
+    )
 
     def __post_init__(self) -> None:
         if not self.name:
@@ -38,9 +41,12 @@ class BackendCapability:
             )
         if not isinstance(self.memory_domain, MemoryDomainKind):
             raise TypeError("memory_domain must be MemoryDomainKind")
+        _validate_layout_set(self.supported_layouts, "supported_layouts")
 
     def supports(self, operation: ComputeOperation) -> bool:
         if operation.kind not in self.supported_ops:
+            return False
+        if _operation_layout(operation) not in self.supported_layouts:
             return False
         if self.max_error_budget is None:
             return True
@@ -87,3 +93,29 @@ def _validate_operation_set(
 def _validate_non_negative_finite_float(value: int | float, label: str) -> None:
     if not isfinite(value) or value < 0:
         raise ValueError(f"{label} must be finite and non-negative")
+
+
+def _validate_layout_set(
+    layouts: frozenset[LayoutKind],
+    label: str,
+) -> None:
+    if not isinstance(layouts, frozenset):
+        raise TypeError(f"{label} must be a frozenset")
+    if not layouts:
+        raise ValueError(f"{label} must contain at least one layout")
+    if any(not isinstance(layout, LayoutKind) for layout in layouts):
+        raise TypeError(f"{label} must contain LayoutKind values")
+
+
+def _operation_layout(operation: ComputeOperation) -> LayoutKind:
+    value = operation.attributes.get("tuc.layout")
+    if value is None:
+        return LayoutKind.ROW_MAJOR
+    if isinstance(value, LayoutKind):
+        return value
+    if isinstance(value, str):
+        try:
+            return LayoutKind(value)
+        except ValueError as exc:
+            raise ValueError(f"unsupported operation layout: {value!r}") from exc
+    raise TypeError("operation layout must be a LayoutKind or string")
