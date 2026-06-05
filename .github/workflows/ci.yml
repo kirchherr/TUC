@@ -8,6 +8,9 @@ on:
       - master
       - "codex/**"
 
+permissions:
+  contents: read
+
 jobs:
   python:
     runs-on: ubuntu-24.04

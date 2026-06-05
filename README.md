@@ -85,6 +85,9 @@ pytest -q
 - [Architecture](docs/ARCHITECTURE.md)
 - [Phase 0 plan](docs/PHASE_0.md)
 - [MVP definition](docs/MVP.md)
+- [Foundational research](docs/FOUNDATIONAL_RESEARCH.md)
+- [Secure by Design](docs/SECURE_BY_DESIGN.md)
+- [Compiler threat model](docs/COMPILER_THREAT_MODEL.md)
 - [Contributing](CONTRIBUTING.md)
 - [Governance](GOVERNANCE.md)
 

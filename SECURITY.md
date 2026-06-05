@@ -2,6 +2,11 @@
 
 TUC is pre-alpha and not ready for production use.
 
+Security is a design constraint for the compiler. See:
+
+- [Secure by Design](docs/SECURE_BY_DESIGN.md)
+- [Compiler Threat Model](docs/COMPILER_THREAT_MODEL.md)
+
 ## Supported Versions
 
 No released version is currently supported.
