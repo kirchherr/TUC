@@ -51,6 +51,13 @@ must be unique, tensor bindings must be consistent, and attributes/metadata are
 immutable mappings with type, depth, key-count, string-size, and total-size
 budgets.
 
+HAC-IR also has an explicit v0 dialect contract in `tuc.ir.dialect`. It defines
+the MVP operation family, future `tuc_hac.*` MLIR operation names, arity bounds,
+required compiler-produced attributes, optional compiler attributes, and
+fail-closed handling for unknown reserved `tuc.*` attributes. The compiler
+validates HAC-IR immediately after TLIR lowering and again before HAC-IR is
+specialized into HS-IR.
+
 ## Data Movement Awareness
 
 HAC-IR now records data movement as an explicit compiler fact. The pass in
@@ -163,3 +170,6 @@ The first MLIR design spike is a parseable unregistered-dialect artifact under
 `examples/mlir/`. It maps current HAC-IR concepts toward `tuc_hac` syntax while
 deliberately avoiding native C++ dialect code, external MLIR ingestion, or pass
 execution.
+
+The current Python HAC-IR dialect contract is the reviewable source of truth for
+future MLIR ODS/TableGen work until native dialect code is explicitly hardened.

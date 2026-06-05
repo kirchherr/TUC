@@ -34,6 +34,7 @@ The current prototype contains:
 - Prototype Triton-like metadata adapter for frontend ingestion.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Native-MLIR-oriented HAC-IR design spike.
+- HAC-IR v0 dialect contracts for operations and compiler attributes.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.
@@ -137,6 +138,7 @@ pytest -q
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Benchmarking](docs/BENCHMARKING.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)
+- [HAC-IR dialect contract](docs/HAC_IR_DIALECT.md)
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
 - [Runtime transfer plan](docs/RUNTIME_PLAN.md)
 - [Security baseline](docs/SECURITY_BASELINE.md)

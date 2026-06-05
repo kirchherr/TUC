@@ -6,6 +6,7 @@ from dataclasses import replace
 from typing import Any
 
 from tuc.compiler.movement import annotate_graph_movement, summarize_graph_movement
+from tuc.ir.dialect import HAC_IR_DIALECT_VERSION, validate_hac_module_contract
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind
 from tuc.ir.modules import IRModule, IRStage
 from tuc.runtime.partitioning import PartitionPlan
@@ -35,11 +36,13 @@ def lower_tlir_to_hac(tlir: IRModule) -> IRModule:
     operations = tuple(_normalize_operation(operation) for operation in tlir.graph.operations)
     graph = ComputeGraph(name=tlir.graph.name, operations=operations, metadata=metadata)
     movement_graph = annotate_graph_movement(graph)
-    return IRModule(
+    module = IRModule(
         stage=IRStage.HAC_IR,
         graph=movement_graph,
-        metadata={"dialect_version": "hac-ir.v0"},
+        metadata={"dialect_version": HAC_IR_DIALECT_VERSION},
     )
+    validate_hac_module_contract(module)
+    return module
 
 
 def lower_hac_to_hs(hac_ir: IRModule, partition_plan: PartitionPlan) -> IRModule:
@@ -47,6 +50,7 @@ def lower_hac_to_hs(hac_ir: IRModule, partition_plan: PartitionPlan) -> IRModule
 
     if hac_ir.stage is not IRStage.HAC_IR:
         raise ValueError(f"expected HAC-IR module, got {hac_ir.stage.value}")
+    validate_hac_module_contract(hac_ir)
 
     operations = tuple(
         _attach_backend(operation, partition_plan)

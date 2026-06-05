@@ -35,6 +35,8 @@ The artifact sketches a future `tuc_hac` dialect shape for:
 - Error budget metadata.
 
 This mirrors the current Python HAC-IR contract without introducing native code.
+The executable contract is documented in `docs/HAC_IR_DIALECT.md` and
+implemented in `tuc.ir.dialect`.
 
 ## Non-Goals
 

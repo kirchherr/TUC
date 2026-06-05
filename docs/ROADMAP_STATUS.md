@@ -50,6 +50,7 @@ Current slice:
 - Prototype frontend adapter for Triton-like kernel metadata.
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
+- HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
 
 ## Next
 

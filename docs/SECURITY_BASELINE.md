@@ -53,6 +53,9 @@ Implemented now:
   executable backend hooks.
 - Schema-versioned JSON manifest loading with file-size, duplicate-key,
   nesting, string, numeric, and unknown-field rejection.
+- HAC-IR v0 dialect contracts for operation arity, compiler-produced
+  attributes, known user hints, and fail-closed rejection of unknown reserved
+  `tuc.*` attributes.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

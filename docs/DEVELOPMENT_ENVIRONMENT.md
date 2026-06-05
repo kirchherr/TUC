@@ -66,6 +66,15 @@ docker compose run --rm dev python scripts/verify_mlir_spike.py
 The verifier checks the repository-owned MLIR spike artifact with `mlir-opt` and
 the unregistered dialect path.
 
+## Verify HAC-IR Dialect Contracts
+
+```powershell
+docker compose run --rm dev pytest -q tests/test_hac_ir_dialect_contracts.py
+```
+
+The tests check the Python-level HAC-IR v0 operation and attribute contracts
+that future native MLIR definitions must preserve.
+
 ## Optional GPU Shell
 
 If Docker Desktop has NVIDIA GPU support configured, use:
