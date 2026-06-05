@@ -21,11 +21,13 @@ The v0.1 surface is:
 - `LoweringResult`
 - Schema-versioned backend capability manifests.
 - Schema-versioned transfer-cost profile manifests.
+- Explicit backend capability registry.
 - HAC-IR and HS-IR dialect contracts.
 
 The code lives in:
 
 - `tuc.backends.base`
+- `tuc.backends.registry`
 - `tuc.manifests`
 - `tuc.ir.dialect`
 - `tuc.runtime.plan`
@@ -53,6 +55,19 @@ plugin code.
 
 This manifest is declarative. Loading it must not import backend modules, touch
 devices, open network connections, or execute vendor tools.
+
+Capability manifests can be collected through `BackendRegistry`:
+
+```python
+from tuc.backends.registry import BackendRegistry
+
+registry = BackendRegistry.from_manifest_paths(
+    ["examples/manifests/linear_sim_backend.json"]
+)
+```
+
+The registry receives explicit file paths only. It does not scan directories,
+resolve entry points, import backend modules, or store backend objects.
 
 ## Capability Fields
 
@@ -184,6 +199,8 @@ Backend API v0.1 follows these rules:
 - Backend capability manifests must not contain import paths, plugin modules,
   shell commands, device paths, or dynamic-library names.
 - TUC does not auto-discover backends.
+- Backend registries are explicit capability registries, not executable plugin
+  registries.
 - TUC does not execute backend code while parsing, validating, dumping IR, or
   selecting capabilities.
 - Backend lowering may run only for explicitly constructed trusted backend
@@ -220,6 +237,7 @@ Backend API v0.1 does not yet provide:
 - Stable binary ABI.
 - Plugin packaging.
 - Auto-discovery.
+- Backend plugin lifecycle management.
 - Device enumeration.
 - Artifact execution.
 - Sandboxing.

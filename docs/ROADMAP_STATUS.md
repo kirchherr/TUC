@@ -64,8 +64,12 @@ Current slice:
   success, and the `pypi` environment.
 - CODEOWNERS-backed review policy for compiler, runtime, backend, governance,
   and release trust boundaries.
+- Explicit backend capability registry for Phase 2 manifest-loaded planning
+  data without plugin discovery or backend code execution.
 
 ## Next
 
 - Maintainer teams or organization-backed owner groups before broad external
   contribution.
+- Plugin lifecycle RFC and sandboxing model before any executable backend
+  discovery, artifact execution, or native plugin ABI.

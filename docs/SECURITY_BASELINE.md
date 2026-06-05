@@ -61,6 +61,9 @@ Implemented now:
 - Backend API v0.1 explicitly limits external backend onboarding to
   declarative manifests and trusted in-process prototypes; no auto-discovery,
   plugin loading, dynamic libraries, subprocesses, or artifact execution.
+- Explicit backend capability registry for caller-provided manifest paths and
+  trusted in-memory capabilities, with bounded backend count, unique safe names,
+  directory non-scanning, and no backend object execution.
 - Backend author certification requires negative tests for plugin-like manifest
   fields, duplicate keys, unsupported schemas, false capability claims,
   unsupported layouts, and lower-time operation rejection.
