@@ -1,0 +1,8 @@
+{
+  "operation": "elementwise",
+  "kernel": "relu",
+  "inputs": {
+    "value": [[-2.0, -0.5, 0.0, 1.5]]
+  },
+  "expected": [[0.0, 0.0, 0.0, 1.5]]
+}

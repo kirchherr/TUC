@@ -1,0 +1,60 @@
+# Baseline Benchmarking
+
+TUC has a small CPU-first benchmark harness for the MVP reference kernels.
+
+## Scope
+
+The harness measures:
+
+- `matmul_64x64`
+- `elementwise_relu_4096`
+- `reduction_sum_128x64_axis1`
+- `softmax_128x32_axis1`
+
+The benchmark uses deterministic NumPy inputs and the reference kernels in
+`tuc.reference`. It emits a JSON report to stdout.
+
+## Run
+
+Inside the Docker development container:
+
+```bash
+python scripts/benchmark.py
+```
+
+For a faster smoke run:
+
+```bash
+python scripts/benchmark.py --iterations 2 --warmup 1
+```
+
+To include CUDA capability status without requiring CUDA:
+
+```bash
+python scripts/benchmark.py --include-cuda
+```
+
+To fail closed when CUDA benchmarks are requested but unavailable:
+
+```bash
+python scripts/benchmark.py --include-cuda --require-cuda
+```
+
+## Security Rules
+
+The baseline harness is intentionally narrow:
+
+- It runs CPU NumPy reference kernels only.
+- It does not import backend plugins.
+- It does not execute generated code.
+- It does not scan the host for GPUs or invoke hardware-discovery subprocesses.
+- Iteration and warmup counts are bounded.
+- Output is written to stdout; callers can redirect it if they need artifacts.
+
+CUDA is represented as explicit capability status until TUC has an executable
+CUDA backend path and a dedicated threat model for device execution.
+
+## Current Limitations
+
+This is not a performance claim. It is a repeatable baseline for local drift,
+CI smoke checks, and future comparisons against executable backends.

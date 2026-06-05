@@ -1,0 +1,17 @@
+runtime.plan @golden_produced_layout_conversion {
+  assignments {
+    first -> blocked_in_row_out domain=gpu_hbm produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=256 reason="supported:elementwise;domain=gpu_hbm;transfer_bytes=0;layout_conversion_bytes=256;produced_layout=row_major;actual_transfer_bytes=0;actual_layout_conversion_bytes=256"
+    second -> blocked_in_row_out domain=gpu_hbm produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=256 reason="supported:elementwise;domain=gpu_hbm;transfer_bytes=0;layout_conversion_bytes=256;produced_layout=row_major;actual_transfer_bytes=0;actual_layout_conversion_bytes=256"
+  }
+  layout_conversions {
+    %x: graph_input -> first row_major->blocked bytes=256 reason="layout_mismatch"
+    %y: first -> second row_major->blocked bytes=256 reason="layout_mismatch"
+  }
+  summary {
+    total_transfer_bytes = 0
+    total_layout_conversion_bytes = 512
+    total_data_movement_bytes = 512
+    estimated_transfer_latency_ns = 0
+    estimated_transfer_energy_pj = 0
+  }
+}

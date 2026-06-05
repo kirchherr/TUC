@@ -6,7 +6,7 @@ This repository ships a Docker-based TUC development environment. The default im
 
 - Ubuntu 24.04
 - Python virtual environment in `/opt/tuc-venv`
-- Python developer tooling: pytest, ruff, mypy, hypothesis, pybind11, lit, FileCheck
+- Python developer tooling: build, pytest, ruff, mypy, hypothesis, pybind11, lit, FileCheck
 - LLVM 18, Clang 18, LLD 18, LLDB 18
 - MLIR 18 tools and CMake packages
 - PyTorch installed through a configurable wheel index
@@ -45,6 +45,103 @@ Or:
 ```
 
 The check prints Python, Clang, LLVM, MLIR, PyTorch, Triton, NumPy, and whether PyTorch sees CUDA.
+
+## Run Baseline Benchmarks
+
+The baseline benchmark harness runs in the default CPU container:
+
+```powershell
+docker compose run --rm dev python scripts/benchmark.py --iterations 2 --warmup 1
+```
+
+CUDA is reported as explicit capability status until an executable CUDA backend
+contract exists.
+
+## Run The CI Smoke Surface Locally
+
+The required `python` CI job runs:
+
+```powershell
+docker compose run --rm dev ruff check .
+docker compose run --rm dev mypy src/tuc
+docker compose run --rm dev pytest -q
+docker compose run --rm dev python examples/phase0_vertical_slice.py
+docker compose run --rm dev python examples/phase1_ir_pipeline.py
+docker compose run --rm dev python examples/data_movement_ir.py
+docker compose run --rm dev python examples/triton_metadata_adapter.py
+docker compose run --rm dev python examples/backend_api_v0.py
+docker compose run --rm dev python scripts/benchmark.py --iterations 1 --warmup 0
+```
+
+## Run The Backend API Example
+
+```powershell
+docker compose run --rm dev python examples/backend_api_v0.py
+```
+
+The example shows a trusted in-process prototype backend with declarative
+capabilities, runtime planning, HS-IR assignment, and explicit lower-time
+capability rejection.
+
+## Verify Backend Author Negative Tests
+
+```powershell
+docker compose run --rm dev pytest -q tests/test_backend_author_negative_template.py
+```
+
+The template covers malicious manifest fields, duplicate manifest keys,
+unsupported schema versions, false capability claims, unsupported layouts, and
+lower-time operation rejection.
+
+## Verify Backend Conformance Fixtures
+
+```powershell
+docker compose run --rm dev pytest -q tests/test_backend_conformance.py
+```
+
+The conformance fixtures check capability/lowering agreement, semantic artifact
+markers, and bounded diagnostics for trusted in-process prototype backends.
+
+## Verify The MLIR Design Spike
+
+```powershell
+docker compose run --rm dev python scripts/verify_mlir_spike.py
+```
+
+The verifier checks the repository-owned MLIR spike artifact with `mlir-opt` and
+the unregistered dialect path.
+
+## Prepare Release Artifacts Locally
+
+After rebuilding the development image with current dependencies:
+
+```powershell
+docker compose run --rm dev python -m build
+docker compose run --rm dev python scripts/generate_sbom.py --output dist/tuc.cdx.json
+docker compose run --rm dev python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
+```
+
+The GitHub release-artifact workflow also creates provenance and SBOM
+attestations. Local runs generate the distributions, CycloneDX SBOM, and
+checksum manifest only.
+
+## Verify HAC-IR Dialect Contracts
+
+```powershell
+docker compose run --rm dev pytest -q tests/test_hac_ir_dialect_contracts.py
+```
+
+The tests check the Python-level HAC-IR v0 operation and attribute contracts
+that future native MLIR definitions must preserve.
+
+## Verify HS-IR Dialect Contracts
+
+```powershell
+docker compose run --rm dev pytest -q tests/test_hs_ir_contracts.py
+```
+
+The tests check backend assignment, produced-layout, movement-summary, and
+runtime-transfer-summary contracts for HS-IR v0.
 
 ## Optional GPU Shell
 

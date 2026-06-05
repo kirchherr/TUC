@@ -41,3 +41,9 @@ Phase 0 is complete when:
 - The first architecture RFC is accepted.
 - The license decision is resolved.
 - The first MLIR implementation task is ready to start.
+
+## Follow-On Phase 1 Slice
+
+Phase 1 begins with an explicit TLIR -> HAC-IR -> HS-IR skeleton. See
+[Roadmap status](ROADMAP_STATUS.md) and
+[RFC 0002](../rfcs/0002-phase-1-ir-skeleton.md).

@@ -8,12 +8,17 @@ on:
       - master
       - "codex/**"
 
+permissions:
+  contents: read
+
 jobs:
   python:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Install package
@@ -26,3 +31,13 @@ jobs:
         run: pytest -q
       - name: Example
         run: python examples/phase0_vertical_slice.py
+      - name: Phase 1 pipeline example
+        run: python examples/phase1_ir_pipeline.py
+      - name: Data movement IR example
+        run: python examples/data_movement_ir.py
+      - name: Triton metadata adapter example
+        run: python examples/triton_metadata_adapter.py
+      - name: Backend API example
+        run: python examples/backend_api_v0.py
+      - name: Baseline benchmark smoke test
+        run: python scripts/benchmark.py --iterations 1 --warmup 0
