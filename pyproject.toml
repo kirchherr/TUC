@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tuc"
+version = "0.1.0"
+description = "Experimental Triton Universal Compiler prototype."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "TUC contributors" }
+]
+dependencies = [
+  "numpy>=1.26"
+]
+
+[project.optional-dependencies]
+dev = [
+  "hypothesis",
+  "mypy",
+  "pytest",
+  "pytest-xdist",
+  "ruff"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = []
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_configs = true
+packages = ["tuc"]

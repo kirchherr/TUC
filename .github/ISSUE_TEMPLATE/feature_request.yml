@@ -1,0 +1,32 @@
+name: Feature request
+description: Propose a new capability or improvement.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What should TUC support?
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this important?
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: Possible design
+      description: Optional design notes or alternatives.
+  - type: dropdown
+    id: needs-rfc
+    attributes:
+      label: Requires RFC?
+      options:
+        - "No"
+        - "Maybe"
+        - "Yes"

@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+
+# Native builds
+CMakeFiles/
+CMakeCache.txt
+cmake-build-*/
+build-*/
+*.o
+*.so
+*.dylib
+*.dll
+
+# Local data
+logs/
+tmp/
+.cache/
+
+# Editors
+.idea/
+.vscode/
+
+# OS
+Thumbs.db
+.DS_Store

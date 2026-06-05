@@ -1,0 +1,14 @@
+filecheck
+hypothesis
+lit
+mypy
+networkx
+numpy
+pre-commit
+pybind11
+pytest
+pytest-xdist
+pyyaml
+rich
+ruff
+triton
