@@ -158,3 +158,8 @@ Triton-like frontend
 
 The Python prototype exists to make those boundaries testable before native
 compiler implementation begins.
+
+The first MLIR design spike is a parseable unregistered-dialect artifact under
+`examples/mlir/`. It maps current HAC-IR concepts toward `tuc_hac` syntax while
+deliberately avoiding native C++ dialect code, external MLIR ingestion, or pass
+execution.

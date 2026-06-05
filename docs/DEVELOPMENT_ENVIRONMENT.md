@@ -57,6 +57,15 @@ docker compose run --rm dev python scripts/benchmark.py --iterations 2 --warmup 
 CUDA is reported as explicit capability status until an executable CUDA backend
 contract exists.
 
+## Verify The MLIR Design Spike
+
+```powershell
+docker compose run --rm dev python scripts/verify_mlir_spike.py
+```
+
+The verifier checks the repository-owned MLIR spike artifact with `mlir-opt` and
+the unregistered dialect path.
+
 ## Optional GPU Shell
 
 If Docker Desktop has NVIDIA GPU support configured, use:

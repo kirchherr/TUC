@@ -53,6 +53,8 @@ Implemented now:
   executable backend hooks.
 - Schema-versioned JSON manifest loading with file-size, duplicate-key,
   nesting, string, numeric, and unknown-field rejection.
+- Native MLIR design spike limited to repository-owned text artifacts; no
+  external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.
 - Dependabot configuration for GitHub Actions, Python, and Docker updates.
 - CodeQL, dependency review, and OpenSSF Scorecard workflows.

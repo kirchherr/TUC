@@ -33,6 +33,7 @@ The current prototype contains:
 - Golden-kernel correctness fixtures for MVP operation semantics.
 - Prototype Triton-like metadata adapter for frontend ingestion.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
+- Native-MLIR-oriented HAC-IR design spike.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.
@@ -102,6 +103,12 @@ Run the baseline benchmark harness:
 python scripts/benchmark.py --iterations 2 --warmup 1
 ```
 
+Verify the MLIR design-spike artifact:
+
+```bash
+python scripts/verify_mlir_spike.py
+```
+
 Inspect example backend and transfer manifests:
 
 ```text
@@ -129,6 +136,7 @@ pytest -q
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Benchmarking](docs/BENCHMARKING.md)
+- [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
 - [Runtime transfer plan](docs/RUNTIME_PLAN.md)
 - [Security baseline](docs/SECURITY_BASELINE.md)
