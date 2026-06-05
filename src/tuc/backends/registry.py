@@ -5,10 +5,12 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
+from math import isfinite
 from pathlib import Path
 from types import MappingProxyType
 
 from tuc.backends.base import BackendCapability
+from tuc.ir.memory import LayoutKind
 from tuc.ir.model import ComputeOperation, OperationKind
 from tuc.manifests import load_backend_capability_manifest
 
@@ -34,6 +36,18 @@ class BackendRegistration:
         """Return the stable backend name."""
 
         return self.capability.name
+
+
+@dataclass(frozen=True)
+class BackendSupportDiagnostic:
+    """Explains whether one backend capability accepts one operation."""
+
+    backend_name: str
+    operation_name: str
+    operation_kind: OperationKind
+    supported: bool
+    reason: str
+    detail: str = ""
 
 
 class BackendRegistry:
@@ -118,10 +132,133 @@ class BackendRegistry:
         if not isinstance(operation, ComputeOperation):
             raise TypeError("operation must be ComputeOperation")
         return tuple(
-            capability
-            for capability in self.capabilities()
-            if capability.supports(operation)
+            self.capability(diagnostic.backend_name)
+            for diagnostic in self.diagnose_operation_support(operation)
+            if diagnostic.supported
         )
+
+    def diagnose_operation_support(
+        self,
+        operation: ComputeOperation,
+    ) -> tuple[BackendSupportDiagnostic, ...]:
+        """Explain each registered backend's pure-data support decision."""
+
+        if not isinstance(operation, ComputeOperation):
+            raise TypeError("operation must be ComputeOperation")
+        return tuple(
+            _diagnose_backend_support(registration.capability, operation)
+            for registration in self._registrations.values()
+        )
+
+
+def _diagnose_backend_support(
+    capability: BackendCapability,
+    operation: ComputeOperation,
+) -> BackendSupportDiagnostic:
+    if operation.kind not in capability.supported_ops:
+        return _support_diagnostic(
+            capability,
+            operation,
+            supported=False,
+            reason="unsupported_operation_kind",
+            detail=f"{operation.kind.value} not declared in supported_ops",
+        )
+
+    layout, layout_error = _operation_layout_for_diagnostics(operation)
+    if layout_error is not None:
+        return _support_diagnostic(
+            capability,
+            operation,
+            supported=False,
+            reason="invalid_layout_attribute",
+            detail=layout_error,
+        )
+    if layout not in capability.supported_layouts:
+        supported_layouts = ",".join(
+            sorted(layout.value for layout in capability.supported_layouts)
+        )
+        return _support_diagnostic(
+            capability,
+            operation,
+            supported=False,
+            reason="unsupported_layout",
+            detail=f"{layout.value} not in supported_layouts={supported_layouts}",
+        )
+
+    if capability.max_error_budget is not None:
+        requested_budget = operation.attributes.get("max_error_budget")
+        if requested_budget is not None:
+            budget, budget_error = _error_budget_for_diagnostics(requested_budget)
+            if budget_error is not None:
+                return _support_diagnostic(
+                    capability,
+                    operation,
+                    supported=False,
+                    reason="invalid_error_budget_attribute",
+                    detail=budget_error,
+                )
+            if budget is not None and budget > capability.max_error_budget:
+                return _support_diagnostic(
+                    capability,
+                    operation,
+                    supported=False,
+                    reason="error_budget_exceeds_backend_limit",
+                    detail=(
+                        f"requested={budget:g} backend_max="
+                        f"{capability.max_error_budget:g}"
+                    ),
+                )
+
+    return _support_diagnostic(
+        capability,
+        operation,
+        supported=True,
+        reason="accepted",
+        detail="capability accepts operation kind, layout, and error budget",
+    )
+
+
+def _support_diagnostic(
+    capability: BackendCapability,
+    operation: ComputeOperation,
+    *,
+    supported: bool,
+    reason: str,
+    detail: str,
+) -> BackendSupportDiagnostic:
+    return BackendSupportDiagnostic(
+        backend_name=capability.name,
+        operation_name=operation.name,
+        operation_kind=operation.kind,
+        supported=supported,
+        reason=reason,
+        detail=detail,
+    )
+
+
+def _operation_layout_for_diagnostics(
+    operation: ComputeOperation,
+) -> tuple[LayoutKind, str | None]:
+    value = operation.attributes.get("tuc.layout")
+    if value is None:
+        return LayoutKind.ROW_MAJOR, None
+    if isinstance(value, LayoutKind):
+        return value, None
+    if isinstance(value, str):
+        try:
+            return LayoutKind(value), None
+        except ValueError:
+            return LayoutKind.ROW_MAJOR, f"unsupported operation layout: {value!r}"
+    return LayoutKind.ROW_MAJOR, "operation layout must be a LayoutKind or string"
+
+
+def _error_budget_for_diagnostics(value: object) -> tuple[float | None, str | None]:
+    if not isinstance(value, int | float) or isinstance(value, bool):
+        return None, "max_error_budget attribute must be a number"
+    budget = float(value)
+    if not isfinite(budget) or budget < 0:
+        return None, "max_error_budget attribute must be finite and non-negative"
+    return budget, None
 
 
 def _validate_registration_count(
@@ -158,6 +295,7 @@ __all__ = [
     "BackendRegistration",
     "BackendRegistry",
     "BackendRegistryError",
+    "BackendSupportDiagnostic",
     "MAX_BACKEND_NAME_BYTES",
     "MAX_REGISTERED_BACKENDS",
 ]

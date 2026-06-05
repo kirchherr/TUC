@@ -102,6 +102,105 @@ def test_registry_filters_supporting_operations_without_lowering() -> None:
     assert registry.supporting_operation(operation)[0].name == "linear-sim"
 
 
+def test_registry_explains_operation_support_decisions() -> None:
+    registry = BackendRegistry.from_capabilities(
+        [
+            BackendCapability(
+                name="linear-sim",
+                supported_ops=frozenset({OperationKind.MATMUL}),
+            ),
+            BackendCapability(
+                name="vector-sim",
+                supported_ops=frozenset({OperationKind.ELEMENTWISE}),
+            ),
+        ]
+    )
+
+    diagnostics = registry.diagnose_operation_support(_matmul_graph().operations[0])
+
+    assert [(item.backend_name, item.supported, item.reason) for item in diagnostics] == [
+        ("linear-sim", True, "accepted"),
+        ("vector-sim", False, "unsupported_operation_kind"),
+    ]
+
+
+def test_registry_explains_unsupported_layout() -> None:
+    registry = BackendRegistry.from_capabilities(
+        [
+            BackendCapability(
+                name="row-only",
+                supported_ops=frozenset({OperationKind.MATMUL}),
+            )
+        ]
+    )
+    operation = _matmul_graph().operations[0]
+    blocked_operation = ComputeOperation(
+        name=operation.name,
+        kind=operation.kind,
+        inputs=operation.inputs,
+        outputs=operation.outputs,
+        attributes={"tuc.layout": "blocked"},
+    )
+
+    diagnostics = registry.diagnose_operation_support(blocked_operation)
+
+    assert diagnostics[0].supported is False
+    assert diagnostics[0].reason == "unsupported_layout"
+    assert registry.supporting_operation(blocked_operation) == ()
+
+
+def test_registry_explains_invalid_error_budget() -> None:
+    registry = BackendRegistry.from_capabilities(
+        [
+            BackendCapability(
+                name="bounded",
+                supported_ops=frozenset({OperationKind.MATMUL}),
+                max_error_budget=0.1,
+            )
+        ]
+    )
+    operation = _matmul_graph().operations[0]
+    invalid_budget_operation = ComputeOperation(
+        name=operation.name,
+        kind=operation.kind,
+        inputs=operation.inputs,
+        outputs=operation.outputs,
+        attributes={"max_error_budget": -1.0},
+    )
+
+    diagnostics = registry.diagnose_operation_support(invalid_budget_operation)
+
+    assert diagnostics[0].supported is False
+    assert diagnostics[0].reason == "invalid_error_budget_attribute"
+    assert registry.supporting_operation(invalid_budget_operation) == ()
+
+
+def test_registry_explains_excessive_error_budget() -> None:
+    registry = BackendRegistry.from_capabilities(
+        [
+            BackendCapability(
+                name="bounded",
+                supported_ops=frozenset({OperationKind.MATMUL}),
+                max_error_budget=0.1,
+            )
+        ]
+    )
+    operation = _matmul_graph().operations[0]
+    excessive_budget_operation = ComputeOperation(
+        name=operation.name,
+        kind=operation.kind,
+        inputs=operation.inputs,
+        outputs=operation.outputs,
+        attributes={"max_error_budget": 0.2},
+    )
+
+    diagnostics = registry.diagnose_operation_support(excessive_budget_operation)
+
+    assert diagnostics[0].supported is False
+    assert diagnostics[0].reason == "error_budget_exceeds_backend_limit"
+    assert "requested=0.2" in diagnostics[0].detail
+
+
 def test_manifest_rejects_backend_name_without_alphanumeric_prefix(
     tmp_path: Path,
 ) -> None:

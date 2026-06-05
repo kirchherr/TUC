@@ -69,6 +69,16 @@ registry = BackendRegistry.from_manifest_paths(
 The registry receives explicit file paths only. It does not scan directories,
 resolve entry points, import backend modules, or store backend objects.
 
+The registry can also explain pure-data support decisions:
+
+```python
+diagnostics = registry.diagnose_operation_support(operation)
+```
+
+These diagnostics are suitable for compiler review, backend author feedback, and
+future partitioning reports because they state why a backend accepted or
+rejected an operation without executing backend code.
+
 ## Capability Fields
 
 | Field | Meaning |
@@ -201,6 +211,8 @@ Backend API v0.1 follows these rules:
 - TUC does not auto-discover backends.
 - Backend registries are explicit capability registries, not executable plugin
   registries.
+- Backend support diagnostics must be pure data and must not include host paths,
+  device identifiers, imported module names, or backend execution output.
 - TUC does not execute backend code while parsing, validating, dumping IR, or
   selecting capabilities.
 - Backend lowering may run only for explicitly constructed trusted backend

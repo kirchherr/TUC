@@ -66,6 +66,8 @@ Current slice:
   and release trust boundaries.
 - Explicit backend capability registry for Phase 2 manifest-loaded planning
   data without plugin discovery or backend code execution.
+- Pure-data backend support diagnostics that explain accepted and rejected
+  operation/backend matches before partitioning.
 
 ## Next
 

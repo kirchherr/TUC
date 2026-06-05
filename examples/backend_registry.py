@@ -31,9 +31,16 @@ def build_graph() -> ComputeGraph:
 def main() -> None:
     manifest_path = Path("examples/manifests/linear_sim_backend.json")
     registry = BackendRegistry.from_manifest_paths([manifest_path])
-    result = compile_graph(build_graph(), registry.capabilities())
+    graph = build_graph()
+    result = compile_graph(graph, registry.capabilities())
 
     print("registered_backends=" + ",".join(registry.names()))
+    for diagnostic in registry.diagnose_operation_support(graph.operations[0]):
+        print(
+            "support "
+            f"{diagnostic.backend_name}:{diagnostic.operation_name} "
+            f"{diagnostic.reason}"
+        )
     print(result.dump_runtime_plan())
 
 
