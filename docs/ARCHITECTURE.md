@@ -170,10 +170,13 @@ ComputeGraph
   -> TLIR module
   -> HAC-IR module
   -> PartitionPlan
+  -> CompilerDecisionReport
   -> HS-IR module
 ```
 
 The pipeline emits diagnostics and deterministic text dumps at each stage.
+`CompilerDecisionReport` records the selected backend for each operation and
+the pure-data support diagnostics for every registered backend candidate.
 
 ## Future MLIR Shape
 

@@ -6,7 +6,13 @@ from tuc.backends import (
     BackendRegistryError,
     BackendSupportDiagnostic,
 )
-from tuc.compiler import CompilationResult, CompilerPipeline, compile_graph
+from tuc.compiler import (
+    CompilationResult,
+    CompilerDecisionReport,
+    CompilerPipeline,
+    OperationDecision,
+    compile_graph,
+)
 from tuc.frontend import (
     CompilationHints,
     TritonKernelMetadata,
@@ -38,6 +44,7 @@ __all__ = [
     "BackendSupportDiagnostic",
     "CompilationHints",
     "CompilationResult",
+    "CompilerDecisionReport",
     "ComputeGraph",
     "ComputeOperation",
     "CompilerPipeline",
@@ -50,6 +57,7 @@ __all__ = [
     "MemoryDomainKind",
     "MovementEstimate",
     "OperationKind",
+    "OperationDecision",
     "TensorRef",
     "TritonKernelMetadata",
     "TritonOperationMetadata",

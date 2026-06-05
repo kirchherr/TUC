@@ -68,6 +68,8 @@ Current slice:
   data without plugin discovery or backend code execution.
 - Pure-data backend support diagnostics that explain accepted and rejected
   operation/backend matches before partitioning.
+- Compiler decision reports that connect backend support diagnostics to final
+  operation assignments.
 
 ## Next
 

@@ -65,6 +65,9 @@ Implemented now:
   trusted in-memory capabilities, with bounded backend count, unique safe names,
   directory non-scanning, pure-data support diagnostics, and no backend object
   execution.
+- Compiler decision reports that connect backend support diagnostics to final
+  partition selections without imports, plugin execution, device access, host
+  paths, or backend execution output.
 - Backend author certification requires negative tests for plugin-like manifest
   fields, duplicate keys, unsupported schemas, false capability claims,
   unsupported layouts, and lower-time operation rejection.

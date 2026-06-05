@@ -30,6 +30,7 @@ The current prototype contains:
 - Validated transfer-cost profiles and backend-produced layout metadata.
 - Backend API v0.1 authoring guide for external prototype backends.
 - Explicit backend capability registry for manifest-loaded planning data.
+- Compiler decision reports for backend-selection explainability.
 - Backend author certification checklist and negative-test template.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
@@ -173,6 +174,7 @@ pytest -q
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend capability registry](docs/BACKEND_REGISTRY.md)
+- [Compiler decision report](docs/COMPILER_DECISION_REPORT.md)
 - [Backend author certification](docs/BACKEND_AUTHOR_CERTIFICATION.md)
 - [Backend conformance fixtures](docs/BACKEND_CONFORMANCE.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)

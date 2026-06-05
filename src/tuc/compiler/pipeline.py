@@ -6,6 +6,12 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 
 from tuc.backends.base import BackendCapability
+from tuc.backends.registry import BackendRegistry
+from tuc.compiler.decisions import (
+    CompilerDecisionReport,
+    build_decision_report,
+    dump_decision_report,
+)
 from tuc.compiler.lowering import lower_hac_to_hs, lower_tlir_to_hac
 from tuc.ir.dump import dump_module
 from tuc.ir.model import ComputeGraph
@@ -21,6 +27,7 @@ class CompilationResult:
     hac_ir: IRModule
     hs_ir: IRModule
     partition_plan: PartitionPlan
+    decision_report: CompilerDecisionReport
     diagnostics: tuple[str, ...]
 
     def dump(self, stage: IRStage) -> str:
@@ -44,6 +51,11 @@ class CompilationResult:
 
         return dump_partition_plan(self.partition_plan)
 
+    def dump_decision_report(self) -> str:
+        """Return a deterministic backend-selection decision dump."""
+
+        return dump_decision_report(self.decision_report)
+
 
 class CompilerPipeline:
     """Small TLIR -> HAC-IR -> HS-IR pipeline used by Phase 1."""
@@ -54,7 +66,7 @@ class CompilerPipeline:
         fallback_backend: str = "gpu",
         transfer_cost_profile: TransferCostProfile | None = None,
     ) -> None:
-        self._backend_capabilities = tuple(backend_capabilities)
+        self._backend_registry = BackendRegistry.from_capabilities(backend_capabilities)
         self._fallback_backend = fallback_backend
         self._transfer_cost_profile = transfer_cost_profile
 
@@ -67,11 +79,16 @@ class CompilerPipeline:
         hac_ir = lower_tlir_to_hac(tlir)
         partition_plan = partition_graph(
             hac_ir.graph,
-            self._backend_capabilities,
+            self._backend_registry.capabilities(),
             fallback_backend=self._fallback_backend,
             transfer_cost_profile=self._transfer_cost_profile,
         )
         hs_ir = lower_hac_to_hs(hac_ir, partition_plan)
+        decision_report = build_decision_report(
+            hac_ir.graph,
+            self._backend_registry,
+            partition_plan,
+        )
 
         diagnostics = tuple(
             f"{assignment.operation_name}->{assignment.backend_name}:{assignment.reason}"
@@ -82,6 +99,7 @@ class CompilerPipeline:
             hac_ir=hac_ir,
             hs_ir=hs_ir,
             partition_plan=partition_plan,
+            decision_report=decision_report,
             diagnostics=diagnostics,
         )
 

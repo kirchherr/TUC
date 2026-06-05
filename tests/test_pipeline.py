@@ -61,6 +61,12 @@ def test_pipeline_lowers_through_all_three_ir_stages() -> None:
         "transfer_edge_count": 1,
     }
     assert "runtime.plan @mlp" in result.dump_runtime_plan()
+    assert "compiler.decisions @mlp" in result.dump_decision_report()
+    assert result.decision_report.operation("projection").selected_backend == "linear-sim"
+    assert (
+        result.decision_report.operation("activation").candidates[0].reason
+        == "unsupported_operation_kind"
+    )
     assert any(
         diagnostic.startswith("projection->linear-sim:preferred_for:matmul")
         for diagnostic in result.diagnostics

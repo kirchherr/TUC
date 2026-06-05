@@ -37,6 +37,7 @@
 /docs/BACKEND_AUTHOR_CERTIFICATION.md @kirchherr
 /docs/BACKEND_CONFORMANCE.md @kirchherr
 /docs/BACKEND_REGISTRY.md @kirchherr
+/docs/COMPILER_DECISION_REPORT.md @kirchherr
 /docs/DATA_MOVEMENT_IR.md @kirchherr
 /docs/HAC_IR_DIALECT.md @kirchherr
 /docs/HS_IR_DIALECT.md @kirchherr

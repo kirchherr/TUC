@@ -46,6 +46,9 @@ def main() -> None:
         print(f"\n== {stage} ==")
         print(dump)
 
+    print("\n== compiler decisions ==")
+    print(result.dump_decision_report())
+
 
 if __name__ == "__main__":
     main()
