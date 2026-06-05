@@ -29,6 +29,7 @@ The current prototype contains:
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
 - Backend API v0.1 authoring guide for external prototype backends.
+- Backend author certification checklist and negative-test template.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
@@ -146,6 +147,7 @@ pytest -q
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
+- [Backend author certification](docs/BACKEND_AUTHOR_CERTIFICATION.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)
 - [HAC-IR dialect contract](docs/HAC_IR_DIALECT.md)
 - [HS-IR dialect contract](docs/HS_IR_DIALECT.md)

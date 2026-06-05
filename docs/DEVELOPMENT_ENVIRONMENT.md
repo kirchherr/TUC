@@ -67,6 +67,16 @@ The example shows a trusted in-process prototype backend with declarative
 capabilities, runtime planning, HS-IR assignment, and explicit lower-time
 capability rejection.
 
+## Verify Backend Author Negative Tests
+
+```powershell
+docker compose run --rm dev pytest -q tests/test_backend_author_negative_template.py
+```
+
+The template covers malicious manifest fields, duplicate manifest keys,
+unsupported schema versions, false capability claims, unsupported layouts, and
+lower-time operation rejection.
+
 ## Verify The MLIR Design Spike
 
 ```powershell

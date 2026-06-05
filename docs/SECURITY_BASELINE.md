@@ -61,6 +61,9 @@ Implemented now:
 - Backend API v0.1 explicitly limits external backend onboarding to
   declarative manifests and trusted in-process prototypes; no auto-discovery,
   plugin loading, dynamic libraries, subprocesses, or artifact execution.
+- Backend author certification requires negative tests for plugin-like manifest
+  fields, duplicate keys, unsupported schemas, false capability claims,
+  unsupported layouts, and lower-time operation rejection.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

@@ -204,6 +204,11 @@ Before proposing a backend:
 - Do not add plugin discovery, imports, subprocesses, dynamic loading, device
   access, or artifact execution without a new security RFC.
 
+Backend proposals should also follow the dedicated
+[Backend Author Certification](BACKEND_AUTHOR_CERTIFICATION.md) checklist and
+copy the executable negative-test template from
+`tests/test_backend_author_negative_template.py`.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:
