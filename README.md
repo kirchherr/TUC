@@ -102,6 +102,7 @@ pytest -q
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
+- [Runtime transfer plan](docs/RUNTIME_PLAN.md)
 - [Security baseline](docs/SECURITY_BASELINE.md)
 - [Roadmap status](docs/ROADMAP_STATUS.md)
 - [Contributing](CONTRIBUTING.md)

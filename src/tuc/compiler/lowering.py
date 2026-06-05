@@ -61,6 +61,13 @@ def lower_hac_to_hs(hac_ir: IRModule, partition_plan: PartitionPlan) -> IRModule
         "lowered_from": hac_ir.stage.value,
         "backend_assignments": assignments,
         "movement_summary": summarize_graph_movement(hac_ir.graph),
+        "runtime_transfer_summary": {
+            "layout_conversion_count": len(partition_plan.layout_conversions),
+            "total_data_movement_bytes": partition_plan.total_data_movement_bytes(),
+            "total_layout_conversion_bytes": partition_plan.total_layout_conversion_bytes(),
+            "total_transfer_bytes": partition_plan.total_transfer_bytes(),
+            "transfer_edge_count": len(partition_plan.transfer_edges),
+        },
     }
     return IRModule(
         stage=IRStage.HS_IR,

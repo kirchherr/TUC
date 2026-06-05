@@ -36,6 +36,8 @@ Current slice:
 - Backend capability validation and memory-domain metadata.
 - Transfer-byte-aware partition plan diagnostics.
 - Apache-2.0 license and initial supply-chain security workflows.
+- Explicit runtime transfer-edge objects.
+- Runtime layout-conversion costing.
 
 ## Next
 
@@ -44,6 +46,8 @@ Current slice:
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - Backend API v0.1 documentation for external authors.
-- Explicit runtime transfer-edge objects and layout-conversion costing.
+- Runtime plan dump format.
+- Backend layout capability schema.
+- Transfer bandwidth, latency, and energy estimates.
 - Branch protection and required CI/security checks on `main`.
 - Release provenance, SBOM, and signed artifacts before first package release.

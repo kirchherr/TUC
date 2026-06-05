@@ -42,6 +42,15 @@ def main() -> None:
     print("Partition plan")
     for assignment in plan.assignments:
         print(f"- {assignment.operation_name}: {assignment.backend_name} ({assignment.reason})")
+    if plan.transfer_edges:
+        print()
+        print("Runtime transfers")
+        for edge in plan.transfer_edges:
+            print(
+                f"- %{edge.tensor_name}: {edge.source_backend}/{edge.source_domain.value}"
+                f" -> {edge.target_backend}/{edge.target_domain.value}"
+                f" ({edge.bytes_moved} bytes)"
+            )
 
     simulator_graph = ComputeGraph(name=graph.name, operations=(graph.operations[0],))
     lowered = simulator.lower(simulator_graph)

@@ -44,6 +44,19 @@ def main() -> None:
     for key, value in sorted(result.hs_ir.graph.metadata["movement_summary"].items()):
         print(f"{key}: {value}")
 
+    print("\n== runtime transfer summary ==")
+    for key, value in sorted(result.hs_ir.graph.metadata["runtime_transfer_summary"].items()):
+        print(f"{key}: {value}")
+
+    if result.partition_plan.transfer_edges:
+        print("\n== runtime transfers ==")
+        for edge in result.partition_plan.transfer_edges:
+            print(
+                f"%{edge.tensor_name}: {edge.source_backend}/{edge.source_domain.value}"
+                f" -> {edge.target_backend}/{edge.target_domain.value}"
+                f" ({edge.bytes_moved} bytes)"
+            )
+
     print("\n== hs-ir ==")
     print(result.dump(result.hs_ir.stage))
 

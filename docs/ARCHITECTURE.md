@@ -105,8 +105,9 @@ This is intentionally simple. Later phases can replace the rule set with richer
 cost models, transfer estimates, noise simulation, and calibration-aware
 scheduling.
 
-Partition plans now expose backend assignments, memory domains, and estimated
-transfer bytes, so runtime decisions stay inspectable.
+Partition plans now expose backend assignments, memory domains, runtime transfer
+edges, layout conversions, and estimated byte costs, so runtime decisions stay
+inspectable.
 
 ## Compiler Pipeline
 

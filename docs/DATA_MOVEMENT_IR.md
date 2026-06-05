@@ -31,7 +31,8 @@ Current Phase 1 behavior:
 - HAC-IR attaches movement estimates after MVP operation validation.
 - HS-IR carries the same operation attributes plus backend assignments.
 - HS-IR graph metadata includes a movement summary for runtime decisions.
-- Partition plans include estimated cross-domain transfer bytes.
+- Partition plans include explicit runtime transfer edges and layout conversion
+  costs.
 
 This keeps the model inspectable without introducing hidden optimizer state.
 
@@ -79,7 +80,7 @@ These rules are part of the compiler attack-surface reduction strategy.
 The next increments should be:
 
 1. Attach validated backend memory-domain capabilities.
-2. Add explicit transfer-edge objects to runtime plans.
-3. Add layout conversion costs.
+2. Add bandwidth, latency, and energy estimates to transfer edges.
+3. Let backend capabilities advertise accepted layouts.
 4. Let partitioning consider movement summary and operation intensity.
 5. Add fuzz tests for serialized IR and malicious backend capability metadata.
