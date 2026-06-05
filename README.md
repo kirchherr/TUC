@@ -28,6 +28,7 @@ The current prototype contains:
 - Data-movement-aware HAC-IR metadata for MVP kernels.
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
+- Backend API v0.1 authoring guide for external prototype backends.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
@@ -99,6 +100,12 @@ Run the Triton-like metadata adapter example:
 python examples/triton_metadata_adapter.py
 ```
 
+Run the Backend API v0.1 authoring example:
+
+```bash
+python examples/backend_api_v0.py
+```
+
 Run the baseline benchmark harness:
 
 ```bash
@@ -138,6 +145,7 @@ pytest -q
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Benchmarking](docs/BENCHMARKING.md)
+- [Backend API v0.1](docs/BACKEND_API.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)
 - [HAC-IR dialect contract](docs/HAC_IR_DIALECT.md)
 - [HS-IR dialect contract](docs/HS_IR_DIALECT.md)

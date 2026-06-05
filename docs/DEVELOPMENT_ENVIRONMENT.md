@@ -57,6 +57,16 @@ docker compose run --rm dev python scripts/benchmark.py --iterations 2 --warmup 
 CUDA is reported as explicit capability status until an executable CUDA backend
 contract exists.
 
+## Run The Backend API Example
+
+```powershell
+docker compose run --rm dev python examples/backend_api_v0.py
+```
+
+The example shows a trusted in-process prototype backend with declarative
+capabilities, runtime planning, HS-IR assignment, and explicit lower-time
+capability rejection.
+
 ## Verify The MLIR Design Spike
 
 ```powershell

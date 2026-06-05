@@ -111,6 +111,11 @@ Schema-versioned JSON manifests are loaded through `tuc.manifests`. Manifest
 loading is explicit, bounded, duplicate-key rejecting, and does not scan for or
 execute backend plugins.
 
+Backend API v0.1 is documented in `docs/BACKEND_API.md`. It is an authoring
+contract for trusted in-process prototypes and declarative manifests, not a
+plugin ABI. TUC does not auto-discover backends or execute backend code during
+capability checks, manifest loading, IR validation, partitioning, or dumping.
+
 ## Backend Lowering
 
 Backends implement a minimal protocol:

@@ -58,6 +58,9 @@ Implemented now:
   `tuc.*` attributes.
 - HS-IR v0 contracts for backend assignments, produced layouts,
   movement-summary metadata, and runtime-transfer-summary consistency.
+- Backend API v0.1 explicitly limits external backend onboarding to
+  declarative manifests and trusted in-process prototypes; no auto-discovery,
+  plugin loading, dynamic libraries, subprocesses, or artifact execution.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.
