@@ -1,7 +1,6 @@
 # Release Security
 
-TUC does not publish packages yet. This document defines the minimum release
-artifact controls that must be in place before the first public package release.
+This document defines TUC's release artifact and publishing controls.
 
 ## Release Artifact Scope
 
@@ -13,8 +12,9 @@ The release workflow builds:
 - SHA-256 checksum manifest.
 - GitHub artifact attestations for build provenance and the SBOM.
 
-The workflow uploads these files as GitHub Actions artifacts. It does not publish
-to PyPI, GHCR, or any external package registry.
+The workflow uploads these files as GitHub Actions artifacts. On protected `v*`
+tag pushes, it can also publish wheel and source distribution files to PyPI
+after `pypi` environment approval.
 
 ## Trust Boundary
 
@@ -25,23 +25,24 @@ more sensitive than ordinary CI.
 Current controls:
 
 - Release workflow permissions are least-privilege by default.
-- Only the release job receives `id-token: write` and `attestations: write`.
+- Only the artifact-build job receives `attestations: write`.
+- Only the PyPI publishing job receives `id-token: write`.
+- The PyPI publishing job is isolated from artifact building and test execution.
 - Release workflow actions are pinned to reviewed commit SHAs.
 - The workflow uses GitHub OIDC-backed artifact attestations rather than stored
   signing secrets.
 - The workflow builds artifacts from repository source and does not run dynamic
   plugin, backend, or generated-artifact execution.
 - SBOM generation is repository-owned Python code, not a third-party action.
-- The workflow can run manually for dry-runs and automatically for `v*` tags.
+- Manual workflow runs are dry-runs. Publishing is restricted to `v*` tag pushes.
 
-## Required Before Publishing
+## Required For Publishing
 
-Before TUC publishes to any registry:
+Before TUC publishes to PyPI:
 
 1. Protect release tags or restrict tag creation to maintainers.
-2. Add a release approval process for public package publication.
-3. Decide whether package publication uses PyPI trusted publishing or another
-   OIDC-based mechanism.
+2. Require `pypi` environment approval.
+3. Use PyPI Trusted Publishing through OIDC.
 4. Document the package verification command in the release notes.
 
 See [Release governance](RELEASE_GOVERNANCE.md) for the required GitHub tag
@@ -72,9 +73,8 @@ project package and direct runtime dependencies from `pyproject.toml`.
 Future native backends, bundled binaries, generated compiler plugins, or runtime
 artifacts must extend this SBOM model before release.
 
-## Non-Goals For This Slice
+## Non-Goals
 
-- Publishing to PyPI.
 - Publishing container images.
 - Long-lived signing keys.
 - Executing generated backend artifacts during release.

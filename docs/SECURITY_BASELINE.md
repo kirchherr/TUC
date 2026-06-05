@@ -80,6 +80,8 @@ Implemented now:
   registry publishing permissions.
 - Release workflow action SHA pinning and release governance policy for tag
   rulesets, publishing environments, and PyPI Trusted Publishing.
+- Isolated PyPI publishing job with OIDC Trusted Publishing, no stored PyPI
+  token, `v*` tag gating, and `pypi` environment approval.
 - Apache-2.0 license and NOTICE file.
 
 ## Supply Chain Baseline
@@ -97,8 +99,8 @@ Pre-release requirements:
 1. Apply GitHub tag rulesets and publishing environments before any public
    release.
 2. Produce release artifacts only from protected branches or tags.
-3. Add maintainer approval and OIDC-based publishing workflow before any PyPI,
-   GHCR, or external registry release.
+3. Verify maintainer approval and OIDC-based publishing before any PyPI, GHCR,
+   or external registry release.
 4. Add native-code sanitizers and fuzzers before accepting native parsers,
    deserializers, or backends.
 

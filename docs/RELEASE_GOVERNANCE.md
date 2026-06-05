@@ -3,15 +3,17 @@
 This document defines the release governance controls TUC needs before any
 public package publication.
 
-TUC currently builds release artifacts and attestations, but it does not publish
-to PyPI, GHCR, or any other external registry.
+TUC builds release artifacts and attestations. A protected `v*` tag can also
+publish Python distributions to PyPI after the `pypi` GitHub environment is
+approved.
 
 ## Release Trigger
 
 Release artifact builds may run through:
 
-- Manual `workflow_dispatch` dry-runs.
-- `v*` tag pushes.
+- Manual `workflow_dispatch` dry-runs that build, attest, and upload artifacts.
+- `v*` tag pushes that build, attest, upload artifacts, and then wait for
+  `pypi` environment approval before publishing.
 
 Public publishing must not be triggered directly by ordinary pull requests,
 unprotected branches, or user-controlled workflow inputs.
@@ -39,7 +41,7 @@ tested later, but maintainers should keep the naming convention narrow.
 
 ## GitHub Environment For Publishing
 
-If TUC adds a publishing job, create a GitHub environment named:
+TUC's publishing job uses a GitHub environment named:
 
 ```text
 pypi
@@ -52,8 +54,8 @@ Required environment settings:
 - Deployment branch/tag policy restricted to protected branches and `v*` tags.
 - No long-lived publishing secrets.
 
-The publishing job must be separate from the artifact-build job and must receive
-only the permissions it needs.
+The publishing job is separate from the artifact-build job and receives only the
+permissions it needs.
 
 ## PyPI Trusted Publishing
 
@@ -62,8 +64,7 @@ Use PyPI Trusted Publishing instead of stored PyPI API tokens.
 The PyPI publisher configuration must bind to:
 
 - Repository: `kirchherr/TUC`
-- Workflow: `.github/workflows/release-artifacts.yml` or a later dedicated
-  publishing workflow.
+- Workflow: `.github/workflows/release-artifacts.yml`
 - Environment: `pypi`
 
 Do not add a PyPI token or password as a repository secret.
@@ -78,6 +79,8 @@ High-risk release actions are pinned to reviewed commit SHAs:
 | `actions/setup-python` | `v6.2.0` | `a309ff8b426b58ec0e2a45f0f869d46889d02405` |
 | `actions/attest` | `v4.1.0` | `59d89421af93a897026c735860bf21b6eb4f7b26` |
 | `actions/upload-artifact` | `v7.0.1` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` |
+| `actions/download-artifact` | `v8.0.1` | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` |
+| `pypa/gh-action-pypi-publish` | `v1.14.0` | `cef221092ed1bacb1cc03d23a2d87d1d172e277b` |
 
 When updating a release action:
 
@@ -98,8 +101,7 @@ Before a public release:
 - At least one maintainer has reviewed release notes and artifact checksums.
 - PyPI Trusted Publishing is configured with the `pypi` environment.
 
-## Current Limitation
+## Current Admin Dependency
 
-This repository can document and test release workflow policy, but GitHub
-rulesets, environments, and PyPI Trusted Publisher configuration must be applied
-by a repository or PyPI project administrator.
+GitHub rulesets, environments, and PyPI Trusted Publisher configuration are
+admin-side settings. The repository workflow assumes those settings are active.

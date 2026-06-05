@@ -60,6 +60,8 @@ Current slice:
   check, and GitHub provenance/SBOM attestations.
 - Release governance policy with SHA-pinned release actions, release-action pin
   tests, and required GitHub/PyPI publishing controls.
+- PyPI Trusted Publishing job gated by protected `v*` tags, artifact-build
+  success, and the `pypi` environment.
 
 ## Next
 

@@ -72,11 +72,12 @@ def test_release_workflow_actions_are_sha_pinned() -> None:
     )
     workflow_text = workflow_path.read_text(encoding="utf-8")
     action_refs = re.findall(
-        r"uses:\s+(actions/[A-Za-z0-9_.-]+)@([0-9a-f]{40})(?:\s+#\s+v[0-9.]+)?",
+        r"uses:\s+([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)@([0-9a-f]{40})"
+        r"(?:\s+#\s+v[0-9.]+)?",
         workflow_text,
     )
     unpinned_action_refs = re.findall(
-        r"uses:\s+actions/[A-Za-z0-9_.-]+@(v[0-9][A-Za-z0-9_.-]*)",
+        r"uses:\s+[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@([A-Za-z_/.-]*v[0-9][A-Za-z0-9_.-]*)",
         workflow_text,
     )
 
@@ -87,4 +88,6 @@ def test_release_workflow_actions_are_sha_pinned() -> None:
         ("actions/attest", "59d89421af93a897026c735860bf21b6eb4f7b26"),
         ("actions/attest", "59d89421af93a897026c735860bf21b6eb4f7b26"),
         ("actions/upload-artifact", "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"),
+        ("actions/download-artifact", "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"),
+        ("pypa/gh-action-pypi-publish", "cef221092ed1bacb1cc03d23a2d87d1d172e277b"),
     ]

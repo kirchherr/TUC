@@ -36,6 +36,8 @@ The current prototype contains:
   GitHub artifact attestations.
 - Release governance policy with SHA-pinned release actions and publishing
   approval requirements.
+- PyPI Trusted Publishing job gated by protected `v*` tags and the `pypi`
+  environment.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
