@@ -41,6 +41,7 @@ def test_pipeline_lowers_through_all_three_ir_stages() -> None:
     assert result.hac_ir.graph.operations[0].attributes["tuc.bytes_written"] == 512
     assert result.hac_ir.graph.metadata["movement_model"] == "movement.v0"
     assert result.hs_ir.graph.operations[0].attributes["tuc.assigned_backend"] == "linear-sim"
+    assert result.hs_ir.graph.operations[0].attributes["tuc.produced_layout"] == "row_major"
     assert result.hs_ir.graph.operations[0].attributes["tuc.bytes_read"] == 3072
     assert result.hs_ir.graph.metadata["movement_summary"] == {
         "arithmetic_intensity": 8320 / 4608,

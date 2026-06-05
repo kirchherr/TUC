@@ -75,6 +75,15 @@ docker compose run --rm dev pytest -q tests/test_hac_ir_dialect_contracts.py
 The tests check the Python-level HAC-IR v0 operation and attribute contracts
 that future native MLIR definitions must preserve.
 
+## Verify HS-IR Dialect Contracts
+
+```powershell
+docker compose run --rm dev pytest -q tests/test_hs_ir_contracts.py
+```
+
+The tests check backend assignment, produced-layout, movement-summary, and
+runtime-transfer-summary contracts for HS-IR v0.
+
 ## Optional GPU Shell
 
 If Docker Desktop has NVIDIA GPU support configured, use:

@@ -56,6 +56,8 @@ Implemented now:
 - HAC-IR v0 dialect contracts for operation arity, compiler-produced
   attributes, known user hints, and fail-closed rejection of unknown reserved
   `tuc.*` attributes.
+- HS-IR v0 contracts for backend assignments, produced layouts,
+  movement-summary metadata, and runtime-transfer-summary consistency.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

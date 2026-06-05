@@ -5,11 +5,17 @@ from tuc.ir.dialect import (
     HAC_IR_DIALECT_VERSION,
     HAC_IR_MLIR_DIALECT,
     HAC_OPERATION_CONTRACTS,
+    HS_IR_DIALECT_VERSION,
+    HS_IR_MLIR_DIALECT,
+    HS_OPERATION_CONTRACTS,
+    MOVEMENT_MODEL_VERSION,
     HacAttributeContract,
     HacAttributeKind,
     HacOperationContract,
     validate_hac_module_contract,
     validate_hac_operation_contract,
+    validate_hs_module_contract,
+    validate_hs_operation_contract,
 )
 from tuc.ir.dump import dump_module
 from tuc.ir.memory import (
@@ -31,6 +37,9 @@ __all__ = [
     "HAC_IR_DIALECT_VERSION",
     "HAC_IR_MLIR_DIALECT",
     "HAC_OPERATION_CONTRACTS",
+    "HS_IR_DIALECT_VERSION",
+    "HS_IR_MLIR_DIALECT",
+    "HS_OPERATION_CONTRACTS",
     "HacAttributeContract",
     "HacAttributeKind",
     "HacOperationContract",
@@ -41,6 +50,7 @@ __all__ = [
     "MemoryDomain",
     "MemoryDomainKind",
     "MovementEstimate",
+    "MOVEMENT_MODEL_VERSION",
     "OperationKind",
     "TensorRef",
     "TransferEdge",
@@ -48,4 +58,6 @@ __all__ = [
     "dump_module",
     "validate_hac_module_contract",
     "validate_hac_operation_contract",
+    "validate_hs_module_contract",
+    "validate_hs_operation_contract",
 ]

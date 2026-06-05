@@ -6,10 +6,15 @@ from dataclasses import replace
 from typing import Any
 
 from tuc.compiler.movement import annotate_graph_movement, summarize_graph_movement
-from tuc.ir.dialect import HAC_IR_DIALECT_VERSION, validate_hac_module_contract
+from tuc.ir.dialect import (
+    HAC_IR_DIALECT_VERSION,
+    HS_IR_DIALECT_VERSION,
+    validate_hac_module_contract,
+    validate_hs_module_contract,
+)
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind
 from tuc.ir.modules import IRModule, IRStage
-from tuc.runtime.partitioning import PartitionPlan
+from tuc.runtime.partitioning import Assignment, PartitionPlan
 
 MVP_OPERATION_KINDS = frozenset(
     {
@@ -75,12 +80,14 @@ def lower_hac_to_hs(hac_ir: IRModule, partition_plan: PartitionPlan) -> IRModule
             "transfer_edge_count": len(partition_plan.transfer_edges),
         },
     }
-    return IRModule(
+    module = IRModule(
         stage=IRStage.HS_IR,
         graph=ComputeGraph(name=hac_ir.graph.name, operations=operations, metadata=metadata),
         target="heterogeneous",
-        metadata={"dialect_version": "hs-ir.v0"},
+        metadata={"dialect_version": HS_IR_DIALECT_VERSION},
     )
+    validate_hs_module_contract(module)
+    return module
 
 
 def _normalize_operation(operation: ComputeOperation) -> ComputeOperation:
@@ -97,13 +104,21 @@ def _normalize_operation(operation: ComputeOperation) -> ComputeOperation:
 
 
 def _attach_backend(operation: ComputeOperation, partition_plan: PartitionPlan) -> ComputeOperation:
-    backend_name = partition_plan.backend_for(operation.name)
+    assignment = _assignment_for(partition_plan, operation.name)
     attributes = {
         **operation.attributes,
-        "tuc.assigned_backend": backend_name,
+        "tuc.assigned_backend": assignment.backend_name,
+        "tuc.produced_layout": assignment.produced_layout.value,
         "tuc.source_stage": IRStage.HAC_IR.value,
     }
     return replace(operation, attributes=attributes)
+
+
+def _assignment_for(partition_plan: PartitionPlan, operation_name: str) -> Assignment:
+    for assignment in partition_plan.assignments:
+        if assignment.operation_name == operation_name:
+            return assignment
+    raise KeyError(operation_name)
 
 
 def _linearity(kind: OperationKind) -> str:

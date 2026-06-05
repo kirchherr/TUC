@@ -58,6 +58,12 @@ fail-closed handling for unknown reserved `tuc.*` attributes. The compiler
 validates HAC-IR immediately after TLIR lowering and again before HAC-IR is
 specialized into HS-IR.
 
+HS-IR has a matching v0 contract in the same module. It requires backend
+assignment metadata to exactly match operations, requires every operation to
+carry `tuc.assigned_backend` and `tuc.produced_layout`, validates produced
+layouts against the layout vocabulary, and checks movement/runtime-transfer
+summaries for finite non-negative values and internal byte-total consistency.
+
 ## Data Movement Awareness
 
 HAC-IR now records data movement as an explicit compiler fact. The pass in
@@ -171,5 +177,6 @@ The first MLIR design spike is a parseable unregistered-dialect artifact under
 deliberately avoiding native C++ dialect code, external MLIR ingestion, or pass
 execution.
 
-The current Python HAC-IR dialect contract is the reviewable source of truth for
-future MLIR ODS/TableGen work until native dialect code is explicitly hardened.
+The current Python HAC-IR and HS-IR dialect contracts are the reviewable source
+of truth for future MLIR ODS/TableGen work until native dialect code is
+explicitly hardened.

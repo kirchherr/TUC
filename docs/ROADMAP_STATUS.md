@@ -51,6 +51,7 @@ Current slice:
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
+- HS-IR v0 contracts for backend assignments, produced layouts, and runtime-transfer summaries.
 
 ## Next
 
