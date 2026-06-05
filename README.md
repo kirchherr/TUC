@@ -29,6 +29,7 @@ The current prototype contains:
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
+- Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Tests and a runnable Phase 0 vertical-slice example.
 - Docker-based compiler development environment.
 - RFC, governance, issue, PR, and CI scaffolding.
@@ -84,6 +85,12 @@ Inspect data-movement metadata:
 
 ```bash
 python examples/data_movement_ir.py
+```
+
+Inspect example backend and transfer manifests:
+
+```text
+examples/manifests/
 ```
 
 ## Local Python Setup

@@ -44,6 +44,8 @@ Current slice:
 - Backend produced-layout schema.
 - Validated in-memory transfer-cost profiles.
 - Runtime plan golden dumps.
+- Schema-versioned backend manifest files.
+- Calibrated transfer-cost profile files.
 
 ## Next
 
@@ -52,7 +54,5 @@ Current slice:
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - Backend API v0.1 documentation for external authors.
-- Schema-versioned backend manifest files.
-- Calibrated transfer-cost profile files.
 - Branch protection and required CI/security checks on `main`.
 - Release provenance, SBOM, and signed artifacts before first package release.

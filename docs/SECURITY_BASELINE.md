@@ -51,6 +51,8 @@ Implemented now:
 - Movement-aware partition plan metadata with transfer-byte accounting.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.
+- Schema-versioned JSON manifest loading with file-size, duplicate-key,
+  nesting, string, numeric, and unknown-field rejection.
 - Read-only default GitHub workflow permissions.
 - Dependabot configuration for GitHub Actions, Python, and Docker updates.
 - CodeQL, dependency review, and OpenSSF Scorecard workflows.

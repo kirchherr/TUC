@@ -2,10 +2,16 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from tuc import CompilationHints, ComputeGraph, ComputeOperation, OperationKind, TensorRef
-from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
-from tuc.runtime import TransferCostProfile
+from tuc.manifests import (
+    load_backend_capability_manifest,
+    load_transfer_cost_profile_manifest,
+)
+
+_MANIFEST_DIR = Path(__file__).parent / "manifests"
 
 
 def build_graph() -> ComputeGraph:
@@ -39,28 +45,15 @@ def build_graph() -> ComputeGraph:
 
 
 def main() -> None:
-    transfer_profile = TransferCostProfile.from_manifest(
-        {
-            "name": "example_profile",
-            "fallback": {
-                "bandwidth_gb_s": 16.0,
-                "base_latency_ns": 20000.0,
-                "energy_pj_per_byte": 100.0,
-            },
-            "edges": (
-                {
-                    "source_domain": "analog_weight_bank",
-                    "target_domain": "gpu_hbm",
-                    "bandwidth_gb_s": 128.0,
-                    "base_latency_ns": 2500.0,
-                    "energy_pj_per_byte": 12.0,
-                },
-            ),
-        }
+    backend_capability = load_backend_capability_manifest(
+        _MANIFEST_DIR / "linear_sim_backend.json"
+    )
+    transfer_profile = load_transfer_cost_profile_manifest(
+        _MANIFEST_DIR / "analog_to_gpu_transfer_profile.json"
     )
     result = compile_graph(
         build_graph(),
-        [LinearAlgebraSimulatorBackend().capability],
+        [backend_capability],
         transfer_cost_profile=transfer_profile,
     )
 

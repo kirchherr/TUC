@@ -13,6 +13,11 @@ from tuc.ir.memory import (
 )
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.ir.modules import IRModule, IRStage
+from tuc.manifests import (
+    ManifestError,
+    load_backend_capability_manifest,
+    load_transfer_cost_profile_manifest,
+)
 
 __all__ = [
     "CompilationHints",
@@ -24,6 +29,7 @@ __all__ = [
     "IRStage",
     "LayoutConstraint",
     "LayoutKind",
+    "ManifestError",
     "MemoryDomain",
     "MemoryDomainKind",
     "MovementEstimate",
@@ -32,4 +38,6 @@ __all__ = [
     "TransferEdge",
     "compile_graph",
     "dtype_size_bytes",
+    "load_backend_capability_manifest",
+    "load_transfer_cost_profile_manifest",
 ]

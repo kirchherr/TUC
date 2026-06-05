@@ -89,6 +89,10 @@ Transfer-cost profiles can be supplied as validated declarative manifests. The
 runtime uses them for transfer-edge estimates and candidate scoring without
 executing backend code or trusting backend-provided behavior.
 
+Schema-versioned JSON manifests are loaded through `tuc.manifests`. Manifest
+loading is explicit, bounded, duplicate-key rejecting, and does not scan for or
+execute backend plugins.
+
 ## Backend Lowering
 
 Backends implement a minimal protocol:

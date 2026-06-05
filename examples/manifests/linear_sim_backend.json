@@ -1,0 +1,12 @@
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "linear-sim",
+  "supported_ops": ["matmul"],
+  "supports_noise_model": true,
+  "supports_calibration": false,
+  "preferred_for": ["matmul"],
+  "max_error_budget": 0.05,
+  "memory_domain": "analog_weight_bank",
+  "supported_layouts": ["row_major"],
+  "produced_layouts": ["row_major"]
+}

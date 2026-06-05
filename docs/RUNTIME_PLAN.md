@@ -54,6 +54,8 @@ Runtime plan objects are declarative data:
 - Transfer cost numbers must be finite and validated.
 - Transfer-cost manifests are accepted only as bounded plain `dict`, `list`, and
   `tuple` data.
+- Transfer-cost profile files must pass the schema-versioned JSON loader before
+  becoming runtime profile data.
 - Same-domain transfer edges are rejected.
 - No plugin, backend, subprocess, import, or filesystem path is executed while
   constructing a plan or validating a transfer profile.
@@ -63,8 +65,7 @@ Runtime plan objects are declarative data:
 This is still a prototype:
 
 - Transfer cost uses a coarse deterministic prototype profile.
-- Optional calibrated profiles are in-memory manifest objects; schema-versioned
-  profile files are future work.
+- Optional calibrated profiles can be loaded from schema-versioned JSON files.
 - Layout conversion cost is byte-count based only.
 - Synchronization, buffer lifetime, contention, calibration, and overlapping
   transfer/compute are future work.
@@ -74,6 +75,4 @@ This is still a prototype:
 ## Next Work
 
 1. Include buffer lifetime and reuse in runtime planning.
-2. Add schema-versioned backend manifest files.
-3. Add calibrated transfer-cost profile files.
-4. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
+2. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
