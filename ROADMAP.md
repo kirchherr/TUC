@@ -228,6 +228,9 @@ Completed evidence:
   automatic global optimization from gaining hidden placement controls before
   schema, validation, review, decision-report, and runtime-plan golden gates are
   defined.
+- Schema-versioned `RuntimeOverrideSet` data can constrain operation placement
+  only across already accepted backend candidates and is covered by negative
+  tests plus compiler decision-report and runtime-plan golden fixtures.
 
 Next work:
 
@@ -235,9 +238,7 @@ Next work:
   operation-family planning is documented.
 - Add candidate scoring once transfer/noise-aware models are stable.
 - Add runtime-plan golden dumps for future proof graphs.
-- Add schema-versioned declarative manual override data only after RFC 0042's
-  fail-closed gates are implemented with negative tests, compiler
-  decision-report goldens, and runtime-plan goldens.
+- Add richer override diagnostics only if they stay bounded and golden-tested.
 
 Go/No-Go:
 

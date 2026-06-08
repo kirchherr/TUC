@@ -14,7 +14,13 @@ from tuc.compiler.lowering import lower_hac_to_hs, lower_tlir_to_hac
 from tuc.ir.dump import dump_module
 from tuc.ir.model import ComputeGraph
 from tuc.ir.modules import IRModule, IRStage
-from tuc.runtime import PartitionPlan, TransferCostProfile, dump_partition_plan, partition_graph
+from tuc.runtime import (
+    PartitionPlan,
+    RuntimeOverrideSet,
+    TransferCostProfile,
+    dump_partition_plan,
+    partition_graph,
+)
 
 
 @dataclass(frozen=True)
@@ -63,10 +69,12 @@ class CompilerPipeline:
         backend_capabilities: Iterable[BackendCapability],
         fallback_backend: str = "gpu",
         transfer_cost_profile: TransferCostProfile | None = None,
+        runtime_overrides: RuntimeOverrideSet | None = None,
     ) -> None:
         self._backend_capabilities = tuple(backend_capabilities)
         self._fallback_backend = fallback_backend
         self._transfer_cost_profile = transfer_cost_profile
+        self._runtime_overrides = runtime_overrides
 
     def compile(self, graph: ComputeGraph) -> CompilationResult:
         tlir = IRModule(
@@ -80,6 +88,7 @@ class CompilerPipeline:
             self._backend_capabilities,
             fallback_backend=self._fallback_backend,
             transfer_cost_profile=self._transfer_cost_profile,
+            runtime_overrides=self._runtime_overrides,
         )
         decision_report = build_compiler_decision_report(
             graph=hac_ir.graph,
@@ -107,6 +116,7 @@ def compile_graph(
     backend_capabilities: Iterable[BackendCapability],
     fallback_backend: str = "gpu",
     transfer_cost_profile: TransferCostProfile | None = None,
+    runtime_overrides: RuntimeOverrideSet | None = None,
 ) -> CompilationResult:
     """Convenience wrapper for one-shot pipeline runs."""
 
@@ -114,4 +124,5 @@ def compile_graph(
         backend_capabilities=backend_capabilities,
         fallback_backend=fallback_backend,
         transfer_cost_profile=transfer_cost_profile,
+        runtime_overrides=runtime_overrides,
     ).compile(graph)

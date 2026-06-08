@@ -1,0 +1,10 @@
+compiler.decision_report @golden_manual_override {
+  operation projection kind=matmul assigned=gpu-matmul accepted_backends="linear-sim,gpu-matmul" rejected_backends="-" reason="manual_override:require_backend=gpu-matmul;domain=gpu_hbm;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
+  support {
+    linear-sim accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+    gpu-matmul accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+  }
+  manual_overrides {
+    require_backend="gpu-matmul" prefer_backend="-" deny_backends="-"
+  }
+}

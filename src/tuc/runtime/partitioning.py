@@ -10,6 +10,7 @@ from typing import NamedTuple
 from tuc.backends.base import BackendCapability
 from tuc.ir.memory import LayoutKind, MemoryDomainKind, dtype_size_bytes
 from tuc.ir.model import ComputeGraph, ComputeOperation, TensorRef
+from tuc.runtime.overrides import RuntimeOverrideEffect, RuntimeOverrideSet
 from tuc.runtime.plan import LayoutConversionCost, RuntimeTransferEdge, TransferCostProfile
 
 
@@ -34,6 +35,7 @@ class PartitionPlan:
     assignments: tuple[Assignment, ...]
     transfer_edges: tuple[RuntimeTransferEdge, ...] = ()
     layout_conversions: tuple[LayoutConversionCost, ...] = ()
+    override_effects: tuple[RuntimeOverrideEffect, ...] = ()
 
     def backend_for(self, operation_name: str) -> str:
         for assignment in self.assignments:
@@ -80,10 +82,14 @@ def partition_graph(
     backends: Iterable[BackendCapability],
     fallback_backend: str = "gpu",
     transfer_cost_profile: TransferCostProfile | None = None,
+    runtime_overrides: RuntimeOverrideSet | None = None,
 ) -> PartitionPlan:
     """Assign operations using backend preference and capability metadata."""
 
     capabilities = tuple(backends)
+    if runtime_overrides is not None:
+        runtime_overrides.validate_for_graph(graph, capabilities)
+
     assignments: list[Assignment] = []
     transfer_edges: list[RuntimeTransferEdge] = []
     layout_conversions: list[LayoutConversionCost] = []
@@ -95,6 +101,7 @@ def partition_graph(
             fallback_backend,
             tensor_locations,
             transfer_cost_profile,
+            runtime_overrides,
         )
         transfers, conversions = _movement_requirements(
             operation=operation,
@@ -119,6 +126,11 @@ def partition_graph(
         assignments=tuple(assignments),
         transfer_edges=tuple(transfer_edges),
         layout_conversions=tuple(layout_conversions),
+        override_effects=(
+            runtime_overrides.active_effects_for_graph(graph)
+            if runtime_overrides is not None
+            else ()
+        ),
     )
 
 
@@ -128,11 +140,42 @@ def _assign_operation(
     fallback_backend: str,
     tensor_locations: dict[str, TensorLocation],
     transfer_cost_profile: TransferCostProfile | None,
+    runtime_overrides: RuntimeOverrideSet | None,
 ) -> Assignment:
+    accepted = tuple(capability for capability in capabilities if capability.supports(operation))
+    override_effect = (
+        runtime_overrides.effect_for_operation(operation.name)
+        if runtime_overrides is not None
+        else None
+    )
+    if runtime_overrides is not None:
+        accepted = runtime_overrides.apply_to_candidates(
+            operation_name=operation.name,
+            candidates=accepted,
+        )
+
+    if override_effect is not None and override_effect.required_backend is not None:
+        return _select_lowest_transfer_candidate(
+            operation=operation,
+            candidates=accepted,
+            tensor_locations=tensor_locations,
+            reason_prefix=f"manual_override:require_backend={override_effect.required_backend}",
+            transfer_cost_profile=transfer_cost_profile,
+        )
+
+    if override_effect is not None and override_effect.preferred_backend is not None:
+        return _select_lowest_transfer_candidate(
+            operation=operation,
+            candidates=accepted,
+            tensor_locations=tensor_locations,
+            reason_prefix=f"manual_override:prefer_backend={override_effect.preferred_backend}",
+            transfer_cost_profile=transfer_cost_profile,
+        )
+
     preferred = tuple(
         capability
-        for capability in capabilities
-        if operation.kind in capability.preferred_for and capability.supports(operation)
+        for capability in accepted
+        if operation.kind in capability.preferred_for
     )
     if preferred:
         return _select_lowest_transfer_candidate(
@@ -143,11 +186,10 @@ def _assign_operation(
             transfer_cost_profile=transfer_cost_profile,
         )
 
-    supported = tuple(capability for capability in capabilities if capability.supports(operation))
-    if supported:
+    if accepted:
         return _select_lowest_transfer_candidate(
             operation=operation,
-            candidates=supported,
+            candidates=accepted,
             tensor_locations=tensor_locations,
             reason_prefix=f"supported:{operation.kind.value}",
             transfer_cost_profile=transfer_cost_profile,

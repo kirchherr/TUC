@@ -10,6 +10,7 @@ It answers:
 - Which registered backend capabilities rejected the operation?
 - Which pure-data reason code explains each accept or reject decision?
 - Why did runtime planning choose the final assignment?
+- Did a manual runtime override affect candidate selection?
 
 This is a compiler-level inspectability artifact. It does not replace HAC-IR,
 HS-IR, or runtime plans.
@@ -44,6 +45,12 @@ was assigned to:
 - a supported registered backend
 - a fallback backend because no registered capability accepted the operation
 - a backend chosen after transfer/layout planning
+- a backend selected through an accepted manual override constraint
+
+Manual override effects are reported in a `manual_overrides` block. The block is
+present only when a `RuntimeOverrideSet` affects placement. The override
+contract is defined by
+[Runtime manual override policy](RUNTIME_OVERRIDE_POLICY.md).
 
 ## Security Model
 
@@ -53,6 +60,7 @@ The report is pure data built from:
 - explicit backend capability data
 - registry support diagnostics
 - the runtime partition plan
+- schema-versioned runtime override effects
 
 It does not:
 
@@ -79,6 +87,7 @@ Use the decision report when reviewing changes to:
 - partitioning rules
 - fallback behavior
 - transfer-aware placement
+- manual placement overrides
 - proof artifacts that include backend assignment reasoning
 
 If a backend is rejected, the report should show a short reason code such as
@@ -99,5 +108,5 @@ tests/golden/compiler_decisions/
 `tests/test_compiler_decision_report_golden.py` compares proof and MVP graph
 reports against those fixtures. Fixture changes are compiler-contract changes:
 reviewers should inspect accepted backend candidates, rejected backend
-candidates, fallback reasons, and assignment reasons rather than treating the
-files as generated noise.
+candidates, manual override effects, fallback reasons, and assignment reasons
+rather than treating the files as generated noise.

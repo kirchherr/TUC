@@ -9,7 +9,11 @@ from examples.phase1_ir_pipeline import build_graph as build_phase1_graph
 from examples.proof_of_abstraction import run_proof as run_abstraction_proof
 from examples.proof_of_reduction import run_proof as run_reduction_proof
 from tuc.backends import LinearAlgebraSimulatorBackend
+from tuc.backends.base import BackendCapability
 from tuc.compiler import compile_graph
+from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
+from tuc.ir.memory import MemoryDomainKind
+from tuc.runtime import RUNTIME_OVERRIDE_SCHEMA_VERSION, RuntimeOverrideSet
 
 _GOLDEN_DIR = Path(__file__).parent / "golden" / "compiler_decisions"
 
@@ -32,6 +36,10 @@ _GOLDEN_DIR = Path(__file__).parent / "golden" / "compiler_decisions"
                 [LinearAlgebraSimulatorBackend().capability],
             ).dump_decision_report(),
         ),
+        (
+            "manual_override_require.txt",
+            lambda: _manual_override_decision_report(),
+        ),
     ),
 )
 def test_compiler_decision_report_matches_golden(
@@ -41,3 +49,43 @@ def test_compiler_decision_report_matches_golden(
     expected = (_GOLDEN_DIR / fixture_name).read_text(encoding="utf-8").rstrip("\n")
 
     assert report_builder() == expected
+
+
+def _manual_override_decision_report() -> str:
+    lhs = TensorRef("lhs", (4, 4))
+    rhs = TensorRef("rhs", (4, 4))
+    out = TensorRef("out", (4, 4))
+    graph = ComputeGraph(
+        name="golden_manual_override",
+        operations=(
+            ComputeOperation(
+                name="projection",
+                kind=OperationKind.MATMUL,
+                inputs=(lhs, rhs),
+                outputs=(out,),
+                attributes={"max_error_budget": 0.01},
+            ),
+        ),
+    )
+    gpu_backend = BackendCapability(
+        name="gpu-matmul",
+        supported_ops=frozenset({OperationKind.MATMUL}),
+        memory_domain=MemoryDomainKind.GPU_HBM,
+    )
+    overrides = RuntimeOverrideSet.from_manifest(
+        {
+            "schema_version": RUNTIME_OVERRIDE_SCHEMA_VERSION,
+            "rules": (
+                {
+                    "operation_name": "projection",
+                    "action": "require_backend",
+                    "backend_name": "gpu-matmul",
+                },
+            ),
+        }
+    )
+    return compile_graph(
+        graph,
+        [LinearAlgebraSimulatorBackend().capability, gpu_backend],
+        runtime_overrides=overrides,
+    ).dump_decision_report()
