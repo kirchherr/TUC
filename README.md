@@ -1,22 +1,25 @@
 # TUC
 
-TUC is an early-stage open-source prototype for a Triton Universal Compiler.
+TUC is **The Universal Compute**: an early-stage open-source prototype exploring
+whether compute intent can be represented through a hardware-independent
+interface.
 
-The goal is to keep Triton-style developer ergonomics while exploring a compiler
-and runtime architecture that can target heterogeneous AI accelerators:
-conventional GPUs first, then simulator-backed photonic and neuromorphic targets.
+The goal is not to build another compiler. The goal is to prove that software
+can describe compute intent while hardware describes capabilities, with TUC
+performing the translation through HAC-IR, backend capability data, and runtime
+planning.
 
-TUC is currently moving through Phase 1. The repository is being shaped as a
-serious open-source project while the first compiler pipeline skeleton becomes
-real.
+The strategic north star is [TUC Master Plan](TUC_MASTER_PLAN.md). Roadmap and
+implementation decisions should strengthen hardware independence, protect
+HAC-IR, and move the project up the proof ladder.
 
 ## What TUC Is Trying To Prove
 
 The first credible claim is intentionally narrow:
 
-> Existing Triton-style compute intent can be represented in a hardware-agnostic
-> compute IR, partitioned across backend capabilities, and lowered into at least
-> one conventional or simulated backend without changing mathematical intent.
+> Compute intent can be represented independently of hardware, planned across
+> backend capabilities, and checked against deterministic reference semantics
+> without changing mathematical intent.
 
 The current prototype contains:
 
@@ -25,6 +28,7 @@ The current prototype contains:
 - Backend capability metadata.
 - A simulator backend for linear algebra operations.
 - Rule-based runtime partitioning.
+- Proof-of-abstraction example for Objective Alpha.
 - Data-movement-aware HAC-IR metadata for MVP kernels.
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
@@ -100,6 +104,12 @@ Run the Phase 1 IR pipeline skeleton:
 python examples/phase1_ir_pipeline.py
 ```
 
+Run the proof-of-abstraction example:
+
+```bash
+python examples/proof_of_abstraction.py
+```
+
 Inspect data-movement metadata:
 
 ```bash
@@ -161,6 +171,7 @@ pytest -q
 
 ## Documentation
 
+- [TUC Master Plan](TUC_MASTER_PLAN.md)
 - [Roadmap](ROADMAP.md)
 - [Development environment](docs/DEVELOPMENT_ENVIRONMENT.md)
 - [Architecture](docs/ARCHITECTURE.md)
@@ -192,7 +203,8 @@ pytest -q
 ## Project Status
 
 TUC is pre-alpha. APIs, IR names, backend contracts, and runtime behavior are
-expected to change as the project moves through Phase 1.
+expected to change as the project moves from compiler skeleton toward a
+hardware-independent compute interface proof.
 
 ## License
 

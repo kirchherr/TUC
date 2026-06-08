@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tuc"
 version = "0.1.0"
-description = "Experimental Triton Universal Compiler prototype."
+description = "Experimental hardware-independent compute interface prototype."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
