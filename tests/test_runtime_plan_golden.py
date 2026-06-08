@@ -10,8 +10,15 @@ from examples.proof_of_reduction import run_proof as run_reduction_proof
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
-from tuc.ir.memory import LayoutKind
-from tuc.runtime import PartitionPlan, TransferCostProfile, dump_partition_plan, partition_graph
+from tuc.ir.memory import LayoutKind, MemoryDomainKind
+from tuc.runtime import (
+    RUNTIME_OVERRIDE_SCHEMA_VERSION,
+    PartitionPlan,
+    RuntimeOverrideSet,
+    TransferCostProfile,
+    dump_partition_plan,
+    partition_graph,
+)
 
 _GOLDEN_DIR = Path(__file__).parent / "golden" / "runtime_plans"
 
@@ -22,6 +29,7 @@ _GOLDEN_DIR = Path(__file__).parent / "golden" / "runtime_plans"
         ("default_transfer.txt", lambda: _default_transfer_plan()),
         ("produced_layout_conversion.txt", lambda: _produced_layout_conversion_plan()),
         ("profiled_transfer.txt", lambda: _profiled_transfer_plan()),
+        ("manual_override_require.txt", lambda: _manual_override_plan()),
         (
             "proof_of_abstraction.txt",
             lambda: run_proof().compiled.partition_plan,
@@ -145,4 +153,44 @@ def _profiled_transfer_plan() -> PartitionPlan:
         graph,
         [LinearAlgebraSimulatorBackend().capability],
         transfer_cost_profile=profile,
+    )
+
+
+def _manual_override_plan() -> PartitionPlan:
+    lhs = TensorRef("lhs", (4, 4))
+    rhs = TensorRef("rhs", (4, 4))
+    out = TensorRef("out", (4, 4))
+    graph = ComputeGraph(
+        name="golden_manual_override",
+        operations=(
+            ComputeOperation(
+                name="projection",
+                kind=OperationKind.MATMUL,
+                inputs=(lhs, rhs),
+                outputs=(out,),
+                attributes={"max_error_budget": 0.01},
+            ),
+        ),
+    )
+    gpu_backend = BackendCapability(
+        name="gpu-matmul",
+        supported_ops=frozenset({OperationKind.MATMUL}),
+        memory_domain=MemoryDomainKind.GPU_HBM,
+    )
+    overrides = RuntimeOverrideSet.from_manifest(
+        {
+            "schema_version": RUNTIME_OVERRIDE_SCHEMA_VERSION,
+            "rules": (
+                {
+                    "operation_name": "projection",
+                    "action": "require_backend",
+                    "backend_name": "gpu-matmul",
+                },
+            ),
+        }
+    )
+    return partition_graph(
+        graph,
+        [LinearAlgebraSimulatorBackend().capability, gpu_backend],
+        runtime_overrides=overrides,
     )

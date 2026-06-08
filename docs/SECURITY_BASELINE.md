@@ -99,6 +99,11 @@ Implemented now:
   runtime-plan dumps, and free of plugin discovery, imports, subprocesses,
   dynamic libraries, device access, network access, host-path reads,
   environment-dependent behavior, or generated-artifact execution.
+- Runtime manual override v0 implements that gate with `RuntimeOverrideSet`,
+  `tuc.runtime_overrides.v0`, positive and negative tests, compiler
+  decision-report goldens, and runtime-plan goldens. Overrides are accepted only
+  after graph and capability validation, and only for already accepted backend
+  candidates.
 - Backend author certification requires negative tests for plugin-like manifest
   fields, duplicate keys, unsupported schemas, false capability claims,
   unsupported layouts, and lower-time operation rejection.

@@ -1,0 +1,15 @@
+runtime.plan @golden_manual_override {
+  assignments {
+    projection -> gpu-matmul domain=gpu_hbm produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="manual_override:require_backend=gpu-matmul;domain=gpu_hbm;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
+  }
+  manual_overrides {
+    projection require_backend="gpu-matmul" prefer_backend="-" deny_backends="-"
+  }
+  summary {
+    total_transfer_bytes = 0
+    total_layout_conversion_bytes = 0
+    total_data_movement_bytes = 0
+    estimated_transfer_latency_ns = 0
+    estimated_transfer_energy_pj = 0
+  }
+}

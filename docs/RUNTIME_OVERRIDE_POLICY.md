@@ -1,14 +1,15 @@
 # Runtime Manual Override Policy
 
-TUC does not implement runtime manual placement overrides yet.
+TUC implements a first operation-scoped runtime manual override data surface in
+`tuc.runtime.overrides`.
 
-This policy defines the rules that must exist before TUC adds any override
+This policy defines the rules for that surface and for any future override
 object, config file, command-line flag, frontend hint, or optimizer control that
 can influence backend placement.
 
 ## Purpose
 
-Manual overrides are future declarative planning constraints. They may help a
+Manual overrides are declarative planning constraints. They may help a
 maintainer, backend author, or proof fixture force a known placement scenario so
 that runtime planning, transfer costs, and decision reporting can be reviewed.
 
@@ -33,6 +34,41 @@ A future override object may only be accepted if it is:
 
 Graph-wide overrides are not part of the initial policy. They require a
 dedicated RFC because they can hide broad placement changes.
+
+## Implemented Prototype Surface
+
+The current schema version is:
+
+```text
+tuc.runtime_overrides.v0
+```
+
+Callers can create bounded declarative overrides with
+`RuntimeOverrideSet.from_manifest(...)` and pass the result to
+`partition_graph(...)` or `compile_graph(...)`.
+
+Current rule shape:
+
+```python
+{
+    "schema_version": "tuc.runtime_overrides.v0",
+    "rules": (
+        {
+            "operation_name": "projection",
+            "action": "require_backend",
+            "backend_name": "gpu-matmul",
+        },
+    ),
+}
+```
+
+Implemented actions:
+
+- `require_backend`: restrict one operation to one already accepted backend
+  candidate.
+- `prefer_backend`: select one already accepted backend candidate before normal
+  rule-based candidate scoring.
+- `deny_backend`: remove one already accepted backend candidate.
 
 ## Hard Limits
 
@@ -60,7 +96,7 @@ Manual overrides cannot:
 
 ## Planning Order
 
-A future implementation must preserve this order:
+The implementation preserves this order:
 
 1. Validate the graph and all IR boundary data.
 2. Lower TLIR to HAC-IR and validate HAC-IR neutrality.
@@ -85,7 +121,11 @@ An override must be rejected before planning continues when it contains:
 - Unknown operation names.
 - Unknown backend names.
 - Duplicate rules for the same operation and action.
+- Multiple required or preferred backends for the same operation.
+- Simultaneous `require_backend` and `prefer_backend` actions for the same
+  operation.
 - Contradictory `require_backend` and `deny_backend` actions.
+- Contradictory `prefer_backend` and `deny_backend` actions.
 - Unbounded wildcard, regex, glob, or selector behavior.
 - Backend requirements not present in accepted support diagnostics.
 - Deny rules that remove every valid candidate.
@@ -99,8 +139,8 @@ secret material.
 
 ## Review And Test Gate
 
-Before executable override support can be added, the implementation PR must
-include:
+Before any new override support can be added, the implementation PR must
+include or preserve:
 
 - A dedicated RFC that names the schema and trust boundary.
 - Positive tests for accepted operation-scoped overrides.
@@ -120,5 +160,6 @@ overrides as hidden training data, performance claims, or backend certification.
 ## Current Status
 
 This policy is the current contract. TUC has no accepted manual override input
-surface yet.
-
+surface beyond the in-process schema-versioned data model. TUC has no override
+file loader, frontend override syntax, command-line override flag, automatic
+optimizer, or graph-wide override mechanism.

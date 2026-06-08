@@ -41,6 +41,14 @@ from tuc.proof import (
     ProofReportMetadata,
     proof_metadata_from_partition_plan,
 )
+from tuc.runtime import (
+    RUNTIME_OVERRIDE_SCHEMA_VERSION,
+    RuntimeOverrideAction,
+    RuntimeOverrideEffect,
+    RuntimeOverrideError,
+    RuntimeOverrideRule,
+    RuntimeOverrideSet,
+)
 
 __all__ = [
     "BackendRegistration",
@@ -64,7 +72,13 @@ __all__ = [
     "OperationKind",
     "OperationDecisionReport",
     "PROOF_REPORT_SCHEMA_VERSION",
+    "RUNTIME_OVERRIDE_SCHEMA_VERSION",
     "ProofReportMetadata",
+    "RuntimeOverrideAction",
+    "RuntimeOverrideEffect",
+    "RuntimeOverrideError",
+    "RuntimeOverrideRule",
+    "RuntimeOverrideSet",
     "TensorRef",
     "TritonKernelMetadata",
     "TritonOperationMetadata",

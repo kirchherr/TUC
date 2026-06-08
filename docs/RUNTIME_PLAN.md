@@ -50,7 +50,8 @@ runtime assignment was finalized.
 
 ## Manual Override Policy
 
-TUC does not currently accept manual placement override input.
+TUC accepts a first operation-scoped manual placement override data surface
+through `RuntimeOverrideSet`.
 
 Any future override mechanism must follow
 [Runtime manual override policy](RUNTIME_OVERRIDE_POLICY.md). Overrides may only
@@ -58,8 +59,8 @@ constrain backend candidates that already passed capability diagnostics. They
 cannot create backend capability facts, change operation semantics, mutate
 HAC-IR, bypass validation, hide fallback behavior, or execute code.
 
-Override effects must be visible in compiler decision reports and deterministic
-runtime-plan dumps before they can become part of accepted prototype behavior.
+Override effects are visible in compiler decision reports and deterministic
+runtime-plan dumps through `manual_overrides` blocks.
 
 ## Security Invariants
 
@@ -76,8 +77,8 @@ Runtime plan objects are declarative data:
 - Same-domain transfer edges are rejected.
 - No plugin, backend, subprocess, import, or filesystem path is executed while
   constructing a plan or validating a transfer profile.
-- Manual overrides are policy-only today; any future implementation must stay
-  schema-versioned, bounded, fail closed, and execution-free.
+- Manual overrides are schema-versioned, bounded, operation-scoped, fail closed,
+  and execution-free.
 
 ## Current Limitations
 
@@ -95,5 +96,5 @@ This is still a prototype:
 
 1. Include buffer lifetime and reuse in runtime planning.
 2. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
-3. Add schema-versioned manual override data only after RFC 0042's review,
-   negative-test, decision-report, and runtime-plan golden gates are satisfied.
+3. Add richer override diagnostics only if they stay bounded and visible in
+   decision-report and runtime-plan golden fixtures.

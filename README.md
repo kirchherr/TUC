@@ -47,6 +47,8 @@ The current prototype contains:
 - Golden compiler decision-report fixtures for proof and MVP graph review.
 - Runtime manual override policy for future placement constraints before
   automatic global optimization.
+- Schema-versioned runtime manual overrides for operation-scoped placement
+  constraints across already accepted backend candidates.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and

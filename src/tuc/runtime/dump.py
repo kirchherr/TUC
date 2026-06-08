@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from tuc.runtime.overrides import RuntimeOverrideEffect
 from tuc.runtime.partitioning import Assignment, PartitionPlan
 from tuc.runtime.plan import LayoutConversionCost, RuntimeTransferEdge
 
@@ -25,6 +26,12 @@ def dump_partition_plan(plan: PartitionPlan) -> str:
         lines.append("  layout_conversions {")
         for conversion in plan.layout_conversions:
             lines.append(f"    {_format_layout_conversion(conversion)}")
+        lines.append("  }")
+
+    if plan.override_effects:
+        lines.append("  manual_overrides {")
+        for effect in plan.override_effects:
+            lines.append(f"    {_format_override_effect(effect)}")
         lines.append("  }")
 
     lines.append("  summary {")
@@ -85,6 +92,27 @@ def _format_layout_conversion(conversion: LayoutConversionCost) -> str:
         f" bytes={conversion.bytes_converted}"
         f' reason="{conversion.reason}"'
     )
+
+
+def _format_override_effect(effect: RuntimeOverrideEffect) -> str:
+    return (
+        f'{effect.operation_name} '
+        f'require_backend="{_format_optional_name(effect.required_backend)}"'
+        f' prefer_backend="{_format_optional_name(effect.preferred_backend)}"'
+        f' deny_backends="{_format_names(effect.denied_backends)}"'
+    )
+
+
+def _format_optional_name(value: str | None) -> str:
+    if value is None:
+        return "-"
+    return value
+
+
+def _format_names(names: tuple[str, ...]) -> str:
+    if not names:
+        return "-"
+    return ",".join(names)
 
 
 def _format_float(value: float) -> str:
