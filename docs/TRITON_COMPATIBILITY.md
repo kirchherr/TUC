@@ -18,7 +18,7 @@ compatibility on day one.
 | Feature | Level | Notes |
 | --- | --- | --- |
 | `@triton.jit` syntax | L0 | Preserved as a design goal; no Python source parser yet. |
-| Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake reports prove no source parsing or code execution. |
+| Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L2 | Lowered through TLIR -> HAC-IR -> HS-IR and covered by golden correctness fixtures. |
 | Elementwise | L2 | Lowered and assigned to fallback backend by default; ReLU reference fixture covers semantics. |

@@ -1,0 +1,17 @@
+hac-ir.module @triton_metadata_mlp {
+  metadata {
+    graph.dialect_version = "tlir.v0"
+    graph.frontend.adapter = "triton_metadata.v0"
+    graph.frontend.intake_contract = "triton_intake.execution_free.v0"
+    graph.frontend.schema_version = "triton_metadata.v0"
+    graph.frontend.source = "triton-like-metadata"
+    graph.lowered_from = "tlir"
+    graph.movement_model = "movement.v0"
+    graph.movement_summary = {arithmetic_intensity: 3.5833333333333335, movement_model: "movement.v0", operation_count: 2, total_arithmetic_ops: 66048, total_bytes_read: 14336, total_bytes_written: 4096}
+    graph.mvp_operation_count = 2
+    graph.source = "triton-like-python"
+    module.dialect_version = "hac-ir.v0"
+  }
+  %c = tuc.matmul @projection(%a: tensor<32x64xf32>, %b: tensor<64x16xf32>) -> (%c: tensor<32x16xf32>) {max_error_budget = 0.02, prefer_analog_linear = true, prefer_sparsity = false, robust_to_noise = false, tuc.arithmetic_intensity = 4.571428571428571, tuc.arithmetic_ops = 65536, tuc.bytes_read = 12288, tuc.bytes_written = 2048, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "analog_weight_bank", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
+  %y = tuc.elementwise @activation(%c: tensor<32x16xf32>) -> (%y: tensor<32x16xf32>) {prefer_analog_linear = false, prefer_sparsity = false, robust_to_noise = false, semantic = "gelu_approx", tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 512, tuc.bytes_read = 2048, tuc.bytes_written = 2048, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["exact_shape_elementwise"], tuc.preferred_memory_domain = "gpu_hbm", tuc.semantic_op = "elementwise", tuc.source_stage = "tlir"}
+}

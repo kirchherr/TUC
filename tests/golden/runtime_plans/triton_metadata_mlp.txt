@@ -1,0 +1,16 @@
+runtime.plan @triton_metadata_mlp {
+  assignments {
+    projection -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
+    activation -> gpu domain=gpu_hbm produced_layout=row_major transfer_bytes=2048 layout_conversion_bytes=0 reason="fallback:transfer_bytes=2048;layout_conversion_bytes=0;actual_transfer_bytes=2048;actual_layout_conversion_bytes=0"
+  }
+  transfers {
+    %c: projection/linear-sim/analog_weight_bank/row_major -> activation/gpu/gpu_hbm/row_major bytes=2048 bandwidth_gb_s=64 latency_ns=5032 energy_pj=40960
+  }
+  summary {
+    total_transfer_bytes = 2048
+    total_layout_conversion_bytes = 0
+    total_data_movement_bytes = 2048
+    estimated_transfer_latency_ns = 5032
+    estimated_transfer_energy_pj = 40960
+  }
+}
