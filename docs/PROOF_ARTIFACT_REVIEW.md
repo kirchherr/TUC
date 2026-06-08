@@ -73,7 +73,7 @@ and sandboxing plan before merge.
 Run the narrow proof checks first:
 
 ```bash
-python -m pytest tests/test_proof_metadata.py tests/test_proof_of_abstraction.py tests/test_proof_of_reduction.py tests/test_hac_ir_golden_dumps.py tests/test_runtime_plan_golden.py tests/test_compiler_decision_report_golden.py -q
+python -m pytest tests/test_proof_metadata.py tests/test_proof_of_abstraction.py tests/test_proof_of_reduction.py tests/test_proof_of_softmax.py tests/test_hac_ir_golden_dumps.py tests/test_runtime_plan_golden.py tests/test_compiler_decision_report_golden.py -q
 ```
 
 Then run the normal project checks:
@@ -84,6 +84,7 @@ python -m mypy src/tuc
 python -m pytest -q
 python examples/proof_of_abstraction.py
 python examples/proof_of_reduction.py
+python examples/proof_of_softmax.py
 ```
 
 ## Golden File Discipline

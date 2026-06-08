@@ -84,10 +84,13 @@ Required artifacts:
 
 - `examples/proof_of_abstraction.py`
 - `examples/proof_of_reduction.py`
+- `examples/proof_of_softmax.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
+- `tests/golden/proofs/proof_of_softmax.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
+- `docs/PROOF_OF_SOFTMAX.md`
 
 Completed evidence:
 
@@ -102,6 +105,9 @@ Completed evidence:
   correct independent NumPy reference result.
 - Golden HAC-IR and runtime-plan output validate the second proof independently
   from its full report.
+- Third proof graph covers `matmul -> softmax` with explicit axis validation,
+  correct independent NumPy reference semantics, explainable fallback, and
+  transfer-plan evidence.
 - Proof reports include deterministic metadata for proof version, graph family,
   and backend set.
 - Proof artifact changes have a reviewer-facing checklist and merge gate.
@@ -147,14 +153,15 @@ Completed evidence:
 - Deterministic HAC-IR golden dumps cover the Objective Alpha proof graph and
   the Phase 1 MVP graph.
 - Deterministic HAC-IR golden dumps cover the second reduction proof graph.
+- Deterministic HAC-IR golden dumps cover the third softmax proof graph.
 - Softmax operation-family planning documents stable reference semantics,
   HAC-IR boundaries, runtime decomposition gates, and proof requirements before
   softmax proof goldens are introduced.
 
 Next work:
 
-- Add HAC-IR golden dumps for future softmax proof graphs now that nonlinear
-  operation-family planning is documented.
+- Add future HAC-IR golden dumps only when new proof graph families add
+  contract value beyond abstraction, reduction, and softmax.
 
 Go/No-Go:
 
@@ -198,11 +205,13 @@ Completed evidence:
 - Golden compiler decision-report fixtures cover proof and MVP graphs.
 - Softmax operation-family planning defines what future softmax capability,
   runtime, and decision-report fixtures must prove.
+- Golden compiler decision-report fixtures cover the softmax proof graph's
+  explicit fallback and rejected backend support evidence.
 
 Next work:
 
-- Add future decision-report fixtures for softmax proof graphs now that
-  nonlinear operation-family planning is documented.
+- Add future decision-report fixtures only when new proof graph families or
+  capability claims introduce new backend-selection evidence.
 
 Go/No-Go:
 
@@ -241,13 +250,14 @@ Completed evidence:
   behavior.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
+- Runtime-plan goldens cover the softmax proof graph's fallback assignment and
+  cross-domain transfer bytes.
 
 Next work:
 
-- Add future decision-report fixtures for softmax proof graphs now that
-  nonlinear operation-family planning is documented.
 - Add candidate scoring once transfer/noise-aware models are stable.
-- Add runtime-plan golden dumps for future proof graphs.
+- Add runtime-plan golden dumps for future proof graphs only when they add new
+  placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
 - Add noise/error-budget score components only after those models are stable and
   documented.

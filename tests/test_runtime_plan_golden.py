@@ -7,6 +7,7 @@ import pytest
 
 from examples.proof_of_abstraction import run_proof
 from examples.proof_of_reduction import run_proof as run_reduction_proof
+from examples.proof_of_softmax import run_proof as run_softmax_proof
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
@@ -38,6 +39,10 @@ _GOLDEN_DIR = Path(__file__).parent / "golden" / "runtime_plans"
         (
             "proof_of_reduction.txt",
             lambda: run_reduction_proof().compiled.partition_plan,
+        ),
+        (
+            "proof_of_softmax.txt",
+            lambda: run_softmax_proof().compiled.partition_plan,
         ),
     ),
 )

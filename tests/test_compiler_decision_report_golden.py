@@ -8,6 +8,7 @@ import pytest
 from examples.phase1_ir_pipeline import build_graph as build_phase1_graph
 from examples.proof_of_abstraction import run_proof as run_abstraction_proof
 from examples.proof_of_reduction import run_proof as run_reduction_proof
+from examples.proof_of_softmax import run_proof as run_softmax_proof
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability
 from tuc.compiler import compile_graph
@@ -28,6 +29,10 @@ _GOLDEN_DIR = Path(__file__).parent / "golden" / "compiler_decisions"
         (
             "proof_of_reduction.txt",
             lambda: run_reduction_proof().compiled.dump_decision_report(),
+        ),
+        (
+            "proof_of_softmax.txt",
+            lambda: run_softmax_proof().compiled.dump_decision_report(),
         ),
         (
             "phase1_mlp_block.txt",

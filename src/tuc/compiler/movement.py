@@ -187,6 +187,11 @@ def _estimate_softmax(
         raise ValueError("softmax movement estimate expects one input and one output")
     if operation.inputs[0].shape != operation.outputs[0].shape:
         raise ValueError("softmax input and output shapes must match")
+    _require_axis_attribute(
+        operation.attributes.get("axis"),
+        rank=len(operation.inputs[0].shape),
+        operation_name=operation.name,
+    )
 
     elements = _tensor_elements(operation.outputs[0])
     bytes_read = _tensor_nbytes(operation.inputs[0])
@@ -300,6 +305,15 @@ def _require_attribute_int(operation: ComputeOperation, key: str) -> int:
     if not isinstance(value, int) or isinstance(value, bool) or value < 0:
         raise ValueError(f"operation {operation.name!r} is missing valid {key}")
     return value
+
+
+def _require_axis_attribute(value: object, *, rank: int, operation_name: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise TypeError(f"operation {operation_name!r} softmax axis must be an integer")
+    normalized = value + rank if value < 0 else value
+    if normalized < 0 or normalized >= rank:
+        raise ValueError(f"operation {operation_name!r} softmax axis is out of bounds")
+    return normalized
 
 
 __all__ = [
