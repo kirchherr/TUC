@@ -113,6 +113,8 @@ Current slice:
   compiler decision-report goldens, and runtime-plan goldens.
 - Opt-in runtime candidate score diagnostics with runtime-plan and compiler
   decision-report goldens.
+- Softmax operation-family planning contract for future nonlinear proof graphs,
+  softmax HAC-IR goldens, runtime-plan goldens, and decision-report goldens.
 
 ### Phase Beta: HAC-IR Contract
 
@@ -127,6 +129,8 @@ Current focus:
   attributes.
 - Use the reviewer-facing HAC-IR neutrality checklist for every attribute
   change.
+- Use [Softmax operation-family planning](SOFTMAX_OPERATION_PLANNING.md) before
+  accepting softmax proof graph fixtures or softmax-specific HAC-IR changes.
 
 ### Phase Gamma: Capability Framework
 
@@ -162,11 +166,15 @@ Current focus:
   and separate from HAC-IR semantics.
 - Use `CandidateScore` diagnostics as the review surface before adding richer
   transfer/noise-aware candidate scoring.
+- Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
+  semantics.
 
 ## Next
 
 - Real Triton integration as a credibility milestone after the abstraction proof
   remains stable.
+- Softmax proof graph fixtures now that the nonlinear operation-family planning
+  contract is documented.
 - Candidate scoring only after transfer/noise-aware models are stable and its
   decisions can be explained next to manual override effects.
 - Noise/error-budget score components only after those models are documented

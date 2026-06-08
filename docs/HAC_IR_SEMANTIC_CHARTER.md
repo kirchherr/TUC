@@ -20,6 +20,8 @@ HAC-IR may express:
 - Operation linearity when it follows from the operation family.
 - Semantic operation identity through `tuc.semantic_op`.
 - User intent such as accepted error budget when validated and bounded.
+- Softmax intent as a nonlinear operation family; decomposition into reduction
+  and elementwise pieces is not HAC-IR semantics.
 
 Compute intent must remain independent of backend assignment. A backend may be
 better or worse for an operation, but it must not redefine what the operation
@@ -99,6 +101,7 @@ or future sandboxed artifact/calibration schemas.
 | What transfer profile estimates movement cost? | no | Transfer-cost profile |
 | What generated artifact should execute? | no | Future sandboxed artifact contract |
 | What calibration file proves device behavior? | no | Future calibration-artifact schema |
+| How should softmax be decomposed for one backend? | no | Runtime plan, HS-IR, backend contract, or proof artifact |
 
 ## Review Rules
 

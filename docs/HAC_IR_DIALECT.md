@@ -40,6 +40,12 @@ The contract is derived from the MVP kernels rather than from a universal
 hardware abstraction. New operation families should be added through RFCs and
 tests.
 
+Softmax is additionally governed by
+[`SOFTMAX_OPERATION_PLANNING.md`](SOFTMAX_OPERATION_PLANNING.md). HAC-IR
+preserves softmax intent; decomposition, approximation, placement, and backend
+implementation choices belong to runtime planning, HS-IR, backend contracts, or
+proof artifacts.
+
 ## Required Compiler Attributes
 
 Every HAC-IR v0 operation must carry these compiler-produced attributes:

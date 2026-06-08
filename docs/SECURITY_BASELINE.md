@@ -111,6 +111,11 @@ Implemented now:
   dynamic libraries, access devices, execute generated artifacts, touch the
   network, read host paths, read environment variables, change HAC-IR, or alter
   default placement behavior.
+- Softmax operation-family planning defines the nonlinear proof gate before
+  softmax proof graphs, decomposition paths, or softmax-specific scoring can be
+  accepted. The contract keeps decomposition, approximation, backend support,
+  noise assumptions, calibration evidence, and generated artifacts outside
+  HAC-IR semantics.
 - Backend author certification requires negative tests for plugin-like manifest
   fields, duplicate keys, unsupported schemas, false capability claims,
   unsupported layouts, and lower-time operation rejection.
