@@ -44,6 +44,7 @@ The current prototype contains:
 - Capability-schema negative examples for invalid or misleading backend claims.
 - Compiler decision reports connecting backend support diagnostics to runtime
   assignments.
+- Golden compiler decision-report fixtures for proof and MVP graph review.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and

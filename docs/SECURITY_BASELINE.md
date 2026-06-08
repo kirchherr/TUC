@@ -89,6 +89,9 @@ Implemented now:
   diagnostics, and runtime plans without plugin discovery, imports,
   subprocesses, dynamic libraries, device access, network access, or generated
   artifact execution.
+- Golden compiler decision-report fixtures verify backend support evidence and
+  fallback reasoning from fixed in-repository graphs and trusted in-memory
+  capability data without adding generator execution.
 - Backend author certification requires negative tests for plugin-like manifest
   fields, duplicate keys, unsupported schemas, false capability claims,
   unsupported layouts, and lower-time operation rejection.

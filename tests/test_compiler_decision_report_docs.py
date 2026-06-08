@@ -13,6 +13,7 @@ def test_compiler_decision_report_docs_cover_inspectability_contract() -> None:
         "fallback",
         "runtime partition plan",
         "BackendRegistry.diagnose_operation_support",
+        "tests/golden/compiler_decisions/",
     ):
         assert required in text
 

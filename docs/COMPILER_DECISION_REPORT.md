@@ -87,3 +87,17 @@ If a backend is rejected, the report should show a short reason code such as
 
 If an operation falls back, reviewers should be able to see which registered
 backends rejected it and why.
+
+## Golden Fixtures
+
+Representative decision reports are locked as plain-text fixtures under:
+
+```text
+tests/golden/compiler_decisions/
+```
+
+`tests/test_compiler_decision_report_golden.py` compares proof and MVP graph
+reports against those fixtures. Fixture changes are compiler-contract changes:
+reviewers should inspect accepted backend candidates, rejected backend
+candidates, fallback reasons, and assignment reasons rather than treating the
+files as generated noise.
