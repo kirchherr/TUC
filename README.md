@@ -42,6 +42,8 @@ The current prototype contains:
 - Backend capability schema guidance for error budgets, latency, energy,
   calibration, and noise assumptions.
 - Capability-schema negative examples for invalid or misleading backend claims.
+- Compiler decision reports connecting backend support diagnostics to runtime
+  assignments.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and
@@ -213,6 +215,7 @@ pytest -q
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)
 - [Backend capability registry](docs/BACKEND_REGISTRY.md)
+- [Compiler decision report](docs/COMPILER_DECISION_REPORT.md)
 - [Backend author certification](docs/BACKEND_AUTHOR_CERTIFICATION.md)
 - [Backend conformance fixtures](docs/BACKEND_CONFORMANCE.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)

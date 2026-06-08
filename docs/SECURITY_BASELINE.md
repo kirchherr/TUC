@@ -84,6 +84,11 @@ Implemented now:
   trusted in-memory capabilities, with bounded backend count, unique safe names,
   directory non-scanning, pure-data support diagnostics, and no backend object
   execution.
+- Compiler decision reports derive accepted and rejected backend candidate
+  evidence from validated HAC-IR operations, explicit capability data, registry
+  diagnostics, and runtime plans without plugin discovery, imports,
+  subprocesses, dynamic libraries, device access, network access, or generated
+  artifact execution.
 - Backend author certification requires negative tests for plugin-like manifest
   fields, duplicate keys, unsupported schemas, false capability claims,
   unsupported layouts, and lower-time operation rejection.

@@ -44,6 +44,10 @@ Fixture updates are intentional compiler-contract changes. They should stay
 small, readable, and tied to typed in-memory graph construction rather than
 external generators.
 
+Compiler decision reports complement runtime-plan dumps by showing which
+registered backend capabilities accepted or rejected each operation before the
+runtime assignment was finalized.
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:

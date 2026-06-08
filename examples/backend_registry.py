@@ -41,6 +41,7 @@ def main() -> None:
             f"{diagnostic.backend_name}:{diagnostic.operation_name} "
             f"{diagnostic.reason}"
         )
+    print(result.dump_decision_report())
     print(result.dump_runtime_plan())
 
 

@@ -6,6 +6,10 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 
 from tuc.backends.base import BackendCapability
+from tuc.compiler.decisions import (
+    CompilerDecisionReport,
+    build_compiler_decision_report,
+)
 from tuc.compiler.lowering import lower_hac_to_hs, lower_tlir_to_hac
 from tuc.ir.dump import dump_module
 from tuc.ir.model import ComputeGraph
@@ -21,6 +25,7 @@ class CompilationResult:
     hac_ir: IRModule
     hs_ir: IRModule
     partition_plan: PartitionPlan
+    decision_report: CompilerDecisionReport
     diagnostics: tuple[str, ...]
 
     def dump(self, stage: IRStage) -> str:
@@ -43,6 +48,11 @@ class CompilationResult:
         """Return a deterministic runtime partition and transfer-plan dump."""
 
         return dump_partition_plan(self.partition_plan)
+
+    def dump_decision_report(self) -> str:
+        """Return deterministic compiler decision evidence."""
+
+        return self.decision_report.dump()
 
 
 class CompilerPipeline:
@@ -71,6 +81,11 @@ class CompilerPipeline:
             fallback_backend=self._fallback_backend,
             transfer_cost_profile=self._transfer_cost_profile,
         )
+        decision_report = build_compiler_decision_report(
+            graph=hac_ir.graph,
+            partition_plan=partition_plan,
+            backend_capabilities=self._backend_capabilities,
+        )
         hs_ir = lower_hac_to_hs(hac_ir, partition_plan)
 
         diagnostics = tuple(
@@ -82,6 +97,7 @@ class CompilerPipeline:
             hac_ir=hac_ir,
             hs_ir=hs_ir,
             partition_plan=partition_plan,
+            decision_report=decision_report,
             diagnostics=diagnostics,
         )
 

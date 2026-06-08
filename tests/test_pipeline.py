@@ -61,6 +61,8 @@ def test_pipeline_lowers_through_all_three_ir_stages() -> None:
         "transfer_edge_count": 1,
     }
     assert "runtime.plan @mlp" in result.dump_runtime_plan()
+    assert "compiler.decision_report @mlp" in result.dump_decision_report()
+    assert result.decision_report.operation_reports[0].assigned_backend == "linear-sim"
     assert any(
         diagnostic.startswith("projection->linear-sim:preferred_for:matmul")
         for diagnostic in result.diagnostics

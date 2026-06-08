@@ -94,6 +94,8 @@ Current slice:
   data without plugin discovery or backend code execution.
 - Pure-data backend support diagnostics that explain accepted and rejected
   operation/backend matches before partitioning.
+- Compiler-level decision reports that connect backend support diagnostics to
+  final runtime assignments.
 - Masterplan-aligned roadmap organized around proof phases instead of a
   compiler-centric implementation timeline.
 - Proof-of-abstraction runtime plan is golden-tested independently from the
@@ -128,6 +130,8 @@ Current focus:
 - Use the external-style backend author path as the reference for toy backend
   proposals.
 - Store backend conformance evidence as deterministic review artifacts.
+- Use compiler decision reports to inspect accepted and rejected backend
+  candidates next to final assignments.
 - Keep capability-schema assumptions documented separately from HAC-IR and
   executable backend behavior.
 - Keep invalid or misleading capability claims covered by examples and negative
@@ -139,8 +143,8 @@ Current focus:
 
 - Keep operation placement explainable.
 - Golden-test proof runtime plans independently from full proof reports.
-- Connect backend support diagnostics to compiler-level decision reports once
-  that branch lands.
+- Use compiler decision reports as the bridge between support diagnostics and
+  runtime placement.
 
 ## Next
 
