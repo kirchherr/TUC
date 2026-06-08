@@ -56,6 +56,8 @@ Implemented now:
 - HAC-IR v0 dialect contracts for operation arity, compiler-produced
   attributes, known user hints, and fail-closed rejection of unknown reserved
   `tuc.*` attributes.
+- HAC-IR semantic charter separates compute intent, compiler facts, planning
+  constraints, and forbidden backend details before future native IR work.
 - HAC-IR neutrality guardrails and negative tests for known high-risk hardware,
   backend, device, plugin, and generated-artifact leakage attributes.
 - HS-IR v0 contracts for backend assignments, produced layouts,

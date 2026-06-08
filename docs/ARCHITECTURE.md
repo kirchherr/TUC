@@ -77,6 +77,11 @@ fail-closed handling for unknown reserved `tuc.*` attributes. The compiler
 validates HAC-IR immediately after TLIR lowering and again before HAC-IR is
 specialized into HS-IR.
 
+The HAC-IR semantic charter in `docs/HAC_IR_SEMANTIC_CHARTER.md` separates
+compute intent, compiler facts, planning constraints, and forbidden backend
+details. It is the architectural reason HAC-IR can serve as the
+hardware-independent interface instead of becoming another backend-specific IR.
+
 The HAC-IR neutrality checklist in `docs/HAC_IR_NEUTRALITY.md` defines what may
 enter the hardware-independent layer and what must stay in capabilities, HS-IR,
 runtime planning, backend lowering, or future sandboxed artifact handling. The

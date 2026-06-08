@@ -58,6 +58,8 @@ The current prototype contains:
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Native-MLIR-oriented HAC-IR design spike.
 - HAC-IR v0 dialect contracts for operations and compiler attributes.
+- HAC-IR semantic charter for compute intent, compiler facts, planning
+  constraints, and forbidden backend details.
 - HAC-IR neutrality guardrails against backend, vendor, device, plugin, and
   artifact leakage.
 - HS-IR v0 contracts for backend assignments, produced layouts, and transfer summaries.
@@ -204,6 +206,7 @@ pytest -q
 - [Backend conformance fixtures](docs/BACKEND_CONFORMANCE.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)
 - [HAC-IR dialect contract](docs/HAC_IR_DIALECT.md)
+- [HAC-IR semantic charter](docs/HAC_IR_SEMANTIC_CHARTER.md)
 - [HAC-IR neutrality checklist](docs/HAC_IR_NEUTRALITY.md)
 - [HS-IR dialect contract](docs/HS_IR_DIALECT.md)
 - [Data movement aware IR](docs/DATA_MOVEMENT_IR.md)
