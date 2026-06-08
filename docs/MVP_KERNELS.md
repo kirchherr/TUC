@@ -10,7 +10,7 @@ and runtime boundaries before performance work begins.
 | MatMul | Core operation for attention, MLPs, and linear projections. | Represent in TLIR, normalize into HAC-IR, assign to simulator or GPU fallback. |
 | Elementwise | Activations, scaling, bias, masking, and simple nonlinear work. | Represent and keep on fallback backend unless a backend explicitly supports it. |
 | Reduction | Sums, norms, statistics, and softmax components. | Represent as linear-friendly HAC-IR where possible. |
-| Softmax-like | Common transformer workload and useful partitioning boundary. | Model as an operation family; detailed decomposition is future work. |
+| Softmax-like | Common transformer workload and useful partitioning boundary. | Model as an operation family; detailed decomposition is gated by [Softmax operation-family planning](SOFTMAX_OPERATION_PLANNING.md). |
 
 ## Phase 1 Success Criteria
 
@@ -26,7 +26,8 @@ and runtime boundaries before performance work begins.
 - Vendor-level performance.
 - Full Triton AST capture.
 - Real CUDA/HIP lowering.
-- Full decomposition of softmax into reductions and elementwise operations.
+- Full decomposition of softmax into reductions and elementwise operations
+  before the softmax planning proof gate is satisfied.
 
 ## Next Kernel Work
 

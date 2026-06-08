@@ -59,6 +59,11 @@ Supported estimator coverage:
 - `reduction`: output element count must not exceed input element count.
 - `softmax`: exact input/output shape, approximate arithmetic count.
 
+Softmax movement estimates are planning evidence only. The operation-family
+contract in [`SOFTMAX_OPERATION_PLANNING.md`](SOFTMAX_OPERATION_PLANNING.md)
+defines the proof gate before accepting softmax proof graphs, runtime
+decomposition, or softmax-specific candidate score components.
+
 ## Security Rules
 
 Movement metadata is declarative data, not executable behavior.

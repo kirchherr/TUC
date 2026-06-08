@@ -147,10 +147,13 @@ Completed evidence:
 - Deterministic HAC-IR golden dumps cover the Objective Alpha proof graph and
   the Phase 1 MVP graph.
 - Deterministic HAC-IR golden dumps cover the second reduction proof graph.
+- Softmax operation-family planning documents stable reference semantics,
+  HAC-IR boundaries, runtime decomposition gates, and proof requirements before
+  softmax proof goldens are introduced.
 
 Next work:
 
-- Add HAC-IR golden dumps for future softmax proof graphs once nonlinear
+- Add HAC-IR golden dumps for future softmax proof graphs now that nonlinear
   operation-family planning is documented.
 
 Go/No-Go:
@@ -193,11 +196,13 @@ Completed evidence:
 - Compiler decision reports connect backend support diagnostics to final
   runtime assignments.
 - Golden compiler decision-report fixtures cover proof and MVP graphs.
+- Softmax operation-family planning defines what future softmax capability,
+  runtime, and decision-report fixtures must prove.
 
 Next work:
 
-- Add future decision-report fixtures for softmax proof graphs once nonlinear
-  operation-family planning is documented.
+- Add future decision-report fixtures for softmax proof graphs now that
+  nonlinear operation-family planning is documented.
 
 Go/No-Go:
 
@@ -234,11 +239,13 @@ Completed evidence:
 - Opt-in `CandidateScore` diagnostics expose deterministic transfer, layout,
   and preferred-domain score components without changing default placement
   behavior.
+- Softmax operation-family planning defines the review gate for future
+  nonlinear proof graphs and softmax-specific score components.
 
 Next work:
 
-- Add future decision-report fixtures for softmax proof graphs once nonlinear
-  operation-family planning is documented.
+- Add future decision-report fixtures for softmax proof graphs now that
+  nonlinear operation-family planning is documented.
 - Add candidate scoring once transfer/noise-aware models are stable.
 - Add runtime-plan golden dumps for future proof graphs.
 - Add richer override diagnostics only if they stay bounded and golden-tested.

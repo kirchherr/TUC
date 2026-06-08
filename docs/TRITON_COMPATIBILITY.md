@@ -23,7 +23,7 @@ compatibility on day one.
 | MatMul | L2 | Lowered through TLIR -> HAC-IR -> HS-IR and covered by golden correctness fixtures. |
 | Elementwise | L2 | Lowered and assigned to fallback backend by default; ReLU reference fixture covers semantics. |
 | Reduction | L2 | Represented, supported by the linear simulator backend, and covered by a sum-reduction fixture. |
-| Softmax-like operation | L2 | Represented as an operation family and covered by a softmax reference fixture; decomposition is future work. |
+| Softmax-like operation | L2 | Represented as an operation family and covered by a softmax reference fixture; decomposition is gated by the softmax operation-family planning contract. |
 | GPU backend | L0 | Represented as fallback backend name only. |
 | Photonic backend | L0 | Captured as roadmap target; simulator work comes later. |
 | Neuromorphic backend | L0 | Captured as roadmap target; simulator work comes later. |

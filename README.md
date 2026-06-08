@@ -50,6 +50,7 @@ The current prototype contains:
 - Schema-versioned runtime manual overrides for operation-scoped placement
   constraints across already accepted backend candidates.
 - Opt-in runtime candidate score diagnostics for reviewable placement evidence.
+- Softmax operation-family planning contract for future nonlinear proof graphs.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and
@@ -214,6 +215,7 @@ pytest -q
 - [Proof of reduction](docs/PROOF_OF_REDUCTION.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
+- [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
