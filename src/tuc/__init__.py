@@ -30,6 +30,11 @@ from tuc.manifests import (
     load_backend_capability_manifest,
     load_transfer_cost_profile_manifest,
 )
+from tuc.proof import (
+    PROOF_REPORT_SCHEMA_VERSION,
+    ProofReportMetadata,
+    proof_metadata_from_partition_plan,
+)
 
 __all__ = [
     "BackendRegistration",
@@ -50,6 +55,8 @@ __all__ = [
     "MemoryDomainKind",
     "MovementEstimate",
     "OperationKind",
+    "PROOF_REPORT_SCHEMA_VERSION",
+    "ProofReportMetadata",
     "TensorRef",
     "TritonKernelMetadata",
     "TritonOperationMetadata",
@@ -59,5 +66,6 @@ __all__ = [
     "dtype_size_bytes",
     "load_backend_capability_manifest",
     "load_transfer_cost_profile_manifest",
+    "proof_metadata_from_partition_plan",
     "triton_metadata_to_compute_graph",
 ]

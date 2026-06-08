@@ -102,10 +102,11 @@ Completed evidence:
   correct independent NumPy reference result.
 - Golden HAC-IR and runtime-plan output validate the second proof independently
   from its full report.
+- Proof reports include deterministic metadata for proof version, graph family,
+  and backend set.
 
 Next work:
 
-- Add proof report metadata for proof version, graph family, and backend set.
 - Add a reviewer-facing checklist for changing proof artifacts.
 
 Go/No-Go:

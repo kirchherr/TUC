@@ -52,6 +52,7 @@ The current prototype contains:
   environment.
 - CODEOWNERS-backed review policy for compiler, runtime, backend, governance,
   and release trust boundaries.
+- Proof-report metadata for proof version, graph family, and backend set.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
 - HAC-IR golden dump fixtures for proof and MVP graph contract review.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.

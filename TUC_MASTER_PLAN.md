@@ -250,6 +250,7 @@ examples/proof_of_abstraction.py
 
 Output:
 
+- Proof metadata
 - Input graph
 - HAC-IR
 - Backend assignments
