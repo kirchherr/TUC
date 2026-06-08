@@ -24,6 +24,10 @@ The v0.1 surface is:
 - Explicit backend capability registry.
 - HAC-IR and HS-IR dialect contracts.
 
+Capability schema assumptions for error budgets, latency, energy, calibration,
+and noise modeling are documented in
+[Backend Capability Schema](BACKEND_CAPABILITY_SCHEMA.md).
+
 The code lives in:
 
 - `tuc.backends.base`
@@ -102,6 +106,12 @@ Valid operation families currently are:
 
 Valid memory domains and layouts are defined by `MemoryDomainKind` and
 `LayoutKind` in `tuc.ir.memory`.
+
+`max_error_budget`, `supports_noise_model`, and `supports_calibration` are
+capability claims and planning assumptions. They are not correctness proofs,
+hardware certificates, or permission to hide backend-specific behavior inside
+HAC-IR. Transfer latency and energy assumptions belong to transfer-cost
+profiles, not backend capability manifests.
 
 ## Layout Contract
 
@@ -245,6 +255,8 @@ Before proposing a backend:
 - Document supported operations and numeric semantics.
 - Document accepted and produced layouts.
 - Document memory domain and transfer assumptions.
+- Document error-budget, latency, energy, noise-model, and calibration
+  assumptions using [Backend Capability Schema](BACKEND_CAPABILITY_SCHEMA.md).
 - Provide a capability manifest and negative tests.
 - Show deterministic diagnostics for rejected operations.
 - Do not add plugin discovery, imports, subprocesses, dynamic loading, device

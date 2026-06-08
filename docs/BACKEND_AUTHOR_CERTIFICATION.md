@@ -26,6 +26,8 @@ Every backend proposal must include:
 - Accepted layouts and produced layouts.
 - Memory domain and transfer assumptions.
 - Error-budget behavior.
+- Latency, energy, calibration, and noise-model assumptions, documented using
+  [Backend Capability Schema](BACKEND_CAPABILITY_SCHEMA.md).
 - Deterministic diagnostics for rejected operations.
 - Negative tests for malformed manifests and unsupported operations.
 - A statement that capability checks are pure data checks.

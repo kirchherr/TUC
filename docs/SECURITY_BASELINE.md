@@ -79,6 +79,9 @@ Implemented now:
 - Deterministic backend conformance report artifacts with schema versioning and
   report field-size limits; report dumping is pure data serialization and does
   not include backend artifact contents.
+- Backend capability schema documentation separates error-budget, latency,
+  energy, calibration, and noise assumptions from HAC-IR semantics, backend
+  executable behavior, and hardware certification claims.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.
