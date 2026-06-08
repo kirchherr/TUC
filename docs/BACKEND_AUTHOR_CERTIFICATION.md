@@ -111,6 +111,13 @@ The reusable fixtures are documented in
 declared capability data and lower-time behavior agree for MVP operation
 fixtures.
 
+Authors can use the external-style path in
+`examples/external_backend_author_path.py` as the reference shape for a toy
+backend proposal. The corresponding test,
+`tests/test_external_backend_author_path.py`, proves that manifest loading,
+registry diagnostics, compiler planning, conformance, and trusted lowering can
+work without modifying TUC core or adding plugin discovery.
+
 ## Review Outcome
 
 Maintainers should block a backend proposal when:

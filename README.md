@@ -35,6 +35,8 @@ The current prototype contains:
 - Backend API v0.1 authoring guide for external prototype backends.
 - Explicit backend capability registry for manifest-loaded planning data.
 - Backend author certification checklist and negative-test template.
+- External-style backend author path for manifest, registry, compiler,
+  conformance, and trusted lowering.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and
@@ -134,6 +136,12 @@ Run the explicit backend registry example:
 
 ```bash
 python examples/backend_registry.py
+```
+
+Run the external-style backend author path:
+
+```bash
+python examples/external_backend_author_path.py
 ```
 
 Run the baseline benchmark harness:

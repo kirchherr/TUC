@@ -49,6 +49,18 @@ The reference tests live in:
 tests/test_backend_conformance.py
 ```
 
+An external-style backend author path also lives in:
+
+```text
+examples/external_backend_author_path.py
+tests/test_external_backend_author_path.py
+```
+
+It loads a schema-versioned capability manifest through the explicit registry,
+compiles a graph using only that capability data, runs the reusable conformance
+fixtures, and lowers only the compiler-assigned HAC-IR subgraph with a trusted
+in-process prototype backend.
+
 ## Fixture Scope
 
 The fixture graphs are intentionally tiny:
@@ -78,6 +90,10 @@ Backend conformance does not:
 
 The only backend method called by the fixtures is `lower(graph)` on a trusted
 object that the test constructed directly.
+
+The external author path follows the same rule: manifest and registry steps are
+pure data; backend lowering starts only after the test explicitly constructs
+the trusted backend object.
 
 ## Relation To Certification
 

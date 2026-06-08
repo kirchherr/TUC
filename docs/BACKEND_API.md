@@ -171,6 +171,21 @@ class MinimalLinearBackend:
 
 The runnable reference is `examples/backend_api_v0.py`.
 
+The external-style author path is:
+
+```text
+examples/external_backend_author_path.py
+```
+
+It demonstrates the intended review flow for a toy backend author:
+
+1. Provide a schema-versioned manifest.
+2. Load it through `BackendRegistry.from_manifest_paths(...)`.
+3. Compile a graph using capability data only.
+4. Run `assert_backend_conformance(...)`.
+5. Lower only the HAC-IR subgraph assigned to the explicitly constructed
+   trusted backend object.
+
 ## Transfer-Cost Profiles
 
 Backends or experiments may also provide transfer-cost profile manifests:
@@ -241,6 +256,9 @@ copy the executable negative-test template from
 Prototype backends should also run the reusable
 [Backend Conformance Fixtures](BACKEND_CONFORMANCE.md) through
 `assert_backend_conformance`.
+
+The executable test for the full author path is
+`tests/test_external_backend_author_path.py`.
 
 ## Current Limitations
 

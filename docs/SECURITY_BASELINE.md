@@ -73,6 +73,9 @@ Implemented now:
 - Backend conformance fixtures check trusted in-process backends without plugin
   discovery, imports, subprocesses, dynamic libraries, device access, file I/O,
   or artifact execution.
+- External-style backend author path proves manifest loading, registry
+  diagnostics, compiler planning, conformance, and trusted lowering without
+  backend auto-discovery or compile-time plugin execution.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.
