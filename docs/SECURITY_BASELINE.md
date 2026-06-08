@@ -63,6 +63,9 @@ Implemented now:
 - HAC-IR golden dump fixtures for proof and MVP graphs, generated from fixed
   typed graph builders without plugin discovery, subprocesses, device access,
   network access, or generated-artifact execution.
+- Second Objective Alpha proof graph covers reduction intent with bounded
+  in-repository tensors, trusted in-memory capability data, deterministic
+  reference kernels, and golden proof/runtime artifacts.
 - HS-IR v0 contracts for backend assignments, produced layouts,
   movement-summary metadata, and runtime-transfer-summary consistency.
 - Backend API v0.1 explicitly limits external backend onboarding to

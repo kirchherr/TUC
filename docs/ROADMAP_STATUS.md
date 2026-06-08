@@ -27,6 +27,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
 - Golden runtime-plan dump for proof-of-abstraction placement and transfer
   reasoning.
+- Proof-of-reduction example for Objective Alpha's second graph family.
+- Golden proof, HAC-IR, and runtime-plan dumps for proof-of-reduction
+  validation.
 
 ## In Progress
 
@@ -94,6 +97,8 @@ Current slice:
   full proof report.
 - HAC-IR neutrality checklist and executable hardware-leakage guard.
 - HAC-IR golden dump fixtures for proof and MVP graphs.
+- Second Objective Alpha proof graph with `matmul -> reduction -> elementwise`
+  correctness validation.
 
 ### Phase Beta: HAC-IR Contract
 
@@ -128,7 +133,7 @@ Current focus:
 Current focus:
 
 - Keep operation placement explainable.
-- Golden-test proof-of-abstraction runtime plans.
+- Golden-test proof runtime plans independently from full proof reports.
 - Connect backend support diagnostics to compiler-level decision reports once
   that branch lands.
 

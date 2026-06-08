@@ -83,8 +83,11 @@ Correct Result
 Required artifacts:
 
 - `examples/proof_of_abstraction.py`
+- `examples/proof_of_reduction.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
+- `tests/golden/proofs/proof_of_reduction.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
+- `docs/PROOF_OF_REDUCTION.md`
 
 Completed evidence:
 
@@ -95,10 +98,13 @@ Completed evidence:
 - Result matches independent NumPy reference semantics.
 - Golden proof output validates full stdout.
 - Golden runtime-plan output validates placement and transfer reasoning.
+- Second proof graph covers `matmul -> reduction -> elementwise` with a
+  correct independent NumPy reference result.
+- Golden HAC-IR and runtime-plan output validate the second proof independently
+  from its full report.
 
 Next work:
 
-- Add a second proof graph using reduction or softmax.
 - Add proof report metadata for proof version, graph family, and backend set.
 - Add a reviewer-facing checklist for changing proof artifacts.
 
@@ -137,11 +143,12 @@ Completed evidence:
   before backend assignment or lowering can treat them as valid facts.
 - Deterministic HAC-IR golden dumps cover the Objective Alpha proof graph and
   the Phase 1 MVP graph.
+- Deterministic HAC-IR golden dumps cover the second reduction proof graph.
 
 Next work:
 
-- Add HAC-IR golden dumps for the second proof graph once reduction or softmax
-  is added.
+- Add HAC-IR golden dumps for future softmax proof graphs once nonlinear
+  operation-family planning is documented.
 
 Go/No-Go:
 
@@ -212,7 +219,7 @@ Next work:
 
 - Connect backend support diagnostics into compiler-level decision reports.
 - Add candidate scoring once transfer/noise-aware models are stable.
-- Add runtime-plan golden dumps for the next proof graphs.
+- Add runtime-plan golden dumps for future proof graphs.
 - Add explicit manual override policy before adding automatic global
   optimization.
 

@@ -1,0 +1,17 @@
+runtime.plan @proof_of_reduction {
+  assignments {
+    linear_projection -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
+    row_reduction -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="supported:reduction;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
+    digital_activation -> gpu domain=gpu_hbm produced_layout=row_major transfer_bytes=8 layout_conversion_bytes=0 reason="fallback:transfer_bytes=8;layout_conversion_bytes=0;actual_transfer_bytes=8;actual_layout_conversion_bytes=0"
+  }
+  transfers {
+    %row_sums: row_reduction/linear-sim/analog_weight_bank/row_major -> digital_activation/gpu/gpu_hbm/row_major bytes=8 bandwidth_gb_s=64 latency_ns=5000.125 energy_pj=160
+  }
+  summary {
+    total_transfer_bytes = 8
+    total_layout_conversion_bytes = 0
+    total_data_movement_bytes = 8
+    estimated_transfer_latency_ns = 5000.125
+    estimated_transfer_energy_pj = 160
+  }
+}

@@ -106,8 +106,8 @@ Representative HAC-IR dumps are locked as plain-text fixtures under:
 tests/golden/hac_ir/
 ```
 
-`tests/test_hac_ir_golden_dumps.py` compares the Objective Alpha proof graph
-and the Phase 1 MVP graph against those fixtures. Fixture changes are
+`tests/test_hac_ir_golden_dumps.py` compares Objective Alpha proof graphs and
+the Phase 1 MVP graph against those fixtures. Fixture changes are
 compiler-contract changes and must be reviewed through the semantic charter and
 neutrality checklist.
 
