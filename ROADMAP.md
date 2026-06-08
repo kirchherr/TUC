@@ -172,11 +172,14 @@ Completed evidence:
   lowering without modifying TUC core.
 - Backend conformance reports can be emitted as deterministic JSON artifacts
   for maintainer review.
+- Backend capability schema assumptions for error budgets, latency, energy,
+  calibration, and noise modeling are documented separately from HAC-IR and
+  executable backend behavior.
 
 Next work:
 
-- Add capability schema documentation for error, latency, energy, and
-  calibration assumptions.
+- Add capability-schema negative examples for invalid or misleading backend
+  claims.
 
 Go/No-Go:
 

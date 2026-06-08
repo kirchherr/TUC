@@ -70,6 +70,8 @@ Current slice:
   diagnostics, compiler planning, conformance, and trusted lowering.
 - Deterministic backend conformance report artifacts for reviewable backend
   author evidence.
+- Backend capability schema guidance for error-budget, latency, energy,
+  calibration, and noise assumptions.
 - Branch protection policy for `main` and expanded required CI smoke surface.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, wheel import
   check, and GitHub provenance/SBOM attestations.
@@ -110,6 +112,8 @@ Current focus:
 - Use the external-style backend author path as the reference for toy backend
   proposals.
 - Store backend conformance evidence as deterministic review artifacts.
+- Keep capability-schema assumptions documented separately from HAC-IR and
+  executable backend behavior.
 
 ### Phase Delta: Runtime Planning
 
@@ -122,8 +126,6 @@ Current focus:
 
 ## Next
 
-- Add capability schema documentation for error, latency, energy, and
-  calibration assumptions.
 - Real Triton integration as a credibility milestone after the abstraction proof
   remains stable.
 - Maintainer teams or organization-backed owner groups before broad external

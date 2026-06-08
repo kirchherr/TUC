@@ -129,6 +129,11 @@ Capabilities include:
 This lets the runtime reason about a backend without knowing its implementation.
 Capability checks are pure data checks and must not execute backend plugin code.
 
+Capability-field assumptions for error budgets, latency, energy, calibration,
+and noise modeling are documented in
+`docs/BACKEND_CAPABILITY_SCHEMA.md`. These assumptions remain outside HAC-IR
+and must not be treated as hardware certification claims.
+
 Transfer-cost profiles can be supplied as validated declarative manifests. The
 runtime uses them for transfer-edge estimates and candidate scoring without
 executing backend code or trusting backend-provided behavior.

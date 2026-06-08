@@ -38,6 +38,8 @@ The current prototype contains:
 - External-style backend author path for manifest, registry, compiler,
   conformance, and trusted lowering.
 - Deterministic backend conformance report artifacts for maintainer review.
+- Backend capability schema guidance for error budgets, latency, energy,
+  calibration, and noise assumptions.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and
@@ -195,6 +197,7 @@ pytest -q
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
+- [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)
 - [Backend capability registry](docs/BACKEND_REGISTRY.md)
 - [Backend author certification](docs/BACKEND_AUTHOR_CERTIFICATION.md)
 - [Backend conformance fixtures](docs/BACKEND_CONFORMANCE.md)

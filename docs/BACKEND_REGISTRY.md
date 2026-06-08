@@ -31,6 +31,10 @@ It does not answer:
 Those surfaces require separate threat models and sandboxing before they can
 become part of TUC.
 
+Capability-field assumptions, including error budgets, latency, energy,
+calibration, and noise modeling, are documented in
+[Backend Capability Schema](BACKEND_CAPABILITY_SCHEMA.md).
+
 ## API
 
 ```python
