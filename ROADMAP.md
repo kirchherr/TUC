@@ -175,11 +175,13 @@ Completed evidence:
 - Backend capability schema assumptions for error budgets, latency, energy,
   calibration, and noise modeling are documented separately from HAC-IR and
   executable backend behavior.
+- Capability-schema negative examples show which backend claims are invalid or
+  misleading and keep those cases covered by tests.
 
 Next work:
 
-- Add capability-schema negative examples for invalid or misleading backend
-  claims.
+- Add a HAC-IR semantic charter that separates compute intent, compiler facts,
+  planning constraints, and forbidden backend details.
 
 Go/No-Go:
 

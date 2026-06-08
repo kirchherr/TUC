@@ -131,6 +131,81 @@ Capability checks are pure data checks. They may inspect operation kind, layout,
 and error-budget attributes, but they must not call backend lowering, import
 backend code, access devices, or execute artifacts.
 
+## Invalid Or Misleading Examples
+
+These examples must be rejected or moved to another contract.
+
+### Latency Or Energy In A Backend Manifest
+
+Invalid:
+
+```json
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "too-much-in-one-manifest",
+  "supported_ops": ["matmul"],
+  "bandwidth_gb_s": 128.0,
+  "base_latency_ns": 2500.0,
+  "energy_pj_per_byte": 12.0
+}
+```
+
+Why this is wrong: latency and energy assumptions belong to
+`tuc.transfer_cost_profile.v0`, not backend operation-acceptance data.
+
+### Calibration Evidence In A Capability Manifest
+
+Invalid:
+
+```json
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "calibrated-by-claim",
+  "supported_ops": ["matmul"],
+  "supports_calibration": true,
+  "calibration_data": "device-run-2026-06-08.json",
+  "hardware_serial": "vendor-device-0"
+}
+```
+
+Why this is wrong: `supports_calibration` is a capability flag, not calibration
+evidence. Calibration artifacts need a separate schema and security review
+before TUC may accept them.
+
+### Performance Or Certification Claims
+
+Invalid:
+
+```json
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "marketing-claim",
+  "supported_ops": ["matmul"],
+  "benchmark_score": "fastest",
+  "hardware_certificate": "certified"
+}
+```
+
+Why this is wrong: benchmarks, certifications, and measured artifacts are not
+capability fields. They need provenance and review rules before they can inform
+TUC decisions.
+
+### Impossible Or Misleading Error Budgets
+
+Invalid:
+
+```json
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "bad-error-budget",
+  "supported_ops": ["matmul"],
+  "max_error_budget": -0.1
+}
+```
+
+Why this is wrong: error-budget limits must be finite and non-negative. A
+backend must not use an invalid limit to imply correctness or certification.
+
 ## Reviewer Checklist
 
 Before accepting a capability-schema change, verify:

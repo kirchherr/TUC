@@ -82,6 +82,9 @@ Implemented now:
 - Backend capability schema documentation separates error-budget, latency,
   energy, calibration, and noise assumptions from HAC-IR semantics, backend
   executable behavior, and hardware certification claims.
+- Capability-schema negative examples and tests reject misleading latency,
+  energy, calibration, benchmark, certificate, measured-error, and executable
+  backend claims from backend capability manifests.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

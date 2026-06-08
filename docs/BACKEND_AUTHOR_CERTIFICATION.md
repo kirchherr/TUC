@@ -96,6 +96,12 @@ At minimum, their tests must prove:
 
 These tests should be submitted before any backend-specific lowering code.
 
+Backend authors should also compare their manifests against the invalid and
+misleading examples in [Backend Capability Schema](BACKEND_CAPABILITY_SCHEMA.md).
+Claims about latency, energy, calibration evidence, hardware certificates,
+benchmark scores, or measured accuracy do not belong in
+`tuc.backend_capability.v0`.
+
 ## Conformance Fixture Requirements
 
 Backend authors must also add a positive/rejection conformance test using:

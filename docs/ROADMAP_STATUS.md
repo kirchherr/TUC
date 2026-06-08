@@ -72,6 +72,7 @@ Current slice:
   author evidence.
 - Backend capability schema guidance for error-budget, latency, energy,
   calibration, and noise assumptions.
+- Capability-schema negative examples for invalid or misleading backend claims.
 - Branch protection policy for `main` and expanded required CI smoke surface.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, wheel import
   check, and GitHub provenance/SBOM attestations.
@@ -114,6 +115,8 @@ Current focus:
 - Store backend conformance evidence as deterministic review artifacts.
 - Keep capability-schema assumptions documented separately from HAC-IR and
   executable backend behavior.
+- Keep invalid or misleading capability claims covered by examples and negative
+  tests.
 
 ### Phase Delta: Runtime Planning
 
