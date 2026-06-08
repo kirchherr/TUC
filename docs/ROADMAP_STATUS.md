@@ -107,6 +107,8 @@ Current slice:
   correctness validation.
 - Deterministic proof-report metadata visible in golden proof reports.
 - Reviewer-facing proof artifact checklist and golden-file merge gate.
+- Runtime manual override policy for future placement constraints before
+  automatic global optimization.
 
 ### Phase Beta: HAC-IR Contract
 
@@ -149,11 +151,17 @@ Current focus:
 - Use compiler decision reports as the bridge between support diagnostics and
   runtime placement.
 - Golden-test compiler decision reports for proof and MVP graphs.
+- Use [Runtime manual override policy](RUNTIME_OVERRIDE_POLICY.md) as the gate
+  before schema-versioned placement overrides, candidate scoring, or automatic
+  global optimization.
 
 ## Next
 
 - Real Triton integration as a credibility milestone after the abstraction proof
   remains stable.
+- Schema-versioned manual override implementation only after RFC 0042's
+  negative-test, decision-report, runtime-plan golden, and security-review gates
+  are satisfied.
 - Maintainer teams or organization-backed owner groups before broad external
   contribution.
 - Plugin lifecycle RFC and sandboxing model before any executable backend
