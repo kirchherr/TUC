@@ -45,6 +45,8 @@ The current prototype contains:
 - Compiler decision reports connecting backend support diagnostics to runtime
   assignments.
 - Golden compiler decision-report fixtures for proof and MVP graph review.
+- Runtime manual override policy for future placement constraints before
+  automatic global optimization.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and
@@ -217,6 +219,7 @@ pytest -q
 - [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)
 - [Backend capability registry](docs/BACKEND_REGISTRY.md)
 - [Compiler decision report](docs/COMPILER_DECISION_REPORT.md)
+- [Runtime manual override policy](docs/RUNTIME_OVERRIDE_POLICY.md)
 - [Backend author certification](docs/BACKEND_AUTHOR_CERTIFICATION.md)
 - [Backend conformance fixtures](docs/BACKEND_CONFORMANCE.md)
 - [MLIR design spike](docs/MLIR_DESIGN_SPIKE.md)

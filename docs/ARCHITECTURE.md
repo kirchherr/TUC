@@ -197,6 +197,12 @@ Runtime transfer edges also carry coarse prototype bandwidth, latency, and
 energy estimates, or estimates from a validated transfer-cost profile. These
 estimates are deterministic planning data, not hardware certification claims.
 
+Future manual placement overrides are policy-gated by
+`docs/RUNTIME_OVERRIDE_POLICY.md`. They may constrain only backend candidates
+that already passed capability diagnostics; they cannot create capabilities,
+change HAC-IR, change mathematical semantics, or hide why the runtime planner
+made a placement decision.
+
 ## Compiler Pipeline
 
 `tuc.compiler.pipeline` provides the current end-to-end skeleton:

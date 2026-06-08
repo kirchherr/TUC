@@ -222,14 +222,22 @@ Deliverables:
 - Golden runtime-plan dumps.
 - Planning diagnostics that explain why work executes where it does.
 
+Completed evidence:
+
+- [Runtime manual override policy](docs/RUNTIME_OVERRIDE_POLICY.md) blocks
+  automatic global optimization from gaining hidden placement controls before
+  schema, validation, review, decision-report, and runtime-plan golden gates are
+  defined.
+
 Next work:
 
 - Add future decision-report fixtures for softmax proof graphs once nonlinear
   operation-family planning is documented.
 - Add candidate scoring once transfer/noise-aware models are stable.
 - Add runtime-plan golden dumps for future proof graphs.
-- Add explicit manual override policy before adding automatic global
-  optimization.
+- Add schema-versioned declarative manual override data only after RFC 0042's
+  fail-closed gates are implemented with negative tests, compiler
+  decision-report goldens, and runtime-plan goldens.
 
 Go/No-Go:
 
