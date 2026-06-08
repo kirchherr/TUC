@@ -185,6 +185,8 @@ It demonstrates the intended review flow for a toy backend author:
 4. Run `assert_backend_conformance(...)`.
 5. Lower only the HAC-IR subgraph assigned to the explicitly constructed
    trusted backend object.
+6. Emit `dump_backend_conformance_report(...)` as a deterministic review
+   artifact.
 
 ## Transfer-Cost Profiles
 
@@ -256,6 +258,10 @@ copy the executable negative-test template from
 Prototype backends should also run the reusable
 [Backend Conformance Fixtures](BACKEND_CONFORMANCE.md) through
 `assert_backend_conformance`.
+
+Backend authors should store or attach the deterministic conformance report
+artifact produced by `dump_backend_conformance_report(...)` when asking
+maintainers to review a prototype backend.
 
 The executable test for the full author path is
 `tests/test_external_backend_author_path.py`.

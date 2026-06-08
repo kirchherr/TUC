@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from examples.external_backend_author_path import (
@@ -9,7 +11,7 @@ from examples.external_backend_author_path import (
     build_graph,
     run_external_backend_author_path,
 )
-from tuc.backends.conformance import build_conformance_graph
+from tuc.backends.conformance import build_conformance_graph, dump_backend_conformance_report
 from tuc.backends.registry import BackendRegistry
 from tuc.compiler import compile_graph
 from tuc.ir import LayoutKind, OperationKind
@@ -38,6 +40,15 @@ def test_external_backend_author_path_passes_conformance_and_lowers_assignment()
     assert report.lowered.backend_name == "external-vector"
     assert report.lowered.graph_name == "external_backend_author_demo"
     assert "elementwise activation" in report.lowered.artifact
+
+
+def test_external_backend_author_conformance_report_matches_golden() -> None:
+    report = run_external_backend_author_path()
+    golden = Path("tests/golden/backend_conformance/external_vector_report.json")
+
+    assert dump_backend_conformance_report(report.conformance) == golden.read_text(
+        encoding="utf-8"
+    )
 
 
 def test_external_backend_author_lowering_rejects_unsupported_work() -> None:

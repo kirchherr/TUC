@@ -37,16 +37,26 @@ def test_backend_conformance() -> None:
 Or inspect the report directly:
 
 ```python
-from tuc.backends.conformance import run_backend_conformance
+from tuc.backends.conformance import (
+    dump_backend_conformance_report,
+    run_backend_conformance,
+)
 
 report = run_backend_conformance(backend)
 assert report.passed, report.issues
+artifact = dump_backend_conformance_report(report)
 ```
+
+`dump_backend_conformance_report(...)` renders a deterministic JSON artifact
+with schema version `tuc.backend_conformance_report.v0`. Backend authors can
+attach this artifact to reviews so maintainers can inspect the checked cases,
+pass/fail status, and conformance issues without executing backend artifacts.
 
 The reference tests live in:
 
 ```text
 tests/test_backend_conformance.py
+tests/golden/backend_conformance/
 ```
 
 An external-style backend author path also lives in:
@@ -94,6 +104,11 @@ object that the test constructed directly.
 The external author path follows the same rule: manifest and registry steps are
 pure data; backend lowering starts only after the test explicitly constructs
 the trusted backend object.
+
+Conformance report dumping is also pure data serialization. It validates report
+field sizes, emits deterministic JSON, and does not read files, discover
+plugins, import backend modules, execute artifacts, or include backend artifact
+contents.
 
 ## Relation To Certification
 

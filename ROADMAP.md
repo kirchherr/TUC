@@ -170,12 +170,13 @@ Completed evidence:
 - External-style backend author path demonstrates manifest loading, explicit
   registry diagnostics, compiler planning, reusable conformance, and trusted
   lowering without modifying TUC core.
+- Backend conformance reports can be emitted as deterministic JSON artifacts
+  for maintainer review.
 
 Next work:
 
 - Add capability schema documentation for error, latency, energy, and
   calibration assumptions.
-- Add conformance reports that can be stored as reviewable artifacts.
 
 Go/No-Go:
 

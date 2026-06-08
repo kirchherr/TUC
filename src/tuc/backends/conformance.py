@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from collections.abc import Iterable
 from dataclasses import dataclass
 
@@ -9,6 +10,7 @@ from tuc.backends.base import Backend, LoweringResult
 from tuc.ir.memory import LayoutKind
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 
+CONFORMANCE_REPORT_SCHEMA_VERSION = "tuc.backend_conformance_report.v0"
 MVP_CONFORMANCE_OPERATION_KINDS = (
     OperationKind.MATMUL,
     OperationKind.ELEMENTWISE,
@@ -18,6 +20,10 @@ MVP_CONFORMANCE_OPERATION_KINDS = (
 MAX_CONFORMANCE_ARTIFACT_BYTES = 64 * 1024
 MAX_CONFORMANCE_DIAGNOSTICS = 16
 MAX_CONFORMANCE_DIAGNOSTIC_BYTES = 512
+MAX_CONFORMANCE_REPORT_BYTES = 64 * 1024
+MAX_CONFORMANCE_REPORT_CASES = 128
+MAX_CONFORMANCE_REPORT_FIELD_BYTES = 512
+MAX_CONFORMANCE_REPORT_ISSUES = 128
 
 
 @dataclass(frozen=True)
@@ -142,6 +148,36 @@ def assert_backend_conformance(
         lines.extend(f"- {issue.case_name}: {issue.message}" for issue in report.issues)
         raise BackendConformanceError("\n".join(lines))
     return report
+
+
+def conformance_report_to_dict(
+    report: BackendConformanceReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible conformance report payload."""
+
+    _validate_report(report)
+    return {
+        "backend_name": report.backend_name,
+        "checked_cases": list(report.checked_cases),
+        "issues": [
+            {
+                "case_name": issue.case_name,
+                "message": issue.message,
+            }
+            for issue in report.issues
+        ],
+        "passed": report.passed,
+        "schema_version": CONFORMANCE_REPORT_SCHEMA_VERSION,
+    }
+
+
+def dump_backend_conformance_report(report: BackendConformanceReport) -> str:
+    """Render a stable review artifact for backend conformance evidence."""
+
+    text = json.dumps(conformance_report_to_dict(report), indent=2, sort_keys=True)
+    if len(text.encode("utf-8")) > MAX_CONFORMANCE_REPORT_BYTES:
+        raise ValueError("backend conformance report exceeds byte limit")
+    return text + "\n"
 
 
 def _conformance_cases(
@@ -310,12 +346,39 @@ def _validate_diagnostics(
     return tuple(issues)
 
 
+def _validate_report(report: BackendConformanceReport) -> None:
+    if not isinstance(report, BackendConformanceReport):
+        raise TypeError("backend conformance report must be BackendConformanceReport")
+    _validate_report_text(report.backend_name, "backend_name")
+    if len(report.checked_cases) > MAX_CONFORMANCE_REPORT_CASES:
+        raise ValueError("backend conformance report exceeds checked-case limit")
+    for case_name in report.checked_cases:
+        _validate_report_text(case_name, "checked case")
+    if len(report.issues) > MAX_CONFORMANCE_REPORT_ISSUES:
+        raise ValueError("backend conformance report exceeds issue limit")
+    for issue in report.issues:
+        if not isinstance(issue, BackendConformanceIssue):
+            raise TypeError("backend conformance report issues must be issue objects")
+        _validate_report_text(issue.case_name, "issue case_name")
+        _validate_report_text(issue.message, "issue message")
+
+
+def _validate_report_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{label} must be a non-empty string")
+    if len(value.encode("utf-8")) > MAX_CONFORMANCE_REPORT_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds conformance report field limit")
+
+
 __all__ = [
     "BackendConformanceError",
     "BackendConformanceIssue",
     "BackendConformanceReport",
+    "CONFORMANCE_REPORT_SCHEMA_VERSION",
     "MVP_CONFORMANCE_OPERATION_KINDS",
     "assert_backend_conformance",
     "build_conformance_graph",
+    "conformance_report_to_dict",
+    "dump_backend_conformance_report",
     "run_backend_conformance",
 ]

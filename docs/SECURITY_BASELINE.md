@@ -76,6 +76,9 @@ Implemented now:
 - External-style backend author path proves manifest loading, registry
   diagnostics, compiler planning, conformance, and trusted lowering without
   backend auto-discovery or compile-time plugin execution.
+- Deterministic backend conformance report artifacts with schema versioning and
+  report field-size limits; report dumping is pure data serialization and does
+  not include backend artifact contents.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

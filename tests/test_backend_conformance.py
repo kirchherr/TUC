@@ -5,9 +5,14 @@ import pytest
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability, LoweringResult
 from tuc.backends.conformance import (
+    CONFORMANCE_REPORT_SCHEMA_VERSION,
     BackendConformanceError,
+    BackendConformanceIssue,
+    BackendConformanceReport,
     assert_backend_conformance,
     build_conformance_graph,
+    conformance_report_to_dict,
+    dump_backend_conformance_report,
     run_backend_conformance,
 )
 from tuc.ir.model import ComputeGraph, OperationKind
@@ -114,3 +119,46 @@ def test_assert_backend_conformance_raises_with_compact_report() -> None:
 
     with pytest.raises(BackendConformanceError, match="failed conformance"):
         assert_backend_conformance(BadBackend())
+
+
+def test_conformance_report_dump_is_stable_review_artifact() -> None:
+    report = run_backend_conformance(LinearAlgebraSimulatorBackend())
+
+    artifact = dump_backend_conformance_report(report)
+    payload = conformance_report_to_dict(report)
+
+    assert payload["schema_version"] == CONFORMANCE_REPORT_SCHEMA_VERSION
+    assert payload["passed"] is True
+    assert payload["issues"] == []
+    assert artifact.endswith("\n")
+    assert '"backend_name": "linear-sim"' in artifact
+    assert '"conformance_matmul_row_major"' in artifact
+
+
+def test_conformance_report_dump_includes_failures() -> None:
+    report = BackendConformanceReport(
+        backend_name="bad",
+        checked_cases=("conformance_matmul_row_major",),
+        issues=(
+            BackendConformanceIssue(
+                case_name="conformance_matmul_row_major",
+                message="artifact must not be empty",
+            ),
+        ),
+    )
+
+    artifact = dump_backend_conformance_report(report)
+
+    assert '"passed": false' in artifact
+    assert '"message": "artifact must not be empty"' in artifact
+
+
+def test_conformance_report_dump_rejects_oversized_fields() -> None:
+    report = BackendConformanceReport(
+        backend_name="bad",
+        checked_cases=("x" * 513,),
+        issues=(),
+    )
+
+    with pytest.raises(ValueError, match="field limit"):
+        dump_backend_conformance_report(report)
