@@ -16,6 +16,7 @@ examples/proof_*.py
 tests/golden/proofs/
 tests/golden/hac_ir/proof_*.txt
 tests/golden/runtime_plans/proof_*.txt
+tests/golden/compiler_decisions/proof_*.txt
 tests/test_proof_*.py
 docs/PROOF_*.md
 src/tuc/proof.py
@@ -39,10 +40,13 @@ Before approving a proof artifact change, reviewers should confirm:
   plugin, generated-artifact, benchmark, calibration, or runtime-handle data.
 - Runtime-plan changes keep backend assignments, transfer bytes, movement
   costs, and fallback reasons inspectable.
+- Compiler decision-report changes keep accepted backends, rejected backends,
+  assignment reasons, and fallback support evidence inspectable.
 - Numerical results are compared against deterministic independent reference
   semantics.
-- Full proof stdout, HAC-IR dump, and runtime-plan dump golden files are
-  updated together when the proof contract changes.
+- Full proof stdout, HAC-IR dump, runtime-plan dump, and compiler
+  decision-report golden files are updated together when the proof contract
+  changes.
 - The proof still ends with `PASS`.
 - Tests cover the changed golden artifacts.
 
@@ -69,7 +73,7 @@ and sandboxing plan before merge.
 Run the narrow proof checks first:
 
 ```bash
-python -m pytest tests/test_proof_metadata.py tests/test_proof_of_abstraction.py tests/test_proof_of_reduction.py tests/test_hac_ir_golden_dumps.py tests/test_runtime_plan_golden.py -q
+python -m pytest tests/test_proof_metadata.py tests/test_proof_of_abstraction.py tests/test_proof_of_reduction.py tests/test_hac_ir_golden_dumps.py tests/test_runtime_plan_golden.py tests/test_compiler_decision_report_golden.py -q
 ```
 
 Then run the normal project checks:
@@ -90,7 +94,7 @@ files as generated noise.
 
 Do not regenerate proof goldens as a cleanup step. Update them only when the
 intended proof behavior, metadata contract, HAC-IR contract, or runtime-plan
-contract changed.
+contract, or compiler decision-report contract changed.
 
 ## Merge Gate
 

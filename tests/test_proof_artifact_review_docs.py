@@ -5,6 +5,7 @@ from pathlib import Path
 
 def test_proof_artifact_review_checklist_covers_contract_boundaries() -> None:
     text = Path("docs/PROOF_ARTIFACT_REVIEW.md").read_text(encoding="utf-8")
+    searchable = text.lower()
 
     for required in (
         "report_schema",
@@ -18,6 +19,7 @@ def test_proof_artifact_review_checklist_covers_contract_boundaries() -> None:
         "PASS",
     ):
         assert required in text
+    assert "compiler decision-report" in searchable
 
 
 def test_proof_artifact_review_checklist_covers_security_boundaries() -> None:

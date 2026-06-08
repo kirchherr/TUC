@@ -192,10 +192,12 @@ Completed evidence:
   misleading and keep those cases covered by tests.
 - Compiler decision reports connect backend support diagnostics to final
   runtime assignments.
+- Golden compiler decision-report fixtures cover proof and MVP graphs.
 
 Next work:
 
-- Add golden compiler decision-report fixtures for proof and MVP graphs.
+- Add future decision-report fixtures for softmax proof graphs once nonlinear
+  operation-family planning is documented.
 
 Go/No-Go:
 
@@ -222,7 +224,8 @@ Deliverables:
 
 Next work:
 
-- Add golden compiler decision-report fixtures for proof and MVP graphs.
+- Add future decision-report fixtures for softmax proof graphs once nonlinear
+  operation-family planning is documented.
 - Add candidate scoring once transfer/noise-aware models are stable.
 - Add runtime-plan golden dumps for future proof graphs.
 - Add explicit manual override policy before adding automatic global

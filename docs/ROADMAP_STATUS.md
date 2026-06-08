@@ -96,6 +96,7 @@ Current slice:
   operation/backend matches before partitioning.
 - Compiler-level decision reports that connect backend support diagnostics to
   final runtime assignments.
+- Golden compiler decision-report fixtures for proof and MVP graphs.
 - Masterplan-aligned roadmap organized around proof phases instead of a
   compiler-centric implementation timeline.
 - Proof-of-abstraction runtime plan is golden-tested independently from the
@@ -132,6 +133,8 @@ Current focus:
 - Store backend conformance evidence as deterministic review artifacts.
 - Use compiler decision reports to inspect accepted and rejected backend
   candidates next to final assignments.
+- Treat compiler decision-report fixtures as reviewable backend selection
+  evidence.
 - Keep capability-schema assumptions documented separately from HAC-IR and
   executable backend behavior.
 - Keep invalid or misleading capability claims covered by examples and negative
@@ -145,6 +148,7 @@ Current focus:
 - Golden-test proof runtime plans independently from full proof reports.
 - Use compiler decision reports as the bridge between support diagnostics and
   runtime placement.
+- Golden-test compiler decision reports for proof and MVP graphs.
 
 ## Next
 
