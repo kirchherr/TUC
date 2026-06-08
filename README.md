@@ -52,6 +52,7 @@ The current prototype contains:
 - CODEOWNERS-backed review policy for compiler, runtime, backend, governance,
   and release trust boundaries.
 - Runtime-plan golden dump fixtures for reviewer-visible compiler contracts.
+- HAC-IR golden dump fixtures for proof and MVP graph contract review.
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
 - Prototype Triton-like metadata adapter for frontend ingestion.

@@ -98,6 +98,19 @@ HAC-IR to HS-IR lowering. Unsupported operation shapes, invalid dialect
 versions, malformed compiler attributes, and premature backend-assignment
 metadata fail closed.
 
+## Golden Dump Fixtures
+
+Representative HAC-IR dumps are locked as plain-text fixtures under:
+
+```text
+tests/golden/hac_ir/
+```
+
+`tests/test_hac_ir_golden_dumps.py` compares the Objective Alpha proof graph
+and the Phase 1 MVP graph against those fixtures. Fixture changes are
+compiler-contract changes and must be reviewed through the semantic charter and
+neutrality checklist.
+
 ## Native MLIR Follow-Up
 
 Before native MLIR or C++ dialect code accepts external input, TUC must add:

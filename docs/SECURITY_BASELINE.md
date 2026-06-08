@@ -60,6 +60,9 @@ Implemented now:
   constraints, and forbidden backend details before future native IR work.
 - HAC-IR neutrality guardrails and negative tests for known high-risk hardware,
   backend, device, plugin, and generated-artifact leakage attributes.
+- HAC-IR golden dump fixtures for proof and MVP graphs, generated from fixed
+  typed graph builders without plugin discovery, subprocesses, device access,
+  network access, or generated-artifact execution.
 - HS-IR v0 contracts for backend assignments, produced layouts,
   movement-summary metadata, and runtime-transfer-summary consistency.
 - Backend API v0.1 explicitly limits external backend onboarding to

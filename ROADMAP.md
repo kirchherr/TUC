@@ -135,10 +135,13 @@ Completed evidence:
   plugin, backend-artifact, and specialized-placement leakage.
 - Negative tests verify that hardware-specific `tuc.*` attributes fail closed
   before backend assignment or lowering can treat them as valid facts.
+- Deterministic HAC-IR golden dumps cover the Objective Alpha proof graph and
+  the Phase 1 MVP graph.
 
 Next work:
 
-- Expand deterministic HAC-IR golden dumps for the next proof and MVP graphs.
+- Add HAC-IR golden dumps for the second proof graph once reduction or softmax
+  is added.
 
 Go/No-Go:
 
@@ -180,8 +183,7 @@ Completed evidence:
 
 Next work:
 
-- Add a HAC-IR semantic charter that separates compute intent, compiler facts,
-  planning constraints, and forbidden backend details.
+- Connect backend support diagnostics into compiler-level decision reports.
 
 Go/No-Go:
 

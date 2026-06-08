@@ -73,6 +73,16 @@ tests/golden/runtime_plans/proof_of_abstraction.txt
 that artifact. This makes placement and transfer reasoning reviewable without
 requiring maintainers to diff the full proof report.
 
+The HAC-IR dump has a separate golden contract:
+
+```text
+tests/golden/hac_ir/proof_of_abstraction.txt
+```
+
+`tests/test_hac_ir_golden_dumps.py` compares the proof graph's HAC-IR dump to
+that artifact. This keeps hardware-independent compute intent reviewable on its
+own, before runtime planning and backend assignment enter the report.
+
 This keeps the proof aligned with the master plan's Level 3 validation target:
 another person can reproduce the same proof and see the same report.
 
