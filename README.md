@@ -30,6 +30,7 @@ The current prototype contains:
 - Rule-based runtime partitioning.
 - Proof-of-abstraction example for Objective Alpha.
 - Proof-of-reduction example for Objective Alpha's second graph family.
+- Proof-of-softmax example for Objective Alpha's nonlinear operation family.
 - Data-movement-aware HAC-IR metadata for MVP kernels.
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
@@ -50,7 +51,7 @@ The current prototype contains:
 - Schema-versioned runtime manual overrides for operation-scoped placement
   constraints across already accepted backend candidates.
 - Opt-in runtime candidate score diagnostics for reviewable placement evidence.
-- Softmax operation-family planning contract for future nonlinear proof graphs.
+- Softmax operation-family planning contract and proof graph fixtures.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and
@@ -138,6 +139,12 @@ Run the proof-of-reduction example:
 python examples/proof_of_reduction.py
 ```
 
+Run the proof-of-softmax example:
+
+```bash
+python examples/proof_of_softmax.py
+```
+
 Inspect data-movement metadata:
 
 ```bash
@@ -213,6 +220,7 @@ pytest -q
 - [MVP definition](docs/MVP.md)
 - [Proof of abstraction](docs/PROOF_OF_ABSTRACTION.md)
 - [Proof of reduction](docs/PROOF_OF_REDUCTION.md)
+- [Proof of softmax](docs/PROOF_OF_SOFTMAX.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)

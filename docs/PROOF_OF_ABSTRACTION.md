@@ -101,7 +101,8 @@ This keeps the proof aligned with the master plan's Level 3 validation target:
 another person can reproduce the same proof and see the same report.
 
 The second Objective Alpha proof is documented in
-[`PROOF_OF_REDUCTION.md`](PROOF_OF_REDUCTION.md).
+[`PROOF_OF_REDUCTION.md`](PROOF_OF_REDUCTION.md). The third Objective Alpha
+proof is documented in [`PROOF_OF_SOFTMAX.md`](PROOF_OF_SOFTMAX.md).
 
 Changes to proof artifacts must follow the
 [`PROOF_ARTIFACT_REVIEW.md`](PROOF_ARTIFACT_REVIEW.md) checklist.

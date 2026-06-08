@@ -152,3 +152,8 @@ Before a softmax proof graph is accepted, the PR must include:
 
 Softmax proof artifacts are compiler-contract changes and must be reviewed as
 hardware-independence evidence, not just numerical fixtures.
+
+The first accepted softmax proof fixture is documented in
+[`PROOF_OF_SOFTMAX.md`](PROOF_OF_SOFTMAX.md). Further softmax decomposition or
+specialized-backend claims must still pass this gate with new runtime/HS-IR
+planning evidence.

@@ -1,0 +1,13 @@
+hac-ir.module @proof_of_softmax {
+  metadata {
+    graph.dialect_version = "tlir.v0"
+    graph.lowered_from = "tlir"
+    graph.movement_model = "movement.v0"
+    graph.movement_summary = {arithmetic_intensity: 0.5238095238095238, movement_model: "movement.v0", operation_count: 2, total_arithmetic_ops: 88, total_bytes_read: 104, total_bytes_written: 64}
+    graph.mvp_operation_count = 2
+    graph.source = "triton-like-python"
+    module.dialect_version = "hac-ir.v0"
+  }
+  %logits = tuc.matmul @linear_projection(%lhs: tensor<2x3xf32>, %rhs: tensor<3x4xf32>) -> (%logits: tensor<2x4xf32>) {max_error_budget = 0.05, prefer_analog_linear = true, tuc.arithmetic_intensity = 0.46153846153846156, tuc.arithmetic_ops = 48, tuc.bytes_read = 72, tuc.bytes_written = 32, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "analog_weight_bank", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
+  %probabilities = tuc.softmax @row_softmax(%logits: tensor<2x4xf32>) -> (%probabilities: tensor<2x4xf32>) {axis = 1, tuc.arithmetic_intensity = 0.625, tuc.arithmetic_ops = 40, tuc.bytes_read = 32, tuc.bytes_written = 32, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["softmax_approximate_ops"], tuc.preferred_memory_domain = "gpu_hbm", tuc.semantic_op = "softmax", tuc.source_stage = "tlir"}
+}

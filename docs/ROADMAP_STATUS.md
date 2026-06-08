@@ -105,6 +105,8 @@ Current slice:
 - HAC-IR golden dump fixtures for proof and MVP graphs.
 - Second Objective Alpha proof graph with `matmul -> reduction -> elementwise`
   correctness validation.
+- Third Objective Alpha proof graph with `matmul -> softmax`, explicit axis
+  validation, fallback planning, and correctness validation.
 - Deterministic proof-report metadata visible in golden proof reports.
 - Reviewer-facing proof artifact checklist and golden-file merge gate.
 - Runtime manual override policy for future placement constraints before
@@ -115,6 +117,8 @@ Current slice:
   decision-report goldens.
 - Softmax operation-family planning contract for future nonlinear proof graphs,
   softmax HAC-IR goldens, runtime-plan goldens, and decision-report goldens.
+- Softmax proof graph fixtures with full proof output, HAC-IR dump,
+  runtime-plan dump, and compiler decision-report goldens.
 
 ### Phase Beta: HAC-IR Contract
 
@@ -130,7 +134,7 @@ Current focus:
 - Use the reviewer-facing HAC-IR neutrality checklist for every attribute
   change.
 - Use [Softmax operation-family planning](SOFTMAX_OPERATION_PLANNING.md) before
-  accepting softmax proof graph fixtures or softmax-specific HAC-IR changes.
+  accepting further softmax-specific HAC-IR changes or decomposition claims.
 
 ### Phase Gamma: Capability Framework
 
@@ -173,8 +177,8 @@ Current focus:
 
 - Real Triton integration as a credibility milestone after the abstraction proof
   remains stable.
-- Softmax proof graph fixtures now that the nonlinear operation-family planning
-  contract is documented.
+- Future softmax decomposition only after runtime/HS-IR planning evidence,
+  capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its
   decisions can be explained next to manual override effects.
 - Noise/error-budget score components only after those models are documented
