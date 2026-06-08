@@ -43,6 +43,7 @@ from tuc.proof import (
 )
 from tuc.runtime import (
     RUNTIME_OVERRIDE_SCHEMA_VERSION,
+    CandidateScore,
     RuntimeOverrideAction,
     RuntimeOverrideEffect,
     RuntimeOverrideError,
@@ -55,6 +56,7 @@ __all__ = [
     "BackendRegistry",
     "BackendRegistryError",
     "BackendSupportDiagnostic",
+    "CandidateScore",
     "CompilationHints",
     "CompilationResult",
     "CompilerDecisionReport",

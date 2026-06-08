@@ -30,6 +30,7 @@ _GOLDEN_DIR = Path(__file__).parent / "golden" / "runtime_plans"
         ("produced_layout_conversion.txt", lambda: _produced_layout_conversion_plan()),
         ("profiled_transfer.txt", lambda: _profiled_transfer_plan()),
         ("manual_override_require.txt", lambda: _manual_override_plan()),
+        ("candidate_scores.txt", lambda: _candidate_score_plan()),
         (
             "proof_of_abstraction.txt",
             lambda: run_proof().compiled.partition_plan,
@@ -193,4 +194,43 @@ def _manual_override_plan() -> PartitionPlan:
         graph,
         [LinearAlgebraSimulatorBackend().capability, gpu_backend],
         runtime_overrides=overrides,
+    )
+
+
+def _candidate_score_plan() -> PartitionPlan:
+    lhs = TensorRef("lhs", (4, 4))
+    rhs = TensorRef("rhs", (4, 4))
+    projection = TensorRef("projection_out", (4, 4))
+    activated = TensorRef("activated", (4, 4))
+    graph = ComputeGraph(
+        name="golden_candidate_scores",
+        operations=(
+            ComputeOperation(
+                name="projection",
+                kind=OperationKind.MATMUL,
+                inputs=(lhs, rhs),
+                outputs=(projection,),
+            ),
+            ComputeOperation(
+                name="activation",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(projection,),
+                outputs=(activated,),
+            ),
+        ),
+    )
+    analog = BackendCapability(
+        name="analog",
+        supported_ops=frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE}),
+        memory_domain=MemoryDomainKind.ANALOG_WEIGHT_BANK,
+    )
+    gpu = BackendCapability(
+        name="gpu",
+        supported_ops=frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE}),
+        memory_domain=MemoryDomainKind.GPU_HBM,
+    )
+    return partition_graph(
+        graph,
+        [analog, gpu],
+        include_candidate_scores=True,
     )

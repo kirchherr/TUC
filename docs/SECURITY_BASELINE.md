@@ -104,6 +104,13 @@ Implemented now:
   decision-report goldens, and runtime-plan goldens. Overrides are accepted only
   after graph and capability validation, and only for already accepted backend
   candidates.
+- Runtime candidate score diagnostics are opt-in bounded `CandidateScore`
+  records derived from validated graph operations, capability data, movement
+  estimates, transfer-cost profiles, and override effects. They do not execute
+  backend code, discover plugins, import modules, spawn subprocesses, load
+  dynamic libraries, access devices, execute generated artifacts, touch the
+  network, read host paths, read environment variables, change HAC-IR, or alter
+  default placement behavior.
 - Backend author certification requires negative tests for plugin-like manifest
   fields, duplicate keys, unsupported schemas, false capability claims,
   unsupported layouts, and lower-time operation rejection.

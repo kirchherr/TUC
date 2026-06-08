@@ -9,7 +9,12 @@ from tuc.runtime.overrides import (
     RuntimeOverrideRule,
     RuntimeOverrideSet,
 )
-from tuc.runtime.partitioning import Assignment, PartitionPlan, partition_graph
+from tuc.runtime.partitioning import (
+    Assignment,
+    CandidateScore,
+    PartitionPlan,
+    partition_graph,
+)
 from tuc.runtime.plan import (
     DEFAULT_TRANSFER_COST_PROFILE,
     LayoutConversionCost,
@@ -22,6 +27,7 @@ from tuc.runtime.plan import (
 
 __all__ = [
     "Assignment",
+    "CandidateScore",
     "DEFAULT_TRANSFER_COST_PROFILE",
     "LayoutConversionCost",
     "PartitionPlan",

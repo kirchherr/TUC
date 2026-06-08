@@ -1,0 +1,20 @@
+compiler.decision_report @golden_candidate_scores {
+  operation projection kind=matmul assigned=gpu accepted_backends="analog,gpu" rejected_backends="-" reason="supported:matmul;domain=gpu_hbm;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
+  support {
+    analog accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+    gpu accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+  }
+  candidate_scores {
+    analog selected=false stage=supported transfer_score=0 transfer_score_unit=bytes transfer_bytes=0 layout_conversion_bytes=0 preferred_memory_domain_match=false domain=analog_weight_bank produced_layout=row_major
+    gpu selected=true stage=supported transfer_score=0 transfer_score_unit=bytes transfer_bytes=0 layout_conversion_bytes=0 preferred_memory_domain_match=true domain=gpu_hbm produced_layout=row_major
+  }
+  operation activation kind=elementwise assigned=gpu accepted_backends="analog,gpu" rejected_backends="-" reason="supported:elementwise;domain=gpu_hbm;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
+  support {
+    analog accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+    gpu accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+  }
+  candidate_scores {
+    analog selected=false stage=supported transfer_score=64 transfer_score_unit=bytes transfer_bytes=64 layout_conversion_bytes=0 preferred_memory_domain_match=false domain=analog_weight_bank produced_layout=row_major
+    gpu selected=true stage=supported transfer_score=0 transfer_score_unit=bytes transfer_bytes=0 layout_conversion_bytes=0 preferred_memory_domain_match=true domain=gpu_hbm produced_layout=row_major
+  }
+}

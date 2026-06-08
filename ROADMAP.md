@@ -231,6 +231,9 @@ Completed evidence:
 - Schema-versioned `RuntimeOverrideSet` data can constrain operation placement
   only across already accepted backend candidates and is covered by negative
   tests plus compiler decision-report and runtime-plan golden fixtures.
+- Opt-in `CandidateScore` diagnostics expose deterministic transfer, layout,
+  and preferred-domain score components without changing default placement
+  behavior.
 
 Next work:
 
@@ -239,6 +242,8 @@ Next work:
 - Add candidate scoring once transfer/noise-aware models are stable.
 - Add runtime-plan golden dumps for future proof graphs.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
+- Add noise/error-budget score components only after those models are stable and
+  documented.
 
 Go/No-Go:
 

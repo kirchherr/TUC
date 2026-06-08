@@ -204,6 +204,11 @@ diagnostics; they cannot create capabilities, change HAC-IR, change
 mathematical semantics, or hide why the runtime planner made a placement
 decision.
 
+Candidate score diagnostics are opt-in `CandidateScore` records attached to
+runtime plans. They expose the current transfer/layout/domain score components
+without changing placement behavior or turning runtime planning into automatic
+global optimization.
+
 ## Compiler Pipeline
 
 `tuc.compiler.pipeline` provides the current end-to-end skeleton:

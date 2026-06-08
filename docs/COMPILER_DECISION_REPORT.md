@@ -11,6 +11,8 @@ It answers:
 - Which pure-data reason code explains each accept or reject decision?
 - Why did runtime planning choose the final assignment?
 - Did a manual runtime override affect candidate selection?
+- Which candidate score components explain a selected backend when score
+  diagnostics are enabled?
 
 This is a compiler-level inspectability artifact. It does not replace HAC-IR,
 HS-IR, or runtime plans.
@@ -52,6 +54,10 @@ present only when a `RuntimeOverrideSet` affects placement. The override
 contract is defined by
 [Runtime manual override policy](RUNTIME_OVERRIDE_POLICY.md).
 
+Candidate score diagnostics are reported in `candidate_scores` blocks only when
+the caller enables `include_candidate_scores=True`. They are review evidence for
+the existing deterministic placement rule, not a global optimizer.
+
 ## Security Model
 
 The report is pure data built from:
@@ -61,6 +67,7 @@ The report is pure data built from:
 - registry support diagnostics
 - the runtime partition plan
 - schema-versioned runtime override effects
+- opt-in candidate score diagnostics
 
 It does not:
 
@@ -88,6 +95,7 @@ Use the decision report when reviewing changes to:
 - fallback behavior
 - transfer-aware placement
 - manual placement overrides
+- candidate score diagnostics
 - proof artifacts that include backend assignment reasoning
 
 If a backend is rejected, the report should show a short reason code such as
