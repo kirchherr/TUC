@@ -275,6 +275,10 @@ Backend authors should store or attach the deterministic conformance report
 artifact produced by `dump_backend_conformance_report(...)` when asking
 maintainers to review a prototype backend.
 
+Backend authors should also review the invalid and misleading examples in
+[Backend Capability Schema](BACKEND_CAPABILITY_SCHEMA.md) before proposing new
+capability fields or manifests.
+
 The executable test for the full author path is
 `tests/test_external_backend_author_path.py`.
 

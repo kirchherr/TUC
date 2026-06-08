@@ -48,6 +48,56 @@ def test_backend_manifest_rejects_execution_surface_fields(
         load_backend_capability_manifest(path)
 
 
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("bandwidth_gb_s", 128.0),
+        ("base_latency_ns", 2500.0),
+        ("energy_pj_per_byte", 12.0),
+        ("calibration_data", "device-run-2026-06-08.json"),
+        ("hardware_serial", "vendor-device-0"),
+        ("benchmark_score", "fastest"),
+        ("hardware_certificate", "certified"),
+        ("measured_error", 0.001),
+        ("noise_model_module", "vendor.noise_model"),
+    ),
+)
+def test_backend_manifest_rejects_misleading_capability_claim_fields(
+    tmp_path: Path,
+    field: str,
+    value: object,
+) -> None:
+    manifest = {
+        "schema_version": BACKEND_CAPABILITY_SCHEMA_VERSION,
+        "name": "candidate",
+        "supported_ops": ["matmul"],
+        field: value,
+    }
+    path = tmp_path / "candidate_backend.json"
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    with pytest.raises(ManifestError, match="unsupported keys"):
+        load_backend_capability_manifest(path)
+
+
+def test_backend_manifest_rejects_negative_error_budget(tmp_path: Path) -> None:
+    path = tmp_path / "candidate_backend.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": BACKEND_CAPABILITY_SCHEMA_VERSION,
+                "name": "candidate",
+                "supported_ops": ["matmul"],
+                "max_error_budget": -0.1,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="finite and non-negative"):
+        load_backend_capability_manifest(path)
+
+
 def test_backend_manifest_rejects_duplicate_keys(tmp_path: Path) -> None:
     path = tmp_path / "candidate_backend.json"
     path.write_text(

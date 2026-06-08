@@ -40,6 +40,7 @@ The current prototype contains:
 - Deterministic backend conformance report artifacts for maintainer review.
 - Backend capability schema guidance for error budgets, latency, energy,
   calibration, and noise assumptions.
+- Capability-schema negative examples for invalid or misleading backend claims.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and

@@ -52,3 +52,18 @@ def test_backend_capability_schema_doc_states_security_boundary() -> None:
         "execute generated artifacts",
     ):
         assert forbidden_surface in text
+
+
+def test_backend_capability_schema_doc_covers_negative_examples() -> None:
+    text = Path("docs/BACKEND_CAPABILITY_SCHEMA.md").read_text(encoding="utf-8")
+
+    assert "Invalid Or Misleading Examples" in text
+    for misplaced_field in (
+        "`tuc.transfer_cost_profile.v0`",
+        "calibration_data",
+        "hardware_serial",
+        "benchmark_score",
+        "hardware_certificate",
+        "max_error_budget",
+    ):
+        assert misplaced_field in text
