@@ -289,6 +289,8 @@ Go/No-Go:
 
 - Real Triton-style intent reaches HAC-IR without executing untrusted user code
   during metadata ingestion.
+- Frontend intake is schema-versioned, bounded, and reviewable before any
+  source parser, Python import, or `@triton.jit` handling is accepted.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

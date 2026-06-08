@@ -36,6 +36,7 @@ def build_metadata() -> TritonKernelMetadata:
                     "attributes": {"semantic": "gelu_approx"},
                 },
             ],
+            "schema_version": "triton_metadata.v0",
             "metadata": {"frontend.source": "triton-like-metadata"},
         }
     )
@@ -48,6 +49,9 @@ def main() -> None:
     print("== graph ==")
     print(graph.name)
     print(", ".join(graph.operation_names()))
+
+    print("\n== intake report ==")
+    print(build_metadata().intake_report().dump())
 
     print("\n== runtime plan ==")
     print(result.dump_runtime_plan())

@@ -18,7 +18,7 @@ compatibility on day one.
 | Feature | Level | Notes |
 | --- | --- | --- |
 | `@triton.jit` syntax | L0 | Preserved as a design goal; no Python source parser yet. |
-| Triton-like metadata adapter | L3 | Declarative metadata can be converted into `ComputeGraph`; no source parsing or code execution. |
+| Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake reports prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L2 | Lowered through TLIR -> HAC-IR -> HS-IR and covered by golden correctness fixtures. |
 | Elementwise | L2 | Lowered and assigned to fallback backend by default; ReLU reference fixture covers semantics. |
@@ -34,8 +34,11 @@ compatibility on day one.
 - Unsupported operations must remain visible and explainable.
 - Fallback backend assignment must be explicit in HS-IR.
 - Compatibility claims must be backed by tests or examples.
+- Real Triton-facing intake must remain execution-free until a separate parser
+  and sandbox RFC exists.
 
 ## Next Step
 
-Connect executable backend outputs to the golden-kernel reference suite once
-backend execution exists.
+Use the schema-versioned Triton metadata intake contract as the entry point for
+future Triton idiom coverage before any source parser or `@triton.jit` handling
+is accepted.

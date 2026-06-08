@@ -16,10 +16,45 @@ from tuc.frontend.hints import CompilationHints
 from tuc.ir.memory import LayoutKind
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 
+TRITON_METADATA_SCHEMA_VERSION = "triton_metadata.v0"
+TRITON_METADATA_INTAKE_CONTRACT = "triton_intake.execution_free.v0"
 MAX_TRITON_METADATA_TENSORS = 4096
 MAX_TRITON_OPERATION_ARITY = 16
 MAX_TRITON_METADATA_OPERATIONS = 4096
 _RESERVED_ATTRIBUTE_PREFIX = "tuc."
+_FORBIDDEN_EXECUTION_SURFACE_KEYS = frozenset(
+    {
+        "bytecode",
+        "callable",
+        "command",
+        "device_path",
+        "dynamic_library",
+        "env",
+        "environment",
+        "executable",
+        "file_path",
+        "generated_artifact",
+        "import_module",
+        "jit_function",
+        "module",
+        "network",
+        "plugin_entrypoint",
+        "python_module",
+        "python_source",
+        "subprocess",
+        "url",
+    }
+)
+_BLOCKED_EXECUTION_SURFACES = (
+    "bytecode_inspection",
+    "device_access",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "python_import",
+    "subprocess_execution",
+)
 _EnumT = TypeVar("_EnumT", bound=StrEnum)
 
 
@@ -67,6 +102,7 @@ class TritonOperationMetadata:
         if len(outputs) > MAX_TRITON_OPERATION_ARITY:
             raise ValueError("triton operation output count exceeds adapter limit")
         _reject_reserved_attributes(self.attributes)
+        _reject_execution_surface_keys(self.attributes, "triton operation attributes")
         object.__setattr__(self, "inputs", inputs)
         object.__setattr__(self, "outputs", outputs)
         object.__setattr__(self, "attributes", dict(self.attributes))
@@ -79,9 +115,15 @@ class TritonKernelMetadata:
     name: str
     tensors: tuple[TritonTensorMetadata, ...]
     operations: tuple[TritonOperationMetadata, ...]
+    schema_version: str = TRITON_METADATA_SCHEMA_VERSION
     metadata: Mapping[str, object] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
+        if self.schema_version != TRITON_METADATA_SCHEMA_VERSION:
+            raise ValueError(
+                "triton metadata schema_version must be "
+                f"{TRITON_METADATA_SCHEMA_VERSION!r}"
+            )
         if len(self.tensors) > MAX_TRITON_METADATA_TENSORS:
             raise ValueError("triton metadata tensor count exceeds adapter limit")
         if len(self.operations) > MAX_TRITON_METADATA_OPERATIONS:
@@ -91,6 +133,7 @@ class TritonKernelMetadata:
         if not self.operations:
             raise ValueError("triton metadata must contain operations")
         _reject_reserved_attributes(self.metadata)
+        _reject_execution_surface_keys(self.metadata, "triton kernel metadata")
         object.__setattr__(self, "tensors", tuple(self.tensors))
         object.__setattr__(self, "operations", tuple(self.operations))
         object.__setattr__(self, "metadata", dict(self.metadata))
@@ -102,8 +145,13 @@ class TritonKernelMetadata:
         mapping = _require_plain_mapping(metadata, "triton kernel metadata")
         _reject_unknown_keys(
             mapping,
-            frozenset({"name", "tensors", "operations", "metadata"}),
+            frozenset({"name", "schema_version", "tensors", "operations", "metadata"}),
             "triton kernel metadata",
+        )
+        schema_version = _optional_string(
+            mapping,
+            "schema_version",
+            TRITON_METADATA_SCHEMA_VERSION,
         )
         tensors = tuple(
             _tensor_metadata_from_mapping(item)
@@ -120,6 +168,7 @@ class TritonKernelMetadata:
             name=_require_string(mapping, "name"),
             tensors=tensors,
             operations=operations,
+            schema_version=schema_version,
             metadata=_require_plain_mapping(graph_metadata, "metadata"),
         )
 
@@ -127,6 +176,42 @@ class TritonKernelMetadata:
         """Convert Triton-like metadata into TUC's hardware-agnostic graph."""
 
         return triton_metadata_to_compute_graph(self)
+
+    def intake_report(self) -> TritonIntakeReport:
+        """Return deterministic evidence for this execution-free intake."""
+
+        return build_triton_intake_report(self)
+
+
+@dataclass(frozen=True)
+class TritonIntakeReport:
+    """Inspectable evidence for one Triton metadata intake boundary."""
+
+    graph_name: str
+    schema_version: str
+    intake_contract: str
+    tensor_count: int
+    operation_count: int
+    operation_kinds: tuple[str, ...]
+    blocked_execution_surfaces: tuple[str, ...]
+
+    def dump(self) -> str:
+        """Render a deterministic frontend intake report."""
+
+        operation_kinds = ",".join(self.operation_kinds) if self.operation_kinds else "-"
+        blocked = ",".join(self.blocked_execution_surfaces)
+        return "\n".join(
+            (
+                f"triton.intake_report @{self.graph_name} {{",
+                f'  schema_version = "{self.schema_version}"',
+                f'  intake_contract = "{self.intake_contract}"',
+                f"  tensor_count = {self.tensor_count}",
+                f"  operation_count = {self.operation_count}",
+                f'  operation_kinds = "{operation_kinds}"',
+                f'  blocked_execution_surfaces = "{blocked}"',
+                "}",
+            )
+        )
 
 
 def triton_metadata_to_compute_graph(metadata: TritonKernelMetadata) -> ComputeGraph:
@@ -156,10 +241,28 @@ def triton_metadata_to_compute_graph(metadata: TritonKernelMetadata) -> ComputeG
 
     graph_metadata = dict(metadata.metadata)
     graph_metadata["frontend.adapter"] = "triton_metadata.v0"
+    graph_metadata["frontend.schema_version"] = metadata.schema_version
+    graph_metadata["frontend.intake_contract"] = TRITON_METADATA_INTAKE_CONTRACT
     return ComputeGraph(
         name=metadata.name,
         operations=tuple(operations),
         metadata=graph_metadata,
+    )
+
+
+def build_triton_intake_report(metadata: TritonKernelMetadata) -> TritonIntakeReport:
+    """Build deterministic evidence that metadata intake stayed execution-free."""
+
+    if not isinstance(metadata, TritonKernelMetadata):
+        raise TypeError("metadata must be TritonKernelMetadata")
+    return TritonIntakeReport(
+        graph_name=metadata.name,
+        schema_version=metadata.schema_version,
+        intake_contract=TRITON_METADATA_INTAKE_CONTRACT,
+        tensor_count=len(metadata.tensors),
+        operation_count=len(metadata.operations),
+        operation_kinds=tuple(operation.kind.value for operation in metadata.operations),
+        blocked_execution_surfaces=_BLOCKED_EXECUTION_SURFACES,
     )
 
 
@@ -273,6 +376,12 @@ def _reject_reserved_attributes(attributes: Mapping[str, object]) -> None:
             raise ValueError("triton frontend metadata must not contain reserved tuc.* keys")
 
 
+def _reject_execution_surface_keys(attributes: Mapping[str, object], label: str) -> None:
+    for key in attributes:
+        if key in _FORBIDDEN_EXECUTION_SURFACE_KEYS:
+            raise ValueError(f"{label} contains forbidden execution surface key: {key}")
+
+
 def _require_plain_mapping(value: object, label: str) -> dict[str, object]:
     if type(value) is not dict:
         raise TypeError(f"{label} must be a plain mapping")
@@ -347,8 +456,12 @@ def _enum_from_string(value: str, enum_type: type[_EnumT], label: str) -> _EnumT
 __all__ = [
     "MAX_TRITON_METADATA_OPERATIONS",
     "MAX_TRITON_METADATA_TENSORS",
+    "TRITON_METADATA_INTAKE_CONTRACT",
+    "TRITON_METADATA_SCHEMA_VERSION",
+    "TritonIntakeReport",
     "TritonKernelMetadata",
     "TritonOperationMetadata",
     "TritonTensorMetadata",
+    "build_triton_intake_report",
     "triton_metadata_to_compute_graph",
 ]

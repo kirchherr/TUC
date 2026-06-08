@@ -14,10 +14,14 @@ from tuc.compiler import (
     compile_graph,
 )
 from tuc.frontend import (
+    TRITON_METADATA_INTAKE_CONTRACT,
+    TRITON_METADATA_SCHEMA_VERSION,
     CompilationHints,
+    TritonIntakeReport,
     TritonKernelMetadata,
     TritonOperationMetadata,
     TritonTensorMetadata,
+    build_triton_intake_report,
     triton_metadata_to_compute_graph,
 )
 from tuc.ir.memory import (
@@ -81,11 +85,15 @@ __all__ = [
     "RuntimeOverrideError",
     "RuntimeOverrideRule",
     "RuntimeOverrideSet",
+    "TRITON_METADATA_INTAKE_CONTRACT",
+    "TRITON_METADATA_SCHEMA_VERSION",
     "TensorRef",
+    "TritonIntakeReport",
     "TritonKernelMetadata",
     "TritonOperationMetadata",
     "TritonTensorMetadata",
     "TransferEdge",
+    "build_triton_intake_report",
     "compile_graph",
     "dtype_size_bytes",
     "load_backend_capability_manifest",

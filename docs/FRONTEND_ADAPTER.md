@@ -8,6 +8,7 @@ The adapter accepts declarative metadata and produces a `ComputeGraph`.
 
 It supports:
 
+- Schema-versioned metadata through `triton_metadata.v0`.
 - Kernel name.
 - Tensor names, shapes, and dtypes.
 - Ordered operations.
@@ -16,6 +17,7 @@ It supports:
 - Developer hints.
 - Optional non-reserved operation attributes.
 - Optional layout metadata through a dedicated field.
+- Deterministic intake reports through `TritonIntakeReport`.
 
 ## Non-Goals
 
@@ -29,12 +31,29 @@ Frontend metadata is treated as untrusted data:
 
 - Mapping ingestion accepts only plain `dict`, `list`, and `tuple` structures.
 - Unknown fields are rejected.
+- Unsupported `schema_version` values are rejected.
 - Reserved `tuc.*` attributes are rejected at the frontend boundary.
+- Known execution-surface fields such as `import_module`, `python_source`,
+  `jit_function`, `dynamic_library`, `device_path`, `subprocess`, `url`, and
+  `generated_artifact` are rejected even when they appear inside otherwise
+  allowed metadata or operation attributes.
 - Operation tensor references must resolve to declared tensors.
 - Tensor and graph validation still happens in the core IR model.
 
 This keeps the frontend adapter as a data boundary instead of a code execution
 surface.
+
+## Intake Report
+
+`TritonKernelMetadata.intake_report().dump()` emits stable evidence that the
+frontend boundary remained execution-free. The report includes:
+
+- schema version
+- intake contract
+- tensor count
+- operation count
+- operation kinds
+- blocked execution surfaces
 
 ## Example
 
