@@ -1,0 +1,11 @@
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "external-vector",
+  "supported_ops": ["elementwise"],
+  "supports_noise_model": false,
+  "supports_calibration": false,
+  "preferred_for": ["elementwise"],
+  "memory_domain": "device_sram",
+  "supported_layouts": ["row_major"],
+  "produced_layouts": ["vector"]
+}

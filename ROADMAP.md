@@ -165,10 +165,14 @@ Deliverables:
 - Capability examples for simulator, GPU fallback, and future specialized
   backends.
 
+Completed evidence:
+
+- External-style backend author path demonstrates manifest loading, explicit
+  registry diagnostics, compiler planning, reusable conformance, and trusted
+  lowering without modifying TUC core.
+
 Next work:
 
-- Add a "backend author test" example that simulates an external developer
-  adding a backend without touching TUC core.
 - Add capability schema documentation for error, latency, energy, and
   calibration assumptions.
 - Add conformance reports that can be stored as reviewable artifacts.

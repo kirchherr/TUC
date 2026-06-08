@@ -66,6 +66,8 @@ Current slice:
 - Backend API v0.1 authoring guide for external prototype backends.
 - Backend author certification checklist and negative-test template.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
+- External-style backend author path covering manifest loading, registry
+  diagnostics, compiler planning, conformance, and trusted lowering.
 - Branch protection policy for `main` and expanded required CI smoke surface.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, wheel import
   check, and GitHub provenance/SBOM attestations.
@@ -103,7 +105,8 @@ Current focus:
 
 - Strengthen backend manifests, registry, diagnostics, and conformance fixtures.
 - Keep backend onboarding capability-first and execution-free.
-- Prepare an external-style backend author test.
+- Use the external-style backend author path as the reference for toy backend
+  proposals.
 
 ### Phase Delta: Runtime Planning
 
@@ -116,7 +119,8 @@ Current focus:
 
 ## Next
 
-- External-style backend author test.
+- Add capability schema documentation for error, latency, energy, and
+  calibration assumptions.
 - Real Triton integration as a credibility milestone after the abstraction proof
   remains stable.
 - Maintainer teams or organization-backed owner groups before broad external
