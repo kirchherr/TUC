@@ -104,10 +104,12 @@ Completed evidence:
   from its full report.
 - Proof reports include deterministic metadata for proof version, graph family,
   and backend set.
+- Proof artifact changes have a reviewer-facing checklist and merge gate.
 
 Next work:
 
-- Add a reviewer-facing checklist for changing proof artifacts.
+- Expand future proof graph families only when the existing proof contracts
+  remain stable.
 
 Go/No-Go:
 

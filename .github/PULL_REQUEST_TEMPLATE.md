@@ -17,6 +17,14 @@ pytest -q
 Does this change affect IR, backend APIs, runtime behavior, developer-facing
 syntax, or governance?
 
+## Proof Artifact Impact
+
+Does this change proof examples, proof metadata, proof golden files, HAC-IR
+proof fixtures, runtime-plan proof fixtures, or proof documentation?
+
+If yes, answer the checklist in
+`docs/PROOF_ARTIFACT_REVIEW.md`.
+
 ## Security Impact
 
 - What input boundary changed?

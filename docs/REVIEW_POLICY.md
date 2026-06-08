@@ -40,6 +40,8 @@ These changes require explicit owner review:
   behavior.
 - Runtime partitioning, transfer-cost modeling, runtime plans, or generated
   artifact handling.
+- Proof examples, proof metadata, proof golden files, HAC-IR proof fixtures,
+  runtime-plan proof fixtures, or proof documentation.
 - Security baseline, release governance, branch protection, or vulnerability
   handling.
 - RFCs that change compatibility, architecture, backend contracts, governance,
@@ -56,6 +58,8 @@ Owner review should answer:
   generated-code execution, or filesystem writes?
 - Are diagnostics bounded and free of secrets or misleading fallbacks?
 - Which tests or golden artifacts prove the intended behavior?
+- If proof artifacts changed, does the PR answer
+  [Proof artifact review checklist](PROOF_ARTIFACT_REVIEW.md)?
 
 ## Merge Policy
 

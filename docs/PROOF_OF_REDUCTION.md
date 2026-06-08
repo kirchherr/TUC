@@ -94,6 +94,9 @@ tests/golden/runtime_plans/proof_of_reduction.txt
 Together these artifacts let reviewers inspect compute intent, movement facts,
 backend assignments, transfer bytes, and correctness independently.
 
+Changes to proof artifacts must follow the
+[`PROOF_ARTIFACT_REVIEW.md`](PROOF_ARTIFACT_REVIEW.md) checklist.
+
 ## Security Notes
 
 The proof uses only:
