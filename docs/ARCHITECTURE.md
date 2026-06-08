@@ -1,6 +1,25 @@
 # TUC Architecture
 
-TUC is organized around a small number of compiler and runtime boundaries.
+TUC is The Universal Compute. It is organized around a small number of
+hardware-independent compute boundaries.
+
+The compiler pipeline is an implementation tool. The architectural goal is an
+open compute abstraction where software describes intent, hardware describes
+capabilities, and TUC performs inspectable translation and runtime planning.
+
+The strategic source of truth is [TUC Master Plan](../TUC_MASTER_PLAN.md).
+
+## Universal Compute Boundaries
+
+TUC protects four strategic boundaries:
+
+- Compute intent: what the workload means mathematically.
+- HAC-IR: hardware-neutral representation of that intent.
+- Capability descriptions: what hardware claims it can accept.
+- Runtime planning: where work executes and why.
+
+Backend-specific implementation details must stay outside HAC-IR and compiler
+neutral passes.
 
 ## Frontend
 

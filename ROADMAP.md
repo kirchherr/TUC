@@ -1,29 +1,67 @@
 # TUC Roadmap
 
+## Strategische Prioritaet
+
+Der strategische Masterplan steht ueber dieser Roadmap:
+
+- [TUC Master Plan](TUC_MASTER_PLAN.md)
+
+TUC wird ab jetzt als **The Universal Compute** gefuehrt. Der Compiler ist ein
+Werkzeug innerhalb von TUC, aber nicht die Identitaet des Projekts. Die zentrale
+Beweisfuehrung lautet:
+
+```text
+Compute Intent
+        ->
+The Universal Compute
+        ->
+Capability Description
+        ->
+Runtime Planning
+        ->
+Any Hardware
+```
+
+Roadmap-Punkte werden danach bewertet, ob sie Hardwareunabhaengigkeit erhoehen,
+HAC-IR staerken und die Integration zukuenftiger Hardware erleichtern.
+
 ## Zielbild
 
-TUC, der Triton Universal Compiler, soll KI-Entwicklern erlauben, mathematische Kernels einmal zu schreiben und sie auf unterschiedlichen Beschleunigern auszufuehren: NVIDIA/AMD-GPUs zuerst, danach photonische, neuromorphe und weitere spezialisierte Hardware.
+TUC, The Universal Compute, soll KI-Entwicklern erlauben, Compute Intent einmal
+zu beschreiben und ihn ueber eine hardwareunabhaengige Schnittstelle auf
+unterschiedliche Beschleuniger abzubilden: klassische GPUs zuerst, danach
+simulatorgestuetzte photonische, neuromorphe und weitere spezialisierte
+Hardware.
 
-Der entscheidende Gedanke ist nicht, sofort jede Hardware zu unterstuetzen. Der erste Beweis muss sein:
+Der entscheidende Gedanke ist nicht, sofort jede Hardware zu unterstuetzen oder
+einen weiteren Compiler zu bauen. Der erste Beweis muss sein:
 
-- Bestehende Triton-Kernels laufen weiter.
-- Die Compiler-Pipeline kann eine hardwareagnostische Zwischenform ausdruecken.
-- Backends koennen als Plugins angebunden werden.
-- Ein Runtime-System kann Arbeit sinnvoll zwischen mehreren Geraeten aufteilen.
-- Rauschen, Kalibrierung und physikalische Constraints werden als Compiler- und Runtime-Daten modelliert.
+- Compute Intent kann in HAC-IR hardwareunabhaengig dargestellt werden.
+- Hardware kann sich ueber Capability-Daten beschreiben.
+- Runtime Planning kann erklaeren, warum Arbeit wo ausgefuehrt wird.
+- Mindestens zwei Backend-Ziele koennen gemeinsam zu einem korrekten Ergebnis
+  beitragen.
+- Rauschen, Kalibrierung und physikalische Constraints bleiben Daten und
+  werden nicht als versteckte Backend-Logik in HAC-IR eingebaut.
 
 ## Strategischer MVP
 
-Der MVP sollte kein vollstaendiger Universal-Compiler sein. Er sollte ein glaubwuerdiger, messbarer Vertical Slice sein:
+Der MVP sollte keine vollstaendige Universal-Compute-Plattform sein. Er sollte ein
+glaubwuerdiger, messbarer Proof of Abstraction sein:
 
-1. Ein kleiner Satz realer Triton-Kernels: MatMul, Elementwise, Reduction, Softmax-nahe Patterns.
-2. Eine MLIR-basierte Pipeline mit drei klaren Ebenen: TLIR, HAC-IR, HS-IR.
-3. Bestehende GPU-Ausgabe bleibt kompatibel und performant genug.
-4. Eine Backend-API kann ein simuliertes Spezialgeraet anbinden.
-5. Ein Noise-Aware-Tuning-Prototyp zeigt, dass TUC nicht nur Geschwindigkeit, sondern Robustheit optimieren kann.
+1. `examples/proof_of_abstraction.py`: Graph -> HAC-IR -> Runtime Planning ->
+   Backend A -> Backend B -> Correct Result -> PASS.
+2. Ein kleiner Satz realer Triton-Kernels: MatMul, Elementwise, Reduction, Softmax-nahe Patterns.
+3. Eine MLIR-orientierte Pipeline mit drei klaren Ebenen: TLIR, HAC-IR, HS-IR.
+4. Bestehende GPU-Ausgabe bleibt kompatibel und korrekt genug.
+5. Eine Backend-API kann ein simuliertes Spezialgeraet anbinden.
 6. Eine einfache Runtime partitioniert einen kleinen Graphen zwischen GPU und Spezialbackend.
+7. Ein Noise-Aware-Tuning-Prototyp zeigt, dass TUC nicht nur Geschwindigkeit,
+   sondern Robustheit optimieren kann.
 
-Damit entsteht frueh ein sichtbarer Beweis: "TUC kann existierenden Triton-Code nehmen, ihn durch eine neue IR-Schicht fuehren und Teile davon auf ein nicht-traditionelles Backend mappen."
+Damit entsteht frueh ein sichtbarer Beweis: "TUC kann Compute Intent
+hardwareunabhaengig darstellen, ueber Capability-Daten planen und ueber mehrere
+Backend-Ziele zu einem korrekten mathematischen Ergebnis fuehren."
 
 ## Nicht-Ziele Fuer Version 1
 
@@ -415,7 +453,8 @@ Gegenmassnahme:
 
 ### Risiko: Open-Source-Governance Ist Zu Spaet
 
-Ein Universal-Compiler braucht Vertrauen von Hardware-Partnern und Entwicklern.
+Eine Universal-Compute-Schicht braucht Vertrauen von Hardware-Partnern und
+Entwicklern.
 
 Gegenmassnahme:
 
@@ -440,6 +479,8 @@ TUC sollte in der ersten Phase nicht versuchen, "Universal" vollstaendig einzulo
 
 Der richtige erste Claim lautet:
 
-"Wir koennen bestehende Triton-Kernels kompatibel halten, eine hardwareagnostische Compute-IR einfuehren und einen Teil der Arbeit ueber eine dokumentierte Backend-API an Spezialhardware oder Simulatoren delegieren."
+"Wir koennen Compute Intent in HAC-IR hardwareunabhaengig darstellen, ueber
+Capability-Daten planen und ueber mehrere Backend-Ziele ein korrektes Ergebnis
+erzeugen."
 
 Wenn dieser Claim belastbar ist, wird aus der Vision eine Plattform.

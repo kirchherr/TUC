@@ -3,6 +3,12 @@
 This file tracks concrete progress against the roadmap. It is deliberately
 shorter and more operational than `ROADMAP.md`.
 
+## Strategic Priority
+
+TUC is now led by [TUC Master Plan](../TUC_MASTER_PLAN.md). The project identity
+is **The Universal Compute**: a proof that compute intent can flow through a
+hardware-independent interface into capability-driven runtime planning.
+
 ## Completed
 
 ### Phase 0: Project Foundation
@@ -16,6 +22,8 @@ shorter and more operational than `ROADMAP.md`.
 - Rule-based runtime partitioning.
 - Unit tests and Phase 0 vertical-slice example.
 - Initial commit pushed to GitHub.
+- Strategic master plan promoted as the top-level project guide.
+- Proof-of-abstraction example for Objective Alpha.
 
 ## In Progress
 
@@ -71,6 +79,8 @@ Current slice:
 
 ## Next
 
+- Real Triton integration remains the next credibility milestone after the
+  proof-of-abstraction path is established.
 - Maintainer teams or organization-backed owner groups before broad external
   contribution.
 - Plugin lifecycle RFC and sandboxing model before any executable backend

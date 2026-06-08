@@ -1,4 +1,4 @@
-"""TUC, the experimental Triton Universal Compiler prototype."""
+"""TUC, the experimental Universal Compute prototype."""
 
 from tuc.backends import (
     BackendRegistration,

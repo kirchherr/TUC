@@ -1,16 +1,17 @@
 # MVP Definition
 
-The TUC MVP is a vertical slice, not a full universal compiler.
+The TUC MVP is a vertical proof of abstraction, not a full compiler product.
 
 ## MVP Claim
 
-TUC can represent a Triton-style compute workload in a hardware-agnostic IR,
-carry developer hints through the pipeline, partition operations by backend
-capabilities, and lower supported operations into a backend artifact.
+TUC can represent compute intent in a hardware-agnostic IR, partition operations
+by backend capabilities, explain the runtime plan, and produce a deterministic
+mathematical result that matches an independent reference.
 
 ## Included In MVP
 
 - MatMul, elementwise, reduction, and softmax-like operation families.
+- `examples/proof_of_abstraction.py` as Objective Alpha.
 - Developer hints as metadata.
 - Hardware-agnostic compute graph model.
 - Backend capability declarations.
@@ -34,6 +35,8 @@ capabilities, and lower supported operations into a backend artifact.
 
 - The repository builds and tests inside Docker.
 - The Phase 0 example runs end to end.
+- The proof-of-abstraction example prints HAC-IR, backend assignments, transfer
+  plan, result, reference result, and `PASS`.
 - Backend capability and partitioning behavior are inspectable.
 - MVP kernel semantics are covered by deterministic golden reference tests.
 - The next implementation step toward MLIR is clear and documented.
