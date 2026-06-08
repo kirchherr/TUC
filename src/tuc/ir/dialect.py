@@ -22,6 +22,29 @@ MOVEMENT_MODEL_VERSION = "movement.v0"
 RESERVED_COMPILER_ATTRIBUTE_PREFIX = "tuc."
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
 
+HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES: Mapping[str, str] = MappingProxyType(
+    {
+        "tuc.assigned_backend": "backend assignment belongs to HS-IR",
+        "tuc.backend_binary": "compiled backend artifacts belong outside HAC-IR",
+        "tuc.backend_config": "backend configuration belongs to capabilities or HS-IR",
+        "tuc.backend_kernel": "backend kernel names belong outside HAC-IR",
+        "tuc.cuda_arch": "vendor target details belong to backend capabilities",
+        "tuc.cuda_device": "device selection belongs to runtime planning",
+        "tuc.cuda_launch_grid": "launch configuration belongs to backend lowering",
+        "tuc.cuda_stream": "runtime stream handles belong outside HAC-IR",
+        "tuc.device_path": "host device paths are not compute intent",
+        "tuc.dynamic_library": "dynamic libraries are not HAC-IR data",
+        "tuc.generated_artifact": "generated artifacts must not enter HAC-IR",
+        "tuc.hip_target": "vendor target details belong to backend capabilities",
+        "tuc.metal_device": "device selection belongs to runtime planning",
+        "tuc.neuromorphic_core": "specialized placement belongs to backend capabilities",
+        "tuc.photonic_mesh": "specialized placement belongs to backend capabilities",
+        "tuc.plugin_entrypoint": "plugin entrypoints are not HAC-IR data",
+        "tuc.produced_layout": "backend-produced layout belongs to HS-IR",
+        "tuc.vendor": "vendor identity belongs to backend capabilities",
+    }
+)
+
 
 class HacAttributeKind(StrEnum):
     """Small schema vocabulary for prototype IR operation attributes."""
@@ -436,6 +459,15 @@ def _validate_operation_attributes(
 
     for name, value in attributes.items():
         if name.startswith(RESERVED_COMPILER_ATTRIBUTE_PREFIX):
+            if (
+                dialect_label == "HAC-IR"
+                and name in HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES
+            ):
+                reason = HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES[name]
+                raise ValueError(
+                    f"operation {operation.name!r} has forbidden HAC-IR "
+                    f"hardware attribute: {name} ({reason})"
+                )
             if name not in contract.allowed_attributes:
                 raise ValueError(
                     f"operation {operation.name!r} has unsupported {dialect_label} "
@@ -757,6 +789,7 @@ def _validate_string_tuple(value: object, label: str) -> None:
 
 __all__ = [
     "HAC_ATTRIBUTE_CONTRACTS",
+    "HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES",
     "HAC_IR_DIALECT_VERSION",
     "HAC_IR_MLIR_DIALECT",
     "HAC_OPERATION_CONTRACTS",

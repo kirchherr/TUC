@@ -126,6 +126,20 @@ Deliverables:
 - Negative tests for hardware-specific leakage into HAC-IR.
 - Deterministic HAC-IR golden dumps for proof and MVP graphs.
 
+Completed evidence:
+
+- `docs/HAC_IR_NEUTRALITY.md` defines the reviewer-facing neutrality checklist.
+- `HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES` rejects known high-risk vendor, device,
+  plugin, backend-artifact, and specialized-placement leakage.
+- Negative tests verify that hardware-specific `tuc.*` attributes fail closed
+  before backend assignment or lowering can treat them as valid facts.
+
+Next work:
+
+- Add a HAC-IR semantic charter that separates compute intent, compiler facts,
+  planning constraints, and forbidden backend details.
+- Expand deterministic HAC-IR golden dumps for the next proof and MVP graphs.
+
 Go/No-Go:
 
 - HAC-IR can express MVP compute intent without naming vendor hardware.

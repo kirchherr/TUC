@@ -8,6 +8,7 @@ from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
 from tuc.ir import (
     HAC_IR_DIALECT_VERSION,
+    HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES,
     HAC_OPERATION_CONTRACTS,
     ComputeGraph,
     ComputeOperation,
@@ -75,7 +76,7 @@ def test_hac_ir_contract_rejects_unknown_compiler_attribute() -> None:
         operation,
         attributes={
             **operation.attributes,
-            "tuc.dynamic_library": "unexpected_backend.dll",
+            "tuc.unreviewed_compiler_fact": True,
         },
     )
     bad_graph = ComputeGraph(
@@ -88,14 +89,40 @@ def test_hac_ir_contract_rejects_unknown_compiler_attribute() -> None:
         validate_hac_module_contract(replace(hac_ir, graph=bad_graph))
 
 
-def test_hac_ir_contract_rejects_backend_assignment_before_hs_ir() -> None:
+@pytest.mark.parametrize(
+    "attribute_name, attribute_value",
+    [
+        ("tuc.assigned_backend", "gpu"),
+        ("tuc.backend_binary", "kernel.cubin"),
+        ("tuc.backend_config", "vendor-fast-math"),
+        ("tuc.backend_kernel", "vendor_matmul"),
+        ("tuc.cuda_arch", "sm_90"),
+        ("tuc.cuda_device", "cuda:0"),
+        ("tuc.cuda_launch_grid", (16, 16, 1)),
+        ("tuc.cuda_stream", "stream0"),
+        ("tuc.device_path", "/dev/nvidia0"),
+        ("tuc.dynamic_library", "unexpected_backend.dll"),
+        ("tuc.generated_artifact", "build/backend.o"),
+        ("tuc.hip_target", "gfx942"),
+        ("tuc.metal_device", "mps0"),
+        ("tuc.neuromorphic_core", "core0"),
+        ("tuc.photonic_mesh", "mesh0"),
+        ("tuc.plugin_entrypoint", "package.module:backend"),
+        ("tuc.produced_layout", "row_major"),
+        ("tuc.vendor", "example-vendor"),
+    ],
+)
+def test_hac_ir_contract_rejects_hardware_specific_leakage(
+    attribute_name: str,
+    attribute_value: object,
+) -> None:
     hac_ir = _compiled_hac_module()
     operation = hac_ir.graph.operations[0]
     bad_operation = replace(
         operation,
         attributes={
             **operation.attributes,
-            "tuc.assigned_backend": "gpu",
+            attribute_name: attribute_value,
         },
     )
     bad_graph = ComputeGraph(
@@ -104,8 +131,14 @@ def test_hac_ir_contract_rejects_backend_assignment_before_hs_ir() -> None:
         metadata=hac_ir.graph.metadata,
     )
 
-    with pytest.raises(ValueError, match="unsupported HAC-IR compiler attribute"):
+    with pytest.raises(ValueError, match="forbidden HAC-IR hardware attribute"):
         validate_hac_module_contract(replace(hac_ir, graph=bad_graph))
+
+
+def test_hac_ir_forbidden_hardware_attributes_are_not_hac_attributes() -> None:
+    hac_attributes = set(HAC_OPERATION_CONTRACTS[OperationKind.MATMUL].allowed_attributes)
+
+    assert set(HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES).isdisjoint(hac_attributes)
 
 
 def test_hac_ir_contract_rejects_invalid_operation_arity() -> None:

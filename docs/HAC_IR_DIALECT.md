@@ -18,6 +18,9 @@ tuc_hac.v0
 
 The Python contract lives in `tuc.ir.dialect`.
 
+Reviewer-facing neutrality rules live in
+[`HAC_IR_NEUTRALITY.md`](HAC_IR_NEUTRALITY.md).
+
 ## MVP Operations
 
 The v0 operation family is deliberately small:
@@ -59,6 +62,10 @@ Optional compiler attributes are:
 
 Unknown `tuc.*` attributes are rejected in HAC-IR v0. HS-IR-specific attributes,
 such as backend assignments, must not appear before HAC-IR validation completes.
+The executable contract also names the current high-risk hardware-leakage
+attributes in `HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES` so reviewers can see the
+boundary that protects HAC-IR from vendor, device, plugin, and backend-artifact
+details.
 
 ## User Hints
 
