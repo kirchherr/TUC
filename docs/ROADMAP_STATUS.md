@@ -28,7 +28,7 @@ hardware-independent interface into capability-driven runtime planning.
 
 ## In Progress
 
-### Phase 1: Triton Compatibility And IR Skeleton
+### Phase Alpha: Smallest Unarguable Proof
 
 Current slice:
 
@@ -36,7 +36,7 @@ Current slice:
 - TLIR -> HAC-IR lowering.
 - HAC-IR -> HS-IR lowering with backend assignments.
 - Stable text dumps for debugging and tests.
-- Phase 1 vertical-slice example.
+- Early TLIR/HAC-IR/HS-IR vertical-slice example.
 - MVP kernel family definition.
 - Triton compatibility matrix.
 - Data-movement-aware HAC-IR annotations for MVP kernels.
@@ -73,15 +73,47 @@ Current slice:
   success, and the `pypi` environment.
 - CODEOWNERS-backed review policy for compiler, runtime, backend, governance,
   and release trust boundaries.
-- Explicit backend capability registry for Phase 2 manifest-loaded planning
+- Explicit backend capability registry for manifest-loaded planning
   data without plugin discovery or backend code execution.
 - Pure-data backend support diagnostics that explain accepted and rejected
   operation/backend matches before partitioning.
+- Masterplan-aligned roadmap organized around proof phases instead of a
+  compiler-centric implementation timeline.
+
+### Phase Beta: HAC-IR Contract
+
+Current focus:
+
+- Preserve HAC-IR as the hardware-neutral compute-intent layer.
+- Keep vendor-specific assumptions out of HAC-IR semantics.
+- Expand deterministic HAC-IR proof and MVP dumps.
+- Add negative tests for hardware-specific leakage into reserved `tuc.*`
+  attributes.
+
+### Phase Gamma: Capability Framework
+
+Current focus:
+
+- Strengthen backend manifests, registry, diagnostics, and conformance fixtures.
+- Keep backend onboarding capability-first and execution-free.
+- Prepare an external-style backend author test.
+
+### Phase Delta: Runtime Planning
+
+Current focus:
+
+- Keep operation placement explainable.
+- Golden-test proof-of-abstraction runtime plans.
+- Connect backend support diagnostics to compiler-level decision reports once
+  that branch lands.
 
 ## Next
 
-- Real Triton integration remains the next credibility milestone after the
-  proof-of-abstraction path is established.
+- Golden runtime-plan dumps for proof-of-abstraction graphs.
+- HAC-IR neutrality checklist and tests.
+- External-style backend author test.
+- Real Triton integration as a credibility milestone after the abstraction proof
+  remains stable.
 - Maintainer teams or organization-backed owner groups before broad external
   contribution.
 - Plugin lifecycle RFC and sandboxing model before any executable backend

@@ -1,486 +1,336 @@
 # TUC Roadmap
 
-## Strategische Prioritaet
+## Strategic Priority
 
-Der strategische Masterplan steht ueber dieser Roadmap:
+The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-- [TUC Master Plan](TUC_MASTER_PLAN.md)
+TUC is **The Universal Compute**. The compiler pipeline is an implementation
+tool inside TUC, not the project's identity.
 
-TUC wird ab jetzt als **The Universal Compute** gefuehrt. Der Compiler ist ein
-Werkzeug innerhalb von TUC, aber nicht die Identitaet des Projekts. Die zentrale
-Beweisfuehrung lautet:
+The roadmap answers one question:
 
 ```text
-Compute Intent
-        ->
-The Universal Compute
-        ->
-Capability Description
-        ->
-Runtime Planning
-        ->
-Any Hardware
+How do we prove that compute intent can flow through a hardware-independent
+interface into capability-driven runtime planning and correct execution?
 ```
 
-Roadmap-Punkte werden danach bewertet, ob sie Hardwareunabhaengigkeit erhoehen,
-HAC-IR staerken und die Integration zukuenftiger Hardware erleichtern.
-
-## Zielbild
-
-TUC, The Universal Compute, soll KI-Entwicklern erlauben, Compute Intent einmal
-zu beschreiben und ihn ueber eine hardwareunabhaengige Schnittstelle auf
-unterschiedliche Beschleuniger abzubilden: klassische GPUs zuerst, danach
-simulatorgestuetzte photonische, neuromorphe und weitere spezialisierte
-Hardware.
-
-Der entscheidende Gedanke ist nicht, sofort jede Hardware zu unterstuetzen oder
-einen weiteren Compiler zu bauen. Der erste Beweis muss sein:
-
-- Compute Intent kann in HAC-IR hardwareunabhaengig dargestellt werden.
-- Hardware kann sich ueber Capability-Daten beschreiben.
-- Runtime Planning kann erklaeren, warum Arbeit wo ausgefuehrt wird.
-- Mindestens zwei Backend-Ziele koennen gemeinsam zu einem korrekten Ergebnis
-  beitragen.
-- Rauschen, Kalibrierung und physikalische Constraints bleiben Daten und
-  werden nicht als versteckte Backend-Logik in HAC-IR eingebaut.
-
-## Strategischer MVP
-
-Der MVP sollte keine vollstaendige Universal-Compute-Plattform sein. Er sollte ein
-glaubwuerdiger, messbarer Proof of Abstraction sein:
-
-1. `examples/proof_of_abstraction.py`: Graph -> HAC-IR -> Runtime Planning ->
-   Backend A -> Backend B -> Correct Result -> PASS.
-2. Ein kleiner Satz realer Triton-Kernels: MatMul, Elementwise, Reduction, Softmax-nahe Patterns.
-3. Eine MLIR-orientierte Pipeline mit drei klaren Ebenen: TLIR, HAC-IR, HS-IR.
-4. Bestehende GPU-Ausgabe bleibt kompatibel und korrekt genug.
-5. Eine Backend-API kann ein simuliertes Spezialgeraet anbinden.
-6. Eine einfache Runtime partitioniert einen kleinen Graphen zwischen GPU und Spezialbackend.
-7. Ein Noise-Aware-Tuning-Prototyp zeigt, dass TUC nicht nur Geschwindigkeit,
-   sondern Robustheit optimieren kann.
-
-Damit entsteht frueh ein sichtbarer Beweis: "TUC kann Compute Intent
-hardwareunabhaengig darstellen, ueber Capability-Daten planen und ueber mehrere
-Backend-Ziele zu einem korrekten mathematischen Ergebnis fuehren."
-
-## Nicht-Ziele Fuer Version 1
-
-- Kein sofortiger Support fuer beliebige PyTorch-Modelle.
-- Kein echter Quanten-Hybrid-Backend im ersten Jahr.
-- Keine komplette Neuimplementierung von Triton.
-- Keine perfekte Performance-Paritaet fuer alle Kernels.
-- Keine vollautomatische Modellpartitionierung ohne explizite Kostenmodelle.
-
-Diese Begrenzungen sind wichtig, damit die Vision gross bleibt, aber die Umsetzung nicht zerfasert.
-
-## Architektur-Arbeitsstraenge
-
-### 1. Frontend Und Developer Experience
-
-Ziel: Entwickler schreiben weiterhin vertraute Triton-nahe Python-Kernels.
-
-Aufgaben:
-
-- Bestehende `@triton.jit`-Semantik analysieren und Kompatibilitaetsmatrix erstellen.
-- Neue optionale Hints definieren, zum Beispiel `robust_to_noise`, `prefer_sparsity`, `prefer_analog_linear`, `max_error_budget`.
-- Hints zuerst als Metadaten durch die Pipeline tragen, ohne Verhalten zu aendern.
-- Fehlerausgaben und Debug-Views bauen: "Warum wurde dieser Kernel so partitioniert?"
-- Golden-Kernel-Suite fuer typische AI-Workloads aufbauen.
-
-Meilenstein:
-
-- Ein Entwickler kann einen bestehenden Triton-Kernel mit TUC kompilieren, Hints setzen und die transformierte IR inspizieren.
-
-### 2. MLIR Pipeline
-
-Ziel: Eine robuste, erweiterbare Compiler-Pipeline, die nicht an eine einzelne Hardwarearchitektur gebunden ist.
-
-Ebenen:
-
-- TLIR: Triton-nahe High-Level-Darstellung.
-- HAC-IR: Hardware-Agnostic Compute IR fuer fundamentale Operationen und Constraints.
-- HS-IR: Hardware-Specific IR fuer konkrete Zielgeraete.
-
-Aufgaben:
-
-- Minimalen HAC-IR-Dialekt definieren: Tensor-Operationen, lineare Algebra, Reduktionen, Elementwise-Operationen, Fehlerbudgets, Datenbewegung.
-- Lowering von TLIR zu HAC-IR fuer die MVP-Kernels bauen.
-- Lowering von HAC-IR zu GPU-HS-IR bauen.
-- Pass-Infrastruktur fuer Pattern-Rewrites, Fusion, Partitionierung und Kostenmodell-Anbindung aufsetzen.
-- IR-Printer und Visualisierung fuer Debugging bereitstellen.
-
-Meilenstein:
-
-- MatMul und Elementwise-Kernels koennen von TLIR zu HAC-IR und zurueck in ein funktionierendes GPU-Backend laufen.
-
-### 3. Backend API
-
-Ziel: Hardware-Hersteller sollen ein Backend schreiben koennen, ohne die ganze Compiler-Pipeline zu verstehen.
-
-Aufgaben:
-
-- Capability-Modell definieren: unterstuetzte Ops, Speicherformate, Latenzmodell, Bandbreite, Fehlerprofil, Kalibrierungsbedarf.
-- Backend-Vertrag definieren: Input HS-IR, Output Code/Config/Runtime-Plan.
-- Plugin-Lifecycle definieren: Registrierung, Feature Discovery, Validierung, Versionierung.
-- Referenzbackend bauen: CPU- oder Simulator-Backend als einfaches Beispiel.
-- Documentation-first API: Ein Backend-Autor muss innerhalb weniger Tage einen Toy-Backend anbinden koennen.
-
-Meilenstein:
-
-- Ein externes Beispielbackend kann eine lineare Operation akzeptieren, kompilieren und ueber die Runtime ausfuehren.
-
-### 4. GPU Legacy Backends
-
-Ziel: Vertrauen gewinnen, indem existierende NVIDIA/AMD-Faehigkeiten erhalten bleiben.
-
-Aufgaben:
-
-- Bestehende Triton-GPU-Pipeline respektieren und nur gezielt erweitern.
-- PTX/NVIDIA- und AMD/HIP-Pfade als Baseline behalten.
-- Benchmark-Suite gegen Triton, cuBLAS/rocBLAS und relevante Kernel-Baselines aufbauen.
-- Auto-Tuning nicht neu erfinden, sondern bestehende Mechanismen integrieren.
-- Performance-Regressions frueh in CI sichtbar machen.
-
-Meilenstein:
-
-- Fuer MVP-Kernels liegt TUC auf GPU innerhalb eines definierten Performance-Fensters zur Triton-Baseline, zum Beispiel 90 bis 100 Prozent je nach Kerneltyp.
-
-### 5. Photonik-Referenzbackend
-
-Ziel: Den radikalen Teil des Konzepts beweisen, ohne direkt von realem Silizium abzuhaengen.
-
-Aufgaben:
-
-- Photonik-Simulator bauen oder integrieren: MZI-Matrixmodell, ADC/DAC-Grenzen, thermisches Rauschen, Kalibrierungsparameter.
-- HAC-IR-Patterns erkennen, die linear-analog abbildbar sind.
-- Nicht-lineare Operationen automatisch an digitale Hardware delegieren.
-- Runtime-Plan erzeugen: Analog-Teil, digitale Nachbearbeitung, Datenbewegung.
-- Thermal-Tuning/Calibration als explizite Runtime-Schritte modellieren.
-
-Meilenstein:
-
-- Ein kleiner Attention- oder MLP-Block wird zwischen GPU und photonischem Simulator partitioniert, mit messbarem Genauigkeits-/Robustheitsbericht.
-
-### 6. Neuromorphes Referenzbackend
-
-Ziel: Eine zweite nicht-traditionelle Klasse testen, um zu beweisen, dass HAC-IR nicht nur "Photonik plus GPU" ist.
-
-Aufgaben:
-
-- Sparse Connectivity als Zielmodell definieren.
-- Dichte Gewichte in sparse, gewichtete Verbindungen transformieren.
-- Aktivierungs-/Update-Regeln als Spike-nahe Approximationen modellieren.
-- Routing- und Synapsen-Konfiguration statt klassischem Maschinencode erzeugen.
-- Genauigkeits- und Energie-Modell als Backend-Capability erfassen.
-
-Meilenstein:
-
-- Ein kleiner klassifizierender Netzwerkblock kann in eine neuromorphe Konfiguration uebersetzt und im Simulator validiert werden.
-
-### 7. Noise-Aware Auto-Tuner
-
-Ziel: TUC optimiert nicht nur Laufzeit, sondern physikalische Robustheit.
-
-Aufgaben:
-
-- Error-Budget-Modell fuer HAC-IR definieren.
-- Rauschmodelle pro Backend erfassen: thermisch, Quantisierung, ADC/DAC, sparsity-induced error.
-- Tuning-Ziele definieren: Latenz, Energie, Genauigkeit, Robustheit.
-- Multi-Objective-Suche implementieren.
-- Ergebnisberichte erzeugen: gewaehlte Strategie, verworfene Alternativen, erwarteter Fehler.
-
-Meilenstein:
-
-- Fuer einen photonischen MatMul- oder MLP-Block waehlt der Tuner eine robustere Strategie als die schnellste naive Strategie und belegt das durch Simulation.
-
-### 8. Runtime Und Dynamic Graph Partitioning
-
-Ziel: TUC entscheidet zur Laufzeit, welche Hardware welchen Graphteil ausfuehrt.
-
-Aufgaben:
-
-- Device Discovery bauen: vorhandene GPUs, Spezialgeraete, Simulatoren.
-- Unified Execution Plan definieren: Ops, Datenbewegung, Synchronisation, Kalibrierung.
-- Cost Model integrieren: Transferkosten, Latenz, Durchsatz, Fehlerbudget.
-- Puffer- und Speicherstrategie fuer heterogene Ausfuehrung definieren.
-- PyTorch-Integration als optionaler Backend-/Compilerpfad vorbereiten.
-
-Meilenstein:
-
-- Ein Mini-Graph wird automatisch in GPU- und Spezialbackend-Abschnitte geteilt und korrekt ausgefuehrt.
-
-## Zeitplan
-
-### Phase 0: Projektfundament, Monat 0 bis 1
-
-Ergebnis: Das Projekt ist arbeitsfaehig und technisch fokussiert.
-
-Lieferobjekte:
-
-- Architekturentscheidung: Fork, Extension oder Layer ueber Triton.
-- Repository-Struktur.
-- Build- und Testumgebung.
-- Kompatibilitaetsmatrix fuer Triton-Kernels.
-- Erste Governance: Maintainer-Modell, RFC-Prozess, Contribution Guidelines.
-- Definition der MVP-Kernels.
+Roadmap items are accepted when they strengthen at least one of the strategic
+assets:
+
+- HAC-IR as hardware-neutral compute intent.
+- Backend capability descriptions as hardware self-description.
+- Runtime planning as explainable placement and movement reasoning.
+- Open integration as the path for future hardware vendors.
+
+## Roadmap Rules
+
+Before any roadmap item is accepted, ask:
+
+1. Does this increase hardware independence?
+2. Does this strengthen or protect HAC-IR?
+3. Would a future hardware vendor benefit from this without changing TUC core?
+4. Can the result be inspected, tested, and reproduced?
+5. Does it avoid new compiler attack surfaces such as plugin discovery, dynamic
+   imports, subprocess execution, or generated-artifact execution?
+
+If the answer to the first question is no, the item is not core roadmap work.
+
+## Non-Goals For Version 1
+
+- No complete Triton fork.
+- No production CUDA, HIP, photonic, or neuromorphic backend.
+- No performance-parity claim against vendor libraries.
+- No auto-discovery or execution of third-party backend plugins.
+- No arbitrary PyTorch model support.
+- No native parser, native MLIR dialect, or executable artifact path without a
+  dedicated security RFC, fuzzing plan, and sandboxing model.
+
+## Proof Ladder
+
+Each phase maps to the proof ladder from the master plan.
+
+| Level | Meaning | TUC Evidence |
+| --- | --- | --- |
+| 0 | Architecture | Master plan, RFCs, documented boundaries |
+| 1 | Prototype | In-repository Python implementation |
+| 2 | Proof | Working example with correct result |
+| 3 | Validation | Golden output and reproducible test |
+| 4 | Integration | External-style backend author path |
+| 5 | Adoption | Organization-ready integration surface |
+
+## Phase Alpha: Smallest Unarguable Proof
+
+Status: active and partially complete.
+
+Purpose: prove the central claim before expanding scope.
+
+Target:
+
+```text
+Graph
+    ->
+HAC-IR
+    ->
+Runtime Planning
+    ->
+Backend A
+    ->
+Backend B
+    ->
+Correct Result
+```
+
+Required artifacts:
+
+- `examples/proof_of_abstraction.py`
+- `tests/golden/proofs/proof_of_abstraction.txt`
+- `docs/PROOF_OF_ABSTRACTION.md`
+
+Completed evidence:
+
+- Input graph is declared as compute intent.
+- HAC-IR dump is deterministic.
+- Runtime plan assigns matmul to `linear-sim` and elementwise fallback to `gpu`.
+- Transfer plan is inspectable.
+- Result matches independent NumPy reference semantics.
+- Golden proof output validates full stdout.
+
+Next work:
+
+- Add a second proof graph using reduction or softmax.
+- Add proof report metadata for proof version, graph family, and backend set.
+- Add a reviewer-facing checklist for changing proof artifacts.
 
 Go/No-Go:
 
-- Build laeuft lokal und in CI.
-- Mindestens ein bestehender Triton-Kernel ist reproduzierbar testbar.
+- The proof must end with `PASS`.
+- The full report must be reproducible.
+- The proof must not rely on real hardware, network access, plugin discovery,
+  dynamic imports, or generated-artifact execution.
 
-### Phase 1: Triton-Kompatibilitaet Und IR-Skeleton, Monat 1 bis 3
+## Phase Beta: HAC-IR Contract
 
-Ergebnis: TUC kann existierende Kernels durch eine kontrollierte Pipeline fuehren.
+Status: in progress.
 
-Lieferobjekte:
+Purpose: make the hardware-independent interface stronger than any individual
+backend.
 
-- Frontend-Hints als Metadaten.
-- TLIR/HAC-IR/HS-IR Skeleton.
-- IR-Dumps und Debug-Ausgaben.
-- MatMul- und Elementwise-Vertical-Slice.
-- Baseline-Benchmarks gegen Triton.
+Deliverables:
 
-Go/No-Go:
-
-- MatMul laeuft end-to-end.
-- Hints gehen durch die Pipeline.
-- Keine groben Performance- oder Korrektheitsregressionen im MVP-Scope.
-
-### Phase 2: HAC-IR Und Backend API, Monat 3 bis 6
-
-Ergebnis: TUC wird zu einer echten Plattform statt nur einem Fork.
-
-Lieferobjekte:
-
-- HAC-IR v0.1.
-- Backend Capability Schema.
-- Plugin-Registrierung.
-- Referenz-Simulatorbackend.
-- API-Dokumentation fuer Backend-Autoren.
+- HAC-IR semantic charter: what belongs in HAC-IR and what is forbidden.
+- Reserved `tuc.*` attribute policy.
+- Operation-family contracts for matmul, elementwise, reduction, and softmax.
+- Data-movement attributes as compiler-produced facts.
+- Error-budget attributes as intent and planning constraints.
+- Negative tests for hardware-specific leakage into HAC-IR.
+- Deterministic HAC-IR golden dumps for proof and MVP graphs.
 
 Go/No-Go:
 
-- Ein Toy-Backend kann eine lineare Operation uebernehmen.
-- GPU-Backend bleibt fuer MVP-Kernels kompatibel.
-- API ist stabil genug fuer externe Experimente.
+- HAC-IR can express MVP compute intent without naming vendor hardware.
+- Unknown reserved attributes fail closed.
+- Hardware-specific details stay in capabilities, manifests, HS-IR, backend
+  implementations, or runtime plans.
 
-### Phase 3: Noise-Aware Tuning Und Photonik-Simulator, Monat 6 bis 9
+## Phase Gamma: Capability Framework
 
-Ergebnis: Der physikalische Compiler-Ansatz wird sichtbar.
+Status: in progress.
 
-Lieferobjekte:
+Purpose: let hardware describe what it can do without forcing implementation
+details into HAC-IR.
 
-- Photonik-Simulator oder Integrationsschicht.
-- Rauschmodell v0.1.
-- Tuning-Ziele fuer Geschwindigkeit, Energie und Robustheit.
-- Graph-Splitting fuer lineare und nicht-lineare Abschnitte.
-- Ergebnisreport fuer Tuning-Entscheidungen.
+Deliverables:
 
-Go/No-Go:
+- Schema-versioned backend capability manifests.
+- Explicit backend capability registry.
+- Pure-data backend support diagnostics.
+- Backend conformance fixtures.
+- Backend author certification checklist.
+- Negative test template for backend authors.
+- Capability examples for simulator, GPU fallback, and future specialized
+  backends.
 
-- TUC kann eine lineare Operation an den Photonik-Simulator delegieren.
-- Nicht-lineare Operationen bleiben korrekt auf digitaler Hardware.
-- Robustheitsgewinn ist messbar.
+Next work:
 
-### Phase 4: Runtime Partitioning, Monat 9 bis 12
-
-Ergebnis: TUC kann heterogen ausfuehren, nicht nur heterogen kompilieren.
-
-Lieferobjekte:
-
-- Device Discovery.
-- Execution Plan Format.
-- Datenbewegungs- und Pufferstrategie.
-- Mini-PyTorch-Integration oder TorchDynamo-nahe Demo.
-- End-to-End-Demo: GPU plus Spezialbackend-Simulator.
+- Add a "backend author test" example that simulates an external developer
+  adding a backend without touching TUC core.
+- Add capability schema documentation for error, latency, energy, and
+  calibration assumptions.
+- Add conformance reports that can be stored as reviewable artifacts.
 
 Go/No-Go:
 
-- Ein kleiner MLP- oder Attention-Block wird korrekt partitioniert.
-- Laufzeitplan ist inspizierbar.
-- Die Demo ist reproduzierbar und dokumentiert.
+- A toy backend can be described through capability data.
+- Unsupported operations and layouts are rejected explicitly.
+- Capability checks never import backend code, run subprocesses, load dynamic
+  libraries, touch devices, or execute artifacts.
 
-### Phase 5: Jahr 2, Partner-Backends Und Oekosystem
+## Phase Delta: Runtime Planning
 
-Ergebnis: TUC wird fuer Hardware-Partner relevant.
+Status: in progress.
 
-Lieferobjekte:
+Purpose: make placement decisions explainable before making them clever.
 
-- Backend API v1.0.
-- Mindestens ein Partner- oder Community-Backend.
-- Photonik-Referenzbackend stabilisiert.
-- Neuromorpher Simulator/Backend-Prototyp.
-- Benchmark- und Model-Zoo fuer heterogene Ausfuehrung.
-- RFC-Prozess fuer neue Hardwareklassen.
+Deliverables:
 
-Go/No-Go:
+- Runtime partition plans.
+- Transfer edges and transfer-cost profiles.
+- Layout conversion accounting.
+- Produced-layout metadata.
+- Backend decision reports.
+- Golden runtime-plan dumps.
+- Planning diagnostics that explain why work executes where it does.
 
-- Ein kleines externes Team kann ein Backend ohne Kernteam-Unterstuetzung anbinden.
-- TUC zeigt fuer mindestens eine Spezialhardwareklasse einen Vorteil bei Energie, Latenz oder Robustheit.
+Next work:
 
-### Phase 6: Jahr 3, PyTorch-Integration Und Standardisierung
-
-Ergebnis: TUC wird ein ernstzunehmender Standardpfad fuer heterogenes KI-Computing.
-
-Lieferobjekte:
-
-- Offizielle oder community-getragene PyTorch-Integration.
-- Stabiler Runtime Manager.
-- Produktionsnahe Benchmarks.
-- Erweiterte Auto-Tuning-Strategien.
-- Dokumentierte Backend-Zertifizierung.
-- Community-Governance mit mehreren Maintainer-Gruppen.
+- Connect backend support diagnostics into compiler-level decision reports.
+- Add candidate scoring once transfer/noise-aware models are stable.
+- Add runtime-plan golden dumps for proof-of-abstraction graphs.
+- Add explicit manual override policy before adding automatic global
+  optimization.
 
 Go/No-Go:
 
-- TUC kann reale Modelle teilweise partitionieren.
-- Mindestens zwei Hardwareklassen werden glaubwuerdig unterstuetzt.
-- Backends koennen unabhaengig versioniert und getestet werden.
+- Every operation assignment has an inspectable reason.
+- Movement costs are explicit.
+- Fallbacks do not hide semantic changes.
+- Runtime planning remains deterministic for test fixtures.
 
-## Erste 30 Tage
+## Phase Epsilon: Real Triton Integration
 
-Prioritaet: Den Traum in einen baubaren Kern verwandeln.
+Status: future credibility milestone.
 
-Aufgaben:
+Purpose: show that TUC can ingest real developer-facing compute intent.
 
-1. Triton-Codebasis und MLIR-Pipeline analysieren.
-2. MVP-Kernels festlegen.
-3. Architektur-RFC schreiben: IR-Ebenen, Backend-API, Runtime-Grenzen.
-4. Build- und CI-Grundgeruest aufsetzen.
-5. Erste Tests fuer MatMul und Elementwise-Kernels erstellen.
-6. Frontend-Hints als reine Metadaten einbauen.
-7. IR-Dump-Format definieren.
+Deliverables:
 
-Erfolgskriterium:
+- Triton compatibility matrix.
+- Triton-like metadata adapter hardening.
+- First real Triton kernel ingestion path.
+- MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
+- Correctness tests against deterministic references.
+- Optional performance baselines, treated as diagnostic data rather than the
+  core success metric.
 
-- Ein Entwickler kann TUC lokal bauen, einen minimalen Kernel ausfuehren und die erste IR-Zwischenform sehen.
+Go/No-Go:
 
-## Erste 60 Tage
+- Real Triton-style intent reaches HAC-IR without executing untrusted user code
+  during metadata ingestion.
+- Existing Triton compatibility is preserved within MVP scope.
+- The integration strengthens the hardware-independent interface rather than
+  turning TUC into a Triton fork.
 
-Prioritaet: Der erste Vertical Slice.
+## Phase Zeta: Specialized Hardware Proofs
 
-Aufgaben:
+Status: future proof expansion.
 
-1. TLIR zu HAC-IR fuer MatMul implementieren.
-2. HAC-IR zu GPU-HS-IR fuer den gleichen Kernel implementieren.
-3. Korrektheitstests gegen Triton-Baseline.
-4. Benchmark-Harness aufbauen.
-5. Backend-Capability-Modell v0.1 skizzieren.
-6. Toy-Backend definieren, das lineare Operationen annimmt.
+Purpose: prove that HAC-IR is not merely "GPU plus simulator".
 
-Erfolgskriterium:
+Candidate proof tracks:
 
-- MatMul laeuft durch die neue Pipeline und erreicht eine akzeptable Baseline-Performance.
+- Photonic simulator: linear algebra, transfer costs, noise assumptions,
+  calibration data.
+- Neuromorphic simulator: sparse connectivity, event/update approximation,
+  routing/configuration artifacts.
+- Additional accelerators: only after capability contracts remain neutral.
 
-## Erste 90 Tage
+Deliverables:
 
-Prioritaet: Plattformbeweis.
+- Specialized capability manifests.
+- Simulator-backed correctness reports.
+- Noise/error-budget reports.
+- Runtime plans that split linear and nonlinear work explicitly.
+- Documentation showing which assumptions are backend-specific and therefore
+  kept out of HAC-IR.
 
-Aufgaben:
+Go/No-Go:
 
-1. Elementwise und Reduction in HAC-IR aufnehmen.
-2. Backend-Plugin-Registrierung implementieren.
-3. Simuliertes Spezialbackend anbinden.
-4. Einfache Partitionierung zwischen GPU und Toy-Backend bauen.
-5. Erste Dokumentation fuer Backend-Autoren schreiben.
-6. Roadmap fuer Photonik-Simulator finalisieren.
+- Specialized backends improve the proof of hardware independence.
+- No specialized backend can redefine HAC-IR semantics for its own convenience.
+- Numerical correctness and reproducibility are required before performance or
+  energy claims.
 
-Erfolgskriterium:
+## Phase Eta: External Integration And Governance
 
-- TUC kann einen kleinen Graphen analysieren, einen Teil an ein Spezialbackend delegieren und den Rest auf GPU ausfuehren.
+Status: future ecosystem readiness.
 
-## Erfolgsmessung
+Purpose: make TUC usable by people who are not the original authors.
 
-Technische Metriken:
+Deliverables:
 
-- Kernel-Korrektheit gegen Triton-Baselines.
-- Performance relativ zu Triton/cuBLAS/rocBLAS.
-- Anzahl unterstuetzter HAC-IR-Ops.
-- Zeit, die ein externer Entwickler fuer ein Toy-Backend braucht.
-- Genauigkeitsverlust unter simuliertem Rauschen.
-- Datenbewegungskosten bei heterogener Partitionierung.
+- Organization-backed maintainer groups.
+- CODEOWNERS backed by teams rather than a single maintainer.
+- Backend author onboarding guide with a reproducible certification path.
+- Versioned capability and runtime-plan schemas.
+- Release artifacts with SBOM, checksums, and provenance.
+- PyPI Trusted Publishing and protected tag governance.
 
-Oekosystem-Metriken:
+Go/No-Go:
 
-- Anzahl externer Contributors.
-- Anzahl Backend-Prototypen.
-- Dokumentationsqualitaet gemessen an erfolgreichen Onboarding-Versuchen.
-- Wiederholbare Demos und Benchmarks.
+- An external developer can add and test a toy backend without modifying TUC
+  core.
+- Governance protects HAC-IR neutrality from vendor capture.
+- Release and supply-chain controls are in place before broad adoption.
 
-## Hauptrisiken
+## Current Priority Order
 
-### Risiko: Die IR Wird Zu Allgemein
+1. Keep the master plan and roadmap aligned.
+2. Maintain the proof-of-abstraction validation as the first public proof.
+3. Harden HAC-IR neutrality and reserved-attribute rejection.
+4. Strengthen backend capability and conformance tooling.
+5. Make runtime planning explanations richer and golden-tested.
+6. Integrate real Triton intent only after the abstraction proof remains stable.
+7. Expand to specialized hardware simulators only when they strengthen the
+   universal compute claim.
 
-Wenn HAC-IR versucht, jede Hardware abstrakt zu beschreiben, wird sie unbrauchbar.
+## Success Metrics
 
-Gegenmassnahme:
+Measure:
 
-- HAC-IR zuerst aus konkreten Kernels ableiten.
-- Nur Ops aufnehmen, die im MVP wirklich gebraucht werden.
-- Erweiterungen ueber RFCs steuern.
+- Reproducible proof milestones.
+- HAC-IR neutrality and stability.
+- Backend onboarding effort.
+- Runtime planning explainability.
+- Correctness against independent references.
+- Security of input boundaries and backend integration surfaces.
 
-### Risiko: GPU-Kompatibilitaet Leidet
+Do not optimize roadmap decisions for:
 
-Wenn bestehende Triton-Nutzer Performance verlieren, entsteht kein Vertrauen.
+- GitHub stars.
+- Raw benchmark wins.
+- Vendor-specific feature depth.
+- Social reach.
+- Premature hardware-specific performance claims.
 
-Gegenmassnahme:
+## Strategic Risks
 
-- GPU-Baseline als harte CI-Metrik.
-- Neue IR-Pfade zuerst optional machen.
-- Performance-Regressions sichtbar und blockierend machen.
+### Risk: Becoming Another Compiler
 
-### Risiko: Exotische Hardware Ist Nicht Verfuegbar
+Mitigation: every phase must preserve the master-plan framing: compiler work is
+only useful when it advances hardware-independent compute.
 
-Ohne reale Chips koennte TUC abstrakt bleiben.
+### Risk: Vendor Capture
 
-Gegenmassnahme:
+Mitigation: keep vendor details outside HAC-IR and route them through
+capabilities, manifests, HS-IR, backend implementations, and runtime plans.
 
-- Simulator-first-Strategie.
-- Capability- und Noise-Modelle als Backend-Vertrag.
-- Fruehe Partnergespraeche, aber keine Roadmap-Abhaengigkeit von einem einzelnen Partner.
+### Risk: Architecture Inflation
 
-### Risiko: Runtime-Partitionierung Wird Zu Komplex
+Mitigation: no architecture without a runnable artifact or an explicit security
+gate.
 
-Automatische Graph-Aufteilung kann schnell explodieren.
+### Risk: Simulator Illusion
 
-Gegenmassnahme:
+Mitigation: simulator demos must include numerical correctness, independent
+references, and reproducible golden reports.
 
-- Erst regelbasierte Partitionierung.
-- Kostenmodelle klein halten.
-- Entscheidungen erklaerbar machen.
-- Manuelle Overrides erlauben.
+### Risk: Runtime Planning Complexity
 
-### Risiko: Open-Source-Governance Ist Zu Spaet
+Mitigation: keep rule-based deterministic planning until candidate scoring is
+testable and explainable.
 
-Eine Universal-Compute-Schicht braucht Vertrauen von Hardware-Partnern und
-Entwicklern.
+### Risk: Insecure Plugin Surface
 
-Gegenmassnahme:
-
-- RFC-Prozess frueh einrichten.
-- Backend-API offen dokumentieren.
-- Kompatibilitaets- und Zertifizierungstests bereitstellen.
-
-## Teamstruktur Fuer Den Start
-
-Minimalteam:
-
-- Compiler Lead: Architektur, MLIR, Pass-Pipeline.
-- Triton Engineer: Kompatibilitaet, GPU-Backends, Benchmarks.
-- Runtime Engineer: Device Discovery, Execution Plan, PyTorch-Integration.
-- Backend/API Engineer: Plugin-System, Capability-Modell.
-- Research Engineer: Noise-Modelle, Photonik-/Neuromorphik-Simulatoren.
-- Developer Experience Engineer: Dokumentation, Debuggability, Onboarding.
-
-## Kernentscheidung
-
-TUC sollte in der ersten Phase nicht versuchen, "Universal" vollstaendig einzuloesen. Es sollte beweisen, dass Universalitaet als Architektur moeglich ist.
-
-Der richtige erste Claim lautet:
-
-"Wir koennen Compute Intent in HAC-IR hardwareunabhaengig darstellen, ueber
-Capability-Daten planen und ueber mehrere Backend-Ziele ein korrektes Ergebnis
-erzeugen."
-
-Wenn dieser Claim belastbar ist, wird aus der Vision eine Plattform.
+Mitigation: do not add auto-discovery, dynamic imports, dynamic libraries,
+subprocesses, device access, or artifact execution without a dedicated security
+RFC, sandbox model, and negative tests.
