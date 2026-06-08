@@ -210,6 +210,9 @@ ComputeGraph
 ```
 
 The pipeline emits diagnostics and deterministic text dumps at each stage.
+Compilation results also carry a compiler decision report that connects
+registry support diagnostics to final runtime assignments, so accepted and
+rejected backend candidates remain inspectable without executing backend code.
 
 ## Future MLIR Shape
 

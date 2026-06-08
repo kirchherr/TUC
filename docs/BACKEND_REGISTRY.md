@@ -92,6 +92,11 @@ name, operation kind, support status, reason code, and a short detail string.
 They do not include host paths, imported module names, device identifiers, or
 backend execution output.
 
+Compiler results attach these diagnostics to final runtime assignments through
+the [Compiler Decision Report](COMPILER_DECISION_REPORT.md). This lets reviewers
+see which registered capabilities accepted or rejected an operation next to the
+backend that runtime planning selected.
+
 ## Validation
 
 The registry enforces:

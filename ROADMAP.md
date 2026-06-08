@@ -190,10 +190,12 @@ Completed evidence:
   executable backend behavior.
 - Capability-schema negative examples show which backend claims are invalid or
   misleading and keep those cases covered by tests.
+- Compiler decision reports connect backend support diagnostics to final
+  runtime assignments.
 
 Next work:
 
-- Connect backend support diagnostics into compiler-level decision reports.
+- Add golden compiler decision-report fixtures for proof and MVP graphs.
 
 Go/No-Go:
 
@@ -220,7 +222,7 @@ Deliverables:
 
 Next work:
 
-- Connect backend support diagnostics into compiler-level decision reports.
+- Add golden compiler decision-report fixtures for proof and MVP graphs.
 - Add candidate scoring once transfer/noise-aware models are stable.
 - Add runtime-plan golden dumps for future proof graphs.
 - Add explicit manual override policy before adding automatic global
