@@ -25,6 +25,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Strategic master plan promoted as the top-level project guide.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
+- Golden runtime-plan dump for proof-of-abstraction placement and transfer
+  reasoning.
 
 ## In Progress
 
@@ -79,6 +81,8 @@ Current slice:
   operation/backend matches before partitioning.
 - Masterplan-aligned roadmap organized around proof phases instead of a
   compiler-centric implementation timeline.
+- Proof-of-abstraction runtime plan is golden-tested independently from the
+  full proof report.
 
 ### Phase Beta: HAC-IR Contract
 
@@ -109,7 +113,6 @@ Current focus:
 
 ## Next
 
-- Golden runtime-plan dumps for proof-of-abstraction graphs.
 - HAC-IR neutrality checklist and tests.
 - External-style backend author test.
 - Real Triton integration as a credibility milestone after the abstraction proof

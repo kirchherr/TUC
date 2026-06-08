@@ -94,6 +94,7 @@ Completed evidence:
 - Transfer plan is inspectable.
 - Result matches independent NumPy reference semantics.
 - Golden proof output validates full stdout.
+- Golden runtime-plan output validates placement and transfer reasoning.
 
 Next work:
 
@@ -185,7 +186,7 @@ Next work:
 
 - Connect backend support diagnostics into compiler-level decision reports.
 - Add candidate scoring once transfer/noise-aware models are stable.
-- Add runtime-plan golden dumps for proof-of-abstraction graphs.
+- Add runtime-plan golden dumps for the next proof graphs.
 - Add explicit manual override policy before adding automatic global
   optimization.
 

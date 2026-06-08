@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from examples.proof_of_abstraction import run_proof
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
@@ -20,6 +21,10 @@ _GOLDEN_DIR = Path(__file__).parent / "golden" / "runtime_plans"
         ("default_transfer.txt", lambda: _default_transfer_plan()),
         ("produced_layout_conversion.txt", lambda: _produced_layout_conversion_plan()),
         ("profiled_transfer.txt", lambda: _profiled_transfer_plan()),
+        (
+            "proof_of_abstraction.txt",
+            lambda: run_proof().compiled.partition_plan,
+        ),
     ),
 )
 def test_runtime_plan_dump_matches_golden(

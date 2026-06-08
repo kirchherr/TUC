@@ -63,6 +63,16 @@ tests/golden/proofs/proof_of_abstraction.txt
 `tests/test_proof_of_abstraction.py` runs the example and compares its full
 stdout to that golden file.
 
+The runtime plan inside the proof also has its own narrower golden contract:
+
+```text
+tests/golden/runtime_plans/proof_of_abstraction.txt
+```
+
+`tests/test_runtime_plan_golden.py` compares the proof's runtime plan dump to
+that artifact. This makes placement and transfer reasoning reviewable without
+requiring maintainers to diff the full proof report.
+
 This keeps the proof aligned with the master plan's Level 3 validation target:
 another person can reproduce the same proof and see the same report.
 
