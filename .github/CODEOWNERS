@@ -42,6 +42,7 @@
 /docs/HAC_IR_DIALECT.md @kirchherr
 /docs/HS_IR_DIALECT.md @kirchherr
 /docs/MLIR_DESIGN_SPIKE.md @kirchherr
+/docs/PROOF_OF_ABSTRACTION.md @kirchherr
 /docs/RUNTIME_PLAN.md @kirchherr
 /docs/TRITON_COMPATIBILITY.md @kirchherr
 /rfcs/ @kirchherr

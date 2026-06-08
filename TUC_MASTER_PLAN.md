@@ -258,6 +258,12 @@ Output:
 - Reference result
 - PASS
 
+Validation artifact:
+
+```text
+tests/golden/proofs/proof_of_abstraction.txt
+```
+
 ### Milestone 2: Real Triton Integration
 
 Transition:
