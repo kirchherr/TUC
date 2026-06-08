@@ -55,6 +55,16 @@ frontend boundary remained execution-free. The report includes:
 - operation kinds
 - blocked execution surfaces
 
+The intake report and the resulting HAC-IR, runtime plan, and compiler decision
+report are golden-tested under:
+
+```text
+tests/golden/frontend/triton_metadata_intake.txt
+tests/golden/hac_ir/triton_metadata_mlp.txt
+tests/golden/runtime_plans/triton_metadata_mlp.txt
+tests/golden/compiler_decisions/triton_metadata_mlp.txt
+```
+
 ## Example
 
 See `examples/triton_metadata_adapter.py` for a small metadata-to-pipeline
