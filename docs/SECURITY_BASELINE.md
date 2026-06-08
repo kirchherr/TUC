@@ -56,6 +56,8 @@ Implemented now:
 - HAC-IR v0 dialect contracts for operation arity, compiler-produced
   attributes, known user hints, and fail-closed rejection of unknown reserved
   `tuc.*` attributes.
+- HAC-IR neutrality guardrails and negative tests for known high-risk hardware,
+  backend, device, plugin, and generated-artifact leakage attributes.
 - HS-IR v0 contracts for backend assignments, produced layouts,
   movement-summary metadata, and runtime-transfer-summary consistency.
 - Backend API v0.1 explicitly limits external backend onboarding to

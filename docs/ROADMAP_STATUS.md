@@ -83,6 +83,7 @@ Current slice:
   compiler-centric implementation timeline.
 - Proof-of-abstraction runtime plan is golden-tested independently from the
   full proof report.
+- HAC-IR neutrality checklist and executable hardware-leakage guard.
 
 ### Phase Beta: HAC-IR Contract
 
@@ -91,8 +92,10 @@ Current focus:
 - Preserve HAC-IR as the hardware-neutral compute-intent layer.
 - Keep vendor-specific assumptions out of HAC-IR semantics.
 - Expand deterministic HAC-IR proof and MVP dumps.
-- Add negative tests for hardware-specific leakage into reserved `tuc.*`
+- Maintain negative tests for hardware-specific leakage into reserved `tuc.*`
   attributes.
+- Use the reviewer-facing HAC-IR neutrality checklist for every attribute
+  change.
 
 ### Phase Gamma: Capability Framework
 
@@ -113,7 +116,6 @@ Current focus:
 
 ## Next
 
-- HAC-IR neutrality checklist and tests.
 - External-style backend author test.
 - Real Triton integration as a credibility milestone after the abstraction proof
   remains stable.

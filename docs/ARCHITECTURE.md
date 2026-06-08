@@ -77,6 +77,13 @@ fail-closed handling for unknown reserved `tuc.*` attributes. The compiler
 validates HAC-IR immediately after TLIR lowering and again before HAC-IR is
 specialized into HS-IR.
 
+The HAC-IR neutrality checklist in `docs/HAC_IR_NEUTRALITY.md` defines what may
+enter the hardware-independent layer and what must stay in capabilities, HS-IR,
+runtime planning, backend lowering, or future sandboxed artifact handling. The
+Python contract rejects known high-risk hardware, backend, device, plugin, and
+generated-artifact leakage attributes before they can become valid compiler
+facts.
+
 HS-IR has a matching v0 contract in the same module. It requires backend
 assignment metadata to exactly match operations, requires every operation to
 carry `tuc.assigned_backend` and `tuc.produced_layout`, validates produced
