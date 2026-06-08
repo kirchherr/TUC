@@ -44,6 +44,7 @@ The example builds a two-operation graph:
 
 It prints:
 
+- proof metadata
 - input graph
 - HAC-IR
 - backend assignments
@@ -62,6 +63,19 @@ tests/golden/proofs/proof_of_abstraction.txt
 
 `tests/test_proof_of_abstraction.py` runs the example and compares its full
 stdout to that golden file.
+
+The report starts with metadata:
+
+```text
+report_schema: proof-report.v0
+proof_id: proof_of_abstraction
+proof_version: alpha.v1
+graph_family: abstraction
+backend_set: gpu, linear-sim
+```
+
+This makes proof version, graph family, and backend set visible before HAC-IR,
+runtime planning, or numerical output.
 
 The runtime plan inside the proof also has its own narrower golden contract:
 

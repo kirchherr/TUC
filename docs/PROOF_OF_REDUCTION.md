@@ -46,6 +46,7 @@ The example builds a three-operation graph:
 
 It prints:
 
+- proof metadata
 - input graph
 - HAC-IR
 - backend assignments
@@ -64,6 +65,19 @@ tests/golden/proofs/proof_of_reduction.txt
 
 `tests/test_proof_of_reduction.py` runs the example and compares its full
 stdout to that golden file.
+
+The report starts with metadata:
+
+```text
+report_schema: proof-report.v0
+proof_id: proof_of_reduction
+proof_version: alpha.v1
+graph_family: reduction
+backend_set: gpu, linear-sim
+```
+
+This makes proof version, graph family, and backend set visible before HAC-IR,
+runtime planning, or numerical output.
 
 The HAC-IR dump also has its own narrower golden contract:
 

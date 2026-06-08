@@ -30,6 +30,7 @@ hardware-independent interface into capability-driven runtime planning.
 - Proof-of-reduction example for Objective Alpha's second graph family.
 - Golden proof, HAC-IR, and runtime-plan dumps for proof-of-reduction
   validation.
+- Proof-report metadata for proof version, graph family, and backend set.
 
 ## In Progress
 
@@ -99,6 +100,7 @@ Current slice:
 - HAC-IR golden dump fixtures for proof and MVP graphs.
 - Second Objective Alpha proof graph with `matmul -> reduction -> elementwise`
   correctness validation.
+- Deterministic proof-report metadata visible in golden proof reports.
 
 ### Phase Beta: HAC-IR Contract
 

@@ -11,6 +11,7 @@ from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
 from tuc.compiler.pipeline import CompilationResult
 from tuc.ir import ComputeGraph, ComputeOperation, IRStage, OperationKind, TensorRef
+from tuc.proof import ProofReportMetadata, proof_metadata_from_partition_plan
 from tuc.reference import reference_elementwise, reference_matmul
 
 FloatArray = NDArray[np.float64]
@@ -21,6 +22,7 @@ class ProofOfAbstractionReport:
     """Deterministic proof artifact for Objective Alpha."""
 
     graph: ComputeGraph
+    metadata: ProofReportMetadata
     compiled: CompilationResult
     result: FloatArray
     reference: FloatArray
@@ -100,11 +102,18 @@ def run_proof() -> ProofOfAbstractionReport:
     inputs = proof_inputs()
     simulator = LinearAlgebraSimulatorBackend()
     compiled = compile_graph(graph, [simulator.capability])
+    metadata = proof_metadata_from_partition_plan(
+        proof_id="proof_of_abstraction",
+        proof_version="alpha.v1",
+        graph_family="abstraction",
+        partition_plan=compiled.partition_plan,
+    )
     result = evaluate_graph(graph, inputs)
     expected = reference_result(inputs)
     passed = np.allclose(result, expected, rtol=1e-12, atol=1e-12)
     return ProofOfAbstractionReport(
         graph=graph,
+        metadata=metadata,
         compiled=compiled,
         result=result,
         reference=expected,
@@ -115,7 +124,11 @@ def run_proof() -> ProofOfAbstractionReport:
 def render_proof_report(report: ProofOfAbstractionReport) -> str:
     """Render the proof report as deterministic text for validation."""
 
-    lines = ["== input graph =="]
+    lines = ["== proof metadata =="]
+    lines.extend(report.metadata.render_lines())
+
+    lines.append("")
+    lines.append("== input graph ==")
     for operation in report.graph.operations:
         lines.append(f"{operation.name}: {operation.kind.value}")
 

@@ -1,3 +1,10 @@
+== proof metadata ==
+report_schema: proof-report.v0
+proof_id: proof_of_abstraction
+proof_version: alpha.v1
+graph_family: abstraction
+backend_set: gpu, linear-sim
+
 == input graph ==
 linear_projection: matmul
 digital_activation: elementwise

@@ -15,6 +15,10 @@ def test_proof_of_reduction_example_runs() -> None:
         text=True,
     )
 
+    assert "== proof metadata ==" in completed.stdout
+    assert "proof_version: alpha.v1" in completed.stdout
+    assert "graph_family: reduction" in completed.stdout
+    assert "backend_set: gpu, linear-sim" in completed.stdout
     assert "== input graph ==" in completed.stdout
     assert "== hac-ir ==" in completed.stdout
     assert "linear_projection -> linear-sim" in completed.stdout

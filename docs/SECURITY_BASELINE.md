@@ -66,6 +66,10 @@ Implemented now:
 - Second Objective Alpha proof graph covers reduction intent with bounded
   in-repository tensors, trusted in-memory capability data, deterministic
   reference kernels, and golden proof/runtime artifacts.
+- Proof-report metadata validates bounded safe proof identifiers and backend
+  sets, derives backend names from existing partition plans, and does not add
+  parsing, plugin discovery, subprocess, device, network, or artifact execution
+  surfaces.
 - HS-IR v0 contracts for backend assignments, produced layouts,
   movement-summary metadata, and runtime-transfer-summary consistency.
 - Backend API v0.1 explicitly limits external backend onboarding to
