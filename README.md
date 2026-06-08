@@ -177,6 +177,7 @@ pytest -q
 - [Architecture](docs/ARCHITECTURE.md)
 - [Phase 0 plan](docs/PHASE_0.md)
 - [MVP definition](docs/MVP.md)
+- [Proof of abstraction](docs/PROOF_OF_ABSTRACTION.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)

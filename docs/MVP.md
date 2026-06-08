@@ -37,6 +37,7 @@ mathematical result that matches an independent reference.
 - The Phase 0 example runs end to end.
 - The proof-of-abstraction example prints HAC-IR, backend assignments, transfer
   plan, result, reference result, and `PASS`.
+- The proof-of-abstraction output is checked against a golden validation file.
 - Backend capability and partitioning behavior are inspectable.
 - MVP kernel semantics are covered by deterministic golden reference tests.
 - The next implementation step toward MLIR is clear and documented.

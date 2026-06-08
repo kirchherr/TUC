@@ -2,15 +2,29 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import numpy as np
 from numpy.typing import NDArray
 
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
+from tuc.compiler.pipeline import CompilationResult
 from tuc.ir import ComputeGraph, ComputeOperation, IRStage, OperationKind, TensorRef
 from tuc.reference import reference_elementwise, reference_matmul
 
 FloatArray = NDArray[np.float64]
+
+
+@dataclass(frozen=True)
+class ProofOfAbstractionReport:
+    """Deterministic proof artifact for Objective Alpha."""
+
+    graph: ComputeGraph
+    compiled: CompilationResult
+    result: FloatArray
+    reference: FloatArray
+    passed: bool
 
 
 def build_graph() -> ComputeGraph:
@@ -79,7 +93,9 @@ def reference_result(inputs: dict[str, FloatArray]) -> FloatArray:
     return reference_elementwise(reference_matmul(inputs["lhs"], inputs["rhs"]), "relu")
 
 
-def main() -> None:
+def run_proof() -> ProofOfAbstractionReport:
+    """Run the proof and return a stable report object."""
+
     graph = build_graph()
     inputs = proof_inputs()
     simulator = LinearAlgebraSimulatorBackend()
@@ -87,29 +103,52 @@ def main() -> None:
     result = evaluate_graph(graph, inputs)
     expected = reference_result(inputs)
     passed = np.allclose(result, expected, rtol=1e-12, atol=1e-12)
+    return ProofOfAbstractionReport(
+        graph=graph,
+        compiled=compiled,
+        result=result,
+        reference=expected,
+        passed=passed,
+    )
 
-    print("== input graph ==")
-    for operation in graph.operations:
-        print(f"{operation.name}: {operation.kind.value}")
 
-    print("\n== hac-ir ==")
-    print(compiled.dump(IRStage.HAC_IR))
+def render_proof_report(report: ProofOfAbstractionReport) -> str:
+    """Render the proof report as deterministic text for validation."""
 
-    print("\n== backend assignments ==")
-    for assignment in compiled.partition_plan.assignments:
-        print(f"{assignment.operation_name} -> {assignment.backend_name}")
+    lines = ["== input graph =="]
+    for operation in report.graph.operations:
+        lines.append(f"{operation.name}: {operation.kind.value}")
 
-    print("\n== transfer plan ==")
-    print(compiled.dump_runtime_plan())
+    lines.append("")
+    lines.append("== hac-ir ==")
+    lines.append(report.compiled.dump(IRStage.HAC_IR))
 
-    print("\n== result ==")
-    print(_format_array(result))
+    lines.append("")
+    lines.append("== backend assignments ==")
+    for assignment in report.compiled.partition_plan.assignments:
+        lines.append(f"{assignment.operation_name} -> {assignment.backend_name}")
 
-    print("\n== reference result ==")
-    print(_format_array(expected))
+    lines.append("")
+    lines.append("== transfer plan ==")
+    lines.append(report.compiled.dump_runtime_plan())
 
-    print("\nPASS" if passed else "\nFAIL")
-    if not passed:
+    lines.append("")
+    lines.append("== result ==")
+    lines.append(_format_array(report.result))
+
+    lines.append("")
+    lines.append("== reference result ==")
+    lines.append(_format_array(report.reference))
+
+    lines.append("")
+    lines.append("PASS" if report.passed else "FAIL")
+    return "\n".join(lines)
+
+
+def main() -> None:
+    report = run_proof()
+    print(render_proof_report(report))
+    if not report.passed:
         raise SystemExit(1)
 
 
