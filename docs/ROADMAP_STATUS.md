@@ -93,6 +93,7 @@ Current slice:
 - Proof-of-abstraction runtime plan is golden-tested independently from the
   full proof report.
 - HAC-IR neutrality checklist and executable hardware-leakage guard.
+- HAC-IR golden dump fixtures for proof and MVP graphs.
 
 ### Phase Beta: HAC-IR Contract
 
@@ -102,7 +103,7 @@ Current focus:
 - Keep vendor-specific assumptions out of HAC-IR semantics.
 - Use the HAC-IR semantic charter when deciding whether new facts belong in
   HAC-IR, HS-IR, capabilities, runtime plans, or backend contracts.
-- Expand deterministic HAC-IR proof and MVP dumps.
+- Maintain deterministic HAC-IR proof and MVP dumps.
 - Maintain negative tests for hardware-specific leakage into reserved `tuc.*`
   attributes.
 - Use the reviewer-facing HAC-IR neutrality checklist for every attribute

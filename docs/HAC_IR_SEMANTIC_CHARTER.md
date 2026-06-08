@@ -124,3 +124,7 @@ The executable v0 contract in `tuc.ir.dialect` enforces the current allowed
 
 The neutrality checklist in `docs/HAC_IR_NEUTRALITY.md` is the reviewer-facing
 approval checklist. This charter is the semantic reason behind that checklist.
+
+Deterministic fixtures in `tests/golden/hac_ir/` make changes to proof and MVP
+HAC-IR dumps visible during review. Updating those fixtures should be treated as
+an intentional change to the hardware-independent interface contract.
