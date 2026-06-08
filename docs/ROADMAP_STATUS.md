@@ -68,6 +68,8 @@ Current slice:
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - External-style backend author path covering manifest loading, registry
   diagnostics, compiler planning, conformance, and trusted lowering.
+- Deterministic backend conformance report artifacts for reviewable backend
+  author evidence.
 - Branch protection policy for `main` and expanded required CI smoke surface.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, wheel import
   check, and GitHub provenance/SBOM attestations.
@@ -107,6 +109,7 @@ Current focus:
 - Keep backend onboarding capability-first and execution-free.
 - Use the external-style backend author path as the reference for toy backend
   proposals.
+- Store backend conformance evidence as deterministic review artifacts.
 
 ### Phase Delta: Runtime Planning
 

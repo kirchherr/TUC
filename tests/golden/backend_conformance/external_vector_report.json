@@ -1,0 +1,12 @@
+{
+  "backend_name": "external-vector",
+  "checked_cases": [
+    "conformance_matmul_row_major",
+    "conformance_elementwise_row_major",
+    "conformance_reduction_row_major",
+    "conformance_softmax_row_major"
+  ],
+  "issues": [],
+  "passed": true,
+  "schema_version": "tuc.backend_conformance_report.v0"
+}

@@ -37,6 +37,7 @@ The current prototype contains:
 - Backend author certification checklist and negative-test template.
 - External-style backend author path for manifest, registry, compiler,
   conformance, and trusted lowering.
+- Deterministic backend conformance report artifacts for maintainer review.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and

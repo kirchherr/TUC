@@ -6,7 +6,11 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from tuc.backends.base import BackendCapability, LoweringResult
-from tuc.backends.conformance import BackendConformanceReport, assert_backend_conformance
+from tuc.backends.conformance import (
+    BackendConformanceReport,
+    assert_backend_conformance,
+    dump_backend_conformance_report,
+)
 from tuc.backends.registry import BackendRegistry
 from tuc.compiler import CompilationResult, compile_graph
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind, TensorRef
@@ -142,6 +146,7 @@ def main() -> None:
             f"{diagnostic.reason}"
         )
     print("conformance_passed=" + str(report.conformance.passed).lower())
+    print(dump_backend_conformance_report(report.conformance), end="")
     print(report.compiled.dump_runtime_plan())
     print()
     print(report.lowered.artifact)
