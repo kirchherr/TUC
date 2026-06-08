@@ -86,6 +86,9 @@ own, before runtime planning and backend assignment enter the report.
 This keeps the proof aligned with the master plan's Level 3 validation target:
 another person can reproduce the same proof and see the same report.
 
+The second Objective Alpha proof is documented in
+[`PROOF_OF_REDUCTION.md`](PROOF_OF_REDUCTION.md).
+
 ## Security Notes
 
 The proof uses only:

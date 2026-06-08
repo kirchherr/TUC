@@ -264,6 +264,18 @@ Validation artifact:
 tests/golden/proofs/proof_of_abstraction.txt
 ```
 
+Additional Objective Alpha proof artifact:
+
+```text
+examples/proof_of_reduction.py
+```
+
+Validation artifact:
+
+```text
+tests/golden/proofs/proof_of_reduction.txt
+```
+
 ### Milestone 2: Real Triton Integration
 
 Transition:

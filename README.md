@@ -29,6 +29,7 @@ The current prototype contains:
 - A simulator backend for linear algebra operations.
 - Rule-based runtime partitioning.
 - Proof-of-abstraction example for Objective Alpha.
+- Proof-of-reduction example for Objective Alpha's second graph family.
 - Data-movement-aware HAC-IR metadata for MVP kernels.
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
@@ -121,6 +122,12 @@ Run the proof-of-abstraction example:
 python examples/proof_of_abstraction.py
 ```
 
+Run the proof-of-reduction example:
+
+```bash
+python examples/proof_of_reduction.py
+```
+
 Inspect data-movement metadata:
 
 ```bash
@@ -195,6 +202,7 @@ pytest -q
 - [Phase 0 plan](docs/PHASE_0.md)
 - [MVP definition](docs/MVP.md)
 - [Proof of abstraction](docs/PROOF_OF_ABSTRACTION.md)
+- [Proof of reduction](docs/PROOF_OF_REDUCTION.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
