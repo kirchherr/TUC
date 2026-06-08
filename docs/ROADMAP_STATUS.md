@@ -62,6 +62,8 @@ Current slice:
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
+- HAC-IR semantic charter for compute intent, compiler facts, planning
+  constraints, and forbidden backend details.
 - HS-IR v0 contracts for backend assignments, produced layouts, and runtime-transfer summaries.
 - Backend API v0.1 authoring guide for external prototype backends.
 - Backend author certification checklist and negative-test template.
@@ -98,6 +100,8 @@ Current focus:
 
 - Preserve HAC-IR as the hardware-neutral compute-intent layer.
 - Keep vendor-specific assumptions out of HAC-IR semantics.
+- Use the HAC-IR semantic charter when deciding whether new facts belong in
+  HAC-IR, HS-IR, capabilities, runtime plans, or backend contracts.
 - Expand deterministic HAC-IR proof and MVP dumps.
 - Maintain negative tests for hardware-specific leakage into reserved `tuc.*`
   attributes.

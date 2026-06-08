@@ -21,6 +21,10 @@ The Python contract lives in `tuc.ir.dialect`.
 Reviewer-facing neutrality rules live in
 [`HAC_IR_NEUTRALITY.md`](HAC_IR_NEUTRALITY.md).
 
+The semantic boundary for compute intent, compiler facts, planning constraints,
+and forbidden backend details lives in
+[`HAC_IR_SEMANTIC_CHARTER.md`](HAC_IR_SEMANTIC_CHARTER.md).
+
 ## MVP Operations
 
 The v0 operation family is deliberately small:

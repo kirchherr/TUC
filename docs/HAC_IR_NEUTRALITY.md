@@ -8,6 +8,11 @@ or how a backend will implement it.
 Use this checklist for every change that touches HAC-IR operations,
 attributes, lowering, dumps, frontend metadata, or dialect contracts.
 
+The semantic source for this checklist is
+[`HAC_IR_SEMANTIC_CHARTER.md`](HAC_IR_SEMANTIC_CHARTER.md). It separates
+compute intent, compiler facts, planning constraints, and forbidden backend
+details.
+
 ## Neutrality Rules
 
 HAC-IR may contain:

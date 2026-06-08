@@ -128,6 +128,8 @@ Deliverables:
 
 Completed evidence:
 
+- `docs/HAC_IR_SEMANTIC_CHARTER.md` separates compute intent, compiler facts,
+  planning constraints, and forbidden backend details.
 - `docs/HAC_IR_NEUTRALITY.md` defines the reviewer-facing neutrality checklist.
 - `HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES` rejects known high-risk vendor, device,
   plugin, backend-artifact, and specialized-placement leakage.
@@ -136,8 +138,6 @@ Completed evidence:
 
 Next work:
 
-- Add a HAC-IR semantic charter that separates compute intent, compiler facts,
-  planning constraints, and forbidden backend details.
 - Expand deterministic HAC-IR golden dumps for the next proof and MVP graphs.
 
 Go/No-Go:
