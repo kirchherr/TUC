@@ -31,6 +31,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Golden proof, HAC-IR, and runtime-plan dumps for proof-of-reduction
   validation.
 - Proof-report metadata for proof version, graph family, and backend set.
+- Proof artifact review checklist for proof examples, metadata, goldens, and
+  proof documentation.
 
 ## In Progress
 
@@ -101,6 +103,7 @@ Current slice:
 - Second Objective Alpha proof graph with `matmul -> reduction -> elementwise`
   correctness validation.
 - Deterministic proof-report metadata visible in golden proof reports.
+- Reviewer-facing proof artifact checklist and golden-file merge gate.
 
 ### Phase Beta: HAC-IR Contract
 

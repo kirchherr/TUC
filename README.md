@@ -204,6 +204,7 @@ pytest -q
 - [MVP definition](docs/MVP.md)
 - [Proof of abstraction](docs/PROOF_OF_ABSTRACTION.md)
 - [Proof of reduction](docs/PROOF_OF_REDUCTION.md)
+- [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)

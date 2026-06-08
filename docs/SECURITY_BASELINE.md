@@ -70,6 +70,11 @@ Implemented now:
   sets, derives backend names from existing partition plans, and does not add
   parsing, plugin discovery, subprocess, device, network, or artifact execution
   surfaces.
+- Proof artifact review checklist requires maintainers to review proof metadata,
+  HAC-IR neutrality, runtime-plan inspectability, deterministic reference
+  semantics, golden-file discipline, and absence of new plugin, subprocess,
+  device, network, generated-artifact, host-path, or environment-dependent
+  proof surfaces.
 - HS-IR v0 contracts for backend assignments, produced layouts,
   movement-summary metadata, and runtime-transfer-summary consistency.
 - Backend API v0.1 explicitly limits external backend onboarding to

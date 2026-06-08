@@ -103,6 +103,9 @@ another person can reproduce the same proof and see the same report.
 The second Objective Alpha proof is documented in
 [`PROOF_OF_REDUCTION.md`](PROOF_OF_REDUCTION.md).
 
+Changes to proof artifacts must follow the
+[`PROOF_ARTIFACT_REVIEW.md`](PROOF_ARTIFACT_REVIEW.md) checklist.
+
 ## Security Notes
 
 The proof uses only:
