@@ -111,6 +111,8 @@ Current slice:
   automatic global optimization.
 - Schema-versioned runtime manual override v0 with fail-closed negative tests,
   compiler decision-report goldens, and runtime-plan goldens.
+- Opt-in runtime candidate score diagnostics with runtime-plan and compiler
+  decision-report goldens.
 
 ### Phase Beta: HAC-IR Contract
 
@@ -158,6 +160,8 @@ Current focus:
   global optimization.
 - Keep `RuntimeOverrideSet` operation-scoped, capability-bounded, inspectable,
   and separate from HAC-IR semantics.
+- Use `CandidateScore` diagnostics as the review surface before adding richer
+  transfer/noise-aware candidate scoring.
 
 ## Next
 
@@ -165,6 +169,8 @@ Current focus:
   remains stable.
 - Candidate scoring only after transfer/noise-aware models are stable and its
   decisions can be explained next to manual override effects.
+- Noise/error-budget score components only after those models are documented
+  outside HAC-IR semantics and covered by goldens.
 - Maintainer teams or organization-backed owner groups before broad external
   contribution.
 - Plugin lifecycle RFC and sandboxing model before any executable backend

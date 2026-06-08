@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
 from dataclasses import dataclass
 from math import prod
@@ -12,6 +13,9 @@ from tuc.ir.memory import LayoutKind, MemoryDomainKind, dtype_size_bytes
 from tuc.ir.model import ComputeGraph, ComputeOperation, TensorRef
 from tuc.runtime.overrides import RuntimeOverrideEffect, RuntimeOverrideSet
 from tuc.runtime.plan import LayoutConversionCost, RuntimeTransferEdge, TransferCostProfile
+
+_CANDIDATE_SCORE_UNITS = frozenset({"bytes", "latency_ns"})
+_PLAN_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
 
 
 @dataclass(frozen=True)
@@ -28,6 +32,50 @@ class Assignment:
 
 
 @dataclass(frozen=True)
+class CandidateScore:
+    """Diagnostic score components for one accepted backend candidate."""
+
+    operation_name: str
+    backend_name: str
+    selection_stage: str
+    selected: bool
+    transfer_score: float
+    transfer_score_unit: str
+    transfer_bytes: int
+    layout_conversion_bytes: int
+    preferred_memory_domain_match: bool
+    memory_domain: MemoryDomainKind
+    produced_layout: LayoutKind
+
+    def __post_init__(self) -> None:
+        _require_plan_name(self.operation_name, "candidate score operation_name")
+        _require_plan_name(self.backend_name, "candidate score backend_name")
+        _require_plan_name(self.selection_stage, "candidate score selection_stage")
+        if not isinstance(self.selected, bool):
+            raise TypeError("candidate score selected must be bool")
+        if not isinstance(self.transfer_score, int | float) or isinstance(
+            self.transfer_score,
+            bool,
+        ):
+            raise TypeError("candidate score transfer_score must be a number")
+        if self.transfer_score < 0:
+            raise ValueError("candidate score transfer_score must be non-negative")
+        if self.transfer_score_unit not in _CANDIDATE_SCORE_UNITS:
+            raise ValueError("candidate score transfer_score_unit is unsupported")
+        _require_non_negative_bytes(self.transfer_bytes, "candidate score transfer_bytes")
+        _require_non_negative_bytes(
+            self.layout_conversion_bytes,
+            "candidate score layout_conversion_bytes",
+        )
+        if not isinstance(self.preferred_memory_domain_match, bool):
+            raise TypeError("candidate score preferred_memory_domain_match must be bool")
+        if not isinstance(self.memory_domain, MemoryDomainKind):
+            raise TypeError("candidate score memory_domain must be MemoryDomainKind")
+        if not isinstance(self.produced_layout, LayoutKind):
+            raise TypeError("candidate score produced_layout must be LayoutKind")
+
+
+@dataclass(frozen=True)
 class PartitionPlan:
     """Ordered operation-to-backend assignment plan."""
 
@@ -36,6 +84,7 @@ class PartitionPlan:
     transfer_edges: tuple[RuntimeTransferEdge, ...] = ()
     layout_conversions: tuple[LayoutConversionCost, ...] = ()
     override_effects: tuple[RuntimeOverrideEffect, ...] = ()
+    candidate_scores: tuple[CandidateScore, ...] = ()
 
     def backend_for(self, operation_name: str) -> str:
         for assignment in self.assignments:
@@ -83,19 +132,24 @@ def partition_graph(
     fallback_backend: str = "gpu",
     transfer_cost_profile: TransferCostProfile | None = None,
     runtime_overrides: RuntimeOverrideSet | None = None,
+    include_candidate_scores: bool = False,
 ) -> PartitionPlan:
     """Assign operations using backend preference and capability metadata."""
+
+    if not isinstance(include_candidate_scores, bool):
+        raise TypeError("include_candidate_scores must be bool")
 
     capabilities = tuple(backends)
     if runtime_overrides is not None:
         runtime_overrides.validate_for_graph(graph, capabilities)
 
     assignments: list[Assignment] = []
+    candidate_scores: list[CandidateScore] = []
     transfer_edges: list[RuntimeTransferEdge] = []
     layout_conversions: list[LayoutConversionCost] = []
     tensor_locations: dict[str, TensorLocation] = {}
     for operation in graph.operations:
-        assignment = _assign_operation(
+        selection = _assign_operation(
             operation,
             capabilities,
             fallback_backend,
@@ -103,6 +157,9 @@ def partition_graph(
             transfer_cost_profile,
             runtime_overrides,
         )
+        assignment = selection.assignment
+        if include_candidate_scores:
+            candidate_scores.extend(selection.candidate_scores)
         transfers, conversions = _movement_requirements(
             operation=operation,
             assignment=assignment,
@@ -131,6 +188,7 @@ def partition_graph(
             if runtime_overrides is not None
             else ()
         ),
+        candidate_scores=tuple(candidate_scores),
     )
 
 
@@ -141,7 +199,7 @@ def _assign_operation(
     tensor_locations: dict[str, TensorLocation],
     transfer_cost_profile: TransferCostProfile | None,
     runtime_overrides: RuntimeOverrideSet | None,
-) -> Assignment:
+) -> AssignmentSelection:
     accepted = tuple(capability for capability in capabilities if capability.supports(operation))
     override_effect = (
         runtime_overrides.effect_for_operation(operation.name)
@@ -160,6 +218,7 @@ def _assign_operation(
             candidates=accepted,
             tensor_locations=tensor_locations,
             reason_prefix=f"manual_override:require_backend={override_effect.required_backend}",
+            selection_stage="manual_override_require",
             transfer_cost_profile=transfer_cost_profile,
         )
 
@@ -169,6 +228,7 @@ def _assign_operation(
             candidates=accepted,
             tensor_locations=tensor_locations,
             reason_prefix=f"manual_override:prefer_backend={override_effect.preferred_backend}",
+            selection_stage="manual_override_prefer",
             transfer_cost_profile=transfer_cost_profile,
         )
 
@@ -183,6 +243,7 @@ def _assign_operation(
             candidates=preferred,
             tensor_locations=tensor_locations,
             reason_prefix=f"preferred_for:{operation.kind.value}",
+            selection_stage="preferred_for",
             transfer_cost_profile=transfer_cost_profile,
         )
 
@@ -192,6 +253,7 @@ def _assign_operation(
             candidates=accepted,
             tensor_locations=tensor_locations,
             reason_prefix=f"supported:{operation.kind.value}",
+            selection_stage="supported",
             transfer_cost_profile=transfer_cost_profile,
         )
 
@@ -206,18 +268,21 @@ def _assign_operation(
         tensor_locations,
     )
 
-    return Assignment(
-        operation_name=operation.name,
-        backend_name=fallback_backend,
-        reason=(
-            "fallback:"
-            f"transfer_bytes={transfer_bytes};"
-            f"layout_conversion_bytes={layout_conversion_bytes}"
+    return AssignmentSelection(
+        assignment=Assignment(
+            operation_name=operation.name,
+            backend_name=fallback_backend,
+            reason=(
+                "fallback:"
+                f"transfer_bytes={transfer_bytes};"
+                f"layout_conversion_bytes={layout_conversion_bytes}"
+            ),
+            memory_domain=MemoryDomainKind.GPU_HBM,
+            produced_layout=_operation_layout(operation),
+            transfer_bytes=transfer_bytes,
+            layout_conversion_bytes=layout_conversion_bytes,
         ),
-        memory_domain=MemoryDomainKind.GPU_HBM,
-        produced_layout=_operation_layout(operation),
-        transfer_bytes=transfer_bytes,
-        layout_conversion_bytes=layout_conversion_bytes,
+        candidate_scores=(),
     )
 
 
@@ -226,32 +291,23 @@ def _select_lowest_transfer_candidate(
     candidates: tuple[BackendCapability, ...],
     tensor_locations: dict[str, TensorLocation],
     reason_prefix: str,
+    selection_stage: str,
     transfer_cost_profile: TransferCostProfile | None,
-) -> Assignment:
+) -> AssignmentSelection:
     scored = tuple(
-        (
-            _transfer_score_for_domain(
-                operation,
-                capability.memory_domain,
-                tensor_locations,
-                transfer_cost_profile,
-            ),
-            _layout_conversion_bytes_for_layout(
-                operation,
-                _operation_layout(operation),
-                tensor_locations,
-            ),
-            _transfer_bytes_for_domain(operation, capability.memory_domain, tensor_locations),
-            not _domain_match(operation, capability.memory_domain),
-            capability.name,
-            capability,
+        _score_candidate(
+            operation=operation,
+            capability=capability,
+            tensor_locations=tensor_locations,
+            selection_stage=selection_stage,
+            transfer_cost_profile=transfer_cost_profile,
         )
         for capability in candidates
     )
-    _, layout_conversion_bytes, transfer_bytes, _, _, capability = min(
-        scored,
-        key=lambda item: item[:5],
-    )
+    selected_score = min(scored, key=_candidate_sort_key)
+    capability = selected_score.capability
+    transfer_bytes = selected_score.transfer_bytes
+    layout_conversion_bytes = selected_score.layout_conversion_bytes
     domain_match = _domain_match(operation, capability.memory_domain)
     reason_parts = [
         reason_prefix,
@@ -262,7 +318,7 @@ def _select_lowest_transfer_candidate(
     ]
     if domain_match:
         reason_parts.append("preferred_memory_domain_match")
-    return Assignment(
+    assignment = Assignment(
         operation_name=operation.name,
         backend_name=capability.name,
         reason=";".join(reason_parts),
@@ -270,6 +326,62 @@ def _select_lowest_transfer_candidate(
         produced_layout=capability.produced_layout_for(operation),
         transfer_bytes=transfer_bytes,
         layout_conversion_bytes=layout_conversion_bytes,
+    )
+    return AssignmentSelection(
+        assignment=assignment,
+        candidate_scores=tuple(
+            score.to_candidate_score(selected=score.backend_name == capability.name)
+            for score in scored
+        ),
+    )
+
+
+def _score_candidate(
+    *,
+    operation: ComputeOperation,
+    capability: BackendCapability,
+    tensor_locations: dict[str, TensorLocation],
+    selection_stage: str,
+    transfer_cost_profile: TransferCostProfile | None,
+) -> CandidateScoreBuilder:
+    transfer_score = _transfer_score_for_domain(
+        operation,
+        capability.memory_domain,
+        tensor_locations,
+        transfer_cost_profile,
+    )
+    return CandidateScoreBuilder(
+        operation_name=operation.name,
+        backend_name=capability.name,
+        selection_stage=selection_stage,
+        transfer_score=transfer_score,
+        transfer_score_unit="latency_ns" if transfer_cost_profile is not None else "bytes",
+        transfer_bytes=_transfer_bytes_for_domain(
+            operation,
+            capability.memory_domain,
+            tensor_locations,
+        ),
+        layout_conversion_bytes=_layout_conversion_bytes_for_layout(
+            operation,
+            _operation_layout(operation),
+            tensor_locations,
+        ),
+        preferred_memory_domain_match=_domain_match(operation, capability.memory_domain),
+        memory_domain=capability.memory_domain,
+        produced_layout=capability.produced_layout_for(operation),
+        capability=capability,
+    )
+
+
+def _candidate_sort_key(
+    score: CandidateScoreBuilder,
+) -> tuple[float, int, int, bool, str]:
+    return (
+        score.transfer_score,
+        score.layout_conversion_bytes,
+        score.transfer_bytes,
+        not score.preferred_memory_domain_match,
+        score.backend_name,
     )
 
 
@@ -404,6 +516,16 @@ def _tensor_nbytes(tensor: TensorRef) -> int:
     return prod(tensor.shape) * dtype_size_bytes(tensor.dtype)
 
 
+def _require_plan_name(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PLAN_NAME_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe runtime-plan name")
+
+
+def _require_non_negative_bytes(value: int, label: str) -> None:
+    if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+        raise ValueError(f"{label} must be a non-negative integer")
+
+
 def _operation_layout(operation: ComputeOperation) -> LayoutKind:
     value = operation.attributes.get("tuc.layout")
     if value is None:
@@ -443,3 +565,41 @@ class TensorLocation(NamedTuple):
     backend_name: str
     memory_domain: MemoryDomainKind
     layout: LayoutKind
+
+
+class AssignmentSelection(NamedTuple):
+    """Internal assignment result plus optional diagnostic score data."""
+
+    assignment: Assignment
+    candidate_scores: tuple[CandidateScore, ...]
+
+
+class CandidateScoreBuilder(NamedTuple):
+    """Internal score tuple that also carries the backend capability."""
+
+    operation_name: str
+    backend_name: str
+    selection_stage: str
+    transfer_score: float
+    transfer_score_unit: str
+    transfer_bytes: int
+    layout_conversion_bytes: int
+    preferred_memory_domain_match: bool
+    memory_domain: MemoryDomainKind
+    produced_layout: LayoutKind
+    capability: BackendCapability
+
+    def to_candidate_score(self, *, selected: bool) -> CandidateScore:
+        return CandidateScore(
+            operation_name=self.operation_name,
+            backend_name=self.backend_name,
+            selection_stage=self.selection_stage,
+            selected=selected,
+            transfer_score=self.transfer_score,
+            transfer_score_unit=self.transfer_score_unit,
+            transfer_bytes=self.transfer_bytes,
+            layout_conversion_bytes=self.layout_conversion_bytes,
+            preferred_memory_domain_match=self.preferred_memory_domain_match,
+            memory_domain=self.memory_domain,
+            produced_layout=self.produced_layout,
+        )

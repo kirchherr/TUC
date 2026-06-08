@@ -70,11 +70,15 @@ class CompilerPipeline:
         fallback_backend: str = "gpu",
         transfer_cost_profile: TransferCostProfile | None = None,
         runtime_overrides: RuntimeOverrideSet | None = None,
+        include_candidate_scores: bool = False,
     ) -> None:
+        if not isinstance(include_candidate_scores, bool):
+            raise TypeError("include_candidate_scores must be bool")
         self._backend_capabilities = tuple(backend_capabilities)
         self._fallback_backend = fallback_backend
         self._transfer_cost_profile = transfer_cost_profile
         self._runtime_overrides = runtime_overrides
+        self._include_candidate_scores = include_candidate_scores
 
     def compile(self, graph: ComputeGraph) -> CompilationResult:
         tlir = IRModule(
@@ -89,6 +93,7 @@ class CompilerPipeline:
             fallback_backend=self._fallback_backend,
             transfer_cost_profile=self._transfer_cost_profile,
             runtime_overrides=self._runtime_overrides,
+            include_candidate_scores=self._include_candidate_scores,
         )
         decision_report = build_compiler_decision_report(
             graph=hac_ir.graph,
@@ -117,6 +122,7 @@ def compile_graph(
     fallback_backend: str = "gpu",
     transfer_cost_profile: TransferCostProfile | None = None,
     runtime_overrides: RuntimeOverrideSet | None = None,
+    include_candidate_scores: bool = False,
 ) -> CompilationResult:
     """Convenience wrapper for one-shot pipeline runs."""
 
@@ -125,4 +131,5 @@ def compile_graph(
         fallback_backend=fallback_backend,
         transfer_cost_profile=transfer_cost_profile,
         runtime_overrides=runtime_overrides,
+        include_candidate_scores=include_candidate_scores,
     ).compile(graph)

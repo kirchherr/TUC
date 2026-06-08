@@ -62,6 +62,28 @@ HAC-IR, bypass validation, hide fallback behavior, or execute code.
 Override effects are visible in compiler decision reports and deterministic
 runtime-plan dumps through `manual_overrides` blocks.
 
+## Candidate Score Diagnostics
+
+TUC can emit opt-in candidate score diagnostics with
+`include_candidate_scores=True` on `partition_graph(...)` or
+`compile_graph(...)`.
+
+Candidate scores are diagnostic data, not automatic global optimization. They
+record the score components the current deterministic rule-based planner uses
+when multiple accepted backend candidates remain:
+
+- selection stage
+- selected flag
+- transfer score and unit
+- transfer bytes
+- layout conversion bytes
+- preferred memory-domain match
+- memory domain
+- produced layout
+
+Runtime-plan dumps include a `candidate_scores` block only when diagnostics are
+enabled. Compiler decision reports carry the same evidence per operation.
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:
@@ -79,6 +101,9 @@ Runtime plan objects are declarative data:
   constructing a plan or validating a transfer profile.
 - Manual overrides are schema-versioned, bounded, operation-scoped, fail closed,
   and execution-free.
+- Candidate score diagnostics are bounded, opt-in, and derived only from
+  validated graph operations, capability data, movement estimates, transfer-cost
+  profiles, and validated override effects.
 
 ## Current Limitations
 
@@ -98,3 +123,5 @@ This is still a prototype:
 2. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
 3. Add richer override diagnostics only if they stay bounded and visible in
    decision-report and runtime-plan golden fixtures.
+4. Add noise/error-budget candidate score components only after those models are
+   stable and documented.

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from tuc.runtime.overrides import RuntimeOverrideEffect
-from tuc.runtime.partitioning import Assignment, PartitionPlan
+from tuc.runtime.partitioning import Assignment, CandidateScore, PartitionPlan
 from tuc.runtime.plan import LayoutConversionCost, RuntimeTransferEdge
 
 
@@ -32,6 +32,12 @@ def dump_partition_plan(plan: PartitionPlan) -> str:
         lines.append("  manual_overrides {")
         for effect in plan.override_effects:
             lines.append(f"    {_format_override_effect(effect)}")
+        lines.append("  }")
+
+    if plan.candidate_scores:
+        lines.append("  candidate_scores {")
+        for score in plan.candidate_scores:
+            lines.append(f"    {_format_candidate_score(score)}")
         lines.append("  }")
 
     lines.append("  summary {")
@@ -103,6 +109,22 @@ def _format_override_effect(effect: RuntimeOverrideEffect) -> str:
     )
 
 
+def _format_candidate_score(score: CandidateScore) -> str:
+    return (
+        f"{score.operation_name}/{score.backend_name}"
+        f" selected={_format_bool(score.selected)}"
+        f" stage={score.selection_stage}"
+        f" transfer_score={_format_float(score.transfer_score)}"
+        f" transfer_score_unit={score.transfer_score_unit}"
+        f" transfer_bytes={score.transfer_bytes}"
+        f" layout_conversion_bytes={score.layout_conversion_bytes}"
+        f" preferred_memory_domain_match="
+        f"{_format_bool(score.preferred_memory_domain_match)}"
+        f" domain={score.memory_domain.value}"
+        f" produced_layout={score.produced_layout.value}"
+    )
+
+
 def _format_optional_name(value: str | None) -> str:
     if value is None:
         return "-"
@@ -117,6 +139,10 @@ def _format_names(names: tuple[str, ...]) -> str:
 
 def _format_float(value: float) -> str:
     return f"{value:.12g}"
+
+
+def _format_bool(value: bool) -> str:
+    return "true" if value else "false"
 
 
 __all__ = ["dump_partition_plan"]

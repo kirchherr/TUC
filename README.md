@@ -49,6 +49,7 @@ The current prototype contains:
   automatic global optimization.
 - Schema-versioned runtime manual overrides for operation-scoped placement
   constraints across already accepted backend candidates.
+- Opt-in runtime candidate score diagnostics for reviewable placement evidence.
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - Branch protection policy for `main` and required CI/security checks.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, and

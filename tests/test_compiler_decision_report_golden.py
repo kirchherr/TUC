@@ -40,6 +40,10 @@ _GOLDEN_DIR = Path(__file__).parent / "golden" / "compiler_decisions"
             "manual_override_require.txt",
             lambda: _manual_override_decision_report(),
         ),
+        (
+            "candidate_scores.txt",
+            lambda: _candidate_score_decision_report(),
+        ),
     ),
 )
 def test_compiler_decision_report_matches_golden(
@@ -88,4 +92,43 @@ def _manual_override_decision_report() -> str:
         graph,
         [LinearAlgebraSimulatorBackend().capability, gpu_backend],
         runtime_overrides=overrides,
+    ).dump_decision_report()
+
+
+def _candidate_score_decision_report() -> str:
+    lhs = TensorRef("lhs", (4, 4))
+    rhs = TensorRef("rhs", (4, 4))
+    projection = TensorRef("projection_out", (4, 4))
+    activated = TensorRef("activated", (4, 4))
+    graph = ComputeGraph(
+        name="golden_candidate_scores",
+        operations=(
+            ComputeOperation(
+                name="projection",
+                kind=OperationKind.MATMUL,
+                inputs=(lhs, rhs),
+                outputs=(projection,),
+            ),
+            ComputeOperation(
+                name="activation",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(projection,),
+                outputs=(activated,),
+            ),
+        ),
+    )
+    analog = BackendCapability(
+        name="analog",
+        supported_ops=frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE}),
+        memory_domain=MemoryDomainKind.ANALOG_WEIGHT_BANK,
+    )
+    gpu = BackendCapability(
+        name="gpu",
+        supported_ops=frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE}),
+        memory_domain=MemoryDomainKind.GPU_HBM,
+    )
+    return compile_graph(
+        graph,
+        [analog, gpu],
+        include_candidate_scores=True,
     ).dump_decision_report()

@@ -1,0 +1,19 @@
+runtime.plan @golden_candidate_scores {
+  assignments {
+    projection -> analog domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="supported:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
+    activation -> analog domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="supported:elementwise;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
+  }
+  candidate_scores {
+    projection/analog selected=true stage=supported transfer_score=0 transfer_score_unit=bytes transfer_bytes=0 layout_conversion_bytes=0 preferred_memory_domain_match=false domain=analog_weight_bank produced_layout=row_major
+    projection/gpu selected=false stage=supported transfer_score=0 transfer_score_unit=bytes transfer_bytes=0 layout_conversion_bytes=0 preferred_memory_domain_match=false domain=gpu_hbm produced_layout=row_major
+    activation/analog selected=true stage=supported transfer_score=0 transfer_score_unit=bytes transfer_bytes=0 layout_conversion_bytes=0 preferred_memory_domain_match=false domain=analog_weight_bank produced_layout=row_major
+    activation/gpu selected=false stage=supported transfer_score=64 transfer_score_unit=bytes transfer_bytes=64 layout_conversion_bytes=0 preferred_memory_domain_match=false domain=gpu_hbm produced_layout=row_major
+  }
+  summary {
+    total_transfer_bytes = 0
+    total_layout_conversion_bytes = 0
+    total_data_movement_bytes = 0
+    estimated_transfer_latency_ns = 0
+    estimated_transfer_energy_pj = 0
+  }
+}
