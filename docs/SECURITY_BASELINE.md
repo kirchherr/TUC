@@ -48,6 +48,11 @@ Implemented now:
 - Attribute type, nesting, key-count, string-size, and total-size budgets.
 - Backend capability validation for operation sets, preferences, error budgets,
   memory domains, accepted layouts, and produced layouts.
+- Schema-versioned Triton metadata intake rejects reserved `tuc.*` attributes,
+  unsupported schema versions, custom mapping subclasses, and known execution
+  surface keys before producing a `ComputeGraph`; deterministic intake reports
+  make the frontend boundary reviewable without importing, parsing, JITing, or
+  executing Triton code.
 - Movement-aware partition plan metadata with transfer-byte accounting.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.

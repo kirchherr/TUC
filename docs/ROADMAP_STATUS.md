@@ -65,6 +65,8 @@ Current slice:
 - Calibrated transfer-cost profile files.
 - Golden-kernel correctness suite.
 - Prototype frontend adapter for Triton-like kernel metadata.
+- Schema-versioned Triton metadata intake contract with execution-surface
+  rejection and deterministic intake reports.
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
@@ -177,6 +179,9 @@ Current focus:
 
 - Real Triton integration as a credibility milestone after the abstraction proof
   remains stable.
+- Future Triton idiom coverage should enter through the schema-versioned
+  metadata intake contract before any source parser or `@triton.jit` handling
+  is accepted.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its
