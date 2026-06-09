@@ -1,0 +1,87 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+
+def test_source_intent_doc_preserves_non_lowering_boundary() -> None:
+    text = Path("docs/SOURCE_INTENT_IR.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "not a Triton source parser",
+        "not a metadata adapter",
+        "not a `ComputeGraph` constructor",
+        "produce metadata",
+        "produce a `ComputeGraph`",
+        "produce TLIR, HAC-IR, or HS-IR",
+        "execute `@triton.jit`",
+        "no `to_compute_graph` or `to_metadata`",
+        "The preflight must not create Source Intent IR",
+    ):
+        assert expected in text
+
+
+def test_source_intent_rfc_preserves_conversion_gate() -> None:
+    text = Path("rfcs/0053-canonical-source-intent-ir.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source parsing",
+        "no `to_metadata`",
+        "no `to_compute_graph`",
+        "no lowering path",
+        "hardware family names",
+        "reserved `tuc.*` keys",
+        "metadata remains the accepted bridge",
+        "Future conversion from Source Intent IR to metadata requires its own RFC",
+    ):
+        assert expected in text
+
+
+def test_triton_docs_reference_source_intent_without_ingestion() -> None:
+    compatibility = Path("docs/TRITON_COMPATIBILITY.md").read_text(
+        encoding="utf-8"
+    )
+    threat_model = Path("docs/TRITON_SOURCE_THREAT_MODEL.md").read_text(
+        encoding="utf-8"
+    )
+    preflight = Path("docs/TRITON_SOURCE_PREFLIGHT.md").read_text(encoding="utf-8")
+
+    assert "Canonical Source Intent IR | L1" in compatibility
+    assert "Source Intent Metadata Conversion | L2" in compatibility
+    assert "not source text" in compatibility
+    assert "RFC 0054 permits only execution-free conversion" in threat_model
+    assert "Source text and preflight reports must remain disconnected" in threat_model
+    assert "The preflight must not create it" in preflight
+
+
+def test_source_intent_metadata_doc_preserves_adapter_boundary() -> None:
+    text = Path("docs/SOURCE_INTENT_METADATA.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "execution-free bridge",
+        "already constructed `SourceIntentModule`",
+        "does not parse source text",
+        "must not produce `ComputeGraph`, TLIR, HAC-IR, HS-IR",
+        "source_intent_to_metadata.execution_free.v0",
+        "tests/golden/frontend/source_intent_metadata_report.txt",
+        "source text to Source Intent IR",
+    ):
+        assert expected in text
+
+
+def test_source_intent_metadata_rfc_preserves_source_parser_block() -> None:
+    text = Path("rfcs/0054-source-intent-metadata-conversion.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source parsing",
+        "source_intent_to_metadata.execution_free.v0",
+        "already validated `SourceIntentModule`",
+        "consume preflight reports",
+        "produce `ComputeGraph`, TLIR, HAC-IR, HS-IR",
+        "direct graph construction would bypass the metadata intake",
+        "source parsing remains blocked",
+    ):
+        assert expected in text

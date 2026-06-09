@@ -34,6 +34,15 @@ The only source-text-facing implementation is
 [`TRITON_SOURCE_PREFLIGHT.md`](TRITON_SOURCE_PREFLIGHT.md). It emits a bounded
 diagnostic report and never produces a `ComputeGraph`.
 
+[`SOURCE_INTENT_IR.md`](SOURCE_INTENT_IR.md) defines the future data-only
+boundary between bounded source syntax data and schema-versioned metadata. It
+does not convert to metadata or `ComputeGraph`.
+
+[`SOURCE_INTENT_METADATA.md`](SOURCE_INTENT_METADATA.md) defines the separate
+execution-free adapter from an already constructed `SourceIntentModule` to
+schema-versioned metadata. This still does not accept source text or preflight
+reports.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:
@@ -76,6 +85,11 @@ tests/golden/frontend/triton_metadata_mvp_families_intake.txt
 tests/golden/hac_ir/triton_metadata_mvp_families.txt
 tests/golden/runtime_plans/triton_metadata_mvp_families.txt
 tests/golden/compiler_decisions/triton_metadata_mvp_families.txt
+tests/golden/frontend/source_intent_metadata_report.txt
+tests/golden/frontend/source_intent_metadata_intake.txt
+tests/golden/hac_ir/source_intent_metadata_mlp.txt
+tests/golden/runtime_plans/source_intent_metadata_mlp.txt
+tests/golden/compiler_decisions/source_intent_metadata_mlp.txt
 ```
 
 ## Example

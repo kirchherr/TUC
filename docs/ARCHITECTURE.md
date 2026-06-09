@@ -36,6 +36,11 @@ data and converts it into `ComputeGraph`. It does not parse Python source,
 execute `@triton.jit` functions, import user modules, or trust reserved `tuc.*`
 attributes from frontend input.
 
+Canonical Source Intent IR is a data-only boundary between bounded source
+syntax data and schema-versioned metadata. It is intentionally disconnected
+from metadata conversion, `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans,
+and backend decisions until a separate RFC accepts that conversion path.
+
 ## IR Stages
 
 Phase 1 has an explicit Python-level IR skeleton with three stages:

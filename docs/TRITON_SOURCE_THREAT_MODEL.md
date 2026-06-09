@@ -167,6 +167,20 @@ Triton source preflight v0 provides the first fuzz corpus/property-test corpus.
 Future source-intent IR work must extend it with semantic mapping seeds before
 source text can influence compiler artifacts.
 
+Canonical Source Intent IR v0 exists as a data model. RFC 0054 permits only
+execution-free conversion from an already constructed `SourceIntentModule` to
+schema-versioned metadata. Source text and preflight reports must remain
+disconnected from Source Intent IR, `ComputeGraph`, TLIR, HAC-IR, HS-IR,
+runtime plans, and compiler decision reports until a separate source-to-intent
+RFC adds parser budgets, corpus, deterministic diagnostics, goldens, and
+security-review evidence.
+
+RFC 0054 permits only execution-free conversion from an already constructed
+`SourceIntentModule` to schema-versioned metadata.
+
+Source text and preflight reports must remain disconnected from Source Intent
+IR.
+
 ## HAC-IR Neutrality Gate
 
 The source parser must preserve HAC-IR neutrality. It may describe compute
@@ -203,3 +217,7 @@ TUC also has an execution-free
 provided source text as bounded syntax data and emit a deterministic diagnostic
 report. It must not produce metadata, `ComputeGraph`, TLIR, HAC-IR, HS-IR,
 runtime plans, compiler decision reports, or backend assignments.
+
+TUC also has a data-only [Source Intent IR](SOURCE_INTENT_IR.md) and a separate
+[Source Intent Metadata Conversion](SOURCE_INTENT_METADATA.md) adapter. No
+implemented frontend path may produce Source Intent IR from source text yet.

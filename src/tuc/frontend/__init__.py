@@ -1,6 +1,21 @@
 """Frontend metadata and developer-facing helpers."""
 
 from tuc.frontend.hints import CompilationHints
+from tuc.frontend.source_intent import (
+    MAX_SOURCE_INTENT_ARITY,
+    MAX_SOURCE_INTENT_OPERATIONS,
+    MAX_SOURCE_INTENT_TENSORS,
+    SOURCE_INTENT_IR_CONTRACT,
+    SourceIntentModule,
+    SourceIntentOperation,
+    SourceIntentTensor,
+)
+from tuc.frontend.source_intent_metadata import (
+    SOURCE_INTENT_METADATA_CONTRACT,
+    SourceIntentMetadataReport,
+    build_source_intent_metadata_report,
+    source_intent_to_triton_metadata,
+)
 from tuc.frontend.triton_metadata import (
     TRITON_METADATA_INTAKE_CONTRACT,
     TRITON_METADATA_SCHEMA_VERSION,
@@ -25,12 +40,21 @@ from tuc.frontend.triton_source import (
 
 __all__ = [
     "CompilationHints",
+    "MAX_SOURCE_INTENT_ARITY",
+    "MAX_SOURCE_INTENT_OPERATIONS",
+    "MAX_SOURCE_INTENT_TENSORS",
     "MAX_TRITON_SOURCE_AST_DEPTH",
     "MAX_TRITON_SOURCE_AST_NODES",
     "MAX_TRITON_SOURCE_BYTES",
     "MAX_TRITON_SOURCE_DIAGNOSTICS",
     "MAX_TRITON_SOURCE_DIAGNOSTIC_BYTES",
     "MAX_TRITON_SOURCE_LINES",
+    "SOURCE_INTENT_IR_CONTRACT",
+    "SOURCE_INTENT_METADATA_CONTRACT",
+    "SourceIntentModule",
+    "SourceIntentMetadataReport",
+    "SourceIntentOperation",
+    "SourceIntentTensor",
     "TRITON_METADATA_INTAKE_CONTRACT",
     "TRITON_METADATA_SCHEMA_VERSION",
     "TRITON_SOURCE_PREFLIGHT_CONTRACT",
@@ -40,6 +64,8 @@ __all__ = [
     "TritonSourcePreflightReport",
     "TritonTensorMetadata",
     "build_triton_intake_report",
+    "build_source_intent_metadata_report",
     "preflight_triton_source",
+    "source_intent_to_triton_metadata",
     "triton_metadata_to_compute_graph",
 ]

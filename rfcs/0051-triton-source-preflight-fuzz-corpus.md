@@ -49,6 +49,8 @@ The seed corpus covers:
 - The preflight now has executable fuzz/property-test evidence.
 - Source-intent IR remains blocked from lowering until it has its own RFC,
   corpus, goldens, and security review.
+- RFC 0053 adds the Source Intent IR data model only; conversion to metadata or
+  compiler artifacts remains blocked behind its own review gate.
 - Future parser work can reuse this corpus as the first malformed-source seed
   set.
 
