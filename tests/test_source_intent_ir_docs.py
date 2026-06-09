@@ -79,13 +79,92 @@ def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
         "parse source text",
         "source_intent_intake.execution_free.v0",
         "source_intent_from_mapping(data)",
+        "schemas/source_intent.v0.schema.json",
         "Seed corpus: `tests/corpus/source_intent_intake/`",
         "Property tests: `tests/test_source_intent_intake_fuzz.py`",
         "arbitrary JSON-like values",
         "backend-specific hint escape attempts",
         "must not accept source text or preflight reports",
         "tests/golden/frontend/source_intent_intake_report.txt",
+        "tests/golden/hac_ir/source_intent_intake_mlp.txt",
+        "tests/golden/runtime_plans/source_intent_intake_mlp.txt",
+        "tests/golden/compiler_decisions/source_intent_intake_mlp.txt",
         "source text to Source Intent data",
+    ):
+        assert expected in text
+
+
+def test_source_intent_schema_doc_preserves_runtime_boundary() -> None:
+    text = Path("docs/SOURCE_INTENT_SCHEMA.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "schemas/source_intent.v0.schema.json",
+        "JSON Schema draft: 2020-12",
+        "source_intent_from_mapping(data)",
+        "additionalProperties: false",
+        "trusted runtime boundary remains",
+        "source parsing",
+        "ComputeGraph",
+        "Incompatible schema changes require a new schema version",
+    ):
+        assert expected in text
+
+
+def test_source_intent_schema_rfc_preserves_non_runtime_boundary() -> None:
+    text = Path("rfcs/0058-source-intent-json-schema.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "schemas/source_intent.v0.schema.json",
+        "does not add source parsing",
+        "JSON Schema draft 2020-12",
+        "additionalProperties: false",
+        "trusted runtime boundary remains `source_intent_from_mapping(data)`",
+        "prefer_analog_linear",
+        "python_source",
+        "Runtime validation remains fail-closed",
+    ):
+        assert expected in text
+
+
+def test_source_intent_frontend_conformance_doc_preserves_non_parser_gate() -> None:
+    text = Path("docs/SOURCE_INTENT_FRONTEND_CONFORMANCE.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "reusable certification path",
+        "does not read files",
+        "parse source text",
+        "discover plugins",
+        "execute generated artifacts",
+        "It is not a source parser",
+        "run_source_intent_frontend_conformance(frontend_name, cases)",
+        "dump_source_intent_frontend_conformance_report(report)",
+        "tests/golden/frontend/source_intent_frontend_conformance_report.json",
+        "failure stages and exception types, not raw payload contents",
+        "must not become a production source ingestion path",
+    ):
+        assert expected in text
+
+
+def test_source_intent_frontend_conformance_rfc_preserves_security_gate() -> None:
+    text = Path("rfcs/0059-source-intent-frontend-conformance.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source parsing",
+        "frontend module imports",
+        "plugin discovery",
+        "generated-artifact execution",
+        "run_source_intent_frontend_conformance(frontend_name, cases)",
+        "Rejected cases must fail closed at Source Intent Intake",
+        "not a production source parser",
+        "not a parser-to-IR bridge",
+        "tests/golden/frontend/source_intent_frontend_conformance_report.json",
+        "certification must not import or execute untrusted frontend code",
     ):
         assert expected in text
 
@@ -118,6 +197,24 @@ def test_source_intent_intake_fuzz_rfc_preserves_non_ingestion_gate() -> None:
         "unknown tensor references",
         "Source text and preflight reports remain disconnected",
         "production API must remain path-free",
+    ):
+        assert expected in text
+
+
+def test_source_intent_intake_e2e_rfc_preserves_parser_block() -> None:
+    text = Path("rfcs/0057-source-intent-intake-e2e-goldens.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source parsing",
+        "plain data",
+        "SourceIntentModule",
+        "HAC-IR",
+        "runtime plan",
+        "compiler decision report",
+        "Source text, preflight reports, and parser outputs remain blocked",
+        "Source Intent Intake must not produce compiler artifacts directly",
     ):
         assert expected in text
 

@@ -16,6 +16,7 @@ It does not parse source text.
 - Intake contract: `source_intent_intake.execution_free.v0`
 - API: `source_intent_from_mapping(data)`
 - Report: `build_source_intent_intake_report(module)`
+- JSON Schema: `schemas/source_intent.v0.schema.json`
 - Example: `examples/source_intent_intake.py`
 - Tests: `tests/test_source_intent_intake.py`
 - Seed corpus: `tests/corpus/source_intent_intake/`
@@ -29,6 +30,11 @@ Accepted plain data:
 - neutral source-intent hints already accepted by Source Intent IR
 
 Unsupported keys fail closed.
+
+The machine-readable schema is documented in
+[Source Intent JSON Schema](SOURCE_INTENT_SCHEMA.md). The schema is an
+interoperability artifact; the trusted runtime boundary remains
+`source_intent_from_mapping(data)`.
 
 ## Security Boundary
 
@@ -50,7 +56,15 @@ The intake is golden-tested through:
 tests/golden/frontend/source_intent_intake_report.txt
 tests/golden/frontend/source_intent_intake_module.txt
 tests/golden/frontend/source_intent_intake_metadata.txt
+tests/golden/hac_ir/source_intent_intake_mlp.txt
+tests/golden/runtime_plans/source_intent_intake_mlp.txt
+tests/golden/compiler_decisions/source_intent_intake_mlp.txt
 ```
+
+The HAC-IR, runtime-plan, and compiler decision-report goldens are produced
+only after the separate Source Intent Metadata Conversion adapter and existing
+metadata intake path validate the module. Source Intent Intake itself still
+does not produce compiler artifacts directly.
 
 The intake also has property-test and seed-corpus coverage for:
 

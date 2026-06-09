@@ -283,6 +283,7 @@ Deliverables:
 - Triton-like metadata adapter hardening.
 - Execution-free Triton source preflight with bounded diagnostics.
 - Triton source preflight fuzz/property corpus.
+- Source Intent Frontend Conformance report for external frontend authors.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -307,15 +308,22 @@ Go/No-Go:
 - Source Intent Intake may build `SourceIntentModule` only from already decoded
   schema-versioned plain data, not source text, files, preflight reports, or
   Python objects.
+- Source Intent plain data must have a machine-readable schema artifact for
+  external frontend authors; runtime validation remains fail-closed in TUC.
 - Source Intent Intake fuzz/property tests must keep arbitrary JSON-like data,
   hostile source-text keys, backend hints, and broken tensor references
   fail-closed before source parsers can target the schema.
+- Source Intent Intake proof artifacts must show the accepted plain-data path
+  through metadata intake, HAC-IR, runtime planning, and compiler decision
+  reports before any source-text parser targets the schema.
 - Canonical Source Intent IR remains a data-only contract; conversion to
   metadata is allowed only through the separately reviewed
   `source_intent_to_metadata.execution_free.v0` adapter and its goldens.
 - Source Intent IR to metadata conversion may start only from an already
   constructed `SourceIntentModule`; source text and preflight reports remain
   disconnected until a separate source-to-intent security gate is accepted.
+- External frontend authors must first provide Source Intent Frontend
+  Conformance evidence for accepted plain data and rejected hostile cases.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

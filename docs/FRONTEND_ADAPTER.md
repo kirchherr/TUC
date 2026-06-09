@@ -42,10 +42,20 @@ does not convert to metadata or `ComputeGraph`.
 plain-data construction of `SourceIntentModule`. It does not accept source
 text, files, preflight reports, or Python objects.
 
+[`SOURCE_INTENT_SCHEMA.md`](SOURCE_INTENT_SCHEMA.md) documents the
+machine-readable `schemas/source_intent.v0.schema.json` contract for external
+frontend authors. Runtime validation still happens in Source Intent Intake.
+
 [`SOURCE_INTENT_METADATA.md`](SOURCE_INTENT_METADATA.md) defines the separate
 execution-free adapter from an already constructed `SourceIntentModule` to
 schema-versioned metadata. This still does not accept source text or preflight
 reports.
+
+[`SOURCE_INTENT_FRONTEND_CONFORMANCE.md`](SOURCE_INTENT_FRONTEND_CONFORMANCE.md)
+defines a reusable certification path for external frontend authors that emit
+`source_intent.v0` plain data. It checks in-memory cases only and does not load
+frontend packages, parse source text, discover plugins, or execute backend
+artifacts.
 
 ## Security Rules
 
@@ -92,11 +102,15 @@ tests/golden/compiler_decisions/triton_metadata_mvp_families.txt
 tests/golden/frontend/source_intent_intake_report.txt
 tests/golden/frontend/source_intent_intake_module.txt
 tests/golden/frontend/source_intent_intake_metadata.txt
+tests/golden/hac_ir/source_intent_intake_mlp.txt
+tests/golden/runtime_plans/source_intent_intake_mlp.txt
+tests/golden/compiler_decisions/source_intent_intake_mlp.txt
 tests/golden/frontend/source_intent_metadata_report.txt
 tests/golden/frontend/source_intent_metadata_intake.txt
 tests/golden/hac_ir/source_intent_metadata_mlp.txt
 tests/golden/runtime_plans/source_intent_metadata_mlp.txt
 tests/golden/compiler_decisions/source_intent_metadata_mlp.txt
+tests/golden/frontend/source_intent_frontend_conformance_report.json
 ```
 
 ## Example
