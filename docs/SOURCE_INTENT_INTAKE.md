@@ -90,3 +90,7 @@ These remain future work:
 Any source-text-to-intent path still requires parser budgets, source corpus,
 negative tests, deterministic diagnostics, security review, and source-intent
 goldens.
+
+[Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is the required
+future gate before source text or preflight reports may create
+`source_intent.v0` plain data for this intake.

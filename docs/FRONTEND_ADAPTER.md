@@ -62,6 +62,12 @@ documents the machine-readable JSON Schema for deterministic frontend
 conformance report artifacts:
 `schemas/source_intent_frontend_conformance_report.v0.schema.json`.
 
+[`SOURCE_TO_INTENT_PARSER_GATE.md`](SOURCE_TO_INTENT_PARSER_GATE.md) defines
+the required future gate before source text or preflight reports may create
+`source_intent.v0` plain data. It keeps parser work blocked until budgets,
+corpus, diagnostics, goldens, HAC-IR neutrality review, and conformance
+evidence exist.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:

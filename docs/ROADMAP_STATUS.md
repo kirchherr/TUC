@@ -92,6 +92,10 @@ Current slice:
   data.
 - Machine-readable Source Intent Frontend Conformance report JSON Schema at
   `schemas/source_intent_frontend_conformance_report.v0.schema.json`.
+- Source-To-Intent Parser Gate defining the required future parser RFC,
+  budgets, accepted/rejected corpus, deterministic diagnostics, goldens,
+  HAC-IR neutrality review, and conformance evidence before source text may
+  create `source_intent.v0` plain data.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -230,6 +234,9 @@ Current focus:
 - External frontend proposals should provide a Source Intent Frontend
   Conformance report matching the report schema before maintainers consider
   any source-text parser or frontend package integration.
+- Source-to-intent parser work remains blocked until
+  [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is satisfied
+  by a dedicated parser implementation RFC and executable evidence.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its

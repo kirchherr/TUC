@@ -49,10 +49,13 @@ def test_triton_docs_reference_source_intent_without_ingestion() -> None:
 
     assert "Canonical Source Intent IR | L1" in compatibility
     assert "Source Intent Metadata Conversion | L2" in compatibility
+    assert "Source-To-Intent Parser Gate | L0" in compatibility
     assert "not source text" in compatibility
     assert "RFC 0054 permits only execution-free conversion" in threat_model
     assert "Source text and preflight reports must remain disconnected" in threat_model
+    assert "Source-To-Intent Parser Gate blocks source text" in threat_model
     assert "The preflight must not create it" in preflight
+    assert "SOURCE_TO_INTENT_PARSER_GATE.md" in preflight
 
 
 def test_source_intent_metadata_doc_preserves_adapter_boundary() -> None:
@@ -90,6 +93,7 @@ def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
         "tests/golden/runtime_plans/source_intent_intake_mlp.txt",
         "tests/golden/compiler_decisions/source_intent_intake_mlp.txt",
         "source text to Source Intent data",
+        "SOURCE_TO_INTENT_PARSER_GATE.md",
     ):
         assert expected in text
 
@@ -206,6 +210,57 @@ def test_source_intent_frontend_conformance_report_schema_rfc_is_report_only() -
         "raw frontend payloads",
         "It must not add source parsing or report-to-compiler ingestion",
         "SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA_VERSION",
+    ):
+        assert expected in text
+
+
+def test_source_to_intent_parser_gate_doc_blocks_parser_work() -> None:
+    text = Path("docs/SOURCE_TO_INTENT_PARSER_GATE.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "TUC still does not implement source text to Source Intent IR",
+        "Source-to-intent parsing is blocked",
+        "No source text or preflight report may produce Source Intent IR today",
+        "source_intent.v0 plain data",
+        "A future parser must not produce metadata",
+        "must not import user modules",
+        "must not evaluate decorators",
+        "must not execute `@triton.jit`",
+        "must not produce `ComputeGraph`",
+        "Required Parser Budgets",
+        "Required Corpus",
+        "Required Evidence",
+        "Source Intent Frontend Conformance report",
+        "The parser report must not contain raw source text",
+        "source-to-metadata or source-to-ComputeGraph shortcuts",
+    ):
+        assert expected in text
+
+
+def test_source_to_intent_parser_gate_rfc_blocks_parser_work() -> None:
+    text = Path("rfcs/0061-source-to-intent-parser-gate.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not implement a parser",
+        "source-file loading",
+        "preflight-to-intent conversion",
+        "`@triton.jit` execution",
+        "ComputeGraph",
+        "Source Intent Intake",
+        "A future parser must not produce metadata",
+        "Parser implementation work remains blocked",
+        "must not import user modules",
+        "must not evaluate decorators",
+        "must not execute `@triton.jit`",
+        "The parser report must not contain raw source text",
+        "ambiguous softmax axis intent",
+        "hardware-specific hints such as `prefer_analog_linear`",
+        "reserved `tuc.*` leakage",
+        "Start with a partial parser and add security later",
     ):
         assert expected in text
 
