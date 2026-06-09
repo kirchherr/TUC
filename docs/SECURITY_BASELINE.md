@@ -57,6 +57,11 @@ Implemented now:
   [TRITON_SOURCE_THREAT_MODEL.md](TRITON_SOURCE_THREAT_MODEL.md) until a
   data-only parser design includes source budgets, negative tests, fuzzing or
   property-test corpus, deterministic diagnostics, and sandboxing gates.
+- Triton source preflight v0 parses caller-provided source text as bounded
+  syntax data only, emits deterministic diagnostics, rejects imports,
+  decorator calls, dangerous builtins, host/device/network/dynamic-library
+  surfaces, unsupported calls, and `tuc.*` HAC-IR leakage, and never produces a
+  `ComputeGraph`.
 - Movement-aware partition plan metadata with transfer-byte accounting.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.

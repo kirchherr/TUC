@@ -1,0 +1,14 @@
+triton.source_preflight @mvp_kernel {
+  intake_contract = "triton_source_preflight.execution_free.v0"
+  status = "accepted"
+  source_bytes = 142
+  line_count = 6
+  ast_node_count = 59
+  ast_depth = 7
+  identifier_count = 18
+  literal_count = 3
+  operation_families = "elementwise,matmul"
+  blocked_execution_surfaces = "bytecode_inspection,decorator_evaluation,device_access,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,python_import,subprocess_execution"
+  rejected_features = "-"
+  diagnostics = "-"
+}

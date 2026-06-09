@@ -279,6 +279,7 @@ Deliverables:
 
 - Triton compatibility matrix.
 - Triton-like metadata adapter hardening.
+- Execution-free Triton source preflight with bounded diagnostics.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -296,6 +297,8 @@ Go/No-Go:
 - Direct Triton source parsing is blocked until a threat model, parser budgets,
   negative tests, fuzzing or property-test corpus, deterministic diagnostics,
   and sandboxing gates are in place.
+- Source preflight may inspect syntax as data, but it must not produce
+  `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans, or backend decisions.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

@@ -17,7 +17,8 @@ compatibility on day one.
 
 | Feature | Level | Notes |
 | --- | --- | --- |
-| `@triton.jit` syntax | L0 | Preserved as a design goal; blocked by the Triton source threat model until a data-only parser, negative tests, fuzzing, and sandboxing gates exist. |
+| `@triton.jit` syntax | L0 | Preserved as a design goal; source text can pass execution-free preflight only, with no source-to-IR ingestion yet. |
+| Triton source preflight | L0 | Bounded source syntax report rejects imports, decorator calls, dangerous builtins, host/device/network surfaces, unsupported calls, and HAC-IR leakage without producing a `ComputeGraph`. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
@@ -39,8 +40,11 @@ compatibility on day one.
 - Direct source parsing must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before moving
   beyond L0.
+- Source-text preflight is documented in
+  [Triton Source Preflight](TRITON_SOURCE_PREFLIGHT.md), but it is not source
+  ingestion.
 
 ## Next Step
 
-Implement source-intake preflight only after the Triton source threat model has
-dedicated negative tests, resource budgets, and deterministic diagnostics.
+Add a canonical source-intent IR only after source preflight has fuzz coverage
+and remains disconnected from lowering.

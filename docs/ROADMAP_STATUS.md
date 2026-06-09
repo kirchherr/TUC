@@ -74,6 +74,8 @@ Current slice:
 - Triton source threat model that blocks direct source parsing and `@triton.jit`
   handling until parser budgets, negative tests, fuzzing, diagnostics, and
   sandboxing gates exist.
+- Triton source preflight v0 with execution-free source budgets, negative
+  tests, deterministic report golden, and no source-to-IR conversion.
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
@@ -192,6 +194,9 @@ Current focus:
 - Source parser work must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before it can
   produce metadata, HAC-IR, runtime-plan, or decision-report artifacts.
+- Source preflight is allowed only as a diagnostic boundary; future canonical
+  source-intent IR must remain disconnected from lowering until fuzzing and
+  golden review evidence exist.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its
