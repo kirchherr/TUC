@@ -68,6 +68,11 @@ the required future gate before source text or preflight reports may create
 corpus, diagnostics, goldens, HAC-IR neutrality review, and conformance
 evidence exist.
 
+[`SOURCE_TO_INTENT_READINESS.md`](SOURCE_TO_INTENT_READINESS.md) defines a
+deterministic report for reviewing whether a future parser proposal has every
+required gate artifact. The current golden report intentionally remains
+blocked.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:

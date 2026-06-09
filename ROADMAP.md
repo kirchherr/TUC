@@ -286,6 +286,7 @@ Deliverables:
 - Source Intent Frontend Conformance report for external frontend authors.
 - Source Intent Frontend Conformance report JSON Schema.
 - Source-To-Intent Parser Gate for future source parser proposals.
+- Source-To-Intent Readiness report for parser proposal evidence.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -329,6 +330,8 @@ Go/No-Go:
   using the versioned conformance report schema.
 - Source-to-intent parser proposals must satisfy the Source-To-Intent Parser
   Gate before source text can create `source_intent.v0` plain data.
+- Source-to-intent parser proposals must pass the Source-To-Intent Readiness
+  report before source text can influence compiler artifacts.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

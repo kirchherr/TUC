@@ -96,6 +96,8 @@ Current slice:
   budgets, accepted/rejected corpus, deterministic diagnostics, goldens,
   HAC-IR neutrality review, and conformance evidence before source text may
   create `source_intent.v0` plain data.
+- Source-To-Intent Readiness report with deterministic blocked golden evidence
+  for future parser proposals.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -237,6 +239,9 @@ Current focus:
 - Source-to-intent parser work remains blocked until
   [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is satisfied
   by a dedicated parser implementation RFC and executable evidence.
+- Future parser proposals must pass
+  [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) before
+  source text can influence compiler artifacts.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its

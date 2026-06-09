@@ -25,6 +25,7 @@ compatibility on day one.
 | Source Intent Metadata Conversion | L2 | Execution-free adapter converts already constructed Source Intent IR to schema-versioned metadata, with source-intake, HAC-IR, runtime-plan, and compiler decision-report goldens. |
 | Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, metadata conversion, graph construction, and neutral planning while rejected cases fail closed at intake; report artifacts have a JSON Schema. |
 | Source-To-Intent Parser Gate | L0 | Parser implementation remains blocked, but the required future RFC, budgets, corpus, diagnostics, goldens, neutrality review, and conformance evidence are defined. |
+| Source-To-Intent Readiness Report | L0 | Parser implementation remains blocked, with deterministic readiness evidence showing which required gate artifacts are still missing. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
@@ -73,6 +74,9 @@ compatibility on day one.
   parser implementation blocked until source text can produce Source Intent
   plain data without bypassing intake, conformance, metadata conversion, HAC-IR
   neutrality review, runtime-plan goldens, or decision-report goldens.
+- Source-To-Intent Readiness Report is documented in
+  [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md). It is a
+  review artifact for parser proposals, not a source parser or ingestion path.
 
 ## Next Step
 

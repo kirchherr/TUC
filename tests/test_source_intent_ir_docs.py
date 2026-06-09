@@ -50,6 +50,7 @@ def test_triton_docs_reference_source_intent_without_ingestion() -> None:
     assert "Canonical Source Intent IR | L1" in compatibility
     assert "Source Intent Metadata Conversion | L2" in compatibility
     assert "Source-To-Intent Parser Gate | L0" in compatibility
+    assert "Source-To-Intent Readiness Report | L0" in compatibility
     assert "not source text" in compatibility
     assert "RFC 0054 permits only execution-free conversion" in threat_model
     assert "Source text and preflight reports must remain disconnected" in threat_model
@@ -233,8 +234,55 @@ def test_source_to_intent_parser_gate_doc_blocks_parser_work() -> None:
         "Required Corpus",
         "Required Evidence",
         "Source Intent Frontend Conformance report",
+        "Source-To-Intent Readiness report",
+        "SOURCE_TO_INTENT_READINESS.md",
         "The parser report must not contain raw source text",
         "source-to-metadata or source-to-ComputeGraph shortcuts",
+    ):
+        assert expected in text
+
+
+def test_source_to_intent_readiness_doc_is_report_only() -> None:
+    text = Path("docs/SOURCE_TO_INTENT_READINESS.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "does not parse source text",
+        "inspect preflight reports",
+        "load source files",
+        "produce `source_intent.v0` payloads",
+        "construct `ComputeGraph`",
+        "source_to_intent_parser_gate.blocking.v0",
+        "build_source_to_intent_readiness_report(proposal_name, evidence)",
+        "SOURCE_TO_INTENT_REQUIRED_EVIDENCE",
+        "tests/golden/frontend/source_to_intent_readiness_report.json",
+        "Missing evidence keeps parser implementation blocked",
+        "must not include raw source text",
+        "Unknown evidence IDs and duplicate evidence IDs fail closed",
+        "must not import user modules",
+        "must not evaluate decorators",
+        "execute `@triton.jit`",
+    ):
+        assert expected in text
+
+
+def test_source_to_intent_readiness_rfc_is_report_only() -> None:
+    text = Path("rfcs/0062-source-to-intent-readiness-report.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not implement a parser",
+        "source ingestion",
+        "preflight-to-intent conversion",
+        "source-to-`ComputeGraph` construction",
+        "build_source_to_intent_readiness_report(proposal_name, evidence)",
+        "source_to_intent_parser_gate.blocking.v0",
+        "parser_rfc",
+        "source_intent_frontend_conformance_report",
+        "must not include raw source text",
+        "Unknown evidence IDs and duplicate evidence IDs fail closed",
+        "Source semantics remain blocked",
+        "tests/golden/frontend/source_to_intent_readiness_report.json",
     ):
         assert expected in text
 
