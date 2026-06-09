@@ -58,3 +58,9 @@ CUDA backend path and a dedicated threat model for device execution.
 
 This is not a performance claim. It is a repeatable baseline for local drift,
 CI smoke checks, and future comparisons against executable backends.
+
+Performance proof claims are gated by
+[Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md). Baseline benchmark
+output must not be used as a native performance parity claim until leaky
+abstraction evidence, planner-overhead evidence, native baseline provenance,
+correctness goldens, and security review exist.

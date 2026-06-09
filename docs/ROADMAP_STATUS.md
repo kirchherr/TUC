@@ -33,6 +33,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Proof-report metadata for proof version, graph family, and backend set.
 - Proof artifact review checklist for proof examples, metadata, goldens, and
   proof documentation.
+- Performance proof boundary for leaky abstraction and planner-overhead limits
+  of the current correctness proof.
 
 ## In Progress
 
@@ -108,6 +110,9 @@ Current slice:
   already constructed `SourceIntentModule` into schema-versioned metadata, with
   frontend, HAC-IR, runtime-plan, and compiler decision-report goldens.
 - Baseline benchmark harness that can run with or without CUDA.
+- Performance Proof Boundary documenting that benchmarks are diagnostic until
+  native baseline provenance, leaky-abstraction evidence, planner-overhead
+  evidence, correctness goldens, and security review exist.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
 - HAC-IR semantic charter for compute intent, compiler facts, planning
@@ -246,6 +251,8 @@ Current focus:
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its
   decisions can be explained next to manual override effects.
+- Native performance claims remain blocked until
+  [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied.
 - Noise/error-budget score components only after those models are documented
   outside HAC-IR semantics and covered by goldens.
 - Maintainer teams or organization-backed owner groups before broad external

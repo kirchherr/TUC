@@ -40,6 +40,9 @@ If the answer to the first question is no, the item is not core roadmap work.
 - No complete Triton fork.
 - No production CUDA, HIP, photonic, or neuromorphic backend.
 - No performance-parity claim against vendor libraries.
+- No native performance parity claim before
+  [Performance Proof Boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md) is
+  satisfied.
 - No auto-discovery or execution of third-party backend plugins.
 - No arbitrary PyTorch model support.
 - No native parser, native MLIR dialect, or executable artifact path without a
@@ -112,6 +115,8 @@ Completed evidence:
 - Proof reports include deterministic metadata for proof version, graph family,
   and backend set.
 - Proof artifact changes have a reviewer-facing checklist and merge gate.
+- Performance proof boundaries are documented: Objective Alpha proves
+  correctness and inspectability, not native performance parity.
 
 Next work:
 
@@ -292,6 +297,8 @@ Deliverables:
 - Correctness tests against deterministic references.
 - Optional performance baselines, treated as diagnostic data rather than the
   core success metric.
+- Performance proof boundary covering leaky abstraction and planner overhead
+  before native performance claims.
 
 Go/No-Go:
 
@@ -335,6 +342,9 @@ Go/No-Go:
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
+- Performance claims remain blocked until leaky-abstraction evidence,
+  planner-overhead evidence, native baseline provenance, correctness goldens,
+  and security review exist.
 
 ## Phase Zeta: Specialized Hardware Proofs
 
@@ -444,6 +454,13 @@ references, and reproducible golden reports.
 
 Mitigation: keep rule-based deterministic planning until candidate scoring is
 testable and explainable.
+
+### Risk: Leaky Abstraction And Planner Overhead
+
+Mitigation: do not claim native performance parity until
+[Performance Proof Boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md) is satisfied.
+Hardware-specific optimization details must stay outside HAC-IR, and planning
+overhead must be measured separately from execution time.
 
 ### Risk: Insecure Plugin Surface
 

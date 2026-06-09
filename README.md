@@ -234,6 +234,7 @@ pytest -q
 - [Proof of reduction](docs/PROOF_OF_REDUCTION.md)
 - [Proof of softmax](docs/PROOF_OF_SOFTMAX.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
+- [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
