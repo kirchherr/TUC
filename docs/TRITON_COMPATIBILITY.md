@@ -19,6 +19,7 @@ compatibility on day one.
 | --- | --- | --- |
 | `@triton.jit` syntax | L0 | Preserved as a design goal; source text can pass execution-free preflight only, with no source-to-IR ingestion yet. |
 | Triton source preflight | L0 | Bounded source syntax report rejects imports, decorator calls, dangerous builtins, host/device/network surfaces, unsupported calls, and HAC-IR leakage without producing a `ComputeGraph`; fuzz/property tests cover arbitrary decoded bytes and malicious seed cases. |
+| Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
 | Canonical Source Intent IR | L1 | Data-only frontend contract exists with deterministic dump and negative hardware-leakage tests; conversion is exposed only through a separate Source Intent Metadata adapter. |
 | Source Intent Metadata Conversion | L2 | Execution-free adapter converts already constructed Source Intent IR to schema-versioned metadata, with source-intake, HAC-IR, runtime-plan, and compiler decision-report goldens. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
@@ -49,6 +50,9 @@ compatibility on day one.
   ingestion.
 - Canonical Source Intent IR is documented in
   [Source Intent IR](SOURCE_INTENT_IR.md).
+- Source Intent Intake is documented in
+  [Source Intent Intake](SOURCE_INTENT_INTAKE.md). It accepts plain data, not
+  source text or preflight reports.
 - Source Intent Metadata Conversion is documented in
   [Source Intent Metadata Conversion](SOURCE_INTENT_METADATA.md). It starts
   from an already constructed `SourceIntentModule`, not source text.

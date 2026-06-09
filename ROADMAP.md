@@ -304,6 +304,12 @@ Go/No-Go:
   `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans, or backend decisions.
 - Preflight fuzz/property tests must keep arbitrary decoded source, invalid
   Unicode, and malicious seed cases fail-closed before source-intent IR work.
+- Source Intent Intake may build `SourceIntentModule` only from already decoded
+  schema-versioned plain data, not source text, files, preflight reports, or
+  Python objects.
+- Source Intent Intake fuzz/property tests must keep arbitrary JSON-like data,
+  hostile source-text keys, backend hints, and broken tensor references
+  fail-closed before source parsers can target the schema.
 - Canonical Source Intent IR remains a data-only contract; conversion to
   metadata is allowed only through the separately reviewed
   `source_intent_to_metadata.execution_free.v0` adapter and its goldens.

@@ -1,0 +1,28 @@
+{
+  "name": "seed_mlp",
+  "schema_version": "source_intent.v0",
+  "tensors": [
+    {"name": "a", "shape": [2, 3]},
+    {"name": "b", "shape": [3, 4]},
+    {"name": "c", "shape": [2, 4]},
+    {"name": "y", "shape": [2, 4]}
+  ],
+  "operations": [
+    {
+      "name": "projection",
+      "family": "matmul",
+      "inputs": ["a", "b"],
+      "outputs": ["c"],
+      "hints": {
+        "max_error_budget": 0.02,
+        "prefer_linear_accelerator": true
+      }
+    },
+    {
+      "name": "activation",
+      "family": "elementwise",
+      "inputs": ["c"],
+      "outputs": ["y"]
+    }
+  ]
+}

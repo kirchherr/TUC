@@ -16,6 +16,9 @@ It is not a `ComputeGraph` constructor.
 - Golden: `tests/golden/frontend/source_intent_ir.txt`
 - Tests: `tests/test_source_intent_ir.py`
 
+Plain-data construction is handled by
+[Source Intent Intake](SOURCE_INTENT_INTAKE.md), not by source parsing.
+
 The v0 contract accepts only:
 
 - bounded tensor names, shapes, and dtypes
@@ -45,11 +48,12 @@ negative tests, fuzz or property-test corpus, deterministic frontend goldens,
 HAC-IR neutrality review, runtime-plan goldens, and compiler decision-report
 goldens.
 
-The separate
+The separate [Source Intent Intake](SOURCE_INTENT_INTAKE.md) adapter may build a
+`SourceIntentModule` from schema-versioned plain data. The separate
 [Source Intent Metadata Conversion](SOURCE_INTENT_METADATA.md) adapter may
 convert an already constructed `SourceIntentModule` into schema-versioned
-metadata. That adapter is a separate review boundary; it is not a method on
-Source Intent IR and it does not accept source text or preflight reports.
+metadata. Both adapters are separate review boundaries; they are not methods on
+Source Intent IR and they do not accept source text or preflight reports.
 
 ## Neutrality
 
@@ -94,6 +98,6 @@ schema-versioned metadata
 ComputeGraph
 ```
 
-Only the Source Intent IR to metadata arrow exists today, and only when starting
-from an already constructed `SourceIntentModule`. The source-text and preflight
-arrows around it remain future work.
+Only the plain-data to Source Intent IR and Source Intent IR to metadata arrows
+exist today. The source-text and preflight arrows around them remain future
+work.
