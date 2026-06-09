@@ -48,8 +48,40 @@ def test_triton_docs_reference_source_intent_without_ingestion() -> None:
     preflight = Path("docs/TRITON_SOURCE_PREFLIGHT.md").read_text(encoding="utf-8")
 
     assert "Canonical Source Intent IR | L1" in compatibility
-    assert "but it is not connected to lowering" in compatibility
-    assert "Canonical Source Intent IR v0 now exists only as a data model" in (
-        threat_model
-    )
+    assert "Source Intent Metadata Conversion | L2" in compatibility
+    assert "not source text" in compatibility
+    assert "RFC 0054 permits only execution-free conversion" in threat_model
+    assert "Source text and preflight reports must remain disconnected" in threat_model
     assert "The preflight must not create it" in preflight
+
+
+def test_source_intent_metadata_doc_preserves_adapter_boundary() -> None:
+    text = Path("docs/SOURCE_INTENT_METADATA.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "execution-free bridge",
+        "already constructed `SourceIntentModule`",
+        "does not parse source text",
+        "must not produce `ComputeGraph`, TLIR, HAC-IR, HS-IR",
+        "source_intent_to_metadata.execution_free.v0",
+        "tests/golden/frontend/source_intent_metadata_report.txt",
+        "source text to Source Intent IR",
+    ):
+        assert expected in text
+
+
+def test_source_intent_metadata_rfc_preserves_source_parser_block() -> None:
+    text = Path("rfcs/0054-source-intent-metadata-conversion.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source parsing",
+        "source_intent_to_metadata.execution_free.v0",
+        "already validated `SourceIntentModule`",
+        "consume preflight reports",
+        "produce `ComputeGraph`, TLIR, HAC-IR, HS-IR",
+        "direct graph construction would bypass the metadata intake",
+        "source parsing remains blocked",
+    ):
+        assert expected in text

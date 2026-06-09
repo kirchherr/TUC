@@ -82,6 +82,9 @@ Current slice:
 - Canonical Source Intent IR v0 as a data-only frontend contract with
   deterministic dump, negative hardware-leakage tests, and no metadata or
   compiler-lowering exit.
+- Source Intent Metadata Conversion v0 for execution-free conversion from an
+  already constructed `SourceIntentModule` into schema-versioned metadata, with
+  frontend, HAC-IR, runtime-plan, and compiler decision-report goldens.
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
@@ -203,9 +206,10 @@ Current focus:
 - Source preflight is allowed only as a diagnostic boundary; future canonical
   source-intent IR must remain disconnected from lowering until fuzzing and
   golden review evidence exist.
-- Source preflight fuzzing is now the baseline seed set; Source Intent IR v0 is
-  only a data model. Future conversion work must add its own corpus,
-  source-intake goldens, and security review before any lowering connection.
+- Source preflight fuzzing is now the baseline seed set; Source Intent IR v0
+  can convert to metadata only from an already constructed module. Future
+  source-text-to-intent work must add its own corpus, source-intent goldens,
+  deterministic diagnostics, and security review before any source connection.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its

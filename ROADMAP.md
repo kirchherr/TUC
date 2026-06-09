@@ -304,9 +304,12 @@ Go/No-Go:
   `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans, or backend decisions.
 - Preflight fuzz/property tests must keep arbitrary decoded source, invalid
   Unicode, and malicious seed cases fail-closed before source-intent IR work.
-- Canonical Source Intent IR may exist only as a data-only contract until a
-  separate conversion RFC, corpus, goldens, and security review connect it to
-  metadata.
+- Canonical Source Intent IR remains a data-only contract; conversion to
+  metadata is allowed only through the separately reviewed
+  `source_intent_to_metadata.execution_free.v0` adapter and its goldens.
+- Source Intent IR to metadata conversion may start only from an already
+  constructed `SourceIntentModule`; source text and preflight reports remain
+  disconnected until a separate source-to-intent security gate is accepted.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

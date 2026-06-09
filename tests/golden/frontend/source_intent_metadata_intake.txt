@@ -1,0 +1,8 @@
+triton.intake_report @source_intent_mlp {
+  schema_version = "triton_metadata.v0"
+  intake_contract = "triton_intake.execution_free.v0"
+  tensor_count = 4
+  operation_count = 2
+  operation_kinds = "matmul,elementwise"
+  blocked_execution_surfaces = "bytecode_inspection,device_access,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,python_import,subprocess_execution"
+}

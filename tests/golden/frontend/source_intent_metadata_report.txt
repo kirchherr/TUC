@@ -1,0 +1,10 @@
+source_intent.metadata_report @source_intent_mlp {
+  source_intent_contract = "source_intent_ir.canonical.v0"
+  conversion_contract = "source_intent_to_metadata.execution_free.v0"
+  metadata_schema_version = "triton_metadata.v0"
+  tensor_count = 4
+  operation_count = 2
+  operation_families = "matmul,elementwise"
+  blocked_execution_surfaces = "bytecode_inspection,decorator_evaluation,device_access,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,plugin_discovery,python_import,source_parsing,subprocess_execution"
+  blocked_compiler_outputs = "compute_graph,tlir,hac_ir,hs_ir,runtime_plan,backend_decision"
+}

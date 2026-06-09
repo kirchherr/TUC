@@ -45,6 +45,12 @@ negative tests, fuzz or property-test corpus, deterministic frontend goldens,
 HAC-IR neutrality review, runtime-plan goldens, and compiler decision-report
 goldens.
 
+The separate
+[Source Intent Metadata Conversion](SOURCE_INTENT_METADATA.md) adapter may
+convert an already constructed `SourceIntentModule` into schema-versioned
+metadata. That adapter is a separate review boundary; it is not a method on
+Source Intent IR and it does not accept source text or preflight reports.
+
 ## Neutrality
 
 Source Intent IR describes what the source appears to intend. It must not name
@@ -88,5 +94,6 @@ schema-versioned metadata
 ComputeGraph
 ```
 
-Only the Source Intent IR data model exists today. The conversion arrows around
-it are future work.
+Only the Source Intent IR to metadata arrow exists today, and only when starting
+from an already constructed `SourceIntentModule`. The source-text and preflight
+arrows around it remain future work.

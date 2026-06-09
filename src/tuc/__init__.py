@@ -15,9 +15,11 @@ from tuc.compiler import (
 )
 from tuc.frontend import (
     SOURCE_INTENT_IR_CONTRACT,
+    SOURCE_INTENT_METADATA_CONTRACT,
     TRITON_METADATA_INTAKE_CONTRACT,
     TRITON_METADATA_SCHEMA_VERSION,
     CompilationHints,
+    SourceIntentMetadataReport,
     SourceIntentModule,
     SourceIntentOperation,
     SourceIntentTensor,
@@ -25,7 +27,9 @@ from tuc.frontend import (
     TritonKernelMetadata,
     TritonOperationMetadata,
     TritonTensorMetadata,
+    build_source_intent_metadata_report,
     build_triton_intake_report,
+    source_intent_to_triton_metadata,
     triton_metadata_to_compute_graph,
 )
 from tuc.ir.memory import (
@@ -90,7 +94,9 @@ __all__ = [
     "RuntimeOverrideRule",
     "RuntimeOverrideSet",
     "SOURCE_INTENT_IR_CONTRACT",
+    "SOURCE_INTENT_METADATA_CONTRACT",
     "SourceIntentModule",
+    "SourceIntentMetadataReport",
     "SourceIntentOperation",
     "SourceIntentTensor",
     "TRITON_METADATA_INTAKE_CONTRACT",
@@ -102,10 +108,12 @@ __all__ = [
     "TritonTensorMetadata",
     "TransferEdge",
     "build_triton_intake_report",
+    "build_source_intent_metadata_report",
     "compile_graph",
     "dtype_size_bytes",
     "load_backend_capability_manifest",
     "load_transfer_cost_profile_manifest",
     "proof_metadata_from_partition_plan",
+    "source_intent_to_triton_metadata",
     "triton_metadata_to_compute_graph",
 ]
