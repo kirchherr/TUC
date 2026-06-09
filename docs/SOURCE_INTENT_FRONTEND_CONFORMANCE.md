@@ -15,6 +15,8 @@ It does not parse source text.
 ## Contract
 
 - Report schema: `tuc.source_intent_frontend_conformance_report.v0`
+- Report JSON Schema:
+  `schemas/source_intent_frontend_conformance_report.v0.schema.json`
 - Case type: `SourceIntentFrontendConformanceCase`
 - API: `run_source_intent_frontend_conformance(frontend_name, cases)`
 - Assertion API: `assert_source_intent_frontend_conformance(frontend_name, cases)`
@@ -22,6 +24,11 @@ It does not parse source text.
 - Example: `examples/source_intent_frontend_conformance.py`
 - Golden: `tests/golden/frontend/source_intent_frontend_conformance_report.json`
 - Tests: `tests/test_source_intent_conformance.py`
+
+The machine-readable report schema is documented in
+[Source Intent Frontend Conformance Report Schema](SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md).
+It is an interoperability artifact for review reports; the trusted conformance
+path remains `run_source_intent_frontend_conformance(frontend_name, cases)`.
 
 Accepted cases must pass:
 

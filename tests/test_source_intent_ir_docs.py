@@ -142,6 +142,7 @@ def test_source_intent_frontend_conformance_doc_preserves_non_parser_gate() -> N
         "It is not a source parser",
         "run_source_intent_frontend_conformance(frontend_name, cases)",
         "dump_source_intent_frontend_conformance_report(report)",
+        "schemas/source_intent_frontend_conformance_report.v0.schema.json",
         "tests/golden/frontend/source_intent_frontend_conformance_report.json",
         "failure stages and exception types, not raw payload contents",
         "must not become a production source ingestion path",
@@ -165,6 +166,46 @@ def test_source_intent_frontend_conformance_rfc_preserves_security_gate() -> Non
         "not a parser-to-IR bridge",
         "tests/golden/frontend/source_intent_frontend_conformance_report.json",
         "certification must not import or execute untrusted frontend code",
+    ):
+        assert expected in text
+
+
+def test_source_intent_frontend_conformance_report_schema_doc_is_report_only() -> None:
+    text = Path(
+        "docs/SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md"
+    ).read_text(encoding="utf-8")
+
+    for expected in (
+        "schemas/source_intent_frontend_conformance_report.v0.schema.json",
+        "JSON Schema draft: 2020-12",
+        "dump_source_intent_frontend_conformance_report(report)",
+        "additionalProperties: false",
+        "not a production validator for frontend payloads",
+        "plugin discovery",
+        "generated artifact execution",
+        "intentionally excludes raw frontend payloads",
+        "trusted conformance path remains",
+        "Incompatible schema changes require a new schema version",
+    ):
+        assert expected in text
+
+
+def test_source_intent_frontend_conformance_report_schema_rfc_is_report_only() -> None:
+    text = Path(
+        "rfcs/0060-source-intent-frontend-conformance-report-schema.md"
+    ).read_text(encoding="utf-8")
+
+    for expected in (
+        "schemas/source_intent_frontend_conformance_report.v0.schema.json",
+        "does not add source parsing",
+        "frontend module imports",
+        "plugin discovery",
+        "generated-artifact execution",
+        "production report ingestion",
+        "trusted conformance path remains",
+        "raw frontend payloads",
+        "It must not add source parsing or report-to-compiler ingestion",
+        "SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA_VERSION",
     ):
         assert expected in text
 

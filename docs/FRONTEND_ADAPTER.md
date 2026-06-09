@@ -57,6 +57,11 @@ defines a reusable certification path for external frontend authors that emit
 frontend packages, parse source text, discover plugins, or execute backend
 artifacts.
 
+[`SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md`](SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md)
+documents the machine-readable JSON Schema for deterministic frontend
+conformance report artifacts:
+`schemas/source_intent_frontend_conformance_report.v0.schema.json`.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:

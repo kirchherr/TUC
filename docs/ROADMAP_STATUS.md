@@ -90,6 +90,8 @@ Current slice:
 - Source Intent Frontend Conformance fixtures with deterministic JSON report
   artifacts for external frontend authors that emit `source_intent.v0` plain
   data.
+- Machine-readable Source Intent Frontend Conformance report JSON Schema at
+  `schemas/source_intent_frontend_conformance_report.v0.schema.json`.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -226,8 +228,8 @@ Current focus:
   must add its own corpus, source-intent goldens, deterministic diagnostics,
   and security review before any source connection.
 - External frontend proposals should provide a Source Intent Frontend
-  Conformance report before maintainers consider any source-text parser or
-  frontend package integration.
+  Conformance report matching the report schema before maintainers consider
+  any source-text parser or frontend package integration.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its

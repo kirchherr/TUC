@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_intent_frontend_conformance_report.v0.schema.json",
+  "title": "TUC Source Intent Frontend Conformance Report v0",
+  "description": "Deterministic review artifact schema for Source Intent frontend conformance evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_case_count",
+    "checked_cases",
+    "frontend_name",
+    "issues",
+    "passed",
+    "rejected_case_count",
+    "schema_version"
+  ],
+  "properties": {
+    "accepted_case_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 128
+    },
+    "checked_cases": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "frontend_name": {"$ref": "#/$defs/report_text"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/issue"}
+    },
+    "passed": {"type": "boolean"},
+    "rejected_case_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 128
+    },
+    "schema_version": {
+      "const": "tuc.source_intent_frontend_conformance_report.v0"
+    }
+  },
+  "$defs": {
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_name", "message"],
+      "properties": {
+        "case_name": {"$ref": "#/$defs/report_text"},
+        "message": {"$ref": "#/$defs/report_text"}
+      }
+    }
+  }
+}

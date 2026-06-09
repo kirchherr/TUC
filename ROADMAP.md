@@ -284,6 +284,7 @@ Deliverables:
 - Execution-free Triton source preflight with bounded diagnostics.
 - Triton source preflight fuzz/property corpus.
 - Source Intent Frontend Conformance report for external frontend authors.
+- Source Intent Frontend Conformance report JSON Schema.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -323,7 +324,8 @@ Go/No-Go:
   constructed `SourceIntentModule`; source text and preflight reports remain
   disconnected until a separate source-to-intent security gate is accepted.
 - External frontend authors must first provide Source Intent Frontend
-  Conformance evidence for accepted plain data and rejected hostile cases.
+  Conformance evidence for accepted plain data and rejected hostile cases,
+  using the versioned conformance report schema.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
