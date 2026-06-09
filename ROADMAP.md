@@ -293,6 +293,9 @@ Go/No-Go:
   source parser, Python import, or `@triton.jit` handling is accepted.
 - MVP operation-family coverage is demonstrated through frontend-originated
   metadata goldens before direct Triton syntax support is attempted.
+- Direct Triton source parsing is blocked until a threat model, parser budgets,
+  negative tests, fuzzing or property-test corpus, deterministic diagnostics,
+  and sandboxing gates are in place.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
