@@ -68,6 +68,8 @@ The current prototype contains:
 - Schema-versioned JSON manifests for backend capabilities and transfer profiles.
 - Golden-kernel correctness fixtures for MVP operation semantics.
 - Prototype Triton-like metadata adapter for frontend ingestion.
+- Triton source threat model that blocks direct Python source, decorator, and
+  `@triton.jit` ingestion until a bounded data-only parser gate exists.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Native-MLIR-oriented HAC-IR design spike.
 - HAC-IR v0 dialect contracts for operations and compiler attributes.
@@ -227,6 +229,7 @@ pytest -q
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
+- [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)

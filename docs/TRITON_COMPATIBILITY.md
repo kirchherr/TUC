@@ -17,7 +17,7 @@ compatibility on day one.
 
 | Feature | Level | Notes |
 | --- | --- | --- |
-| `@triton.jit` syntax | L0 | Preserved as a design goal; no Python source parser yet. |
+| `@triton.jit` syntax | L0 | Preserved as a design goal; blocked by the Triton source threat model until a data-only parser, negative tests, fuzzing, and sandboxing gates exist. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
@@ -36,9 +36,11 @@ compatibility on day one.
 - Compatibility claims must be backed by tests or examples.
 - Real Triton-facing intake must remain execution-free until a separate parser
   and sandbox RFC exists.
+- Direct source parsing must satisfy
+  [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before moving
+  beyond L0.
 
 ## Next Step
 
-Use the schema-versioned Triton metadata intake contract as the entry point for
-future Triton idiom coverage before any source parser or `@triton.jit` handling
-is accepted.
+Implement source-intake preflight only after the Triton source threat model has
+dedicated negative tests, resource budgets, and deterministic diagnostics.

@@ -25,6 +25,11 @@ This is not a Triton source parser and does not execute `@triton.jit` functions.
 It does not import user modules, inspect Python bytecode, evaluate decorators, or
 run arbitrary frontend code.
 
+Direct Triton source ingestion remains blocked by
+[`TRITON_SOURCE_THREAT_MODEL.md`](TRITON_SOURCE_THREAT_MODEL.md) until a future
+parser implementation satisfies its resource-budget, negative-test, fuzzing,
+and sandboxing gates.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:
