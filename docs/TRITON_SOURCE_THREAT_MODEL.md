@@ -177,8 +177,8 @@ the source-intent IR or HAC-IR.
 
 ## Current Allowed Path
 
-Until this threat model is implemented as code and tests, the only Triton-like
-frontend path accepted by TUC is schema-versioned metadata:
+The only Triton-like frontend path accepted by TUC for compiler ingestion is
+schema-versioned metadata:
 
 ```text
 Triton-like metadata
@@ -193,3 +193,9 @@ HAC-IR
 ```
 
 This keeps Phase Epsilon moving without opening a Python execution surface.
+
+TUC also has an execution-free
+[Triton Source Preflight](TRITON_SOURCE_PREFLIGHT.md). It may parse caller-
+provided source text as bounded syntax data and emit a deterministic diagnostic
+report. It must not produce metadata, `ComputeGraph`, TLIR, HAC-IR, HS-IR,
+runtime plans, compiler decision reports, or backend assignments.

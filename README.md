@@ -70,6 +70,8 @@ The current prototype contains:
 - Prototype Triton-like metadata adapter for frontend ingestion.
 - Triton source threat model that blocks direct Python source, decorator, and
   `@triton.jit` ingestion until a bounded data-only parser gate exists.
+- Execution-free Triton source preflight with parser budgets, negative tests,
+  and deterministic report goldens before any source-to-IR conversion.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Native-MLIR-oriented HAC-IR design spike.
 - HAC-IR v0 dialect contracts for operations and compiler attributes.
@@ -159,6 +161,12 @@ Run the Triton-like metadata adapter example:
 python examples/triton_metadata_adapter.py
 ```
 
+Run the execution-free Triton source preflight example:
+
+```bash
+python examples/triton_source_preflight.py
+```
+
 Run the Backend API v0.1 authoring example:
 
 ```bash
@@ -230,6 +238,7 @@ pytest -q
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
+- [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)

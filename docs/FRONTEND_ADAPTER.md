@@ -30,6 +30,10 @@ Direct Triton source ingestion remains blocked by
 parser implementation satisfies its resource-budget, negative-test, fuzzing,
 and sandboxing gates.
 
+The only source-text-facing implementation is
+[`TRITON_SOURCE_PREFLIGHT.md`](TRITON_SOURCE_PREFLIGHT.md). It emits a bounded
+diagnostic report and never produces a `ComputeGraph`.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:
