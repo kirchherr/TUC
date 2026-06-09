@@ -3,6 +3,7 @@ from __future__ import annotations
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
 from tuc.ir import ComputeGraph, ComputeOperation, IRStage, OperationKind, TensorRef
+from tuc.runtime import DEFAULT_FALLBACK_BACKEND
 
 
 def test_pipeline_lowers_through_all_three_ir_stages() -> None:
@@ -35,7 +36,7 @@ def test_pipeline_lowers_through_all_three_ir_stages() -> None:
     assert result.hac_ir.stage is IRStage.HAC_IR
     assert result.hs_ir.stage is IRStage.HS_IR
     assert result.partition_plan.backend_for("projection") == "linear-sim"
-    assert result.partition_plan.backend_for("activation") == "gpu"
+    assert result.partition_plan.backend_for("activation") == DEFAULT_FALLBACK_BACKEND
     assert result.hac_ir.graph.operations[0].attributes["tuc.linearity"] == "linear"
     assert result.hac_ir.graph.operations[0].attributes["tuc.bytes_read"] == 3072
     assert result.hac_ir.graph.operations[0].attributes["tuc.bytes_written"] == 512
@@ -52,8 +53,8 @@ def test_pipeline_lowers_through_all_three_ir_stages() -> None:
         "total_bytes_written": 1024,
     }
     assert result.hs_ir.graph.metadata["runtime_transfer_summary"] == {
-        "estimated_transfer_energy_pj": 10240.0,
-        "estimated_transfer_latency_ns": 5008.0,
+        "estimated_transfer_energy_pj": 51200.0,
+        "estimated_transfer_latency_ns": 20032.0,
         "layout_conversion_count": 0,
         "total_data_movement_bytes": 512,
         "total_layout_conversion_bytes": 0,

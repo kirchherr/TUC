@@ -3,7 +3,7 @@ compiler.decision_report @triton_metadata_mvp_families {
   support {
     linear-sim accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
   }
-  operation attention_softmax kind=softmax assigned=gpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=32;layout_conversion_bytes=0;actual_transfer_bytes=32;actual_layout_conversion_bytes=0"
+  operation attention_softmax kind=softmax assigned=reference-cpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=32;layout_conversion_bytes=0;actual_transfer_bytes=32;actual_layout_conversion_bytes=0"
   support {
     linear-sim rejected reason="unsupported_operation_kind" detail="softmax not declared in supported_ops"
   }
@@ -15,7 +15,7 @@ compiler.decision_report @triton_metadata_mvp_families {
   support {
     linear-sim accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
   }
-  operation summary_activation kind=elementwise assigned=gpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=8;layout_conversion_bytes=0;actual_transfer_bytes=8;actual_layout_conversion_bytes=0"
+  operation summary_activation kind=elementwise assigned=reference-cpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=8;layout_conversion_bytes=0;actual_transfer_bytes=8;actual_layout_conversion_bytes=0"
   support {
     linear-sim rejected reason="unsupported_operation_kind" detail="elementwise not declared in supported_ops"
   }

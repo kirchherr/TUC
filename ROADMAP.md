@@ -185,7 +185,8 @@ Deliverables:
 - Backend conformance fixtures.
 - Backend author certification checklist.
 - Negative test template for backend authors.
-- Capability examples for simulator, GPU fallback, and future specialized
+- Capability examples for simulator, explicit GPU backends, neutral fallback,
+  and future specialized
   backends.
 
 Completed evidence:

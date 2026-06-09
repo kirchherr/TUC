@@ -482,7 +482,11 @@ def _validate_operation_attributes(
             )
         elif name in {"max_error_budget"}:
             _validate_non_negative_float(value, name)
-        elif name in {"prefer_analog_linear", "prefer_sparsity", "robust_to_noise"}:
+        elif name in {
+            "prefer_linear_accelerator",
+            "prefer_sparsity",
+            "robust_to_noise",
+        }:
             if type(value) is not bool:
                 raise TypeError(f"{name} must be a boolean")
 

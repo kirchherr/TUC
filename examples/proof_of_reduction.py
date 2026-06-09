@@ -49,7 +49,7 @@ def build_graph() -> ComputeGraph:
                 kind=OperationKind.MATMUL,
                 inputs=(lhs, rhs),
                 outputs=(projection,),
-                attributes={"max_error_budget": 0.05, "prefer_analog_linear": True},
+                attributes={"max_error_budget": 0.05, "prefer_linear_accelerator": True},
             ),
             ComputeOperation(
                 name="row_reduction",

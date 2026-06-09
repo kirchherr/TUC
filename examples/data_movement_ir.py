@@ -16,7 +16,7 @@ _MANIFEST_DIR = Path(__file__).parent / "manifests"
 
 def build_graph() -> ComputeGraph:
     hints = CompilationHints(
-        prefer_analog_linear=True,
+        prefer_linear_accelerator=True,
         max_error_budget=0.02,
     )
     a = TensorRef("a", (64, 128))

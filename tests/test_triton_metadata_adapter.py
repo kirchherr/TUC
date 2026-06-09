@@ -10,6 +10,7 @@ from tuc.frontend import (
     TritonKernelMetadata,
 )
 from tuc.ir import OperationKind
+from tuc.runtime import DEFAULT_FALLBACK_BACKEND
 
 
 def test_triton_metadata_mapping_builds_compute_graph() -> None:
@@ -20,7 +21,7 @@ def test_triton_metadata_mapping_builds_compute_graph() -> None:
     assert graph.metadata["frontend.schema_version"] == TRITON_METADATA_SCHEMA_VERSION
     assert graph.metadata["frontend.intake_contract"] == TRITON_METADATA_INTAKE_CONTRACT
     assert graph.operations[0].kind is OperationKind.MATMUL
-    assert graph.operations[0].attributes["prefer_analog_linear"] is True
+    assert graph.operations[0].attributes["prefer_linear_accelerator"] is True
     assert graph.operations[0].attributes["max_error_budget"] == 0.02
     assert graph.operations[1].attributes["semantic"] == "gelu_approx"
 
@@ -30,7 +31,7 @@ def test_triton_metadata_graph_runs_through_pipeline() -> None:
     result = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
 
     assert result.partition_plan.backend_for("projection") == "linear-sim"
-    assert result.partition_plan.backend_for("activation") == "gpu"
+    assert result.partition_plan.backend_for("activation") == DEFAULT_FALLBACK_BACKEND
     assert result.tlir.graph.metadata["frontend.adapter"] == "triton_metadata.v0"
 
 
@@ -132,6 +133,20 @@ def test_triton_metadata_rejects_unknown_mapping_fields() -> None:
         TritonKernelMetadata.from_mapping(metadata)
 
 
+def test_triton_metadata_rejects_hardware_specific_analog_hint() -> None:
+    metadata = _metadata_dict()
+    operation = metadata["operations"][0]
+    if type(operation) is not dict:
+        raise AssertionError("test fixture is malformed")
+    hints = operation["hints"]
+    if type(hints) is not dict:
+        raise AssertionError("test fixture is malformed")
+    hints["prefer_analog_linear"] = True
+
+    with pytest.raises(ValueError, match="unsupported keys"):
+        TritonKernelMetadata.from_mapping(metadata)
+
+
 def test_triton_metadata_rejects_custom_mapping_subclass() -> None:
     class CustomMapping(dict[str, object]):
         pass
@@ -160,7 +175,7 @@ def _metadata_dict() -> dict[str, object]:
                 "inputs": ["a", "b"],
                 "outputs": ["c"],
                 "hints": {
-                    "prefer_analog_linear": True,
+                    "prefer_linear_accelerator": True,
                     "max_error_budget": 0.02,
                 },
             },

@@ -1,16 +1,16 @@
 runtime.plan @proof_of_abstraction {
   assignments {
     linear_projection -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
-    digital_activation -> gpu domain=gpu_hbm produced_layout=row_major transfer_bytes=16 layout_conversion_bytes=0 reason="fallback:transfer_bytes=16;layout_conversion_bytes=0;actual_transfer_bytes=16;actual_layout_conversion_bytes=0"
+    digital_activation -> reference-cpu domain=host_ram produced_layout=row_major transfer_bytes=16 layout_conversion_bytes=0 reason="fallback:transfer_bytes=16;layout_conversion_bytes=0;actual_transfer_bytes=16;actual_layout_conversion_bytes=0"
   }
   transfers {
-    %projection: linear_projection/linear-sim/analog_weight_bank/row_major -> digital_activation/gpu/gpu_hbm/row_major bytes=16 bandwidth_gb_s=64 latency_ns=5000.25 energy_pj=320
+    %projection: linear_projection/linear-sim/analog_weight_bank/row_major -> digital_activation/reference-cpu/host_ram/row_major bytes=16 bandwidth_gb_s=16 latency_ns=20001 energy_pj=1600
   }
   summary {
     total_transfer_bytes = 16
     total_layout_conversion_bytes = 0
     total_data_movement_bytes = 16
-    estimated_transfer_latency_ns = 5000.25
-    estimated_transfer_energy_pj = 320
+    estimated_transfer_latency_ns = 20001
+    estimated_transfer_energy_pj = 1600
   }
 }

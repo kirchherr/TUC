@@ -3,7 +3,7 @@ compiler.decision_report @proof_of_softmax {
   support {
     linear-sim accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
   }
-  operation row_softmax kind=softmax assigned=gpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=32;layout_conversion_bytes=0;actual_transfer_bytes=32;actual_layout_conversion_bytes=0"
+  operation row_softmax kind=softmax assigned=reference-cpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=32;layout_conversion_bytes=0;actual_transfer_bytes=32;actual_layout_conversion_bytes=0"
   support {
     linear-sim rejected reason="unsupported_operation_kind" detail="softmax not declared in supported_ops"
   }

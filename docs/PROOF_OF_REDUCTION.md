@@ -41,8 +41,8 @@ The example builds a three-operation graph:
 
 - `linear_projection`: a matmul assigned to the `linear-sim` backend.
 - `row_reduction`: a sum reduction assigned to the `linear-sim` backend.
-- `digital_activation`: a ReLU elementwise operation assigned to the `gpu`
-  fallback backend.
+- `digital_activation`: a ReLU elementwise operation assigned to the
+  `reference-cpu` fallback backend.
 
 It prints:
 
@@ -73,7 +73,7 @@ report_schema: proof-report.v0
 proof_id: proof_of_reduction
 proof_version: alpha.v1
 graph_family: reduction
-backend_set: gpu, linear-sim
+backend_set: linear-sim, reference-cpu
 ```
 
 This makes proof version, graph family, and backend set visible before HAC-IR,

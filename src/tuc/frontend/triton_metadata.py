@@ -317,7 +317,7 @@ def _hints_from_mapping(value: object) -> CompilationHints:
             {
                 "robust_to_noise",
                 "prefer_sparsity",
-                "prefer_analog_linear",
+                "prefer_linear_accelerator",
                 "max_error_budget",
             }
         ),
@@ -326,7 +326,11 @@ def _hints_from_mapping(value: object) -> CompilationHints:
     return CompilationHints(
         robust_to_noise=_optional_bool(mapping, "robust_to_noise", False),
         prefer_sparsity=_optional_bool(mapping, "prefer_sparsity", False),
-        prefer_analog_linear=_optional_bool(mapping, "prefer_analog_linear", False),
+        prefer_linear_accelerator=_optional_bool(
+            mapping,
+            "prefer_linear_accelerator",
+            False,
+        ),
         max_error_budget=_optional_float(mapping, "max_error_budget"),
     )
 

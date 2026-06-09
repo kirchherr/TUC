@@ -20,7 +20,7 @@ def test_proof_metadata_from_partition_plan_is_deterministic() -> None:
         "proof_id: proof_of_reduction",
         "proof_version: alpha.v1",
         "graph_family: reduction",
-        "backend_set: gpu, linear-sim",
+        "backend_set: linear-sim, reference-cpu",
     )
 
 
@@ -37,7 +37,7 @@ def test_softmax_proof_metadata_from_partition_plan_is_deterministic() -> None:
         "proof_id: proof_of_softmax",
         "proof_version: alpha.v1",
         "graph_family: softmax",
-        "backend_set: gpu, linear-sim",
+        "backend_set: linear-sim, reference-cpu",
     )
 
 

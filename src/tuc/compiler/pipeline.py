@@ -15,6 +15,7 @@ from tuc.ir.dump import dump_module
 from tuc.ir.model import ComputeGraph
 from tuc.ir.modules import IRModule, IRStage
 from tuc.runtime import (
+    DEFAULT_FALLBACK_BACKEND,
     PartitionPlan,
     RuntimeOverrideSet,
     TransferCostProfile,
@@ -67,7 +68,7 @@ class CompilerPipeline:
     def __init__(
         self,
         backend_capabilities: Iterable[BackendCapability],
-        fallback_backend: str = "gpu",
+        fallback_backend: str = DEFAULT_FALLBACK_BACKEND,
         transfer_cost_profile: TransferCostProfile | None = None,
         runtime_overrides: RuntimeOverrideSet | None = None,
         include_candidate_scores: bool = False,
@@ -119,7 +120,7 @@ class CompilerPipeline:
 def compile_graph(
     graph: ComputeGraph,
     backend_capabilities: Iterable[BackendCapability],
-    fallback_backend: str = "gpu",
+    fallback_backend: str = DEFAULT_FALLBACK_BACKEND,
     transfer_cost_profile: TransferCostProfile | None = None,
     runtime_overrides: RuntimeOverrideSet | None = None,
     include_candidate_scores: bool = False,
