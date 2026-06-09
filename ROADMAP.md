@@ -291,6 +291,8 @@ Go/No-Go:
   during metadata ingestion.
 - Frontend intake is schema-versioned, bounded, and reviewable before any
   source parser, Python import, or `@triton.jit` handling is accepted.
+- MVP operation-family coverage is demonstrated through frontend-originated
+  metadata goldens before direct Triton syntax support is attempted.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

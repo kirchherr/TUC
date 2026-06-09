@@ -20,10 +20,10 @@ compatibility on day one.
 | `@triton.jit` syntax | L0 | Preserved as a design goal; no Python source parser yet. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
-| MatMul | L2 | Lowered through TLIR -> HAC-IR -> HS-IR and covered by golden correctness fixtures. |
-| Elementwise | L2 | Lowered and assigned to fallback backend by default; ReLU reference fixture covers semantics. |
-| Reduction | L2 | Represented, supported by the linear simulator backend, and covered by a sum-reduction fixture. |
-| Softmax-like operation | L2 | Represented as an operation family and covered by a softmax reference fixture; decomposition is gated by the softmax operation-family planning contract. |
+| MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
+| Elementwise | L3 | Lowered and assigned to fallback backend by default; ReLU reference fixture and Triton metadata frontend goldens cover semantics. |
+| Reduction | L3 | Represented, supported by the linear simulator backend, covered by a sum-reduction fixture, and included in Triton metadata frontend goldens. |
+| Softmax-like operation | L3 | Represented as an operation family and included in Triton metadata frontend goldens; decomposition is gated by the softmax operation-family planning contract. |
 | GPU backend | L0 | Represented as fallback backend name only. |
 | Photonic backend | L0 | Captured as roadmap target; simulator work comes later. |
 | Neuromorphic backend | L0 | Captured as roadmap target; simulator work comes later. |

@@ -69,6 +69,8 @@ Current slice:
   rejection and deterministic intake reports.
 - Triton metadata frontend golden artifacts for intake report, HAC-IR,
   runtime-plan, and compiler decision-report review.
+- Triton metadata MVP family coverage for `matmul`, `softmax`, `reduction`,
+  and `elementwise` in one execution-free frontend-originated graph.
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
