@@ -19,6 +19,7 @@ compatibility on day one.
 | --- | --- | --- |
 | `@triton.jit` syntax | L0 | Preserved as a design goal; source text can pass execution-free preflight only, with no source-to-IR ingestion yet. |
 | Triton source preflight | L0 | Bounded source syntax report rejects imports, decorator calls, dangerous builtins, host/device/network surfaces, unsupported calls, and HAC-IR leakage without producing a `ComputeGraph`; fuzz/property tests cover arbitrary decoded bytes and malicious seed cases. |
+| Canonical Source Intent IR | L1 | Data-only frontend contract exists with deterministic dump and negative hardware-leakage tests; it has no metadata, `ComputeGraph`, lowering, runtime-plan, or backend-decision exit. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
@@ -45,8 +46,12 @@ compatibility on day one.
 - Source-text preflight is documented in
   [Triton Source Preflight](TRITON_SOURCE_PREFLIGHT.md), but it is not source
   ingestion.
+- Canonical Source Intent IR is documented in
+  [Source Intent IR](SOURCE_INTENT_IR.md), but it is not connected to lowering.
 
 ## Next Step
 
-Design a canonical source-intent IR as a separate RFC, still disconnected from
-lowering, with its own corpus and source-intake goldens.
+Design Source Intent IR to metadata conversion as a separate RFC, still
+disconnected from direct source parsing until it has its own corpus,
+source-intake goldens, HAC-IR review evidence, runtime-plan goldens, and
+compiler decision-report goldens.

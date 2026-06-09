@@ -105,7 +105,10 @@ first parser gate by making source limits, negative tests, deterministic
 diagnostics, and fuzz/property-test coverage executable.
 
 It does not satisfy the whole source-ingestion gate. A future source parser
-still needs a canonical source-intent IR, metadata conversion, fuzz corpus,
-source-intake goldens, HAC-IR goldens, runtime-plan goldens, compiler decision
-goldens, and a separate security review before any direct source can affect the
-compiler pipeline.
+now has a canonical source-intent IR data model, but still needs metadata
+conversion, fuzz corpus, source-intake goldens, HAC-IR goldens, runtime-plan
+goldens, compiler decision goldens, and a separate security review before any
+direct source can affect the compiler pipeline.
+
+The Source Intent IR data model is documented in
+[Source Intent IR](SOURCE_INTENT_IR.md). The preflight must not create it.

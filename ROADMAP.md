@@ -96,7 +96,8 @@ Completed evidence:
 
 - Input graph is declared as compute intent.
 - HAC-IR dump is deterministic.
-- Runtime plan assigns matmul to `linear-sim` and elementwise fallback to `gpu`.
+- Runtime plan assigns matmul to `linear-sim` and elementwise fallback to the
+  neutral `reference-cpu` backend.
 - Transfer plan is inspectable.
 - Result matches independent NumPy reference semantics.
 - Golden proof output validates full stdout.
@@ -303,6 +304,9 @@ Go/No-Go:
   `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans, or backend decisions.
 - Preflight fuzz/property tests must keep arbitrary decoded source, invalid
   Unicode, and malicious seed cases fail-closed before source-intent IR work.
+- Canonical Source Intent IR may exist only as a data-only contract until a
+  separate conversion RFC, corpus, goldens, and security review connect it to
+  metadata.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

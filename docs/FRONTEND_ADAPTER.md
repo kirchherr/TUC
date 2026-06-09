@@ -34,6 +34,10 @@ The only source-text-facing implementation is
 [`TRITON_SOURCE_PREFLIGHT.md`](TRITON_SOURCE_PREFLIGHT.md). It emits a bounded
 diagnostic report and never produces a `ComputeGraph`.
 
+[`SOURCE_INTENT_IR.md`](SOURCE_INTENT_IR.md) defines the future data-only
+boundary between bounded source syntax data and schema-versioned metadata. It
+does not convert to metadata or `ComputeGraph`.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:
