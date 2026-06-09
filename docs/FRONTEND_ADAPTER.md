@@ -92,6 +92,9 @@ tests/golden/compiler_decisions/triton_metadata_mvp_families.txt
 tests/golden/frontend/source_intent_intake_report.txt
 tests/golden/frontend/source_intent_intake_module.txt
 tests/golden/frontend/source_intent_intake_metadata.txt
+tests/golden/hac_ir/source_intent_intake_mlp.txt
+tests/golden/runtime_plans/source_intent_intake_mlp.txt
+tests/golden/compiler_decisions/source_intent_intake_mlp.txt
 tests/golden/frontend/source_intent_metadata_report.txt
 tests/golden/frontend/source_intent_metadata_intake.txt
 tests/golden/hac_ir/source_intent_metadata_mlp.txt

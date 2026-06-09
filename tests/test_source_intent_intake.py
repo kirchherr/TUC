@@ -6,6 +6,8 @@ from pathlib import Path
 import pytest
 
 from examples.source_intent_intake import build_source_intent_data
+from tuc.backends import LinearAlgebraSimulatorBackend
+from tuc.compiler import compile_graph
 from tuc.frontend import (
     SOURCE_INTENT_INTAKE_CONTRACT,
     SOURCE_INTENT_SCHEMA_VERSION,
@@ -13,6 +15,7 @@ from tuc.frontend import (
     source_intent_from_mapping,
     source_intent_to_triton_metadata,
 )
+from tuc.ir import IRStage
 
 
 def test_source_intent_intake_builds_module_from_plain_data() -> None:
@@ -101,6 +104,18 @@ def test_source_intent_intake_does_not_accept_source_text() -> None:
                 source_intent_from_mapping(build_source_intent_data())
             ).intake_report().dump(),
         ),
+        (
+            Path("hac_ir") / "source_intent_intake_mlp.txt",
+            lambda: _compiled_source_intent_intake_graph().dump(IRStage.HAC_IR),
+        ),
+        (
+            Path("runtime_plans") / "source_intent_intake_mlp.txt",
+            lambda: _compiled_source_intent_intake_graph().dump_runtime_plan(),
+        ),
+        (
+            Path("compiler_decisions") / "source_intent_intake_mlp.txt",
+            lambda: _compiled_source_intent_intake_graph().dump_decision_report(),
+        ),
     ),
 )
 def test_source_intent_intake_artifact_matches_golden(
@@ -112,3 +127,10 @@ def test_source_intent_intake_artifact_matches_golden(
     ).rstrip("\n")
 
     assert artifact_builder() == expected
+
+
+def _compiled_source_intent_intake_graph():
+    module = source_intent_from_mapping(build_source_intent_data())
+    metadata = source_intent_to_triton_metadata(module)
+    graph = metadata.to_compute_graph()
+    return compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])

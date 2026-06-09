@@ -85,6 +85,9 @@ def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
         "backend-specific hint escape attempts",
         "must not accept source text or preflight reports",
         "tests/golden/frontend/source_intent_intake_report.txt",
+        "tests/golden/hac_ir/source_intent_intake_mlp.txt",
+        "tests/golden/runtime_plans/source_intent_intake_mlp.txt",
+        "tests/golden/compiler_decisions/source_intent_intake_mlp.txt",
         "source text to Source Intent data",
     ):
         assert expected in text
@@ -118,6 +121,24 @@ def test_source_intent_intake_fuzz_rfc_preserves_non_ingestion_gate() -> None:
         "unknown tensor references",
         "Source text and preflight reports remain disconnected",
         "production API must remain path-free",
+    ):
+        assert expected in text
+
+
+def test_source_intent_intake_e2e_rfc_preserves_parser_block() -> None:
+    text = Path("rfcs/0057-source-intent-intake-e2e-goldens.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source parsing",
+        "plain data",
+        "SourceIntentModule",
+        "HAC-IR",
+        "runtime plan",
+        "compiler decision report",
+        "Source text, preflight reports, and parser outputs remain blocked",
+        "Source Intent Intake must not produce compiler artifacts directly",
     ):
         assert expected in text
 

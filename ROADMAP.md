@@ -310,6 +310,9 @@ Go/No-Go:
 - Source Intent Intake fuzz/property tests must keep arbitrary JSON-like data,
   hostile source-text keys, backend hints, and broken tensor references
   fail-closed before source parsers can target the schema.
+- Source Intent Intake proof artifacts must show the accepted plain-data path
+  through metadata intake, HAC-IR, runtime planning, and compiler decision
+  reports before any source-text parser targets the schema.
 - Canonical Source Intent IR remains a data-only contract; conversion to
   metadata is allowed only through the separately reviewed
   `source_intent_to_metadata.execution_free.v0` adapter and its goldens.

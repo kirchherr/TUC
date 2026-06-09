@@ -88,6 +88,9 @@ Current slice:
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
+- Source Intent Intake end-to-end frontend goldens proving schema-versioned
+  plain data can flow through Source Intent IR, metadata intake, HAC-IR,
+  runtime planning, and compiler decision reports without source parsing.
 - Source Intent Metadata Conversion v0 for execution-free conversion from an
   already constructed `SourceIntentModule` into schema-versioned metadata, with
   frontend, HAC-IR, runtime-plan, and compiler decision-report goldens.
