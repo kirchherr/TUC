@@ -1,0 +1,15 @@
+{
+  "name": "bad_schema",
+  "schema_version": "source_intent.v999",
+  "tensors": [
+    {"name": "a", "shape": [1]}
+  ],
+  "operations": [
+    {
+      "name": "identity",
+      "family": "elementwise",
+      "inputs": ["a"],
+      "outputs": ["a"]
+    }
+  ]
+}

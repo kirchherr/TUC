@@ -18,6 +18,8 @@ It does not parse source text.
 - Report: `build_source_intent_intake_report(module)`
 - Example: `examples/source_intent_intake.py`
 - Tests: `tests/test_source_intent_intake.py`
+- Seed corpus: `tests/corpus/source_intent_intake/`
+- Property tests: `tests/test_source_intent_intake_fuzz.py`
 
 Accepted plain data:
 
@@ -49,6 +51,15 @@ tests/golden/frontend/source_intent_intake_report.txt
 tests/golden/frontend/source_intent_intake_module.txt
 tests/golden/frontend/source_intent_intake_metadata.txt
 ```
+
+The intake also has property-test and seed-corpus coverage for:
+
+- arbitrary JSON-like values
+- seed payload wrapping
+- unsupported schema versions
+- unknown source-text fields
+- backend-specific hint escape attempts
+- unknown tensor references
 
 This gives future source parsers a stable target data shape without granting
 source text any compiler influence today.

@@ -1,0 +1,15 @@
+{
+  "name": "unknown_tensor_reference",
+  "schema_version": "source_intent.v0",
+  "tensors": [
+    {"name": "a", "shape": [2, 2]}
+  ],
+  "operations": [
+    {
+      "name": "projection",
+      "family": "matmul",
+      "inputs": ["a", "missing"],
+      "outputs": ["a"]
+    }
+  ]
+}

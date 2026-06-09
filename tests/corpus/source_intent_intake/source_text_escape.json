@@ -1,0 +1,16 @@
+{
+  "name": "source_escape",
+  "schema_version": "source_intent.v0",
+  "python_source": "@triton.jit\ndef kernel(a):\n    return a",
+  "tensors": [
+    {"name": "a", "shape": [1]}
+  ],
+  "operations": [
+    {
+      "name": "identity",
+      "family": "elementwise",
+      "inputs": ["a"],
+      "outputs": ["a"]
+    }
+  ]
+}

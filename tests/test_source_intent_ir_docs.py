@@ -79,6 +79,10 @@ def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
         "parse source text",
         "source_intent_intake.execution_free.v0",
         "source_intent_from_mapping(data)",
+        "Seed corpus: `tests/corpus/source_intent_intake/`",
+        "Property tests: `tests/test_source_intent_intake_fuzz.py`",
+        "arbitrary JSON-like values",
+        "backend-specific hint escape attempts",
         "must not accept source text or preflight reports",
         "tests/golden/frontend/source_intent_intake_report.txt",
         "source text to Source Intent data",
@@ -97,6 +101,23 @@ def test_source_intent_intake_rfc_preserves_source_block() -> None:
         "consume preflight reports",
         "produce metadata, `ComputeGraph`, TLIR, HAC-IR, HS-IR",
         "source parsing remains blocked",
+    ):
+        assert expected in text
+
+
+def test_source_intent_intake_fuzz_rfc_preserves_non_ingestion_gate() -> None:
+    text = Path("rfcs/0056-source-intent-intake-fuzz-corpus.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source parsing",
+        "arbitrary JSON-like values",
+        "source-text escape attempts",
+        "backend-specific hint escape attempts",
+        "unknown tensor references",
+        "Source text and preflight reports remain disconnected",
+        "production API must remain path-free",
     ):
         assert expected in text
 
