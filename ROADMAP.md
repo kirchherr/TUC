@@ -42,7 +42,9 @@ If the answer to the first question is no, the item is not core roadmap work.
 - No performance-parity claim against vendor libraries.
 - No native performance parity claim before
   [Performance Proof Boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md) is
-  satisfied.
+  satisfied and
+  [Performance Proof Readiness Report](docs/PERFORMANCE_PROOF_READINESS.md)
+  passes.
 - No auto-discovery or execution of third-party backend plugins.
 - No arbitrary PyTorch model support.
 - No native parser, native MLIR dialect, or executable artifact path without a
@@ -117,6 +119,9 @@ Completed evidence:
 - Proof artifact changes have a reviewer-facing checklist and merge gate.
 - Performance proof boundaries are documented: Objective Alpha proves
   correctness and inspectability, not native performance parity.
+- Performance proof readiness is machine-readable and intentionally blocked
+  until leaky-abstraction, planner-overhead, native-baseline, benchmark-artifact,
+  and executable-backend security evidence exists.
 
 Next work:
 
@@ -299,6 +304,8 @@ Deliverables:
   core success metric.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
+- Performance Proof Readiness report for future native performance proposal
+  evidence.
 
 Go/No-Go:
 
@@ -344,7 +351,7 @@ Go/No-Go:
   turning TUC into a Triton fork.
 - Performance claims remain blocked until leaky-abstraction evidence,
   planner-overhead evidence, native baseline provenance, correctness goldens,
-  and security review exist.
+  security review, and a passing Performance Proof Readiness report exist.
 
 ## Phase Zeta: Specialized Hardware Proofs
 
@@ -458,7 +465,10 @@ testable and explainable.
 ### Risk: Leaky Abstraction And Planner Overhead
 
 Mitigation: do not claim native performance parity until
-[Performance Proof Boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md) is satisfied.
+[Performance Proof Boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md) is satisfied
+and
+[Performance Proof Readiness Report](docs/PERFORMANCE_PROOF_READINESS.md)
+passes.
 Hardware-specific optimization details must stay outside HAC-IR, and planning
 overhead must be measured separately from execution time.
 

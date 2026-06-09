@@ -95,6 +95,28 @@ Any future performance proof must add:
 - security review for any executable backend, device access, generated artifact,
   cache, subprocess, dynamic library, or native code used by benchmarking
 
+## Performance Proof Readiness Report
+
+Future native performance proposals must pass the
+[Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) before
+TUC may make native performance claims.
+
+The readiness report uses boundary contract
+`performance_proof_boundary.blocking.v0`, report schema version
+`tuc.performance_proof_readiness_report.v0`, API
+`build_performance_proof_readiness_report(proposal_name, evidence)`, required
+evidence IDs `PERFORMANCE_PROOF_REQUIRED_EVIDENCE`, and golden artifact
+`tests/golden/proofs/performance_proof_readiness_report.json`.
+
+Missing evidence keeps native performance claims blocked. Unknown evidence IDs
+and duplicate evidence IDs fail closed.
+
+The readiness report does not run benchmarks.
+The readiness report does not access devices.
+The readiness report does not execute backend artifacts.
+The readiness report does not claim native performance parity.
+The readiness report must not include raw benchmark output.
+
 ## Benchmarking Relationship
 
 The current CPU-first benchmark harness is diagnostic. It is useful for local

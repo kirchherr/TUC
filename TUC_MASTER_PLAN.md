@@ -240,7 +240,9 @@ Success means mathematical correctness, not performance.
 
 Native performance parity is a later proof class. It requires separate leaky-
 abstraction evidence, planner-overhead evidence, native baseline provenance,
-and benchmark methodology before TUC may claim competitive hardware speed.
+benchmark methodology, benchmark artifacts, and executable-backend security
+review before TUC may claim competitive hardware speed. Until those exist, the
+Performance Proof Readiness report remains blocked.
 
 ## Critical Milestones
 

@@ -35,6 +35,8 @@ Two risks matter most:
 ## Decision
 
 Add [Performance Proof Boundary](../docs/PERFORMANCE_PROOF_BOUNDARY.md).
+Future native performance proposals must also pass the
+[Performance Proof Readiness Report](../docs/PERFORMANCE_PROOF_READINESS.md).
 
 The current proof claim remains:
 
@@ -93,6 +95,12 @@ sandboxing plan.
 
 Benchmark outputs, transfer-cost profiles, latency estimates, cache behavior,
 and measured hardware data must not become HAC-IR semantics.
+
+The readiness report does not run benchmarks.
+The readiness report does not access devices.
+The readiness report does not execute backend artifacts.
+The readiness report does not claim native performance parity.
+It must not include raw benchmark output.
 
 ## Consequences
 

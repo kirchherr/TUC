@@ -19,6 +19,7 @@ tests/golden/runtime_plans/proof_*.txt
 tests/golden/compiler_decisions/proof_*.txt
 tests/test_proof_*.py
 docs/PROOF_*.md
+docs/PERFORMANCE_PROOF_READINESS.md
 src/tuc/proof.py
 ```
 
@@ -52,6 +53,9 @@ Before approving a proof artifact change, reviewers should confirm:
 - The proof does not claim native performance parity, 100 percent native
   performance, or a fixed percentage of vendor-library performance unless
   [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied.
+- Future native performance claims pass the
+  [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) and do
+  not include raw benchmark output in readiness evidence.
 - The proof does not claim 100 percent native performance.
 
 ## Security Checks
@@ -79,14 +83,16 @@ Current Objective Alpha proof artifacts are correctness and inspectability
 evidence, not performance evidence.
 
 Reviewers should reject proof changes that claim native performance parity until
-the performance proof boundary supplies:
+the performance proof boundary and readiness report supply:
 
 - native baseline provenance
 - leaky-abstraction report
 - planner-overhead report
+- break-even workload size
 - benchmark methodology
 - correctness goldens for benchmarked workloads
 - runtime-plan and compiler decision-report goldens
+- deterministic benchmark report artifacts
 - security review for any executable backend or device access
 
 ## Required Validation

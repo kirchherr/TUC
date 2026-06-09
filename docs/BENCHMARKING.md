@@ -64,3 +64,8 @@ Performance proof claims are gated by
 output must not be used as a native performance parity claim until leaky
 abstraction evidence, planner-overhead evidence, native baseline provenance,
 correctness goldens, and security review exist.
+
+Future native performance proposals must also pass the
+[Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md). That
+readiness report does not run benchmarks, does not ingest raw benchmark output,
+and does not turn local timing data into a proof claim.

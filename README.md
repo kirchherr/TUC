@@ -75,6 +75,9 @@ The current prototype contains:
 - Triton source preflight fuzz/property corpus for arbitrary decoded bytes,
   invalid Unicode, seed combinations, and bounded diagnostics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
+- Performance proof boundary and readiness report for leaky-abstraction,
+  planner-overhead, native baseline, benchmark artifact, and executable-backend
+  security evidence before native performance claims.
 - Native-MLIR-oriented HAC-IR design spike.
 - HAC-IR v0 dialect contracts for operations and compiler attributes.
 - HAC-IR semantic charter for compute intent, compiler facts, planning
@@ -193,6 +196,12 @@ Run the baseline benchmark harness:
 python scripts/benchmark.py --iterations 2 --warmup 1
 ```
 
+Inspect the intentionally blocked performance proof readiness report:
+
+```bash
+python examples/performance_proof_readiness.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -235,6 +244,7 @@ pytest -q
 - [Proof of softmax](docs/PROOF_OF_SOFTMAX.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
+- [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

@@ -1,0 +1,139 @@
+{
+  "blocked_claims": [
+    "native_performance_parity",
+    "hundred_percent_native_performance",
+    "fixed_vendor_performance_percentage",
+    "near_native_without_threshold",
+    "planner_overhead_hidden_in_execution_time",
+    "transfer_estimates_as_measured_hardware_performance",
+    "hardware_specific_hac_ir_knobs"
+  ],
+  "boundary_contract": "performance_proof_boundary.blocking.v0",
+  "checked_evidence": [
+    {
+      "evidence_id": "performance_proof_rfc",
+      "present": false
+    },
+    {
+      "evidence_id": "benchmark_methodology",
+      "present": false
+    },
+    {
+      "evidence_id": "native_baseline_provenance",
+      "present": false
+    },
+    {
+      "evidence_id": "versioned_toolchain_environment",
+      "present": false
+    },
+    {
+      "evidence_id": "workload_scope",
+      "present": false
+    },
+    {
+      "evidence_id": "correctness_goldens",
+      "present": false
+    },
+    {
+      "evidence_id": "native_baseline_comparison",
+      "present": false
+    },
+    {
+      "evidence_id": "leaky_abstraction_report",
+      "present": false
+    },
+    {
+      "evidence_id": "planner_overhead_report",
+      "present": false
+    },
+    {
+      "evidence_id": "break_even_workload_size",
+      "present": false
+    },
+    {
+      "evidence_id": "runtime_plan_goldens",
+      "present": false
+    },
+    {
+      "evidence_id": "compiler_decision_report_goldens",
+      "present": false
+    },
+    {
+      "evidence_id": "benchmark_report_schema",
+      "present": false
+    },
+    {
+      "evidence_id": "benchmark_report_artifacts",
+      "present": false
+    },
+    {
+      "evidence_id": "executable_backend_security_review",
+      "present": false
+    }
+  ],
+  "issues": [
+    {
+      "evidence_id": "performance_proof_rfc",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "benchmark_methodology",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "native_baseline_provenance",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "versioned_toolchain_environment",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "workload_scope",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "correctness_goldens",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "native_baseline_comparison",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "leaky_abstraction_report",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "planner_overhead_report",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "break_even_workload_size",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "runtime_plan_goldens",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "compiler_decision_report_goldens",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "benchmark_report_schema",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "benchmark_report_artifacts",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "executable_backend_security_review",
+      "message": "required performance proof boundary evidence is missing"
+    }
+  ],
+  "proposal_name": "blocked-native-performance-proof-proposal",
+  "ready": false,
+  "schema_version": "tuc.performance_proof_readiness_report.v0"
+}
