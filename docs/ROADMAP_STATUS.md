@@ -85,6 +85,8 @@ Current slice:
 - Source Intent Intake v0 for schema-versioned plain-data construction of
   `SourceIntentModule`, with fail-closed unknown-key and source-text rejection
   plus deterministic frontend goldens.
+- Machine-readable Source Intent JSON Schema at
+  `schemas/source_intent.v0.schema.json` for external frontend authors.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.

@@ -16,6 +16,7 @@ It does not parse source text.
 - Intake contract: `source_intent_intake.execution_free.v0`
 - API: `source_intent_from_mapping(data)`
 - Report: `build_source_intent_intake_report(module)`
+- JSON Schema: `schemas/source_intent.v0.schema.json`
 - Example: `examples/source_intent_intake.py`
 - Tests: `tests/test_source_intent_intake.py`
 - Seed corpus: `tests/corpus/source_intent_intake/`
@@ -29,6 +30,11 @@ Accepted plain data:
 - neutral source-intent hints already accepted by Source Intent IR
 
 Unsupported keys fail closed.
+
+The machine-readable schema is documented in
+[Source Intent JSON Schema](SOURCE_INTENT_SCHEMA.md). The schema is an
+interoperability artifact; the trusted runtime boundary remains
+`source_intent_from_mapping(data)`.
 
 ## Security Boundary
 

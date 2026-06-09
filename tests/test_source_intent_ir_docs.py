@@ -79,6 +79,7 @@ def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
         "parse source text",
         "source_intent_intake.execution_free.v0",
         "source_intent_from_mapping(data)",
+        "schemas/source_intent.v0.schema.json",
         "Seed corpus: `tests/corpus/source_intent_intake/`",
         "Property tests: `tests/test_source_intent_intake_fuzz.py`",
         "arbitrary JSON-like values",
@@ -89,6 +90,40 @@ def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
         "tests/golden/runtime_plans/source_intent_intake_mlp.txt",
         "tests/golden/compiler_decisions/source_intent_intake_mlp.txt",
         "source text to Source Intent data",
+    ):
+        assert expected in text
+
+
+def test_source_intent_schema_doc_preserves_runtime_boundary() -> None:
+    text = Path("docs/SOURCE_INTENT_SCHEMA.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "schemas/source_intent.v0.schema.json",
+        "JSON Schema draft: 2020-12",
+        "source_intent_from_mapping(data)",
+        "additionalProperties: false",
+        "trusted runtime boundary remains",
+        "source parsing",
+        "ComputeGraph",
+        "Incompatible schema changes require a new schema version",
+    ):
+        assert expected in text
+
+
+def test_source_intent_schema_rfc_preserves_non_runtime_boundary() -> None:
+    text = Path("rfcs/0058-source-intent-json-schema.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "schemas/source_intent.v0.schema.json",
+        "does not add source parsing",
+        "JSON Schema draft 2020-12",
+        "additionalProperties: false",
+        "trusted runtime boundary remains `source_intent_from_mapping(data)`",
+        "prefer_analog_linear",
+        "python_source",
+        "Runtime validation remains fail-closed",
     ):
         assert expected in text
 

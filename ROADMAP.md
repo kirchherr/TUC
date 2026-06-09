@@ -307,6 +307,8 @@ Go/No-Go:
 - Source Intent Intake may build `SourceIntentModule` only from already decoded
   schema-versioned plain data, not source text, files, preflight reports, or
   Python objects.
+- Source Intent plain data must have a machine-readable schema artifact for
+  external frontend authors; runtime validation remains fail-closed in TUC.
 - Source Intent Intake fuzz/property tests must keep arbitrary JSON-like data,
   hostile source-text keys, backend hints, and broken tensor references
   fail-closed before source parsers can target the schema.

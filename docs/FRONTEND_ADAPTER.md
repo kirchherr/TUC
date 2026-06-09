@@ -42,6 +42,10 @@ does not convert to metadata or `ComputeGraph`.
 plain-data construction of `SourceIntentModule`. It does not accept source
 text, files, preflight reports, or Python objects.
 
+[`SOURCE_INTENT_SCHEMA.md`](SOURCE_INTENT_SCHEMA.md) documents the
+machine-readable `schemas/source_intent.v0.schema.json` contract for external
+frontend authors. Runtime validation still happens in Source Intent Intake.
+
 [`SOURCE_INTENT_METADATA.md`](SOURCE_INTENT_METADATA.md) defines the separate
 execution-free adapter from an already constructed `SourceIntentModule` to
 schema-versioned metadata. This still does not accept source text or preflight
