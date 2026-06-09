@@ -1,0 +1,10 @@
+source_intent.intake_report @source_intent_data_mlp {
+  schema_version = "source_intent.v0"
+  intake_contract = "source_intent_intake.execution_free.v0"
+  source_intent_contract = "source_intent_ir.canonical.v0"
+  tensor_count = 4
+  operation_count = 2
+  operation_families = "matmul,elementwise"
+  blocked_execution_surfaces = "bytecode_inspection,decorator_evaluation,device_access,dynamic_library_loading,file_system_access,generated_artifact_execution,jit_execution,network_access,plugin_discovery,python_import,source_parsing,subprocess_execution"
+  blocked_compiler_outputs = "metadata,compute_graph,tlir,hac_ir,hs_ir,runtime_plan,backend_decision"
+}

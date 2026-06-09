@@ -10,6 +10,10 @@ devices, or touch the network.
 
 It does not parse source text.
 
+Schema-versioned plain-data construction is handled by
+[Source Intent Intake](SOURCE_INTENT_INTAKE.md). Metadata conversion begins only
+after that data has become a validated `SourceIntentModule`.
+
 ## Contract
 
 - Contract: `source_intent_to_metadata.execution_free.v0`

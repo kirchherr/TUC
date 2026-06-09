@@ -1,0 +1,12 @@
+source_intent.module @source_intent_data_mlp {
+  contract = "source_intent_ir.canonical.v0"
+  tensor_count = 4
+  operation_count = 2
+  blocked_lowering = "metadata,compute_graph,tlir,hac_ir,hs_ir,runtime_plan,backend_decision"
+  tensor %a : tensor<4x8xfloat32>
+  tensor %b : tensor<8x2xfloat32>
+  tensor %c : tensor<4x2xfloat32>
+  tensor %y : tensor<4x2xfloat32>
+  op @projection family=matmul inputs=%a,%b outputs=%c hints={max_error_budget=0.02,prefer_linear_accelerator=true}
+  op @activation family=elementwise inputs=%c outputs=%y hints={}
+}

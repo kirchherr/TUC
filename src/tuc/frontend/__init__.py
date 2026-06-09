@@ -10,6 +10,13 @@ from tuc.frontend.source_intent import (
     SourceIntentOperation,
     SourceIntentTensor,
 )
+from tuc.frontend.source_intent_intake import (
+    SOURCE_INTENT_INTAKE_CONTRACT,
+    SOURCE_INTENT_SCHEMA_VERSION,
+    SourceIntentIntakeReport,
+    build_source_intent_intake_report,
+    source_intent_from_mapping,
+)
 from tuc.frontend.source_intent_metadata import (
     SOURCE_INTENT_METADATA_CONTRACT,
     SourceIntentMetadataReport,
@@ -50,7 +57,10 @@ __all__ = [
     "MAX_TRITON_SOURCE_DIAGNOSTIC_BYTES",
     "MAX_TRITON_SOURCE_LINES",
     "SOURCE_INTENT_IR_CONTRACT",
+    "SOURCE_INTENT_INTAKE_CONTRACT",
     "SOURCE_INTENT_METADATA_CONTRACT",
+    "SOURCE_INTENT_SCHEMA_VERSION",
+    "SourceIntentIntakeReport",
     "SourceIntentModule",
     "SourceIntentMetadataReport",
     "SourceIntentOperation",
@@ -63,9 +73,11 @@ __all__ = [
     "TritonOperationMetadata",
     "TritonSourcePreflightReport",
     "TritonTensorMetadata",
-    "build_triton_intake_report",
+    "build_source_intent_intake_report",
     "build_source_intent_metadata_report",
+    "build_triton_intake_report",
     "preflight_triton_source",
+    "source_intent_from_mapping",
     "source_intent_to_triton_metadata",
     "triton_metadata_to_compute_graph",
 ]

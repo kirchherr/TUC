@@ -82,6 +82,9 @@ Current slice:
 - Canonical Source Intent IR v0 as a data-only frontend contract with
   deterministic dump, negative hardware-leakage tests, and no metadata or
   compiler-lowering exit.
+- Source Intent Intake v0 for schema-versioned plain-data construction of
+  `SourceIntentModule`, with fail-closed unknown-key and source-text rejection
+  plus deterministic frontend goldens.
 - Source Intent Metadata Conversion v0 for execution-free conversion from an
   already constructed `SourceIntentModule` into schema-versioned metadata, with
   frontend, HAC-IR, runtime-plan, and compiler decision-report goldens.
@@ -207,9 +210,10 @@ Current focus:
   source-intent IR must remain disconnected from lowering until fuzzing and
   golden review evidence exist.
 - Source preflight fuzzing is now the baseline seed set; Source Intent IR v0
-  can convert to metadata only from an already constructed module. Future
-  source-text-to-intent work must add its own corpus, source-intent goldens,
-  deterministic diagnostics, and security review before any source connection.
+  can be built from schema-versioned plain data and can convert to metadata
+  only through separate reviewed adapters. Future source-text-to-intent work
+  must add its own corpus, source-intent goldens, deterministic diagnostics,
+  and security review before any source connection.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its

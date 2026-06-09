@@ -70,6 +70,37 @@ def test_source_intent_metadata_doc_preserves_adapter_boundary() -> None:
         assert expected in text
 
 
+def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
+    text = Path("docs/SOURCE_INTENT_INTAKE.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "schema-versioned plain-data entrypoint",
+        "does not read files",
+        "parse source text",
+        "source_intent_intake.execution_free.v0",
+        "source_intent_from_mapping(data)",
+        "must not accept source text or preflight reports",
+        "tests/golden/frontend/source_intent_intake_report.txt",
+        "source text to Source Intent data",
+    ):
+        assert expected in text
+
+
+def test_source_intent_intake_rfc_preserves_source_block() -> None:
+    text = Path("rfcs/0055-source-intent-intake.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "does not add source parsing",
+        "source_intent_intake.execution_free.v0",
+        "accepts only plain `dict`, `list`, and `tuple` data",
+        "parse source text",
+        "consume preflight reports",
+        "produce metadata, `ComputeGraph`, TLIR, HAC-IR, HS-IR",
+        "source parsing remains blocked",
+    ):
+        assert expected in text
+
+
 def test_source_intent_metadata_rfc_preserves_source_parser_block() -> None:
     text = Path("rfcs/0054-source-intent-metadata-conversion.md").read_text(
         encoding="utf-8"
