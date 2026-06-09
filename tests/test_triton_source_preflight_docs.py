@@ -46,5 +46,36 @@ def test_triton_source_threat_model_allows_only_diagnostic_preflight() -> None:
         "bounded syntax data",
         "must not produce metadata",
         "`ComputeGraph`, TLIR, HAC-IR, HS-IR",
+        "first fuzz corpus/property-test corpus",
+    ):
+        assert expected in text
+
+
+def test_triton_source_preflight_doc_preserves_fuzz_gate() -> None:
+    text = Path("docs/TRITON_SOURCE_PREFLIGHT.md").read_text(encoding="utf-8")
+
+    for expected in (
+        "Seed corpus: `tests/corpus/triton_source_preflight/`",
+        "Property tests: `tests/test_triton_source_preflight_fuzz.py`",
+        "arbitrary byte sequences decoded with `surrogateescape`",
+        "invalid Unicode rejection",
+        "diagnostic count and diagnostic byte caps",
+        "blocked execution-surface evidence in every report",
+    ):
+        assert expected in text
+
+
+def test_triton_source_preflight_fuzz_rfc_preserves_non_ingestion_gate() -> None:
+    text = Path("rfcs/0051-triton-source-preflight-fuzz-corpus.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source ingestion",
+        "arbitrary byte sequences decoded with `surrogateescape`",
+        "invalid Unicode rejection",
+        "bounded diagnostic count and diagnostic bytes",
+        "HAC-IR neutrality leakage rejection",
+        "Source-intent IR remains blocked from lowering",
     ):
         assert expected in text

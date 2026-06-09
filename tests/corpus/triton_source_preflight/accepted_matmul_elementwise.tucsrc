@@ -1,0 +1,6 @@
+@triton.jit
+def kernel(a, b, c):
+    offsets = tl.arange(0, 16)
+    acc = tl.dot(a, b)
+    y = tl.exp(acc + 1.0)
+    tl.store(c + offsets, y)

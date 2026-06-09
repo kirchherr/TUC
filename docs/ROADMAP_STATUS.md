@@ -76,6 +76,9 @@ Current slice:
   sandboxing gates exist.
 - Triton source preflight v0 with execution-free source budgets, negative
   tests, deterministic report golden, and no source-to-IR conversion.
+- Triton source preflight fuzz/property corpus for arbitrary decoded bytes,
+  invalid Unicode, seed combinations, bounded diagnostics, and known malicious
+  source surfaces.
 - Baseline benchmark harness that can run with or without CUDA.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
@@ -197,6 +200,9 @@ Current focus:
 - Source preflight is allowed only as a diagnostic boundary; future canonical
   source-intent IR must remain disconnected from lowering until fuzzing and
   golden review evidence exist.
+- Source preflight fuzzing is now the baseline seed set; future source-intent
+  IR work must add its own corpus, source-intake goldens, and security review
+  before any lowering connection.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its

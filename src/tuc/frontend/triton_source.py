@@ -159,7 +159,7 @@ def preflight_triton_source(
         raise TypeError("triton source preflight input must be source text")
     _validate_source_name(source_name)
 
-    source_bytes = len(source.encode("utf-8"))
+    source_bytes, source_utf8_valid = _utf8_byte_length(source)
     line_count = len(source.splitlines())
     state = _PreflightState(
         source_name=source_name,
@@ -169,6 +169,8 @@ def preflight_triton_source(
 
     if source_bytes == 0:
         _reject(state, "empty_source", "source text must not be empty")
+    if not source_utf8_valid:
+        _reject(state, "invalid_unicode", "source text must be valid UTF-8 text")
     if source_bytes > MAX_TRITON_SOURCE_BYTES:
         _reject(state, "source_bytes_exceeded", "source byte budget exceeded")
     if line_count > MAX_TRITON_SOURCE_LINES:
@@ -180,6 +182,9 @@ def preflight_triton_source(
         tree = ast.parse(source, filename="<tuc-triton-source>", mode="exec")
     except SyntaxError as exc:
         _reject(state, "syntax_error", f"syntax error at line {_line_or_unknown(exc.lineno)}")
+        return _report(state)
+    except ValueError:
+        _reject(state, "syntax_error", "source text cannot be parsed as Python syntax data")
         return _report(state)
     except RecursionError:
         _reject(state, "parser_recursion", "parser recursion budget exceeded")
@@ -329,7 +334,13 @@ def _inspect_literal(value: object, node: ast.AST, state: _PreflightState) -> No
         _reject(state, "literal_count_exceeded", "literal count budget exceeded")
         return
     if isinstance(value, str):
-        literal_bytes = len(value.encode("utf-8"))
+        literal_bytes, literal_utf8_valid = _utf8_byte_length(value)
+        if not literal_utf8_valid:
+            _reject(
+                state,
+                "invalid_unicode_literal",
+                f"string literal must be valid UTF-8 text at line {_node_line(node)}",
+            )
         if literal_bytes > MAX_TRITON_SOURCE_LITERAL_BYTES:
             _reject(
                 state,
@@ -372,7 +383,10 @@ def _record_identifier(identifier: str, state: _PreflightState) -> None:
     state.identifier_count += 1
     if state.identifier_count > MAX_TRITON_SOURCE_IDENTIFIERS:
         _reject(state, "identifier_count_exceeded", "identifier count budget exceeded")
-    if len(identifier.encode("utf-8")) > MAX_TRITON_SOURCE_IDENTIFIER_BYTES:
+    identifier_bytes, identifier_utf8_valid = _utf8_byte_length(identifier)
+    if not identifier_utf8_valid:
+        _reject(state, "invalid_identifier_unicode", "identifier must be valid UTF-8 text")
+    if identifier_bytes > MAX_TRITON_SOURCE_IDENTIFIER_BYTES:
         _reject(state, "identifier_bytes_exceeded", "identifier byte budget exceeded")
 
 
@@ -452,6 +466,13 @@ def _line_or_unknown(line: object) -> str:
     if isinstance(line, int):
         return str(line)
     return "unknown"
+
+
+def _utf8_byte_length(value: str) -> tuple[int, bool]:
+    try:
+        return len(value.encode("utf-8")), True
+    except UnicodeEncodeError:
+        return len(value.encode("utf-8", errors="backslashreplace")), False
 
 
 def _joined_or_dash(values: tuple[str, ...], *, separator: str = ",") -> str:

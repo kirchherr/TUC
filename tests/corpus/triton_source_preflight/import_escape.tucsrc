@@ -1,0 +1,5 @@
+import os
+
+@triton.jit
+def kernel(a):
+    return a

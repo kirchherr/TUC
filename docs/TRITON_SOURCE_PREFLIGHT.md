@@ -15,6 +15,8 @@ It is not an ingestion path into `ComputeGraph`.
 - API: `preflight_triton_source(source, source_name="triton_source")`
 - Output: `TritonSourcePreflightReport`
 - Golden: `tests/golden/frontend/triton_source_preflight.txt`
+- Seed corpus: `tests/corpus/triton_source_preflight/`
+- Property tests: `tests/test_triton_source_preflight_fuzz.py`
 
 The report includes:
 
@@ -80,12 +82,27 @@ Rejected:
 - `tuc.*` references or literals that could smuggle hardware-specific details
   into HAC-IR
 
+## Fuzz And Seed Corpus
+
+The preflight has executable fuzz/property-test evidence:
+
+- arbitrary byte sequences decoded with `surrogateescape`
+- source-corpus seed combinations
+- invalid Unicode rejection
+- diagnostic count and diagnostic byte caps
+- report stability for malformed syntax
+- blocked execution-surface evidence in every report
+
+The seed corpus covers accepted `@triton.jit` syntax as data plus known
+malicious or unsupported surfaces: imports, decorator calls, host-path literals,
+HAC-IR neutrality leakage, and unsupported `tl.*` calls.
+
 ## Relationship To Source Parsing
 
 The preflight is the first implementation step under
 [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md). It satisfies the
-first parser gate by making source limits, negative tests, and deterministic
-diagnostics executable.
+first parser gate by making source limits, negative tests, deterministic
+diagnostics, and fuzz/property-test coverage executable.
 
 It does not satisfy the whole source-ingestion gate. A future source parser
 still needs a canonical source-intent IR, metadata conversion, fuzz corpus,
