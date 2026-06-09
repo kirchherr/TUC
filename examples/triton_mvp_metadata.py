@@ -57,7 +57,7 @@ def build_metadata() -> TritonKernelMetadata:
                     "inputs": ["q", "k"],
                     "outputs": ["scores"],
                     "hints": {
-                        "prefer_analog_linear": True,
+                        "prefer_linear_accelerator": True,
                         "max_error_budget": 0.02,
                     },
                 },
@@ -73,7 +73,7 @@ def build_metadata() -> TritonKernelMetadata:
                     "kind": "matmul",
                     "inputs": ["weights", "v"],
                     "outputs": ["context"],
-                    "hints": {"prefer_analog_linear": True},
+                    "hints": {"prefer_linear_accelerator": True},
                 },
                 {
                     "name": "context_reduction",

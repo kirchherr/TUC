@@ -10,6 +10,8 @@ from tuc.runtime.overrides import (
     RuntimeOverrideSet,
 )
 from tuc.runtime.partitioning import (
+    DEFAULT_FALLBACK_BACKEND,
+    DEFAULT_FALLBACK_MEMORY_DOMAIN,
     Assignment,
     CandidateScore,
     PartitionPlan,
@@ -28,6 +30,8 @@ from tuc.runtime.plan import (
 __all__ = [
     "Assignment",
     "CandidateScore",
+    "DEFAULT_FALLBACK_BACKEND",
+    "DEFAULT_FALLBACK_MEMORY_DOMAIN",
     "DEFAULT_TRANSFER_COST_PROFILE",
     "LayoutConversionCost",
     "PartitionPlan",

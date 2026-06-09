@@ -24,7 +24,7 @@ def build_metadata() -> TritonKernelMetadata:
                     "inputs": ["a", "b"],
                     "outputs": ["c"],
                     "hints": {
-                        "prefer_analog_linear": True,
+                        "prefer_linear_accelerator": True,
                         "max_error_budget": 0.02,
                     },
                 },

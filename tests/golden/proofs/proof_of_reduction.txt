@@ -3,7 +3,7 @@ report_schema: proof-report.v0
 proof_id: proof_of_reduction
 proof_version: alpha.v1
 graph_family: reduction
-backend_set: gpu, linear-sim
+backend_set: linear-sim, reference-cpu
 
 == input graph ==
 linear_projection: matmul
@@ -21,32 +21,32 @@ hac-ir.module @proof_of_reduction {
     graph.source = "triton-like-python"
     module.dialect_version = "hac-ir.v0"
   }
-  %projection = tuc.matmul @linear_projection(%lhs: tensor<2x3xf32>, %rhs: tensor<3x3xf32>) -> (%projection: tensor<2x3xf32>) {max_error_budget = 0.05, prefer_analog_linear = true, tuc.arithmetic_intensity = 0.42857142857142855, tuc.arithmetic_ops = 36, tuc.bytes_read = 60, tuc.bytes_written = 24, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "analog_weight_bank", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
-  %row_sums = tuc.reduction @row_reduction(%projection: tensor<2x3xf32>) -> (%row_sums: tensor<2xf32>) {axis = 1, tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 4, tuc.bytes_read = 24, tuc.bytes_written = 8, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["bounded_reduction"], tuc.preferred_memory_domain = "gpu_hbm", tuc.semantic_op = "reduction", tuc.source_stage = "tlir"}
-  %activated = tuc.elementwise @digital_activation(%row_sums: tensor<2xf32>) -> (%activated: tensor<2xf32>) {kernel = "relu", tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 2, tuc.bytes_read = 8, tuc.bytes_written = 8, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["exact_shape_elementwise"], tuc.preferred_memory_domain = "gpu_hbm", tuc.semantic_op = "elementwise", tuc.source_stage = "tlir"}
+  %projection = tuc.matmul @linear_projection(%lhs: tensor<2x3xf32>, %rhs: tensor<3x3xf32>) -> (%projection: tensor<2x3xf32>) {max_error_budget = 0.05, prefer_linear_accelerator = true, tuc.arithmetic_intensity = 0.42857142857142855, tuc.arithmetic_ops = 36, tuc.bytes_read = 60, tuc.bytes_written = 24, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "analog_weight_bank", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
+  %row_sums = tuc.reduction @row_reduction(%projection: tensor<2x3xf32>) -> (%row_sums: tensor<2xf32>) {axis = 1, tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 4, tuc.bytes_read = 24, tuc.bytes_written = 8, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["bounded_reduction"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "reduction", tuc.source_stage = "tlir"}
+  %activated = tuc.elementwise @digital_activation(%row_sums: tensor<2xf32>) -> (%activated: tensor<2xf32>) {kernel = "relu", tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 2, tuc.bytes_read = 8, tuc.bytes_written = 8, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["exact_shape_elementwise"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "elementwise", tuc.source_stage = "tlir"}
 }
 
 == backend assignments ==
 linear_projection -> linear-sim
 row_reduction -> linear-sim
-digital_activation -> gpu
+digital_activation -> reference-cpu
 
 == transfer plan ==
 runtime.plan @proof_of_reduction {
   assignments {
     linear_projection -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
     row_reduction -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="supported:reduction;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
-    digital_activation -> gpu domain=gpu_hbm produced_layout=row_major transfer_bytes=8 layout_conversion_bytes=0 reason="fallback:transfer_bytes=8;layout_conversion_bytes=0;actual_transfer_bytes=8;actual_layout_conversion_bytes=0"
+    digital_activation -> reference-cpu domain=host_ram produced_layout=row_major transfer_bytes=8 layout_conversion_bytes=0 reason="fallback:transfer_bytes=8;layout_conversion_bytes=0;actual_transfer_bytes=8;actual_layout_conversion_bytes=0"
   }
   transfers {
-    %row_sums: row_reduction/linear-sim/analog_weight_bank/row_major -> digital_activation/gpu/gpu_hbm/row_major bytes=8 bandwidth_gb_s=64 latency_ns=5000.125 energy_pj=160
+    %row_sums: row_reduction/linear-sim/analog_weight_bank/row_major -> digital_activation/reference-cpu/host_ram/row_major bytes=8 bandwidth_gb_s=16 latency_ns=20000.5 energy_pj=800
   }
   summary {
     total_transfer_bytes = 8
     total_layout_conversion_bytes = 0
     total_data_movement_bytes = 8
-    estimated_transfer_latency_ns = 5000.125
-    estimated_transfer_energy_pj = 160
+    estimated_transfer_latency_ns = 20000.5
+    estimated_transfer_energy_pj = 800
   }
 }
 

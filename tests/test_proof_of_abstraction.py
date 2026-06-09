@@ -18,11 +18,11 @@ def test_proof_of_abstraction_example_runs() -> None:
     assert "== proof metadata ==" in completed.stdout
     assert "proof_version: alpha.v1" in completed.stdout
     assert "graph_family: abstraction" in completed.stdout
-    assert "backend_set: gpu, linear-sim" in completed.stdout
+    assert "backend_set: linear-sim, reference-cpu" in completed.stdout
     assert "== input graph ==" in completed.stdout
     assert "== hac-ir ==" in completed.stdout
     assert "linear_projection -> linear-sim" in completed.stdout
-    assert "digital_activation -> gpu" in completed.stdout
+    assert "digital_activation -> reference-cpu" in completed.stdout
     assert completed.stdout.rstrip().endswith("PASS")
     assert completed.stdout.rstrip("\n") == _GOLDEN_PROOF.read_text(
         encoding="utf-8"

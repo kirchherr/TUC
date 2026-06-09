@@ -3,7 +3,7 @@ report_schema: proof-report.v0
 proof_id: proof_of_softmax
 proof_version: alpha.v1
 graph_family: softmax
-backend_set: gpu, linear-sim
+backend_set: linear-sim, reference-cpu
 
 == input graph ==
 linear_projection: matmul
@@ -20,29 +20,29 @@ hac-ir.module @proof_of_softmax {
     graph.source = "triton-like-python"
     module.dialect_version = "hac-ir.v0"
   }
-  %logits = tuc.matmul @linear_projection(%lhs: tensor<2x3xf32>, %rhs: tensor<3x4xf32>) -> (%logits: tensor<2x4xf32>) {max_error_budget = 0.05, prefer_analog_linear = true, tuc.arithmetic_intensity = 0.46153846153846156, tuc.arithmetic_ops = 48, tuc.bytes_read = 72, tuc.bytes_written = 32, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "analog_weight_bank", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
-  %probabilities = tuc.softmax @row_softmax(%logits: tensor<2x4xf32>) -> (%probabilities: tensor<2x4xf32>) {axis = 1, tuc.arithmetic_intensity = 0.625, tuc.arithmetic_ops = 40, tuc.bytes_read = 32, tuc.bytes_written = 32, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["softmax_approximate_ops"], tuc.preferred_memory_domain = "gpu_hbm", tuc.semantic_op = "softmax", tuc.source_stage = "tlir"}
+  %logits = tuc.matmul @linear_projection(%lhs: tensor<2x3xf32>, %rhs: tensor<3x4xf32>) -> (%logits: tensor<2x4xf32>) {max_error_budget = 0.05, prefer_linear_accelerator = true, tuc.arithmetic_intensity = 0.46153846153846156, tuc.arithmetic_ops = 48, tuc.bytes_read = 72, tuc.bytes_written = 32, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "analog_weight_bank", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
+  %probabilities = tuc.softmax @row_softmax(%logits: tensor<2x4xf32>) -> (%probabilities: tensor<2x4xf32>) {axis = 1, tuc.arithmetic_intensity = 0.625, tuc.arithmetic_ops = 40, tuc.bytes_read = 32, tuc.bytes_written = 32, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["softmax_approximate_ops"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "softmax", tuc.source_stage = "tlir"}
 }
 
 == backend assignments ==
 linear_projection -> linear-sim
-row_softmax -> gpu
+row_softmax -> reference-cpu
 
 == transfer plan ==
 runtime.plan @proof_of_softmax {
   assignments {
     linear_projection -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
-    row_softmax -> gpu domain=gpu_hbm produced_layout=row_major transfer_bytes=32 layout_conversion_bytes=0 reason="fallback:transfer_bytes=32;layout_conversion_bytes=0;actual_transfer_bytes=32;actual_layout_conversion_bytes=0"
+    row_softmax -> reference-cpu domain=host_ram produced_layout=row_major transfer_bytes=32 layout_conversion_bytes=0 reason="fallback:transfer_bytes=32;layout_conversion_bytes=0;actual_transfer_bytes=32;actual_layout_conversion_bytes=0"
   }
   transfers {
-    %logits: linear_projection/linear-sim/analog_weight_bank/row_major -> row_softmax/gpu/gpu_hbm/row_major bytes=32 bandwidth_gb_s=64 latency_ns=5000.5 energy_pj=640
+    %logits: linear_projection/linear-sim/analog_weight_bank/row_major -> row_softmax/reference-cpu/host_ram/row_major bytes=32 bandwidth_gb_s=16 latency_ns=20002 energy_pj=3200
   }
   summary {
     total_transfer_bytes = 32
     total_layout_conversion_bytes = 0
     total_data_movement_bytes = 32
-    estimated_transfer_latency_ns = 5000.5
-    estimated_transfer_energy_pj = 640
+    estimated_transfer_latency_ns = 20002
+    estimated_transfer_energy_pj = 3200
   }
 }
 

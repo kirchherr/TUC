@@ -40,7 +40,8 @@ PASS
 The example builds a two-operation graph:
 
 - `linear_projection`: a matmul assigned to the `linear-sim` backend.
-- `row_softmax`: a row-wise softmax assigned to the `gpu` fallback backend.
+- `row_softmax`: a row-wise softmax assigned to the `reference-cpu` fallback
+  backend.
 
 It prints:
 
@@ -71,7 +72,7 @@ report_schema: proof-report.v0
 proof_id: proof_of_softmax
 proof_version: alpha.v1
 graph_family: softmax
-backend_set: gpu, linear-sim
+backend_set: linear-sim, reference-cpu
 ```
 
 This makes proof version, graph family, and backend set visible before HAC-IR,

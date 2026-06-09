@@ -14,6 +14,7 @@ from examples.triton_mvp_metadata import (
     run_report,
 )
 from tuc.ir import OperationKind
+from tuc.runtime import DEFAULT_FALLBACK_BACKEND
 
 
 def test_triton_mvp_metadata_covers_all_mvp_operation_families() -> None:
@@ -50,10 +51,16 @@ def test_triton_mvp_metadata_pipeline_assignments_are_explainable() -> None:
     report = run_report()
 
     assert report.compiled.partition_plan.backend_for("score_projection") == "linear-sim"
-    assert report.compiled.partition_plan.backend_for("attention_softmax") == "gpu"
+    assert (
+        report.compiled.partition_plan.backend_for("attention_softmax")
+        == DEFAULT_FALLBACK_BACKEND
+    )
     assert report.compiled.partition_plan.backend_for("value_projection") == "linear-sim"
     assert report.compiled.partition_plan.backend_for("context_reduction") == "linear-sim"
-    assert report.compiled.partition_plan.backend_for("summary_activation") == "gpu"
+    assert (
+        report.compiled.partition_plan.backend_for("summary_activation")
+        == DEFAULT_FALLBACK_BACKEND
+    )
     assert report.passed
 
 

@@ -3,7 +3,7 @@ compiler.decision_report @triton_metadata_mlp {
   support {
     linear-sim accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
   }
-  operation activation kind=elementwise assigned=gpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=2048;layout_conversion_bytes=0;actual_transfer_bytes=2048;actual_layout_conversion_bytes=0"
+  operation activation kind=elementwise assigned=reference-cpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=2048;layout_conversion_bytes=0;actual_transfer_bytes=2048;actual_layout_conversion_bytes=0"
   support {
     linear-sim rejected reason="unsupported_operation_kind" detail="elementwise not declared in supported_ops"
   }

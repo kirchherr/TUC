@@ -11,7 +11,7 @@ class CompilationHints:
 
     robust_to_noise: bool = False
     prefer_sparsity: bool = False
-    prefer_analog_linear: bool = False
+    prefer_linear_accelerator: bool = False
     max_error_budget: float | None = None
 
     def __post_init__(self) -> None:
@@ -22,7 +22,7 @@ class CompilationHints:
         metadata: dict[str, bool | float] = {
             "robust_to_noise": self.robust_to_noise,
             "prefer_sparsity": self.prefer_sparsity,
-            "prefer_analog_linear": self.prefer_analog_linear,
+            "prefer_linear_accelerator": self.prefer_linear_accelerator,
         }
         if self.max_error_budget is not None:
             metadata["max_error_budget"] = self.max_error_budget

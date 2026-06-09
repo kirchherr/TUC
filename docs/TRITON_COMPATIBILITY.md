@@ -22,16 +22,18 @@ compatibility on day one.
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
-| Elementwise | L3 | Lowered and assigned to fallback backend by default; ReLU reference fixture and Triton metadata frontend goldens cover semantics. |
+| Elementwise | L3 | Lowered and assigned to neutral `reference-cpu` fallback by default unless an explicit backend capability accepts it; ReLU reference fixture and Triton metadata frontend goldens cover semantics. |
 | Reduction | L3 | Represented, supported by the linear simulator backend, covered by a sum-reduction fixture, and included in Triton metadata frontend goldens. |
 | Softmax-like operation | L3 | Represented as an operation family and included in Triton metadata frontend goldens; decomposition is gated by the softmax operation-family planning contract. |
-| GPU backend | L0 | Represented as fallback backend name only. |
+| GPU backend | L0 | Represented only when explicit backend capability data names a GPU backend; GPU is not the default fallback. |
 | Photonic backend | L0 | Captured as roadmap target; simulator work comes later. |
 | Neuromorphic backend | L0 | Captured as roadmap target; simulator work comes later. |
 
 ## Design Rules
 
 - Hints must not change mathematical correctness.
+- Frontend hints must not name hardware classes; use neutral intent such as
+  `prefer_linear_accelerator`.
 - Unsupported operations must remain visible and explainable.
 - Fallback backend assignment must be explicit in HS-IR.
 - Compatibility claims must be backed by tests or examples.

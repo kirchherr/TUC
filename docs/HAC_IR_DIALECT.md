@@ -82,7 +82,7 @@ details.
 The current frontend can still carry non-namespaced user hints such as:
 
 - `max_error_budget`
-- `prefer_analog_linear`
+- `prefer_linear_accelerator`
 - `prefer_sparsity`
 - `robust_to_noise`
 

@@ -16,6 +16,8 @@ from tuc.runtime.plan import LayoutConversionCost, RuntimeTransferEdge, Transfer
 
 _CANDIDATE_SCORE_UNITS = frozenset({"bytes", "latency_ns"})
 _PLAN_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
+DEFAULT_FALLBACK_BACKEND = "reference-cpu"
+DEFAULT_FALLBACK_MEMORY_DOMAIN = MemoryDomainKind.HOST_RAM
 
 
 @dataclass(frozen=True)
@@ -129,7 +131,7 @@ class PartitionPlan:
 def partition_graph(
     graph: ComputeGraph,
     backends: Iterable[BackendCapability],
-    fallback_backend: str = "gpu",
+    fallback_backend: str = DEFAULT_FALLBACK_BACKEND,
     transfer_cost_profile: TransferCostProfile | None = None,
     runtime_overrides: RuntimeOverrideSet | None = None,
     include_candidate_scores: bool = False,
@@ -138,6 +140,7 @@ def partition_graph(
 
     if not isinstance(include_candidate_scores, bool):
         raise TypeError("include_candidate_scores must be bool")
+    _require_plan_name(fallback_backend, "fallback backend")
 
     capabilities = tuple(backends)
     if runtime_overrides is not None:
@@ -259,7 +262,7 @@ def _assign_operation(
 
     transfer_bytes = _transfer_bytes_for_domain(
         operation,
-        MemoryDomainKind.GPU_HBM,
+        DEFAULT_FALLBACK_MEMORY_DOMAIN,
         tensor_locations,
     )
     layout_conversion_bytes = _layout_conversion_bytes_for_layout(
@@ -277,7 +280,7 @@ def _assign_operation(
                 f"transfer_bytes={transfer_bytes};"
                 f"layout_conversion_bytes={layout_conversion_bytes}"
             ),
-            memory_domain=MemoryDomainKind.GPU_HBM,
+            memory_domain=DEFAULT_FALLBACK_MEMORY_DOMAIN,
             produced_layout=_operation_layout(operation),
             transfer_bytes=transfer_bytes,
             layout_conversion_bytes=layout_conversion_bytes,

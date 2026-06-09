@@ -6,7 +6,13 @@ from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.ir.memory import LayoutKind, MemoryDomainKind
-from tuc.runtime import TransferCostProfile, dump_partition_plan, partition_graph
+from tuc.runtime import (
+    DEFAULT_FALLBACK_BACKEND,
+    DEFAULT_FALLBACK_MEMORY_DOMAIN,
+    TransferCostProfile,
+    dump_partition_plan,
+    partition_graph,
+)
 
 
 def test_partitioning_prefers_linear_simulator_for_matmul() -> None:
@@ -37,8 +43,9 @@ def test_partitioning_prefers_linear_simulator_for_matmul() -> None:
     plan = partition_graph(graph, [simulator.capability])
 
     assert plan.backend_for("projection") == "linear-sim"
-    assert plan.backend_for("activation") == "gpu"
+    assert plan.backend_for("activation") == DEFAULT_FALLBACK_BACKEND
     assert plan.assignments[0].memory_domain is MemoryDomainKind.ANALOG_WEIGHT_BANK
+    assert plan.assignments[1].memory_domain is DEFAULT_FALLBACK_MEMORY_DOMAIN
     assert plan.assignments[1].transfer_bytes == 16 * 16 * 4
     assert plan.total_transfer_bytes() == 16 * 16 * 4
     assert len(plan.transfer_edges) == 1
@@ -47,11 +54,11 @@ def test_partitioning_prefers_linear_simulator_for_matmul() -> None:
     assert edge.source_operation == "projection"
     assert edge.target_operation == "activation"
     assert edge.source_domain is MemoryDomainKind.ANALOG_WEIGHT_BANK
-    assert edge.target_domain is MemoryDomainKind.GPU_HBM
+    assert edge.target_domain is MemoryDomainKind.HOST_RAM
     assert plan.total_data_movement_bytes() == 16 * 16 * 4
-    assert plan.total_estimated_transfer_latency_ns() == pytest.approx(5016.0)
-    assert plan.total_estimated_transfer_energy_pj() == pytest.approx(20480.0)
-    assert "bandwidth_gb_s=64" in dump_partition_plan(plan)
+    assert plan.total_estimated_transfer_latency_ns() == pytest.approx(20064.0)
+    assert plan.total_estimated_transfer_energy_pj() == pytest.approx(102400.0)
+    assert "bandwidth_gb_s=16" in dump_partition_plan(plan)
     assert "produced_layout=row_major" in dump_partition_plan(plan)
 
 
@@ -155,9 +162,11 @@ def test_partitioning_records_layout_conversion_costs() -> None:
 
     plan = partition_graph(graph, [gpu_backend])
 
-    assert plan.total_transfer_bytes() == 0
+    assert plan.backend_for("second") == DEFAULT_FALLBACK_BACKEND
+    assert plan.assignments[1].memory_domain is MemoryDomainKind.HOST_RAM
+    assert plan.total_transfer_bytes() == 8 * 8 * 4
     assert plan.total_layout_conversion_bytes() == 8 * 8 * 4
-    assert plan.total_data_movement_bytes() == 8 * 8 * 4
+    assert plan.total_data_movement_bytes() == 2 * 8 * 8 * 4
     assert len(plan.layout_conversions) == 1
     conversion = plan.layout_conversions[0]
     assert conversion.tensor_name == "y"
@@ -259,8 +268,30 @@ def test_partitioning_uses_transfer_cost_profile_for_edges() -> None:
 
     cost = plan.transfer_edges[0].cost_estimate
     assert cost is not None
-    assert cost.bandwidth_gb_s == 256.0
-    assert plan.total_estimated_transfer_latency_ns() == pytest.approx(101.0)
+    assert plan.transfer_edges[0].target_domain is MemoryDomainKind.HOST_RAM
+    assert cost.bandwidth_gb_s == 10.0
+    assert plan.total_estimated_transfer_latency_ns() == pytest.approx(1025.6)
+
+
+def test_partitioning_default_fallback_is_reference_cpu() -> None:
+    x = TensorRef("x", (4, 4))
+    y = TensorRef("y", (4, 4))
+    graph = ComputeGraph(
+        name="neutral_fallback",
+        operations=(
+            ComputeOperation(
+                name="activation",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(x,),
+                outputs=(y,),
+            ),
+        ),
+    )
+
+    plan = partition_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+
+    assert plan.backend_for("activation") == DEFAULT_FALLBACK_BACKEND
+    assert plan.assignments[0].memory_domain is DEFAULT_FALLBACK_MEMORY_DOMAIN
 
 
 def test_partitioning_rejects_invalid_operation_layout() -> None:

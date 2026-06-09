@@ -39,8 +39,8 @@ PASS
 The example builds a two-operation graph:
 
 - `linear_projection`: a matmul assigned to the `linear-sim` backend.
-- `digital_activation`: a ReLU elementwise operation assigned to the `gpu`
-  fallback backend.
+- `digital_activation`: a ReLU elementwise operation assigned to the
+  `reference-cpu` fallback backend.
 
 It prints:
 
@@ -71,7 +71,7 @@ report_schema: proof-report.v0
 proof_id: proof_of_abstraction
 proof_version: alpha.v1
 graph_family: abstraction
-backend_set: gpu, linear-sim
+backend_set: linear-sim, reference-cpu
 ```
 
 This makes proof version, graph family, and backend set visible before HAC-IR,

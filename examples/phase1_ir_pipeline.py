@@ -10,7 +10,7 @@ from tuc.compiler import compile_graph
 def build_graph() -> ComputeGraph:
     hints = CompilationHints(
         robust_to_noise=True,
-        prefer_analog_linear=True,
+        prefer_linear_accelerator=True,
         max_error_budget=0.02,
     )
     a = TensorRef("a", (128, 256))

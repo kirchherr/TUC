@@ -24,7 +24,7 @@ MAX_TENSOR_BYTES = 2**63 - 1
 
 def annotate_graph_movement(
     graph: ComputeGraph,
-    default_domain: MemoryDomainKind = MemoryDomainKind.GPU_HBM,
+    default_domain: MemoryDomainKind = MemoryDomainKind.HOST_RAM,
 ) -> ComputeGraph:
     """Attach bounded data-movement estimates to every operation in a graph."""
 
@@ -230,10 +230,12 @@ def _movement_estimate(
 
 def _preferred_domain(
     operation: ComputeOperation,
-    default_domain: MemoryDomainKind = MemoryDomainKind.GPU_HBM,
+    default_domain: MemoryDomainKind = MemoryDomainKind.HOST_RAM,
 ) -> MemoryDomainKind:
-    prefers_analog = operation.attributes.get("prefer_analog_linear") is True
-    if operation.kind is OperationKind.MATMUL and prefers_analog:
+    prefers_linear_accelerator = (
+        operation.attributes.get("prefer_linear_accelerator") is True
+    )
+    if operation.kind is OperationKind.MATMUL and prefers_linear_accelerator:
         return MemoryDomainKind.ANALOG_WEIGHT_BANK
     return default_domain
 

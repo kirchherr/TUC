@@ -25,7 +25,7 @@ neutral passes.
 
 The frontend preserves Triton-style developer ergonomics. During the early
 prototype phases, frontend work is represented by `CompilationHints`: optional
-metadata such as noise robustness, sparsity preference, analog linear
+metadata such as noise robustness, sparsity preference, linear-accelerator
 preference, and error budgets.
 
 Hints must never change mathematical correctness. They only inform lowering,
@@ -183,7 +183,8 @@ The early runtime uses simple rule-based partitioning:
 1. Prefer backends that explicitly prefer an operation kind.
 2. Otherwise choose any backend that supports the operation.
 3. Break ties by minimizing cross-domain transfer bytes.
-4. Otherwise fall back to the default backend, currently named `gpu`.
+4. Otherwise fall back to the neutral reference backend, currently named
+   `reference-cpu` in `host_ram`.
 
 This is intentionally simple. Later phases can replace the rule set with richer
 cost models, transfer estimates, noise simulation, and calibration-aware

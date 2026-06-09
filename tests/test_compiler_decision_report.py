@@ -4,6 +4,7 @@ from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.backends.base import BackendCapability
 from tuc.compiler import compile_graph
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
+from tuc.runtime import DEFAULT_FALLBACK_BACKEND
 
 
 def test_compiler_decision_report_connects_support_diagnostics_to_assignments() -> None:
@@ -40,7 +41,7 @@ def test_compiler_decision_report_connects_support_diagnostics_to_assignments() 
     assert projection.support_diagnostics[0].reason == "accepted"
 
     assert activation.operation_name == "activation"
-    assert activation.assigned_backend == "gpu"
+    assert activation.assigned_backend == DEFAULT_FALLBACK_BACKEND
     assert activation.accepted_backends == ()
     assert activation.rejected_backends == ("linear-sim",)
     assert activation.support_diagnostics[0].reason == "unsupported_operation_kind"
@@ -56,7 +57,7 @@ def test_compiler_decision_report_connects_support_diagnostics_to_assignments() 
             '    linear-sim accepted reason="accepted" '
             'detail="capability accepts operation kind, layout, and error budget"',
             "  }",
-            "  operation activation kind=elementwise assigned=gpu "
+            f"  operation activation kind=elementwise assigned={DEFAULT_FALLBACK_BACKEND} "
             'accepted_backends="-" rejected_backends="linear-sim" '
             'reason="fallback:transfer_bytes=512;layout_conversion_bytes=0;'
             'actual_transfer_bytes=512;actual_layout_conversion_bytes=0"',
@@ -94,7 +95,7 @@ def test_compiler_decision_report_keeps_rejection_reason_for_fallback() -> None:
     result = compile_graph(graph, [bounded])
     report = result.decision_report.operation_reports[0]
 
-    assert report.assigned_backend == "gpu"
+    assert report.assigned_backend == DEFAULT_FALLBACK_BACKEND
     assert report.accepted_backends == ()
     assert report.rejected_backends == ("bounded-linear",)
     assert report.support_diagnostics[0].reason == "error_budget_exceeds_backend_limit"

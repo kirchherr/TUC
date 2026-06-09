@@ -1,16 +1,16 @@
 runtime.plan @golden_profiled_transfer {
   assignments {
     projection -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
-    activation -> gpu domain=gpu_hbm produced_layout=row_major transfer_bytes=256 layout_conversion_bytes=0 reason="fallback:transfer_bytes=256;layout_conversion_bytes=0;actual_transfer_bytes=256;actual_layout_conversion_bytes=0"
+    activation -> reference-cpu domain=host_ram produced_layout=row_major transfer_bytes=256 layout_conversion_bytes=0 reason="fallback:transfer_bytes=256;layout_conversion_bytes=0;actual_transfer_bytes=256;actual_layout_conversion_bytes=0"
   }
   transfers {
-    %c: projection/linear-sim/analog_weight_bank/row_major -> activation/gpu/gpu_hbm/row_major bytes=256 bandwidth_gb_s=256 latency_ns=101 energy_pj=768
+    %c: projection/linear-sim/analog_weight_bank/row_major -> activation/reference-cpu/host_ram/row_major bytes=256 bandwidth_gb_s=10 latency_ns=1025.6 energy_pj=256
   }
   summary {
     total_transfer_bytes = 256
     total_layout_conversion_bytes = 0
     total_data_movement_bytes = 256
-    estimated_transfer_latency_ns = 101
-    estimated_transfer_energy_pj = 768
+    estimated_transfer_latency_ns = 1025.6
+    estimated_transfer_energy_pj = 256
   }
 }

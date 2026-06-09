@@ -64,7 +64,7 @@ def test_movement_annotations_preserve_declarative_backend_hints() -> None:
                 kind=OperationKind.MATMUL,
                 inputs=(TensorRef("a", (8, 8)), TensorRef("b", (8, 8))),
                 outputs=(TensorRef("c", (8, 8)),),
-                attributes={"prefer_analog_linear": True},
+                attributes={"prefer_linear_accelerator": True},
             ),
         ),
     )
@@ -75,7 +75,7 @@ def test_movement_annotations_preserve_declarative_backend_hints() -> None:
     assert annotated.metadata["movement_model"] == MOVEMENT_MODEL_VERSION
     assert operation.attributes["tuc.preferred_memory_domain"] == "analog_weight_bank"
     assert operation.attributes["tuc.layout"] == "row_major"
-    assert operation.attributes["prefer_analog_linear"] is True
+    assert operation.attributes["prefer_linear_accelerator"] is True
 
 
 def test_summarize_graph_movement_fails_closed_for_unannotated_graph() -> None:
