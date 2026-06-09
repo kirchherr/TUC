@@ -163,6 +163,10 @@ Before the source parser accepts untrusted external source, TUC must add:
 If native code is introduced, ASan/UBSan and strict ownership boundaries are
 required before merge.
 
+Triton source preflight v0 provides the first fuzz corpus/property-test corpus.
+Future source-intent IR work must extend it with semantic mapping seeds before
+source text can influence compiler artifacts.
+
 ## HAC-IR Neutrality Gate
 
 The source parser must preserve HAC-IR neutrality. It may describe compute

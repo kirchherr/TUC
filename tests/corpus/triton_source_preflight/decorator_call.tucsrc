@@ -1,0 +1,3 @@
+@triton.jit(debug=True)
+def kernel(a):
+    return a

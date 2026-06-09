@@ -280,6 +280,7 @@ Deliverables:
 - Triton compatibility matrix.
 - Triton-like metadata adapter hardening.
 - Execution-free Triton source preflight with bounded diagnostics.
+- Triton source preflight fuzz/property corpus.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -299,6 +300,8 @@ Go/No-Go:
   and sandboxing gates are in place.
 - Source preflight may inspect syntax as data, but it must not produce
   `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans, or backend decisions.
+- Preflight fuzz/property tests must keep arbitrary decoded source, invalid
+  Unicode, and malicious seed cases fail-closed before source-intent IR work.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

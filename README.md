@@ -72,6 +72,8 @@ The current prototype contains:
   `@triton.jit` ingestion until a bounded data-only parser gate exists.
 - Execution-free Triton source preflight with parser budgets, negative tests,
   and deterministic report goldens before any source-to-IR conversion.
+- Triton source preflight fuzz/property corpus for arbitrary decoded bytes,
+  invalid Unicode, seed combinations, and bounded diagnostics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Native-MLIR-oriented HAC-IR design spike.
 - HAC-IR v0 dialect contracts for operations and compiler attributes.
