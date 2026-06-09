@@ -63,9 +63,15 @@ tests/golden/frontend/triton_metadata_intake.txt
 tests/golden/hac_ir/triton_metadata_mlp.txt
 tests/golden/runtime_plans/triton_metadata_mlp.txt
 tests/golden/compiler_decisions/triton_metadata_mlp.txt
+tests/golden/frontend/triton_metadata_mvp_families_intake.txt
+tests/golden/hac_ir/triton_metadata_mvp_families.txt
+tests/golden/runtime_plans/triton_metadata_mvp_families.txt
+tests/golden/compiler_decisions/triton_metadata_mvp_families.txt
 ```
 
 ## Example
 
 See `examples/triton_metadata_adapter.py` for a small metadata-to-pipeline
-vertical slice.
+vertical slice. See `examples/triton_mvp_metadata.py` for a frontend-originated
+graph that covers all MVP operation families without source parsing or Triton
+JIT execution.

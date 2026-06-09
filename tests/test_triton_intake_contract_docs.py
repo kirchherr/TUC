@@ -45,3 +45,20 @@ def test_triton_frontend_golden_rfc_preserves_review_artifacts() -> None:
         "Direct `@triton.jit` handling remains blocked",
     ):
         assert expected in text
+
+
+def test_triton_mvp_metadata_rfc_preserves_execution_free_coverage() -> None:
+    text = Path("rfcs/0048-triton-mvp-metadata-coverage.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "matmul -> softmax -> matmul -> reduction -> elementwise",
+        "tests/golden/frontend/triton_metadata_mvp_families_intake.txt",
+        "tests/golden/hac_ir/triton_metadata_mvp_families.txt",
+        "tests/golden/runtime_plans/triton_metadata_mvp_families.txt",
+        "tests/golden/compiler_decisions/triton_metadata_mvp_families.txt",
+        "does not parse Python source",
+        "Direct Triton source ingestion remains blocked",
+    ):
+        assert expected in text
