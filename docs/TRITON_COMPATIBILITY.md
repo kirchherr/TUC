@@ -23,6 +23,7 @@ compatibility on day one.
 | Source Intent JSON Schema | L1 | Machine-readable `source_intent.v0` schema documents the plain-data contract for external frontend authors while runtime validation remains in Source Intent Intake. |
 | Canonical Source Intent IR | L1 | Data-only frontend contract exists with deterministic dump and negative hardware-leakage tests; conversion is exposed only through a separate Source Intent Metadata adapter. |
 | Source Intent Metadata Conversion | L2 | Execution-free adapter converts already constructed Source Intent IR to schema-versioned metadata, with source-intake, HAC-IR, runtime-plan, and compiler decision-report goldens. |
+| Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, metadata conversion, graph construction, and neutral planning while rejected cases fail closed at intake. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
@@ -59,10 +60,15 @@ compatibility on day one.
 - Source Intent Metadata Conversion is documented in
   [Source Intent Metadata Conversion](SOURCE_INTENT_METADATA.md). It starts
   from an already constructed `SourceIntentModule`, not source text.
+- Source Intent Frontend Conformance is documented in
+  [Source Intent Frontend Conformance](SOURCE_INTENT_FRONTEND_CONFORMANCE.md).
+  It checks in-memory plain-data cases and does not load frontend packages,
+  parse source text, discover plugins, or execute backend artifacts.
 
 ## Next Step
 
 Design source-text to Source Intent IR only after parser budgets, a semantic
 mapping corpus, source-intent goldens, deterministic diagnostics, HAC-IR review
 evidence, runtime-plan goldens, compiler decision-report goldens, and a
-security review are accepted.
+security review are accepted. External frontend proposals should first publish
+a Source Intent Frontend Conformance report.

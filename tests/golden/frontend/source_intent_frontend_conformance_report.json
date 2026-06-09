@@ -1,0 +1,14 @@
+{
+  "accepted_case_count": 1,
+  "checked_cases": [
+    "valid_source_intent_mlp",
+    "reject_source_text_escape",
+    "reject_backend_hint_escape",
+    "reject_unknown_tensor_reference"
+  ],
+  "frontend_name": "example-source-intent-frontend",
+  "issues": [],
+  "passed": true,
+  "rejected_case_count": 3,
+  "schema_version": "tuc.source_intent_frontend_conformance_report.v0"
+}

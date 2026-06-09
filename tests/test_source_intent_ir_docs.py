@@ -128,6 +128,47 @@ def test_source_intent_schema_rfc_preserves_non_runtime_boundary() -> None:
         assert expected in text
 
 
+def test_source_intent_frontend_conformance_doc_preserves_non_parser_gate() -> None:
+    text = Path("docs/SOURCE_INTENT_FRONTEND_CONFORMANCE.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "reusable certification path",
+        "does not read files",
+        "parse source text",
+        "discover plugins",
+        "execute generated artifacts",
+        "It is not a source parser",
+        "run_source_intent_frontend_conformance(frontend_name, cases)",
+        "dump_source_intent_frontend_conformance_report(report)",
+        "tests/golden/frontend/source_intent_frontend_conformance_report.json",
+        "failure stages and exception types, not raw payload contents",
+        "must not become a production source ingestion path",
+    ):
+        assert expected in text
+
+
+def test_source_intent_frontend_conformance_rfc_preserves_security_gate() -> None:
+    text = Path("rfcs/0059-source-intent-frontend-conformance.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "does not add source parsing",
+        "frontend module imports",
+        "plugin discovery",
+        "generated-artifact execution",
+        "run_source_intent_frontend_conformance(frontend_name, cases)",
+        "Rejected cases must fail closed at Source Intent Intake",
+        "not a production source parser",
+        "not a parser-to-IR bridge",
+        "tests/golden/frontend/source_intent_frontend_conformance_report.json",
+        "certification must not import or execute untrusted frontend code",
+    ):
+        assert expected in text
+
+
 def test_source_intent_intake_rfc_preserves_source_block() -> None:
     text = Path("rfcs/0055-source-intent-intake.md").read_text(encoding="utf-8")
 

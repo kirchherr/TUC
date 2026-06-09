@@ -51,6 +51,12 @@ execution-free adapter from an already constructed `SourceIntentModule` to
 schema-versioned metadata. This still does not accept source text or preflight
 reports.
 
+[`SOURCE_INTENT_FRONTEND_CONFORMANCE.md`](SOURCE_INTENT_FRONTEND_CONFORMANCE.md)
+defines a reusable certification path for external frontend authors that emit
+`source_intent.v0` plain data. It checks in-memory cases only and does not load
+frontend packages, parse source text, discover plugins, or execute backend
+artifacts.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:
@@ -104,6 +110,7 @@ tests/golden/frontend/source_intent_metadata_intake.txt
 tests/golden/hac_ir/source_intent_metadata_mlp.txt
 tests/golden/runtime_plans/source_intent_metadata_mlp.txt
 tests/golden/compiler_decisions/source_intent_metadata_mlp.txt
+tests/golden/frontend/source_intent_frontend_conformance_report.json
 ```
 
 ## Example

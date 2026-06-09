@@ -283,6 +283,7 @@ Deliverables:
 - Triton-like metadata adapter hardening.
 - Execution-free Triton source preflight with bounded diagnostics.
 - Triton source preflight fuzz/property corpus.
+- Source Intent Frontend Conformance report for external frontend authors.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -321,6 +322,8 @@ Go/No-Go:
 - Source Intent IR to metadata conversion may start only from an already
   constructed `SourceIntentModule`; source text and preflight reports remain
   disconnected until a separate source-to-intent security gate is accepted.
+- External frontend authors must first provide Source Intent Frontend
+  Conformance evidence for accepted plain data and rejected hostile cases.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
