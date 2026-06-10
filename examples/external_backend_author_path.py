@@ -6,6 +6,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from tuc.backends.base import BackendCapability, LoweringResult
+from tuc.backends.claim_review import (
+    ManifestClaimReviewInput,
+    ManifestClaimReviewReport,
+    build_manifest_claim_review_report,
+    dump_manifest_claim_review_report,
+)
 from tuc.backends.conformance import (
     BackendConformanceReport,
     assert_backend_conformance,
@@ -64,6 +70,7 @@ class ExternalVectorBackend:
 class ExternalBackendAuthorReport:
     """Reviewable outputs from the external backend author path."""
 
+    claim_review: ManifestClaimReviewReport
     registry: BackendRegistry
     compiled: CompilationResult
     conformance: BackendConformanceReport
@@ -119,8 +126,10 @@ def assigned_graph_for_backend(
 def run_external_backend_author_path(
     manifest_path: Path = MANIFEST_PATH,
 ) -> ExternalBackendAuthorReport:
-    """Run manifest registry, compiler planning, conformance, and trusted lowering."""
+    """Run claim review, registry, compiler planning, conformance, and lowering."""
 
+    claim_review = build_external_backend_claim_review(manifest_path)
+    _assert_author_manifest_accepted(claim_review)
     registry = BackendRegistry.from_manifest_paths([manifest_path])
     backend = ExternalVectorBackend(registry.capability("external-vector"))
     graph = build_graph()
@@ -128,6 +137,7 @@ def run_external_backend_author_path(
     conformance = assert_backend_conformance(backend)
     lowered = backend.lower(assigned_graph_for_backend(compiled, backend.capability.name))
     return ExternalBackendAuthorReport(
+        claim_review=claim_review,
         registry=registry,
         compiled=compiled,
         conformance=conformance,
@@ -138,6 +148,8 @@ def run_external_backend_author_path(
 def main() -> None:
     report = run_external_backend_author_path()
 
+    print("manifest_claim_review_passed=" + str(report.claim_review.passed).lower())
+    print(dump_manifest_claim_review_report(report.claim_review), end="")
     print("registered_backends=" + ",".join(report.registry.names()))
     for diagnostic in report.registry.diagnose_operation_support(build_graph().operations[0]):
         print(
@@ -150,6 +162,30 @@ def main() -> None:
     print(report.compiled.dump_runtime_plan())
     print()
     print(report.lowered.artifact)
+
+
+def build_external_backend_claim_review(
+    manifest_path: Path = MANIFEST_PATH,
+) -> ManifestClaimReviewReport:
+    """Return the author-path manifest claim review report."""
+
+    return build_manifest_claim_review_report(
+        (
+            ManifestClaimReviewInput(
+                manifest_id="external_vector_backend",
+                path=manifest_path,
+                expected_review_status="accepted",
+            ),
+        )
+    )
+
+
+def _assert_author_manifest_accepted(report: ManifestClaimReviewReport) -> None:
+    if not report.passed:
+        raise ValueError("external backend manifest claim review failed")
+    case = report.cases[0]
+    if case.observed_review_status != "accepted":
+        raise ValueError("external backend manifest was not accepted by claim review")
 
 
 if __name__ == "__main__":

@@ -101,6 +101,8 @@ The current prototype contains:
   trusted Runtime Executor registry.
 - Manifest Claim Review with negative fixtures for overreaching specialized
   accelerator manifests.
+- External backend author onboarding that runs Manifest Claim Review before
+  registry loading, compiler planning, conformance, or trusted lowering.
 - Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
   Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and

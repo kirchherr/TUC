@@ -71,3 +71,16 @@ Before accepting a new specialized accelerator manifest, verify:
 - Runtime execution remains authorized only by trusted runtime executor
   contracts.
 - HAC-IR remains free of backend-specific details.
+
+## Backend Author Path
+
+`examples/external_backend_author_path.py` runs Manifest Claim Review as its
+first gate. A backend author manifest must be `accepted` before the path loads
+the manifest into `BackendRegistry`, compiles the example graph, runs backend
+conformance, or lowers the assigned HAC-IR subgraph.
+
+The toy author path has its own deterministic golden at:
+
+```text
+tests/golden/backend_claim_review/external_vector_author_report.json
+```

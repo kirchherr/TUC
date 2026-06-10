@@ -209,12 +209,13 @@ examples/external_backend_author_path.py
 It demonstrates the intended review flow for a toy backend author:
 
 1. Provide a schema-versioned manifest.
-2. Load it through `BackendRegistry.from_manifest_paths(...)`.
-3. Compile a graph using capability data only.
-4. Run `assert_backend_conformance(...)`.
-5. Lower only the HAC-IR subgraph assigned to the explicitly constructed
+2. Pass Manifest Claim Review for that explicit manifest path.
+3. Load it through `BackendRegistry.from_manifest_paths(...)`.
+4. Compile a graph using capability data only.
+5. Run `assert_backend_conformance(...)`.
+6. Lower only the HAC-IR subgraph assigned to the explicitly constructed
    trusted backend object.
-6. Emit `dump_backend_conformance_report(...)` as a deterministic review
+7. Emit claim-review and conformance reports as deterministic review
    artifact.
 
 ## Transfer-Cost Profiles
@@ -314,6 +315,9 @@ Specialized accelerator manifests should also pass
 as acceptable planning evidence. The current report schema is
 `schemas/manifest_claim_review_report.v0.schema.json`, and the runnable example
 is `examples/manifest_claim_review.py`.
+
+The external-style backend author path runs Manifest Claim Review before
+registry loading and stops if the manifest is blocked.
 
 ## Current Limitations
 

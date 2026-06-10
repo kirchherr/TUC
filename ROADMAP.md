@@ -308,6 +308,8 @@ Completed evidence:
 - Manifest Claim Review blocks syntactically valid but overreaching
   specialized accelerator manifests before they become accepted planning
   evidence.
+- The external backend author path runs Manifest Claim Review before registry
+  loading, compiler planning, conformance, or trusted lowering.
 - Golden compiler decision-report fixtures cover proof and MVP graphs.
 - Softmax operation-family planning defines what future softmax capability,
   runtime, and decision-report fixtures must prove.
@@ -324,6 +326,8 @@ Go/No-Go:
 - A toy backend can be described through capability data.
 - Unsupported operations and layouts are rejected explicitly.
 - Specialized accelerator manifests pass claim review before acceptance.
+- External backend author onboarding fails closed when claim review blocks a
+  manifest.
 - Capability checks never import backend code, run subprocesses, load dynamic
   libraries, touch devices, or execute artifacts.
 

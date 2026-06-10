@@ -1,0 +1,35 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_count": 1,
+  "cases": [
+    {
+      "backend_name": "external-vector",
+      "expected_review_status": "accepted",
+      "issue_codes": [],
+      "load_status": "loaded",
+      "manifest_id": "external_vector_backend",
+      "memory_domain": "device_sram",
+      "observed_review_status": "accepted",
+      "produced_layouts": [
+        "vector"
+      ],
+      "source_label": "external_vector_backend.json",
+      "supported_ops": [
+        "elementwise"
+      ]
+    }
+  ],
+  "claim_review_contract": "manifest_claim_review.data_only.v0",
+  "passed": true,
+  "report_issues": [],
+  "schema_version": "tuc.manifest_claim_review_report.v0"
+}

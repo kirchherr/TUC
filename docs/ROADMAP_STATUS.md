@@ -75,6 +75,9 @@ hardware-independent interface into capability-driven runtime planning.
   `schemas/manifest_claim_review_report.v0.schema.json` and deterministic
   golden evidence at
   `tests/golden/backend_claim_review/manifest_claim_review_report.json`.
+- Backend author path now runs Manifest Claim Review before registry loading,
+  compiler planning, conformance, or trusted lowering, with golden evidence at
+  `tests/golden/backend_claim_review/external_vector_author_report.json`.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
@@ -268,6 +271,8 @@ Current slice:
 - Manifest Claim Review for syntactically valid but overreaching specialized
   accelerator claims, including universal operation-family claims and
   noise/calibration claims without explicit error-budget boundaries.
+- External backend author path gate that blocks manifests failing Manifest
+  Claim Review before they can reach registry diagnostics or lowering.
 - Deterministic backend conformance report artifacts for reviewable backend
   author evidence.
 - Backend capability schema guidance for error-budget, latency, energy,

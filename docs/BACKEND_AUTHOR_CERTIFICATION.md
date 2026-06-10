@@ -22,6 +22,7 @@ execution, or network access is part of certification.
 Every backend proposal must include:
 
 - A schema-versioned backend capability manifest.
+- A passing Manifest Claim Review report for that manifest.
 - A description of supported operations and numeric semantics.
 - Accepted layouts and produced layouts.
 - Memory domain and transfer assumptions.
@@ -102,6 +103,33 @@ Claims about latency, energy, calibration evidence, hardware certificates,
 benchmark scores, or measured accuracy do not belong in
 `tuc.backend_capability.v0`.
 
+## Manifest Claim Review Requirements
+
+Backend authors must run [Manifest Claim Review](MANIFEST_CLAIM_REVIEW.md)
+before maintainers treat a manifest as planning evidence.
+
+The reference author path runs this automatically:
+
+```bash
+python examples/external_backend_author_path.py
+```
+
+That path stops before registry loading, compiler planning, conformance, or
+trusted lowering when the manifest claim review fails.
+
+Authors can also inspect the standalone review suite:
+
+```bash
+python examples/manifest_claim_review.py
+```
+
+The external author path stores deterministic golden evidence for the toy
+backend at:
+
+```text
+tests/golden/backend_claim_review/external_vector_author_report.json
+```
+
 ## Conformance Fixture Requirements
 
 Backend authors must also add a positive/rejection conformance test using:
@@ -122,9 +150,10 @@ fixtures.
 Authors can use the external-style path in
 `examples/external_backend_author_path.py` as the reference shape for a toy
 backend proposal. The corresponding test,
-`tests/test_external_backend_author_path.py`, proves that manifest loading,
-registry diagnostics, compiler planning, conformance, and trusted lowering can
-work without modifying TUC core or adding plugin discovery.
+`tests/test_external_backend_author_path.py`, proves that manifest claim review,
+manifest loading, registry diagnostics, compiler planning, conformance, and
+trusted lowering can work without modifying TUC core or adding plugin
+discovery.
 
 ## Review Outcome
 
