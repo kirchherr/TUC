@@ -84,6 +84,20 @@ NATIVE_BASELINE_DEFAULT_ISSUES = (
     "native_baseline_comparison_not_supplied",
     "native_performance_claim_blocked",
 )
+NATIVE_BASELINE_COMPARISON_REPORT_SCHEMA_VERSION = (
+    "tuc.native_baseline_comparison_report.v0"
+)
+NATIVE_BASELINE_COMPARISON_ARTIFACT_STATUS = "diagnostic_only"
+NATIVE_BASELINE_COMPARISON_CLAIM_STATUS = "blocked"
+NATIVE_BASELINE_COMPARISON_RESULT_STATUSES = (
+    "not_measured",
+    "reported_not_validated",
+    "validated_by_ci",
+)
+NATIVE_BASELINE_COMPARISON_DEFAULT_ISSUES = (
+    "native_baseline_comparisons_not_supplied",
+    "native_performance_claim_blocked",
+)
 BENCHMARK_ARTIFACT_MANIFEST_REPORT_SCHEMA_VERSION = (
     "tuc.benchmark_artifact_manifest_report.v0"
 )
@@ -172,6 +186,9 @@ MAX_LEAKY_ABSTRACTION_FACTS = 128
 MAX_NATIVE_BASELINE_REPORT_BYTES = 64 * 1024
 MAX_NATIVE_BASELINE_FIELD_BYTES = 512
 MAX_NATIVE_BASELINES = 64
+MAX_NATIVE_BASELINE_COMPARISON_REPORT_BYTES = 64 * 1024
+MAX_NATIVE_BASELINE_COMPARISON_FIELD_BYTES = 512
+MAX_NATIVE_BASELINE_COMPARISONS = 128
 MAX_BENCHMARK_ARTIFACT_MANIFEST_REPORT_BYTES = 64 * 1024
 MAX_BENCHMARK_ARTIFACT_FIELD_BYTES = 512
 MAX_BENCHMARK_ARTIFACTS = 128
@@ -317,6 +334,38 @@ class NativeBaselineProvenanceReport:
     @property
     def native_baseline_ready(self) -> bool:
         return bool(self.baselines) and not self.issues
+
+
+@dataclass(frozen=True)
+class NativeBaselineComparison:
+    """One data-only native baseline comparison artifact reference."""
+
+    comparison_id: str
+    workload_scope_id: str
+    baseline_artifact_id: str
+    native_artifact_id: str
+    comparison_metric_id: str
+    summary_policy_id: str
+    result_status: str = "not_measured"
+    comparison_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class NativeBaselineComparisonReport:
+    """Diagnostic report for native baseline comparison review."""
+
+    proposal_name: str
+    comparisons: tuple[NativeBaselineComparison, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def native_baseline_comparison_ready(self) -> bool:
+        comparison_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue.startswith("native_baseline_comparison")
+        )
+        return bool(self.comparisons) and not comparison_issues
 
 
 @dataclass(frozen=True)
@@ -559,6 +608,35 @@ def build_native_baseline_provenance_report(
     )
 
 
+def build_native_baseline_comparison_report(
+    proposal_name: str,
+    comparisons: Iterable[NativeBaselineComparison] = (),
+) -> NativeBaselineComparisonReport:
+    """Build a bounded data-only native baseline comparison report."""
+
+    _validate_native_baseline_comparison_text(proposal_name, "proposal_name")
+    normalized_comparisons = _normalize_native_baseline_comparisons(comparisons)
+    issues = list(NATIVE_BASELINE_COMPARISON_DEFAULT_ISSUES)
+    if normalized_comparisons:
+        issues.remove("native_baseline_comparisons_not_supplied")
+    if any(
+        comparison.result_status != "validated_by_ci"
+        for comparison in normalized_comparisons
+    ):
+        issues.append("native_baseline_comparison_not_validated_by_ci")
+    if any(
+        comparison.comparison_digest == "not_supplied"
+        for comparison in normalized_comparisons
+    ):
+        issues.append("native_baseline_comparison_digest_not_supplied")
+
+    return NativeBaselineComparisonReport(
+        proposal_name=proposal_name,
+        comparisons=normalized_comparisons,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def build_benchmark_artifact_manifest_report(
     proposal_name: str,
     artifacts: Iterable[BenchmarkArtifactReference] = (),
@@ -761,6 +839,39 @@ def native_baseline_provenance_report_to_dict(
     }
 
 
+def native_baseline_comparison_report_to_dict(
+    report: NativeBaselineComparisonReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible native comparison report."""
+
+    _validate_native_baseline_comparison_report(report)
+    return {
+        "artifact_status": NATIVE_BASELINE_COMPARISON_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "comparisons": [
+            {
+                "baseline_artifact_id": comparison.baseline_artifact_id,
+                "comparison_digest": comparison.comparison_digest,
+                "comparison_id": comparison.comparison_id,
+                "comparison_metric_id": comparison.comparison_metric_id,
+                "native_artifact_id": comparison.native_artifact_id,
+                "result_status": comparison.result_status,
+                "summary_policy_id": comparison.summary_policy_id,
+                "workload_scope_id": comparison.workload_scope_id,
+            }
+            for comparison in report.comparisons
+        ],
+        "issues": list(report.issues),
+        "native_baseline_comparison_ready": (
+            report.native_baseline_comparison_ready
+        ),
+        "native_performance_claim": False,
+        "performance_claim_status": NATIVE_BASELINE_COMPARISON_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "schema_version": NATIVE_BASELINE_COMPARISON_REPORT_SCHEMA_VERSION,
+    }
+
+
 def benchmark_artifact_manifest_report_to_dict(
     report: BenchmarkArtifactManifestReport,
 ) -> dict[str, object]:
@@ -921,6 +1032,21 @@ def dump_native_baseline_provenance_report(
     return text + "\n"
 
 
+def dump_native_baseline_comparison_report(
+    report: NativeBaselineComparisonReport,
+) -> str:
+    """Render a stable diagnostic native baseline comparison report."""
+
+    text = json.dumps(
+        native_baseline_comparison_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_NATIVE_BASELINE_COMPARISON_REPORT_BYTES:
+        raise ValueError("native baseline comparison report exceeds byte limit")
+    return text + "\n"
+
+
 def dump_benchmark_artifact_manifest_report(
     report: BenchmarkArtifactManifestReport,
 ) -> str:
@@ -1032,6 +1158,51 @@ def _normalize_native_baselines(
         if baseline.artifact_digest_status not in {"not_supplied", "supplied"}:
             raise ValueError("unsupported native baseline artifact digest status")
         seen.add(baseline.baseline_id)
+    return normalized
+
+
+def _normalize_native_baseline_comparisons(
+    comparisons: Iterable[NativeBaselineComparison],
+) -> tuple[NativeBaselineComparison, ...]:
+    normalized = tuple(comparisons)
+    if len(normalized) > MAX_NATIVE_BASELINE_COMPARISONS:
+        raise ValueError("native baseline comparison count exceeds limit")
+    seen: set[str] = set()
+    for comparison in normalized:
+        if not isinstance(comparison, NativeBaselineComparison):
+            raise TypeError(
+                "native baseline comparisons must be NativeBaselineComparison"
+            )
+        _validate_native_baseline_comparison_text(
+            comparison.comparison_id,
+            "comparison_id",
+        )
+        _validate_native_baseline_comparison_text(
+            comparison.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_native_baseline_comparison_text(
+            comparison.baseline_artifact_id,
+            "baseline_artifact_id",
+        )
+        _validate_native_baseline_comparison_text(
+            comparison.native_artifact_id,
+            "native_artifact_id",
+        )
+        _validate_native_baseline_comparison_text(
+            comparison.comparison_metric_id,
+            "comparison_metric_id",
+        )
+        _validate_native_baseline_comparison_text(
+            comparison.summary_policy_id,
+            "summary_policy_id",
+        )
+        if comparison.comparison_id in seen:
+            raise ValueError("duplicate native baseline comparison id")
+        if comparison.result_status not in NATIVE_BASELINE_COMPARISON_RESULT_STATUSES:
+            raise ValueError("unsupported native baseline comparison result status")
+        _validate_native_baseline_comparison_digest(comparison.comparison_digest)
+        seen.add(comparison.comparison_id)
     return normalized
 
 
@@ -1266,6 +1437,17 @@ def _validate_native_baseline_report(
         raise ValueError("native baseline provenance v0 must remain claim-blocked")
 
 
+def _validate_native_baseline_comparison_report(
+    report: NativeBaselineComparisonReport,
+) -> None:
+    if not isinstance(report, NativeBaselineComparisonReport):
+        raise TypeError("native baseline comparison report must be report object")
+    _validate_native_baseline_comparison_text(report.proposal_name, "proposal_name")
+    _normalize_native_baseline_comparisons(report.comparisons)
+    for issue in report.issues:
+        _validate_native_baseline_comparison_text(issue, "issue")
+
+
 def _validate_benchmark_artifact_manifest_report(
     report: BenchmarkArtifactManifestReport,
 ) -> None:
@@ -1354,6 +1536,24 @@ def _validate_native_baseline_text(value: str, label: str) -> None:
         raise ValueError(f"{label} must be a safe native baseline identifier")
     if len(value.encode("utf-8")) > MAX_NATIVE_BASELINE_FIELD_BYTES:
         raise ValueError(f"{label} exceeds native baseline field limit")
+
+
+def _validate_native_baseline_comparison_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(
+            f"{label} must be a safe native baseline comparison identifier"
+        )
+    if len(value.encode("utf-8")) > MAX_NATIVE_BASELINE_COMPARISON_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds native baseline comparison field limit")
+
+
+def _validate_native_baseline_comparison_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("comparison_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("comparison_digest must be not_supplied or sha256 digest")
 
 
 def _validate_benchmark_artifact_text(value: str, label: str) -> None:
@@ -1457,12 +1657,19 @@ __all__ = [
     "LeakyAbstractionLeak",
     "LeakyAbstractionReport",
     "MAX_PERFORMANCE_PROOF_READINESS_ISSUES",
+    "NATIVE_BASELINE_COMPARISON_ARTIFACT_STATUS",
+    "NATIVE_BASELINE_COMPARISON_CLAIM_STATUS",
+    "NATIVE_BASELINE_COMPARISON_DEFAULT_ISSUES",
+    "NATIVE_BASELINE_COMPARISON_REPORT_SCHEMA_VERSION",
+    "NATIVE_BASELINE_COMPARISON_RESULT_STATUSES",
     "NATIVE_BASELINE_DEFAULT_ISSUES",
     "NATIVE_BASELINE_IMPLEMENTATION_KINDS",
     "NATIVE_BASELINE_PROVENANCE_ARTIFACT_STATUS",
     "NATIVE_BASELINE_PROVENANCE_CLAIM_STATUS",
     "NATIVE_BASELINE_PROVENANCE_REPORT_SCHEMA_VERSION",
     "NATIVE_BASELINE_REPRODUCIBILITY_STATUSES",
+    "NativeBaselineComparison",
+    "NativeBaselineComparisonReport",
     "NativeBaselineProvenance",
     "NativeBaselineProvenanceReport",
     "TOOLCHAIN_COMPONENT_KINDS",
@@ -1499,6 +1706,7 @@ __all__ = [
     "build_benchmark_artifact_manifest_report",
     "build_benchmark_methodology_report",
     "build_leaky_abstraction_report",
+    "build_native_baseline_comparison_report",
     "build_native_baseline_provenance_report",
     "build_performance_proof_readiness_report",
     "build_workload_scope_report",
@@ -1506,10 +1714,12 @@ __all__ = [
     "dump_benchmark_methodology_report",
     "dump_toolchain_environment_report",
     "dump_leaky_abstraction_report",
+    "dump_native_baseline_comparison_report",
     "dump_native_baseline_provenance_report",
     "dump_performance_proof_readiness_report",
     "dump_workload_scope_report",
     "leaky_abstraction_report_to_dict",
+    "native_baseline_comparison_report_to_dict",
     "native_baseline_provenance_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "proof_metadata_from_partition_plan",

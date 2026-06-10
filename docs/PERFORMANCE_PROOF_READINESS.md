@@ -92,6 +92,12 @@ the existence of a bounded native baseline provenance contract. It does not
 satisfy native baseline comparison, benchmark report artifacts, execution
 timing, or native performance parity.
 
+The current diagnostic native baseline comparison report schema is
+`schemas/native_baseline_comparison_report.v0.schema.json`. It can satisfy only
+the existence of a bounded native comparison metadata contract. It does not
+load benchmark artifacts, parse raw benchmark output, store timing samples, or
+prove native performance parity.
+
 The current diagnostic benchmark artifact manifest report schema is
 `schemas/benchmark_artifact_manifest_report.v0.schema.json`. It can satisfy only
 the existence of a bounded benchmark artifact inventory contract. It does not
@@ -133,6 +139,11 @@ The readiness report is also not a native baseline provenance report. Native
 baseline candidates are tracked by
 [Native Baseline Provenance Report](NATIVE_BASELINE_PROVENANCE.md), which is
 data-only and remains claim-blocked in v0.
+
+The readiness report is not a native baseline comparison report. Native
+comparison metadata is tracked by
+[Native Baseline Comparison Report](NATIVE_BASELINE_COMPARISON_REPORT.md), which
+is data-only and remains separate from raw benchmark values.
 
 The readiness report is not a benchmark artifact manifest. Benchmark report
 artifact inventory is tracked by

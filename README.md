@@ -83,6 +83,8 @@ The current prototype contains:
   facts outside HAC-IR.
 - Diagnostic native-baseline provenance reports that identify future native
   comparison candidates without executing native code or claiming parity.
+- Diagnostic native-baseline comparison reports that track bounded comparison
+  metadata without loading raw benchmark outputs.
 - Diagnostic benchmark-artifact manifest reports that inventory benchmark
   report artifacts through bounded IDs and digests.
 - Diagnostic workload-scope reports that bound future performance claims to
@@ -92,8 +94,8 @@ The current prototype contains:
 - Diagnostic toolchain-environment reports that identify versioned runtime,
   package, compiler, driver, container, and OS components without host discovery.
 - Performance proof boundary and readiness report for leaky-abstraction,
-  planner-overhead, native baseline, benchmark artifact, and executable-backend
-  security evidence before native performance claims.
+  planner-overhead, native baseline, native comparison, benchmark artifact, and
+  executable-backend security evidence before native performance claims.
 - Native-MLIR-oriented HAC-IR design spike.
 - HAC-IR v0 dialect contracts for operations and compiler attributes.
 - HAC-IR semantic charter for compute intent, compiler facts, planning
@@ -236,6 +238,12 @@ Inspect the diagnostic native-baseline provenance report:
 python examples/native_baseline_provenance.py
 ```
 
+Inspect the diagnostic native-baseline comparison report:
+
+```bash
+python examples/native_baseline_comparison_report.py
+```
+
 Inspect the diagnostic benchmark-artifact manifest report:
 
 ```bash
@@ -306,6 +314,7 @@ pytest -q
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
 - [Native baseline provenance report](docs/NATIVE_BASELINE_PROVENANCE.md)
+- [Native baseline comparison report](docs/NATIVE_BASELINE_COMPARISON_REPORT.md)
 - [Benchmark artifact manifest report](docs/BENCHMARK_ARTIFACT_MANIFEST.md)
 - [Workload scope report](docs/WORKLOAD_SCOPE_REPORT.md)
 - [Benchmark methodology report](docs/BENCHMARK_METHODOLOGY_REPORT.md)

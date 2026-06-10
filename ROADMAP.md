@@ -130,6 +130,9 @@ Completed evidence:
   to homes outside HAC-IR.
 - Native-baseline provenance reports identify native comparison candidates as
   bounded review data while keeping native performance claims blocked.
+- Native-baseline comparison reports identify bounded comparison metadata
+  between TUC baseline artifacts and native benchmark artifacts without loading
+  raw outputs.
 - Benchmark-artifact manifest reports inventory future benchmark report
   artifacts through bounded IDs and digests without loading raw outputs.
 - Workload-scope reports bound future performance claims to explicit operation
@@ -325,6 +328,7 @@ Deliverables:
 - Leaky Abstraction Report for diagnostic HAC-IR boundary review.
 - Native Baseline Provenance Report for diagnostic native comparison
   provenance.
+- Native Baseline Comparison Report for diagnostic native comparison metadata.
 - Benchmark Artifact Manifest Report for diagnostic benchmark artifact
   inventory.
 - Workload Scope Report for diagnostic workload-family and problem-size
@@ -379,8 +383,9 @@ Go/No-Go:
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
 - Performance claims remain blocked until leaky-abstraction evidence,
-  planner-overhead evidence, native baseline provenance, correctness goldens,
-  security review, and a passing Performance Proof Readiness report exist.
+  planner-overhead evidence, native baseline provenance, native baseline
+  comparison, correctness goldens, security review, and a passing Performance
+  Proof Readiness report exist.
 - Baseline benchmark reports must remain diagnostic-only unless a future native
   benchmark RFC adds separate provenance, artifact, and security gates.
 - Planner-overhead reports must keep execution timing and break-even workload
@@ -390,6 +395,9 @@ Go/No-Go:
 - Native-baseline provenance reports must remain data-only and must not include
   host paths, command lines, backend artifacts, raw output, or device-specific
   identifiers.
+- Native-baseline comparison reports must remain data-only and must not include
+  host paths, command lines, raw timing samples, raw native output, backend
+  artifacts, device identifiers, benchmark report contents, or generated code.
 - Benchmark-artifact manifest reports must remain data-only and must not include
   host paths, URLs, raw timing samples, backend binaries, generated code, or
   embedded benchmark outputs.

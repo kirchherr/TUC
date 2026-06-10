@@ -121,6 +121,12 @@ Native baseline candidates are tracked separately by the
 reports must not smuggle native implementation provenance, source paths,
 command lines, backend artifacts, or raw native output into timing data.
 
+Native comparison metadata is tracked separately by the
+[Native Baseline Comparison Report](NATIVE_BASELINE_COMPARISON_REPORT.md) and
+`schemas/native_baseline_comparison_report.v0.schema.json`. Baseline benchmark
+reports must not embed native comparison claims, raw native output, command
+lines, device identifiers, or benchmark report contents.
+
 Benchmark report artifact inventory is tracked separately by the
 [Benchmark Artifact Manifest Report](BENCHMARK_ARTIFACT_MANIFEST.md) and
 `schemas/benchmark_artifact_manifest_report.v0.schema.json`. The manifest
