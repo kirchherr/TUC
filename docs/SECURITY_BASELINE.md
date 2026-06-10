@@ -88,6 +88,10 @@ Implemented now:
   operation/backend assignments.
 - Triton-like MVP metadata execution carries readiness evidence across
   `matmul`, `softmax`, `reduction`, and `elementwise` before execution.
+- Runtime Evidence Matrix v0 inventories proof/runtime evidence through bounded
+  identifiers only, rejects path-like IDs and known execution surfaces, derives
+  missing-evidence issues deterministically, and never scans repositories,
+  imports code, discovers plugins, or executes artifacts.
 - Runtime operation semantic contracts validate MVP operation shape and axis
   rules before trusted reference kernels run, preventing implicit NumPy
   broadcasting, scalar reductions, unsupported elementwise kernels, or

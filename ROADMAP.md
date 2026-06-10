@@ -150,6 +150,9 @@ Completed evidence:
   backend executor contracts before any operation executes.
 - Triton-like MVP metadata graph readiness evidence covers `matmul`,
   `softmax`, `reduction`, and `elementwise` before execution.
+- Runtime Evidence Matrix v0 inventories HAC-IR, runtime-plan,
+  compiler-decision, readiness, trace, and correctness evidence across current
+  graph fixtures with deterministic schema and golden output.
 - Runtime operation semantic contracts validate MVP operation shapes, axes, and
   supported elementwise kernels before trusted kernels run.
 - Runtime tensor value contracts enforce declared shapes, `float64` dtype, and
