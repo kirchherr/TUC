@@ -49,10 +49,25 @@ PERFORMANCE_CLAIM_THRESHOLD_POLICY_DEFAULT_ISSUES = (
     "performance_claim_threshold_policies_not_supplied",
     "native_performance_claim_blocked",
 )
+PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_SCHEMA_VERSION = (
+    "tuc.performance_acceptance_criteria_report.v0"
+)
+PERFORMANCE_ACCEPTANCE_CRITERIA_ARTIFACT_STATUS = "diagnostic_only"
+PERFORMANCE_ACCEPTANCE_CRITERIA_CLAIM_STATUS = "blocked"
+PERFORMANCE_ACCEPTANCE_CRITERIA_STATUSES = (
+    "draft",
+    "reviewed_not_accepted",
+    "accepted_by_maintainers",
+)
+PERFORMANCE_ACCEPTANCE_CRITERIA_DEFAULT_ISSUES = (
+    "performance_acceptance_criteria_not_supplied",
+    "native_performance_claim_blocked",
+)
 PERFORMANCE_PROOF_BOUNDARY_CONTRACT = "performance_proof_boundary.blocking.v0"
 PERFORMANCE_PROOF_REQUIRED_EVIDENCE = (
     "performance_proof_rfc",
     "performance_claim_threshold_policy",
+    "performance_acceptance_criteria",
     "benchmark_methodology",
     "native_baseline_provenance",
     "versioned_toolchain_environment",
@@ -257,6 +272,9 @@ MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_FIELD_BYTES = 512
 MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICIES = 128
 MAX_PERFORMANCE_CLAIM_THRESHOLD_BASIS_POINTS = 100_000
+MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_BYTES = 64 * 1024
+MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_FIELD_BYTES = 512
+MAX_PERFORMANCE_ACCEPTANCE_CRITERIA = 128
 MAX_LEAKY_ABSTRACTION_REPORT_BYTES = 64 * 1024
 MAX_LEAKY_ABSTRACTION_FIELD_BYTES = 512
 MAX_LEAKY_ABSTRACTION_FACTS = 128
@@ -421,6 +439,42 @@ class PerformanceClaimThresholdPolicyReport:
             )
         )
         return bool(self.policies) and not threshold_issues
+
+
+@dataclass(frozen=True)
+class PerformanceAcceptanceCriteria:
+    """One bounded acceptance-criteria entry for a future performance claim."""
+
+    criteria_id: str
+    workload_scope_id: str
+    threshold_policy_id: str
+    correctness_evidence_id: str
+    benchmark_methodology_id: str
+    native_baseline_comparison_id: str
+    planner_overhead_report_id: str
+    break_even_workload_size_id: str
+    leaky_abstraction_report_id: str
+    executable_security_review_id: str
+    criteria_status: str = "draft"
+    criteria_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class PerformanceAcceptanceCriteriaReport:
+    """Diagnostic report for future performance acceptance criteria."""
+
+    proposal_name: str
+    criteria: tuple[PerformanceAcceptanceCriteria, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def performance_acceptance_criteria_ready(self) -> bool:
+        criteria_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue.startswith("performance_acceptance_criteria")
+        )
+        return bool(self.criteria) and not criteria_issues
 
 
 @dataclass(frozen=True)
@@ -810,6 +864,48 @@ def build_performance_claim_threshold_policy_report(
     )
 
 
+def build_performance_acceptance_criteria_report(
+    proposal_name: str,
+    criteria: Iterable[PerformanceAcceptanceCriteria] = (),
+) -> PerformanceAcceptanceCriteriaReport:
+    """Build a bounded data-only report for performance acceptance criteria."""
+
+    _validate_performance_acceptance_criteria_text(proposal_name, "proposal_name")
+    normalized_criteria = _normalize_performance_acceptance_criteria(criteria)
+    issues = list(PERFORMANCE_ACCEPTANCE_CRITERIA_DEFAULT_ISSUES)
+    if normalized_criteria:
+        issues.remove("performance_acceptance_criteria_not_supplied")
+    if any(
+        item.criteria_status != "accepted_by_maintainers"
+        for item in normalized_criteria
+    ):
+        issues.append("performance_acceptance_criteria_not_accepted")
+    if any(
+        "not_supplied"
+        in {
+            item.workload_scope_id,
+            item.threshold_policy_id,
+            item.correctness_evidence_id,
+            item.benchmark_methodology_id,
+            item.native_baseline_comparison_id,
+            item.planner_overhead_report_id,
+            item.break_even_workload_size_id,
+            item.leaky_abstraction_report_id,
+            item.executable_security_review_id,
+        }
+        for item in normalized_criteria
+    ):
+        issues.append("performance_acceptance_criteria_evidence_not_supplied")
+    if any(item.criteria_digest == "not_supplied" for item in normalized_criteria):
+        issues.append("performance_acceptance_criteria_digest_not_supplied")
+
+    return PerformanceAcceptanceCriteriaReport(
+        proposal_name=proposal_name,
+        criteria=normalized_criteria,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def build_leaky_abstraction_report(
     hac_ir: IRModule,
     performance_facts: Iterable[LeakyAbstractionFact] = (),
@@ -1181,6 +1277,47 @@ def performance_claim_threshold_policy_report_to_dict(
     }
 
 
+def performance_acceptance_criteria_report_to_dict(
+    report: PerformanceAcceptanceCriteriaReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible acceptance criteria report."""
+
+    _validate_performance_acceptance_criteria_report(report)
+    return {
+        "artifact_status": PERFORMANCE_ACCEPTANCE_CRITERIA_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "criteria": [
+            {
+                "benchmark_methodology_id": item.benchmark_methodology_id,
+                "break_even_workload_size_id": item.break_even_workload_size_id,
+                "correctness_evidence_id": item.correctness_evidence_id,
+                "criteria_digest": item.criteria_digest,
+                "criteria_id": item.criteria_id,
+                "criteria_status": item.criteria_status,
+                "executable_security_review_id": (
+                    item.executable_security_review_id
+                ),
+                "leaky_abstraction_report_id": item.leaky_abstraction_report_id,
+                "native_baseline_comparison_id": (
+                    item.native_baseline_comparison_id
+                ),
+                "planner_overhead_report_id": item.planner_overhead_report_id,
+                "threshold_policy_id": item.threshold_policy_id,
+                "workload_scope_id": item.workload_scope_id,
+            }
+            for item in report.criteria
+        ],
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_acceptance_criteria_ready": (
+            report.performance_acceptance_criteria_ready
+        ),
+        "performance_claim_status": PERFORMANCE_ACCEPTANCE_CRITERIA_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "schema_version": PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_SCHEMA_VERSION,
+    }
+
+
 def leaky_abstraction_report_to_dict(
     report: LeakyAbstractionReport,
 ) -> dict[str, object]:
@@ -1516,6 +1653,21 @@ def dump_performance_claim_threshold_policy_report(
         > MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_BYTES
     ):
         raise ValueError("performance claim threshold policy report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_performance_acceptance_criteria_report(
+    report: PerformanceAcceptanceCriteriaReport,
+) -> str:
+    """Render a stable diagnostic performance acceptance criteria report."""
+
+    text = json.dumps(
+        performance_acceptance_criteria_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_BYTES:
+        raise ValueError("performance acceptance criteria report exceeds byte limit")
     return text + "\n"
 
 
@@ -2043,6 +2195,68 @@ def _normalize_performance_claim_threshold_policies(
     return normalized
 
 
+def _normalize_performance_acceptance_criteria(
+    criteria: Iterable[PerformanceAcceptanceCriteria],
+) -> tuple[PerformanceAcceptanceCriteria, ...]:
+    normalized = tuple(criteria)
+    if len(normalized) > MAX_PERFORMANCE_ACCEPTANCE_CRITERIA:
+        raise ValueError("performance acceptance criteria count exceeds limit")
+    seen: set[str] = set()
+    for item in normalized:
+        if not isinstance(item, PerformanceAcceptanceCriteria):
+            raise TypeError(
+                "performance acceptance criteria must be "
+                "PerformanceAcceptanceCriteria"
+            )
+        _validate_performance_acceptance_criteria_text(
+            item.criteria_id,
+            "criteria_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.threshold_policy_id,
+            "threshold_policy_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.correctness_evidence_id,
+            "correctness_evidence_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.benchmark_methodology_id,
+            "benchmark_methodology_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.native_baseline_comparison_id,
+            "native_baseline_comparison_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.planner_overhead_report_id,
+            "planner_overhead_report_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.break_even_workload_size_id,
+            "break_even_workload_size_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.leaky_abstraction_report_id,
+            "leaky_abstraction_report_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.executable_security_review_id,
+            "executable_security_review_id",
+        )
+        if item.criteria_id in seen:
+            raise ValueError("duplicate performance acceptance criteria id")
+        if item.criteria_status not in PERFORMANCE_ACCEPTANCE_CRITERIA_STATUSES:
+            raise ValueError("unsupported performance acceptance criteria status")
+        _validate_performance_acceptance_criteria_digest(item.criteria_digest)
+        seen.add(item.criteria_id)
+    return normalized
+
+
 def _normalize_performance_evidence(
     evidence: Iterable[PerformanceProofReadinessEvidence],
 ) -> dict[str, bool]:
@@ -2159,6 +2373,20 @@ def _validate_performance_claim_threshold_policy_report(
     _normalize_performance_claim_threshold_policies(report.policies)
     for issue in report.issues:
         _validate_performance_claim_threshold_policy_text(issue, "issue")
+
+
+def _validate_performance_acceptance_criteria_report(
+    report: PerformanceAcceptanceCriteriaReport,
+) -> None:
+    if not isinstance(report, PerformanceAcceptanceCriteriaReport):
+        raise TypeError("performance acceptance criteria report must be report object")
+    _validate_performance_acceptance_criteria_text(
+        report.proposal_name,
+        "proposal_name",
+    )
+    _normalize_performance_acceptance_criteria(report.criteria)
+    for issue in report.issues:
+        _validate_performance_acceptance_criteria_text(issue, "issue")
 
 
 def _validate_native_baseline_report(
@@ -2332,6 +2560,24 @@ def _validate_performance_claim_threshold_policy_digest(value: str) -> None:
         return
     if not _SHA256_DIGEST_RE.fullmatch(value):
         raise ValueError("policy_digest must be not_supplied or sha256 digest")
+
+
+def _validate_performance_acceptance_criteria_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(
+            f"{label} must be a safe performance acceptance criteria identifier"
+        )
+    if len(value.encode("utf-8")) > MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds performance acceptance criteria limit")
+
+
+def _validate_performance_acceptance_criteria_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("criteria_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("criteria_digest must be not_supplied or sha256 digest")
 
 
 def _validate_native_baseline_text(value: str, label: str) -> None:
@@ -2514,6 +2760,9 @@ __all__ = [
     "EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES",
     "ExecutableBackendSecurityReview",
     "ExecutableBackendSecurityReviewReport",
+    "MAX_PERFORMANCE_ACCEPTANCE_CRITERIA",
+    "MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_FIELD_BYTES",
+    "MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_BYTES",
     "MAX_PERFORMANCE_CLAIM_THRESHOLD_BASIS_POINTS",
     "MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICIES",
     "MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_FIELD_BYTES",
@@ -2545,6 +2794,11 @@ __all__ = [
     "NativeBaselineComparisonReport",
     "NativeBaselineProvenance",
     "NativeBaselineProvenanceReport",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_ARTIFACT_STATUS",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_CLAIM_STATUS",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_DEFAULT_ISSUES",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_SCHEMA_VERSION",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_STATUSES",
     "TOOLCHAIN_COMPONENT_KINDS",
     "TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS",
     "TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS",
@@ -2579,6 +2833,8 @@ __all__ = [
     "PERFORMANCE_PROOF_REQUIRED_EVIDENCE",
     "PerformanceClaimThresholdPolicy",
     "PerformanceClaimThresholdPolicyReport",
+    "PerformanceAcceptanceCriteria",
+    "PerformanceAcceptanceCriteriaReport",
     "PerformanceProofReadinessError",
     "PerformanceProofReadinessEvidence",
     "PerformanceProofReadinessIssue",
@@ -2591,6 +2847,7 @@ __all__ = [
     "benchmark_artifact_manifest_report_to_dict",
     "benchmark_methodology_report_to_dict",
     "break_even_workload_size_report_to_dict",
+    "build_performance_acceptance_criteria_report",
     "build_toolchain_environment_report",
     "build_benchmark_artifact_manifest_report",
     "build_benchmark_methodology_report",
@@ -2606,6 +2863,7 @@ __all__ = [
     "dump_benchmark_artifact_manifest_report",
     "dump_benchmark_methodology_report",
     "dump_break_even_workload_size_report",
+    "dump_performance_acceptance_criteria_report",
     "dump_executable_backend_security_review_report",
     "dump_performance_claim_threshold_policy_report",
     "dump_toolchain_environment_report",
@@ -2618,6 +2876,7 @@ __all__ = [
     "leaky_abstraction_report_to_dict",
     "native_baseline_comparison_report_to_dict",
     "native_baseline_provenance_report_to_dict",
+    "performance_acceptance_criteria_report_to_dict",
     "performance_claim_threshold_policy_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "performance_proof_rfc_report_to_dict",

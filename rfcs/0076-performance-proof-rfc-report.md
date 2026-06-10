@@ -26,6 +26,7 @@ must be reviewable:
 - Which bounded threshold-policy report defines that threshold?
 - What evidence bundle is allowed to support the claim?
 - What acceptance criteria apply?
+- Which bounded acceptance-criteria report defines those pass/fail rules?
 - Which executable surfaces were security-reviewed?
 - Did maintainers accept this exact proposal version?
 
@@ -102,4 +103,5 @@ auditable across forks, releases, and future hardware classes.
 - [Performance Proof Readiness Report](../docs/PERFORMANCE_PROOF_READINESS.md)
 - [Performance Proof RFC Report](../docs/PERFORMANCE_PROOF_RFC_REPORT.md)
 - [Performance Claim Threshold Policy Report](../docs/PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
+- [Performance Acceptance Criteria Report](../docs/PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md)
 - `schemas/performance_proof_rfc_report.v0.schema.json`

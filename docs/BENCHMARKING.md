@@ -119,6 +119,12 @@ and `schemas/performance_claim_threshold_policy_report.v0.schema.json`.
 Baseline benchmark reports must not define "near native" thresholds, acceptance
 thresholds, basis-point policy, or post-hoc claim criteria.
 
+Performance claim pass/fail rules are tracked separately by the
+[Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md)
+and `schemas/performance_acceptance_criteria_report.v0.schema.json`.
+Baseline benchmark reports must not define acceptance criteria, decide proof
+success, or embed required evidence contracts.
+
 Planner timing is tracked separately by the
 [Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md). Baseline benchmark
 reports must not hide planner overhead inside execution timing.

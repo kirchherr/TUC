@@ -88,6 +88,40 @@ output, raw timing samples, host paths, command lines, environment variables,
 device identifiers, backend artifacts, generated code, dynamic-library paths,
 native source contents, or execution permission.
 
+## Performance Acceptance Criteria Gate
+
+Before TUC may accept a native performance claim, the pass/fail criteria must
+be predefined as bounded review data.
+
+The proposal must include:
+
+- acceptance-criteria identifier
+- workload-scope report identifier
+- threshold-policy report identifier
+- correctness evidence identifier
+- benchmark methodology identifier
+- native baseline comparison identifier
+- planner-overhead report identifier
+- break-even workload-size report identifier
+- leaky-abstraction report identifier
+- executable-surface security review identifier
+- maintainer acceptance status
+- acceptance-criteria digest status
+
+The current
+[Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md)
+defines the diagnostic report contract at
+`schemas/performance_acceptance_criteria_report.v0.schema.json`. It records
+only scoped acceptance-criteria metadata, required evidence identifiers,
+acceptance status, and digest status. It does not run benchmarks, load
+artifacts, evaluate raw timing samples, grant device access, or prove native
+performance.
+
+Performance acceptance criteria reports must not include raw benchmark output,
+raw timing samples, host paths, command lines, environment variables, device
+identifiers, backend artifacts, generated code, dynamic-library paths, native
+source contents, or execution permission.
+
 ## Leaky Abstraction Gate
 
 Before TUC may claim native performance parity, a proposal must show where
@@ -375,6 +409,7 @@ Any future performance proof must add:
 - dedicated performance proof RFC
 - explicit performance proof RFC report
 - explicit performance claim threshold policy report
+- explicit performance acceptance criteria report
 - benchmark methodology document
 - explicit benchmark methodology report
 - explicit toolchain environment report
@@ -428,25 +463,26 @@ Reviewers must reject performance claims unless every answer is yes:
 
 1. Is the performance proof RFC report present and bounded?
 2. Is the performance claim threshold policy report present and bounded?
-3. Is the claim scoped to a specific workload family and shape range?
-4. Is the workload scope report present and bounded?
-5. Is the benchmark methodology report present and bounded?
-6. Is the toolchain environment report present and bounded?
-7. Is the native baseline reproducible?
-8. Is the native baseline provenance report present and bounded?
-9. Is the native baseline comparison report present and bounded?
-10. Is mathematical correctness still proven independently?
-11. Are planner overhead and execution time reported separately?
-12. Is the break-even workload-size report present and bounded?
-13. Are cache effects explicit rather than hidden?
-14. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+3. Is the performance acceptance criteria report present and bounded?
+4. Is the claim scoped to a specific workload family and shape range?
+5. Is the workload scope report present and bounded?
+6. Is the benchmark methodology report present and bounded?
+7. Is the toolchain environment report present and bounded?
+8. Is the native baseline reproducible?
+9. Is the native baseline provenance report present and bounded?
+10. Is the native baseline comparison report present and bounded?
+11. Is mathematical correctness still proven independently?
+12. Are planner overhead and execution time reported separately?
+13. Is the break-even workload-size report present and bounded?
+14. Are cache effects explicit rather than hidden?
+15. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-15. Is HAC-IR still hardware-neutral?
-16. Are runtime plans and compiler decisions golden-tested?
-17. Is benchmark provenance versioned?
-18. Is the benchmark artifact manifest present and bounded?
-19. Is the executable backend security review report present and bounded?
-20. Does the claim avoid broad wording such as "near native" unless the
+16. Is HAC-IR still hardware-neutral?
+17. Are runtime plans and compiler decisions golden-tested?
+18. Is benchmark provenance versioned?
+19. Is the benchmark artifact manifest present and bounded?
+20. Is the executable backend security review report present and bounded?
+21. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

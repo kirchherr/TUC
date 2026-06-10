@@ -39,6 +39,8 @@ hardware-independent interface into capability-driven runtime planning.
   proposals without benchmark execution or execution permission.
 - Diagnostic performance claim threshold policy report for accepted,
   digest-pinned threshold metadata before "near native" claims can be reviewed.
+- Diagnostic performance acceptance criteria report for accepted, digest-pinned
+  pass/fail metadata before benchmark artifacts can count as passing evidence.
 
 ## In Progress
 
@@ -143,6 +145,9 @@ Current slice:
   digests while keeping native performance claims blocked.
 - Diagnostic Performance Claim Threshold Policy Report for future native
   performance threshold metadata while keeping measured performance claims
+  blocked.
+- Diagnostic Performance Acceptance Criteria Report for future native
+  performance pass/fail metadata while keeping measured performance claims
   blocked.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, native baseline comparison, leaky-abstraction
@@ -292,6 +297,7 @@ Current focus:
   [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied and
   [Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md),
   [Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md),
+  [Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md),
   and
   [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) pass.
 - Noise/error-budget score components only after those models are documented

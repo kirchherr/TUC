@@ -34,6 +34,7 @@ The readiness report tracks:
 
 - performance proof RFC
 - performance claim threshold policy
+- performance acceptance criteria
 - benchmark methodology
 - native baseline provenance
 - versioned toolchain environment
@@ -62,6 +63,12 @@ The current diagnostic performance claim threshold policy report schema is
 satisfy only the existence of a bounded threshold-policy metadata contract. It
 does not run benchmarks, evaluate raw timing samples, grant execution
 permission, or prove native performance parity.
+
+The current diagnostic performance acceptance criteria report schema is
+`schemas/performance_acceptance_criteria_report.v0.schema.json`. It can satisfy
+only the existence of a bounded acceptance-criteria metadata contract. It does
+not run benchmarks, evaluate raw timing samples, grant execution permission, or
+prove native performance parity.
 
 The current diagnostic CPU baseline report schema is
 `schemas/baseline_benchmark_report.v0.schema.json`. It can satisfy only the
@@ -170,6 +177,12 @@ and native performance proof.
 The readiness report is not a performance claim threshold policy report. Claim
 thresholds are tracked by
 [Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md),
+which is data-only and remains separate from benchmark execution and measured
+results.
+
+The readiness report is not a performance acceptance criteria report. Claim
+pass/fail criteria are tracked by
+[Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md),
 which is data-only and remains separate from benchmark execution and measured
 results.
 

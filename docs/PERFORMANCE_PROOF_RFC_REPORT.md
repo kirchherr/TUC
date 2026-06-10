@@ -38,7 +38,7 @@ Each RFC entry is bounded plain data:
 - `workload_scope_id`: linked workload-scope report identifier
 - `claim_threshold_policy_id`: linked performance claim threshold policy
   identifier
-- `acceptance_criteria_id`: acceptance-criteria identifier
+- `acceptance_criteria_id`: linked performance acceptance criteria identifier
 - `evidence_bundle_id`: bounded evidence-bundle identifier
 - `security_review_id`: executable-surface security review identifier
 - `rfc_status`: `draft`, `reviewed_not_accepted`, or
@@ -63,6 +63,11 @@ backend code, or grant device access.
 Threshold policy contents are tracked by
 [Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md).
 The RFC report must not embed threshold-policy report contents or benchmark
+results.
+
+Acceptance criteria contents are tracked by
+[Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md).
+The RFC report must not embed acceptance criteria contents or benchmark
 results.
 
 Unknown fields fail closed through the schema. Duplicate RFC identifiers,

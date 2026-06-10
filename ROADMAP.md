@@ -127,6 +127,8 @@ Completed evidence:
   keeping native performance claims blocked.
 - Performance claim threshold policy reports require accepted, digest-pinned
   threshold metadata before "near native" or percentage claims can be reviewed.
+- Performance acceptance criteria reports require accepted, digest-pinned
+  pass/fail metadata before benchmark artifacts can count as passing evidence.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution
@@ -353,6 +355,8 @@ Deliverables:
   benchmark artifacts can support a native performance claim.
 - Performance Claim Threshold Policy Report for diagnostic threshold governance
   before benchmark artifacts can support "near native" or percentage claims.
+- Performance Acceptance Criteria Report for diagnostic pass/fail governance
+  before benchmark artifacts can count as proof evidence.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -404,8 +408,8 @@ Go/No-Go:
   planner-overhead evidence, native baseline provenance, native baseline
   comparison, correctness goldens, security review, an accepted bounded
   Performance Proof RFC Report, an accepted bounded Performance Claim
-  Threshold Policy Report, and a passing Performance Proof Readiness report
-  exist.
+  Threshold Policy Report, an accepted bounded Performance Acceptance Criteria
+  Report, and a passing Performance Proof Readiness report exist.
 - Baseline benchmark reports must remain diagnostic-only unless a future native
   benchmark RFC adds separate provenance, artifact, and security gates.
 - Performance proof RFC reports must remain data-only and must not include raw
@@ -413,6 +417,10 @@ Go/No-Go:
   variables, device identifiers, backend artifacts, generated code, native
   source contents, or execution permission.
 - Performance claim threshold policy reports must remain data-only and must not
+  include raw benchmark output, raw timing samples, host paths, command lines,
+  environment variables, device identifiers, backend artifacts, generated code,
+  native source contents, or execution permission.
+- Performance acceptance criteria reports must remain data-only and must not
   include raw benchmark output, raw timing samples, host paths, command lines,
   environment variables, device identifiers, backend artifacts, generated code,
   native source contents, or execution permission.

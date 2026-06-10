@@ -48,6 +48,7 @@ The v0 report requires:
 
 - `performance_proof_rfc`
 - `performance_claim_threshold_policy`
+- `performance_acceptance_criteria`
 - `benchmark_methodology`
 - `native_baseline_provenance`
 - `versioned_toolchain_environment`
