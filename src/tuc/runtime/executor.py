@@ -27,6 +27,12 @@ from tuc.reference import (
 from tuc.runtime.partitioning import Assignment, PartitionPlan
 
 RUNTIME_EXECUTOR_CONTRACT = "runtime_executor.trusted_backend.v0"
+TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT = "runtime_backend_executor.trusted.v0"
+TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE = "in_process_reference_kernel"
+TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT = "runtime_executor.numpy_float64_inputs.v0"
+TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT = (
+    "runtime_executor.declared_shape_float64_output.v0"
+)
 TRUSTED_REFERENCE_EXECUTOR_BACKEND = "trusted-reference-kernel"
 TRUSTED_RUNTIME_EXECUTOR_REGISTRY = "trusted_runtime_executor_registry.v0"
 RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
@@ -40,10 +46,60 @@ RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
     "subprocess_execution",
 )
 MAX_RUNTIME_EXECUTION_VALUES = 4096
+MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS = 64
 
 FloatArray = NDArray[np.float64]
 
 _TRACE_NAME_RE = re.compile(r"^[A-Za-z0-9_.:-]+$")
+
+
+@dataclass(frozen=True)
+class RuntimeBackendExecutorContract:
+    """Pure-data execution contract for one trusted prototype runtime backend."""
+
+    backend_name: str
+    supported_ops: frozenset[OperationKind]
+    backend_contract: str = TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT
+    execution_mode: str = TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE
+    input_contract: str = TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT
+    output_contract: str = TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT
+    blocked_execution_surfaces: tuple[str, ...] = RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+    external_artifacts: str = "forbidden"
+    device_access: str = "forbidden"
+    status: str = "trusted"
+
+    def __post_init__(self) -> None:
+        _require_trace_name(self.backend_name, "runtime backend contract name")
+        if self.backend_contract != TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT:
+            raise ValueError(
+                "runtime backend contract must use "
+                f"{TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT!r}"
+            )
+        if self.execution_mode != TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE:
+            raise ValueError("runtime backend execution mode is not trusted for v0")
+        if self.input_contract != TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT:
+            raise ValueError("runtime backend input contract is not trusted for v0")
+        if self.output_contract != TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT:
+            raise ValueError("runtime backend output contract is not trusted for v0")
+        if self.blocked_execution_surfaces != RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES:
+            raise ValueError(
+                "runtime backend blocked execution surfaces must match Runtime Executor v0"
+            )
+        if self.external_artifacts != "forbidden":
+            raise ValueError("runtime backend external artifacts must be forbidden")
+        if self.device_access != "forbidden":
+            raise ValueError("runtime backend device access must be forbidden")
+        if self.status != "trusted":
+            raise ValueError("runtime backend contract status must be trusted")
+        _require_operation_set(
+            self.supported_ops,
+            "runtime backend contract supported_ops",
+        )
+
+    def dump_line(self) -> str:
+        """Render one stable backend-contract line."""
+
+        return _format_backend_contract(self)
 
 
 @dataclass(frozen=True)
@@ -55,12 +111,16 @@ class TrustedRuntimeBackendExecutor:
 
     def __post_init__(self) -> None:
         _require_trace_name(self.name, "executor name")
-        if not isinstance(self.supported_ops, frozenset):
-            raise TypeError("executor supported_ops must be a frozenset")
-        if not self.supported_ops:
-            raise ValueError("executor must support at least one operation")
-        if any(not isinstance(kind, OperationKind) for kind in self.supported_ops):
-            raise TypeError("executor supported_ops must contain OperationKind values")
+        _require_operation_set(self.supported_ops, "executor supported_ops")
+
+    @property
+    def contract(self) -> RuntimeBackendExecutorContract:
+        """Return the pure-data contract for this trusted executor."""
+
+        return RuntimeBackendExecutorContract(
+            backend_name=self.name,
+            supported_ops=self.supported_ops,
+        )
 
     def execute(
         self,
@@ -224,6 +284,42 @@ def dump_execution_trace(trace: RuntimeExecutionTrace) -> str:
     if not isinstance(trace, RuntimeExecutionTrace):
         raise TypeError("trace must be RuntimeExecutionTrace")
     return trace.dump()
+
+
+def trusted_runtime_executor_contracts() -> tuple[RuntimeBackendExecutorContract, ...]:
+    """Return deterministic pure-data contracts for the fixed trusted registry."""
+
+    registry = trusted_runtime_executor_registry()
+    return tuple(registry[name].contract for name in sorted(registry))
+
+
+def dump_trusted_runtime_executor_contracts(
+    contracts: tuple[RuntimeBackendExecutorContract, ...] | None = None,
+) -> str:
+    """Return a stable dump of trusted prototype runtime backend contracts."""
+
+    selected_contracts = (
+        trusted_runtime_executor_contracts() if contracts is None else contracts
+    )
+    _validate_backend_contracts(selected_contracts)
+
+    lines = [
+        f"runtime.backend_executor_contracts @{TRUSTED_RUNTIME_EXECUTOR_REGISTRY} {{"
+    ]
+    lines.append(f'  executor_contract = "{RUNTIME_EXECUTOR_CONTRACT}"')
+    lines.append(
+        f'  backend_contract = "{TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT}"'
+    )
+    lines.append(
+        "  blocked_execution_surfaces = "
+        f'"{",".join(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)}"'
+    )
+    lines.append("  backends {")
+    for contract in sorted(selected_contracts, key=lambda item: item.backend_name):
+        lines.append(f"    {contract.dump_line()}")
+    lines.append("  }")
+    lines.append("}")
+    return "\n".join(lines)
 
 
 def trusted_runtime_executor_registry() -> dict[str, TrustedRuntimeBackendExecutor]:
@@ -405,6 +501,24 @@ def _format_step(step: RuntimeExecutionStep) -> str:
     )
 
 
+def _format_backend_contract(contract: RuntimeBackendExecutorContract) -> str:
+    return (
+        f"{contract.backend_name}"
+        f" contract={contract.backend_contract}"
+        f" execution_mode={contract.execution_mode}"
+        f" supported_ops={_format_operation_kinds(contract.supported_ops)}"
+        f" input_contract={contract.input_contract}"
+        f" output_contract={contract.output_contract}"
+        f" external_artifacts={contract.external_artifacts}"
+        f" device_access={contract.device_access}"
+        f" status={contract.status}"
+    )
+
+
+def _format_operation_kinds(kinds: frozenset[OperationKind]) -> str:
+    return ",".join(sorted(kind.value for kind in kinds))
+
+
 def _format_names(names: tuple[str, ...]) -> str:
     return ",".join(names) if names else "-"
 
@@ -426,6 +540,33 @@ def _require_name_sequence(value: tuple[str, ...], label: str) -> None:
         _require_trace_name(item, label)
 
 
+def _require_operation_set(operations: frozenset[OperationKind], label: str) -> None:
+    if not isinstance(operations, frozenset):
+        raise TypeError(f"{label} must be a frozenset")
+    if not operations:
+        raise ValueError(f"{label} must support at least one operation")
+    if any(not isinstance(operation, OperationKind) for operation in operations):
+        raise TypeError(f"{label} must contain OperationKind values")
+
+
+def _validate_backend_contracts(
+    contracts: tuple[RuntimeBackendExecutorContract, ...],
+) -> None:
+    if type(contracts) is not tuple:
+        raise TypeError("runtime backend contracts must be a tuple")
+    if not contracts:
+        raise ValueError("runtime backend contracts must not be empty")
+    if len(contracts) > MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS:
+        raise ValueError("runtime backend contract count exceeds limit")
+    backend_names: list[str] = []
+    for contract in contracts:
+        if not isinstance(contract, RuntimeBackendExecutorContract):
+            raise TypeError("runtime backend contracts must be RuntimeBackendExecutorContract")
+        backend_names.append(contract.backend_name)
+    if len(set(backend_names)) != len(backend_names):
+        raise ValueError("runtime backend contracts must have unique backend names")
+
+
 def _require_shape(value: tuple[int, ...]) -> None:
     if type(value) is not tuple or not value:
         raise ValueError("runtime execution output shape must be a non-empty tuple")
@@ -441,15 +582,23 @@ def _require_trace_name(value: str, label: str) -> None:
 
 __all__ = [
     "MAX_RUNTIME_EXECUTION_VALUES",
+    "MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS",
     "RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES",
     "RUNTIME_EXECUTOR_CONTRACT",
+    "TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE",
+    "TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT",
+    "TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT",
+    "TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT",
     "TRUSTED_RUNTIME_EXECUTOR_REGISTRY",
     "TRUSTED_REFERENCE_EXECUTOR_BACKEND",
+    "RuntimeBackendExecutorContract",
     "RuntimeExecutionResult",
     "RuntimeExecutionStep",
     "RuntimeExecutionTrace",
     "TrustedRuntimeBackendExecutor",
     "dump_execution_trace",
+    "dump_trusted_runtime_executor_contracts",
     "execute_graph",
+    "trusted_runtime_executor_contracts",
     "trusted_runtime_executor_registry",
 ]

@@ -12,12 +12,16 @@ It is not a backend plugin system.
 
 - Executor contract: `runtime_executor.trusted_backend.v0`
 - Executor registry: `trusted_runtime_executor_registry.v0`
+- Trusted backend contract: `runtime_backend_executor.trusted.v0`
 - API: `execute_graph(graph, partition_plan, inputs)`
 - Trace API: `dump_execution_trace(trace)`
+- Backend contract API: `trusted_runtime_executor_contracts()`
 - Trusted prototype executors: `linear-sim`, `reference-cpu`
 - Proof trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
 - MVP trace golden:
   `tests/golden/execution_traces/triton_metadata_mvp_families.txt`
+- Trusted backend contract golden:
+  `tests/golden/runtime_backend_contracts/trusted_runtime_executor_registry.txt`
 - Tests: `tests/test_runtime_executor.py`
 
 ## Security Boundary
@@ -42,6 +46,23 @@ If a runtime plan names a backend that is not in the trusted registry, execution
 fails closed. If a trusted executor is asked to execute an unsupported operation
 kind, execution also fails closed.
 
+## Trusted Backend Contract
+
+Each in-process prototype executor exposes a `RuntimeBackendExecutorContract`.
+The contract is pure data and records:
+
+- backend name
+- supported operation families
+- execution mode
+- input and output contracts
+- blocked execution surfaces
+- external artifact and device-access policy
+
+For Runtime Executor v0, execution mode is fixed to
+`in_process_reference_kernel`. External artifacts and device access are
+`forbidden`, and the blocked execution-surface list must match the runtime
+executor boundary exactly. A contract that weakens these fields fails closed.
+
 ## Trace Semantics
 
 The execution trace records:
@@ -64,3 +85,6 @@ external backends.
 Executable prototype backends should come after this layer. They need a
 separate backend executor contract, sandboxing model, negative tests, and
 security review before external or generated backend artifacts can run.
+
+Runtime Executor v0 now names the trusted in-process contract, but it still does
+not authorize external executable backend artifacts.

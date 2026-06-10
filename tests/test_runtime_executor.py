@@ -10,11 +10,28 @@ from numpy.testing import assert_allclose
 from examples.proof_of_execution import build_graph, proof_inputs
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
-from tuc.ir import ComputeGraph
-from tuc.runtime import execute_graph, trusted_runtime_executor_registry
+from tuc.ir import ComputeGraph, OperationKind
+from tuc.runtime import (
+    RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
+    TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE,
+    TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT,
+    TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT,
+    TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT,
+    RuntimeBackendExecutorContract,
+    dump_trusted_runtime_executor_contracts,
+    execute_graph,
+    trusted_runtime_executor_contracts,
+    trusted_runtime_executor_registry,
+)
 
 _GOLDEN_TRACE = (
     Path(__file__).parent / "golden" / "execution_traces" / "proof_of_execution.txt"
+)
+_GOLDEN_BACKEND_CONTRACTS = (
+    Path(__file__).parent
+    / "golden"
+    / "runtime_backend_contracts"
+    / "trusted_runtime_executor_registry.txt"
 )
 
 
@@ -80,6 +97,62 @@ def test_runtime_executor_uses_trusted_registry_for_planned_backends() -> None:
     registry = trusted_runtime_executor_registry()
 
     assert sorted(registry) == ["linear-sim", "reference-cpu"]
+
+
+def test_trusted_runtime_executor_contracts_are_stable_and_execution_free() -> None:
+    contracts = trusted_runtime_executor_contracts()
+
+    assert tuple(contract.backend_name for contract in contracts) == (
+        "linear-sim",
+        "reference-cpu",
+    )
+    assert contracts[0].supported_ops == frozenset(
+        {OperationKind.MATMUL, OperationKind.REDUCTION}
+    )
+    assert contracts[1].supported_ops == frozenset(OperationKind)
+    for contract in contracts:
+        assert contract.backend_contract == TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT
+        assert contract.execution_mode == TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE
+        assert contract.input_contract == TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT
+        assert contract.output_contract == TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT
+        assert contract.blocked_execution_surfaces == (
+            RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+        )
+        assert contract.external_artifacts == "forbidden"
+        assert contract.device_access == "forbidden"
+
+
+def test_trusted_runtime_executor_contract_dump_matches_golden() -> None:
+    assert dump_trusted_runtime_executor_contracts() == _GOLDEN_BACKEND_CONTRACTS.read_text(
+        encoding="utf-8"
+    ).rstrip("\n")
+
+
+def test_runtime_backend_executor_contract_rejects_untrusted_execution_mode() -> None:
+    with pytest.raises(ValueError, match="execution mode"):
+        RuntimeBackendExecutorContract(
+            backend_name="bad",
+            supported_ops=frozenset({OperationKind.MATMUL}),
+            execution_mode="artifact_jit",
+        )
+
+
+def test_runtime_backend_executor_contract_rejects_weakened_security_boundary() -> None:
+    with pytest.raises(ValueError, match="blocked execution surfaces"):
+        RuntimeBackendExecutorContract(
+            backend_name="bad",
+            supported_ops=frozenset({OperationKind.MATMUL}),
+            blocked_execution_surfaces=("network_access",),
+        )
+
+
+def test_runtime_backend_executor_contract_rejects_external_artifacts() -> None:
+    with pytest.raises(ValueError, match="external artifacts"):
+        RuntimeBackendExecutorContract(
+            backend_name="bad",
+            supported_ops=frozenset({OperationKind.MATMUL}),
+            external_artifacts="allowed",
+        )
 
 
 def test_runtime_executor_rejects_missing_trusted_executor() -> None:

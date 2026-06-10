@@ -142,6 +142,10 @@ Completed evidence:
   traces.
 - Runtime Executor MVP-family trace covers `matmul`, `softmax`, `reduction`,
   and `elementwise` through the Triton-like metadata graph.
+- Trusted Runtime Backend Executor Contract v0 exposes the fixed in-process
+  executor registry as deterministic pure data and keeps artifact execution,
+  device access, dynamic loading, subprocesses, JIT, and network access
+  forbidden.
 - Proof-of-execution compiles, plans, executes, traces, and verifies a graph
   against independent reference semantics without plugin discovery, device
   access, subprocesses, JIT, or generated-artifact execution.

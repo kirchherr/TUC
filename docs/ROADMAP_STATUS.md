@@ -48,6 +48,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Proof-of-execution example with deterministic proof and execution-trace
   goldens.
 - Runtime Executor MVP-family execution trace for the Triton-like metadata graph.
+- Trusted Runtime Backend Executor Contract v0 with deterministic golden
+  evidence for the fixed in-process prototype executor registry.
 
 ## In Progress
 
@@ -101,6 +103,8 @@ Current slice:
   `tests/golden/execution_traces/proof_of_execution.txt`.
 - Triton metadata MVP-family execution trace golden at
   `tests/golden/execution_traces/triton_metadata_mvp_families.txt`.
+- Trusted runtime backend contract golden at
+  `tests/golden/runtime_backend_contracts/trusted_runtime_executor_registry.txt`.
 - Triton source threat model that blocks direct source parsing and `@triton.jit`
   handling until parser budgets, negative tests, fuzzing, diagnostics, and
   sandboxing gates exist.

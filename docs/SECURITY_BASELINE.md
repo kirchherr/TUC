@@ -77,6 +77,11 @@ Implemented now:
   deterministic execution traces without plugin discovery, dynamic imports,
   subprocesses, device access, network access, JIT, dynamic libraries, or
   generated-artifact execution.
+- Trusted runtime backend executor contracts expose the fixed in-process
+  executor registry as bounded pure data with deterministic golden evidence.
+  The v0 contract requires `in_process_reference_kernel`, forbidden external
+  artifacts, forbidden device access, and the same blocked execution surfaces
+  as Runtime Executor v0.
 - Movement-aware partition plan metadata with transfer-byte accounting.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.

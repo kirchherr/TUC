@@ -82,6 +82,8 @@ The current prototype contains:
   deterministic execution traces.
 - Runtime Executor MVP-family trace covering `matmul`, `softmax`, `reduction`,
   and `elementwise` through the Triton-like metadata graph.
+- Trusted Runtime Backend Executor Contract v0 with golden evidence for the
+  fixed in-process prototype executor registry.
 - Proof-of-execution example that compiles, plans, executes, traces, and
   verifies a graph against independent reference semantics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
