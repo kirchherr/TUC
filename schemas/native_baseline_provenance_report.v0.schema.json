@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/native_baseline_provenance_report.v0.schema.json",
+  "title": "TUC Native Baseline Provenance Report v0",
+  "description": "Diagnostic-only schema for native baseline provenance review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "baselines",
+    "claim_boundary",
+    "issues",
+    "native_baseline_ready",
+    "native_performance_claim",
+    "performance_claim_status",
+    "proposal_name",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "baselines": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/native_baseline"}
+    },
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_baseline_ready": {"const": false},
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "schema_version": {"const": "tuc.native_baseline_provenance_report.v0"}
+  },
+  "$defs": {
+    "artifact_digest_status": {
+      "type": "string",
+      "enum": ["not_supplied", "supplied"]
+    },
+    "implementation_kind": {
+      "type": "string",
+      "enum": [
+        "vendor_library",
+        "vendor_sample",
+        "hand_optimized_kernel",
+        "framework_compiler"
+      ]
+    },
+    "native_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_digest_status",
+        "baseline_id",
+        "implementation_kind",
+        "reproducibility_status",
+        "source_provenance_id",
+        "target_platform_id",
+        "toolchain_id",
+        "workload_scope_id"
+      ],
+      "properties": {
+        "artifact_digest_status": {"$ref": "#/$defs/artifact_digest_status"},
+        "baseline_id": {"$ref": "#/$defs/report_text"},
+        "implementation_kind": {"$ref": "#/$defs/implementation_kind"},
+        "reproducibility_status": {"$ref": "#/$defs/reproducibility_status"},
+        "source_provenance_id": {"$ref": "#/$defs/report_text"},
+        "target_platform_id": {"$ref": "#/$defs/report_text"},
+        "toolchain_id": {"$ref": "#/$defs/report_text"},
+        "workload_scope_id": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "reproducibility_status": {
+      "type": "string",
+      "enum": [
+        "not_reproduced",
+        "documented_not_executed",
+        "reproduced_outside_tuc",
+        "reproduced_by_ci"
+      ]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    }
+  }
+}

@@ -124,6 +124,20 @@ Completed evidence:
   and executable-backend security evidence exists.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
+- Planner-overhead reports separate compiler/planner phases from execution
+  timing and keep break-even claims blocked.
+- Leaky-abstraction reports keep hardware-specific performance facts assigned
+  to homes outside HAC-IR.
+- Native-baseline provenance reports identify native comparison candidates as
+  bounded review data while keeping native performance claims blocked.
+- Benchmark-artifact manifest reports inventory future benchmark report
+  artifacts through bounded IDs and digests without loading raw outputs.
+- Workload-scope reports bound future performance claims to explicit operation
+  families, shape profiles, dtype policies, problem-size ranges, and correctness
+  references.
+- Benchmark-methodology reports define measurement clocks, iteration policies,
+  statistic policy, isolation, outlier handling, and reproducibility policy
+  before benchmark numbers can become evidence.
 
 Next work:
 
@@ -305,6 +319,15 @@ Deliverables:
 - Optional performance baselines, treated as diagnostic data rather than the
   core success metric.
 - Baseline benchmark report schema for diagnostic-only timing artifacts.
+- Planner Overhead Report for diagnostic compiler/planner phase separation.
+- Leaky Abstraction Report for diagnostic HAC-IR boundary review.
+- Native Baseline Provenance Report for diagnostic native comparison
+  provenance.
+- Benchmark Artifact Manifest Report for diagnostic benchmark artifact
+  inventory.
+- Workload Scope Report for diagnostic workload-family and problem-size
+  boundaries.
+- Benchmark Methodology Report for diagnostic measurement policy review.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -357,6 +380,22 @@ Go/No-Go:
   security review, and a passing Performance Proof Readiness report exist.
 - Baseline benchmark reports must remain diagnostic-only unless a future native
   benchmark RFC adds separate provenance, artifact, and security gates.
+- Planner-overhead reports must keep execution timing and break-even workload
+  claims explicit rather than hidden in aggregate benchmark numbers.
+- Leaky-abstraction reports must keep hardware-specific performance facts out
+  of HAC-IR even when those facts are required for future native speed.
+- Native-baseline provenance reports must remain data-only and must not include
+  host paths, command lines, backend artifacts, raw output, or device-specific
+  identifiers.
+- Benchmark-artifact manifest reports must remain data-only and must not include
+  host paths, URLs, raw timing samples, backend binaries, generated code, or
+  embedded benchmark outputs.
+- Workload-scope reports must remain data-only and must not include tensors,
+  host paths, raw benchmark output, backend artifacts, device identifiers, or
+  hardware-specific performance knobs.
+- Benchmark-methodology reports must remain data-only and must not include raw
+  timing samples, host paths, environment variables, backend artifacts, device
+  identifiers, or generated code.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

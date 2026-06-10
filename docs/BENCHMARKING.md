@@ -78,7 +78,43 @@ output must not be used as a native performance parity claim until leaky
 abstraction evidence, planner-overhead evidence, native baseline provenance,
 correctness goldens, and security review exist.
 
+Future performance proposals must also provide a bounded
+[Workload Scope Report](WORKLOAD_SCOPE_REPORT.md) matching
+`schemas/workload_scope_report.v0.schema.json` before benchmark output can be
+interpreted as scoped evidence. The workload scope report records operation
+families, shape profiles, dtype policies, problem-size bounds, and correctness
+references without storing tensors or running benchmarks.
+
+Future performance proposals must also provide a bounded
+[Benchmark Methodology Report](BENCHMARK_METHODOLOGY_REPORT.md) matching
+`schemas/benchmark_methodology_report.v0.schema.json` before benchmark output
+can be interpreted as reproducible evidence. The methodology report records
+timers, warmup and iteration policies, statistic policy, isolation level,
+outlier handling, and reproducibility policy without storing raw timing samples
+or running benchmarks.
+
 Future native performance proposals must also pass the
 [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md). That
 readiness report does not run benchmarks, does not ingest raw benchmark output,
 and does not turn local timing data into a proof claim.
+
+Planner timing is tracked separately by the
+[Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md). Baseline benchmark
+reports must not hide planner overhead inside execution timing.
+
+Hardware-specific performance facts are tracked separately by the
+[Leaky Abstraction Report](LEAKY_ABSTRACTION_REPORT.md). Baseline benchmark
+reports must not turn backend-specific optimization details into HAC-IR
+semantics.
+
+Native baseline candidates are tracked separately by the
+[Native Baseline Provenance Report](NATIVE_BASELINE_PROVENANCE.md) and
+`schemas/native_baseline_provenance_report.v0.schema.json`. Baseline benchmark
+reports must not smuggle native implementation provenance, source paths,
+command lines, backend artifacts, or raw native output into timing data.
+
+Benchmark report artifact inventory is tracked separately by the
+[Benchmark Artifact Manifest Report](BENCHMARK_ARTIFACT_MANIFEST.md) and
+`schemas/benchmark_artifact_manifest_report.v0.schema.json`. The manifest
+records artifact identifiers, schema versions, digest status, and storage
+scopes; it must not load artifacts or embed raw benchmark output.

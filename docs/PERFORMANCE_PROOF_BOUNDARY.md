@@ -55,6 +55,64 @@ implementations, or benchmark evidence, not HAC-IR.
 If a workload requires a hardware-specific optimization that cannot be expressed
 without changing HAC-IR semantics, the performance parity claim fails.
 
+The current [Leaky Abstraction Report](LEAKY_ABSTRACTION_REPORT.md) defines the
+diagnostic report contract at
+`schemas/leaky_abstraction_report.v0.schema.json`. It checks the current
+HAC-IR hardware-leakage guard and records where performance-specific facts must
+live outside HAC-IR.
+
+## Workload Scope Gate
+
+Before TUC may claim performance for a workload class, a proposal must define
+the workload family and problem-size bounds as review data.
+
+The proposal must include:
+
+- operation family
+- shape profile identifier
+- dtype policy identifier
+- minimum problem size
+- maximum problem size
+- correctness reference identifier
+
+The current [Workload Scope Report](WORKLOAD_SCOPE_REPORT.md) defines the
+diagnostic report contract at
+`schemas/workload_scope_report.v0.schema.json`. It records workload boundaries,
+but it does not run benchmarks, store tensors, load artifacts, or prove native
+performance.
+
+Workload scope reports must not include tensors, host paths, command lines,
+environment variables, raw benchmark output, raw timing samples, backend
+binaries, generated code, device identifiers, dynamic-library paths, or native
+source contents.
+
+## Benchmark Methodology Gate
+
+Before benchmark output can count as future performance-proof evidence, a
+proposal must define how measurements are taken and summarized.
+
+The proposal must include:
+
+- measurement clock
+- warmup iteration policy
+- measurement iteration policy
+- statistical summary policy
+- runner isolation level
+- outlier policy
+- reproducibility policy
+
+The current
+[Benchmark Methodology Report](BENCHMARK_METHODOLOGY_REPORT.md) defines the
+diagnostic report contract at
+`schemas/benchmark_methodology_report.v0.schema.json`. It records benchmark
+policy choices, but it does not run benchmarks, store timing samples, load
+artifacts, or prove native performance.
+
+Benchmark methodology reports must not include host paths, command lines,
+environment variables, raw benchmark output, raw timing samples, backend
+binaries, generated code, device identifiers, dynamic-library paths, or native
+source contents.
+
 ## Planner Overhead Gate
 
 Before TUC may claim runtime planning is beneficial for a workload class, a
@@ -79,19 +137,81 @@ as planner-overhead dominated.
 
 Planner overhead must not be hidden inside execution time.
 
+The current [Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md) defines the
+diagnostic report contract at
+`schemas/planner_overhead_report.v0.schema.json`. It separates compiler and
+runtime-planning phases from execution time, but execution time and break-even
+workload size remain explicitly not measured.
+
+## Native Baseline Provenance Gate
+
+Before TUC may compare against a native implementation, a proposal must identify
+the native baseline as bounded review data.
+
+The proposal must include:
+
+- workload scope
+- baseline implementation kind
+- target platform identifier
+- source provenance identifier
+- toolchain identifier
+- reproducibility status
+- artifact digest status
+
+The current [Native Baseline Provenance Report](NATIVE_BASELINE_PROVENANCE.md)
+defines the diagnostic report contract at
+`schemas/native_baseline_provenance_report.v0.schema.json`. It records native
+baseline candidate provenance, but it does not run benchmarks, access devices,
+load artifacts, or prove native performance.
+
+Native baseline provenance must not include host paths, command lines,
+environment variables, raw benchmark output, backend binaries, generated code,
+device identifiers, dynamic-library paths, or native source contents.
+
+## Benchmark Artifact Manifest Gate
+
+Before benchmark report artifacts can count as future performance-proof
+evidence, a proposal must list those artifacts through a bounded manifest.
+
+The proposal must include:
+
+- baseline benchmark report artifact reference
+- native benchmark report artifact reference
+- native baseline comparison report artifact reference
+- schema version for each artifact
+- SHA-256 digest status for each artifact
+- storage scope for each artifact
+
+The current
+[Benchmark Artifact Manifest Report](BENCHMARK_ARTIFACT_MANIFEST.md) defines
+the diagnostic report contract at
+`schemas/benchmark_artifact_manifest_report.v0.schema.json`. It records only
+artifact identifiers, kinds, schema versions, digests, and storage scopes. It
+does not load benchmark artifacts, store raw benchmark output, or accept native
+performance claims.
+
+Benchmark artifact manifests must not include host paths, URLs, command lines,
+environment variables, raw timing samples, raw native output, backend binaries,
+generated code, device identifiers, dynamic-library paths, or native source
+contents.
+
 ## Required Future Evidence
 
 Any future performance proof must add:
 
 - dedicated performance proof RFC
 - benchmark methodology document
+- explicit benchmark methodology report
+- explicit workload scope report
 - native baseline provenance
 - benchmark report schema
 - deterministic benchmark fixtures or stored report artifacts
+- explicit benchmark artifact manifest
 - correctness goldens for every benchmarked workload
 - runtime-plan and compiler decision-report goldens
 - explicit planner-overhead report
 - explicit leaky-abstraction report
+- explicit native baseline provenance report
 - security review for any executable backend, device access, generated artifact,
   cache, subprocess, dynamic library, or native code used by benchmarking
 
@@ -130,18 +250,22 @@ until this boundary is satisfied.
 Reviewers must reject performance claims unless every answer is yes:
 
 1. Is the claim scoped to a specific workload family and shape range?
-2. Is the native baseline reproducible?
-3. Is mathematical correctness still proven independently?
-4. Are planner overhead and execution time reported separately?
-5. Is the break-even workload size reported?
-6. Are cache effects explicit rather than hidden?
-7. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+2. Is the workload scope report present and bounded?
+3. Is the benchmark methodology report present and bounded?
+4. Is the native baseline reproducible?
+5. Is the native baseline provenance report present and bounded?
+6. Is mathematical correctness still proven independently?
+7. Are planner overhead and execution time reported separately?
+8. Is the break-even workload size reported?
+9. Are cache effects explicit rather than hidden?
+10. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-8. Is HAC-IR still hardware-neutral?
-9. Are runtime plans and compiler decisions golden-tested?
-10. Is benchmark provenance versioned?
-11. Are any executable backend or device surfaces threat-modeled?
-12. Does the claim avoid broad wording such as "near native" unless the
+11. Is HAC-IR still hardware-neutral?
+12. Are runtime plans and compiler decisions golden-tested?
+13. Is benchmark provenance versioned?
+14. Is the benchmark artifact manifest present and bounded?
+15. Are any executable backend or device surfaces threat-modeled?
+16. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

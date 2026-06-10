@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/benchmark_artifact_manifest_report.v0.schema.json",
+  "title": "TUC Benchmark Artifact Manifest Report v0",
+  "description": "Diagnostic-only schema for benchmark artifact manifest review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "artifacts",
+    "benchmark_artifact_manifest_complete",
+    "claim_boundary",
+    "issues",
+    "native_performance_claim",
+    "performance_claim_status",
+    "proposal_name",
+    "required_artifact_kinds",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "artifacts": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/benchmark_artifact"}
+    },
+    "benchmark_artifact_manifest_complete": {"type": "boolean"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "required_artifact_kinds": {
+      "const": [
+        "baseline_benchmark_report",
+        "native_benchmark_report",
+        "native_baseline_comparison_report"
+      ]
+    },
+    "schema_version": {"const": "tuc.benchmark_artifact_manifest_report.v0"}
+  },
+  "$defs": {
+    "artifact_digest": {
+      "type": "string",
+      "oneOf": [
+        {"const": "not_supplied"},
+        {"pattern": "^sha256:[0-9a-f]{64}$"}
+      ]
+    },
+    "artifact_kind": {
+      "type": "string",
+      "enum": [
+        "baseline_benchmark_report",
+        "native_benchmark_report",
+        "native_baseline_comparison_report"
+      ]
+    },
+    "benchmark_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_digest",
+        "artifact_id",
+        "artifact_kind",
+        "schema_version",
+        "storage_scope"
+      ],
+      "properties": {
+        "artifact_digest": {"$ref": "#/$defs/artifact_digest"},
+        "artifact_id": {"$ref": "#/$defs/report_text"},
+        "artifact_kind": {"$ref": "#/$defs/artifact_kind"},
+        "schema_version": {"$ref": "#/$defs/report_text"},
+        "storage_scope": {"$ref": "#/$defs/storage_scope"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "storage_scope": {
+      "type": "string",
+      "enum": [
+        "repository_golden",
+        "ci_artifact",
+        "release_artifact",
+        "review_attachment"
+      ]
+    }
+  }
+}

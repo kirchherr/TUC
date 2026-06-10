@@ -57,6 +57,41 @@ satisfy native baseline comparison, planner-overhead report,
 leaky-abstraction report, benchmark report artifacts, or executable backend
 security review.
 
+The current diagnostic workload scope report schema is
+`schemas/workload_scope_report.v0.schema.json`. It can satisfy only the
+existence of a bounded workload-scope contract. It does not satisfy benchmark
+methodology, native baseline comparison, benchmark artifacts, execution timing,
+or native performance parity.
+
+The current diagnostic benchmark methodology report schema is
+`schemas/benchmark_methodology_report.v0.schema.json`. It can satisfy only the
+existence of a bounded benchmark methodology contract. It does not run
+benchmarks, load benchmark artifacts, validate raw native output, or prove
+native performance parity.
+
+The current diagnostic planner-overhead report schema is
+`schemas/planner_overhead_report.v0.schema.json`. It can satisfy only the
+existence of a bounded planner phase-separation report. It does not satisfy
+break-even workload-size evidence, execution timing evidence, native baseline
+comparison, or native performance parity.
+
+The current diagnostic leaky-abstraction report schema is
+`schemas/leaky_abstraction_report.v0.schema.json`. It can satisfy only the
+existence of a bounded HAC-IR boundary review report. It does not satisfy
+native baseline comparison, benchmark artifacts, or native performance parity.
+
+The current diagnostic native baseline provenance report schema is
+`schemas/native_baseline_provenance_report.v0.schema.json`. It can satisfy only
+the existence of a bounded native baseline provenance contract. It does not
+satisfy native baseline comparison, benchmark report artifacts, execution
+timing, or native performance parity.
+
+The current diagnostic benchmark artifact manifest report schema is
+`schemas/benchmark_artifact_manifest_report.v0.schema.json`. It can satisfy only
+the existence of a bounded benchmark artifact inventory contract. It does not
+load benchmark artifacts, satisfy benchmark result acceptance, validate raw
+native output, or prove native performance parity.
+
 ## Blocked Claims
 
 The v0 report explicitly blocks:
@@ -87,6 +122,25 @@ Unknown evidence IDs and duplicate evidence IDs fail closed.
 The report is not a benchmark schema and is not a benchmark result format. A
 future benchmark report schema must be reviewed separately before benchmark
 artifacts can become proof evidence.
+
+The readiness report is also not a native baseline provenance report. Native
+baseline candidates are tracked by
+[Native Baseline Provenance Report](NATIVE_BASELINE_PROVENANCE.md), which is
+data-only and remains claim-blocked in v0.
+
+The readiness report is not a benchmark artifact manifest. Benchmark report
+artifact inventory is tracked by
+[Benchmark Artifact Manifest Report](BENCHMARK_ARTIFACT_MANIFEST.md), which is
+data-only and remains separate from benchmark result validation.
+
+The readiness report is not a workload scope report. Workload boundaries are
+tracked by [Workload Scope Report](WORKLOAD_SCOPE_REPORT.md), which is
+data-only and remains separate from benchmark methodology and execution.
+
+The readiness report is not a benchmark methodology report. Measurement policy
+is tracked by
+[Benchmark Methodology Report](BENCHMARK_METHODOLOGY_REPORT.md), which is
+data-only and remains separate from benchmark execution and raw timing samples.
 
 ## Evidence
 

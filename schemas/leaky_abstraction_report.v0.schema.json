@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/leaky_abstraction_report.v0.schema.json",
+  "title": "TUC Leaky Abstraction Report v0",
+  "description": "Diagnostic-only schema for reviewing whether hardware-specific performance facts stay outside HAC-IR.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "allowed_fact_homes",
+    "artifact_status",
+    "checked_forbidden_attributes",
+    "claim_boundary",
+    "detected_leaks",
+    "graph_name",
+    "hac_ir_contract_valid",
+    "hac_ir_leak_detected",
+    "issues",
+    "native_performance_claim",
+    "performance_claim_status",
+    "performance_facts",
+    "schema_version"
+  ],
+  "properties": {
+    "allowed_fact_homes": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/fact_home"}
+    },
+    "artifact_status": {"const": "diagnostic_only"},
+    "checked_forbidden_attributes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "detected_leaks": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/leak"}
+    },
+    "graph_name": {"$ref": "#/$defs/report_text"},
+    "hac_ir_contract_valid": {"type": "boolean"},
+    "hac_ir_leak_detected": {"type": "boolean"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "performance_facts": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/performance_fact"}
+    },
+    "schema_version": {"const": "tuc.leaky_abstraction_report.v0"}
+  },
+  "$defs": {
+    "fact_home": {
+      "type": "string",
+      "enum": [
+        "backend_capability",
+        "hs_ir",
+        "runtime_plan",
+        "compiler_decision_report",
+        "backend_implementation",
+        "benchmark_artifact",
+        "security_rfc"
+      ]
+    },
+    "leak": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attribute_name", "operation_name", "reason"],
+      "properties": {
+        "attribute_name": {"$ref": "#/$defs/report_text"},
+        "operation_name": {"$ref": "#/$defs/report_text"},
+        "reason": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "performance_fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "correct_home",
+        "enters_hac_ir",
+        "fact_id",
+        "required_for_performance"
+      ],
+      "properties": {
+        "correct_home": {"$ref": "#/$defs/fact_home"},
+        "enters_hac_ir": {"type": "boolean"},
+        "fact_id": {"$ref": "#/$defs/report_text"},
+        "required_for_performance": {"type": "boolean"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    }
+  }
+}

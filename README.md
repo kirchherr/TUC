@@ -77,6 +77,18 @@ The current prototype contains:
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Schema-versioned diagnostic baseline benchmark reports that are explicitly
   marked as non-performance-proof artifacts.
+- Diagnostic planner-overhead reports that separate compiler/planner phases
+  from execution timing.
+- Diagnostic leaky-abstraction reports that keep hardware-specific performance
+  facts outside HAC-IR.
+- Diagnostic native-baseline provenance reports that identify future native
+  comparison candidates without executing native code or claiming parity.
+- Diagnostic benchmark-artifact manifest reports that inventory benchmark
+  report artifacts through bounded IDs and digests.
+- Diagnostic workload-scope reports that bound future performance claims to
+  explicit operation families, shape profiles, dtype policies, and problem sizes.
+- Diagnostic benchmark-methodology reports that define measurement clocks,
+  iteration policy, statistic policy, isolation, and reproducibility policy.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.
@@ -204,6 +216,42 @@ Inspect the intentionally blocked performance proof readiness report:
 python examples/performance_proof_readiness.py
 ```
 
+Inspect the diagnostic planner-overhead report:
+
+```bash
+python examples/planner_overhead_report.py
+```
+
+Inspect the diagnostic leaky-abstraction report:
+
+```bash
+python examples/leaky_abstraction_report.py
+```
+
+Inspect the diagnostic native-baseline provenance report:
+
+```bash
+python examples/native_baseline_provenance.py
+```
+
+Inspect the diagnostic benchmark-artifact manifest report:
+
+```bash
+python examples/benchmark_artifact_manifest.py
+```
+
+Inspect the diagnostic workload-scope report:
+
+```bash
+python examples/workload_scope_report.py
+```
+
+Inspect the diagnostic benchmark-methodology report:
+
+```bash
+python examples/benchmark_methodology_report.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -247,6 +295,12 @@ pytest -q
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
+- [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
+- [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
+- [Native baseline provenance report](docs/NATIVE_BASELINE_PROVENANCE.md)
+- [Benchmark artifact manifest report](docs/BENCHMARK_ARTIFACT_MANIFEST.md)
+- [Workload scope report](docs/WORKLOAD_SCOPE_REPORT.md)
+- [Benchmark methodology report](docs/BENCHMARK_METHODOLOGY_REPORT.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

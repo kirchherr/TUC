@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/benchmark_methodology_report.v0.schema.json",
+  "title": "TUC Benchmark Methodology Report v0",
+  "description": "Diagnostic-only schema for benchmark methodology review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "benchmark_methodology_ready",
+    "claim_boundary",
+    "issues",
+    "methodologies",
+    "native_performance_claim",
+    "performance_claim_status",
+    "proposal_name",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "benchmark_methodology_ready": {"type": "boolean"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "methodologies": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/benchmark_methodology"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "schema_version": {"const": "tuc.benchmark_methodology_report.v0"}
+  },
+  "$defs": {
+    "benchmark_methodology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isolation_level",
+        "measurement_clock",
+        "measurement_iterations",
+        "methodology_id",
+        "outlier_policy_id",
+        "reproducibility_policy_id",
+        "statistic_policy",
+        "warmup_iterations",
+        "workload_scope_id"
+      ],
+      "properties": {
+        "isolation_level": {"$ref": "#/$defs/isolation_level"},
+        "measurement_clock": {"$ref": "#/$defs/measurement_clock"},
+        "measurement_iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "methodology_id": {"$ref": "#/$defs/report_text"},
+        "outlier_policy_id": {"$ref": "#/$defs/report_text"},
+        "reproducibility_policy_id": {"$ref": "#/$defs/report_text"},
+        "statistic_policy": {"$ref": "#/$defs/statistic_policy"},
+        "warmup_iterations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "workload_scope_id": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "isolation_level": {
+      "type": "string",
+      "enum": ["none", "process_isolated", "dedicated_runner", "ci_controlled"]
+    },
+    "measurement_clock": {
+      "type": "string",
+      "enum": ["monotonic_ns", "device_event_timer", "external_profiler"]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "statistic_policy": {
+      "type": "string",
+      "enum": ["min_median_mean", "median_iqr", "confidence_interval"]
+    }
+  }
+}

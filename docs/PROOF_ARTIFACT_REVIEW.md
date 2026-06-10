@@ -20,6 +20,10 @@ tests/golden/compiler_decisions/proof_*.txt
 tests/test_proof_*.py
 docs/PROOF_*.md
 docs/PERFORMANCE_PROOF_READINESS.md
+docs/NATIVE_BASELINE_PROVENANCE.md
+docs/BENCHMARK_ARTIFACT_MANIFEST.md
+docs/WORKLOAD_SCOPE_REPORT.md
+docs/BENCHMARK_METHODOLOGY_REPORT.md
 src/tuc/proof.py
 ```
 
@@ -86,6 +90,9 @@ Reviewers should reject proof changes that claim native performance parity until
 the performance proof boundary and readiness report supply:
 
 - native baseline provenance
+- native baseline provenance report
+- workload scope report
+- benchmark methodology report
 - leaky-abstraction report
 - planner-overhead report
 - break-even workload size
@@ -93,6 +100,7 @@ the performance proof boundary and readiness report supply:
 - correctness goldens for benchmarked workloads
 - runtime-plan and compiler decision-report goldens
 - deterministic benchmark report artifacts
+- benchmark artifact manifest
 - security review for any executable backend or device access
 
 ## Required Validation

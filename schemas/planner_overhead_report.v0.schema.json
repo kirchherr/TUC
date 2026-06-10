@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/planner_overhead_report.v0.schema.json",
+  "title": "TUC Planner Overhead Report v0",
+  "description": "Diagnostic-only schema for separating compiler/planner overhead from execution timing.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "break_even_status",
+    "claim_boundary",
+    "execution_time_status",
+    "graph_name",
+    "issues",
+    "native_performance_claim",
+    "phase_timings",
+    "planner_overhead_hidden_in_execution_time",
+    "schema_version",
+    "total_planning_ns"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "break_even_status": {"const": "not_established"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "execution_time_status": {"const": "not_measured"},
+    "graph_name": {"$ref": "#/$defs/report_text"},
+    "issues": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/issue_id"}
+    },
+    "native_performance_claim": {"const": false},
+    "phase_timings": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 16,
+      "items": {"$ref": "#/$defs/phase_timing"}
+    },
+    "planner_overhead_hidden_in_execution_time": {"const": false},
+    "schema_version": {"const": "tuc.planner_overhead_report.v0"},
+    "total_planning_ns": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 86400000000000
+    }
+  },
+  "$defs": {
+    "duration_ns": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 86400000000000
+    },
+    "issue_id": {
+      "type": "string",
+      "enum": [
+        "graph_construction_not_measured",
+        "frontend_intake_not_measured",
+        "execution_time_not_measured",
+        "break_even_not_established"
+      ]
+    },
+    "measurement_status": {
+      "type": "string",
+      "enum": ["measured", "not_measured"]
+    },
+    "phase_name": {
+      "type": "string",
+      "enum": [
+        "graph_construction",
+        "frontend_intake",
+        "tlir_module_construction",
+        "tlir_to_hac_lowering",
+        "runtime_planning",
+        "backend_selection_report",
+        "hs_ir_generation",
+        "execution"
+      ]
+    },
+    "phase_timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "duration_ns",
+        "included_in_execution_time",
+        "measurement_status",
+        "phase_name"
+      ],
+      "properties": {
+        "duration_ns": {"$ref": "#/$defs/duration_ns"},
+        "included_in_execution_time": {"const": false},
+        "measurement_status": {"$ref": "#/$defs/measurement_status"},
+        "phase_name": {"$ref": "#/$defs/phase_name"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    }
+  }
+}
