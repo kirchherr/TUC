@@ -67,6 +67,9 @@ hardware-independent interface into capability-driven runtime planning.
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
   deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
   goldens, and Runtime Evidence Matrix coverage.
+- Systolic capability manifest path proving that `systolic-sim` can enter TUC
+  as explicit JSON capability data for planning while execution remains gated
+  by the trusted Runtime Executor registry.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
@@ -148,6 +151,10 @@ Current slice:
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
   `tests/golden/compiler_decisions/`, `tests/golden/execution_readiness/`, and
   `tests/golden/execution_traces/`.
+- Systolic capability manifest at
+  `examples/manifests/systolic_sim_backend.json` and manifest-loaded proof at
+  `examples/systolic_manifest_path.py`, with deterministic golden evidence at
+  `tests/golden/proofs/systolic_manifest_path.txt`.
 - Proof-of-execution independent evidence goldens at
   `tests/golden/hac_ir/proof_of_execution.txt`,
   `tests/golden/runtime_plans/proof_of_execution.txt`, and
@@ -251,6 +258,8 @@ Current slice:
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - External-style backend author path covering manifest loading, registry
   diagnostics, compiler planning, conformance, and trusted lowering.
+- Specialized accelerator manifest path showing `device_sram` and `blocked`
+  layout capability self-description without backend code execution.
 - Deterministic backend conformance report artifacts for reviewable backend
   author evidence.
 - Backend capability schema guidance for error-budget, latency, energy,

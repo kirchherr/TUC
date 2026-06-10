@@ -25,6 +25,12 @@ Runnable proof:
 python examples/proof_of_systolic_execution.py
 ```
 
+Manifest-loaded author path:
+
+```bash
+python examples/systolic_manifest_path.py
+```
+
 The proof graph is:
 
 ```text
@@ -42,6 +48,7 @@ the layout conversion from `blocked` to `row_major`.
 ## Evidence
 
 - Proof golden: `tests/golden/proofs/proof_of_systolic_execution.txt`
+- Manifest-path golden: `tests/golden/proofs/systolic_manifest_path.txt`
 - HAC-IR golden: `tests/golden/hac_ir/proof_of_systolic_execution.txt`
 - Runtime-plan golden:
   `tests/golden/runtime_plans/proof_of_systolic_execution.txt`
@@ -54,6 +61,12 @@ the layout conversion from `blocked` to `row_major`.
 - Runtime evidence matrix entry:
   `proof_of_systolic_execution`
 
+The manifest path uses
+`examples/manifests/systolic_sim_backend.json` through the explicit
+`BackendRegistry.from_manifest_paths(...)` API. It proves that the same
+specialized placement can originate from declarative capability data without
+turning manifests into executable backends.
+
 ## Security Boundary
 
 `systolic-sim` does not discover plugins, import backend modules, spawn
@@ -63,3 +76,7 @@ artifacts.
 
 Runtime execution still uses the trusted in-process Runtime Executor contract
 and deterministic reference semantics.
+
+A manifest can influence planning only as validated capability data. It cannot
+authorize execution unless the fixed trusted Runtime Executor registry already
+contains a matching executor contract.

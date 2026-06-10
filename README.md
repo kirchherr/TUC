@@ -96,6 +96,9 @@ The current prototype contains:
 - `systolic-sim` as a second trusted in-process accelerator simulator with
   blocked-layout output, runtime transfer/layout-conversion evidence, and a
   dedicated proof.
+- A systolic capability manifest path showing specialized accelerator
+  self-description as JSON planning data while execution remains gated by the
+  trusted Runtime Executor registry.
 - Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
   Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and
@@ -222,6 +225,12 @@ Run the systolic simulator proof:
 
 ```bash
 python examples/proof_of_systolic_execution.py
+```
+
+Run the systolic manifest-loaded author path:
+
+```bash
+python examples/systolic_manifest_path.py
 ```
 
 Inspect the runtime evidence matrix:

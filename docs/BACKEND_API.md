@@ -59,6 +59,22 @@ plugin code.
 }
 ```
 
+Specialized accelerator-like capabilities use the same declarative surface:
+
+```json
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "systolic-sim",
+  "supported_ops": ["matmul"],
+  "supports_noise_model": false,
+  "supports_calibration": false,
+  "preferred_for": ["matmul"],
+  "memory_domain": "device_sram",
+  "supported_layouts": ["row_major"],
+  "produced_layouts": ["blocked"]
+}
+```
+
 This manifest is declarative. Loading it must not import backend modules, touch
 devices, open network connections, or execute vendor tools.
 
@@ -287,6 +303,11 @@ capability fields or manifests.
 
 The executable test for the full author path is
 `tests/test_external_backend_author_path.py`.
+
+The systolic manifest path at `examples/systolic_manifest_path.py` demonstrates
+that a specialized accelerator capability can be loaded as explicit manifest
+data, planned by the compiler, checked by runtime readiness, and executed only
+through an already trusted Runtime Executor backend.
 
 ## Current Limitations
 

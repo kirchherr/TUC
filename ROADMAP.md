@@ -92,11 +92,13 @@ Required artifacts:
 - `examples/proof_of_softmax.py`
 - `examples/proof_of_execution.py`
 - `examples/proof_of_systolic_execution.py`
+- `examples/systolic_manifest_path.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
 - `tests/golden/proofs/proof_of_execution.txt`
 - `tests/golden/proofs/proof_of_systolic_execution.txt`
+- `tests/golden/proofs/systolic_manifest_path.txt`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -166,6 +168,9 @@ Completed evidence:
   placement and `blocked -> row_major` layout conversion, executes through the
   trusted runtime executor, and validates against independent reference
   semantics.
+- Systolic capability manifest path loads `systolic-sim` from explicit JSON
+  capability data for planning while execution remains authorized only through
+  the trusted Runtime Executor registry.
 - Objective Alpha abstraction, reduction, and softmax proofs now execute through
   Runtime Executor v0 and emit readiness and trace goldens before their
   correctness result is accepted.
@@ -297,6 +302,9 @@ Completed evidence:
   misleading and keep those cases covered by tests.
 - Compiler decision reports connect backend support diagnostics to final
   runtime assignments.
+- The systolic manifest path proves that specialized accelerator capabilities
+  can be described as data, planned, readiness-checked, and executed through a
+  pre-existing trusted runtime contract without plugin discovery.
 - Golden compiler decision-report fixtures cover proof and MVP graphs.
 - Softmax operation-family planning defines what future softmax capability,
   runtime, and decision-report fixtures must prove.
