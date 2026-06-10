@@ -50,6 +50,13 @@ The readiness report tracks:
 
 Missing evidence keeps native performance claims blocked.
 
+The current diagnostic CPU baseline report schema is
+`schemas/baseline_benchmark_report.v0.schema.json`. It can satisfy only the
+existence of a bounded report schema for the baseline harness. It does not
+satisfy native baseline comparison, planner-overhead report,
+leaky-abstraction report, benchmark report artifacts, or executable backend
+security review.
+
 ## Blocked Claims
 
 The v0 report explicitly blocks:

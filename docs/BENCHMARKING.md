@@ -14,6 +14,9 @@ The harness measures:
 The benchmark uses deterministic NumPy inputs and the reference kernels in
 `tuc.reference`. It emits a JSON report to stdout.
 
+The report shape is versioned by
+`schemas/baseline_benchmark_report.v0.schema.json`.
+
 ## Run
 
 Inside the Docker development container:
@@ -48,6 +51,9 @@ The baseline harness is intentionally narrow:
 - It does not import backend plugins.
 - It does not execute generated code.
 - It does not scan the host for GPUs or invoke hardware-discovery subprocesses.
+- It does not include raw timing samples, host paths, hardware serials, device
+  identifiers, plugin entrypoints, backend artifacts, or generated code in the
+  report.
 - Iteration and warmup counts are bounded.
 - Output is written to stdout; callers can redirect it if they need artifacts.
 
@@ -58,6 +64,13 @@ CUDA backend path and a dedicated threat model for device execution.
 
 This is not a performance claim. It is a repeatable baseline for local drift,
 CI smoke checks, and future comparisons against executable backends.
+
+Every report includes:
+
+- `schema_version = "tuc.baseline_benchmark_report.v0"`
+- `artifact_status = "diagnostic_only"`
+- `claim_boundary = "performance_proof_boundary.blocking.v0"`
+- `native_performance_claim = false`
 
 Performance proof claims are gated by
 [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md). Baseline benchmark

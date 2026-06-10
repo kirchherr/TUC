@@ -122,6 +122,8 @@ Completed evidence:
 - Performance proof readiness is machine-readable and intentionally blocked
   until leaky-abstraction, planner-overhead, native-baseline, benchmark-artifact,
   and executable-backend security evidence exists.
+- Baseline benchmark reports are schema-versioned diagnostic artifacts with an
+  explicit non-performance-claim boundary.
 
 Next work:
 
@@ -302,6 +304,7 @@ Deliverables:
 - Correctness tests against deterministic references.
 - Optional performance baselines, treated as diagnostic data rather than the
   core success metric.
+- Baseline benchmark report schema for diagnostic-only timing artifacts.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -352,6 +355,8 @@ Go/No-Go:
 - Performance claims remain blocked until leaky-abstraction evidence,
   planner-overhead evidence, native baseline provenance, correctness goldens,
   security review, and a passing Performance Proof Readiness report exist.
+- Baseline benchmark reports must remain diagnostic-only unless a future native
+  benchmark RFC adds separate provenance, artifact, and security gates.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

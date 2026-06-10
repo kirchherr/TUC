@@ -12,6 +12,7 @@ from time import perf_counter_ns
 
 import numpy as np
 
+from tuc.proof import PERFORMANCE_PROOF_BOUNDARY_CONTRACT
 from tuc.reference import (
     reference_elementwise,
     reference_matmul,
@@ -22,7 +23,12 @@ from tuc.reference.kernels import FloatArray
 
 MAX_BENCHMARK_ITERATIONS = 10_000
 MAX_BENCHMARK_WARMUP = 1_000
+MAX_BENCHMARK_RESULTS = 16
+MAX_BENCHMARK_DEVICES = 8
 BENCHMARK_SUITE_VERSION = "baseline.v0"
+BENCHMARK_REPORT_SCHEMA_VERSION = "tuc.baseline_benchmark_report.v0"
+BENCHMARK_REPORT_ARTIFACT_STATUS = "diagnostic_only"
+BENCHMARK_REPORT_CLAIM_BOUNDARY = PERFORMANCE_PROOF_BOUNDARY_CONTRACT
 
 
 class BenchmarkError(ValueError):
@@ -84,9 +90,13 @@ class BenchmarkReport:
 
     def to_mapping(self) -> dict[str, object]:
         return {
+            "artifact_status": BENCHMARK_REPORT_ARTIFACT_STATUS,
+            "claim_boundary": BENCHMARK_REPORT_CLAIM_BOUNDARY,
             "devices": [device.to_mapping() for device in self.devices],
             "metadata": dict(self.metadata),
+            "native_performance_claim": False,
             "results": [result.to_mapping() for result in self.results],
+            "schema_version": BENCHMARK_REPORT_SCHEMA_VERSION,
             "suite_version": self.suite_version,
         }
 
@@ -228,8 +238,13 @@ def _require_bounded_int(value: int, label: str, *, minimum: int, maximum: int) 
 
 
 __all__ = [
+    "BENCHMARK_REPORT_ARTIFACT_STATUS",
+    "BENCHMARK_REPORT_CLAIM_BOUNDARY",
+    "BENCHMARK_REPORT_SCHEMA_VERSION",
     "BENCHMARK_SUITE_VERSION",
+    "MAX_BENCHMARK_DEVICES",
     "MAX_BENCHMARK_ITERATIONS",
+    "MAX_BENCHMARK_RESULTS",
     "MAX_BENCHMARK_WARMUP",
     "BenchmarkDeviceStatus",
     "BenchmarkError",

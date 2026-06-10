@@ -75,6 +75,8 @@ The current prototype contains:
 - Triton source preflight fuzz/property corpus for arbitrary decoded bytes,
   invalid Unicode, seed combinations, and bounded diagnostics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
+- Schema-versioned diagnostic baseline benchmark reports that are explicitly
+  marked as non-performance-proof artifacts.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.

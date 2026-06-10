@@ -110,6 +110,8 @@ Current slice:
   already constructed `SourceIntentModule` into schema-versioned metadata, with
   frontend, HAC-IR, runtime-plan, and compiler decision-report goldens.
 - Baseline benchmark harness that can run with or without CUDA.
+- Schema-versioned diagnostic baseline benchmark report contract with explicit
+  non-performance-proof markers.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, leaky-abstraction evidence, planner-overhead
   evidence, correctness goldens, and security review exist.
