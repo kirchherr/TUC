@@ -82,6 +82,16 @@ The current prototype contains:
   deterministic execution traces.
 - Runtime Executor MVP-family trace covering `matmul`, `softmax`, `reduction`,
   and `elementwise` through the Triton-like metadata graph.
+- Trusted Runtime Backend Executor Contract v0 with golden evidence for the
+  fixed in-process prototype executor registry.
+- Runtime execution readiness reports that gate planned execution against
+  trusted backend contracts before kernels run.
+- Triton-like MVP metadata graph readiness evidence across `matmul`,
+  `softmax`, `reduction`, and `elementwise` before execution.
+- Runtime operation semantic checks for MVP operation shapes, axes, and
+  elementwise kernels before trusted kernels run.
+- Runtime tensor value contract checks for declared shapes, `float64` dtype,
+  and finite values at input and output boundaries.
 - Proof-of-execution example that compiles, plans, executes, traces, and
   verifies a graph against independent reference semantics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.

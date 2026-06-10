@@ -17,8 +17,9 @@ from typing import cast
 import numpy as np
 from numpy.typing import NDArray
 
-from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind
+from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.reference import (
+    ElementwiseKernel,
     reference_elementwise,
     reference_matmul,
     reference_reduction_sum,
@@ -27,6 +28,12 @@ from tuc.reference import (
 from tuc.runtime.partitioning import Assignment, PartitionPlan
 
 RUNTIME_EXECUTOR_CONTRACT = "runtime_executor.trusted_backend.v0"
+TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT = "runtime_backend_executor.trusted.v0"
+TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE = "in_process_reference_kernel"
+TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT = "runtime_executor.numpy_float64_inputs.v0"
+TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT = (
+    "runtime_executor.declared_shape_float64_output.v0"
+)
 TRUSTED_REFERENCE_EXECUTOR_BACKEND = "trusted-reference-kernel"
 TRUSTED_RUNTIME_EXECUTOR_REGISTRY = "trusted_runtime_executor_registry.v0"
 RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
@@ -40,10 +47,60 @@ RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
     "subprocess_execution",
 )
 MAX_RUNTIME_EXECUTION_VALUES = 4096
+MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS = 64
 
 FloatArray = NDArray[np.float64]
 
 _TRACE_NAME_RE = re.compile(r"^[A-Za-z0-9_.:-]+$")
+
+
+@dataclass(frozen=True)
+class RuntimeBackendExecutorContract:
+    """Pure-data execution contract for one trusted prototype runtime backend."""
+
+    backend_name: str
+    supported_ops: frozenset[OperationKind]
+    backend_contract: str = TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT
+    execution_mode: str = TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE
+    input_contract: str = TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT
+    output_contract: str = TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT
+    blocked_execution_surfaces: tuple[str, ...] = RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+    external_artifacts: str = "forbidden"
+    device_access: str = "forbidden"
+    status: str = "trusted"
+
+    def __post_init__(self) -> None:
+        _require_trace_name(self.backend_name, "runtime backend contract name")
+        if self.backend_contract != TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT:
+            raise ValueError(
+                "runtime backend contract must use "
+                f"{TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT!r}"
+            )
+        if self.execution_mode != TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE:
+            raise ValueError("runtime backend execution mode is not trusted for v0")
+        if self.input_contract != TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT:
+            raise ValueError("runtime backend input contract is not trusted for v0")
+        if self.output_contract != TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT:
+            raise ValueError("runtime backend output contract is not trusted for v0")
+        if self.blocked_execution_surfaces != RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES:
+            raise ValueError(
+                "runtime backend blocked execution surfaces must match Runtime Executor v0"
+            )
+        if self.external_artifacts != "forbidden":
+            raise ValueError("runtime backend external artifacts must be forbidden")
+        if self.device_access != "forbidden":
+            raise ValueError("runtime backend device access must be forbidden")
+        if self.status != "trusted":
+            raise ValueError("runtime backend contract status must be trusted")
+        _require_operation_set(
+            self.supported_ops,
+            "runtime backend contract supported_ops",
+        )
+
+    def dump_line(self) -> str:
+        """Render one stable backend-contract line."""
+
+        return _format_backend_contract(self)
 
 
 @dataclass(frozen=True)
@@ -55,12 +112,16 @@ class TrustedRuntimeBackendExecutor:
 
     def __post_init__(self) -> None:
         _require_trace_name(self.name, "executor name")
-        if not isinstance(self.supported_ops, frozenset):
-            raise TypeError("executor supported_ops must be a frozenset")
-        if not self.supported_ops:
-            raise ValueError("executor must support at least one operation")
-        if any(not isinstance(kind, OperationKind) for kind in self.supported_ops):
-            raise TypeError("executor supported_ops must contain OperationKind values")
+        _require_operation_set(self.supported_ops, "executor supported_ops")
+
+    @property
+    def contract(self) -> RuntimeBackendExecutorContract:
+        """Return the pure-data contract for this trusted executor."""
+
+        return RuntimeBackendExecutorContract(
+            backend_name=self.name,
+            supported_ops=self.supported_ops,
+        )
 
     def execute(
         self,
@@ -155,6 +216,90 @@ class RuntimeExecutionTrace:
 
 
 @dataclass(frozen=True)
+class RuntimeExecutionReadinessStep:
+    """One pre-execution contract check for a planned runtime operation."""
+
+    operation_name: str
+    operation_kind: OperationKind
+    planned_backend: str
+    backend_contract: str
+    supported_ops: frozenset[OperationKind]
+    status: str = "ready"
+    reason: str = "contract_allows_operation"
+
+    def __post_init__(self) -> None:
+        _require_trace_name(self.operation_name, "readiness operation_name")
+        if not isinstance(self.operation_kind, OperationKind):
+            raise TypeError("readiness operation_kind must be OperationKind")
+        _require_trace_name(self.planned_backend, "readiness planned_backend")
+        if self.backend_contract != TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT:
+            raise ValueError("readiness backend_contract is not trusted for v0")
+        _require_operation_set(self.supported_ops, "readiness supported_ops")
+        if self.status != "ready":
+            raise ValueError("runtime execution readiness status must be ready")
+        _require_trace_name(self.reason, "readiness reason")
+
+
+@dataclass(frozen=True)
+class RuntimeExecutionReadinessReport:
+    """Deterministic pre-execution contract report for one planned graph."""
+
+    graph_name: str
+    executor_contract: str
+    backend_contract: str
+    steps: tuple[RuntimeExecutionReadinessStep, ...]
+    trusted_executor_registry: str = TRUSTED_RUNTIME_EXECUTOR_REGISTRY
+    blocked_execution_surfaces: tuple[str, ...] = RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+    status: str = "ready"
+
+    def __post_init__(self) -> None:
+        _require_trace_name(self.graph_name, "readiness graph_name")
+        if self.executor_contract != RUNTIME_EXECUTOR_CONTRACT:
+            raise ValueError("readiness executor_contract is not trusted for v0")
+        if self.backend_contract != TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT:
+            raise ValueError("readiness backend_contract is not trusted for v0")
+        if self.trusted_executor_registry != TRUSTED_RUNTIME_EXECUTOR_REGISTRY:
+            raise ValueError("readiness trusted registry is not trusted for v0")
+        if self.blocked_execution_surfaces != RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES:
+            raise ValueError("readiness blocked execution surfaces changed")
+        if self.status != "ready":
+            raise ValueError("runtime execution readiness report status must be ready")
+        if type(self.steps) is not tuple:
+            raise TypeError("runtime execution readiness steps must be a tuple")
+        if not self.steps:
+            raise ValueError("runtime execution readiness report must contain steps")
+        if len(self.steps) > MAX_RUNTIME_EXECUTION_VALUES:
+            raise ValueError("runtime execution readiness step count exceeds limit")
+        for step in self.steps:
+            if not isinstance(step, RuntimeExecutionReadinessStep):
+                raise TypeError(
+                    "runtime execution readiness steps must be "
+                    "RuntimeExecutionReadinessStep"
+                )
+
+    def dump(self) -> str:
+        """Render a stable execution-readiness report."""
+
+        lines = [f"runtime.execution_readiness @{self.graph_name} {{"]
+        lines.append(f'  executor_contract = "{self.executor_contract}"')
+        lines.append(f'  backend_contract = "{self.backend_contract}"')
+        lines.append(
+            f'  trusted_executor_registry = "{self.trusted_executor_registry}"'
+        )
+        lines.append(
+            "  blocked_execution_surfaces = "
+            f'"{",".join(self.blocked_execution_surfaces)}"'
+        )
+        lines.append(f'  status = "{self.status}"')
+        lines.append("  steps {")
+        for step in self.steps:
+            lines.append(f"    {_format_readiness_step(step)}")
+        lines.append("  }")
+        lines.append("}")
+        return "\n".join(lines)
+
+
+@dataclass(frozen=True)
 class RuntimeExecutionResult:
     """Executed graph values plus deterministic trace evidence."""
 
@@ -188,6 +333,7 @@ def execute_graph(
     if not isinstance(partition_plan, PartitionPlan):
         raise TypeError("runtime executor partition_plan must be PartitionPlan")
     _validate_partition_plan(graph, partition_plan)
+    runtime_execution_readiness_report(graph, partition_plan)
     values = _normalize_inputs(graph, inputs)
     assignments = {
         assignment.operation_name: assignment for assignment in partition_plan.assignments
@@ -226,6 +372,81 @@ def dump_execution_trace(trace: RuntimeExecutionTrace) -> str:
     return trace.dump()
 
 
+def runtime_execution_readiness_report(
+    graph: ComputeGraph,
+    partition_plan: PartitionPlan,
+) -> RuntimeExecutionReadinessReport:
+    """Validate a planned graph against trusted executor contracts."""
+
+    if not isinstance(graph, ComputeGraph):
+        raise TypeError("runtime execution readiness graph must be ComputeGraph")
+    if not isinstance(partition_plan, PartitionPlan):
+        raise TypeError(
+            "runtime execution readiness partition_plan must be PartitionPlan"
+        )
+    _validate_partition_plan(graph, partition_plan)
+    contracts = _backend_contracts_by_name(trusted_runtime_executor_contracts())
+    assignments = {
+        assignment.operation_name: assignment for assignment in partition_plan.assignments
+    }
+    steps = tuple(
+        _build_readiness_step(operation, assignments[operation.name], contracts)
+        for operation in graph.operations
+    )
+    return RuntimeExecutionReadinessReport(
+        graph_name=graph.name,
+        executor_contract=RUNTIME_EXECUTOR_CONTRACT,
+        backend_contract=TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT,
+        steps=steps,
+    )
+
+
+def dump_runtime_execution_readiness(
+    report: RuntimeExecutionReadinessReport,
+) -> str:
+    """Return a stable runtime execution readiness dump."""
+
+    if not isinstance(report, RuntimeExecutionReadinessReport):
+        raise TypeError("report must be RuntimeExecutionReadinessReport")
+    return report.dump()
+
+
+def trusted_runtime_executor_contracts() -> tuple[RuntimeBackendExecutorContract, ...]:
+    """Return deterministic pure-data contracts for the fixed trusted registry."""
+
+    registry = trusted_runtime_executor_registry()
+    return tuple(registry[name].contract for name in sorted(registry))
+
+
+def dump_trusted_runtime_executor_contracts(
+    contracts: tuple[RuntimeBackendExecutorContract, ...] | None = None,
+) -> str:
+    """Return a stable dump of trusted prototype runtime backend contracts."""
+
+    selected_contracts = (
+        trusted_runtime_executor_contracts() if contracts is None else contracts
+    )
+    _validate_backend_contracts(selected_contracts)
+
+    lines = [
+        f"runtime.backend_executor_contracts @{TRUSTED_RUNTIME_EXECUTOR_REGISTRY} {{"
+    ]
+    lines.append(f'  executor_contract = "{RUNTIME_EXECUTOR_CONTRACT}"')
+    lines.append(
+        f'  backend_contract = "{TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT}"'
+    )
+    lines.append(
+        "  blocked_execution_surfaces = "
+        f'"{",".join(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)}"'
+    )
+    lines.append("  backends {")
+    for contract in sorted(selected_contracts, key=lambda item: item.backend_name):
+        lines.append(f"    {contract.dump_line()}")
+    lines.append("  }")
+    lines.append("}")
+    return "\n".join(lines)
+
+
 def trusted_runtime_executor_registry() -> dict[str, TrustedRuntimeBackendExecutor]:
     """Return the fixed trusted in-repository runtime executor registry."""
 
@@ -240,6 +461,39 @@ def trusted_runtime_executor_registry() -> dict[str, TrustedRuntimeBackendExecut
         ),
     )
     return {executor.name: executor for executor in executors}
+
+
+def _backend_contracts_by_name(
+    contracts: tuple[RuntimeBackendExecutorContract, ...],
+) -> dict[str, RuntimeBackendExecutorContract]:
+    _validate_backend_contracts(contracts)
+    return {contract.backend_name: contract for contract in contracts}
+
+
+def _build_readiness_step(
+    operation: ComputeOperation,
+    assignment: Assignment,
+    contracts: Mapping[str, RuntimeBackendExecutorContract],
+) -> RuntimeExecutionReadinessStep:
+    _validate_runtime_operation_contract(operation)
+    contract = contracts.get(assignment.backend_name)
+    if contract is None:
+        raise ValueError(
+            "runtime execution readiness has no trusted executor contract for "
+            f"backend: {assignment.backend_name}"
+        )
+    if operation.kind not in contract.supported_ops:
+        raise ValueError(
+            "runtime execution readiness contract does not support operation: "
+            f"{operation.name}->{assignment.backend_name}"
+        )
+    return RuntimeExecutionReadinessStep(
+        operation_name=operation.name,
+        operation_kind=operation.kind,
+        planned_backend=assignment.backend_name,
+        backend_contract=contract.backend_contract,
+        supported_ops=contract.supported_ops,
+    )
 
 
 def _executor_for_assignment(
@@ -259,6 +513,7 @@ def _execute_reference_operation(
     operation: ComputeOperation,
     values: Mapping[str, FloatArray],
 ) -> FloatArray:
+    _validate_runtime_operation_contract(operation)
     if operation.kind is OperationKind.MATMUL:
         _require_arity(operation, inputs=2, outputs=1)
         return reference_matmul(
@@ -275,7 +530,7 @@ def _execute_reference_operation(
         _require_arity(operation, inputs=1, outputs=1)
         return reference_reduction_sum(
             values[operation.inputs[0].name],
-            axis=_optional_axis(operation, "reduction"),
+            axis=_required_axis(operation, "reduction"),
         )
     if operation.kind is OperationKind.SOFTMAX:
         _require_arity(operation, inputs=1, outputs=1)
@@ -286,13 +541,101 @@ def _execute_reference_operation(
     raise ValueError(f"runtime executor unsupported operation: {operation.kind.value}")
 
 
+def _validate_runtime_operation_contract(operation: ComputeOperation) -> None:
+    if operation.kind is OperationKind.MATMUL:
+        _validate_matmul_operation(operation)
+        return
+    if operation.kind is OperationKind.ELEMENTWISE:
+        _validate_elementwise_operation(operation)
+        return
+    if operation.kind is OperationKind.REDUCTION:
+        _validate_reduction_operation(operation)
+        return
+    if operation.kind is OperationKind.SOFTMAX:
+        _validate_softmax_operation(operation)
+        return
+    raise ValueError(f"runtime executor unsupported operation: {operation.kind.value}")
+
+
+def _validate_matmul_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=2, outputs=1)
+    left, right = operation.inputs
+    output = operation.outputs[0]
+    _require_rank(left, rank=2, operation=operation, role="left input")
+    _require_rank(right, rank=2, operation=operation, role="right input")
+    _require_rank(output, rank=2, operation=operation, role="output")
+    if left.shape[1] != right.shape[0]:
+        raise ValueError(
+            f"runtime executor matmul input dimensions must agree for {operation.name}"
+        )
+    expected = (left.shape[0], right.shape[1])
+    if output.shape != expected:
+        raise ValueError(
+            f"runtime executor matmul output shape mismatch for {operation.name}: "
+            f"expected {_format_shape(expected)}, got {_format_shape(output.shape)}"
+        )
+
+
+def _validate_elementwise_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=1, outputs=1)
+    input_tensor = operation.inputs[0]
+    output = operation.outputs[0]
+    kernel = operation.attributes.get("kernel", "identity")
+    if not isinstance(kernel, str):
+        raise TypeError("runtime executor elementwise kernel must be a string")
+    try:
+        ElementwiseKernel(kernel)
+    except ValueError as exc:
+        raise ValueError(
+            f"runtime executor unsupported elementwise kernel for {operation.name}: "
+            f"{kernel!r}"
+        ) from exc
+    if output.shape != input_tensor.shape:
+        raise ValueError(
+            f"runtime executor elementwise output shape mismatch for {operation.name}: "
+            f"expected {_format_shape(input_tensor.shape)}, got {_format_shape(output.shape)}"
+        )
+
+
+def _validate_reduction_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=1, outputs=1)
+    input_tensor = operation.inputs[0]
+    output = operation.outputs[0]
+    axis = _required_axis(operation, "reduction")
+    normalized_axis = _normalize_axis(axis, rank=len(input_tensor.shape), label="reduction")
+    expected = input_tensor.shape[:normalized_axis] + input_tensor.shape[normalized_axis + 1 :]
+    if not expected:
+        raise ValueError(
+            f"runtime executor reduction output would be scalar for {operation.name}"
+        )
+    if output.shape != expected:
+        raise ValueError(
+            f"runtime executor reduction output shape mismatch for {operation.name}: "
+            f"expected {_format_shape(expected)}, got {_format_shape(output.shape)}"
+        )
+
+
+def _validate_softmax_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=1, outputs=1)
+    input_tensor = operation.inputs[0]
+    output = operation.outputs[0]
+    axis = _required_axis(operation, "softmax")
+    _normalize_axis(axis, rank=len(input_tensor.shape), label="softmax")
+    if output.shape != input_tensor.shape:
+        raise ValueError(
+            f"runtime executor softmax output shape mismatch for {operation.name}: "
+            f"expected {_format_shape(input_tensor.shape)}, got {_format_shape(output.shape)}"
+        )
+
+
 def _normalize_inputs(
     graph: ComputeGraph,
     inputs: Mapping[str, object],
 ) -> dict[str, FloatArray]:
     if type(inputs) is not dict:
         raise TypeError("runtime executor inputs must be a plain mapping")
-    required_inputs = _external_input_names(graph)
+    external_inputs = _external_input_tensors(graph)
+    required_inputs = frozenset(external_inputs)
     supplied_inputs = frozenset(inputs)
     missing = sorted(required_inputs - supplied_inputs)
     if missing:
@@ -306,20 +649,26 @@ def _normalize_inputs(
         value = inputs[name]
         if not isinstance(value, np.ndarray):
             raise TypeError(f"runtime executor input {name} must be NumPy array")
+        _validate_runtime_tensor_value(
+            tensor_name=name,
+            value=value,
+            expected_shape=external_inputs[name].shape,
+            value_role="input",
+        )
         normalized[name] = cast(FloatArray, value)
     return normalized
 
 
-def _external_input_names(graph: ComputeGraph) -> frozenset[str]:
+def _external_input_tensors(graph: ComputeGraph) -> dict[str, TensorRef]:
     produced: set[str] = set()
-    required: set[str] = set()
+    required: dict[str, TensorRef] = {}
     for operation in graph.operations:
         for tensor in operation.inputs:
             if tensor.name not in produced:
-                required.add(tensor.name)
+                required.setdefault(tensor.name, tensor)
         for tensor in operation.outputs:
             produced.add(tensor.name)
-    return frozenset(required)
+    return required
 
 
 def _validate_partition_plan(graph: ComputeGraph, partition_plan: PartitionPlan) -> None:
@@ -333,10 +682,34 @@ def _validate_partition_plan(graph: ComputeGraph, partition_plan: PartitionPlan)
 
 def _validate_declared_output(operation: ComputeOperation, value: FloatArray) -> None:
     output = operation.outputs[0]
-    if tuple(value.shape) != output.shape:
+    _validate_runtime_tensor_value(
+        tensor_name=output.name,
+        value=value,
+        expected_shape=output.shape,
+        value_role="output",
+    )
+
+
+def _validate_runtime_tensor_value(
+    *,
+    tensor_name: str,
+    value: NDArray[np.generic],
+    expected_shape: tuple[int, ...],
+    value_role: str,
+) -> None:
+    _require_trace_name(tensor_name, f"runtime executor {value_role} name")
+    if tuple(value.shape) != expected_shape:
         raise ValueError(
-            f"runtime executor output shape mismatch for {operation.name}: "
-            f"expected {_format_shape(output.shape)}, got {_format_shape(value.shape)}"
+            f"runtime executor {value_role} shape mismatch for {tensor_name}: "
+            f"expected {_format_shape(expected_shape)}, got {_format_shape(value.shape)}"
+        )
+    if value.dtype != np.dtype(np.float64):
+        raise TypeError(
+            f"runtime executor {value_role} {tensor_name} dtype must be float64"
+        )
+    if not bool(np.all(np.isfinite(value))):
+        raise ValueError(
+            f"runtime executor {value_role} {tensor_name} must contain only finite values"
         )
 
 
@@ -371,13 +744,6 @@ def _require_arity(
         )
 
 
-def _optional_axis(operation: ComputeOperation, label: str) -> int | None:
-    axis = operation.attributes.get("axis")
-    if axis is None:
-        return None
-    return _coerce_axis(axis, label)
-
-
 def _required_axis(operation: ComputeOperation, label: str) -> int:
     axis = operation.attributes.get("axis")
     if axis is None:
@@ -389,6 +755,27 @@ def _coerce_axis(axis: object, label: str) -> int:
     if not isinstance(axis, int) or isinstance(axis, bool):
         raise TypeError(f"runtime executor {label} axis must be an integer")
     return axis
+
+
+def _normalize_axis(axis: int, *, rank: int, label: str) -> int:
+    normalized = axis + rank if axis < 0 else axis
+    if normalized < 0 or normalized >= rank:
+        raise ValueError(f"runtime executor {label} axis is out of bounds")
+    return normalized
+
+
+def _require_rank(
+    tensor: TensorRef,
+    *,
+    rank: int,
+    operation: ComputeOperation,
+    role: str,
+) -> None:
+    if len(tensor.shape) != rank:
+        raise ValueError(
+            f"runtime executor {operation.kind.value} {role} rank must be "
+            f"{rank} for {operation.name}"
+        )
 
 
 def _format_step(step: RuntimeExecutionStep) -> str:
@@ -403,6 +790,36 @@ def _format_step(step: RuntimeExecutionStep) -> str:
         f" output_dtypes={_format_names(step.output_dtypes)}"
         f" status={step.status}"
     )
+
+
+def _format_backend_contract(contract: RuntimeBackendExecutorContract) -> str:
+    return (
+        f"{contract.backend_name}"
+        f" contract={contract.backend_contract}"
+        f" execution_mode={contract.execution_mode}"
+        f" supported_ops={_format_operation_kinds(contract.supported_ops)}"
+        f" input_contract={contract.input_contract}"
+        f" output_contract={contract.output_contract}"
+        f" external_artifacts={contract.external_artifacts}"
+        f" device_access={contract.device_access}"
+        f" status={contract.status}"
+    )
+
+
+def _format_readiness_step(step: RuntimeExecutionReadinessStep) -> str:
+    return (
+        f"{step.operation_name}"
+        f" planned_backend={step.planned_backend}"
+        f" backend_contract={step.backend_contract}"
+        f" kind={step.operation_kind.value}"
+        f" supported_ops={_format_operation_kinds(step.supported_ops)}"
+        f" status={step.status}"
+        f" reason={step.reason}"
+    )
+
+
+def _format_operation_kinds(kinds: frozenset[OperationKind]) -> str:
+    return ",".join(sorted(kind.value for kind in kinds))
 
 
 def _format_names(names: tuple[str, ...]) -> str:
@@ -426,6 +843,33 @@ def _require_name_sequence(value: tuple[str, ...], label: str) -> None:
         _require_trace_name(item, label)
 
 
+def _require_operation_set(operations: frozenset[OperationKind], label: str) -> None:
+    if not isinstance(operations, frozenset):
+        raise TypeError(f"{label} must be a frozenset")
+    if not operations:
+        raise ValueError(f"{label} must support at least one operation")
+    if any(not isinstance(operation, OperationKind) for operation in operations):
+        raise TypeError(f"{label} must contain OperationKind values")
+
+
+def _validate_backend_contracts(
+    contracts: tuple[RuntimeBackendExecutorContract, ...],
+) -> None:
+    if type(contracts) is not tuple:
+        raise TypeError("runtime backend contracts must be a tuple")
+    if not contracts:
+        raise ValueError("runtime backend contracts must not be empty")
+    if len(contracts) > MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS:
+        raise ValueError("runtime backend contract count exceeds limit")
+    backend_names: list[str] = []
+    for contract in contracts:
+        if not isinstance(contract, RuntimeBackendExecutorContract):
+            raise TypeError("runtime backend contracts must be RuntimeBackendExecutorContract")
+        backend_names.append(contract.backend_name)
+    if len(set(backend_names)) != len(backend_names):
+        raise ValueError("runtime backend contracts must have unique backend names")
+
+
 def _require_shape(value: tuple[int, ...]) -> None:
     if type(value) is not tuple or not value:
         raise ValueError("runtime execution output shape must be a non-empty tuple")
@@ -441,15 +885,27 @@ def _require_trace_name(value: str, label: str) -> None:
 
 __all__ = [
     "MAX_RUNTIME_EXECUTION_VALUES",
+    "MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS",
     "RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES",
     "RUNTIME_EXECUTOR_CONTRACT",
+    "TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE",
+    "TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT",
+    "TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT",
+    "TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT",
     "TRUSTED_RUNTIME_EXECUTOR_REGISTRY",
     "TRUSTED_REFERENCE_EXECUTOR_BACKEND",
+    "RuntimeBackendExecutorContract",
+    "RuntimeExecutionReadinessReport",
+    "RuntimeExecutionReadinessStep",
     "RuntimeExecutionResult",
     "RuntimeExecutionStep",
     "RuntimeExecutionTrace",
     "TrustedRuntimeBackendExecutor",
     "dump_execution_trace",
+    "dump_runtime_execution_readiness",
+    "dump_trusted_runtime_executor_contracts",
     "execute_graph",
+    "runtime_execution_readiness_report",
+    "trusted_runtime_executor_contracts",
     "trusted_runtime_executor_registry",
 ]

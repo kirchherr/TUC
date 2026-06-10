@@ -142,6 +142,18 @@ Completed evidence:
   traces.
 - Runtime Executor MVP-family trace covers `matmul`, `softmax`, `reduction`,
   and `elementwise` through the Triton-like metadata graph.
+- Trusted Runtime Backend Executor Contract v0 exposes the fixed in-process
+  executor registry as deterministic pure data and keeps artifact execution,
+  device access, dynamic loading, subprocesses, JIT, and network access
+  forbidden.
+- Runtime execution readiness reports validate runtime plans against trusted
+  backend executor contracts before any operation executes.
+- Triton-like MVP metadata graph readiness evidence covers `matmul`,
+  `softmax`, `reduction`, and `elementwise` before execution.
+- Runtime operation semantic contracts validate MVP operation shapes, axes, and
+  supported elementwise kernels before trusted kernels run.
+- Runtime tensor value contracts enforce declared shapes, `float64` dtype, and
+  finite values at input and output boundaries for trusted prototype execution.
 - Proof-of-execution compiles, plans, executes, traces, and verifies a graph
   against independent reference semantics without plugin discovery, device
   access, subprocesses, JIT, or generated-artifact execution.

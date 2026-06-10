@@ -23,6 +23,7 @@ The v0.1 surface is:
 - Schema-versioned transfer-cost profile manifests.
 - Explicit backend capability registry.
 - HAC-IR and HS-IR dialect contracts.
+- Trusted Runtime Backend Executor Contract for fixed in-process execution.
 
 Capability schema assumptions for error budgets, latency, energy, calibration,
 and noise modeling are documented in
@@ -34,6 +35,7 @@ The code lives in:
 - `tuc.backends.registry`
 - `tuc.manifests`
 - `tuc.ir.dialect`
+- `tuc.runtime.executor`
 - `tuc.runtime.plan`
 - `tuc.runtime.partitioning`
 
@@ -129,6 +131,7 @@ The current contracts are:
 
 - [HAC-IR dialect contract](HAC_IR_DIALECT.md)
 - [HS-IR dialect contract](HS_IR_DIALECT.md)
+- [Runtime Executor trusted backend contract](RUNTIME_EXECUTOR.md)
 
 HAC-IR describes hardware-agnostic compute intent and movement facts. HS-IR
 describes backend assignment, produced layout, and runtime-transfer summaries.
@@ -244,6 +247,9 @@ Backend API v0.1 follows these rules:
   selecting capabilities.
 - Backend lowering may run only for explicitly constructed trusted backend
   objects inside the current process.
+- Runtime execution may run only through trusted executor contracts that keep
+  external artifacts, device access, dynamic loading, subprocesses, JIT, and
+  network access forbidden.
 - Backend lowering must validate `capability.supports(operation)` before
   emitting artifacts.
 - Backend artifacts are data until a later RFC defines an execution sandbox.

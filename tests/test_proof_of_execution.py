@@ -18,7 +18,9 @@ def test_proof_of_execution_example_runs() -> None:
     )
 
     assert "== runtime plan ==" in completed.stdout
+    assert "== execution readiness ==" in completed.stdout
     assert "== execution trace ==" in completed.stdout
+    assert "runtime.execution_readiness @proof_of_execution" in completed.stdout
     assert "executor_contract = \"runtime_executor.trusted_backend.v0\"" in (
         completed.stdout
     )
@@ -42,4 +44,5 @@ def test_proof_of_execution_result_is_checked_against_reference() -> None:
     assert report.compiled.partition_plan.backend_for("linear_projection") == "linear-sim"
     assert report.compiled.partition_plan.backend_for("row_reduction") == "linear-sim"
     assert report.compiled.partition_plan.backend_for("activation") == "reference-cpu"
+    assert report.readiness.status == "ready"
     assert report.execution.trace.steps[-1].output_tensors == ("activated",)

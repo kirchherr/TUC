@@ -4,13 +4,15 @@ Proof of Execution is the first Objective Alpha proof that TUC can move from
 runtime planning into controlled execution.
 
 The proof compiles a graph, inspects the runtime plan, executes the graph
-through Runtime Executor v0, emits an execution trace, and compares the result
-against an independent reference result.
+through Runtime Executor v0, emits a pre-execution readiness report, emits an
+execution trace, and compares the result against an independent reference
+result.
 
 ## Contract
 
 - Example: `examples/proof_of_execution.py`
 - Proof golden: `tests/golden/proofs/proof_of_execution.txt`
+- Readiness golden: `tests/golden/execution_readiness/proof_of_execution.txt`
 - Trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
 - Executor: [Runtime Executor v0](RUNTIME_EXECUTOR.md)
 - Tests: `tests/test_proof_of_execution.py`
@@ -19,6 +21,12 @@ against an independent reference result.
 
 - TUC can compile a graph into HAC-IR and a runtime plan.
 - Runtime placement remains visible before execution.
+- Runtime execution is gated by trusted backend executor contracts before the
+  first operation runs.
+- Runtime operation semantics are checked before any trusted reference kernel
+  runs.
+- Runtime tensor values are checked against shape, dtype, and finite-value
+  contracts at input and output boundaries.
 - Execution uses fixed trusted in-process prototype executors.
 - The execution trace records planned backend and actual executor separately.
 - The final result matches an independent reference calculation.
