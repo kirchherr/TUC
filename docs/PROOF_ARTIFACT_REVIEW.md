@@ -21,6 +21,7 @@ tests/test_proof_*.py
 docs/PROOF_*.md
 docs/PERFORMANCE_PROOF_READINESS.md
 docs/NATIVE_BASELINE_PROVENANCE.md
+docs/BENCHMARK_ARTIFACT_MANIFEST.md
 src/tuc/proof.py
 ```
 
@@ -95,6 +96,7 @@ the performance proof boundary and readiness report supply:
 - correctness goldens for benchmarked workloads
 - runtime-plan and compiler decision-report goldens
 - deterministic benchmark report artifacts
+- benchmark artifact manifest
 - security review for any executable backend or device access
 
 ## Required Validation

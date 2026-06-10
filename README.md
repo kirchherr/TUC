@@ -83,6 +83,8 @@ The current prototype contains:
   facts outside HAC-IR.
 - Diagnostic native-baseline provenance reports that identify future native
   comparison candidates without executing native code or claiming parity.
+- Diagnostic benchmark-artifact manifest reports that inventory benchmark
+  report artifacts through bounded IDs and digests.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.
@@ -228,6 +230,12 @@ Inspect the diagnostic native-baseline provenance report:
 python examples/native_baseline_provenance.py
 ```
 
+Inspect the diagnostic benchmark-artifact manifest report:
+
+```bash
+python examples/benchmark_artifact_manifest.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -274,6 +282,7 @@ pytest -q
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
 - [Native baseline provenance report](docs/NATIVE_BASELINE_PROVENANCE.md)
+- [Benchmark artifact manifest report](docs/BENCHMARK_ARTIFACT_MANIFEST.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

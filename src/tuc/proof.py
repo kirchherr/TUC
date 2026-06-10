@@ -84,6 +84,27 @@ NATIVE_BASELINE_DEFAULT_ISSUES = (
     "native_baseline_comparison_not_supplied",
     "native_performance_claim_blocked",
 )
+BENCHMARK_ARTIFACT_MANIFEST_REPORT_SCHEMA_VERSION = (
+    "tuc.benchmark_artifact_manifest_report.v0"
+)
+BENCHMARK_ARTIFACT_MANIFEST_ARTIFACT_STATUS = "diagnostic_only"
+BENCHMARK_ARTIFACT_MANIFEST_CLAIM_STATUS = "blocked"
+BENCHMARK_ARTIFACT_KINDS = (
+    "baseline_benchmark_report",
+    "native_benchmark_report",
+    "native_baseline_comparison_report",
+)
+BENCHMARK_ARTIFACT_REQUIRED_KINDS = BENCHMARK_ARTIFACT_KINDS
+BENCHMARK_ARTIFACT_STORAGE_SCOPES = (
+    "repository_golden",
+    "ci_artifact",
+    "release_artifact",
+    "review_attachment",
+)
+BENCHMARK_ARTIFACT_MANIFEST_DEFAULT_ISSUES = (
+    "benchmark_artifacts_not_supplied",
+    "native_performance_claim_blocked",
+)
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
@@ -95,9 +116,13 @@ MAX_LEAKY_ABSTRACTION_FACTS = 128
 MAX_NATIVE_BASELINE_REPORT_BYTES = 64 * 1024
 MAX_NATIVE_BASELINE_FIELD_BYTES = 512
 MAX_NATIVE_BASELINES = 64
+MAX_BENCHMARK_ARTIFACT_MANIFEST_REPORT_BYTES = 64 * 1024
+MAX_BENCHMARK_ARTIFACT_FIELD_BYTES = 512
+MAX_BENCHMARK_ARTIFACTS = 128
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
+_SHA256_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 
 
 @dataclass(frozen=True)
@@ -229,6 +254,33 @@ class NativeBaselineProvenanceReport:
         return bool(self.baselines) and not self.issues
 
 
+@dataclass(frozen=True)
+class BenchmarkArtifactReference:
+    """One data-only benchmark artifact manifest entry."""
+
+    artifact_id: str
+    artifact_kind: str
+    schema_version: str
+    artifact_digest: str = "not_supplied"
+    storage_scope: str = "review_attachment"
+
+
+@dataclass(frozen=True)
+class BenchmarkArtifactManifestReport:
+    """Diagnostic report for benchmark artifact review."""
+
+    proposal_name: str
+    artifacts: tuple[BenchmarkArtifactReference, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def benchmark_artifact_manifest_complete(self) -> bool:
+        benchmark_issues = tuple(
+            issue for issue in self.issues if issue.startswith("benchmark_artifact")
+        )
+        return bool(self.artifacts) and not benchmark_issues
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -355,6 +407,34 @@ def build_native_baseline_provenance_report(
     )
 
 
+def build_benchmark_artifact_manifest_report(
+    proposal_name: str,
+    artifacts: Iterable[BenchmarkArtifactReference] = (),
+) -> BenchmarkArtifactManifestReport:
+    """Build a bounded data-only benchmark artifact manifest report."""
+
+    _validate_benchmark_artifact_text(proposal_name, "proposal_name")
+    normalized_artifacts = _normalize_benchmark_artifacts(artifacts)
+    issues = list(BENCHMARK_ARTIFACT_MANIFEST_DEFAULT_ISSUES)
+    supplied_kinds = {artifact.artifact_kind for artifact in normalized_artifacts}
+    if normalized_artifacts:
+        issues.remove("benchmark_artifacts_not_supplied")
+    for required_kind in BENCHMARK_ARTIFACT_REQUIRED_KINDS:
+        if required_kind not in supplied_kinds:
+            issues.append(f"benchmark_artifact_missing_{required_kind}")
+    if any(
+        artifact.artifact_digest == "not_supplied"
+        for artifact in normalized_artifacts
+    ):
+        issues.append("benchmark_artifact_digest_not_supplied")
+
+    return BenchmarkArtifactManifestReport(
+        proposal_name=proposal_name,
+        artifacts=normalized_artifacts,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def assert_performance_proof_readiness(
     proposal_name: str,
     evidence: Iterable[PerformanceProofReadinessEvidence],
@@ -467,6 +547,37 @@ def native_baseline_provenance_report_to_dict(
     }
 
 
+def benchmark_artifact_manifest_report_to_dict(
+    report: BenchmarkArtifactManifestReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible benchmark artifact manifest."""
+
+    _validate_benchmark_artifact_manifest_report(report)
+    return {
+        "artifact_status": BENCHMARK_ARTIFACT_MANIFEST_ARTIFACT_STATUS,
+        "artifacts": [
+            {
+                "artifact_digest": artifact.artifact_digest,
+                "artifact_id": artifact.artifact_id,
+                "artifact_kind": artifact.artifact_kind,
+                "schema_version": artifact.schema_version,
+                "storage_scope": artifact.storage_scope,
+            }
+            for artifact in report.artifacts
+        ],
+        "benchmark_artifact_manifest_complete": (
+            report.benchmark_artifact_manifest_complete
+        ),
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": BENCHMARK_ARTIFACT_MANIFEST_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "required_artifact_kinds": list(BENCHMARK_ARTIFACT_REQUIRED_KINDS),
+        "schema_version": BENCHMARK_ARTIFACT_MANIFEST_REPORT_SCHEMA_VERSION,
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -503,6 +614,21 @@ def dump_native_baseline_provenance_report(
     )
     if len(text.encode("utf-8")) > MAX_NATIVE_BASELINE_REPORT_BYTES:
         raise ValueError("native baseline provenance report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_benchmark_artifact_manifest_report(
+    report: BenchmarkArtifactManifestReport,
+) -> str:
+    """Render a stable diagnostic benchmark artifact manifest report."""
+
+    text = json.dumps(
+        benchmark_artifact_manifest_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_BENCHMARK_ARTIFACT_MANIFEST_REPORT_BYTES:
+        raise ValueError("benchmark artifact manifest report exceeds byte limit")
     return text + "\n"
 
 
@@ -567,6 +693,29 @@ def _normalize_native_baselines(
         if baseline.artifact_digest_status not in {"not_supplied", "supplied"}:
             raise ValueError("unsupported native baseline artifact digest status")
         seen.add(baseline.baseline_id)
+    return normalized
+
+
+def _normalize_benchmark_artifacts(
+    artifacts: Iterable[BenchmarkArtifactReference],
+) -> tuple[BenchmarkArtifactReference, ...]:
+    normalized = tuple(artifacts)
+    if len(normalized) > MAX_BENCHMARK_ARTIFACTS:
+        raise ValueError("benchmark artifact count exceeds limit")
+    seen: set[str] = set()
+    for artifact in normalized:
+        if not isinstance(artifact, BenchmarkArtifactReference):
+            raise TypeError("benchmark artifacts must be BenchmarkArtifactReference")
+        _validate_benchmark_artifact_text(artifact.artifact_id, "artifact_id")
+        _validate_benchmark_artifact_text(artifact.schema_version, "schema_version")
+        if artifact.artifact_id in seen:
+            raise ValueError("duplicate benchmark artifact id")
+        if artifact.artifact_kind not in BENCHMARK_ARTIFACT_KINDS:
+            raise ValueError("unsupported benchmark artifact kind")
+        if artifact.storage_scope not in BENCHMARK_ARTIFACT_STORAGE_SCOPES:
+            raise ValueError("unsupported benchmark artifact storage scope")
+        _validate_benchmark_artifact_digest(artifact.artifact_digest)
+        seen.add(artifact.artifact_id)
     return normalized
 
 
@@ -676,6 +825,17 @@ def _validate_native_baseline_report(
         raise ValueError("native baseline provenance v0 must remain claim-blocked")
 
 
+def _validate_benchmark_artifact_manifest_report(
+    report: BenchmarkArtifactManifestReport,
+) -> None:
+    if not isinstance(report, BenchmarkArtifactManifestReport):
+        raise TypeError("benchmark artifact manifest report must be report object")
+    _validate_benchmark_artifact_text(report.proposal_name, "proposal_name")
+    _normalize_benchmark_artifacts(report.artifacts)
+    for issue in report.issues:
+        _validate_benchmark_artifact_text(issue, "issue")
+
+
 def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
     if not isinstance(report, LeakyAbstractionReport):
         raise TypeError("leaky abstraction report must be report object")
@@ -724,6 +884,22 @@ def _validate_native_baseline_text(value: str, label: str) -> None:
         raise ValueError(f"{label} exceeds native baseline field limit")
 
 
+def _validate_benchmark_artifact_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe benchmark artifact identifier")
+    if len(value.encode("utf-8")) > MAX_BENCHMARK_ARTIFACT_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds benchmark artifact field limit")
+
+
+def _validate_benchmark_artifact_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("artifact_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("artifact_digest must be not_supplied or sha256 digest")
+
+
 def _validate_leaky_abstraction_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{label} must be a non-empty string")
@@ -732,6 +908,15 @@ def _validate_leaky_abstraction_text(value: str, label: str) -> None:
 
 
 __all__ = [
+    "BENCHMARK_ARTIFACT_KINDS",
+    "BENCHMARK_ARTIFACT_MANIFEST_ARTIFACT_STATUS",
+    "BENCHMARK_ARTIFACT_MANIFEST_CLAIM_STATUS",
+    "BENCHMARK_ARTIFACT_MANIFEST_DEFAULT_ISSUES",
+    "BENCHMARK_ARTIFACT_MANIFEST_REPORT_SCHEMA_VERSION",
+    "BENCHMARK_ARTIFACT_REQUIRED_KINDS",
+    "BENCHMARK_ARTIFACT_STORAGE_SCOPES",
+    "BenchmarkArtifactManifestReport",
+    "BenchmarkArtifactReference",
     "LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES",
     "LEAKY_ABSTRACTION_ARTIFACT_STATUS",
     "LEAKY_ABSTRACTION_DEFAULT_ISSUES",
@@ -762,9 +947,12 @@ __all__ = [
     "PROOF_REPORT_SCHEMA_VERSION",
     "ProofReportMetadata",
     "assert_performance_proof_readiness",
+    "benchmark_artifact_manifest_report_to_dict",
+    "build_benchmark_artifact_manifest_report",
     "build_leaky_abstraction_report",
     "build_native_baseline_provenance_report",
     "build_performance_proof_readiness_report",
+    "dump_benchmark_artifact_manifest_report",
     "dump_leaky_abstraction_report",
     "dump_native_baseline_provenance_report",
     "dump_performance_proof_readiness_report",

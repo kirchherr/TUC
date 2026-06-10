@@ -118,6 +118,8 @@ Current slice:
   hardware-specific performance facts assigned outside HAC-IR.
 - Diagnostic Native Baseline Provenance Report for bounded native comparison
   candidate review without native execution or performance claims.
+- Diagnostic Benchmark Artifact Manifest Report for benchmark report inventory
+  through bounded IDs, schema versions, digest status, and storage scopes.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, leaky-abstraction evidence, planner-overhead
   evidence, correctness goldens, and security review exist.

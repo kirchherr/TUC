@@ -116,6 +116,33 @@ Native baseline provenance must not include host paths, command lines,
 environment variables, raw benchmark output, backend binaries, generated code,
 device identifiers, dynamic-library paths, or native source contents.
 
+## Benchmark Artifact Manifest Gate
+
+Before benchmark report artifacts can count as future performance-proof
+evidence, a proposal must list those artifacts through a bounded manifest.
+
+The proposal must include:
+
+- baseline benchmark report artifact reference
+- native benchmark report artifact reference
+- native baseline comparison report artifact reference
+- schema version for each artifact
+- SHA-256 digest status for each artifact
+- storage scope for each artifact
+
+The current
+[Benchmark Artifact Manifest Report](BENCHMARK_ARTIFACT_MANIFEST.md) defines
+the diagnostic report contract at
+`schemas/benchmark_artifact_manifest_report.v0.schema.json`. It records only
+artifact identifiers, kinds, schema versions, digests, and storage scopes. It
+does not load benchmark artifacts, store raw benchmark output, or accept native
+performance claims.
+
+Benchmark artifact manifests must not include host paths, URLs, command lines,
+environment variables, raw timing samples, raw native output, backend binaries,
+generated code, device identifiers, dynamic-library paths, or native source
+contents.
+
 ## Required Future Evidence
 
 Any future performance proof must add:
@@ -125,6 +152,7 @@ Any future performance proof must add:
 - native baseline provenance
 - benchmark report schema
 - deterministic benchmark fixtures or stored report artifacts
+- explicit benchmark artifact manifest
 - correctness goldens for every benchmarked workload
 - runtime-plan and compiler decision-report goldens
 - explicit planner-overhead report
@@ -179,8 +207,9 @@ Reviewers must reject performance claims unless every answer is yes:
 9. Is HAC-IR still hardware-neutral?
 10. Are runtime plans and compiler decisions golden-tested?
 11. Is benchmark provenance versioned?
-12. Are any executable backend or device surfaces threat-modeled?
-13. Does the claim avoid broad wording such as "near native" unless the
+12. Is the benchmark artifact manifest present and bounded?
+13. Are any executable backend or device surfaces threat-modeled?
+14. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

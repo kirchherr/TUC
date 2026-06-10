@@ -130,6 +130,8 @@ Completed evidence:
   to homes outside HAC-IR.
 - Native-baseline provenance reports identify native comparison candidates as
   bounded review data while keeping native performance claims blocked.
+- Benchmark-artifact manifest reports inventory future benchmark report
+  artifacts through bounded IDs and digests without loading raw outputs.
 
 Next work:
 
@@ -315,6 +317,8 @@ Deliverables:
 - Leaky Abstraction Report for diagnostic HAC-IR boundary review.
 - Native Baseline Provenance Report for diagnostic native comparison
   provenance.
+- Benchmark Artifact Manifest Report for diagnostic benchmark artifact
+  inventory.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -374,6 +378,9 @@ Go/No-Go:
 - Native-baseline provenance reports must remain data-only and must not include
   host paths, command lines, backend artifacts, raw output, or device-specific
   identifiers.
+- Benchmark-artifact manifest reports must remain data-only and must not include
+  host paths, URLs, raw timing samples, backend binaries, generated code, or
+  embedded benchmark outputs.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

@@ -97,3 +97,9 @@ Native baseline candidates are tracked separately by the
 `schemas/native_baseline_provenance_report.v0.schema.json`. Baseline benchmark
 reports must not smuggle native implementation provenance, source paths,
 command lines, backend artifacts, or raw native output into timing data.
+
+Benchmark report artifact inventory is tracked separately by the
+[Benchmark Artifact Manifest Report](BENCHMARK_ARTIFACT_MANIFEST.md) and
+`schemas/benchmark_artifact_manifest_report.v0.schema.json`. The manifest
+records artifact identifiers, schema versions, digest status, and storage
+scopes; it must not load artifacts or embed raw benchmark output.
