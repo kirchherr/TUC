@@ -126,6 +126,8 @@ Completed evidence:
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution
   timing and keep break-even claims blocked.
+- Leaky-abstraction reports keep hardware-specific performance facts assigned
+  to homes outside HAC-IR.
 
 Next work:
 
@@ -308,6 +310,7 @@ Deliverables:
   core success metric.
 - Baseline benchmark report schema for diagnostic-only timing artifacts.
 - Planner Overhead Report for diagnostic compiler/planner phase separation.
+- Leaky Abstraction Report for diagnostic HAC-IR boundary review.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -362,6 +365,8 @@ Go/No-Go:
   benchmark RFC adds separate provenance, artifact, and security gates.
 - Planner-overhead reports must keep execution timing and break-even workload
   claims explicit rather than hidden in aggregate benchmark numbers.
+- Leaky-abstraction reports must keep hardware-specific performance facts out
+  of HAC-IR even when those facts are required for future native speed.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

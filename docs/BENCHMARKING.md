@@ -86,3 +86,8 @@ and does not turn local timing data into a proof claim.
 Planner timing is tracked separately by the
 [Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md). Baseline benchmark
 reports must not hide planner overhead inside execution timing.
+
+Hardware-specific performance facts are tracked separately by the
+[Leaky Abstraction Report](LEAKY_ABSTRACTION_REPORT.md). Baseline benchmark
+reports must not turn backend-specific optimization details into HAC-IR
+semantics.

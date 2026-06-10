@@ -55,6 +55,12 @@ implementations, or benchmark evidence, not HAC-IR.
 If a workload requires a hardware-specific optimization that cannot be expressed
 without changing HAC-IR semantics, the performance parity claim fails.
 
+The current [Leaky Abstraction Report](LEAKY_ABSTRACTION_REPORT.md) defines the
+diagnostic report contract at
+`schemas/leaky_abstraction_report.v0.schema.json`. It checks the current
+HAC-IR hardware-leakage guard and records where performance-specific facts must
+live outside HAC-IR.
+
 ## Planner Overhead Gate
 
 Before TUC may claim runtime planning is beneficial for a workload class, a

@@ -114,6 +114,8 @@ Current slice:
   non-performance-proof markers.
 - Diagnostic Planner Overhead Report for compiler/planner phase separation
   with execution timing and break-even claims still blocked.
+- Diagnostic Leaky Abstraction Report for HAC-IR boundary review with
+  hardware-specific performance facts assigned outside HAC-IR.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, leaky-abstraction evidence, planner-overhead
   evidence, correctness goldens, and security review exist.

@@ -7,6 +7,12 @@ import re
 from collections.abc import Iterable
 from dataclasses import dataclass
 
+from tuc.ir.dialect import (
+    HAC_IR_DIALECT_VERSION,
+    HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES,
+    validate_hac_module_contract,
+)
+from tuc.ir.modules import IRModule, IRStage
 from tuc.runtime import Assignment, PartitionPlan
 
 PROOF_REPORT_SCHEMA_VERSION = "proof-report.v0"
@@ -40,11 +46,30 @@ PERFORMANCE_PROOF_BLOCKED_CLAIMS = (
     "transfer_estimates_as_measured_hardware_performance",
     "hardware_specific_hac_ir_knobs",
 )
+LEAKY_ABSTRACTION_REPORT_SCHEMA_VERSION = "tuc.leaky_abstraction_report.v0"
+LEAKY_ABSTRACTION_ARTIFACT_STATUS = "diagnostic_only"
+LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS = "blocked"
+LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES = (
+    "backend_capability",
+    "hs_ir",
+    "runtime_plan",
+    "compiler_decision_report",
+    "backend_implementation",
+    "benchmark_artifact",
+    "security_rfc",
+)
+LEAKY_ABSTRACTION_DEFAULT_ISSUES = (
+    "native_baseline_not_supplied",
+    "native_performance_claim_blocked",
+)
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES = 512
 MAX_PERFORMANCE_PROOF_READINESS_ISSUES = 128
+MAX_LEAKY_ABSTRACTION_REPORT_BYTES = 64 * 1024
+MAX_LEAKY_ABSTRACTION_FIELD_BYTES = 512
+MAX_LEAKY_ABSTRACTION_FACTS = 128
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
@@ -115,6 +140,43 @@ class PerformanceProofReadinessError(AssertionError):
     """Raised when a performance proof proposal is not ready."""
 
 
+@dataclass(frozen=True)
+class LeakyAbstractionFact:
+    """One performance fact and its correct home outside HAC-IR."""
+
+    fact_id: str
+    correct_home: str
+    required_for_performance: bool
+    enters_hac_ir: bool = False
+
+
+@dataclass(frozen=True)
+class LeakyAbstractionLeak:
+    """One forbidden hardware-specific fact detected in HAC-IR."""
+
+    operation_name: str
+    attribute_name: str
+    reason: str
+
+
+@dataclass(frozen=True)
+class LeakyAbstractionReport:
+    """Diagnostic report for HAC-IR leaky-abstraction review."""
+
+    graph_name: str
+    hac_ir_contract_valid: bool
+    checked_forbidden_attributes: tuple[str, ...]
+    detected_leaks: tuple[LeakyAbstractionLeak, ...]
+    performance_facts: tuple[LeakyAbstractionFact, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def hac_ir_leak_detected(self) -> bool:
+        return bool(self.detected_leaks) or any(
+            fact.enters_hac_ir for fact in self.performance_facts
+        )
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -164,6 +226,48 @@ def build_performance_proof_readiness_report(
     )
 
 
+def build_leaky_abstraction_report(
+    hac_ir: IRModule,
+    performance_facts: Iterable[LeakyAbstractionFact] = (),
+) -> LeakyAbstractionReport:
+    """Build a bounded diagnostic report for HAC-IR abstraction leakage."""
+
+    if not isinstance(hac_ir, IRModule):
+        raise TypeError("leaky abstraction report requires an IRModule")
+    if hac_ir.stage is not IRStage.HAC_IR:
+        raise ValueError("leaky abstraction report requires a HAC-IR module")
+    if hac_ir.metadata.get("dialect_version") != HAC_IR_DIALECT_VERSION:
+        raise ValueError("leaky abstraction report requires HAC-IR dialect version")
+
+    normalized_facts = _normalize_leaky_abstraction_facts(performance_facts)
+    detected_leaks = _detect_hac_ir_hardware_leaks(hac_ir)
+    issues = list(LEAKY_ABSTRACTION_DEFAULT_ISSUES)
+    if not normalized_facts:
+        issues.insert(0, "performance_facts_not_supplied")
+    if detected_leaks:
+        issues.append("forbidden_hardware_fact_entered_hac_ir")
+    if any(fact.enters_hac_ir for fact in normalized_facts):
+        issues.append("performance_fact_entered_hac_ir")
+
+    hac_ir_contract_valid = False
+    if not detected_leaks:
+        try:
+            validate_hac_module_contract(hac_ir)
+        except (TypeError, ValueError):
+            issues.append("hac_ir_contract_invalid")
+        else:
+            hac_ir_contract_valid = True
+
+    return LeakyAbstractionReport(
+        graph_name=hac_ir.graph.name,
+        hac_ir_contract_valid=hac_ir_contract_valid,
+        checked_forbidden_attributes=tuple(sorted(HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES)),
+        detected_leaks=detected_leaks,
+        performance_facts=normalized_facts,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def assert_performance_proof_readiness(
     proposal_name: str,
     evidence: Iterable[PerformanceProofReadinessEvidence],
@@ -207,6 +311,44 @@ def performance_proof_readiness_report_to_dict(
     }
 
 
+def leaky_abstraction_report_to_dict(
+    report: LeakyAbstractionReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible leaky-abstraction report."""
+
+    _validate_leaky_abstraction_report(report)
+    return {
+        "allowed_fact_homes": list(LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES),
+        "artifact_status": LEAKY_ABSTRACTION_ARTIFACT_STATUS,
+        "checked_forbidden_attributes": list(report.checked_forbidden_attributes),
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "detected_leaks": [
+            {
+                "attribute_name": leak.attribute_name,
+                "operation_name": leak.operation_name,
+                "reason": leak.reason,
+            }
+            for leak in report.detected_leaks
+        ],
+        "graph_name": report.graph_name,
+        "hac_ir_contract_valid": report.hac_ir_contract_valid,
+        "hac_ir_leak_detected": report.hac_ir_leak_detected,
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS,
+        "performance_facts": [
+            {
+                "correct_home": fact.correct_home,
+                "enters_hac_ir": fact.enters_hac_ir,
+                "fact_id": fact.fact_id,
+                "required_for_performance": fact.required_for_performance,
+            }
+            for fact in report.performance_facts
+        ],
+        "schema_version": LEAKY_ABSTRACTION_REPORT_SCHEMA_VERSION,
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -219,6 +361,15 @@ def dump_performance_proof_readiness_report(
     )
     if len(text.encode("utf-8")) > MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES:
         raise ValueError("performance proof readiness report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_leaky_abstraction_report(report: LeakyAbstractionReport) -> str:
+    """Render a stable diagnostic leaky-abstraction report."""
+
+    text = json.dumps(leaky_abstraction_report_to_dict(report), indent=2, sort_keys=True)
+    if len(text.encode("utf-8")) > MAX_LEAKY_ABSTRACTION_REPORT_BYTES:
+        raise ValueError("leaky abstraction report exceeds byte limit")
     return text + "\n"
 
 
@@ -269,6 +420,47 @@ def _normalize_performance_evidence(
     return evidence_by_id
 
 
+def _normalize_leaky_abstraction_facts(
+    performance_facts: Iterable[LeakyAbstractionFact],
+) -> tuple[LeakyAbstractionFact, ...]:
+    facts = tuple(performance_facts)
+    if len(facts) > MAX_LEAKY_ABSTRACTION_FACTS:
+        raise ValueError("leaky abstraction fact count exceeds limit")
+    seen: set[str] = set()
+    normalized: list[LeakyAbstractionFact] = []
+    for fact in facts:
+        if not isinstance(fact, LeakyAbstractionFact):
+            raise TypeError("leaky abstraction facts must be LeakyAbstractionFact")
+        _validate_leaky_abstraction_text(fact.fact_id, "fact_id")
+        if fact.fact_id in seen:
+            raise ValueError("duplicate leaky abstraction fact id")
+        if fact.correct_home not in LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES:
+            raise ValueError("unsupported leaky abstraction fact home")
+        if type(fact.required_for_performance) is not bool:
+            raise TypeError("required_for_performance must be bool")
+        if type(fact.enters_hac_ir) is not bool:
+            raise TypeError("enters_hac_ir must be bool")
+        seen.add(fact.fact_id)
+        normalized.append(fact)
+    return tuple(normalized)
+
+
+def _detect_hac_ir_hardware_leaks(hac_ir: IRModule) -> tuple[LeakyAbstractionLeak, ...]:
+    leaks: list[LeakyAbstractionLeak] = []
+    for operation in hac_ir.graph.operations:
+        for attribute_name in operation.attributes:
+            reason = HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES.get(attribute_name)
+            if reason is not None:
+                leaks.append(
+                    LeakyAbstractionLeak(
+                        operation_name=operation.name,
+                        attribute_name=attribute_name,
+                        reason=reason,
+                    )
+                )
+    return tuple(leaks)
+
+
 def _validate_performance_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> None:
@@ -299,6 +491,29 @@ def _validate_performance_readiness_report(
         _validate_performance_report_text(issue.message, "issue message")
 
 
+def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
+    if not isinstance(report, LeakyAbstractionReport):
+        raise TypeError("leaky abstraction report must be report object")
+    _validate_leaky_abstraction_text(report.graph_name, "graph_name")
+    if type(report.hac_ir_contract_valid) is not bool:
+        raise TypeError("hac_ir_contract_valid must be bool")
+    if tuple(report.checked_forbidden_attributes) != tuple(
+        sorted(HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES)
+    ):
+        raise ValueError("checked forbidden attributes must match HAC-IR guard")
+    for leak in report.detected_leaks:
+        if not isinstance(leak, LeakyAbstractionLeak):
+            raise TypeError("detected leaks must be LeakyAbstractionLeak")
+        _validate_leaky_abstraction_text(leak.operation_name, "leak operation_name")
+        _validate_leaky_abstraction_text(leak.attribute_name, "leak attribute_name")
+        _validate_leaky_abstraction_text(leak.reason, "leak reason")
+    _normalize_leaky_abstraction_facts(report.performance_facts)
+    for issue in report.issues:
+        _validate_leaky_abstraction_text(issue, "issue")
+    if report.detected_leaks and report.hac_ir_contract_valid:
+        raise ValueError("leaky abstraction report cannot validate leaked HAC-IR")
+
+
 def _validate_proof_identifier(value: str, label: str) -> None:
     if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
         raise ValueError(f"{label} must be a safe proof identifier")
@@ -317,7 +532,22 @@ def _validate_performance_report_text(value: str, label: str) -> None:
         raise ValueError(f"{label} exceeds performance proof readiness field limit")
 
 
+def _validate_leaky_abstraction_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{label} must be a non-empty string")
+    if len(value.encode("utf-8")) > MAX_LEAKY_ABSTRACTION_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds leaky abstraction field limit")
+
+
 __all__ = [
+    "LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES",
+    "LEAKY_ABSTRACTION_ARTIFACT_STATUS",
+    "LEAKY_ABSTRACTION_DEFAULT_ISSUES",
+    "LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS",
+    "LEAKY_ABSTRACTION_REPORT_SCHEMA_VERSION",
+    "LeakyAbstractionFact",
+    "LeakyAbstractionLeak",
+    "LeakyAbstractionReport",
     "MAX_PERFORMANCE_PROOF_READINESS_ISSUES",
     "MAX_PROOF_BACKENDS",
     "MAX_PROOF_METADATA_STRING_BYTES",
@@ -332,8 +562,11 @@ __all__ = [
     "PROOF_REPORT_SCHEMA_VERSION",
     "ProofReportMetadata",
     "assert_performance_proof_readiness",
+    "build_leaky_abstraction_report",
     "build_performance_proof_readiness_report",
+    "dump_leaky_abstraction_report",
     "dump_performance_proof_readiness_report",
+    "leaky_abstraction_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "proof_metadata_from_partition_plan",
 ]

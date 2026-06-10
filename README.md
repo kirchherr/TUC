@@ -79,6 +79,8 @@ The current prototype contains:
   marked as non-performance-proof artifacts.
 - Diagnostic planner-overhead reports that separate compiler/planner phases
   from execution timing.
+- Diagnostic leaky-abstraction reports that keep hardware-specific performance
+  facts outside HAC-IR.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.
@@ -212,6 +214,12 @@ Inspect the diagnostic planner-overhead report:
 python examples/planner_overhead_report.py
 ```
 
+Inspect the diagnostic leaky-abstraction report:
+
+```bash
+python examples/leaky_abstraction_report.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -256,6 +264,7 @@ pytest -q
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
+- [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

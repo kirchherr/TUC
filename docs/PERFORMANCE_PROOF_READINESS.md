@@ -63,6 +63,11 @@ existence of a bounded planner phase-separation report. It does not satisfy
 break-even workload-size evidence, execution timing evidence, native baseline
 comparison, or native performance parity.
 
+The current diagnostic leaky-abstraction report schema is
+`schemas/leaky_abstraction_report.v0.schema.json`. It can satisfy only the
+existence of a bounded HAC-IR boundary review report. It does not satisfy
+native baseline comparison, benchmark artifacts, or native performance parity.
+
 ## Blocked Claims
 
 The v0 report explicitly blocks:
