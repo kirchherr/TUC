@@ -123,6 +123,7 @@ tests/golden/frontend/triton_metadata_mvp_families_intake.txt
 tests/golden/hac_ir/triton_metadata_mvp_families.txt
 tests/golden/runtime_plans/triton_metadata_mvp_families.txt
 tests/golden/compiler_decisions/triton_metadata_mvp_families.txt
+tests/golden/execution_traces/triton_metadata_mvp_families.txt
 tests/golden/frontend/source_intent_intake_report.txt
 tests/golden/frontend/source_intent_intake_module.txt
 tests/golden/frontend/source_intent_intake_metadata.txt

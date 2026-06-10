@@ -1,0 +1,12 @@
+runtime.execution_trace @triton_metadata_mvp_families {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  steps {
+    score_projection planned_backend=linear-sim executor_backend=linear-sim kind=matmul inputs=q,k outputs=scores output_shapes=2x4 output_dtypes=float64 status=executed
+    attention_softmax planned_backend=reference-cpu executor_backend=reference-cpu kind=softmax inputs=scores outputs=weights output_shapes=2x4 output_dtypes=float64 status=executed
+    value_projection planned_backend=linear-sim executor_backend=linear-sim kind=matmul inputs=weights,v outputs=context output_shapes=2x3 output_dtypes=float64 status=executed
+    context_reduction planned_backend=linear-sim executor_backend=linear-sim kind=reduction inputs=context outputs=summary output_shapes=2 output_dtypes=float64 status=executed
+    summary_activation planned_backend=reference-cpu executor_backend=reference-cpu kind=elementwise inputs=summary outputs=activated output_shapes=2 output_dtypes=float64 status=executed
+  }
+}

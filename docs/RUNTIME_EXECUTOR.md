@@ -15,7 +15,9 @@ It is not a backend plugin system.
 - API: `execute_graph(graph, partition_plan, inputs)`
 - Trace API: `dump_execution_trace(trace)`
 - Trusted prototype executors: `linear-sim`, `reference-cpu`
-- Trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
+- Proof trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
+- MVP trace golden:
+  `tests/golden/execution_traces/triton_metadata_mvp_families.txt`
 - Tests: `tests/test_runtime_executor.py`
 
 ## Security Boundary

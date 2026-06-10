@@ -18,6 +18,7 @@ from tuc.reference import (
     reference_reduction_sum,
     reference_softmax,
 )
+from tuc.runtime import RuntimeExecutionResult, execute_graph
 
 FloatArray = NDArray[np.float64]
 
@@ -29,6 +30,7 @@ class TritonMvpMetadataReport:
     metadata: TritonKernelMetadata
     graph: ComputeGraph
     compiled: CompilationResult
+    execution: RuntimeExecutionResult
     result: FloatArray
     reference: FloatArray
     passed: bool
@@ -177,12 +179,14 @@ def run_report() -> TritonMvpMetadataReport:
     graph = metadata.to_compute_graph()
     compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
     inputs = mvp_inputs()
-    result = evaluate_graph(graph, inputs)
+    execution = execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)
+    result = execution.output_for("activated")
     expected = reference_result(inputs)
     return TritonMvpMetadataReport(
         metadata=metadata,
         graph=graph,
         compiled=compiled,
+        execution=execution,
         result=result,
         reference=expected,
         passed=np.allclose(result, expected, rtol=1e-12, atol=1e-12),
@@ -201,6 +205,9 @@ def main() -> None:
 
     print("\n== runtime plan ==")
     print(report.compiled.dump_runtime_plan())
+
+    print("\n== execution trace ==")
+    print(report.execution.trace.dump())
 
     print("\n== result ==")
     print(_format_array(report.result))

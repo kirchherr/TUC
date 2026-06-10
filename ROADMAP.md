@@ -140,6 +140,8 @@ Completed evidence:
 - Runtime Executor v0 executes already-compiled graphs through a fixed trusted
   in-process prototype executor registry and emits deterministic execution
   traces.
+- Runtime Executor MVP-family trace covers `matmul`, `softmax`, `reduction`,
+  and `elementwise` through the Triton-like metadata graph.
 - Proof-of-execution compiles, plans, executes, traces, and verifies a graph
   against independent reference semantics without plugin discovery, device
   access, subprocesses, JIT, or generated-artifact execution.
