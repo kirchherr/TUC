@@ -93,6 +93,14 @@ timers, warmup and iteration policies, statistic policy, isolation level,
 outlier handling, and reproducibility policy without storing raw timing samples
 or running benchmarks.
 
+Future performance proposals must also provide a bounded
+[Toolchain Environment Report](TOOLCHAIN_ENVIRONMENT_REPORT.md) matching
+`schemas/toolchain_environment_report.v0.schema.json` before benchmark output
+can be interpreted as reproducible evidence. The toolchain report records
+component identifiers, kinds, version IDs, provenance IDs, and digest status
+without reading environment variables, scanning packages, or discovering
+devices.
+
 Future native performance proposals must also pass the
 [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md). That
 readiness report does not run benchmarks, does not ingest raw benchmark output,
@@ -112,6 +120,12 @@ Native baseline candidates are tracked separately by the
 `schemas/native_baseline_provenance_report.v0.schema.json`. Baseline benchmark
 reports must not smuggle native implementation provenance, source paths,
 command lines, backend artifacts, or raw native output into timing data.
+
+Native comparison metadata is tracked separately by the
+[Native Baseline Comparison Report](NATIVE_BASELINE_COMPARISON_REPORT.md) and
+`schemas/native_baseline_comparison_report.v0.schema.json`. Baseline benchmark
+reports must not embed native comparison claims, raw native output, command
+lines, device identifiers, or benchmark report contents.
 
 Benchmark report artifact inventory is tracked separately by the
 [Benchmark Artifact Manifest Report](BENCHMARK_ARTIFACT_MANIFEST.md) and

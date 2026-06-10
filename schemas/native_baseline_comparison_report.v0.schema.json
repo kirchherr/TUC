@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/native_baseline_comparison_report.v0.schema.json",
+  "title": "TUC Native Baseline Comparison Report v0",
+  "description": "Diagnostic-only schema for native baseline comparison review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "claim_boundary",
+    "comparisons",
+    "issues",
+    "native_baseline_comparison_ready",
+    "native_performance_claim",
+    "performance_claim_status",
+    "proposal_name",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "comparisons": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/native_baseline_comparison"}
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_baseline_comparison_ready": {"type": "boolean"},
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "schema_version": {"const": "tuc.native_baseline_comparison_report.v0"}
+  },
+  "$defs": {
+    "comparison_digest": {
+      "type": "string",
+      "oneOf": [
+        {"const": "not_supplied"},
+        {"pattern": "^sha256:[0-9a-f]{64}$"}
+      ]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "result_status": {
+      "type": "string",
+      "enum": [
+        "not_measured",
+        "reported_not_validated",
+        "validated_by_ci"
+      ]
+    },
+    "native_baseline_comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "baseline_artifact_id",
+        "comparison_digest",
+        "comparison_id",
+        "comparison_metric_id",
+        "native_artifact_id",
+        "result_status",
+        "summary_policy_id",
+        "workload_scope_id"
+      ],
+      "properties": {
+        "baseline_artifact_id": {"$ref": "#/$defs/report_text"},
+        "comparison_digest": {"$ref": "#/$defs/comparison_digest"},
+        "comparison_id": {"$ref": "#/$defs/report_text"},
+        "comparison_metric_id": {"$ref": "#/$defs/report_text"},
+        "native_artifact_id": {"$ref": "#/$defs/report_text"},
+        "result_status": {"$ref": "#/$defs/result_status"},
+        "summary_policy_id": {"$ref": "#/$defs/report_text"},
+        "workload_scope_id": {"$ref": "#/$defs/report_text"}
+      }
+    }
+  }
+}

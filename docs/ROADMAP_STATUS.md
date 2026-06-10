@@ -118,6 +118,8 @@ Current slice:
   hardware-specific performance facts assigned outside HAC-IR.
 - Diagnostic Native Baseline Provenance Report for bounded native comparison
   candidate review without native execution or performance claims.
+- Diagnostic Native Baseline Comparison Report for bounded comparison metadata
+  between baseline and native benchmark artifacts without loading raw outputs.
 - Diagnostic Benchmark Artifact Manifest Report for benchmark report inventory
   through bounded IDs, schema versions, digest status, and storage scopes.
 - Diagnostic Workload Scope Report for operation-family, shape-profile,
@@ -125,9 +127,13 @@ Current slice:
 - Diagnostic Benchmark Methodology Report for measurement clocks, warmup and
   iteration policy, statistic policy, isolation, outlier handling, and
   reproducibility policy.
+- Diagnostic Toolchain Environment Report for versioned runtime, package,
+  compiler, driver, container, and OS component inventory without host
+  discovery.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
-  native baseline provenance, leaky-abstraction evidence, planner-overhead
-  evidence, correctness goldens, and security review exist.
+  native baseline provenance, native baseline comparison, leaky-abstraction
+  evidence, planner-overhead evidence, correctness goldens, and security review
+  exist.
 - Performance Proof Readiness report with deterministic blocked golden evidence
   for future native performance proposals.
 - First native MLIR design spike.

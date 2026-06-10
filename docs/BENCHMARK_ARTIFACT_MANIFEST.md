@@ -32,6 +32,9 @@ The v0 manifest tracks these benchmark artifact kinds:
 - `native_benchmark_report`
 - `native_baseline_comparison_report`
 
+The native baseline comparison artifact is described by
+`schemas/native_baseline_comparison_report.v0.schema.json`.
+
 Each entry contains:
 
 - `artifact_id`: stable identifier for the artifact

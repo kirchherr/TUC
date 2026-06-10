@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/toolchain_environment_report.v0.schema.json",
+  "title": "TUC Toolchain Environment Report v0",
+  "description": "Diagnostic-only schema for versioned toolchain environment review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "claim_boundary",
+    "components",
+    "issues",
+    "native_performance_claim",
+    "performance_claim_status",
+    "proposal_name",
+    "schema_version",
+    "toolchain_environment_ready"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "components": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/toolchain_component"}
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "schema_version": {"const": "tuc.toolchain_environment_report.v0"},
+    "toolchain_environment_ready": {"type": "boolean"}
+  },
+  "$defs": {
+    "component_digest": {
+      "type": "string",
+      "oneOf": [
+        {"const": "not_supplied"},
+        {"pattern": "^sha256:[0-9a-f]{64}$"}
+      ]
+    },
+    "component_kind": {
+      "type": "string",
+      "enum": [
+        "python_runtime",
+        "python_package",
+        "native_compiler",
+        "device_runtime",
+        "device_driver",
+        "container_image",
+        "operating_system"
+      ]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "toolchain_component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_digest",
+        "component_id",
+        "component_kind",
+        "provenance_id",
+        "version_id"
+      ],
+      "properties": {
+        "component_digest": {"$ref": "#/$defs/component_digest"},
+        "component_id": {"$ref": "#/$defs/report_text"},
+        "component_kind": {"$ref": "#/$defs/component_kind"},
+        "provenance_id": {"$ref": "#/$defs/report_text"},
+        "version_id": {"$ref": "#/$defs/report_text"}
+      }
+    }
+  }
+}

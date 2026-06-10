@@ -113,6 +113,31 @@ environment variables, raw benchmark output, raw timing samples, backend
 binaries, generated code, device identifiers, dynamic-library paths, or native
 source contents.
 
+## Toolchain Environment Gate
+
+Before benchmark output can be reproduced, a proposal must identify the
+versioned toolchain environment used for measurement.
+
+The proposal must include:
+
+- runtime component identifiers
+- package or compiler component identifiers
+- version identifiers
+- provenance identifiers
+- digest status for relevant components
+
+The current
+[Toolchain Environment Report](TOOLCHAIN_ENVIRONMENT_REPORT.md) defines the
+diagnostic report contract at
+`schemas/toolchain_environment_report.v0.schema.json`. It records toolchain
+component metadata, but it does not inspect the host, read environment
+variables, run discovery commands, access devices, or prove native performance.
+
+Toolchain environment reports must not include host paths, command lines,
+environment variables, secrets, package-manager output, hardware serials,
+device identifiers, dynamic-library paths, backend binaries, generated code, or
+native source contents.
+
 ## Planner Overhead Gate
 
 Before TUC may claim runtime planning is beneficial for a workload class, a
@@ -168,6 +193,35 @@ Native baseline provenance must not include host paths, command lines,
 environment variables, raw benchmark output, backend binaries, generated code,
 device identifiers, dynamic-library paths, or native source contents.
 
+## Native Baseline Comparison Gate
+
+Before TUC may interpret native benchmark data as comparison evidence, a
+proposal must identify the bounded comparison between TUC baseline artifacts and
+native benchmark artifacts.
+
+The proposal must include:
+
+- workload scope identifier
+- baseline benchmark artifact identifier
+- native benchmark artifact identifier
+- comparison metric identifier
+- summary policy identifier
+- validation status
+- comparison digest status
+
+The current
+[Native Baseline Comparison Report](NATIVE_BASELINE_COMPARISON_REPORT.md)
+defines the diagnostic report contract at
+`schemas/native_baseline_comparison_report.v0.schema.json`. It records only
+comparison metadata, validation status, and digest status. It does not load
+benchmark artifacts, parse raw benchmark output, store raw timing samples, or
+prove native performance.
+
+Native baseline comparison reports must not include host paths, URLs, command
+lines, environment variables, raw timing samples, raw native output, backend
+binaries, generated code, device identifiers, dynamic-library paths, or native
+source contents.
+
 ## Benchmark Artifact Manifest Gate
 
 Before benchmark report artifacts can count as future performance-proof
@@ -202,8 +256,10 @@ Any future performance proof must add:
 - dedicated performance proof RFC
 - benchmark methodology document
 - explicit benchmark methodology report
+- explicit toolchain environment report
 - explicit workload scope report
 - native baseline provenance
+- explicit native baseline comparison report
 - benchmark report schema
 - deterministic benchmark fixtures or stored report artifacts
 - explicit benchmark artifact manifest
@@ -252,20 +308,22 @@ Reviewers must reject performance claims unless every answer is yes:
 1. Is the claim scoped to a specific workload family and shape range?
 2. Is the workload scope report present and bounded?
 3. Is the benchmark methodology report present and bounded?
-4. Is the native baseline reproducible?
-5. Is the native baseline provenance report present and bounded?
-6. Is mathematical correctness still proven independently?
-7. Are planner overhead and execution time reported separately?
-8. Is the break-even workload size reported?
-9. Are cache effects explicit rather than hidden?
-10. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+4. Is the toolchain environment report present and bounded?
+5. Is the native baseline reproducible?
+6. Is the native baseline provenance report present and bounded?
+7. Is the native baseline comparison report present and bounded?
+8. Is mathematical correctness still proven independently?
+9. Are planner overhead and execution time reported separately?
+10. Is the break-even workload size reported?
+11. Are cache effects explicit rather than hidden?
+12. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-11. Is HAC-IR still hardware-neutral?
-12. Are runtime plans and compiler decisions golden-tested?
-13. Is benchmark provenance versioned?
-14. Is the benchmark artifact manifest present and bounded?
-15. Are any executable backend or device surfaces threat-modeled?
-16. Does the claim avoid broad wording such as "near native" unless the
+13. Is HAC-IR still hardware-neutral?
+14. Are runtime plans and compiler decisions golden-tested?
+15. Is benchmark provenance versioned?
+16. Is the benchmark artifact manifest present and bounded?
+17. Are any executable backend or device surfaces threat-modeled?
+18. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked
