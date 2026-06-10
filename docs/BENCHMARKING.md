@@ -138,3 +138,10 @@ Benchmark report artifact inventory is tracked separately by the
 `schemas/benchmark_artifact_manifest_report.v0.schema.json`. The manifest
 records artifact identifiers, schema versions, digest status, and storage
 scopes; it must not load artifacts or embed raw benchmark output.
+
+Executable backend and device security evidence is tracked separately by the
+[Executable Backend Security Review Report](EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md)
+and `schemas/executable_backend_security_review_report.v0.schema.json`.
+Baseline benchmark reports must not embed execution permission, dynamic-library
+paths, device identifiers, backend artifact contents, generated code, native
+source contents, or plugin entrypoints.

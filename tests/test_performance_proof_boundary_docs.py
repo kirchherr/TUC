@@ -22,6 +22,7 @@ def test_performance_proof_boundary_blocks_native_parity_claims() -> None:
         "Benchmark Methodology Gate",
         "Toolchain Environment Gate",
         "Benchmark Artifact Manifest Gate",
+        "Executable Backend Security Review Gate",
         "Planner overhead must not be hidden inside execution time",
         "If planning time is greater than execution time",
         "If a workload requires a hardware-specific optimization",
@@ -33,6 +34,7 @@ def test_performance_proof_boundary_blocks_native_parity_claims() -> None:
         "schemas/benchmark_methodology_report.v0.schema.json",
         "schemas/toolchain_environment_report.v0.schema.json",
         "schemas/benchmark_artifact_manifest_report.v0.schema.json",
+        "schemas/executable_backend_security_review_report.v0.schema.json",
         "hardware-specific performance knobs to HAC-IR",
         "Performance Proof Readiness Report",
         "PERFORMANCE_PROOF_REQUIRED_EVIDENCE",
@@ -95,6 +97,7 @@ def test_performance_proof_readiness_doc_is_report_only() -> None:
         "schemas/benchmark_methodology_report.v0.schema.json",
         "schemas/toolchain_environment_report.v0.schema.json",
         "schemas/benchmark_artifact_manifest_report.v0.schema.json",
+        "schemas/executable_backend_security_review_report.v0.schema.json",
         "must not include raw benchmark output",
         "Unknown evidence IDs and duplicate evidence IDs fail closed",
     ):
@@ -138,6 +141,7 @@ def test_benchmarking_doc_references_performance_boundary() -> None:
         "Benchmark Methodology Report",
         "Toolchain Environment Report",
         "Benchmark Artifact Manifest Report",
+        "Executable Backend Security Review Report",
     ):
         assert expected in text
 
@@ -162,6 +166,7 @@ def test_proof_review_doc_blocks_performance_claims() -> None:
         "benchmark artifact manifest",
         "planner-overhead report",
         "break-even workload-size report",
+        "executable backend security review report",
     ):
         assert expected in text
 

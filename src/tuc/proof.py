@@ -189,6 +189,31 @@ BREAK_EVEN_WORKLOAD_SIZE_DEFAULT_ISSUES = (
     "break_even_workloads_not_supplied",
     "native_performance_claim_blocked",
 )
+EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_SCHEMA_VERSION = (
+    "tuc.executable_backend_security_review_report.v0"
+)
+EXECUTABLE_BACKEND_SECURITY_REVIEW_ARTIFACT_STATUS = "diagnostic_only"
+EXECUTABLE_BACKEND_SECURITY_REVIEW_CLAIM_STATUS = "blocked"
+EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES = (
+    "backend_artifact_execution",
+    "cache_access",
+    "device_access",
+    "dynamic_library_loading",
+    "generated_code_execution",
+    "native_code_execution",
+    "network_access",
+    "plugin_discovery",
+    "subprocess_execution",
+)
+EXECUTABLE_BACKEND_SECURITY_REVIEW_STATUSES = (
+    "not_reviewed",
+    "reviewed_not_approved",
+    "approved_by_maintainers",
+)
+EXECUTABLE_BACKEND_SECURITY_REVIEW_DEFAULT_ISSUES = (
+    "executable_backend_security_reviews_not_supplied",
+    "native_performance_claim_blocked",
+)
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
@@ -219,6 +244,9 @@ MAX_BREAK_EVEN_WORKLOAD_SIZE_REPORT_BYTES = 64 * 1024
 MAX_BREAK_EVEN_WORKLOAD_SIZE_FIELD_BYTES = 512
 MAX_BREAK_EVEN_WORKLOADS = 128
 MAX_BREAK_EVEN_WORKLOAD_SIZE = WORKLOAD_SCOPE_MAX_PROBLEM_SIZE
+MAX_EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_BYTES = 64 * 1024
+MAX_EXECUTABLE_BACKEND_SECURITY_REVIEW_FIELD_BYTES = 512
+MAX_EXECUTABLE_BACKEND_SECURITY_REVIEWS = 128
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
@@ -530,6 +558,39 @@ class BreakEvenWorkloadSizeReport:
         return bool(self.workloads) and not break_even_issues
 
 
+@dataclass(frozen=True)
+class ExecutableBackendSecurityReview:
+    """One data-only executable backend security review entry."""
+
+    review_id: str
+    reviewed_surface: str
+    threat_model_id: str
+    sandbox_model_id: str
+    resource_budget_id: str
+    provenance_id: str
+    review_status: str = "not_reviewed"
+    fuzzing_evidence_id: str = "not_supplied"
+    review_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class ExecutableBackendSecurityReviewReport:
+    """Diagnostic report for executable backend security review."""
+
+    proposal_name: str
+    reviews: tuple[ExecutableBackendSecurityReview, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def executable_backend_security_review_ready(self) -> bool:
+        security_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue.startswith("executable_backend_security")
+        )
+        return bool(self.reviews) and not security_issues
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -801,6 +862,44 @@ def build_break_even_workload_size_report(
     return BreakEvenWorkloadSizeReport(
         proposal_name=proposal_name,
         workloads=normalized_workloads,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
+def build_executable_backend_security_review_report(
+    proposal_name: str,
+    reviews: Iterable[ExecutableBackendSecurityReview] = (),
+) -> ExecutableBackendSecurityReviewReport:
+    """Build a bounded data-only executable backend security review report."""
+
+    _validate_executable_backend_security_text(proposal_name, "proposal_name")
+    normalized_reviews = _normalize_executable_backend_security_reviews(reviews)
+    issues = list(EXECUTABLE_BACKEND_SECURITY_REVIEW_DEFAULT_ISSUES)
+    if normalized_reviews:
+        issues.remove("executable_backend_security_reviews_not_supplied")
+    if any(
+        review.review_status != "approved_by_maintainers"
+        for review in normalized_reviews
+    ):
+        issues.append("executable_backend_security_review_not_approved")
+    if any(
+        "not_supplied"
+        in {
+            review.threat_model_id,
+            review.sandbox_model_id,
+            review.resource_budget_id,
+            review.provenance_id,
+            review.fuzzing_evidence_id,
+        }
+        for review in normalized_reviews
+    ):
+        issues.append("executable_backend_security_review_evidence_not_supplied")
+    if any(review.review_digest == "not_supplied" for review in normalized_reviews):
+        issues.append("executable_backend_security_review_digest_not_supplied")
+
+    return ExecutableBackendSecurityReviewReport(
+        proposal_name=proposal_name,
+        reviews=normalized_reviews,
         issues=tuple(dict.fromkeys(issues)),
     )
 
@@ -1104,6 +1203,42 @@ def break_even_workload_size_report_to_dict(
     }
 
 
+def executable_backend_security_review_report_to_dict(
+    report: ExecutableBackendSecurityReviewReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible backend security report."""
+
+    _validate_executable_backend_security_review_report(report)
+    return {
+        "artifact_status": EXECUTABLE_BACKEND_SECURITY_REVIEW_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "executable_backend_security_review_ready": (
+            report.executable_backend_security_review_ready
+        ),
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": EXECUTABLE_BACKEND_SECURITY_REVIEW_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "reviews": [
+            {
+                "fuzzing_evidence_id": review.fuzzing_evidence_id,
+                "provenance_id": review.provenance_id,
+                "resource_budget_id": review.resource_budget_id,
+                "review_digest": review.review_digest,
+                "review_id": review.review_id,
+                "review_status": review.review_status,
+                "reviewed_surface": review.reviewed_surface,
+                "sandbox_model_id": review.sandbox_model_id,
+                "threat_model_id": review.threat_model_id,
+            }
+            for review in report.reviews
+        ],
+        "schema_version": (
+            EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_SCHEMA_VERSION
+        ),
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -1220,6 +1355,24 @@ def dump_break_even_workload_size_report(
     )
     if len(text.encode("utf-8")) > MAX_BREAK_EVEN_WORKLOAD_SIZE_REPORT_BYTES:
         raise ValueError("break-even workload-size report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_executable_backend_security_review_report(
+    report: ExecutableBackendSecurityReviewReport,
+) -> str:
+    """Render a stable diagnostic executable backend security report."""
+
+    text = json.dumps(
+        executable_backend_security_review_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if (
+        len(text.encode("utf-8"))
+        > MAX_EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_BYTES
+    ):
+        raise ValueError("executable backend security report exceeds byte limit")
     return text + "\n"
 
 
@@ -1497,6 +1650,51 @@ def _normalize_break_even_workloads(
     return normalized
 
 
+def _normalize_executable_backend_security_reviews(
+    reviews: Iterable[ExecutableBackendSecurityReview],
+) -> tuple[ExecutableBackendSecurityReview, ...]:
+    normalized = tuple(reviews)
+    if len(normalized) > MAX_EXECUTABLE_BACKEND_SECURITY_REVIEWS:
+        raise ValueError("executable backend security review count exceeds limit")
+    seen: set[str] = set()
+    for review in normalized:
+        if not isinstance(review, ExecutableBackendSecurityReview):
+            raise TypeError(
+                "executable backend security reviews must be "
+                "ExecutableBackendSecurityReview"
+            )
+        _validate_executable_backend_security_text(review.review_id, "review_id")
+        _validate_executable_backend_security_text(
+            review.threat_model_id,
+            "threat_model_id",
+        )
+        _validate_executable_backend_security_text(
+            review.sandbox_model_id,
+            "sandbox_model_id",
+        )
+        _validate_executable_backend_security_text(
+            review.resource_budget_id,
+            "resource_budget_id",
+        )
+        _validate_executable_backend_security_text(
+            review.provenance_id,
+            "provenance_id",
+        )
+        _validate_executable_backend_security_text(
+            review.fuzzing_evidence_id,
+            "fuzzing_evidence_id",
+        )
+        if review.review_id in seen:
+            raise ValueError("duplicate executable backend security review id")
+        if review.reviewed_surface not in EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES:
+            raise ValueError("unsupported executable backend security surface")
+        if review.review_status not in EXECUTABLE_BACKEND_SECURITY_REVIEW_STATUSES:
+            raise ValueError("unsupported executable backend security review status")
+        _validate_executable_backend_security_digest(review.review_digest)
+        seen.add(review.review_id)
+    return normalized
+
+
 def _normalize_performance_evidence(
     evidence: Iterable[PerformanceProofReadinessEvidence],
 ) -> dict[str, bool]:
@@ -1667,6 +1865,17 @@ def _validate_break_even_workload_report(
         _validate_break_even_workload_text(issue, "issue")
 
 
+def _validate_executable_backend_security_review_report(
+    report: ExecutableBackendSecurityReviewReport,
+) -> None:
+    if not isinstance(report, ExecutableBackendSecurityReviewReport):
+        raise TypeError("executable backend security report must be report object")
+    _validate_executable_backend_security_text(report.proposal_name, "proposal_name")
+    _normalize_executable_backend_security_reviews(report.reviews)
+    for issue in report.issues:
+        _validate_executable_backend_security_text(issue, "issue")
+
+
 def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
     if not isinstance(report, LeakyAbstractionReport):
         raise TypeError("leaky abstraction report must be report object")
@@ -1828,6 +2037,24 @@ def _validate_break_even_workload_digest(value: str) -> None:
         raise ValueError("evidence_digest must be not_supplied or sha256 digest")
 
 
+def _validate_executable_backend_security_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(
+            f"{label} must be a safe executable backend security identifier"
+        )
+    if len(value.encode("utf-8")) > MAX_EXECUTABLE_BACKEND_SECURITY_REVIEW_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds executable backend security field limit")
+
+
+def _validate_executable_backend_security_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("review_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("review_digest must be not_supplied or sha256 digest")
+
+
 def _validate_leaky_abstraction_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{label} must be a non-empty string")
@@ -1862,6 +2089,14 @@ __all__ = [
     "BREAK_EVEN_WORKLOAD_SIZE_STATUSES",
     "BreakEvenWorkloadSize",
     "BreakEvenWorkloadSizeReport",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_ARTIFACT_STATUS",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_CLAIM_STATUS",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_DEFAULT_ISSUES",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_SCHEMA_VERSION",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_STATUSES",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES",
+    "ExecutableBackendSecurityReview",
+    "ExecutableBackendSecurityReviewReport",
     "LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES",
     "LEAKY_ABSTRACTION_ARTIFACT_STATUS",
     "LEAKY_ABSTRACTION_DEFAULT_ISSUES",
@@ -1921,6 +2156,7 @@ __all__ = [
     "build_benchmark_artifact_manifest_report",
     "build_benchmark_methodology_report",
     "build_break_even_workload_size_report",
+    "build_executable_backend_security_review_report",
     "build_leaky_abstraction_report",
     "build_native_baseline_comparison_report",
     "build_native_baseline_provenance_report",
@@ -1929,6 +2165,7 @@ __all__ = [
     "dump_benchmark_artifact_manifest_report",
     "dump_benchmark_methodology_report",
     "dump_break_even_workload_size_report",
+    "dump_executable_backend_security_review_report",
     "dump_toolchain_environment_report",
     "dump_leaky_abstraction_report",
     "dump_native_baseline_comparison_report",
@@ -1940,6 +2177,7 @@ __all__ = [
     "native_baseline_provenance_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "proof_metadata_from_partition_plan",
+    "executable_backend_security_review_report_to_dict",
     "toolchain_environment_report_to_dict",
     "workload_scope_report_to_dict",
 ]

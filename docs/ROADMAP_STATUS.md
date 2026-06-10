@@ -132,10 +132,12 @@ Current slice:
 - Diagnostic Toolchain Environment Report for versioned runtime, package,
   compiler, driver, container, and OS component inventory without host
   discovery.
+- Diagnostic Executable Backend Security Review Report for future executable
+  surfaces without approving execution.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, native baseline comparison, leaky-abstraction
-  evidence, planner-overhead evidence, correctness goldens, and security review
-  exist.
+  evidence, planner-overhead evidence, correctness goldens, and executable
+  backend security review exist.
 - Performance Proof Readiness report with deterministic blocked golden evidence
   for future native performance proposals.
 - First native MLIR design spike.

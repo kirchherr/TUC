@@ -23,6 +23,7 @@ docs/PERFORMANCE_PROOF_READINESS.md
 docs/NATIVE_BASELINE_PROVENANCE.md
 docs/NATIVE_BASELINE_COMPARISON_REPORT.md
 docs/BREAK_EVEN_WORKLOAD_SIZE_REPORT.md
+docs/EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md
 docs/BENCHMARK_ARTIFACT_MANIFEST.md
 docs/WORKLOAD_SCOPE_REPORT.md
 docs/BENCHMARK_METHODOLOGY_REPORT.md
@@ -106,7 +107,7 @@ the performance proof boundary and readiness report supply:
 - runtime-plan and compiler decision-report goldens
 - deterministic benchmark report artifacts
 - benchmark artifact manifest
-- security review for any executable backend or device access
+- executable backend security review report
 
 ## Required Validation
 

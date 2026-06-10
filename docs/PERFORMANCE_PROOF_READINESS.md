@@ -110,6 +110,13 @@ the existence of a bounded benchmark artifact inventory contract. It does not
 load benchmark artifacts, satisfy benchmark result acceptance, validate raw
 native output, or prove native performance parity.
 
+The current diagnostic executable backend security review report schema is
+`schemas/executable_backend_security_review_report.v0.schema.json`. It can
+satisfy only the existence of a bounded executable-surface security review
+metadata contract. It does not execute backend artifacts, access devices, load
+dynamic libraries, run subprocesses, discover plugins, or approve native
+performance parity.
+
 ## Blocked Claims
 
 The v0 report explicitly blocks:
@@ -174,6 +181,11 @@ The readiness report is not a break-even workload-size report. Break-even
 metadata is tracked by
 [Break-Even Workload Size Report](BREAK_EVEN_WORKLOAD_SIZE_REPORT.md), which is
 data-only and remains separate from raw timing samples.
+
+The readiness report is not an executable backend security review report.
+Executable-surface security evidence is tracked by
+[Executable Backend Security Review Report](EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md),
+which is data-only and remains separate from execution permission.
 
 ## Evidence
 

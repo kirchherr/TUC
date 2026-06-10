@@ -278,6 +278,37 @@ environment variables, raw timing samples, raw native output, backend binaries,
 generated code, device identifiers, dynamic-library paths, or native source
 contents.
 
+## Executable Backend Security Review Gate
+
+Before TUC may use executable backend behavior, generated artifacts, device
+access, dynamic libraries, subprocesses, plugin discovery, native code, network
+access, or cache access as performance-proof evidence, a proposal must identify
+the accepted security review for each executable surface.
+
+The proposal must include:
+
+- reviewed executable surface
+- threat model identifier
+- sandbox model identifier
+- resource budget identifier
+- provenance identifier
+- fuzzing, sanitizer, property-test, or negative-test evidence identifier
+- maintainer approval status
+- security review digest status
+
+The current
+[Executable Backend Security Review Report](EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md)
+defines the diagnostic report contract at
+`schemas/executable_backend_security_review_report.v0.schema.json`. It records
+only bounded security review metadata. It does not execute backend artifacts,
+access devices, load dynamic libraries, run subprocesses, discover plugins, or
+prove native performance.
+
+Executable backend security review reports must not include host paths, command
+lines, environment variables, raw benchmark output, raw timing samples, backend
+artifact contents, generated code, device identifiers, dynamic-library paths, or
+native source contents.
+
 ## Required Future Evidence
 
 Any future performance proof must add:
@@ -298,8 +329,7 @@ Any future performance proof must add:
 - explicit break-even workload-size report
 - explicit leaky-abstraction report
 - explicit native baseline provenance report
-- security review for any executable backend, device access, generated artifact,
-  cache, subprocess, dynamic library, or native code used by benchmarking
+- explicit executable backend security review report
 
 ## Performance Proof Readiness Report
 
@@ -352,7 +382,7 @@ Reviewers must reject performance claims unless every answer is yes:
 14. Are runtime plans and compiler decisions golden-tested?
 15. Is benchmark provenance versioned?
 16. Is the benchmark artifact manifest present and bounded?
-17. Are any executable backend or device surfaces threat-modeled?
+17. Is the executable backend security review report present and bounded?
 18. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 

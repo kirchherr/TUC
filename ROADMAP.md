@@ -145,6 +145,9 @@ Completed evidence:
   before benchmark numbers can become evidence.
 - Toolchain-environment reports identify versioned runtime, package, compiler,
   driver, container, and OS components without host discovery.
+- Executable-backend security review reports identify future executable
+  surfaces, threat models, sandbox models, budgets, provenance, fuzzing
+  evidence, and maintainer approval without approving execution.
 
 Next work:
 
@@ -339,6 +342,8 @@ Deliverables:
   boundaries.
 - Benchmark Methodology Report for diagnostic measurement policy review.
 - Toolchain Environment Report for diagnostic versioned environment review.
+- Executable Backend Security Review Report for diagnostic executable-surface
+  security review.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -417,6 +422,10 @@ Go/No-Go:
 - Toolchain-environment reports must remain data-only and must not include host
   paths, environment variables, secrets, package-manager output, device
   identifiers, backend binaries, or generated code.
+- Executable-backend security review reports must remain data-only and must not
+  include host paths, environment variables, backend artifact contents, device
+  identifiers, dynamic-library paths, native source contents, generated code, or
+  execution permission.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

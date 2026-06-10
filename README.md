@@ -95,6 +95,8 @@ The current prototype contains:
   iteration policy, statistic policy, isolation, and reproducibility policy.
 - Diagnostic toolchain-environment reports that identify versioned runtime,
   package, compiler, driver, container, and OS components without host discovery.
+- Diagnostic executable-backend security review reports that track future
+  executable surfaces without approving execution.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, native comparison, benchmark artifact, and
   executable-backend security evidence before native performance claims.
@@ -276,6 +278,12 @@ Inspect the diagnostic toolchain-environment report:
 python examples/toolchain_environment_report.py
 ```
 
+Inspect the diagnostic executable-backend security review report:
+
+```bash
+python examples/executable_backend_security_review_report.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -328,6 +336,7 @@ pytest -q
 - [Workload scope report](docs/WORKLOAD_SCOPE_REPORT.md)
 - [Benchmark methodology report](docs/BENCHMARK_METHODOLOGY_REPORT.md)
 - [Toolchain environment report](docs/TOOLCHAIN_ENVIRONMENT_REPORT.md)
+- [Executable backend security review report](docs/EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
