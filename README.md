@@ -77,6 +77,8 @@ The current prototype contains:
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Schema-versioned diagnostic baseline benchmark reports that are explicitly
   marked as non-performance-proof artifacts.
+- Diagnostic planner-overhead reports that separate compiler/planner phases
+  from execution timing.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.
@@ -204,6 +206,12 @@ Inspect the intentionally blocked performance proof readiness report:
 python examples/performance_proof_readiness.py
 ```
 
+Inspect the diagnostic planner-overhead report:
+
+```bash
+python examples/planner_overhead_report.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -247,6 +255,7 @@ pytest -q
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
+- [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

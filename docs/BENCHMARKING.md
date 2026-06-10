@@ -82,3 +82,7 @@ Future native performance proposals must also pass the
 [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md). That
 readiness report does not run benchmarks, does not ingest raw benchmark output,
 and does not turn local timing data into a proof claim.
+
+Planner timing is tracked separately by the
+[Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md). Baseline benchmark
+reports must not hide planner overhead inside execution timing.

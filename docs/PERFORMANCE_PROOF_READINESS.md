@@ -57,6 +57,12 @@ satisfy native baseline comparison, planner-overhead report,
 leaky-abstraction report, benchmark report artifacts, or executable backend
 security review.
 
+The current diagnostic planner-overhead report schema is
+`schemas/planner_overhead_report.v0.schema.json`. It can satisfy only the
+existence of a bounded planner phase-separation report. It does not satisfy
+break-even workload-size evidence, execution timing evidence, native baseline
+comparison, or native performance parity.
+
 ## Blocked Claims
 
 The v0 report explicitly blocks:

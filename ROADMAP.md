@@ -124,6 +124,8 @@ Completed evidence:
   and executable-backend security evidence exists.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
+- Planner-overhead reports separate compiler/planner phases from execution
+  timing and keep break-even claims blocked.
 
 Next work:
 
@@ -305,6 +307,7 @@ Deliverables:
 - Optional performance baselines, treated as diagnostic data rather than the
   core success metric.
 - Baseline benchmark report schema for diagnostic-only timing artifacts.
+- Planner Overhead Report for diagnostic compiler/planner phase separation.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -357,6 +360,8 @@ Go/No-Go:
   security review, and a passing Performance Proof Readiness report exist.
 - Baseline benchmark reports must remain diagnostic-only unless a future native
   benchmark RFC adds separate provenance, artifact, and security gates.
+- Planner-overhead reports must keep execution timing and break-even workload
+  claims explicit rather than hidden in aggregate benchmark numbers.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

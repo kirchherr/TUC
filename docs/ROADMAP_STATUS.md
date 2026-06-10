@@ -112,6 +112,8 @@ Current slice:
 - Baseline benchmark harness that can run with or without CUDA.
 - Schema-versioned diagnostic baseline benchmark report contract with explicit
   non-performance-proof markers.
+- Diagnostic Planner Overhead Report for compiler/planner phase separation
+  with execution timing and break-even claims still blocked.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, leaky-abstraction evidence, planner-overhead
   evidence, correctness goldens, and security review exist.

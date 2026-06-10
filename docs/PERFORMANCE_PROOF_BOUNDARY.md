@@ -79,6 +79,12 @@ as planner-overhead dominated.
 
 Planner overhead must not be hidden inside execution time.
 
+The current [Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md) defines the
+diagnostic report contract at
+`schemas/planner_overhead_report.v0.schema.json`. It separates compiler and
+runtime-planning phases from execution time, but execution time and break-even
+workload size remain explicitly not measured.
+
 ## Required Future Evidence
 
 Any future performance proof must add:
