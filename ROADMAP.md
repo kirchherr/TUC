@@ -154,6 +154,9 @@ Completed evidence:
   compiler-decision, readiness, trace, and correctness evidence across current
   graph fixtures with deterministic schema and golden output; the current
   matrix is complete across all accepted graph fixtures.
+- Runtime Executor Conformance v0 verifies the fixed trusted executor registry
+  against MVP operation-family support and rejection behavior with deterministic
+  schema and golden output.
 - Objective Alpha abstraction, reduction, and softmax proofs now execute through
   Runtime Executor v0 and emit readiness and trace goldens before their
   correctness result is accepted.

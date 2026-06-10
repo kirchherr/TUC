@@ -93,6 +93,12 @@ Implemented now:
   missing-evidence issues deterministically, and never scans repositories,
   imports code, discovers plugins, or executes artifacts. The current matrix is
   complete across all accepted graph fixtures.
+- Runtime Executor Conformance v0 checks the fixed trusted in-process executor
+  registry with bounded in-memory operation fixtures only. It verifies support
+  and rejection behavior without backend discovery, imports, subprocesses,
+  device access, network access, JIT, dynamic libraries, generated-artifact
+  execution, host-path reads, command-line capture, raw benchmark output, or
+  arbitrary issue text.
 - Objective Alpha abstraction, reduction, and softmax proofs now validate
   Runtime Execution Readiness before trusted in-process execution and emit
   deterministic traces without adding plugin discovery, device access, dynamic

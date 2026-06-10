@@ -91,6 +91,8 @@ The current prototype contains:
 - Runtime Evidence Matrix v0 with schema-versioned, data-only proof inventory
   for HAC-IR, runtime-plan, compiler-decision, readiness, trace, and correctness
   evidence, now complete across current graph fixtures.
+- Runtime Executor Conformance v0 with schema-versioned golden evidence for
+  trusted executor support and rejection behavior.
 - Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
   Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and
@@ -217,6 +219,12 @@ Inspect the runtime evidence matrix:
 
 ```bash
 python examples/runtime_evidence_matrix.py
+```
+
+Inspect trusted runtime executor conformance:
+
+```bash
+python examples/runtime_executor_conformance.py
 ```
 
 Inspect data-movement metadata:
@@ -393,6 +401,7 @@ pytest -q
 - [Proof of softmax](docs/PROOF_OF_SOFTMAX.md)
 - [Proof of execution](docs/PROOF_OF_EXECUTION.md)
 - [Runtime Executor v0](docs/RUNTIME_EXECUTOR.md)
+- [Runtime Executor Conformance](docs/RUNTIME_EXECUTOR_CONFORMANCE.md)
 - [Runtime evidence matrix](docs/RUNTIME_EVIDENCE_MATRIX.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)

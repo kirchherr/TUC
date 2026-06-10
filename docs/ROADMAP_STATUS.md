@@ -56,6 +56,10 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Matrix v0 with schema-versioned proof inventory and
   deterministic golden at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
 - Runtime Evidence Matrix v0 is complete across current graph fixtures.
+- Runtime Executor Conformance v0 with schema-versioned trusted registry
+  conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
+  and deterministic golden at
+  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
@@ -126,6 +130,10 @@ Current slice:
 - Runtime Evidence Matrix report at
   `schemas/runtime_evidence_matrix_report.v0.schema.json`, with golden evidence
   at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
+- Runtime Executor Conformance report at
+  `schemas/runtime_executor_conformance_report.v0.schema.json`, with golden
+  evidence at
+  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Proof-of-execution independent evidence goldens at
   `tests/golden/hac_ir/proof_of_execution.txt`,
   `tests/golden/runtime_plans/proof_of_execution.txt`, and

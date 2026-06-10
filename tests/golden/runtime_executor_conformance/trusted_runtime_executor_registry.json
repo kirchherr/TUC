@@ -1,0 +1,109 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_count": 8,
+  "checked_cases": [
+    {
+      "case_name": "linear-sim_matmul_supported",
+      "executor_name": "linear-sim",
+      "expected_status": "supported",
+      "observed_status": "executed",
+      "operation_kind": "matmul",
+      "output_dtype": "float64",
+      "output_shape": [
+        2,
+        2
+      ]
+    },
+    {
+      "case_name": "linear-sim_elementwise_unsupported",
+      "executor_name": "linear-sim",
+      "expected_status": "unsupported",
+      "observed_status": "rejected",
+      "operation_kind": "elementwise",
+      "output_dtype": "not_executed",
+      "output_shape": []
+    },
+    {
+      "case_name": "linear-sim_reduction_supported",
+      "executor_name": "linear-sim",
+      "expected_status": "supported",
+      "observed_status": "executed",
+      "operation_kind": "reduction",
+      "output_dtype": "float64",
+      "output_shape": [
+        2
+      ]
+    },
+    {
+      "case_name": "linear-sim_softmax_unsupported",
+      "executor_name": "linear-sim",
+      "expected_status": "unsupported",
+      "observed_status": "rejected",
+      "operation_kind": "softmax",
+      "output_dtype": "not_executed",
+      "output_shape": []
+    },
+    {
+      "case_name": "reference-cpu_matmul_supported",
+      "executor_name": "reference-cpu",
+      "expected_status": "supported",
+      "observed_status": "executed",
+      "operation_kind": "matmul",
+      "output_dtype": "float64",
+      "output_shape": [
+        2,
+        2
+      ]
+    },
+    {
+      "case_name": "reference-cpu_elementwise_supported",
+      "executor_name": "reference-cpu",
+      "expected_status": "supported",
+      "observed_status": "executed",
+      "operation_kind": "elementwise",
+      "output_dtype": "float64",
+      "output_shape": [
+        2,
+        2
+      ]
+    },
+    {
+      "case_name": "reference-cpu_reduction_supported",
+      "executor_name": "reference-cpu",
+      "expected_status": "supported",
+      "observed_status": "executed",
+      "operation_kind": "reduction",
+      "output_dtype": "float64",
+      "output_shape": [
+        2
+      ]
+    },
+    {
+      "case_name": "reference-cpu_softmax_supported",
+      "executor_name": "reference-cpu",
+      "expected_status": "supported",
+      "observed_status": "executed",
+      "operation_kind": "softmax",
+      "output_dtype": "float64",
+      "output_shape": [
+        2,
+        3
+      ]
+    }
+  ],
+  "conformance_contract": "runtime_executor_conformance.trusted.v0",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "issues": [],
+  "passed": true,
+  "schema_version": "tuc.runtime_executor_conformance_report.v0",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

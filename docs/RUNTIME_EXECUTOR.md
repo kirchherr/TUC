@@ -20,6 +20,11 @@ It is not a backend plugin system.
 - Readiness API: `runtime_execution_readiness_report(graph, partition_plan)`
 - Trace API: `dump_execution_trace(trace)`
 - Backend contract API: `trusted_runtime_executor_contracts()`
+- Conformance API: `run_runtime_executor_conformance()`
+- Conformance report schema:
+  `schemas/runtime_executor_conformance_report.v0.schema.json`
+- Conformance golden:
+  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`
 - Trusted prototype executors: `linear-sim`, `reference-cpu`
 - Readiness golden:
   `tests/golden/execution_readiness/proof_of_execution.txt`
@@ -43,6 +48,8 @@ It is not a backend plugin system.
 - Trusted backend contract golden:
   `tests/golden/runtime_backend_contracts/trusted_runtime_executor_registry.txt`
 - Tests: `tests/test_runtime_executor.py`
+- Conformance tests: `tests/test_runtime_executor_conformance.py`,
+  `tests/test_runtime_executor_conformance_schema.py`
 
 ## Security Boundary
 
@@ -92,6 +99,23 @@ rejected before input normalization or kernel execution.
 The Objective Alpha proof graphs, proof-of-execution graph, and Triton-like MVP
 metadata graph all have readiness goldens, so contract gates are validated
 before their execution traces are accepted as evidence.
+
+## Executor Conformance
+
+Runtime Executor Conformance v0 checks the fixed trusted executor registry
+itself. It runs bounded in-memory fixtures for `matmul`, `elementwise`,
+`reduction`, and `softmax` against every trusted executor.
+
+The report requires:
+
+- `linear-sim` to execute `matmul` and `reduction`
+- `linear-sim` to reject `elementwise` and `softmax`
+- `reference-cpu` to execute all MVP operation families
+
+The schema-versioned report is documented in
+[Runtime Executor Conformance](RUNTIME_EXECUTOR_CONFORMANCE.md). It keeps
+unsupported execution visible as a clean rejection and does not authorize
+external backend artifacts.
 
 ## Operation Semantic Contract
 
