@@ -244,6 +244,10 @@ Implemented now:
   backend author path, combining claim review, registry loading, compiler
   assignment, conformance, and assigned-subgraph lowering without adding plugin
   discovery or runtime execution permission.
+- Backend Author Evidence Gate runs in the read-only CI job and composes
+  Manifest Claim Review plus Backend Author Readiness without requiring
+  repository write permissions, secrets, publishing tokens, device access,
+  network access, or backend artifact execution.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

@@ -150,6 +150,13 @@ tests/golden/backend_author_readiness/external_vector_readiness_report.json
 The report must be `ready: true` before maintainers treat the author path as
 complete.
 
+Backend onboarding changes must also keep the
+[Backend Author Evidence Gate](BACKEND_AUTHOR_EVIDENCE_GATE.md) passing:
+
+```bash
+python examples/backend_author_evidence_gate.py
+```
+
 ## Conformance Fixture Requirements
 
 Backend authors must also add a positive/rejection conformance test using:

@@ -65,6 +65,12 @@ underlying evidence artifacts:
 python examples/external_backend_author_path.py
 ```
 
+Run the CI-facing gate that consumes this readiness evidence:
+
+```bash
+python examples/backend_author_evidence_gate.py
+```
+
 Readiness means the v0 authoring evidence is internally consistent. It is not a
 hardware certification, performance claim, plugin approval, or runtime
 execution permission.

@@ -105,6 +105,8 @@ The current prototype contains:
   registry loading, compiler planning, conformance, or trusted lowering.
 - Backend Author Readiness as a single schema-versioned pass/fail artifact for
   the external backend author path.
+- Backend Author Evidence Gate for CI-facing external backend onboarding
+  evidence.
 - Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
   Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and
@@ -311,6 +313,12 @@ Inspect backend author readiness:
 python examples/backend_author_readiness.py
 ```
 
+Run the Backend Author Evidence Gate used by CI:
+
+```bash
+python examples/backend_author_evidence_gate.py
+```
+
 Run the baseline benchmark harness:
 
 ```bash
@@ -476,6 +484,7 @@ pytest -q
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)
 - [Backend author readiness](docs/BACKEND_AUTHOR_READINESS.md)
+- [Backend Author Evidence Gate](docs/BACKEND_AUTHOR_EVIDENCE_GATE.md)
 - [Backend capability registry](docs/BACKEND_REGISTRY.md)
 - [Compiler decision report](docs/COMPILER_DECISION_REPORT.md)
 - [Runtime manual override policy](docs/RUNTIME_OVERRIDE_POLICY.md)

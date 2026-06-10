@@ -1,0 +1,8 @@
+backend_author.evidence_gate @backend_author_evidence_gate_v0 {
+  manifest_claim_review = "passed"
+  manifest_claim_review_cases = "4"
+  backend_author_readiness = "ready"
+  backend_author_readiness_checks = "5"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "PASS"
+}

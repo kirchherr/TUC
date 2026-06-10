@@ -83,6 +83,9 @@ hardware-independent interface into capability-driven runtime planning.
   with schema at `schemas/backend_author_readiness_report.v0.schema.json` and
   deterministic golden evidence at
   `tests/golden/backend_author_readiness/external_vector_readiness_report.json`.
+- Backend Author Evidence Gate with deterministic golden evidence at
+  `tests/golden/backend_author_readiness/backend_author_evidence_gate.txt` and
+  CI coverage in the `python` workflow job.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
@@ -280,6 +283,8 @@ Current slice:
   Claim Review before they can reach registry diagnostics or lowering.
 - Backend Author Readiness report for a single pass/fail external-backend
   onboarding artifact built from bounded review evidence.
+- Backend Author Evidence Gate for CI-facing manifest claim review and backend
+  author readiness enforcement.
 - Deterministic backend conformance report artifacts for reviewable backend
   author evidence.
 - Backend capability schema guidance for error-budget, latency, energy,
@@ -361,6 +366,8 @@ Current focus:
   as planning evidence.
 - Use Backend Author Readiness before treating an external backend author path
   as complete.
+- Keep Backend Author Evidence Gate passing in CI before accepting backend
+  onboarding changes.
 
 ### Phase Delta: Runtime Planning
 
