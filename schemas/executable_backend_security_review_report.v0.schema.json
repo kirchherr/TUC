@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/executable_backend_security_review_report.v0.schema.json",
+  "title": "TUC Executable Backend Security Review Report v0",
+  "description": "Diagnostic-only schema for executable backend security review. This is not a native performance proof and does not approve execution by itself.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "claim_boundary",
+    "executable_backend_security_review_ready",
+    "issues",
+    "native_performance_claim",
+    "performance_claim_status",
+    "proposal_name",
+    "reviews",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "executable_backend_security_review_ready": {"type": "boolean"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "reviews": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/security_review"}
+    },
+    "schema_version": {
+      "const": "tuc.executable_backend_security_review_report.v0"
+    }
+  },
+  "$defs": {
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "review_digest": {
+      "type": "string",
+      "oneOf": [
+        {"const": "not_supplied"},
+        {"pattern": "^sha256:[0-9a-f]{64}$"}
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "not_reviewed",
+        "reviewed_not_approved",
+        "approved_by_maintainers"
+      ]
+    },
+    "reviewed_surface": {
+      "type": "string",
+      "enum": [
+        "backend_artifact_execution",
+        "cache_access",
+        "device_access",
+        "dynamic_library_loading",
+        "generated_code_execution",
+        "native_code_execution",
+        "network_access",
+        "plugin_discovery",
+        "subprocess_execution"
+      ]
+    },
+    "security_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fuzzing_evidence_id",
+        "provenance_id",
+        "resource_budget_id",
+        "review_digest",
+        "review_id",
+        "review_status",
+        "reviewed_surface",
+        "sandbox_model_id",
+        "threat_model_id"
+      ],
+      "properties": {
+        "fuzzing_evidence_id": {"$ref": "#/$defs/report_text"},
+        "provenance_id": {"$ref": "#/$defs/report_text"},
+        "resource_budget_id": {"$ref": "#/$defs/report_text"},
+        "review_digest": {"$ref": "#/$defs/review_digest"},
+        "review_id": {"$ref": "#/$defs/report_text"},
+        "review_status": {"$ref": "#/$defs/review_status"},
+        "reviewed_surface": {"$ref": "#/$defs/reviewed_surface"},
+        "sandbox_model_id": {"$ref": "#/$defs/report_text"},
+        "threat_model_id": {"$ref": "#/$defs/report_text"}
+      }
+    }
+  }
+}

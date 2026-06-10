@@ -20,9 +20,13 @@ tests/golden/compiler_decisions/proof_*.txt
 tests/test_proof_*.py
 docs/PROOF_*.md
 docs/PERFORMANCE_PROOF_READINESS.md
+docs/PERFORMANCE_PROOF_RFC_REPORT.md
+docs/PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md
+docs/PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md
 docs/NATIVE_BASELINE_PROVENANCE.md
 docs/NATIVE_BASELINE_COMPARISON_REPORT.md
 docs/BREAK_EVEN_WORKLOAD_SIZE_REPORT.md
+docs/EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md
 docs/BENCHMARK_ARTIFACT_MANIFEST.md
 docs/WORKLOAD_SCOPE_REPORT.md
 docs/BENCHMARK_METHODOLOGY_REPORT.md
@@ -63,6 +67,15 @@ Before approving a proof artifact change, reviewers should confirm:
 - Future native performance claims pass the
   [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) and do
   not include raw benchmark output in readiness evidence.
+- Future native performance claims include a bounded
+  [Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md) before
+  benchmark artifacts are interpreted as proof evidence.
+- Future native performance claims include a bounded
+  [Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
+  before "near native" or percentage claims are reviewed.
+- Future native performance claims include a bounded
+  [Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md)
+  before benchmark artifacts are treated as passing evidence.
 - The proof does not claim 100 percent native performance.
 
 ## Security Checks
@@ -93,6 +106,9 @@ Reviewers should reject proof changes that claim native performance parity until
 the performance proof boundary and readiness report supply:
 
 - native baseline provenance
+- performance proof RFC report
+- performance claim threshold policy report
+- performance acceptance criteria report
 - native baseline provenance report
 - native baseline comparison report
 - workload scope report
@@ -106,7 +122,7 @@ the performance proof boundary and readiness report supply:
 - runtime-plan and compiler decision-report goldens
 - deterministic benchmark report artifacts
 - benchmark artifact manifest
-- security review for any executable backend or device access
+- executable backend security review report
 
 ## Required Validation
 

@@ -122,6 +122,13 @@ Completed evidence:
 - Performance proof readiness is machine-readable and intentionally blocked
   until leaky-abstraction, planner-overhead, native-baseline, benchmark-artifact,
   and executable-backend security evidence exists.
+- Performance-proof RFC reports track future native performance claim proposals,
+  acceptance status, evidence links, security review IDs, and digests while
+  keeping native performance claims blocked.
+- Performance claim threshold policy reports require accepted, digest-pinned
+  threshold metadata before "near native" or percentage claims can be reviewed.
+- Performance acceptance criteria reports require accepted, digest-pinned
+  pass/fail metadata before benchmark artifacts can count as passing evidence.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution
@@ -145,6 +152,9 @@ Completed evidence:
   before benchmark numbers can become evidence.
 - Toolchain-environment reports identify versioned runtime, package, compiler,
   driver, container, and OS components without host discovery.
+- Executable-backend security review reports identify future executable
+  surfaces, threat models, sandbox models, budgets, provenance, fuzzing
+  evidence, and maintainer approval without approving execution.
 
 Next work:
 
@@ -339,6 +349,14 @@ Deliverables:
   boundaries.
 - Benchmark Methodology Report for diagnostic measurement policy review.
 - Toolchain Environment Report for diagnostic versioned environment review.
+- Executable Backend Security Review Report for diagnostic executable-surface
+  security review.
+- Performance Proof RFC Report for diagnostic claim-proposal governance before
+  benchmark artifacts can support a native performance claim.
+- Performance Claim Threshold Policy Report for diagnostic threshold governance
+  before benchmark artifacts can support "near native" or percentage claims.
+- Performance Acceptance Criteria Report for diagnostic pass/fail governance
+  before benchmark artifacts can count as proof evidence.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -388,10 +406,24 @@ Go/No-Go:
   turning TUC into a Triton fork.
 - Performance claims remain blocked until leaky-abstraction evidence,
   planner-overhead evidence, native baseline provenance, native baseline
-  comparison, correctness goldens, security review, and a passing Performance
-  Proof Readiness report exist.
+  comparison, correctness goldens, security review, an accepted bounded
+  Performance Proof RFC Report, an accepted bounded Performance Claim
+  Threshold Policy Report, an accepted bounded Performance Acceptance Criteria
+  Report, and a passing Performance Proof Readiness report exist.
 - Baseline benchmark reports must remain diagnostic-only unless a future native
   benchmark RFC adds separate provenance, artifact, and security gates.
+- Performance proof RFC reports must remain data-only and must not include raw
+  benchmark output, raw timing samples, host paths, command lines, environment
+  variables, device identifiers, backend artifacts, generated code, native
+  source contents, or execution permission.
+- Performance claim threshold policy reports must remain data-only and must not
+  include raw benchmark output, raw timing samples, host paths, command lines,
+  environment variables, device identifiers, backend artifacts, generated code,
+  native source contents, or execution permission.
+- Performance acceptance criteria reports must remain data-only and must not
+  include raw benchmark output, raw timing samples, host paths, command lines,
+  environment variables, device identifiers, backend artifacts, generated code,
+  native source contents, or execution permission.
 - Planner-overhead reports must keep execution timing and break-even workload
   claims explicit rather than hidden in aggregate benchmark numbers.
 - Break-even workload-size reports must remain data-only and must not include
@@ -417,6 +449,10 @@ Go/No-Go:
 - Toolchain-environment reports must remain data-only and must not include host
   paths, environment variables, secrets, package-manager output, device
   identifiers, backend binaries, or generated code.
+- Executable-backend security review reports must remain data-only and must not
+  include host paths, environment variables, backend artifact contents, device
+  identifiers, dynamic-library paths, native source contents, generated code, or
+  execution permission.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

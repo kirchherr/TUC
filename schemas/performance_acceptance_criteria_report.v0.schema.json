@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/performance_acceptance_criteria_report.v0.schema.json",
+  "title": "TUC Performance Acceptance Criteria Report v0",
+  "description": "Diagnostic-only schema for performance acceptance criteria review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "claim_boundary",
+    "criteria",
+    "issues",
+    "native_performance_claim",
+    "performance_acceptance_criteria_ready",
+    "performance_claim_status",
+    "proposal_name",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "criteria": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/acceptance_criteria"}
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_acceptance_criteria_ready": {"type": "boolean"},
+    "performance_claim_status": {"const": "blocked"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "schema_version": {"const": "tuc.performance_acceptance_criteria_report.v0"}
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "oneOf": [
+        {"const": "not_supplied"},
+        {"pattern": "^sha256:[0-9a-f]{64}$"}
+      ]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "criteria_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "reviewed_not_accepted",
+        "accepted_by_maintainers"
+      ]
+    },
+    "acceptance_criteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "benchmark_methodology_id",
+        "break_even_workload_size_id",
+        "correctness_evidence_id",
+        "criteria_digest",
+        "criteria_id",
+        "criteria_status",
+        "executable_security_review_id",
+        "leaky_abstraction_report_id",
+        "native_baseline_comparison_id",
+        "planner_overhead_report_id",
+        "threshold_policy_id",
+        "workload_scope_id"
+      ],
+      "properties": {
+        "benchmark_methodology_id": {"$ref": "#/$defs/report_text"},
+        "break_even_workload_size_id": {"$ref": "#/$defs/report_text"},
+        "correctness_evidence_id": {"$ref": "#/$defs/report_text"},
+        "criteria_digest": {"$ref": "#/$defs/digest"},
+        "criteria_id": {"$ref": "#/$defs/report_text"},
+        "criteria_status": {"$ref": "#/$defs/criteria_status"},
+        "executable_security_review_id": {"$ref": "#/$defs/report_text"},
+        "leaky_abstraction_report_id": {"$ref": "#/$defs/report_text"},
+        "native_baseline_comparison_id": {"$ref": "#/$defs/report_text"},
+        "planner_overhead_report_id": {"$ref": "#/$defs/report_text"},
+        "threshold_policy_id": {"$ref": "#/$defs/report_text"},
+        "workload_scope_id": {"$ref": "#/$defs/report_text"}
+      }
+    }
+  }
+}

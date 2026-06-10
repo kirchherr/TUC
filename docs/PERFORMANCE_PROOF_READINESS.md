@@ -33,6 +33,8 @@ The report is ready only when every required evidence ID is present.
 The readiness report tracks:
 
 - performance proof RFC
+- performance claim threshold policy
+- performance acceptance criteria
 - benchmark methodology
 - native baseline provenance
 - versioned toolchain environment
@@ -49,6 +51,24 @@ The readiness report tracks:
 - executable backend security review
 
 Missing evidence keeps native performance claims blocked.
+
+The current diagnostic performance proof RFC report schema is
+`schemas/performance_proof_rfc_report.v0.schema.json`. It can satisfy only the
+existence of a bounded claim-proposal metadata contract. It does not run
+benchmarks, load benchmark artifacts, grant execution permission, or prove
+native performance parity.
+
+The current diagnostic performance claim threshold policy report schema is
+`schemas/performance_claim_threshold_policy_report.v0.schema.json`. It can
+satisfy only the existence of a bounded threshold-policy metadata contract. It
+does not run benchmarks, evaluate raw timing samples, grant execution
+permission, or prove native performance parity.
+
+The current diagnostic performance acceptance criteria report schema is
+`schemas/performance_acceptance_criteria_report.v0.schema.json`. It can satisfy
+only the existence of a bounded acceptance-criteria metadata contract. It does
+not run benchmarks, evaluate raw timing samples, grant execution permission, or
+prove native performance parity.
 
 The current diagnostic CPU baseline report schema is
 `schemas/baseline_benchmark_report.v0.schema.json`. It can satisfy only the
@@ -110,6 +130,13 @@ the existence of a bounded benchmark artifact inventory contract. It does not
 load benchmark artifacts, satisfy benchmark result acceptance, validate raw
 native output, or prove native performance parity.
 
+The current diagnostic executable backend security review report schema is
+`schemas/executable_backend_security_review_report.v0.schema.json`. It can
+satisfy only the existence of a bounded executable-surface security review
+metadata contract. It does not execute backend artifacts, access devices, load
+dynamic libraries, run subprocesses, discover plugins, or approve native
+performance parity.
+
 ## Blocked Claims
 
 The v0 report explicitly blocks:
@@ -140,6 +167,24 @@ Unknown evidence IDs and duplicate evidence IDs fail closed.
 The report is not a benchmark schema and is not a benchmark result format. A
 future benchmark report schema must be reviewed separately before benchmark
 artifacts can become proof evidence.
+
+The readiness report is not a performance proof RFC report. Native performance
+claim proposals are tracked by
+[Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md), which is
+data-only and remains separate from benchmark artifacts, execution permission,
+and native performance proof.
+
+The readiness report is not a performance claim threshold policy report. Claim
+thresholds are tracked by
+[Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md),
+which is data-only and remains separate from benchmark execution and measured
+results.
+
+The readiness report is not a performance acceptance criteria report. Claim
+pass/fail criteria are tracked by
+[Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md),
+which is data-only and remains separate from benchmark execution and measured
+results.
 
 The readiness report is also not a native baseline provenance report. Native
 baseline candidates are tracked by
@@ -174,6 +219,11 @@ The readiness report is not a break-even workload-size report. Break-even
 metadata is tracked by
 [Break-Even Workload Size Report](BREAK_EVEN_WORKLOAD_SIZE_REPORT.md), which is
 data-only and remains separate from raw timing samples.
+
+The readiness report is not an executable backend security review report.
+Executable-surface security evidence is tracked by
+[Executable Backend Security Review Report](EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md),
+which is data-only and remains separate from execution permission.
 
 ## Evidence
 

@@ -145,6 +145,32 @@ Implemented now:
 - Deterministic backend conformance report artifacts with schema versioning and
   report field-size limits; report dumping is pure data serialization and does
   not include backend artifact contents.
+- Executable backend security review reports provide a diagnostic, data-only
+  evidence contract for future executable surfaces. They require threat-model,
+  sandbox, resource-budget, provenance, fuzzing or negative-test evidence,
+  maintainer approval, and digest identifiers before an executable surface can
+  count as performance-proof evidence. They do not approve execution by
+  themselves.
+- Performance proof RFC reports provide a diagnostic, data-only governance
+  contract for future native performance claims. They require scoped workload,
+  threshold-policy, acceptance-criteria, evidence-bundle, security-review,
+  maintainer-acceptance, and digest identifiers before benchmark artifacts can
+  be interpreted as claim evidence. They do not load artifacts, parse raw
+  benchmark output, grant execution permission, or prove native performance.
+- Performance claim threshold policy reports provide a diagnostic, data-only
+  governance contract for future native performance thresholds. They require
+  scoped workload, comparison metric, summary policy, threshold kind, integer
+  basis points, maintainer acceptance, and digest identifiers before
+  percentage or "near native" claims can be reviewed. They do not ingest
+  timing samples, load benchmark artifacts, grant execution permission, or
+  prove native performance.
+- Performance acceptance criteria reports provide a diagnostic, data-only
+  governance contract for future native performance pass/fail rules. They
+  require scoped workload, threshold policy, correctness evidence, methodology,
+  native comparison, planner-overhead, break-even, leaky-abstraction, and
+  executable-surface security identifiers before benchmark artifacts can be
+  treated as passing evidence. They do not ingest timing samples, load
+  benchmark artifacts, grant execution permission, or prove native performance.
 - Backend capability schema documentation separates error-budget, latency,
   energy, calibration, and noise assumptions from HAC-IR semantics, backend
   executable behavior, and hardware certification claims.

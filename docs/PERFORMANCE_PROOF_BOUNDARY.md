@@ -29,6 +29,99 @@ The current proof claim is not:
 TUC matches native vendor performance.
 ```
 
+## Performance Proof RFC Gate
+
+Before TUC may evaluate a native performance claim, a proposal must identify
+the claim contract itself as bounded review data.
+
+The proposal must include:
+
+- performance-proof RFC identifier
+- workload-scope report identifier
+- predefined claim-threshold policy identifier
+- acceptance-criteria identifier
+- evidence-bundle identifier
+- executable-surface security review identifier
+- maintainer acceptance status
+- RFC digest status
+
+The current
+[Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md) defines the
+diagnostic report contract at
+`schemas/performance_proof_rfc_report.v0.schema.json`. It records only scoped
+claim-proposal metadata, acceptance status, evidence identifiers, security
+review identifier, and digest status. It does not run benchmarks, load
+artifacts, execute backend code, grant device access, or prove native
+performance.
+
+Performance proof RFC reports must not include raw benchmark output, raw timing
+samples, host paths, command lines, environment variables, device identifiers,
+backend artifacts, generated code, dynamic-library paths, native source
+contents, or execution permission.
+
+## Performance Claim Threshold Policy Gate
+
+Before TUC may use benchmark artifacts to support a native performance claim,
+the claim threshold must be predefined as bounded review data.
+
+The proposal must include:
+
+- threshold-policy identifier
+- workload-scope report identifier
+- comparison metric identifier
+- summary policy identifier
+- threshold kind
+- threshold value in basis points
+- maintainer acceptance status
+- threshold-policy digest status
+
+The current
+[Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
+defines the diagnostic report contract at
+`schemas/performance_claim_threshold_policy_report.v0.schema.json`. It records
+only scoped threshold-policy metadata, acceptance status, and digest status. It
+does not run benchmarks, load artifacts, evaluate raw timing samples, grant
+device access, or prove native performance.
+
+Performance claim threshold policy reports must not include raw benchmark
+output, raw timing samples, host paths, command lines, environment variables,
+device identifiers, backend artifacts, generated code, dynamic-library paths,
+native source contents, or execution permission.
+
+## Performance Acceptance Criteria Gate
+
+Before TUC may accept a native performance claim, the pass/fail criteria must
+be predefined as bounded review data.
+
+The proposal must include:
+
+- acceptance-criteria identifier
+- workload-scope report identifier
+- threshold-policy report identifier
+- correctness evidence identifier
+- benchmark methodology identifier
+- native baseline comparison identifier
+- planner-overhead report identifier
+- break-even workload-size report identifier
+- leaky-abstraction report identifier
+- executable-surface security review identifier
+- maintainer acceptance status
+- acceptance-criteria digest status
+
+The current
+[Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md)
+defines the diagnostic report contract at
+`schemas/performance_acceptance_criteria_report.v0.schema.json`. It records
+only scoped acceptance-criteria metadata, required evidence identifiers,
+acceptance status, and digest status. It does not run benchmarks, load
+artifacts, evaluate raw timing samples, grant device access, or prove native
+performance.
+
+Performance acceptance criteria reports must not include raw benchmark output,
+raw timing samples, host paths, command lines, environment variables, device
+identifiers, backend artifacts, generated code, dynamic-library paths, native
+source contents, or execution permission.
+
 ## Leaky Abstraction Gate
 
 Before TUC may claim native performance parity, a proposal must show where
@@ -278,11 +371,45 @@ environment variables, raw timing samples, raw native output, backend binaries,
 generated code, device identifiers, dynamic-library paths, or native source
 contents.
 
+## Executable Backend Security Review Gate
+
+Before TUC may use executable backend behavior, generated artifacts, device
+access, dynamic libraries, subprocesses, plugin discovery, native code, network
+access, or cache access as performance-proof evidence, a proposal must identify
+the accepted security review for each executable surface.
+
+The proposal must include:
+
+- reviewed executable surface
+- threat model identifier
+- sandbox model identifier
+- resource budget identifier
+- provenance identifier
+- fuzzing, sanitizer, property-test, or negative-test evidence identifier
+- maintainer approval status
+- security review digest status
+
+The current
+[Executable Backend Security Review Report](EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md)
+defines the diagnostic report contract at
+`schemas/executable_backend_security_review_report.v0.schema.json`. It records
+only bounded security review metadata. It does not execute backend artifacts,
+access devices, load dynamic libraries, run subprocesses, discover plugins, or
+prove native performance.
+
+Executable backend security review reports must not include host paths, command
+lines, environment variables, raw benchmark output, raw timing samples, backend
+artifact contents, generated code, device identifiers, dynamic-library paths, or
+native source contents.
+
 ## Required Future Evidence
 
 Any future performance proof must add:
 
 - dedicated performance proof RFC
+- explicit performance proof RFC report
+- explicit performance claim threshold policy report
+- explicit performance acceptance criteria report
 - benchmark methodology document
 - explicit benchmark methodology report
 - explicit toolchain environment report
@@ -298,8 +425,7 @@ Any future performance proof must add:
 - explicit break-even workload-size report
 - explicit leaky-abstraction report
 - explicit native baseline provenance report
-- security review for any executable backend, device access, generated artifact,
-  cache, subprocess, dynamic library, or native code used by benchmarking
+- explicit executable backend security review report
 
 ## Performance Proof Readiness Report
 
@@ -335,25 +461,28 @@ until this boundary is satisfied.
 
 Reviewers must reject performance claims unless every answer is yes:
 
-1. Is the claim scoped to a specific workload family and shape range?
-2. Is the workload scope report present and bounded?
-3. Is the benchmark methodology report present and bounded?
-4. Is the toolchain environment report present and bounded?
-5. Is the native baseline reproducible?
-6. Is the native baseline provenance report present and bounded?
-7. Is the native baseline comparison report present and bounded?
-8. Is mathematical correctness still proven independently?
-9. Are planner overhead and execution time reported separately?
-10. Is the break-even workload-size report present and bounded?
-11. Are cache effects explicit rather than hidden?
-12. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+1. Is the performance proof RFC report present and bounded?
+2. Is the performance claim threshold policy report present and bounded?
+3. Is the performance acceptance criteria report present and bounded?
+4. Is the claim scoped to a specific workload family and shape range?
+5. Is the workload scope report present and bounded?
+6. Is the benchmark methodology report present and bounded?
+7. Is the toolchain environment report present and bounded?
+8. Is the native baseline reproducible?
+9. Is the native baseline provenance report present and bounded?
+10. Is the native baseline comparison report present and bounded?
+11. Is mathematical correctness still proven independently?
+12. Are planner overhead and execution time reported separately?
+13. Is the break-even workload-size report present and bounded?
+14. Are cache effects explicit rather than hidden?
+15. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-13. Is HAC-IR still hardware-neutral?
-14. Are runtime plans and compiler decisions golden-tested?
-15. Is benchmark provenance versioned?
-16. Is the benchmark artifact manifest present and bounded?
-17. Are any executable backend or device surfaces threat-modeled?
-18. Does the claim avoid broad wording such as "near native" unless the
+16. Is HAC-IR still hardware-neutral?
+17. Are runtime plans and compiler decisions golden-tested?
+18. Is benchmark provenance versioned?
+19. Is the benchmark artifact manifest present and bounded?
+20. Is the executable backend security review report present and bounded?
+21. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

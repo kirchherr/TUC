@@ -19,9 +19,55 @@ PROOF_REPORT_SCHEMA_VERSION = "proof-report.v0"
 PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION = (
     "tuc.performance_proof_readiness_report.v0"
 )
+PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION = "tuc.performance_proof_rfc_report.v0"
+PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS = "diagnostic_only"
+PERFORMANCE_PROOF_RFC_CLAIM_STATUS = "blocked"
+PERFORMANCE_PROOF_RFC_STATUSES = (
+    "draft",
+    "reviewed_not_accepted",
+    "accepted_by_maintainers",
+)
+PERFORMANCE_PROOF_RFC_DEFAULT_ISSUES = (
+    "performance_proof_rfcs_not_supplied",
+    "native_performance_claim_blocked",
+)
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION = (
+    "tuc.performance_claim_threshold_policy_report.v0"
+)
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_ARTIFACT_STATUS = "diagnostic_only"
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_CLAIM_STATUS = "blocked"
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_KINDS = (
+    "ratio_to_native_at_least",
+    "overhead_over_native_at_most",
+)
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_STATUSES = (
+    "draft",
+    "reviewed_not_accepted",
+    "accepted_by_maintainers",
+)
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_DEFAULT_ISSUES = (
+    "performance_claim_threshold_policies_not_supplied",
+    "native_performance_claim_blocked",
+)
+PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_SCHEMA_VERSION = (
+    "tuc.performance_acceptance_criteria_report.v0"
+)
+PERFORMANCE_ACCEPTANCE_CRITERIA_ARTIFACT_STATUS = "diagnostic_only"
+PERFORMANCE_ACCEPTANCE_CRITERIA_CLAIM_STATUS = "blocked"
+PERFORMANCE_ACCEPTANCE_CRITERIA_STATUSES = (
+    "draft",
+    "reviewed_not_accepted",
+    "accepted_by_maintainers",
+)
+PERFORMANCE_ACCEPTANCE_CRITERIA_DEFAULT_ISSUES = (
+    "performance_acceptance_criteria_not_supplied",
+    "native_performance_claim_blocked",
+)
 PERFORMANCE_PROOF_BOUNDARY_CONTRACT = "performance_proof_boundary.blocking.v0"
 PERFORMANCE_PROOF_REQUIRED_EVIDENCE = (
     "performance_proof_rfc",
+    "performance_claim_threshold_policy",
+    "performance_acceptance_criteria",
     "benchmark_methodology",
     "native_baseline_provenance",
     "versioned_toolchain_environment",
@@ -189,11 +235,46 @@ BREAK_EVEN_WORKLOAD_SIZE_DEFAULT_ISSUES = (
     "break_even_workloads_not_supplied",
     "native_performance_claim_blocked",
 )
+EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_SCHEMA_VERSION = (
+    "tuc.executable_backend_security_review_report.v0"
+)
+EXECUTABLE_BACKEND_SECURITY_REVIEW_ARTIFACT_STATUS = "diagnostic_only"
+EXECUTABLE_BACKEND_SECURITY_REVIEW_CLAIM_STATUS = "blocked"
+EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES = (
+    "backend_artifact_execution",
+    "cache_access",
+    "device_access",
+    "dynamic_library_loading",
+    "generated_code_execution",
+    "native_code_execution",
+    "network_access",
+    "plugin_discovery",
+    "subprocess_execution",
+)
+EXECUTABLE_BACKEND_SECURITY_REVIEW_STATUSES = (
+    "not_reviewed",
+    "reviewed_not_approved",
+    "approved_by_maintainers",
+)
+EXECUTABLE_BACKEND_SECURITY_REVIEW_DEFAULT_ISSUES = (
+    "executable_backend_security_reviews_not_supplied",
+    "native_performance_claim_blocked",
+)
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES = 512
 MAX_PERFORMANCE_PROOF_READINESS_ISSUES = 128
+MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES = 64 * 1024
+MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES = 512
+MAX_PERFORMANCE_PROOF_RFCS = 128
+MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_BYTES = 64 * 1024
+MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_FIELD_BYTES = 512
+MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICIES = 128
+MAX_PERFORMANCE_CLAIM_THRESHOLD_BASIS_POINTS = 100_000
+MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_BYTES = 64 * 1024
+MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_FIELD_BYTES = 512
+MAX_PERFORMANCE_ACCEPTANCE_CRITERIA = 128
 MAX_LEAKY_ABSTRACTION_REPORT_BYTES = 64 * 1024
 MAX_LEAKY_ABSTRACTION_FIELD_BYTES = 512
 MAX_LEAKY_ABSTRACTION_FACTS = 128
@@ -219,6 +300,9 @@ MAX_BREAK_EVEN_WORKLOAD_SIZE_REPORT_BYTES = 64 * 1024
 MAX_BREAK_EVEN_WORKLOAD_SIZE_FIELD_BYTES = 512
 MAX_BREAK_EVEN_WORKLOADS = 128
 MAX_BREAK_EVEN_WORKLOAD_SIZE = WORKLOAD_SCOPE_MAX_PROBLEM_SIZE
+MAX_EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_BYTES = 64 * 1024
+MAX_EXECUTABLE_BACKEND_SECURITY_REVIEW_FIELD_BYTES = 512
+MAX_EXECUTABLE_BACKEND_SECURITY_REVIEWS = 128
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
@@ -288,6 +372,109 @@ class PerformanceProofReadinessReport:
 
 class PerformanceProofReadinessError(AssertionError):
     """Raised when a performance proof proposal is not ready."""
+
+
+@dataclass(frozen=True)
+class PerformanceProofRFC:
+    """One bounded RFC entry for a future native performance claim."""
+
+    rfc_id: str
+    workload_scope_id: str
+    claim_threshold_policy_id: str
+    acceptance_criteria_id: str
+    evidence_bundle_id: str
+    security_review_id: str
+    rfc_status: str = "draft"
+    rfc_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class PerformanceProofRFCReport:
+    """Diagnostic report for performance-proof RFC review."""
+
+    proposal_name: str
+    rfcs: tuple[PerformanceProofRFC, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def performance_proof_rfc_ready(self) -> bool:
+        rfc_issues = tuple(
+            issue for issue in self.issues if issue.startswith("performance_proof_rfc")
+        )
+        return bool(self.rfcs) and not rfc_issues
+
+
+@dataclass(frozen=True)
+class PerformanceClaimThresholdPolicy:
+    """One bounded threshold policy for a future native performance claim."""
+
+    policy_id: str
+    workload_scope_id: str
+    comparison_metric_id: str
+    summary_policy_id: str
+    threshold_kind: str
+    threshold_basis_points: int
+    policy_status: str = "draft"
+    policy_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class PerformanceClaimThresholdPolicyReport:
+    """Diagnostic report for future performance claim threshold policies."""
+
+    proposal_name: str
+    policies: tuple[PerformanceClaimThresholdPolicy, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def performance_claim_threshold_policy_ready(self) -> bool:
+        threshold_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue.startswith(
+                (
+                    "performance_claim_threshold_policy",
+                    "performance_claim_threshold_policies",
+                )
+            )
+        )
+        return bool(self.policies) and not threshold_issues
+
+
+@dataclass(frozen=True)
+class PerformanceAcceptanceCriteria:
+    """One bounded acceptance-criteria entry for a future performance claim."""
+
+    criteria_id: str
+    workload_scope_id: str
+    threshold_policy_id: str
+    correctness_evidence_id: str
+    benchmark_methodology_id: str
+    native_baseline_comparison_id: str
+    planner_overhead_report_id: str
+    break_even_workload_size_id: str
+    leaky_abstraction_report_id: str
+    executable_security_review_id: str
+    criteria_status: str = "draft"
+    criteria_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class PerformanceAcceptanceCriteriaReport:
+    """Diagnostic report for future performance acceptance criteria."""
+
+    proposal_name: str
+    criteria: tuple[PerformanceAcceptanceCriteria, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def performance_acceptance_criteria_ready(self) -> bool:
+        criteria_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue.startswith("performance_acceptance_criteria")
+        )
+        return bool(self.criteria) and not criteria_issues
 
 
 @dataclass(frozen=True)
@@ -530,6 +717,39 @@ class BreakEvenWorkloadSizeReport:
         return bool(self.workloads) and not break_even_issues
 
 
+@dataclass(frozen=True)
+class ExecutableBackendSecurityReview:
+    """One data-only executable backend security review entry."""
+
+    review_id: str
+    reviewed_surface: str
+    threat_model_id: str
+    sandbox_model_id: str
+    resource_budget_id: str
+    provenance_id: str
+    review_status: str = "not_reviewed"
+    fuzzing_evidence_id: str = "not_supplied"
+    review_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class ExecutableBackendSecurityReviewReport:
+    """Diagnostic report for executable backend security review."""
+
+    proposal_name: str
+    reviews: tuple[ExecutableBackendSecurityReview, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def executable_backend_security_review_ready(self) -> bool:
+        security_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue.startswith("executable_backend_security")
+        )
+        return bool(self.reviews) and not security_issues
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -576,6 +796,113 @@ def build_performance_proof_readiness_report(
         checked_evidence=checked_evidence,
         blocked_claims=PERFORMANCE_PROOF_BLOCKED_CLAIMS,
         issues=issues,
+    )
+
+
+def build_performance_proof_rfc_report(
+    proposal_name: str,
+    rfcs: Iterable[PerformanceProofRFC] = (),
+) -> PerformanceProofRFCReport:
+    """Build a bounded data-only report for performance-proof RFC review."""
+
+    _validate_performance_proof_rfc_text(proposal_name, "proposal_name")
+    normalized_rfcs = _normalize_performance_proof_rfcs(rfcs)
+    issues = list(PERFORMANCE_PROOF_RFC_DEFAULT_ISSUES)
+    if normalized_rfcs:
+        issues.remove("performance_proof_rfcs_not_supplied")
+    if any(
+        rfc.rfc_status != "accepted_by_maintainers" for rfc in normalized_rfcs
+    ):
+        issues.append("performance_proof_rfc_not_accepted")
+    if any(
+        "not_supplied"
+        in {
+            rfc.claim_threshold_policy_id,
+            rfc.acceptance_criteria_id,
+            rfc.evidence_bundle_id,
+            rfc.security_review_id,
+        }
+        for rfc in normalized_rfcs
+    ):
+        issues.append("performance_proof_rfc_evidence_not_supplied")
+    if any(rfc.rfc_digest == "not_supplied" for rfc in normalized_rfcs):
+        issues.append("performance_proof_rfc_digest_not_supplied")
+
+    return PerformanceProofRFCReport(
+        proposal_name=proposal_name,
+        rfcs=normalized_rfcs,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
+def build_performance_claim_threshold_policy_report(
+    proposal_name: str,
+    policies: Iterable[PerformanceClaimThresholdPolicy] = (),
+) -> PerformanceClaimThresholdPolicyReport:
+    """Build a bounded data-only report for performance threshold review."""
+
+    _validate_performance_claim_threshold_policy_text(
+        proposal_name,
+        "proposal_name",
+    )
+    normalized_policies = _normalize_performance_claim_threshold_policies(policies)
+    issues = list(PERFORMANCE_CLAIM_THRESHOLD_POLICY_DEFAULT_ISSUES)
+    if normalized_policies:
+        issues.remove("performance_claim_threshold_policies_not_supplied")
+    if any(
+        policy.policy_status != "accepted_by_maintainers"
+        for policy in normalized_policies
+    ):
+        issues.append("performance_claim_threshold_policy_not_accepted")
+    if any(policy.policy_digest == "not_supplied" for policy in normalized_policies):
+        issues.append("performance_claim_threshold_policy_digest_not_supplied")
+
+    return PerformanceClaimThresholdPolicyReport(
+        proposal_name=proposal_name,
+        policies=normalized_policies,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
+def build_performance_acceptance_criteria_report(
+    proposal_name: str,
+    criteria: Iterable[PerformanceAcceptanceCriteria] = (),
+) -> PerformanceAcceptanceCriteriaReport:
+    """Build a bounded data-only report for performance acceptance criteria."""
+
+    _validate_performance_acceptance_criteria_text(proposal_name, "proposal_name")
+    normalized_criteria = _normalize_performance_acceptance_criteria(criteria)
+    issues = list(PERFORMANCE_ACCEPTANCE_CRITERIA_DEFAULT_ISSUES)
+    if normalized_criteria:
+        issues.remove("performance_acceptance_criteria_not_supplied")
+    if any(
+        item.criteria_status != "accepted_by_maintainers"
+        for item in normalized_criteria
+    ):
+        issues.append("performance_acceptance_criteria_not_accepted")
+    if any(
+        "not_supplied"
+        in {
+            item.workload_scope_id,
+            item.threshold_policy_id,
+            item.correctness_evidence_id,
+            item.benchmark_methodology_id,
+            item.native_baseline_comparison_id,
+            item.planner_overhead_report_id,
+            item.break_even_workload_size_id,
+            item.leaky_abstraction_report_id,
+            item.executable_security_review_id,
+        }
+        for item in normalized_criteria
+    ):
+        issues.append("performance_acceptance_criteria_evidence_not_supplied")
+    if any(item.criteria_digest == "not_supplied" for item in normalized_criteria):
+        issues.append("performance_acceptance_criteria_digest_not_supplied")
+
+    return PerformanceAcceptanceCriteriaReport(
+        proposal_name=proposal_name,
+        criteria=normalized_criteria,
+        issues=tuple(dict.fromkeys(issues)),
     )
 
 
@@ -805,6 +1132,44 @@ def build_break_even_workload_size_report(
     )
 
 
+def build_executable_backend_security_review_report(
+    proposal_name: str,
+    reviews: Iterable[ExecutableBackendSecurityReview] = (),
+) -> ExecutableBackendSecurityReviewReport:
+    """Build a bounded data-only executable backend security review report."""
+
+    _validate_executable_backend_security_text(proposal_name, "proposal_name")
+    normalized_reviews = _normalize_executable_backend_security_reviews(reviews)
+    issues = list(EXECUTABLE_BACKEND_SECURITY_REVIEW_DEFAULT_ISSUES)
+    if normalized_reviews:
+        issues.remove("executable_backend_security_reviews_not_supplied")
+    if any(
+        review.review_status != "approved_by_maintainers"
+        for review in normalized_reviews
+    ):
+        issues.append("executable_backend_security_review_not_approved")
+    if any(
+        "not_supplied"
+        in {
+            review.threat_model_id,
+            review.sandbox_model_id,
+            review.resource_budget_id,
+            review.provenance_id,
+            review.fuzzing_evidence_id,
+        }
+        for review in normalized_reviews
+    ):
+        issues.append("executable_backend_security_review_evidence_not_supplied")
+    if any(review.review_digest == "not_supplied" for review in normalized_reviews):
+        issues.append("executable_backend_security_review_digest_not_supplied")
+
+    return ExecutableBackendSecurityReviewReport(
+        proposal_name=proposal_name,
+        reviews=normalized_reviews,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def assert_performance_proof_readiness(
     proposal_name: str,
     evidence: Iterable[PerformanceProofReadinessEvidence],
@@ -845,6 +1210,111 @@ def performance_proof_readiness_report_to_dict(
         "proposal_name": report.proposal_name,
         "ready": report.ready,
         "schema_version": PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION,
+    }
+
+
+def performance_proof_rfc_report_to_dict(
+    report: PerformanceProofRFCReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible performance RFC report."""
+
+    _validate_performance_proof_rfc_report(report)
+    return {
+        "artifact_status": PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": PERFORMANCE_PROOF_RFC_CLAIM_STATUS,
+        "performance_proof_rfc_ready": report.performance_proof_rfc_ready,
+        "proposal_name": report.proposal_name,
+        "rfcs": [
+            {
+                "acceptance_criteria_id": rfc.acceptance_criteria_id,
+                "claim_threshold_policy_id": rfc.claim_threshold_policy_id,
+                "evidence_bundle_id": rfc.evidence_bundle_id,
+                "rfc_digest": rfc.rfc_digest,
+                "rfc_id": rfc.rfc_id,
+                "rfc_status": rfc.rfc_status,
+                "security_review_id": rfc.security_review_id,
+                "workload_scope_id": rfc.workload_scope_id,
+            }
+            for rfc in report.rfcs
+        ],
+        "schema_version": PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION,
+    }
+
+
+def performance_claim_threshold_policy_report_to_dict(
+    report: PerformanceClaimThresholdPolicyReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible threshold policy report."""
+
+    _validate_performance_claim_threshold_policy_report(report)
+    return {
+        "artifact_status": PERFORMANCE_CLAIM_THRESHOLD_POLICY_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": PERFORMANCE_CLAIM_THRESHOLD_POLICY_CLAIM_STATUS,
+        "performance_claim_threshold_policy_ready": (
+            report.performance_claim_threshold_policy_ready
+        ),
+        "policies": [
+            {
+                "comparison_metric_id": policy.comparison_metric_id,
+                "policy_digest": policy.policy_digest,
+                "policy_id": policy.policy_id,
+                "policy_status": policy.policy_status,
+                "summary_policy_id": policy.summary_policy_id,
+                "threshold_basis_points": policy.threshold_basis_points,
+                "threshold_kind": policy.threshold_kind,
+                "workload_scope_id": policy.workload_scope_id,
+            }
+            for policy in report.policies
+        ],
+        "proposal_name": report.proposal_name,
+        "schema_version": PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION,
+    }
+
+
+def performance_acceptance_criteria_report_to_dict(
+    report: PerformanceAcceptanceCriteriaReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible acceptance criteria report."""
+
+    _validate_performance_acceptance_criteria_report(report)
+    return {
+        "artifact_status": PERFORMANCE_ACCEPTANCE_CRITERIA_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "criteria": [
+            {
+                "benchmark_methodology_id": item.benchmark_methodology_id,
+                "break_even_workload_size_id": item.break_even_workload_size_id,
+                "correctness_evidence_id": item.correctness_evidence_id,
+                "criteria_digest": item.criteria_digest,
+                "criteria_id": item.criteria_id,
+                "criteria_status": item.criteria_status,
+                "executable_security_review_id": (
+                    item.executable_security_review_id
+                ),
+                "leaky_abstraction_report_id": item.leaky_abstraction_report_id,
+                "native_baseline_comparison_id": (
+                    item.native_baseline_comparison_id
+                ),
+                "planner_overhead_report_id": item.planner_overhead_report_id,
+                "threshold_policy_id": item.threshold_policy_id,
+                "workload_scope_id": item.workload_scope_id,
+            }
+            for item in report.criteria
+        ],
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_acceptance_criteria_ready": (
+            report.performance_acceptance_criteria_ready
+        ),
+        "performance_claim_status": PERFORMANCE_ACCEPTANCE_CRITERIA_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "schema_version": PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_SCHEMA_VERSION,
     }
 
 
@@ -1104,6 +1574,42 @@ def break_even_workload_size_report_to_dict(
     }
 
 
+def executable_backend_security_review_report_to_dict(
+    report: ExecutableBackendSecurityReviewReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible backend security report."""
+
+    _validate_executable_backend_security_review_report(report)
+    return {
+        "artifact_status": EXECUTABLE_BACKEND_SECURITY_REVIEW_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "executable_backend_security_review_ready": (
+            report.executable_backend_security_review_ready
+        ),
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": EXECUTABLE_BACKEND_SECURITY_REVIEW_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "reviews": [
+            {
+                "fuzzing_evidence_id": review.fuzzing_evidence_id,
+                "provenance_id": review.provenance_id,
+                "resource_budget_id": review.resource_budget_id,
+                "review_digest": review.review_digest,
+                "review_id": review.review_id,
+                "review_status": review.review_status,
+                "reviewed_surface": review.reviewed_surface,
+                "sandbox_model_id": review.sandbox_model_id,
+                "threat_model_id": review.threat_model_id,
+            }
+            for review in report.reviews
+        ],
+        "schema_version": (
+            EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_SCHEMA_VERSION
+        ),
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -1116,6 +1622,52 @@ def dump_performance_proof_readiness_report(
     )
     if len(text.encode("utf-8")) > MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES:
         raise ValueError("performance proof readiness report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_performance_proof_rfc_report(report: PerformanceProofRFCReport) -> str:
+    """Render a stable diagnostic performance-proof RFC report."""
+
+    text = json.dumps(
+        performance_proof_rfc_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES:
+        raise ValueError("performance proof RFC report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_performance_claim_threshold_policy_report(
+    report: PerformanceClaimThresholdPolicyReport,
+) -> str:
+    """Render a stable diagnostic performance threshold policy report."""
+
+    text = json.dumps(
+        performance_claim_threshold_policy_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if (
+        len(text.encode("utf-8"))
+        > MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_BYTES
+    ):
+        raise ValueError("performance claim threshold policy report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_performance_acceptance_criteria_report(
+    report: PerformanceAcceptanceCriteriaReport,
+) -> str:
+    """Render a stable diagnostic performance acceptance criteria report."""
+
+    text = json.dumps(
+        performance_acceptance_criteria_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_BYTES:
+        raise ValueError("performance acceptance criteria report exceeds byte limit")
     return text + "\n"
 
 
@@ -1220,6 +1772,24 @@ def dump_break_even_workload_size_report(
     )
     if len(text.encode("utf-8")) > MAX_BREAK_EVEN_WORKLOAD_SIZE_REPORT_BYTES:
         raise ValueError("break-even workload-size report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_executable_backend_security_review_report(
+    report: ExecutableBackendSecurityReviewReport,
+) -> str:
+    """Render a stable diagnostic executable backend security report."""
+
+    text = json.dumps(
+        executable_backend_security_review_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if (
+        len(text.encode("utf-8"))
+        > MAX_EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_BYTES
+    ):
+        raise ValueError("executable backend security report exceeds byte limit")
     return text + "\n"
 
 
@@ -1497,6 +2067,196 @@ def _normalize_break_even_workloads(
     return normalized
 
 
+def _normalize_executable_backend_security_reviews(
+    reviews: Iterable[ExecutableBackendSecurityReview],
+) -> tuple[ExecutableBackendSecurityReview, ...]:
+    normalized = tuple(reviews)
+    if len(normalized) > MAX_EXECUTABLE_BACKEND_SECURITY_REVIEWS:
+        raise ValueError("executable backend security review count exceeds limit")
+    seen: set[str] = set()
+    for review in normalized:
+        if not isinstance(review, ExecutableBackendSecurityReview):
+            raise TypeError(
+                "executable backend security reviews must be "
+                "ExecutableBackendSecurityReview"
+            )
+        _validate_executable_backend_security_text(review.review_id, "review_id")
+        _validate_executable_backend_security_text(
+            review.threat_model_id,
+            "threat_model_id",
+        )
+        _validate_executable_backend_security_text(
+            review.sandbox_model_id,
+            "sandbox_model_id",
+        )
+        _validate_executable_backend_security_text(
+            review.resource_budget_id,
+            "resource_budget_id",
+        )
+        _validate_executable_backend_security_text(
+            review.provenance_id,
+            "provenance_id",
+        )
+        _validate_executable_backend_security_text(
+            review.fuzzing_evidence_id,
+            "fuzzing_evidence_id",
+        )
+        if review.review_id in seen:
+            raise ValueError("duplicate executable backend security review id")
+        if review.reviewed_surface not in EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES:
+            raise ValueError("unsupported executable backend security surface")
+        if review.review_status not in EXECUTABLE_BACKEND_SECURITY_REVIEW_STATUSES:
+            raise ValueError("unsupported executable backend security review status")
+        _validate_executable_backend_security_digest(review.review_digest)
+        seen.add(review.review_id)
+    return normalized
+
+
+def _normalize_performance_proof_rfcs(
+    rfcs: Iterable[PerformanceProofRFC],
+) -> tuple[PerformanceProofRFC, ...]:
+    normalized = tuple(rfcs)
+    if len(normalized) > MAX_PERFORMANCE_PROOF_RFCS:
+        raise ValueError("performance proof RFC count exceeds limit")
+    seen: set[str] = set()
+    for rfc in normalized:
+        if not isinstance(rfc, PerformanceProofRFC):
+            raise TypeError("performance proof RFCs must be PerformanceProofRFC")
+        _validate_performance_proof_rfc_text(rfc.rfc_id, "rfc_id")
+        _validate_performance_proof_rfc_text(
+            rfc.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_performance_proof_rfc_text(
+            rfc.claim_threshold_policy_id,
+            "claim_threshold_policy_id",
+        )
+        _validate_performance_proof_rfc_text(
+            rfc.acceptance_criteria_id,
+            "acceptance_criteria_id",
+        )
+        _validate_performance_proof_rfc_text(
+            rfc.evidence_bundle_id,
+            "evidence_bundle_id",
+        )
+        _validate_performance_proof_rfc_text(
+            rfc.security_review_id,
+            "security_review_id",
+        )
+        if rfc.rfc_id in seen:
+            raise ValueError("duplicate performance proof RFC id")
+        if rfc.rfc_status not in PERFORMANCE_PROOF_RFC_STATUSES:
+            raise ValueError("unsupported performance proof RFC status")
+        _validate_performance_proof_rfc_digest(rfc.rfc_digest)
+        seen.add(rfc.rfc_id)
+    return normalized
+
+
+def _normalize_performance_claim_threshold_policies(
+    policies: Iterable[PerformanceClaimThresholdPolicy],
+) -> tuple[PerformanceClaimThresholdPolicy, ...]:
+    normalized = tuple(policies)
+    if len(normalized) > MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICIES:
+        raise ValueError("performance claim threshold policy count exceeds limit")
+    seen: set[str] = set()
+    for policy in normalized:
+        if not isinstance(policy, PerformanceClaimThresholdPolicy):
+            raise TypeError(
+                "performance claim threshold policies must be "
+                "PerformanceClaimThresholdPolicy"
+            )
+        _validate_performance_claim_threshold_policy_text(
+            policy.policy_id,
+            "policy_id",
+        )
+        _validate_performance_claim_threshold_policy_text(
+            policy.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_performance_claim_threshold_policy_text(
+            policy.comparison_metric_id,
+            "comparison_metric_id",
+        )
+        _validate_performance_claim_threshold_policy_text(
+            policy.summary_policy_id,
+            "summary_policy_id",
+        )
+        if policy.policy_id in seen:
+            raise ValueError("duplicate performance claim threshold policy id")
+        if policy.threshold_kind not in PERFORMANCE_CLAIM_THRESHOLD_POLICY_KINDS:
+            raise ValueError("unsupported performance claim threshold kind")
+        if policy.policy_status not in PERFORMANCE_CLAIM_THRESHOLD_POLICY_STATUSES:
+            raise ValueError("unsupported performance claim threshold policy status")
+        _validate_performance_claim_threshold_basis_points(
+            policy.threshold_basis_points
+        )
+        _validate_performance_claim_threshold_policy_digest(policy.policy_digest)
+        seen.add(policy.policy_id)
+    return normalized
+
+
+def _normalize_performance_acceptance_criteria(
+    criteria: Iterable[PerformanceAcceptanceCriteria],
+) -> tuple[PerformanceAcceptanceCriteria, ...]:
+    normalized = tuple(criteria)
+    if len(normalized) > MAX_PERFORMANCE_ACCEPTANCE_CRITERIA:
+        raise ValueError("performance acceptance criteria count exceeds limit")
+    seen: set[str] = set()
+    for item in normalized:
+        if not isinstance(item, PerformanceAcceptanceCriteria):
+            raise TypeError(
+                "performance acceptance criteria must be "
+                "PerformanceAcceptanceCriteria"
+            )
+        _validate_performance_acceptance_criteria_text(
+            item.criteria_id,
+            "criteria_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.threshold_policy_id,
+            "threshold_policy_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.correctness_evidence_id,
+            "correctness_evidence_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.benchmark_methodology_id,
+            "benchmark_methodology_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.native_baseline_comparison_id,
+            "native_baseline_comparison_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.planner_overhead_report_id,
+            "planner_overhead_report_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.break_even_workload_size_id,
+            "break_even_workload_size_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.leaky_abstraction_report_id,
+            "leaky_abstraction_report_id",
+        )
+        _validate_performance_acceptance_criteria_text(
+            item.executable_security_review_id,
+            "executable_security_review_id",
+        )
+        if item.criteria_id in seen:
+            raise ValueError("duplicate performance acceptance criteria id")
+        if item.criteria_status not in PERFORMANCE_ACCEPTANCE_CRITERIA_STATUSES:
+            raise ValueError("unsupported performance acceptance criteria status")
+        _validate_performance_acceptance_criteria_digest(item.criteria_digest)
+        seen.add(item.criteria_id)
+    return normalized
+
+
 def _normalize_performance_evidence(
     evidence: Iterable[PerformanceProofReadinessEvidence],
 ) -> dict[str, bool]:
@@ -1590,6 +2350,45 @@ def _validate_performance_readiness_report(
         _validate_performance_report_text(issue.message, "issue message")
 
 
+def _validate_performance_proof_rfc_report(
+    report: PerformanceProofRFCReport,
+) -> None:
+    if not isinstance(report, PerformanceProofRFCReport):
+        raise TypeError("performance proof RFC report must be report object")
+    _validate_performance_proof_rfc_text(report.proposal_name, "proposal_name")
+    _normalize_performance_proof_rfcs(report.rfcs)
+    for issue in report.issues:
+        _validate_performance_proof_rfc_text(issue, "issue")
+
+
+def _validate_performance_claim_threshold_policy_report(
+    report: PerformanceClaimThresholdPolicyReport,
+) -> None:
+    if not isinstance(report, PerformanceClaimThresholdPolicyReport):
+        raise TypeError("performance claim threshold policy report must be report object")
+    _validate_performance_claim_threshold_policy_text(
+        report.proposal_name,
+        "proposal_name",
+    )
+    _normalize_performance_claim_threshold_policies(report.policies)
+    for issue in report.issues:
+        _validate_performance_claim_threshold_policy_text(issue, "issue")
+
+
+def _validate_performance_acceptance_criteria_report(
+    report: PerformanceAcceptanceCriteriaReport,
+) -> None:
+    if not isinstance(report, PerformanceAcceptanceCriteriaReport):
+        raise TypeError("performance acceptance criteria report must be report object")
+    _validate_performance_acceptance_criteria_text(
+        report.proposal_name,
+        "proposal_name",
+    )
+    _normalize_performance_acceptance_criteria(report.criteria)
+    for issue in report.issues:
+        _validate_performance_acceptance_criteria_text(issue, "issue")
+
+
 def _validate_native_baseline_report(
     report: NativeBaselineProvenanceReport,
 ) -> None:
@@ -1667,6 +2466,17 @@ def _validate_break_even_workload_report(
         _validate_break_even_workload_text(issue, "issue")
 
 
+def _validate_executable_backend_security_review_report(
+    report: ExecutableBackendSecurityReviewReport,
+) -> None:
+    if not isinstance(report, ExecutableBackendSecurityReviewReport):
+        raise TypeError("executable backend security report must be report object")
+    _validate_executable_backend_security_text(report.proposal_name, "proposal_name")
+    _normalize_executable_backend_security_reviews(report.reviews)
+    for issue in report.issues:
+        _validate_executable_backend_security_text(issue, "issue")
+
+
 def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
     if not isinstance(report, LeakyAbstractionReport):
         raise TypeError("leaky abstraction report must be report object")
@@ -1706,6 +2516,68 @@ def _validate_performance_report_text(value: str, label: str) -> None:
         raise ValueError(f"{label} must be a non-empty string")
     if len(value.encode("utf-8")) > MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES:
         raise ValueError(f"{label} exceeds performance proof readiness field limit")
+
+
+def _validate_performance_proof_rfc_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe performance proof RFC identifier")
+    if len(value.encode("utf-8")) > MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds performance proof RFC field limit")
+
+
+def _validate_performance_proof_rfc_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("rfc_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("rfc_digest must be not_supplied or sha256 digest")
+
+
+def _validate_performance_claim_threshold_policy_text(
+    value: str,
+    label: str,
+) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(
+            f"{label} must be a safe performance claim threshold policy identifier"
+        )
+    if len(value.encode("utf-8")) > MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds performance claim threshold policy limit")
+
+
+def _validate_performance_claim_threshold_basis_points(value: int) -> None:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise ValueError("threshold_basis_points must be an integer")
+    if value < 1 or value > MAX_PERFORMANCE_CLAIM_THRESHOLD_BASIS_POINTS:
+        raise ValueError("threshold_basis_points exceeds limit")
+
+
+def _validate_performance_claim_threshold_policy_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("policy_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("policy_digest must be not_supplied or sha256 digest")
+
+
+def _validate_performance_acceptance_criteria_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(
+            f"{label} must be a safe performance acceptance criteria identifier"
+        )
+    if len(value.encode("utf-8")) > MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds performance acceptance criteria limit")
+
+
+def _validate_performance_acceptance_criteria_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("criteria_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("criteria_digest must be not_supplied or sha256 digest")
 
 
 def _validate_native_baseline_text(value: str, label: str) -> None:
@@ -1828,6 +2700,24 @@ def _validate_break_even_workload_digest(value: str) -> None:
         raise ValueError("evidence_digest must be not_supplied or sha256 digest")
 
 
+def _validate_executable_backend_security_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(
+            f"{label} must be a safe executable backend security identifier"
+        )
+    if len(value.encode("utf-8")) > MAX_EXECUTABLE_BACKEND_SECURITY_REVIEW_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds executable backend security field limit")
+
+
+def _validate_executable_backend_security_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("review_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("review_digest must be not_supplied or sha256 digest")
+
+
 def _validate_leaky_abstraction_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{label} must be a non-empty string")
@@ -1862,6 +2752,21 @@ __all__ = [
     "BREAK_EVEN_WORKLOAD_SIZE_STATUSES",
     "BreakEvenWorkloadSize",
     "BreakEvenWorkloadSizeReport",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_ARTIFACT_STATUS",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_CLAIM_STATUS",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_DEFAULT_ISSUES",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_SCHEMA_VERSION",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_STATUSES",
+    "EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES",
+    "ExecutableBackendSecurityReview",
+    "ExecutableBackendSecurityReviewReport",
+    "MAX_PERFORMANCE_ACCEPTANCE_CRITERIA",
+    "MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_FIELD_BYTES",
+    "MAX_PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_BYTES",
+    "MAX_PERFORMANCE_CLAIM_THRESHOLD_BASIS_POINTS",
+    "MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICIES",
+    "MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_FIELD_BYTES",
+    "MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_BYTES",
     "LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES",
     "LEAKY_ABSTRACTION_ARTIFACT_STATUS",
     "LEAKY_ABSTRACTION_DEFAULT_ISSUES",
@@ -1871,6 +2776,9 @@ __all__ = [
     "LeakyAbstractionLeak",
     "LeakyAbstractionReport",
     "MAX_PERFORMANCE_PROOF_READINESS_ISSUES",
+    "MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES",
+    "MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES",
+    "MAX_PERFORMANCE_PROOF_RFCS",
     "NATIVE_BASELINE_COMPARISON_ARTIFACT_STATUS",
     "NATIVE_BASELINE_COMPARISON_CLAIM_STATUS",
     "NATIVE_BASELINE_COMPARISON_DEFAULT_ISSUES",
@@ -1886,6 +2794,11 @@ __all__ = [
     "NativeBaselineComparisonReport",
     "NativeBaselineProvenance",
     "NativeBaselineProvenanceReport",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_ARTIFACT_STATUS",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_CLAIM_STATUS",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_DEFAULT_ISSUES",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_SCHEMA_VERSION",
+    "PERFORMANCE_ACCEPTANCE_CRITERIA_STATUSES",
     "TOOLCHAIN_COMPONENT_KINDS",
     "TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS",
     "TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS",
@@ -1905,41 +2818,70 @@ __all__ = [
     "MAX_PROOF_METADATA_STRING_BYTES",
     "PERFORMANCE_PROOF_BLOCKED_CLAIMS",
     "PERFORMANCE_PROOF_BOUNDARY_CONTRACT",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_ARTIFACT_STATUS",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_CLAIM_STATUS",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_DEFAULT_ISSUES",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_KINDS",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_STATUSES",
     "PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION",
+    "PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS",
+    "PERFORMANCE_PROOF_RFC_CLAIM_STATUS",
+    "PERFORMANCE_PROOF_RFC_DEFAULT_ISSUES",
+    "PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION",
+    "PERFORMANCE_PROOF_RFC_STATUSES",
     "PERFORMANCE_PROOF_REQUIRED_EVIDENCE",
+    "PerformanceClaimThresholdPolicy",
+    "PerformanceClaimThresholdPolicyReport",
+    "PerformanceAcceptanceCriteria",
+    "PerformanceAcceptanceCriteriaReport",
     "PerformanceProofReadinessError",
     "PerformanceProofReadinessEvidence",
     "PerformanceProofReadinessIssue",
     "PerformanceProofReadinessReport",
+    "PerformanceProofRFC",
+    "PerformanceProofRFCReport",
     "PROOF_REPORT_SCHEMA_VERSION",
     "ProofReportMetadata",
     "assert_performance_proof_readiness",
     "benchmark_artifact_manifest_report_to_dict",
     "benchmark_methodology_report_to_dict",
     "break_even_workload_size_report_to_dict",
+    "build_performance_acceptance_criteria_report",
     "build_toolchain_environment_report",
     "build_benchmark_artifact_manifest_report",
     "build_benchmark_methodology_report",
     "build_break_even_workload_size_report",
+    "build_executable_backend_security_review_report",
+    "build_performance_claim_threshold_policy_report",
     "build_leaky_abstraction_report",
     "build_native_baseline_comparison_report",
     "build_native_baseline_provenance_report",
     "build_performance_proof_readiness_report",
+    "build_performance_proof_rfc_report",
     "build_workload_scope_report",
     "dump_benchmark_artifact_manifest_report",
     "dump_benchmark_methodology_report",
     "dump_break_even_workload_size_report",
+    "dump_performance_acceptance_criteria_report",
+    "dump_executable_backend_security_review_report",
+    "dump_performance_claim_threshold_policy_report",
     "dump_toolchain_environment_report",
     "dump_leaky_abstraction_report",
     "dump_native_baseline_comparison_report",
     "dump_native_baseline_provenance_report",
     "dump_performance_proof_readiness_report",
+    "dump_performance_proof_rfc_report",
     "dump_workload_scope_report",
     "leaky_abstraction_report_to_dict",
     "native_baseline_comparison_report_to_dict",
     "native_baseline_provenance_report_to_dict",
+    "performance_acceptance_criteria_report_to_dict",
+    "performance_claim_threshold_policy_report_to_dict",
     "performance_proof_readiness_report_to_dict",
+    "performance_proof_rfc_report_to_dict",
     "proof_metadata_from_partition_plan",
+    "executable_backend_security_review_report_to_dict",
     "toolchain_environment_report_to_dict",
     "workload_scope_report_to_dict",
 ]

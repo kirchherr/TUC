@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/performance_claim_threshold_policy_report.v0.schema.json",
+  "title": "TUC Performance Claim Threshold Policy Report v0",
+  "description": "Diagnostic-only schema for performance claim threshold policy review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "claim_boundary",
+    "issues",
+    "native_performance_claim",
+    "performance_claim_status",
+    "performance_claim_threshold_policy_ready",
+    "policies",
+    "proposal_name",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "performance_claim_threshold_policy_ready": {"type": "boolean"},
+    "policies": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/threshold_policy"}
+    },
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "schema_version": {"const": "tuc.performance_claim_threshold_policy_report.v0"}
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "oneOf": [
+        {"const": "not_supplied"},
+        {"pattern": "^sha256:[0-9a-f]{64}$"}
+      ]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "threshold_basis_points": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000
+    },
+    "threshold_kind": {
+      "type": "string",
+      "enum": [
+        "ratio_to_native_at_least",
+        "overhead_over_native_at_most"
+      ]
+    },
+    "policy_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "reviewed_not_accepted",
+        "accepted_by_maintainers"
+      ]
+    },
+    "threshold_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "comparison_metric_id",
+        "policy_digest",
+        "policy_id",
+        "policy_status",
+        "summary_policy_id",
+        "threshold_basis_points",
+        "threshold_kind",
+        "workload_scope_id"
+      ],
+      "properties": {
+        "comparison_metric_id": {"$ref": "#/$defs/report_text"},
+        "policy_digest": {"$ref": "#/$defs/digest"},
+        "policy_id": {"$ref": "#/$defs/report_text"},
+        "policy_status": {"$ref": "#/$defs/policy_status"},
+        "summary_policy_id": {"$ref": "#/$defs/report_text"},
+        "threshold_basis_points": {"$ref": "#/$defs/threshold_basis_points"},
+        "threshold_kind": {"$ref": "#/$defs/threshold_kind"},
+        "workload_scope_id": {"$ref": "#/$defs/report_text"}
+      }
+    }
+  }
+}

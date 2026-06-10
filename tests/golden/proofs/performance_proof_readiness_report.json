@@ -15,6 +15,14 @@
       "present": false
     },
     {
+      "evidence_id": "performance_claim_threshold_policy",
+      "present": false
+    },
+    {
+      "evidence_id": "performance_acceptance_criteria",
+      "present": false
+    },
+    {
       "evidence_id": "benchmark_methodology",
       "present": false
     },
@@ -74,6 +82,14 @@
   "issues": [
     {
       "evidence_id": "performance_proof_rfc",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "performance_claim_threshold_policy",
+      "message": "required performance proof boundary evidence is missing"
+    },
+    {
+      "evidence_id": "performance_acceptance_criteria",
       "message": "required performance proof boundary evidence is missing"
     },
     {

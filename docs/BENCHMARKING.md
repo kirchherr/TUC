@@ -106,6 +106,25 @@ Future native performance proposals must also pass the
 readiness report does not run benchmarks, does not ingest raw benchmark output,
 and does not turn local timing data into a proof claim.
 
+Performance-proof claim proposal metadata is tracked separately by the
+[Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md) and
+`schemas/performance_proof_rfc_report.v0.schema.json`. Baseline benchmark
+reports must not embed broad performance claims, claim thresholds, acceptance
+criteria, security-review approval, RFC text, evidence bundles, or execution
+permission.
+
+Performance claim thresholds are tracked separately by the
+[Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
+and `schemas/performance_claim_threshold_policy_report.v0.schema.json`.
+Baseline benchmark reports must not define "near native" thresholds, acceptance
+thresholds, basis-point policy, or post-hoc claim criteria.
+
+Performance claim pass/fail rules are tracked separately by the
+[Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md)
+and `schemas/performance_acceptance_criteria_report.v0.schema.json`.
+Baseline benchmark reports must not define acceptance criteria, decide proof
+success, or embed required evidence contracts.
+
 Planner timing is tracked separately by the
 [Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md). Baseline benchmark
 reports must not hide planner overhead inside execution timing.
@@ -138,3 +157,10 @@ Benchmark report artifact inventory is tracked separately by the
 `schemas/benchmark_artifact_manifest_report.v0.schema.json`. The manifest
 records artifact identifiers, schema versions, digest status, and storage
 scopes; it must not load artifacts or embed raw benchmark output.
+
+Executable backend and device security evidence is tracked separately by the
+[Executable Backend Security Review Report](EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md)
+and `schemas/executable_backend_security_review_report.v0.schema.json`.
+Baseline benchmark reports must not embed execution permission, dynamic-library
+paths, device identifiers, backend artifact contents, generated code, native
+source contents, or plugin entrypoints.
