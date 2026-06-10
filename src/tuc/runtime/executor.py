@@ -19,6 +19,7 @@ from numpy.typing import NDArray
 
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.reference import (
+    ElementwiseKernel,
     reference_elementwise,
     reference_matmul,
     reference_reduction_sum,
@@ -474,6 +475,7 @@ def _build_readiness_step(
     assignment: Assignment,
     contracts: Mapping[str, RuntimeBackendExecutorContract],
 ) -> RuntimeExecutionReadinessStep:
+    _validate_runtime_operation_contract(operation)
     contract = contracts.get(assignment.backend_name)
     if contract is None:
         raise ValueError(
@@ -511,6 +513,7 @@ def _execute_reference_operation(
     operation: ComputeOperation,
     values: Mapping[str, FloatArray],
 ) -> FloatArray:
+    _validate_runtime_operation_contract(operation)
     if operation.kind is OperationKind.MATMUL:
         _require_arity(operation, inputs=2, outputs=1)
         return reference_matmul(
@@ -527,7 +530,7 @@ def _execute_reference_operation(
         _require_arity(operation, inputs=1, outputs=1)
         return reference_reduction_sum(
             values[operation.inputs[0].name],
-            axis=_optional_axis(operation, "reduction"),
+            axis=_required_axis(operation, "reduction"),
         )
     if operation.kind is OperationKind.SOFTMAX:
         _require_arity(operation, inputs=1, outputs=1)
@@ -536,6 +539,93 @@ def _execute_reference_operation(
             axis=_required_axis(operation, "softmax"),
         )
     raise ValueError(f"runtime executor unsupported operation: {operation.kind.value}")
+
+
+def _validate_runtime_operation_contract(operation: ComputeOperation) -> None:
+    if operation.kind is OperationKind.MATMUL:
+        _validate_matmul_operation(operation)
+        return
+    if operation.kind is OperationKind.ELEMENTWISE:
+        _validate_elementwise_operation(operation)
+        return
+    if operation.kind is OperationKind.REDUCTION:
+        _validate_reduction_operation(operation)
+        return
+    if operation.kind is OperationKind.SOFTMAX:
+        _validate_softmax_operation(operation)
+        return
+    raise ValueError(f"runtime executor unsupported operation: {operation.kind.value}")
+
+
+def _validate_matmul_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=2, outputs=1)
+    left, right = operation.inputs
+    output = operation.outputs[0]
+    _require_rank(left, rank=2, operation=operation, role="left input")
+    _require_rank(right, rank=2, operation=operation, role="right input")
+    _require_rank(output, rank=2, operation=operation, role="output")
+    if left.shape[1] != right.shape[0]:
+        raise ValueError(
+            f"runtime executor matmul input dimensions must agree for {operation.name}"
+        )
+    expected = (left.shape[0], right.shape[1])
+    if output.shape != expected:
+        raise ValueError(
+            f"runtime executor matmul output shape mismatch for {operation.name}: "
+            f"expected {_format_shape(expected)}, got {_format_shape(output.shape)}"
+        )
+
+
+def _validate_elementwise_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=1, outputs=1)
+    input_tensor = operation.inputs[0]
+    output = operation.outputs[0]
+    kernel = operation.attributes.get("kernel", "identity")
+    if not isinstance(kernel, str):
+        raise TypeError("runtime executor elementwise kernel must be a string")
+    try:
+        ElementwiseKernel(kernel)
+    except ValueError as exc:
+        raise ValueError(
+            f"runtime executor unsupported elementwise kernel for {operation.name}: "
+            f"{kernel!r}"
+        ) from exc
+    if output.shape != input_tensor.shape:
+        raise ValueError(
+            f"runtime executor elementwise output shape mismatch for {operation.name}: "
+            f"expected {_format_shape(input_tensor.shape)}, got {_format_shape(output.shape)}"
+        )
+
+
+def _validate_reduction_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=1, outputs=1)
+    input_tensor = operation.inputs[0]
+    output = operation.outputs[0]
+    axis = _required_axis(operation, "reduction")
+    normalized_axis = _normalize_axis(axis, rank=len(input_tensor.shape), label="reduction")
+    expected = input_tensor.shape[:normalized_axis] + input_tensor.shape[normalized_axis + 1 :]
+    if not expected:
+        raise ValueError(
+            f"runtime executor reduction output would be scalar for {operation.name}"
+        )
+    if output.shape != expected:
+        raise ValueError(
+            f"runtime executor reduction output shape mismatch for {operation.name}: "
+            f"expected {_format_shape(expected)}, got {_format_shape(output.shape)}"
+        )
+
+
+def _validate_softmax_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=1, outputs=1)
+    input_tensor = operation.inputs[0]
+    output = operation.outputs[0]
+    axis = _required_axis(operation, "softmax")
+    _normalize_axis(axis, rank=len(input_tensor.shape), label="softmax")
+    if output.shape != input_tensor.shape:
+        raise ValueError(
+            f"runtime executor softmax output shape mismatch for {operation.name}: "
+            f"expected {_format_shape(input_tensor.shape)}, got {_format_shape(output.shape)}"
+        )
 
 
 def _normalize_inputs(
@@ -654,13 +744,6 @@ def _require_arity(
         )
 
 
-def _optional_axis(operation: ComputeOperation, label: str) -> int | None:
-    axis = operation.attributes.get("axis")
-    if axis is None:
-        return None
-    return _coerce_axis(axis, label)
-
-
 def _required_axis(operation: ComputeOperation, label: str) -> int:
     axis = operation.attributes.get("axis")
     if axis is None:
@@ -672,6 +755,27 @@ def _coerce_axis(axis: object, label: str) -> int:
     if not isinstance(axis, int) or isinstance(axis, bool):
         raise TypeError(f"runtime executor {label} axis must be an integer")
     return axis
+
+
+def _normalize_axis(axis: int, *, rank: int, label: str) -> int:
+    normalized = axis + rank if axis < 0 else axis
+    if normalized < 0 or normalized >= rank:
+        raise ValueError(f"runtime executor {label} axis is out of bounds")
+    return normalized
+
+
+def _require_rank(
+    tensor: TensorRef,
+    *,
+    rank: int,
+    operation: ComputeOperation,
+    role: str,
+) -> None:
+    if len(tensor.shape) != rank:
+        raise ValueError(
+            f"runtime executor {operation.kind.value} {role} rank must be "
+            f"{rank} for {operation.name}"
+        )
 
 
 def _format_step(step: RuntimeExecutionStep) -> str:

@@ -13,6 +13,7 @@ It is not a backend plugin system.
 - Executor contract: `runtime_executor.trusted_backend.v0`
 - Executor registry: `trusted_runtime_executor_registry.v0`
 - Trusted backend contract: `runtime_backend_executor.trusted.v0`
+- Operation semantic contract: `runtime_executor.operation_semantics.v0`
 - Input value contract: `runtime_executor.numpy_float64_inputs.v0`
 - Output value contract: `runtime_executor.declared_shape_float64_output.v0`
 - API: `execute_graph(graph, partition_plan, inputs)`
@@ -46,8 +47,9 @@ Inputs must be a plain mapping of external graph tensor names to NumPy arrays.
 Each input must match the declared tensor shape, use `float64`, and contain only
 finite values. Missing inputs, unexpected intermediate tensors, non-plain
 mappings, partition plan mismatches, unsupported arity, invalid axes, invalid
-input dtype or shape, non-finite input values, output-shape mismatches,
-non-`float64` outputs, and non-finite output values fail closed.
+operation shape semantics, invalid elementwise kernels, invalid input dtype or
+shape, non-finite input values, output-shape mismatches, non-`float64` outputs,
+and non-finite output values fail closed.
 
 If a runtime plan names a backend that is not in the trusted registry, execution
 fails closed. If a trusted executor is asked to execute an unsupported operation
@@ -72,6 +74,25 @@ The readiness report records:
 If the runtime plan names an untrusted backend contract or assigns an operation
 to a backend contract that does not support its operation family, execution is
 rejected before input normalization or kernel execution.
+
+## Operation Semantic Contract
+
+Runtime Executor v0 validates operation semantics before calling any trusted
+reference kernel:
+
+- `matmul` requires two rank-2 inputs, one rank-2 output, matching inner
+  dimensions, and declared output shape `(m, n)`
+- `elementwise` requires one input, one output, matching shapes, and a supported
+  reference kernel
+- `reduction` requires one input, one output, an explicit in-bounds axis, and a
+  declared output shape with that axis removed
+- `softmax` requires one input, one output, an explicit in-bounds axis, and a
+  declared output shape equal to the input shape
+
+These checks use `TensorRef` metadata only and run as part of execution
+readiness. They prevent NumPy broadcasting, implicit reductions, scalar
+outputs, or backend-specific shape interpretations from becoming hidden runtime
+behavior.
 
 ## Tensor Value Contract
 

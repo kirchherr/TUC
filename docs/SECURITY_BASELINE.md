@@ -86,6 +86,10 @@ Implemented now:
   runtime plans against trusted backend executor contracts before any operation
   executes, failing closed for untrusted backend contracts or unsupported
   operation/backend assignments.
+- Runtime operation semantic contracts validate MVP operation shape and axis
+  rules before trusted reference kernels run, preventing implicit NumPy
+  broadcasting, scalar reductions, unsupported elementwise kernels, or
+  backend-specific shape interpretation from becoming hidden behavior.
 - Runtime tensor value contracts require external inputs and operation outputs
   to match declared shapes, use `float64`, and contain only finite values,
   failing closed before dtype, shape, or non-finite-value drift can reach later

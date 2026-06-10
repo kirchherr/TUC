@@ -52,6 +52,8 @@ hardware-independent interface into capability-driven runtime planning.
   evidence for the fixed in-process prototype executor registry.
 - Runtime execution readiness report that gates proof execution against trusted
   backend executor contracts before kernels run.
+- Runtime operation semantic contract checks for MVP operation shapes, axes,
+  scalar-output rejection, and supported elementwise kernels.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
   and finite values at input and output boundaries.
 
@@ -113,6 +115,9 @@ Current slice:
   `tests/golden/execution_readiness/proof_of_execution.txt`.
 - Runtime Executor negative tests for input shape mismatch, non-`float64`
   inputs, non-finite inputs, and non-finite outputs.
+- Runtime Executor negative tests for matmul dimension mismatch, elementwise
+  output mismatch, unsupported elementwise kernels, reduction axis/output
+  errors, scalar reduction output, and softmax axis/output errors.
 - Triton source threat model that blocks direct source parsing and `@triton.jit`
   handling until parser budgets, negative tests, fuzzing, diagnostics, and
   sandboxing gates exist.

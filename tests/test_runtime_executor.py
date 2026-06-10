@@ -10,13 +10,22 @@ from numpy.testing import assert_allclose
 from examples.proof_of_execution import build_graph, proof_inputs
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
-from tuc.ir import ComputeGraph, OperationKind
+from tuc.ir import (
+    ComputeGraph,
+    ComputeOperation,
+    LayoutKind,
+    MemoryDomainKind,
+    OperationKind,
+    TensorRef,
+)
 from tuc.runtime import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE,
     TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT,
     TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT,
     TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT,
+    Assignment,
+    PartitionPlan,
     RuntimeBackendExecutorContract,
     dump_runtime_execution_readiness,
     dump_trusted_runtime_executor_contracts,
@@ -38,6 +47,22 @@ _GOLDEN_BACKEND_CONTRACTS = (
 _GOLDEN_READINESS = (
     Path(__file__).parent / "golden" / "execution_readiness" / "proof_of_execution.txt"
 )
+
+
+def _single_operation_plan(graph: ComputeGraph) -> PartitionPlan:
+    operation = graph.operations[0]
+    return PartitionPlan(
+        graph_name=graph.name,
+        assignments=(
+            Assignment(
+                operation_name=operation.name,
+                backend_name="reference-cpu",
+                reason="test",
+                memory_domain=MemoryDomainKind.HOST_RAM,
+                produced_layout=LayoutKind.ROW_MAJOR,
+            ),
+        ),
+    )
 
 
 def test_runtime_executor_executes_compiled_graph_and_trace_matches_golden() -> None:
@@ -156,6 +181,166 @@ def test_runtime_execution_readiness_report_matches_golden() -> None:
     assert dump_runtime_execution_readiness(report) == _GOLDEN_READINESS.read_text(
         encoding="utf-8"
     ).rstrip("\n")
+
+
+def test_runtime_readiness_rejects_matmul_dimension_mismatch() -> None:
+    graph = ComputeGraph(
+        name="bad_matmul",
+        operations=(
+            ComputeOperation(
+                name="projection",
+                kind=OperationKind.MATMUL,
+                inputs=(TensorRef("a", (2, 3)), TensorRef("b", (4, 2))),
+                outputs=(TensorRef("c", (2, 2)),),
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="matmul input dimensions must agree"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
+
+
+def test_runtime_readiness_rejects_elementwise_output_shape_mismatch() -> None:
+    graph = ComputeGraph(
+        name="bad_elementwise",
+        operations=(
+            ComputeOperation(
+                name="activation",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(TensorRef("x", (2,)),),
+                outputs=(TensorRef("y", (3,)),),
+                attributes={"kernel": "relu"},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="elementwise output shape mismatch"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
+
+
+def test_runtime_readiness_rejects_unsupported_elementwise_kernel() -> None:
+    graph = ComputeGraph(
+        name="bad_elementwise_kernel",
+        operations=(
+            ComputeOperation(
+                name="activation",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(TensorRef("x", (2,)),),
+                outputs=(TensorRef("y", (2,)),),
+                attributes={"kernel": "sigmoid"},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="unsupported elementwise kernel"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
+
+
+def test_runtime_readiness_rejects_reduction_axis_out_of_bounds() -> None:
+    graph = ComputeGraph(
+        name="bad_reduction_axis",
+        operations=(
+            ComputeOperation(
+                name="row_sum",
+                kind=OperationKind.REDUCTION,
+                inputs=(TensorRef("x", (2, 3)),),
+                outputs=(TensorRef("y", (2,)),),
+                attributes={"axis": 2},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="reduction axis is out of bounds"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
+
+
+def test_runtime_readiness_rejects_reduction_without_axis() -> None:
+    graph = ComputeGraph(
+        name="bad_reduction_without_axis",
+        operations=(
+            ComputeOperation(
+                name="row_sum",
+                kind=OperationKind.REDUCTION,
+                inputs=(TensorRef("x", (2, 3)),),
+                outputs=(TensorRef("y", (2,)),),
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="reduction axis is required"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
+
+
+def test_runtime_readiness_rejects_scalar_reduction_output() -> None:
+    graph = ComputeGraph(
+        name="bad_scalar_reduction",
+        operations=(
+            ComputeOperation(
+                name="total_sum",
+                kind=OperationKind.REDUCTION,
+                inputs=(TensorRef("x", (2,)),),
+                outputs=(TensorRef("y", (1,)),),
+                attributes={"axis": 0},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="reduction output would be scalar"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
+
+
+def test_runtime_readiness_rejects_reduction_output_shape_mismatch() -> None:
+    graph = ComputeGraph(
+        name="bad_reduction_output",
+        operations=(
+            ComputeOperation(
+                name="row_sum",
+                kind=OperationKind.REDUCTION,
+                inputs=(TensorRef("x", (2, 3)),),
+                outputs=(TensorRef("y", (3,)),),
+                attributes={"axis": 1},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="reduction output shape mismatch"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
+
+
+def test_runtime_readiness_rejects_softmax_output_shape_mismatch() -> None:
+    graph = ComputeGraph(
+        name="bad_softmax_output",
+        operations=(
+            ComputeOperation(
+                name="softmax",
+                kind=OperationKind.SOFTMAX,
+                inputs=(TensorRef("x", (2, 3)),),
+                outputs=(TensorRef("y", (2,)),),
+                attributes={"axis": 1},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="softmax output shape mismatch"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
+
+
+def test_runtime_readiness_rejects_softmax_axis_out_of_bounds() -> None:
+    graph = ComputeGraph(
+        name="bad_softmax_axis",
+        operations=(
+            ComputeOperation(
+                name="softmax",
+                kind=OperationKind.SOFTMAX,
+                inputs=(TensorRef("x", (2, 3)),),
+                outputs=(TensorRef("y", (2, 3)),),
+                attributes={"axis": 2},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="softmax axis is out of bounds"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
 
 
 def test_trusted_runtime_executor_contracts_are_stable_and_execution_free() -> None:

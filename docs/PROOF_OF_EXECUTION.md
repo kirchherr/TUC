@@ -23,6 +23,8 @@ result.
 - Runtime placement remains visible before execution.
 - Runtime execution is gated by trusted backend executor contracts before the
   first operation runs.
+- Runtime operation semantics are checked before any trusted reference kernel
+  runs.
 - Runtime tensor values are checked against shape, dtype, and finite-value
   contracts at input and output boundaries.
 - Execution uses fixed trusted in-process prototype executors.
