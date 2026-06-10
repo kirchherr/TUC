@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/triton_idiom_coverage_report.v0.schema.json",
+  "title": "TUC Triton Idiom Coverage Report v0",
+  "description": "Diagnostic-only schema for Triton-like idiom coverage through execution-free metadata evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "coverage_contract",
+    "coverages",
+    "direct_triton_source_ingestion",
+    "issues",
+    "parser_status",
+    "proposal_name",
+    "schema_version",
+    "triton_idiom_coverage_ready"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "coverage_contract": {
+      "const": "triton_idiom_coverage.execution_free.v0"
+    },
+    "coverages": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/coverage"}
+    },
+    "direct_triton_source_ingestion": {"const": false},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "parser_status": {
+      "const": "direct_triton_source_ingestion_blocked"
+    },
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "schema_version": {"const": "tuc.triton_idiom_coverage_report.v0"},
+    "triton_idiom_coverage_ready": {"type": "boolean"}
+  },
+  "$defs": {
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "compiler_decision_golden_id",
+        "coverage_status",
+        "hac_ir_golden_id",
+        "idiom_id",
+        "intake_golden_id",
+        "metadata_example_id",
+        "operation_family",
+        "runtime_plan_golden_id"
+      ],
+      "properties": {
+        "compiler_decision_golden_id": {"$ref": "#/$defs/report_text"},
+        "coverage_status": {
+          "enum": ["metadata_golden_covered", "documented_not_covered"]
+        },
+        "hac_ir_golden_id": {"$ref": "#/$defs/report_text"},
+        "idiom_id": {"$ref": "#/$defs/report_text"},
+        "intake_golden_id": {"$ref": "#/$defs/report_text"},
+        "metadata_example_id": {"$ref": "#/$defs/report_text"},
+        "operation_family": {
+          "enum": ["matmul", "elementwise", "reduction", "softmax"]
+        },
+        "runtime_plan_golden_id": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(not_supplied|[A-Za-z][A-Za-z0-9_.-]*)$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "bytecode",
+          "callable",
+          "command",
+          "device_path",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_artifact",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "subprocess",
+          "url"
+        ]
+      }
+    }
+  }
+}

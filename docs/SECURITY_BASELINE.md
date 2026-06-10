@@ -53,6 +53,11 @@ Implemented now:
   surface keys before producing a `ComputeGraph`; deterministic intake reports
   make the frontend boundary reviewable without importing, parsing, JITing, or
   executing Triton code.
+- Triton idiom coverage reports use
+  `schemas/triton_idiom_coverage_report.v0.schema.json` to track only bounded
+  metadata-example and golden-evidence identifiers; they keep direct Triton
+  source ingestion blocked and do not load source, Python objects, devices,
+  plugins, backend artifacts, or generated code.
 - Triton source ingestion is explicitly blocked by
   [TRITON_SOURCE_THREAT_MODEL.md](TRITON_SOURCE_THREAT_MODEL.md) until a
   data-only parser design includes source budgets, negative tests, fuzzing or
@@ -65,6 +70,13 @@ Implemented now:
 - Triton source preflight fuzz/property tests cover arbitrary decoded bytes,
   invalid Unicode, seed-corpus combinations, and diagnostic-volume pressure
   without opening source-to-IR ingestion.
+- Runtime Executor v0 executes already-compiled graphs only through a fixed
+  trusted in-process prototype executor registry, requires plain explicit NumPy
+  inputs, validates partition-plan alignment and output shapes, fails closed for
+  unknown executor backends or unsupported executor operation kinds, and emits
+  deterministic execution traces without plugin discovery, dynamic imports,
+  subprocesses, device access, network access, JIT, dynamic libraries, or
+  generated-artifact execution.
 - Movement-aware partition plan metadata with transfer-byte accounting.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.

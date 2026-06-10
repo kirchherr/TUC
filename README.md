@@ -74,6 +74,16 @@ The current prototype contains:
   and deterministic report goldens before any source-to-IR conversion.
 - Triton source preflight fuzz/property corpus for arbitrary decoded bytes,
   invalid Unicode, seed combinations, and bounded diagnostics.
+- Diagnostic Triton idiom coverage reports that track metadata examples and
+  golden evidence while direct source ingestion remains blocked.
+- Deterministic Triton idiom coverage golden report for reviewer-visible
+  frontend coverage evidence.
+- Runtime Executor v0 with trusted in-process prototype backend execution and
+  deterministic execution traces.
+- Runtime Executor MVP-family trace covering `matmul`, `softmax`, `reduction`,
+  and `elementwise` through the Triton-like metadata graph.
+- Proof-of-execution example that compiles, plans, executes, traces, and
+  verifies a graph against independent reference semantics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Schema-versioned diagnostic baseline benchmark reports that are explicitly
   marked as non-performance-proof artifacts.
@@ -182,6 +192,12 @@ Run the proof-of-softmax example:
 python examples/proof_of_softmax.py
 ```
 
+Run the proof-of-execution example:
+
+```bash
+python examples/proof_of_execution.py
+```
+
 Inspect data-movement metadata:
 
 ```bash
@@ -198,6 +214,12 @@ Run the execution-free Triton source preflight example:
 
 ```bash
 python examples/triton_source_preflight.py
+```
+
+Inspect Triton idiom coverage through metadata and golden evidence:
+
+```bash
+python examples/triton_idiom_coverage_report.py
 ```
 
 Run the Backend API v0.1 authoring example:
@@ -348,6 +370,8 @@ pytest -q
 - [Proof of abstraction](docs/PROOF_OF_ABSTRACTION.md)
 - [Proof of reduction](docs/PROOF_OF_REDUCTION.md)
 - [Proof of softmax](docs/PROOF_OF_SOFTMAX.md)
+- [Proof of execution](docs/PROOF_OF_EXECUTION.md)
+- [Runtime Executor v0](docs/RUNTIME_EXECUTOR.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
@@ -368,6 +392,7 @@ pytest -q
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
+- [Triton idiom coverage report](docs/TRITON_IDIOM_COVERAGE_REPORT.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)

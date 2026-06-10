@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from pathlib import Path
 
 import numpy as np
 from numpy.testing import assert_allclose
@@ -15,6 +16,13 @@ from examples.triton_mvp_metadata import (
 )
 from tuc.ir import OperationKind
 from tuc.runtime import DEFAULT_FALLBACK_BACKEND
+
+_GOLDEN_TRACE = (
+    Path(__file__).parent
+    / "golden"
+    / "execution_traces"
+    / "triton_metadata_mvp_families.txt"
+)
 
 
 def test_triton_mvp_metadata_covers_all_mvp_operation_families() -> None:
@@ -64,6 +72,28 @@ def test_triton_mvp_metadata_pipeline_assignments_are_explainable() -> None:
     assert report.passed
 
 
+def test_triton_mvp_metadata_runtime_executor_covers_all_mvp_families() -> None:
+    report = run_report()
+
+    assert tuple(step.operation_kind for step in report.execution.trace.steps) == (
+        OperationKind.MATMUL,
+        OperationKind.SOFTMAX,
+        OperationKind.MATMUL,
+        OperationKind.REDUCTION,
+        OperationKind.ELEMENTWISE,
+    )
+    assert tuple(step.executor_backend for step in report.execution.trace.steps) == (
+        "linear-sim",
+        DEFAULT_FALLBACK_BACKEND,
+        "linear-sim",
+        "linear-sim",
+        DEFAULT_FALLBACK_BACKEND,
+    )
+    assert report.execution.trace.dump() == _GOLDEN_TRACE.read_text(
+        encoding="utf-8"
+    ).rstrip("\n")
+
+
 def test_triton_mvp_metadata_example_runs() -> None:
     completed = subprocess.run(
         [sys.executable, "examples/triton_mvp_metadata.py"],
@@ -73,6 +103,8 @@ def test_triton_mvp_metadata_example_runs() -> None:
     )
 
     assert "== intake report ==" in completed.stdout
+    assert "== execution trace ==" in completed.stdout
     assert "triton_metadata_mvp_families" in completed.stdout
     assert 'operation_kinds = "matmul,softmax,matmul,reduction,elementwise"' in completed.stdout
+    assert "attention_softmax planned_backend=reference-cpu" in completed.stdout
     assert completed.stdout.rstrip().endswith("PASS")

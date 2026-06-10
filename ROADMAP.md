@@ -90,12 +90,17 @@ Required artifacts:
 - `examples/proof_of_abstraction.py`
 - `examples/proof_of_reduction.py`
 - `examples/proof_of_softmax.py`
+- `examples/proof_of_execution.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
+- `tests/golden/proofs/proof_of_execution.txt`
+- `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
 - `docs/PROOF_OF_SOFTMAX.md`
+- `docs/PROOF_OF_EXECUTION.md`
+- `docs/RUNTIME_EXECUTOR.md`
 
 Completed evidence:
 
@@ -129,6 +134,17 @@ Completed evidence:
   threshold metadata before "near native" or percentage claims can be reviewed.
 - Performance acceptance criteria reports require accepted, digest-pinned
   pass/fail metadata before benchmark artifacts can count as passing evidence.
+- Triton idiom coverage reports track which Triton-like idioms are covered by
+  schema-versioned metadata examples and golden evidence while direct source
+  ingestion remains blocked.
+- Runtime Executor v0 executes already-compiled graphs through a fixed trusted
+  in-process prototype executor registry and emits deterministic execution
+  traces.
+- Runtime Executor MVP-family trace covers `matmul`, `softmax`, `reduction`,
+  and `elementwise` through the Triton-like metadata graph.
+- Proof-of-execution compiles, plans, executes, traces, and verifies a graph
+  against independent reference semantics without plugin discovery, device
+  access, subprocesses, JIT, or generated-artifact execution.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution
@@ -404,6 +420,9 @@ Go/No-Go:
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
+- Triton idiom coverage must be represented through
+  `schemas/triton_idiom_coverage_report.v0.schema.json` before source syntax or
+  `@triton.jit` integration is considered.
 - Performance claims remain blocked until leaky-abstraction evidence,
   planner-overhead evidence, native baseline provenance, native baseline
   comparison, correctness goldens, security review, an accepted bounded

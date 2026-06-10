@@ -18,6 +18,8 @@ It supports:
 - Optional non-reserved operation attributes.
 - Optional layout metadata through a dedicated field.
 - Deterministic intake reports through `TritonIntakeReport`.
+- Diagnostic Triton idiom coverage reports through
+  `schemas/triton_idiom_coverage_report.v0.schema.json`.
 
 ## Non-Goals
 
@@ -73,6 +75,12 @@ deterministic report for reviewing whether a future parser proposal has every
 required gate artifact. The current golden report intentionally remains
 blocked.
 
+[`TRITON_IDIOM_COVERAGE_REPORT.md`](TRITON_IDIOM_COVERAGE_REPORT.md) defines a
+diagnostic report for Triton-like idioms covered through metadata examples and
+goldens. It uses
+`schemas/triton_idiom_coverage_report.v0.schema.json`, keeps
+`direct_triton_source_ingestion` false, and does not authorize source parsing.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:
@@ -115,6 +123,7 @@ tests/golden/frontend/triton_metadata_mvp_families_intake.txt
 tests/golden/hac_ir/triton_metadata_mvp_families.txt
 tests/golden/runtime_plans/triton_metadata_mvp_families.txt
 tests/golden/compiler_decisions/triton_metadata_mvp_families.txt
+tests/golden/execution_traces/triton_metadata_mvp_families.txt
 tests/golden/frontend/source_intent_intake_report.txt
 tests/golden/frontend/source_intent_intake_module.txt
 tests/golden/frontend/source_intent_intake_metadata.txt
@@ -127,6 +136,7 @@ tests/golden/hac_ir/source_intent_metadata_mlp.txt
 tests/golden/runtime_plans/source_intent_metadata_mlp.txt
 tests/golden/compiler_decisions/source_intent_metadata_mlp.txt
 tests/golden/frontend/source_intent_frontend_conformance_report.json
+tests/golden/frontend/triton_idiom_coverage_report.json
 ```
 
 ## Example
@@ -134,4 +144,6 @@ tests/golden/frontend/source_intent_frontend_conformance_report.json
 See `examples/triton_metadata_adapter.py` for a small metadata-to-pipeline
 vertical slice. See `examples/triton_mvp_metadata.py` for a frontend-originated
 graph that covers all MVP operation families without source parsing or Triton
-JIT execution.
+JIT execution. See `examples/triton_idiom_coverage_report.py` for a
+machine-readable coverage summary that references metadata and golden evidence
+without loading source text or compiler artifacts.

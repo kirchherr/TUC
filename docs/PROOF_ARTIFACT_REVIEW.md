@@ -14,11 +14,13 @@ Use this checklist when a pull request changes any of these paths:
 ```text
 examples/proof_*.py
 tests/golden/proofs/
+tests/golden/execution_traces/
 tests/golden/hac_ir/proof_*.txt
 tests/golden/runtime_plans/proof_*.txt
 tests/golden/compiler_decisions/proof_*.txt
 tests/test_proof_*.py
 docs/PROOF_*.md
+docs/RUNTIME_EXECUTOR.md
 docs/PERFORMANCE_PROOF_READINESS.md
 docs/PERFORMANCE_PROOF_RFC_REPORT.md
 docs/PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md
@@ -52,6 +54,9 @@ Before approving a proof artifact change, reviewers should confirm:
   plugin, generated-artifact, benchmark, calibration, or runtime-handle data.
 - Runtime-plan changes keep backend assignments, transfer bytes, movement
   costs, and fallback reasons inspectable.
+- Execution-trace changes keep planned backend, actual trusted executor,
+  operation kind, tensor names, output shapes, output dtypes, and status
+  inspectable.
 - Compiler decision-report changes keep accepted backends, rejected backends,
   assignment reasons, and fallback support evidence inspectable.
 - Numerical results are compared against deterministic independent reference
@@ -129,7 +134,7 @@ the performance proof boundary and readiness report supply:
 Run the narrow proof checks first:
 
 ```bash
-python -m pytest tests/test_proof_metadata.py tests/test_proof_of_abstraction.py tests/test_proof_of_reduction.py tests/test_proof_of_softmax.py tests/test_hac_ir_golden_dumps.py tests/test_runtime_plan_golden.py tests/test_compiler_decision_report_golden.py -q
+python -m pytest tests/test_proof_metadata.py tests/test_proof_of_abstraction.py tests/test_proof_of_reduction.py tests/test_proof_of_softmax.py tests/test_proof_of_execution.py tests/test_runtime_executor.py tests/test_hac_ir_golden_dumps.py tests/test_runtime_plan_golden.py tests/test_compiler_decision_report_golden.py -q
 ```
 
 Then run the normal project checks:
@@ -141,6 +146,7 @@ python -m pytest -q
 python examples/proof_of_abstraction.py
 python examples/proof_of_reduction.py
 python examples/proof_of_softmax.py
+python examples/proof_of_execution.py
 ```
 
 ## Golden File Discipline
