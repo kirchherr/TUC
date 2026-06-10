@@ -84,3 +84,6 @@ The toy author path has its own deterministic golden at:
 ```text
 tests/golden/backend_claim_review/external_vector_author_report.json
 ```
+
+The complete author path is summarized by
+[Backend Author Readiness](BACKEND_AUTHOR_READINESS.md).

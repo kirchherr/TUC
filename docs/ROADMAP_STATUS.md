@@ -78,6 +78,11 @@ hardware-independent interface into capability-driven runtime planning.
 - Backend author path now runs Manifest Claim Review before registry loading,
   compiler planning, conformance, or trusted lowering, with golden evidence at
   `tests/golden/backend_claim_review/external_vector_author_report.json`.
+- Backend Author Readiness report that summarizes claim review, registry
+  loading, compiler assignment, conformance, and assigned-subgraph lowering,
+  with schema at `schemas/backend_author_readiness_report.v0.schema.json` and
+  deterministic golden evidence at
+  `tests/golden/backend_author_readiness/external_vector_readiness_report.json`.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
@@ -273,6 +278,8 @@ Current slice:
   noise/calibration claims without explicit error-budget boundaries.
 - External backend author path gate that blocks manifests failing Manifest
   Claim Review before they can reach registry diagnostics or lowering.
+- Backend Author Readiness report for a single pass/fail external-backend
+  onboarding artifact built from bounded review evidence.
 - Deterministic backend conformance report artifacts for reviewable backend
   author evidence.
 - Backend capability schema guidance for error-budget, latency, energy,
@@ -352,6 +359,8 @@ Current focus:
   tests.
 - Use Manifest Claim Review before accepting specialized accelerator manifests
   as planning evidence.
+- Use Backend Author Readiness before treating an external backend author path
+  as complete.
 
 ### Phase Delta: Runtime Planning
 

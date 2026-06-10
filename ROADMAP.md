@@ -310,6 +310,8 @@ Completed evidence:
   evidence.
 - The external backend author path runs Manifest Claim Review before registry
   loading, compiler planning, conformance, or trusted lowering.
+- Backend Author Readiness summarizes the external author path as one
+  schema-versioned pass/fail evidence artifact.
 - Golden compiler decision-report fixtures cover proof and MVP graphs.
 - Softmax operation-family planning defines what future softmax capability,
   runtime, and decision-report fixtures must prove.
@@ -328,6 +330,7 @@ Go/No-Go:
 - Specialized accelerator manifests pass claim review before acceptance.
 - External backend author onboarding fails closed when claim review blocks a
   manifest.
+- External backend author onboarding has one deterministic readiness report.
 - Capability checks never import backend code, run subprocesses, load dynamic
   libraries, touch devices, or execute artifacts.
 

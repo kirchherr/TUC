@@ -103,6 +103,8 @@ The current prototype contains:
   accelerator manifests.
 - External backend author onboarding that runs Manifest Claim Review before
   registry loading, compiler planning, conformance, or trusted lowering.
+- Backend Author Readiness as a single schema-versioned pass/fail artifact for
+  the external backend author path.
 - Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
   Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and
@@ -303,6 +305,12 @@ Run the external-style backend author path:
 python examples/external_backend_author_path.py
 ```
 
+Inspect backend author readiness:
+
+```bash
+python examples/backend_author_readiness.py
+```
+
 Run the baseline benchmark harness:
 
 ```bash
@@ -467,6 +475,7 @@ pytest -q
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)
+- [Backend author readiness](docs/BACKEND_AUTHOR_READINESS.md)
 - [Backend capability registry](docs/BACKEND_REGISTRY.md)
 - [Compiler decision report](docs/COMPILER_DECISION_REPORT.md)
 - [Runtime manual override policy](docs/RUNTIME_OVERRIDE_POLICY.md)

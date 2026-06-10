@@ -23,6 +23,7 @@ Every backend proposal must include:
 
 - A schema-versioned backend capability manifest.
 - A passing Manifest Claim Review report for that manifest.
+- A passing Backend Author Readiness report for the complete author path.
 - A description of supported operations and numeric semantics.
 - Accepted layouts and produced layouts.
 - Memory domain and transfer assumptions.
@@ -129,6 +130,25 @@ backend at:
 ```text
 tests/golden/backend_claim_review/external_vector_author_report.json
 ```
+
+## Backend Author Readiness Requirements
+
+Backend authors should provide one
+[Backend Author Readiness](BACKEND_AUTHOR_READINESS.md) report for the complete
+author path. The current report schema is:
+
+```text
+schemas/backend_author_readiness_report.v0.schema.json
+```
+
+The toy external backend readiness golden is:
+
+```text
+tests/golden/backend_author_readiness/external_vector_readiness_report.json
+```
+
+The report must be `ready: true` before maintainers treat the author path as
+complete.
 
 ## Conformance Fixture Requirements
 

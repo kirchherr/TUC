@@ -1,5 +1,23 @@
 """Backend interfaces and reference implementations."""
 
+from tuc.backends.author_readiness import (
+    BACKEND_AUTHOR_READINESS_CONTRACT,
+    BACKEND_AUTHOR_READINESS_REPORT_SCHEMA_VERSION,
+    BACKEND_AUTHOR_READINESS_REQUIRED_CHECKS,
+    BACKEND_AUTHOR_READINESS_STATUSES,
+    MAX_BACKEND_AUTHOR_READINESS_CHECKS,
+    MAX_BACKEND_AUTHOR_READINESS_FIELD_BYTES,
+    MAX_BACKEND_AUTHOR_READINESS_ISSUES,
+    MAX_BACKEND_AUTHOR_READINESS_REPORT_BYTES,
+    BackendAuthorReadinessCheck,
+    BackendAuthorReadinessError,
+    BackendAuthorReadinessIssue,
+    BackendAuthorReadinessReport,
+    assert_backend_author_readiness,
+    backend_author_readiness_report_to_dict,
+    build_backend_author_readiness_report,
+    dump_backend_author_readiness_report,
+)
 from tuc.backends.base import Backend, BackendCapability, LoweringResult
 from tuc.backends.claim_review import (
     MANIFEST_CLAIM_LOAD_STATUSES,
@@ -39,7 +57,15 @@ from tuc.backends.registry import (
 from tuc.backends.simulator import LinearAlgebraSimulatorBackend, SystolicArraySimulatorBackend
 
 __all__ = [
+    "BACKEND_AUTHOR_READINESS_CONTRACT",
+    "BACKEND_AUTHOR_READINESS_REPORT_SCHEMA_VERSION",
+    "BACKEND_AUTHOR_READINESS_REQUIRED_CHECKS",
+    "BACKEND_AUTHOR_READINESS_STATUSES",
     "Backend",
+    "BackendAuthorReadinessCheck",
+    "BackendAuthorReadinessError",
+    "BackendAuthorReadinessIssue",
+    "BackendAuthorReadinessReport",
     "BackendCapability",
     "BackendConformanceError",
     "BackendConformanceIssue",
@@ -56,6 +82,10 @@ __all__ = [
     "MANIFEST_CLAIM_REVIEW_REPORT_SCHEMA_VERSION",
     "MANIFEST_CLAIM_REVIEW_STATUSES",
     "MVP_CONFORMANCE_OPERATION_KINDS",
+    "MAX_BACKEND_AUTHOR_READINESS_CHECKS",
+    "MAX_BACKEND_AUTHOR_READINESS_FIELD_BYTES",
+    "MAX_BACKEND_AUTHOR_READINESS_ISSUES",
+    "MAX_BACKEND_AUTHOR_READINESS_REPORT_BYTES",
     "MAX_MANIFEST_CLAIM_REVIEW_CASES",
     "MAX_MANIFEST_CLAIM_REVIEW_FIELD_BYTES",
     "MAX_MANIFEST_CLAIM_REVIEW_ISSUES",
@@ -65,10 +95,14 @@ __all__ = [
     "ManifestClaimReviewIssue",
     "ManifestClaimReviewReport",
     "SystolicArraySimulatorBackend",
+    "assert_backend_author_readiness",
     "assert_backend_conformance",
+    "backend_author_readiness_report_to_dict",
+    "build_backend_author_readiness_report",
     "build_manifest_claim_review_report",
     "build_conformance_graph",
     "conformance_report_to_dict",
+    "dump_backend_author_readiness_report",
     "dump_backend_conformance_report",
     "dump_manifest_claim_review_report",
     "manifest_claim_review_report_to_dict",

@@ -239,6 +239,11 @@ Implemented now:
   but overreaching specialized accelerator claims, including universal
   operation-family claims and noise/calibration claims without explicit
   error-budget boundaries.
+- Backend Author Readiness adds a data-only summary report at
+  `schemas/backend_author_readiness_report.v0.schema.json` for the external
+  backend author path, combining claim review, registry loading, compiler
+  assignment, conformance, and assigned-subgraph lowering without adding plugin
+  discovery or runtime execution permission.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

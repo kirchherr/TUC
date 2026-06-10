@@ -217,6 +217,7 @@ It demonstrates the intended review flow for a toy backend author:
    trusted backend object.
 7. Emit claim-review and conformance reports as deterministic review
    artifact.
+8. Emit Backend Author Readiness as the top-level pass/fail authoring artifact.
 
 ## Transfer-Cost Profiles
 
@@ -318,6 +319,9 @@ is `examples/manifest_claim_review.py`.
 
 The external-style backend author path runs Manifest Claim Review before
 registry loading and stops if the manifest is blocked.
+
+It also emits [Backend Author Readiness](BACKEND_AUTHOR_READINESS.md), whose
+schema is `schemas/backend_author_readiness_report.v0.schema.json`.
 
 ## Current Limitations
 

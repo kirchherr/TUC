@@ -5,6 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+from tuc.backends.author_readiness import (
+    BackendAuthorReadinessCheck,
+    BackendAuthorReadinessReport,
+    build_backend_author_readiness_report,
+    dump_backend_author_readiness_report,
+)
 from tuc.backends.base import BackendCapability, LoweringResult
 from tuc.backends.claim_review import (
     ManifestClaimReviewInput,
@@ -75,6 +81,7 @@ class ExternalBackendAuthorReport:
     compiled: CompilationResult
     conformance: BackendConformanceReport
     lowered: LoweringResult
+    readiness: BackendAuthorReadinessReport
 
 
 def build_backend_from_manifest(path: Path = MANIFEST_PATH) -> ExternalVectorBackend:
@@ -135,13 +142,23 @@ def run_external_backend_author_path(
     graph = build_graph()
     compiled = compile_graph(graph, registry.capabilities())
     conformance = assert_backend_conformance(backend)
-    lowered = backend.lower(assigned_graph_for_backend(compiled, backend.capability.name))
+    assigned_graph = assigned_graph_for_backend(compiled, backend.capability.name)
+    lowered = backend.lower(assigned_graph)
+    readiness = build_external_backend_author_readiness_report(
+        claim_review=claim_review,
+        registry=registry,
+        compiled=compiled,
+        conformance=conformance,
+        lowered=lowered,
+        assigned_graph=assigned_graph,
+    )
     return ExternalBackendAuthorReport(
         claim_review=claim_review,
         registry=registry,
         compiled=compiled,
         conformance=conformance,
         lowered=lowered,
+        readiness=readiness,
     )
 
 
@@ -162,6 +179,9 @@ def main() -> None:
     print(report.compiled.dump_runtime_plan())
     print()
     print(report.lowered.artifact)
+    print()
+    print("backend_author_readiness_ready=" + str(report.readiness.ready).lower())
+    print(dump_backend_author_readiness_report(report.readiness), end="")
 
 
 def build_external_backend_claim_review(
@@ -186,6 +206,70 @@ def _assert_author_manifest_accepted(report: ManifestClaimReviewReport) -> None:
     case = report.cases[0]
     if case.observed_review_status != "accepted":
         raise ValueError("external backend manifest was not accepted by claim review")
+
+
+def build_external_backend_author_readiness_report(
+    *,
+    claim_review: ManifestClaimReviewReport,
+    registry: BackendRegistry,
+    compiled: CompilationResult,
+    conformance: BackendConformanceReport,
+    lowered: LoweringResult,
+    assigned_graph: ComputeGraph,
+) -> BackendAuthorReadinessReport:
+    """Summarize the external backend author path as one readiness report."""
+
+    backend_name = "external-vector"
+    manifest_id = "external_vector_backend"
+    assignment_backend = compiled.partition_plan.backend_for("activation")
+    lowered_assigned_ops = "_".join(assigned_graph.operation_names())
+    checks = (
+        BackendAuthorReadinessCheck(
+            check_name="manifest_claim_review",
+            status=(
+                "passed"
+                if claim_review.passed
+                and claim_review.cases[0].observed_review_status == "accepted"
+                else "failed"
+            ),
+            evidence_id="external_vector_author_claim_review",
+            detail=claim_review.cases[0].observed_review_status,
+        ),
+        BackendAuthorReadinessCheck(
+            check_name="manifest_registry",
+            status="passed" if registry.names() == (backend_name,) else "failed",
+            evidence_id="external_vector_registry",
+            detail="registered",
+        ),
+        BackendAuthorReadinessCheck(
+            check_name="compiler_assignment",
+            status="passed" if assignment_backend == backend_name else "failed",
+            evidence_id="external_backend_author_demo",
+            detail=f"activation_{assignment_backend}",
+        ),
+        BackendAuthorReadinessCheck(
+            check_name="backend_conformance",
+            status="passed" if conformance.passed else "failed",
+            evidence_id="external_vector_conformance_report",
+            detail=f"cases_{len(conformance.checked_cases)}",
+        ),
+        BackendAuthorReadinessCheck(
+            check_name="assigned_subgraph_lowering",
+            status=(
+                "passed"
+                if lowered.backend_name == backend_name
+                and lowered.graph_name == assigned_graph.name
+                else "failed"
+            ),
+            evidence_id="external_vector_assigned_lowering",
+            detail=f"lowered_{lowered_assigned_ops}",
+        ),
+    )
+    return build_backend_author_readiness_report(
+        backend_name=backend_name,
+        manifest_id=manifest_id,
+        checks=checks,
+    )
 
 
 if __name__ == "__main__":

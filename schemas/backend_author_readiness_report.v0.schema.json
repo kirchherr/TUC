@@ -1,0 +1,257 @@
+{
+  "$id": "https://tuc.dev/schemas/backend_author_readiness_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "backend_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "check_count": {
+      "const": 5
+    },
+    "checks": {
+      "items": false,
+      "maxItems": 5,
+      "minItems": 5,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/manifest_claim_review_check"
+        },
+        {
+          "$ref": "#/$defs/manifest_registry_check"
+        },
+        {
+          "$ref": "#/$defs/compiler_assignment_check"
+        },
+        {
+          "$ref": "#/$defs/backend_conformance_check"
+        },
+        {
+          "$ref": "#/$defs/assigned_subgraph_lowering_check"
+        }
+      ],
+      "type": "array"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "manifest_id": {
+      "$ref": "#/$defs/report_text"
+    },
+    "readiness_contract": {
+      "const": "backend_author_readiness.data_only.v0"
+    },
+    "ready": {
+      "type": "boolean"
+    },
+    "required_checks": {
+      "items": false,
+      "maxItems": 5,
+      "minItems": 5,
+      "prefixItems": [
+        {
+          "const": "manifest_claim_review"
+        },
+        {
+          "const": "manifest_registry"
+        },
+        {
+          "const": "compiler_assignment"
+        },
+        {
+          "const": "backend_conformance"
+        },
+        {
+          "const": "assigned_subgraph_lowering"
+        }
+      ],
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.backend_author_readiness_report.v0"
+    }
+  },
+  "required": [
+    "backend_name",
+    "blocked_execution_surfaces",
+    "check_count",
+    "checks",
+    "issues",
+    "manifest_id",
+    "readiness_contract",
+    "ready",
+    "required_checks",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "assigned_subgraph_lowering_check": {
+      "$ref": "#/$defs/readiness_check",
+      "properties": {
+        "check_name": {
+          "const": "assigned_subgraph_lowering"
+        }
+      }
+    },
+    "backend_conformance_check": {
+      "$ref": "#/$defs/readiness_check",
+      "properties": {
+        "check_name": {
+          "const": "backend_conformance"
+        }
+      }
+    },
+    "compiler_assignment_check": {
+      "$ref": "#/$defs/readiness_check",
+      "properties": {
+        "check_name": {
+          "const": "compiler_assignment"
+        }
+      }
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "check_name": {
+          "$ref": "#/$defs/required_check"
+        },
+        "issue_code": {
+          "enum": [
+            "assigned_subgraph_lowering_not_passed",
+            "backend_conformance_not_passed",
+            "compiler_assignment_not_passed",
+            "manifest_claim_review_not_passed",
+            "manifest_registry_not_passed"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "check_name",
+        "issue_code"
+      ],
+      "type": "object"
+    },
+    "manifest_claim_review_check": {
+      "$ref": "#/$defs/readiness_check",
+      "properties": {
+        "check_name": {
+          "const": "manifest_claim_review"
+        }
+      }
+    },
+    "manifest_registry_check": {
+      "$ref": "#/$defs/readiness_check",
+      "properties": {
+        "check_name": {
+          "const": "manifest_registry"
+        }
+      }
+    },
+    "readiness_check": {
+      "additionalProperties": false,
+      "properties": {
+        "check_name": {
+          "$ref": "#/$defs/required_check"
+        },
+        "detail": {
+          "$ref": "#/$defs/report_text"
+        },
+        "evidence_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "status": {
+          "enum": [
+            "failed",
+            "passed"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "check_name",
+        "detail",
+        "evidence_id",
+        "status"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "required_check": {
+      "enum": [
+        "assigned_subgraph_lowering",
+        "backend_conformance",
+        "compiler_assignment",
+        "manifest_claim_review",
+        "manifest_registry"
+      ],
+      "type": "string"
+    }
+  }
+}
