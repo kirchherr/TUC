@@ -81,6 +81,8 @@ The current prototype contains:
   from execution timing.
 - Diagnostic leaky-abstraction reports that keep hardware-specific performance
   facts outside HAC-IR.
+- Diagnostic native-baseline provenance reports that identify future native
+  comparison candidates without executing native code or claiming parity.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.
@@ -220,6 +222,12 @@ Inspect the diagnostic leaky-abstraction report:
 python examples/leaky_abstraction_report.py
 ```
 
+Inspect the diagnostic native-baseline provenance report:
+
+```bash
+python examples/native_baseline_provenance.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -265,6 +273,7 @@ pytest -q
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
+- [Native baseline provenance report](docs/NATIVE_BASELINE_PROVENANCE.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

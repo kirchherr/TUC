@@ -62,6 +62,28 @@ LEAKY_ABSTRACTION_DEFAULT_ISSUES = (
     "native_baseline_not_supplied",
     "native_performance_claim_blocked",
 )
+NATIVE_BASELINE_PROVENANCE_REPORT_SCHEMA_VERSION = (
+    "tuc.native_baseline_provenance_report.v0"
+)
+NATIVE_BASELINE_PROVENANCE_ARTIFACT_STATUS = "diagnostic_only"
+NATIVE_BASELINE_PROVENANCE_CLAIM_STATUS = "blocked"
+NATIVE_BASELINE_IMPLEMENTATION_KINDS = (
+    "vendor_library",
+    "vendor_sample",
+    "hand_optimized_kernel",
+    "framework_compiler",
+)
+NATIVE_BASELINE_REPRODUCIBILITY_STATUSES = (
+    "not_reproduced",
+    "documented_not_executed",
+    "reproduced_outside_tuc",
+    "reproduced_by_ci",
+)
+NATIVE_BASELINE_DEFAULT_ISSUES = (
+    "native_baselines_not_supplied",
+    "native_baseline_comparison_not_supplied",
+    "native_performance_claim_blocked",
+)
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
@@ -70,6 +92,9 @@ MAX_PERFORMANCE_PROOF_READINESS_ISSUES = 128
 MAX_LEAKY_ABSTRACTION_REPORT_BYTES = 64 * 1024
 MAX_LEAKY_ABSTRACTION_FIELD_BYTES = 512
 MAX_LEAKY_ABSTRACTION_FACTS = 128
+MAX_NATIVE_BASELINE_REPORT_BYTES = 64 * 1024
+MAX_NATIVE_BASELINE_FIELD_BYTES = 512
+MAX_NATIVE_BASELINES = 64
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
@@ -177,6 +202,33 @@ class LeakyAbstractionReport:
         )
 
 
+@dataclass(frozen=True)
+class NativeBaselineProvenance:
+    """One data-only native baseline provenance entry."""
+
+    baseline_id: str
+    workload_scope_id: str
+    implementation_kind: str
+    target_platform_id: str
+    source_provenance_id: str
+    toolchain_id: str
+    reproducibility_status: str
+    artifact_digest_status: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class NativeBaselineProvenanceReport:
+    """Diagnostic report for native baseline provenance review."""
+
+    proposal_name: str
+    baselines: tuple[NativeBaselineProvenance, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def native_baseline_ready(self) -> bool:
+        return bool(self.baselines) and not self.issues
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -268,6 +320,41 @@ def build_leaky_abstraction_report(
     )
 
 
+def build_native_baseline_provenance_report(
+    proposal_name: str,
+    baselines: Iterable[NativeBaselineProvenance] = (),
+) -> NativeBaselineProvenanceReport:
+    """Build a bounded data-only native baseline provenance report."""
+
+    _validate_native_baseline_text(proposal_name, "proposal_name")
+    normalized_baselines = _normalize_native_baselines(baselines)
+    issues = list(NATIVE_BASELINE_DEFAULT_ISSUES)
+    if normalized_baselines:
+        issues.remove("native_baselines_not_supplied")
+        if all(
+            baseline.reproducibility_status == "reproduced_by_ci"
+            for baseline in normalized_baselines
+        ):
+            issues = [
+                issue
+                for issue in issues
+                if issue != "native_baseline_comparison_not_supplied"
+            ]
+        else:
+            issues.append("native_baseline_not_reproduced_by_ci")
+        if any(
+            baseline.artifact_digest_status != "supplied"
+            for baseline in normalized_baselines
+        ):
+            issues.append("native_baseline_artifact_digest_not_supplied")
+
+    return NativeBaselineProvenanceReport(
+        proposal_name=proposal_name,
+        baselines=normalized_baselines,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def assert_performance_proof_readiness(
     proposal_name: str,
     evidence: Iterable[PerformanceProofReadinessEvidence],
@@ -349,6 +436,37 @@ def leaky_abstraction_report_to_dict(
     }
 
 
+def native_baseline_provenance_report_to_dict(
+    report: NativeBaselineProvenanceReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible native baseline report."""
+
+    _validate_native_baseline_report(report)
+    return {
+        "artifact_status": NATIVE_BASELINE_PROVENANCE_ARTIFACT_STATUS,
+        "baselines": [
+            {
+                "artifact_digest_status": baseline.artifact_digest_status,
+                "baseline_id": baseline.baseline_id,
+                "implementation_kind": baseline.implementation_kind,
+                "reproducibility_status": baseline.reproducibility_status,
+                "source_provenance_id": baseline.source_provenance_id,
+                "target_platform_id": baseline.target_platform_id,
+                "toolchain_id": baseline.toolchain_id,
+                "workload_scope_id": baseline.workload_scope_id,
+            }
+            for baseline in report.baselines
+        ],
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "native_baseline_ready": report.native_baseline_ready,
+        "native_performance_claim": False,
+        "performance_claim_status": NATIVE_BASELINE_PROVENANCE_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "schema_version": NATIVE_BASELINE_PROVENANCE_REPORT_SCHEMA_VERSION,
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -370,6 +488,21 @@ def dump_leaky_abstraction_report(report: LeakyAbstractionReport) -> str:
     text = json.dumps(leaky_abstraction_report_to_dict(report), indent=2, sort_keys=True)
     if len(text.encode("utf-8")) > MAX_LEAKY_ABSTRACTION_REPORT_BYTES:
         raise ValueError("leaky abstraction report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_native_baseline_provenance_report(
+    report: NativeBaselineProvenanceReport,
+) -> str:
+    """Render a stable diagnostic native baseline provenance report."""
+
+    text = json.dumps(
+        native_baseline_provenance_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_NATIVE_BASELINE_REPORT_BYTES:
+        raise ValueError("native baseline provenance report exceeds byte limit")
     return text + "\n"
 
 
@@ -396,6 +529,45 @@ def _normalize_backend_set(backends: tuple[str, ...]) -> tuple[str, ...]:
         _validate_string_budget(backend, "backend_set entry")
         normalized.append(backend)
     return tuple(sorted(normalized))
+
+
+def _normalize_native_baselines(
+    baselines: Iterable[NativeBaselineProvenance],
+) -> tuple[NativeBaselineProvenance, ...]:
+    normalized = tuple(baselines)
+    if len(normalized) > MAX_NATIVE_BASELINES:
+        raise ValueError("native baseline count exceeds limit")
+    seen: set[str] = set()
+    for baseline in normalized:
+        if not isinstance(baseline, NativeBaselineProvenance):
+            raise TypeError("native baselines must be NativeBaselineProvenance")
+        _validate_native_baseline_text(baseline.baseline_id, "baseline_id")
+        _validate_native_baseline_text(
+            baseline.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_native_baseline_text(
+            baseline.target_platform_id,
+            "target_platform_id",
+        )
+        _validate_native_baseline_text(
+            baseline.source_provenance_id,
+            "source_provenance_id",
+        )
+        _validate_native_baseline_text(baseline.toolchain_id, "toolchain_id")
+        if baseline.baseline_id in seen:
+            raise ValueError("duplicate native baseline id")
+        if baseline.implementation_kind not in NATIVE_BASELINE_IMPLEMENTATION_KINDS:
+            raise ValueError("unsupported native baseline implementation kind")
+        if (
+            baseline.reproducibility_status
+            not in NATIVE_BASELINE_REPRODUCIBILITY_STATUSES
+        ):
+            raise ValueError("unsupported native baseline reproducibility status")
+        if baseline.artifact_digest_status not in {"not_supplied", "supplied"}:
+            raise ValueError("unsupported native baseline artifact digest status")
+        seen.add(baseline.baseline_id)
+    return normalized
 
 
 def _normalize_performance_evidence(
@@ -491,6 +663,19 @@ def _validate_performance_readiness_report(
         _validate_performance_report_text(issue.message, "issue message")
 
 
+def _validate_native_baseline_report(
+    report: NativeBaselineProvenanceReport,
+) -> None:
+    if not isinstance(report, NativeBaselineProvenanceReport):
+        raise TypeError("native baseline report must be report object")
+    _validate_native_baseline_text(report.proposal_name, "proposal_name")
+    _normalize_native_baselines(report.baselines)
+    for issue in report.issues:
+        _validate_native_baseline_text(issue, "issue")
+    if report.native_baseline_ready:
+        raise ValueError("native baseline provenance v0 must remain claim-blocked")
+
+
 def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
     if not isinstance(report, LeakyAbstractionReport):
         raise TypeError("leaky abstraction report must be report object")
@@ -532,6 +717,13 @@ def _validate_performance_report_text(value: str, label: str) -> None:
         raise ValueError(f"{label} exceeds performance proof readiness field limit")
 
 
+def _validate_native_baseline_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe native baseline identifier")
+    if len(value.encode("utf-8")) > MAX_NATIVE_BASELINE_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds native baseline field limit")
+
+
 def _validate_leaky_abstraction_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{label} must be a non-empty string")
@@ -549,6 +741,14 @@ __all__ = [
     "LeakyAbstractionLeak",
     "LeakyAbstractionReport",
     "MAX_PERFORMANCE_PROOF_READINESS_ISSUES",
+    "NATIVE_BASELINE_DEFAULT_ISSUES",
+    "NATIVE_BASELINE_IMPLEMENTATION_KINDS",
+    "NATIVE_BASELINE_PROVENANCE_ARTIFACT_STATUS",
+    "NATIVE_BASELINE_PROVENANCE_CLAIM_STATUS",
+    "NATIVE_BASELINE_PROVENANCE_REPORT_SCHEMA_VERSION",
+    "NATIVE_BASELINE_REPRODUCIBILITY_STATUSES",
+    "NativeBaselineProvenance",
+    "NativeBaselineProvenanceReport",
     "MAX_PROOF_BACKENDS",
     "MAX_PROOF_METADATA_STRING_BYTES",
     "PERFORMANCE_PROOF_BLOCKED_CLAIMS",
@@ -563,10 +763,13 @@ __all__ = [
     "ProofReportMetadata",
     "assert_performance_proof_readiness",
     "build_leaky_abstraction_report",
+    "build_native_baseline_provenance_report",
     "build_performance_proof_readiness_report",
     "dump_leaky_abstraction_report",
+    "dump_native_baseline_provenance_report",
     "dump_performance_proof_readiness_report",
     "leaky_abstraction_report_to_dict",
+    "native_baseline_provenance_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "proof_metadata_from_partition_plan",
 ]

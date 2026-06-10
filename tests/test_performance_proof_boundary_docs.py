@@ -15,10 +15,12 @@ def test_performance_proof_boundary_blocks_native_parity_claims() -> None:
         "fixed percentage of CUDA, HIP, vendor-library",
         "Leaky Abstraction Gate",
         "Planner Overhead Gate",
+        "Native Baseline Provenance Gate",
         "Planner overhead must not be hidden inside execution time",
         "If planning time is greater than execution time",
         "If a workload requires a hardware-specific optimization",
         "the performance parity claim fails",
+        "schemas/native_baseline_provenance_report.v0.schema.json",
         "hardware-specific performance knobs to HAC-IR",
         "Performance Proof Readiness Report",
         "PERFORMANCE_PROOF_REQUIRED_EVIDENCE",
@@ -74,6 +76,7 @@ def test_performance_proof_readiness_doc_is_report_only() -> None:
         "PERFORMANCE_PROOF_BLOCKED_CLAIMS",
         "tests/golden/proofs/performance_proof_readiness_report.json",
         "Missing evidence keeps native performance claims blocked",
+        "schemas/native_baseline_provenance_report.v0.schema.json",
         "must not include raw benchmark output",
         "Unknown evidence IDs and duplicate evidence IDs fail closed",
     ):
@@ -110,6 +113,7 @@ def test_benchmarking_doc_references_performance_boundary() -> None:
         "does not run benchmarks",
         "planner-overhead evidence",
         "native baseline provenance",
+        "Native Baseline Provenance Report",
     ):
         assert expected in text
 
@@ -125,6 +129,7 @@ def test_proof_review_doc_blocks_performance_claims() -> None:
         "Hidden planner overhead",
         "not performance evidence",
         "leaky-abstraction report",
+        "native baseline provenance report",
         "planner-overhead report",
         "break-even workload size",
     ):

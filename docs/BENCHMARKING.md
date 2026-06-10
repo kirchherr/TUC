@@ -91,3 +91,9 @@ Hardware-specific performance facts are tracked separately by the
 [Leaky Abstraction Report](LEAKY_ABSTRACTION_REPORT.md). Baseline benchmark
 reports must not turn backend-specific optimization details into HAC-IR
 semantics.
+
+Native baseline candidates are tracked separately by the
+[Native Baseline Provenance Report](NATIVE_BASELINE_PROVENANCE.md) and
+`schemas/native_baseline_provenance_report.v0.schema.json`. Baseline benchmark
+reports must not smuggle native implementation provenance, source paths,
+command lines, backend artifacts, or raw native output into timing data.

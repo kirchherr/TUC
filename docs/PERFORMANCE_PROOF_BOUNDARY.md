@@ -91,6 +91,31 @@ diagnostic report contract at
 runtime-planning phases from execution time, but execution time and break-even
 workload size remain explicitly not measured.
 
+## Native Baseline Provenance Gate
+
+Before TUC may compare against a native implementation, a proposal must identify
+the native baseline as bounded review data.
+
+The proposal must include:
+
+- workload scope
+- baseline implementation kind
+- target platform identifier
+- source provenance identifier
+- toolchain identifier
+- reproducibility status
+- artifact digest status
+
+The current [Native Baseline Provenance Report](NATIVE_BASELINE_PROVENANCE.md)
+defines the diagnostic report contract at
+`schemas/native_baseline_provenance_report.v0.schema.json`. It records native
+baseline candidate provenance, but it does not run benchmarks, access devices,
+load artifacts, or prove native performance.
+
+Native baseline provenance must not include host paths, command lines,
+environment variables, raw benchmark output, backend binaries, generated code,
+device identifiers, dynamic-library paths, or native source contents.
+
 ## Required Future Evidence
 
 Any future performance proof must add:
@@ -104,6 +129,7 @@ Any future performance proof must add:
 - runtime-plan and compiler decision-report goldens
 - explicit planner-overhead report
 - explicit leaky-abstraction report
+- explicit native baseline provenance report
 - security review for any executable backend, device access, generated artifact,
   cache, subprocess, dynamic library, or native code used by benchmarking
 
@@ -143,17 +169,18 @@ Reviewers must reject performance claims unless every answer is yes:
 
 1. Is the claim scoped to a specific workload family and shape range?
 2. Is the native baseline reproducible?
-3. Is mathematical correctness still proven independently?
-4. Are planner overhead and execution time reported separately?
-5. Is the break-even workload size reported?
-6. Are cache effects explicit rather than hidden?
-7. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+3. Is the native baseline provenance report present and bounded?
+4. Is mathematical correctness still proven independently?
+5. Are planner overhead and execution time reported separately?
+6. Is the break-even workload size reported?
+7. Are cache effects explicit rather than hidden?
+8. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-8. Is HAC-IR still hardware-neutral?
-9. Are runtime plans and compiler decisions golden-tested?
-10. Is benchmark provenance versioned?
-11. Are any executable backend or device surfaces threat-modeled?
-12. Does the claim avoid broad wording such as "near native" unless the
+9. Is HAC-IR still hardware-neutral?
+10. Are runtime plans and compiler decisions golden-tested?
+11. Is benchmark provenance versioned?
+12. Are any executable backend or device surfaces threat-modeled?
+13. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

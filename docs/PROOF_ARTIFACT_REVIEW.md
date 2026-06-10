@@ -20,6 +20,7 @@ tests/golden/compiler_decisions/proof_*.txt
 tests/test_proof_*.py
 docs/PROOF_*.md
 docs/PERFORMANCE_PROOF_READINESS.md
+docs/NATIVE_BASELINE_PROVENANCE.md
 src/tuc/proof.py
 ```
 
@@ -86,6 +87,7 @@ Reviewers should reject proof changes that claim native performance parity until
 the performance proof boundary and readiness report supply:
 
 - native baseline provenance
+- native baseline provenance report
 - leaky-abstraction report
 - planner-overhead report
 - break-even workload size

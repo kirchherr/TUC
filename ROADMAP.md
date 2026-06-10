@@ -128,6 +128,8 @@ Completed evidence:
   timing and keep break-even claims blocked.
 - Leaky-abstraction reports keep hardware-specific performance facts assigned
   to homes outside HAC-IR.
+- Native-baseline provenance reports identify native comparison candidates as
+  bounded review data while keeping native performance claims blocked.
 
 Next work:
 
@@ -311,6 +313,8 @@ Deliverables:
 - Baseline benchmark report schema for diagnostic-only timing artifacts.
 - Planner Overhead Report for diagnostic compiler/planner phase separation.
 - Leaky Abstraction Report for diagnostic HAC-IR boundary review.
+- Native Baseline Provenance Report for diagnostic native comparison
+  provenance.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -367,6 +371,9 @@ Go/No-Go:
   claims explicit rather than hidden in aggregate benchmark numbers.
 - Leaky-abstraction reports must keep hardware-specific performance facts out
   of HAC-IR even when those facts are required for future native speed.
+- Native-baseline provenance reports must remain data-only and must not include
+  host paths, command lines, backend artifacts, raw output, or device-specific
+  identifiers.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

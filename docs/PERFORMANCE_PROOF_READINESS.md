@@ -68,6 +68,12 @@ The current diagnostic leaky-abstraction report schema is
 existence of a bounded HAC-IR boundary review report. It does not satisfy
 native baseline comparison, benchmark artifacts, or native performance parity.
 
+The current diagnostic native baseline provenance report schema is
+`schemas/native_baseline_provenance_report.v0.schema.json`. It can satisfy only
+the existence of a bounded native baseline provenance contract. It does not
+satisfy native baseline comparison, benchmark report artifacts, execution
+timing, or native performance parity.
+
 ## Blocked Claims
 
 The v0 report explicitly blocks:
@@ -98,6 +104,11 @@ Unknown evidence IDs and duplicate evidence IDs fail closed.
 The report is not a benchmark schema and is not a benchmark result format. A
 future benchmark report schema must be reviewed separately before benchmark
 artifacts can become proof evidence.
+
+The readiness report is also not a native baseline provenance report. Native
+baseline candidates are tracked by
+[Native Baseline Provenance Report](NATIVE_BASELINE_PROVENANCE.md), which is
+data-only and remains claim-blocked in v0.
 
 ## Evidence
 

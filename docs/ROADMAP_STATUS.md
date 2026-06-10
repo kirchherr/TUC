@@ -116,6 +116,8 @@ Current slice:
   with execution timing and break-even claims still blocked.
 - Diagnostic Leaky Abstraction Report for HAC-IR boundary review with
   hardware-specific performance facts assigned outside HAC-IR.
+- Diagnostic Native Baseline Provenance Report for bounded native comparison
+  candidate review without native execution or performance claims.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, leaky-abstraction evidence, planner-overhead
   evidence, correctness goldens, and security review exist.
