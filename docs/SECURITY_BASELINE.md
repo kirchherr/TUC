@@ -82,6 +82,10 @@ Implemented now:
   The v0 contract requires `in_process_reference_kernel`, forbidden external
   artifacts, forbidden device access, and the same blocked execution surfaces
   as Runtime Executor v0.
+- Runtime execution readiness reports validate already-compiled graphs and
+  runtime plans against trusted backend executor contracts before any operation
+  executes, failing closed for untrusted backend contracts or unsupported
+  operation/backend assignments.
 - Movement-aware partition plan metadata with transfer-byte accounting.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.

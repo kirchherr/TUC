@@ -215,6 +215,90 @@ class RuntimeExecutionTrace:
 
 
 @dataclass(frozen=True)
+class RuntimeExecutionReadinessStep:
+    """One pre-execution contract check for a planned runtime operation."""
+
+    operation_name: str
+    operation_kind: OperationKind
+    planned_backend: str
+    backend_contract: str
+    supported_ops: frozenset[OperationKind]
+    status: str = "ready"
+    reason: str = "contract_allows_operation"
+
+    def __post_init__(self) -> None:
+        _require_trace_name(self.operation_name, "readiness operation_name")
+        if not isinstance(self.operation_kind, OperationKind):
+            raise TypeError("readiness operation_kind must be OperationKind")
+        _require_trace_name(self.planned_backend, "readiness planned_backend")
+        if self.backend_contract != TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT:
+            raise ValueError("readiness backend_contract is not trusted for v0")
+        _require_operation_set(self.supported_ops, "readiness supported_ops")
+        if self.status != "ready":
+            raise ValueError("runtime execution readiness status must be ready")
+        _require_trace_name(self.reason, "readiness reason")
+
+
+@dataclass(frozen=True)
+class RuntimeExecutionReadinessReport:
+    """Deterministic pre-execution contract report for one planned graph."""
+
+    graph_name: str
+    executor_contract: str
+    backend_contract: str
+    steps: tuple[RuntimeExecutionReadinessStep, ...]
+    trusted_executor_registry: str = TRUSTED_RUNTIME_EXECUTOR_REGISTRY
+    blocked_execution_surfaces: tuple[str, ...] = RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+    status: str = "ready"
+
+    def __post_init__(self) -> None:
+        _require_trace_name(self.graph_name, "readiness graph_name")
+        if self.executor_contract != RUNTIME_EXECUTOR_CONTRACT:
+            raise ValueError("readiness executor_contract is not trusted for v0")
+        if self.backend_contract != TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT:
+            raise ValueError("readiness backend_contract is not trusted for v0")
+        if self.trusted_executor_registry != TRUSTED_RUNTIME_EXECUTOR_REGISTRY:
+            raise ValueError("readiness trusted registry is not trusted for v0")
+        if self.blocked_execution_surfaces != RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES:
+            raise ValueError("readiness blocked execution surfaces changed")
+        if self.status != "ready":
+            raise ValueError("runtime execution readiness report status must be ready")
+        if type(self.steps) is not tuple:
+            raise TypeError("runtime execution readiness steps must be a tuple")
+        if not self.steps:
+            raise ValueError("runtime execution readiness report must contain steps")
+        if len(self.steps) > MAX_RUNTIME_EXECUTION_VALUES:
+            raise ValueError("runtime execution readiness step count exceeds limit")
+        for step in self.steps:
+            if not isinstance(step, RuntimeExecutionReadinessStep):
+                raise TypeError(
+                    "runtime execution readiness steps must be "
+                    "RuntimeExecutionReadinessStep"
+                )
+
+    def dump(self) -> str:
+        """Render a stable execution-readiness report."""
+
+        lines = [f"runtime.execution_readiness @{self.graph_name} {{"]
+        lines.append(f'  executor_contract = "{self.executor_contract}"')
+        lines.append(f'  backend_contract = "{self.backend_contract}"')
+        lines.append(
+            f'  trusted_executor_registry = "{self.trusted_executor_registry}"'
+        )
+        lines.append(
+            "  blocked_execution_surfaces = "
+            f'"{",".join(self.blocked_execution_surfaces)}"'
+        )
+        lines.append(f'  status = "{self.status}"')
+        lines.append("  steps {")
+        for step in self.steps:
+            lines.append(f"    {_format_readiness_step(step)}")
+        lines.append("  }")
+        lines.append("}")
+        return "\n".join(lines)
+
+
+@dataclass(frozen=True)
 class RuntimeExecutionResult:
     """Executed graph values plus deterministic trace evidence."""
 
@@ -248,6 +332,7 @@ def execute_graph(
     if not isinstance(partition_plan, PartitionPlan):
         raise TypeError("runtime executor partition_plan must be PartitionPlan")
     _validate_partition_plan(graph, partition_plan)
+    runtime_execution_readiness_report(graph, partition_plan)
     values = _normalize_inputs(graph, inputs)
     assignments = {
         assignment.operation_name: assignment for assignment in partition_plan.assignments
@@ -284,6 +369,45 @@ def dump_execution_trace(trace: RuntimeExecutionTrace) -> str:
     if not isinstance(trace, RuntimeExecutionTrace):
         raise TypeError("trace must be RuntimeExecutionTrace")
     return trace.dump()
+
+
+def runtime_execution_readiness_report(
+    graph: ComputeGraph,
+    partition_plan: PartitionPlan,
+) -> RuntimeExecutionReadinessReport:
+    """Validate a planned graph against trusted executor contracts."""
+
+    if not isinstance(graph, ComputeGraph):
+        raise TypeError("runtime execution readiness graph must be ComputeGraph")
+    if not isinstance(partition_plan, PartitionPlan):
+        raise TypeError(
+            "runtime execution readiness partition_plan must be PartitionPlan"
+        )
+    _validate_partition_plan(graph, partition_plan)
+    contracts = _backend_contracts_by_name(trusted_runtime_executor_contracts())
+    assignments = {
+        assignment.operation_name: assignment for assignment in partition_plan.assignments
+    }
+    steps = tuple(
+        _build_readiness_step(operation, assignments[operation.name], contracts)
+        for operation in graph.operations
+    )
+    return RuntimeExecutionReadinessReport(
+        graph_name=graph.name,
+        executor_contract=RUNTIME_EXECUTOR_CONTRACT,
+        backend_contract=TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT,
+        steps=steps,
+    )
+
+
+def dump_runtime_execution_readiness(
+    report: RuntimeExecutionReadinessReport,
+) -> str:
+    """Return a stable runtime execution readiness dump."""
+
+    if not isinstance(report, RuntimeExecutionReadinessReport):
+        raise TypeError("report must be RuntimeExecutionReadinessReport")
+    return report.dump()
 
 
 def trusted_runtime_executor_contracts() -> tuple[RuntimeBackendExecutorContract, ...]:
@@ -336,6 +460,38 @@ def trusted_runtime_executor_registry() -> dict[str, TrustedRuntimeBackendExecut
         ),
     )
     return {executor.name: executor for executor in executors}
+
+
+def _backend_contracts_by_name(
+    contracts: tuple[RuntimeBackendExecutorContract, ...],
+) -> dict[str, RuntimeBackendExecutorContract]:
+    _validate_backend_contracts(contracts)
+    return {contract.backend_name: contract for contract in contracts}
+
+
+def _build_readiness_step(
+    operation: ComputeOperation,
+    assignment: Assignment,
+    contracts: Mapping[str, RuntimeBackendExecutorContract],
+) -> RuntimeExecutionReadinessStep:
+    contract = contracts.get(assignment.backend_name)
+    if contract is None:
+        raise ValueError(
+            "runtime execution readiness has no trusted executor contract for "
+            f"backend: {assignment.backend_name}"
+        )
+    if operation.kind not in contract.supported_ops:
+        raise ValueError(
+            "runtime execution readiness contract does not support operation: "
+            f"{operation.name}->{assignment.backend_name}"
+        )
+    return RuntimeExecutionReadinessStep(
+        operation_name=operation.name,
+        operation_kind=operation.kind,
+        planned_backend=assignment.backend_name,
+        backend_contract=contract.backend_contract,
+        supported_ops=contract.supported_ops,
+    )
 
 
 def _executor_for_assignment(
@@ -515,6 +671,18 @@ def _format_backend_contract(contract: RuntimeBackendExecutorContract) -> str:
     )
 
 
+def _format_readiness_step(step: RuntimeExecutionReadinessStep) -> str:
+    return (
+        f"{step.operation_name}"
+        f" planned_backend={step.planned_backend}"
+        f" backend_contract={step.backend_contract}"
+        f" kind={step.operation_kind.value}"
+        f" supported_ops={_format_operation_kinds(step.supported_ops)}"
+        f" status={step.status}"
+        f" reason={step.reason}"
+    )
+
+
 def _format_operation_kinds(kinds: frozenset[OperationKind]) -> str:
     return ",".join(sorted(kind.value for kind in kinds))
 
@@ -592,13 +760,17 @@ __all__ = [
     "TRUSTED_RUNTIME_EXECUTOR_REGISTRY",
     "TRUSTED_REFERENCE_EXECUTOR_BACKEND",
     "RuntimeBackendExecutorContract",
+    "RuntimeExecutionReadinessReport",
+    "RuntimeExecutionReadinessStep",
     "RuntimeExecutionResult",
     "RuntimeExecutionStep",
     "RuntimeExecutionTrace",
     "TrustedRuntimeBackendExecutor",
     "dump_execution_trace",
+    "dump_runtime_execution_readiness",
     "dump_trusted_runtime_executor_contracts",
     "execute_graph",
+    "runtime_execution_readiness_report",
     "trusted_runtime_executor_contracts",
     "trusted_runtime_executor_registry",
 ]

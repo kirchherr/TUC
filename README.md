@@ -84,6 +84,8 @@ The current prototype contains:
   and `elementwise` through the Triton-like metadata graph.
 - Trusted Runtime Backend Executor Contract v0 with golden evidence for the
   fixed in-process prototype executor registry.
+- Runtime execution readiness reports that gate planned execution against
+  trusted backend contracts before kernels run.
 - Proof-of-execution example that compiles, plans, executes, traces, and
   verifies a graph against independent reference semantics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.

@@ -14,9 +14,12 @@ It is not a backend plugin system.
 - Executor registry: `trusted_runtime_executor_registry.v0`
 - Trusted backend contract: `runtime_backend_executor.trusted.v0`
 - API: `execute_graph(graph, partition_plan, inputs)`
+- Readiness API: `runtime_execution_readiness_report(graph, partition_plan)`
 - Trace API: `dump_execution_trace(trace)`
 - Backend contract API: `trusted_runtime_executor_contracts()`
 - Trusted prototype executors: `linear-sim`, `reference-cpu`
+- Readiness golden:
+  `tests/golden/execution_readiness/proof_of_execution.txt`
 - Proof trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
 - MVP trace golden:
   `tests/golden/execution_traces/triton_metadata_mvp_families.txt`
@@ -45,6 +48,26 @@ fail closed.
 If a runtime plan names a backend that is not in the trusted registry, execution
 fails closed. If a trusted executor is asked to execute an unsupported operation
 kind, execution also fails closed.
+
+## Execution Readiness
+
+Before executing any operation, Runtime Executor v0 builds a
+`RuntimeExecutionReadinessReport`. This report checks the already-compiled graph
+and runtime plan against the trusted backend executor contracts.
+
+The readiness report records:
+
+- graph name
+- executor and backend contract ids
+- trusted executor registry id
+- blocked execution surfaces
+- planned backend for each operation
+- supported operation families for that backend contract
+- fail-closed readiness status
+
+If the runtime plan names an untrusted backend contract or assigns an operation
+to a backend contract that does not support its operation family, execution is
+rejected before input normalization or kernel execution.
 
 ## Trusted Backend Contract
 

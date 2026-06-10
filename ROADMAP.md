@@ -146,6 +146,8 @@ Completed evidence:
   executor registry as deterministic pure data and keeps artifact execution,
   device access, dynamic loading, subprocesses, JIT, and network access
   forbidden.
+- Runtime execution readiness reports validate runtime plans against trusted
+  backend executor contracts before any operation executes.
 - Proof-of-execution compiles, plans, executes, traces, and verifies a graph
   against independent reference semantics without plugin discovery, device
   access, subprocesses, JIT, or generated-artifact execution.

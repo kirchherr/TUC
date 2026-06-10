@@ -18,8 +18,10 @@ from tuc.runtime import (
     TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT,
     TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT,
     RuntimeBackendExecutorContract,
+    dump_runtime_execution_readiness,
     dump_trusted_runtime_executor_contracts,
     execute_graph,
+    runtime_execution_readiness_report,
     trusted_runtime_executor_contracts,
     trusted_runtime_executor_registry,
 )
@@ -32,6 +34,9 @@ _GOLDEN_BACKEND_CONTRACTS = (
     / "golden"
     / "runtime_backend_contracts"
     / "trusted_runtime_executor_registry.txt"
+)
+_GOLDEN_READINESS = (
+    Path(__file__).parent / "golden" / "execution_readiness" / "proof_of_execution.txt"
 )
 
 
@@ -97,6 +102,29 @@ def test_runtime_executor_uses_trusted_registry_for_planned_backends() -> None:
     registry = trusted_runtime_executor_registry()
 
     assert sorted(registry) == ["linear-sim", "reference-cpu"]
+
+
+def test_runtime_execution_readiness_report_matches_golden() -> None:
+    graph = build_graph()
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    report = runtime_execution_readiness_report(
+        compiled.hac_ir.graph,
+        compiled.partition_plan,
+    )
+
+    assert tuple(step.operation_name for step in report.steps) == (
+        "linear_projection",
+        "row_reduction",
+        "activation",
+    )
+    assert tuple(step.planned_backend for step in report.steps) == (
+        "linear-sim",
+        "linear-sim",
+        "reference-cpu",
+    )
+    assert dump_runtime_execution_readiness(report) == _GOLDEN_READINESS.read_text(
+        encoding="utf-8"
+    ).rstrip("\n")
 
 
 def test_trusted_runtime_executor_contracts_are_stable_and_execution_free() -> None:
@@ -182,6 +210,9 @@ def test_runtime_executor_rejects_unsupported_executor_operation() -> None:
             activation_assignment,
         ),
     )
+
+    with pytest.raises(ValueError, match="contract does not support operation"):
+        runtime_execution_readiness_report(compiled.hac_ir.graph, bad_plan)
 
     with pytest.raises(ValueError, match="does not support"):
         execute_graph(compiled.hac_ir.graph, bad_plan, proof_inputs())
