@@ -1,0 +1,11 @@
+runtime.execution_readiness @proof_of_systolic_execution {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  backend_contract = "runtime_backend_executor.trusted.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "ready"
+  steps {
+    systolic_projection planned_backend=systolic-sim backend_contract=runtime_backend_executor.trusted.v0 kind=matmul supported_ops=matmul status=ready reason=contract_allows_operation
+    host_activation planned_backend=reference-cpu backend_contract=runtime_backend_executor.trusted.v0 kind=elementwise supported_ops=elementwise,matmul,reduction,softmax status=ready reason=contract_allows_operation
+  }
+}

@@ -104,6 +104,11 @@ Implemented now:
   scanning, plugin discovery, device access, network access, subprocesses,
   dynamic imports, JIT, dynamic libraries, generated-artifact execution, raw
   benchmark loading, or native performance claims.
+- `systolic-sim` adds a second trusted in-process accelerator simulator for
+  matmul-only placement and blocked-layout output. It remains capability-only
+  at planning time and uses trusted runtime reference execution; it does not add
+  plugin discovery, device access, external artifact execution, native code, or
+  JIT.
 - Objective Alpha abstraction, reduction, and softmax proofs now validate
   Runtime Execution Readiness before trusted in-process execution and emit
   deterministic traces without adding plugin discovery, device access, dynamic

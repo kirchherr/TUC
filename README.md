@@ -93,6 +93,9 @@ The current prototype contains:
   evidence, now complete across current graph fixtures.
 - Runtime Executor Conformance v0 with schema-versioned golden evidence for
   trusted executor support and rejection behavior.
+- `systolic-sim` as a second trusted in-process accelerator simulator with
+  blocked-layout output, runtime transfer/layout-conversion evidence, and a
+  dedicated proof.
 - Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
   Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and
@@ -213,6 +216,12 @@ Run the proof-of-execution example:
 
 ```bash
 python examples/proof_of_execution.py
+```
+
+Run the systolic simulator proof:
+
+```bash
+python examples/proof_of_systolic_execution.py
 ```
 
 Inspect the runtime evidence matrix:
@@ -410,6 +419,7 @@ pytest -q
 - [Runtime Executor Conformance](docs/RUNTIME_EXECUTOR_CONFORMANCE.md)
 - [Runtime evidence matrix](docs/RUNTIME_EVIDENCE_MATRIX.md)
 - [Runtime Evidence Gate](docs/RUNTIME_EVIDENCE_GATE.md)
+- [Systolic simulator proof](docs/SYSTOLIC_SIMULATOR.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)

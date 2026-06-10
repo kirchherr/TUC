@@ -25,7 +25,7 @@ It is not a backend plugin system.
   `schemas/runtime_executor_conformance_report.v0.schema.json`
 - Conformance golden:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`
-- Trusted prototype executors: `linear-sim`, `reference-cpu`
+- Trusted prototype executors: `linear-sim`, `reference-cpu`, `systolic-sim`
 - Readiness golden:
   `tests/golden/execution_readiness/proof_of_execution.txt`
 - Objective Alpha readiness goldens:
@@ -111,6 +111,8 @@ The report requires:
 - `linear-sim` to execute `matmul` and `reduction`
 - `linear-sim` to reject `elementwise` and `softmax`
 - `reference-cpu` to execute all MVP operation families
+- `systolic-sim` to execute `matmul`
+- `systolic-sim` to reject `elementwise`, `reduction`, and `softmax`
 
 The schema-versioned report is documented in
 [Runtime Executor Conformance](RUNTIME_EXECUTOR_CONFORMANCE.md). It keeps

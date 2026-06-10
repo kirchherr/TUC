@@ -1002,6 +1002,41 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                 ),
             ),
             RuntimeEvidenceGraph(
+                graph_id="proof_of_systolic_execution",
+                graph_family="systolic_execution",
+                source_boundary="typed_compute_graph",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "proof_report_golden",
+                        "proof_of_systolic_execution_report",
+                    ),
+                    _runtime_evidence_artifact(
+                        "hac_ir_golden",
+                        "proof_of_systolic_execution_hac_ir",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_plan_golden",
+                        "proof_of_systolic_execution_runtime_plan",
+                    ),
+                    _runtime_evidence_artifact(
+                        "compiler_decision_golden",
+                        "proof_of_systolic_execution_compiler_decision",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_readiness_golden",
+                        "proof_of_systolic_execution_readiness",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_trace_golden",
+                        "proof_of_systolic_execution_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "reference_correctness",
+                        "proof_of_systolic_execution_reference_semantics",
+                    ),
+                ),
+            ),
+            RuntimeEvidenceGraph(
                 graph_id="triton_metadata_mvp_families",
                 graph_family="triton_metadata_mvp",
                 source_boundary="triton_metadata",

@@ -5,6 +5,7 @@ from tuc.backends import (
     BackendRegistry,
     BackendRegistryError,
     BackendSupportDiagnostic,
+    SystolicArraySimulatorBackend,
 )
 from tuc.compiler import (
     CompilationResult,
@@ -421,6 +422,7 @@ __all__ = [
     "SOURCE_TO_INTENT_PARSER_GATE_CONTRACT",
     "SOURCE_TO_INTENT_READINESS_REPORT_SCHEMA_VERSION",
     "SOURCE_TO_INTENT_REQUIRED_EVIDENCE",
+    "SystolicArraySimulatorBackend",
     "TRITON_IDIOM_COVERAGE_ARTIFACT_STATUS",
     "TRITON_IDIOM_COVERAGE_BLOCKED_EXECUTION_SURFACES",
     "TRITON_IDIOM_COVERAGE_CONTRACT",

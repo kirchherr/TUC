@@ -19,7 +19,7 @@ from tuc.backends.registry import (
     BackendRegistryError,
     BackendSupportDiagnostic,
 )
-from tuc.backends.simulator import LinearAlgebraSimulatorBackend
+from tuc.backends.simulator import LinearAlgebraSimulatorBackend, SystolicArraySimulatorBackend
 
 __all__ = [
     "Backend",
@@ -35,6 +35,7 @@ __all__ = [
     "LinearAlgebraSimulatorBackend",
     "LoweringResult",
     "MVP_CONFORMANCE_OPERATION_KINDS",
+    "SystolicArraySimulatorBackend",
     "assert_backend_conformance",
     "build_conformance_graph",
     "conformance_report_to_dict",

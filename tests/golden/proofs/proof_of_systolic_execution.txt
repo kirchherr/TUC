@@ -1,0 +1,84 @@
+== proof metadata ==
+report_schema: proof-report.v0
+proof_id: proof_of_systolic_execution
+proof_version: alpha.v1
+graph_family: systolic_execution
+backend_set: reference-cpu, systolic-sim
+
+== input graph ==
+systolic_projection: matmul
+host_activation: elementwise
+
+== hac-ir ==
+hac-ir.module @proof_of_systolic_execution {
+  metadata {
+    graph.dialect_version = "tlir.v0"
+    graph.lowered_from = "tlir"
+    graph.movement_model = "movement.v0"
+    graph.movement_summary = {arithmetic_intensity: 0.2916666666666667, movement_model: "movement.v0", operation_count: 2, total_arithmetic_ops: 28, total_bytes_read: 64, total_bytes_written: 32}
+    graph.mvp_operation_count = 2
+    graph.source = "triton-like-python"
+    module.dialect_version = "hac-ir.v0"
+  }
+  %projection = tuc.matmul @systolic_projection(%lhs: tensor<2x3xf32>, %rhs: tensor<3x2xf32>) -> (%projection: tensor<2x2xf32>) {tuc.arithmetic_intensity = 0.375, tuc.arithmetic_ops = 24, tuc.bytes_read = 48, tuc.bytes_written = 16, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
+  %activated = tuc.elementwise @host_activation(%projection: tensor<2x2xf32>) -> (%activated: tensor<2x2xf32>) {kernel = "relu", tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 4, tuc.bytes_read = 16, tuc.bytes_written = 16, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["exact_shape_elementwise"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "elementwise", tuc.source_stage = "tlir"}
+}
+
+== backend assignments ==
+systolic_projection -> systolic-sim
+host_activation -> reference-cpu
+
+== transfer plan ==
+runtime.plan @proof_of_systolic_execution {
+  assignments {
+    systolic_projection -> systolic-sim domain=device_sram produced_layout=blocked transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=device_sram;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=blocked"
+    host_activation -> reference-cpu domain=host_ram produced_layout=row_major transfer_bytes=16 layout_conversion_bytes=16 reason="fallback:transfer_bytes=16;layout_conversion_bytes=16;actual_transfer_bytes=16;actual_layout_conversion_bytes=16"
+  }
+  transfers {
+    %projection: systolic_projection/systolic-sim/device_sram/blocked -> host_activation/reference-cpu/host_ram/row_major bytes=16 bandwidth_gb_s=16 latency_ns=20001 energy_pj=1600
+  }
+  layout_conversions {
+    %projection: systolic_projection -> host_activation blocked->row_major bytes=16 reason="layout_mismatch"
+  }
+  summary {
+    total_transfer_bytes = 16
+    total_layout_conversion_bytes = 16
+    total_data_movement_bytes = 32
+    estimated_transfer_latency_ns = 20001
+    estimated_transfer_energy_pj = 1600
+  }
+}
+
+== execution readiness ==
+runtime.execution_readiness @proof_of_systolic_execution {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  backend_contract = "runtime_backend_executor.trusted.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "ready"
+  steps {
+    systolic_projection planned_backend=systolic-sim backend_contract=runtime_backend_executor.trusted.v0 kind=matmul supported_ops=matmul status=ready reason=contract_allows_operation
+    host_activation planned_backend=reference-cpu backend_contract=runtime_backend_executor.trusted.v0 kind=elementwise supported_ops=elementwise,matmul,reduction,softmax status=ready reason=contract_allows_operation
+  }
+}
+
+== execution trace ==
+runtime.execution_trace @proof_of_systolic_execution {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  steps {
+    systolic_projection planned_backend=systolic-sim executor_backend=systolic-sim kind=matmul inputs=lhs,rhs outputs=projection output_shapes=2x2 output_dtypes=float64 status=executed
+    host_activation planned_backend=reference-cpu executor_backend=reference-cpu kind=elementwise inputs=projection outputs=activated output_shapes=2x2 output_dtypes=float64 status=executed
+  }
+}
+
+== result ==
+[[0. 4.]
+ [7. 0.]]
+
+== reference result ==
+[[0. 4.]
+ [7. 0.]]
+
+PASS

@@ -37,6 +37,10 @@ def test_runtime_executor_conformance_passes_for_trusted_registry() -> None:
         "reference-cpu_elementwise_supported",
         "reference-cpu_reduction_supported",
         "reference-cpu_softmax_supported",
+        "systolic-sim_matmul_supported",
+        "systolic-sim_elementwise_unsupported",
+        "systolic-sim_reduction_unsupported",
+        "systolic-sim_softmax_unsupported",
     )
     assert tuple(runtime_executor_conformance_report_to_dict(report)) == (
         "blocked_execution_surfaces",
@@ -61,6 +65,10 @@ def test_runtime_executor_conformance_records_expected_rejections() -> None:
     assert cases["linear-sim_softmax_unsupported"].output_shape == ()
     assert cases["reference-cpu_softmax_supported"].observed_status == "executed"
     assert cases["reference-cpu_softmax_supported"].output_shape == (2, 3)
+    assert cases["systolic-sim_matmul_supported"].observed_status == "executed"
+    assert cases["systolic-sim_elementwise_unsupported"].observed_status == "rejected"
+    assert cases["systolic-sim_reduction_unsupported"].observed_status == "rejected"
+    assert cases["systolic-sim_softmax_unsupported"].observed_status == "rejected"
 
 
 def test_runtime_executor_conformance_assertion_returns_report() -> None:

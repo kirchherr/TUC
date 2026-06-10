@@ -42,6 +42,8 @@ The current matrix is complete across every accepted graph fixture:
   evidence kinds.
 - `proof_of_execution` is complete across HAC-IR, runtime-plan,
   compiler-decision, readiness, trace, and reference-correctness evidence.
+- `proof_of_systolic_execution` is complete across HAC-IR, runtime-plan,
+  compiler-decision, readiness, trace, and reference-correctness evidence.
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.

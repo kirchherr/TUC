@@ -91,15 +91,18 @@ Required artifacts:
 - `examples/proof_of_reduction.py`
 - `examples/proof_of_softmax.py`
 - `examples/proof_of_execution.py`
+- `examples/proof_of_systolic_execution.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
 - `tests/golden/proofs/proof_of_execution.txt`
+- `tests/golden/proofs/proof_of_systolic_execution.txt`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
 - `docs/PROOF_OF_SOFTMAX.md`
 - `docs/PROOF_OF_EXECUTION.md`
+- `docs/SYSTOLIC_SIMULATOR.md`
 - `docs/RUNTIME_EXECUTOR.md`
 
 Completed evidence:
@@ -159,6 +162,10 @@ Completed evidence:
   schema and golden output.
 - Runtime Evidence Gate v0 composes the complete runtime evidence matrix and
   trusted executor conformance into the main CI job.
+- Systolic simulator proof targets `systolic-sim`, records `device_sram`
+  placement and `blocked -> row_major` layout conversion, executes through the
+  trusted runtime executor, and validates against independent reference
+  semantics.
 - Objective Alpha abstraction, reduction, and softmax proofs now execute through
   Runtime Executor v0 and emit readiness and trace goldens before their
   correctness result is accepted.

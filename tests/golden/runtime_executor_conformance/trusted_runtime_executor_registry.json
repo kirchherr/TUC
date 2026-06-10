@@ -9,7 +9,7 @@
     "network_access",
     "subprocess_execution"
   ],
-  "case_count": 8,
+  "case_count": 12,
   "checked_cases": [
     {
       "case_name": "linear-sim_matmul_supported",
@@ -98,6 +98,45 @@
         2,
         3
       ]
+    },
+    {
+      "case_name": "systolic-sim_matmul_supported",
+      "executor_name": "systolic-sim",
+      "expected_status": "supported",
+      "observed_status": "executed",
+      "operation_kind": "matmul",
+      "output_dtype": "float64",
+      "output_shape": [
+        2,
+        2
+      ]
+    },
+    {
+      "case_name": "systolic-sim_elementwise_unsupported",
+      "executor_name": "systolic-sim",
+      "expected_status": "unsupported",
+      "observed_status": "rejected",
+      "operation_kind": "elementwise",
+      "output_dtype": "not_executed",
+      "output_shape": []
+    },
+    {
+      "case_name": "systolic-sim_reduction_unsupported",
+      "executor_name": "systolic-sim",
+      "expected_status": "unsupported",
+      "observed_status": "rejected",
+      "operation_kind": "reduction",
+      "output_dtype": "not_executed",
+      "output_shape": []
+    },
+    {
+      "case_name": "systolic-sim_softmax_unsupported",
+      "executor_name": "systolic-sim",
+      "expected_status": "unsupported",
+      "observed_status": "rejected",
+      "operation_kind": "softmax",
+      "output_dtype": "not_executed",
+      "output_shape": []
     }
   ],
   "conformance_contract": "runtime_executor_conformance.trusted.v0",

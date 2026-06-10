@@ -63,6 +63,10 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Gate v0 with deterministic golden at
   `tests/golden/proofs/runtime_evidence_gate.txt` and CI coverage in the
   `python` workflow job.
+- Systolic simulator proof with `systolic-sim` placement, `device_sram`
+  memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
+  deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
+  goldens, and Runtime Evidence Matrix coverage.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
@@ -139,6 +143,11 @@ Current slice:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`.
+- Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
+  evidence goldens under `tests/golden/proofs/`,
+  `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
+  `tests/golden/compiler_decisions/`, `tests/golden/execution_readiness/`, and
+  `tests/golden/execution_traces/`.
 - Proof-of-execution independent evidence goldens at
   `tests/golden/hac_ir/proof_of_execution.txt`,
   `tests/golden/runtime_plans/proof_of_execution.txt`, and

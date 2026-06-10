@@ -1,0 +1,10 @@
+compiler.decision_report @proof_of_systolic_execution {
+  operation systolic_projection kind=matmul assigned=systolic-sim accepted_backends="systolic-sim" rejected_backends="-" reason="preferred_for:matmul;domain=device_sram;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=blocked"
+  support {
+    systolic-sim accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+  }
+  operation host_activation kind=elementwise assigned=reference-cpu accepted_backends="-" rejected_backends="systolic-sim" reason="fallback:transfer_bytes=16;layout_conversion_bytes=16;actual_transfer_bytes=16;actual_layout_conversion_bytes=16"
+  support {
+    systolic-sim rejected reason="unsupported_operation_kind" detail="elementwise not declared in supported_ops"
+  }
+}

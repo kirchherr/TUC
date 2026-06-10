@@ -31,6 +31,8 @@ family against each trusted executor:
 - `linear-sim` must reject `elementwise` and `softmax`
 - `reference-cpu` must execute `matmul`, `elementwise`, `reduction`, and
   `softmax`
+- `systolic-sim` must execute `matmul`
+- `systolic-sim` must reject `elementwise`, `reduction`, and `softmax`
 
 Executed cases record output shape and dtype. Rejected cases record
 `not_executed` and no output shape.
