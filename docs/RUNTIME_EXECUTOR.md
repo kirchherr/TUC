@@ -13,6 +13,8 @@ It is not a backend plugin system.
 - Executor contract: `runtime_executor.trusted_backend.v0`
 - Executor registry: `trusted_runtime_executor_registry.v0`
 - Trusted backend contract: `runtime_backend_executor.trusted.v0`
+- Input value contract: `runtime_executor.numpy_float64_inputs.v0`
+- Output value contract: `runtime_executor.declared_shape_float64_output.v0`
 - API: `execute_graph(graph, partition_plan, inputs)`
 - Readiness API: `runtime_execution_readiness_report(graph, partition_plan)`
 - Trace API: `dump_execution_trace(trace)`
@@ -41,9 +43,11 @@ Runtime Executor v0 does not:
 - touch the network
 
 Inputs must be a plain mapping of external graph tensor names to NumPy arrays.
-Missing inputs, unexpected intermediate tensors, non-plain mappings, partition
-plan mismatches, unsupported arity, invalid axes, and output-shape mismatches
-fail closed.
+Each input must match the declared tensor shape, use `float64`, and contain only
+finite values. Missing inputs, unexpected intermediate tensors, non-plain
+mappings, partition plan mismatches, unsupported arity, invalid axes, invalid
+input dtype or shape, non-finite input values, output-shape mismatches,
+non-`float64` outputs, and non-finite output values fail closed.
 
 If a runtime plan names a backend that is not in the trusted registry, execution
 fails closed. If a trusted executor is asked to execute an unsupported operation
@@ -68,6 +72,22 @@ The readiness report records:
 If the runtime plan names an untrusted backend contract or assigns an operation
 to a backend contract that does not support its operation family, execution is
 rejected before input normalization or kernel execution.
+
+## Tensor Value Contract
+
+Runtime Executor v0 validates tensor values at the runtime boundary:
+
+- external inputs must be plain NumPy arrays
+- input names must match external graph tensor names exactly
+- input shapes must match the declared `TensorRef` shapes
+- input dtype must be `float64`
+- input values must be finite
+- operation outputs must match the declared output shape
+- operation outputs must be `float64`
+- operation outputs must be finite
+
+This keeps trusted prototype execution deterministic and prevents hidden dtype,
+shape, or non-finite-value drift from becoming backend-specific behavior.
 
 ## Trusted Backend Contract
 

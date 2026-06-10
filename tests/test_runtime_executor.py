@@ -71,6 +71,37 @@ def test_runtime_executor_rejects_unexpected_input() -> None:
         execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)
 
 
+def test_runtime_executor_rejects_input_shape_mismatch() -> None:
+    graph = build_graph()
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    inputs = proof_inputs()
+    inputs["lhs"] = np.zeros((3, 2), dtype=np.float64)
+
+    with pytest.raises(ValueError, match="input shape mismatch for lhs"):
+        execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)
+
+
+def test_runtime_executor_rejects_non_float64_input() -> None:
+    graph = build_graph()
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    inputs = proof_inputs()
+    inputs["lhs"] = np.zeros((2, 3), dtype=np.float32)
+
+    with pytest.raises(TypeError, match="input lhs dtype must be float64"):
+        execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)
+
+
+def test_runtime_executor_rejects_non_finite_input() -> None:
+    graph = build_graph()
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    inputs = proof_inputs()
+    inputs["lhs"] = inputs["lhs"].copy()
+    inputs["lhs"][0, 0] = np.nan
+
+    with pytest.raises(ValueError, match="input lhs must contain only finite values"):
+        execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)
+
+
 def test_runtime_executor_rejects_non_plain_input_mapping() -> None:
     class CustomInputs(dict[str, object]):
         pass
@@ -236,3 +267,17 @@ def test_runtime_executor_rejects_output_shape_mismatch() -> None:
 
     with pytest.raises(ValueError, match="output shape mismatch"):
         execute_graph(bad_graph, compiled.partition_plan, proof_inputs())
+
+
+def test_runtime_executor_rejects_non_finite_output() -> None:
+    graph = build_graph()
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    inputs = proof_inputs()
+    inputs["lhs"] = np.full((2, 3), 1e308, dtype=np.float64)
+    inputs["rhs"] = np.full((3, 2), 1e308, dtype=np.float64)
+
+    with np.errstate(over="ignore"), pytest.raises(
+        ValueError,
+        match="output projection must contain only finite values",
+    ):
+        execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)

@@ -86,6 +86,8 @@ The current prototype contains:
   fixed in-process prototype executor registry.
 - Runtime execution readiness reports that gate planned execution against
   trusted backend contracts before kernels run.
+- Runtime tensor value contract checks for declared shapes, `float64` dtype,
+  and finite values at input and output boundaries.
 - Proof-of-execution example that compiles, plans, executes, traces, and
   verifies a graph against independent reference semantics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.

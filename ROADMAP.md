@@ -148,6 +148,8 @@ Completed evidence:
   forbidden.
 - Runtime execution readiness reports validate runtime plans against trusted
   backend executor contracts before any operation executes.
+- Runtime tensor value contracts enforce declared shapes, `float64` dtype, and
+  finite values at input and output boundaries for trusted prototype execution.
 - Proof-of-execution compiles, plans, executes, traces, and verifies a graph
   against independent reference semantics without plugin discovery, device
   access, subprocesses, JIT, or generated-artifact execution.

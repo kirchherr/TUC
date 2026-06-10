@@ -17,7 +17,7 @@ from typing import cast
 import numpy as np
 from numpy.typing import NDArray
 
-from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind
+from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.reference import (
     reference_elementwise,
     reference_matmul,
@@ -544,7 +544,8 @@ def _normalize_inputs(
 ) -> dict[str, FloatArray]:
     if type(inputs) is not dict:
         raise TypeError("runtime executor inputs must be a plain mapping")
-    required_inputs = _external_input_names(graph)
+    external_inputs = _external_input_tensors(graph)
+    required_inputs = frozenset(external_inputs)
     supplied_inputs = frozenset(inputs)
     missing = sorted(required_inputs - supplied_inputs)
     if missing:
@@ -558,20 +559,26 @@ def _normalize_inputs(
         value = inputs[name]
         if not isinstance(value, np.ndarray):
             raise TypeError(f"runtime executor input {name} must be NumPy array")
+        _validate_runtime_tensor_value(
+            tensor_name=name,
+            value=value,
+            expected_shape=external_inputs[name].shape,
+            value_role="input",
+        )
         normalized[name] = cast(FloatArray, value)
     return normalized
 
 
-def _external_input_names(graph: ComputeGraph) -> frozenset[str]:
+def _external_input_tensors(graph: ComputeGraph) -> dict[str, TensorRef]:
     produced: set[str] = set()
-    required: set[str] = set()
+    required: dict[str, TensorRef] = {}
     for operation in graph.operations:
         for tensor in operation.inputs:
             if tensor.name not in produced:
-                required.add(tensor.name)
+                required.setdefault(tensor.name, tensor)
         for tensor in operation.outputs:
             produced.add(tensor.name)
-    return frozenset(required)
+    return required
 
 
 def _validate_partition_plan(graph: ComputeGraph, partition_plan: PartitionPlan) -> None:
@@ -585,10 +592,34 @@ def _validate_partition_plan(graph: ComputeGraph, partition_plan: PartitionPlan)
 
 def _validate_declared_output(operation: ComputeOperation, value: FloatArray) -> None:
     output = operation.outputs[0]
-    if tuple(value.shape) != output.shape:
+    _validate_runtime_tensor_value(
+        tensor_name=output.name,
+        value=value,
+        expected_shape=output.shape,
+        value_role="output",
+    )
+
+
+def _validate_runtime_tensor_value(
+    *,
+    tensor_name: str,
+    value: NDArray[np.generic],
+    expected_shape: tuple[int, ...],
+    value_role: str,
+) -> None:
+    _require_trace_name(tensor_name, f"runtime executor {value_role} name")
+    if tuple(value.shape) != expected_shape:
         raise ValueError(
-            f"runtime executor output shape mismatch for {operation.name}: "
-            f"expected {_format_shape(output.shape)}, got {_format_shape(value.shape)}"
+            f"runtime executor {value_role} shape mismatch for {tensor_name}: "
+            f"expected {_format_shape(expected_shape)}, got {_format_shape(value.shape)}"
+        )
+    if value.dtype != np.dtype(np.float64):
+        raise TypeError(
+            f"runtime executor {value_role} {tensor_name} dtype must be float64"
+        )
+    if not bool(np.all(np.isfinite(value))):
+        raise ValueError(
+            f"runtime executor {value_role} {tensor_name} must contain only finite values"
         )
 
 

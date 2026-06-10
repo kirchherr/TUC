@@ -86,6 +86,10 @@ Implemented now:
   runtime plans against trusted backend executor contracts before any operation
   executes, failing closed for untrusted backend contracts or unsupported
   operation/backend assignments.
+- Runtime tensor value contracts require external inputs and operation outputs
+  to match declared shapes, use `float64`, and contain only finite values,
+  failing closed before dtype, shape, or non-finite-value drift can reach later
+  runtime steps.
 - Movement-aware partition plan metadata with transfer-byte accounting.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.
