@@ -26,8 +26,9 @@ from tuc.reference import (
 )
 from tuc.runtime.partitioning import Assignment, PartitionPlan
 
-RUNTIME_EXECUTOR_CONTRACT = "runtime_executor.trusted_reference.v0"
+RUNTIME_EXECUTOR_CONTRACT = "runtime_executor.trusted_backend.v0"
 TRUSTED_REFERENCE_EXECUTOR_BACKEND = "trusted-reference-kernel"
+TRUSTED_RUNTIME_EXECUTOR_REGISTRY = "trusted_runtime_executor_registry.v0"
 RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
     "backend_plugin_discovery",
     "device_access",
@@ -43,6 +44,36 @@ MAX_RUNTIME_EXECUTION_VALUES = 4096
 FloatArray = NDArray[np.float64]
 
 _TRACE_NAME_RE = re.compile(r"^[A-Za-z0-9_.:-]+$")
+
+
+@dataclass(frozen=True)
+class TrustedRuntimeBackendExecutor:
+    """Trusted in-repository executor for one prototype backend name."""
+
+    name: str
+    supported_ops: frozenset[OperationKind]
+
+    def __post_init__(self) -> None:
+        _require_trace_name(self.name, "executor name")
+        if not isinstance(self.supported_ops, frozenset):
+            raise TypeError("executor supported_ops must be a frozenset")
+        if not self.supported_ops:
+            raise ValueError("executor must support at least one operation")
+        if any(not isinstance(kind, OperationKind) for kind in self.supported_ops):
+            raise TypeError("executor supported_ops must contain OperationKind values")
+
+    def execute(
+        self,
+        operation: ComputeOperation,
+        values: Mapping[str, FloatArray],
+    ) -> FloatArray:
+        """Execute one operation with trusted reference semantics."""
+
+        if operation.kind not in self.supported_ops:
+            raise ValueError(
+                f"executor {self.name!r} does not support {operation.kind.value!r}"
+            )
+        return _execute_reference_operation(operation, values)
 
 
 @dataclass(frozen=True)
@@ -108,7 +139,9 @@ class RuntimeExecutionTrace:
 
         lines = [f"runtime.execution_trace @{self.graph_name} {{"]
         lines.append(f'  executor_contract = "{self.executor_contract}"')
-        lines.append(f'  trusted_executor = "{TRUSTED_REFERENCE_EXECUTOR_BACKEND}"')
+        lines.append(
+            f'  trusted_executor_registry = "{TRUSTED_RUNTIME_EXECUTOR_REGISTRY}"'
+        )
         lines.append(
             "  blocked_execution_surfaces = "
             f'"{",".join(self.blocked_execution_surfaces)}"'
@@ -159,17 +192,19 @@ def execute_graph(
     assignments = {
         assignment.operation_name: assignment for assignment in partition_plan.assignments
     }
+    executors = trusted_runtime_executor_registry()
     steps: list[RuntimeExecutionStep] = []
 
     for operation in graph.operations:
         assignment = assignments[operation.name]
-        result = _execute_operation(operation, values)
+        executor = _executor_for_assignment(assignment, executors)
+        result = executor.execute(operation, values)
         if len(operation.outputs) != 1:
             raise ValueError("runtime executor v0 supports one output per operation")
         output = operation.outputs[0]
         _validate_declared_output(operation, result)
         values[output.name] = result
-        steps.append(_build_step(operation, assignment, result))
+        steps.append(_build_step(operation, assignment, executor, result))
         if len(values) > MAX_RUNTIME_EXECUTION_VALUES:
             raise ValueError("runtime executor value count exceeds limit")
 
@@ -191,7 +226,36 @@ def dump_execution_trace(trace: RuntimeExecutionTrace) -> str:
     return trace.dump()
 
 
-def _execute_operation(
+def trusted_runtime_executor_registry() -> dict[str, TrustedRuntimeBackendExecutor]:
+    """Return the fixed trusted in-repository runtime executor registry."""
+
+    executors = (
+        TrustedRuntimeBackendExecutor(
+            name="linear-sim",
+            supported_ops=frozenset({OperationKind.MATMUL, OperationKind.REDUCTION}),
+        ),
+        TrustedRuntimeBackendExecutor(
+            name="reference-cpu",
+            supported_ops=frozenset(OperationKind),
+        ),
+    )
+    return {executor.name: executor for executor in executors}
+
+
+def _executor_for_assignment(
+    assignment: Assignment,
+    executors: Mapping[str, TrustedRuntimeBackendExecutor],
+) -> TrustedRuntimeBackendExecutor:
+    executor = executors.get(assignment.backend_name)
+    if executor is None:
+        raise ValueError(
+            f"runtime executor has no trusted executor for backend: "
+            f"{assignment.backend_name}"
+        )
+    return executor
+
+
+def _execute_reference_operation(
     operation: ComputeOperation,
     values: Mapping[str, FloatArray],
 ) -> FloatArray:
@@ -279,13 +343,14 @@ def _validate_declared_output(operation: ComputeOperation, value: FloatArray) ->
 def _build_step(
     operation: ComputeOperation,
     assignment: Assignment,
+    executor: TrustedRuntimeBackendExecutor,
     value: FloatArray,
 ) -> RuntimeExecutionStep:
     return RuntimeExecutionStep(
         operation_name=operation.name,
         operation_kind=operation.kind,
         planned_backend=assignment.backend_name,
-        executor_backend=TRUSTED_REFERENCE_EXECUTOR_BACKEND,
+        executor_backend=executor.name,
         input_tensors=tuple(tensor.name for tensor in operation.inputs),
         output_tensors=tuple(tensor.name for tensor in operation.outputs),
         output_shapes=(tuple(int(dimension) for dimension in value.shape),),
@@ -378,10 +443,13 @@ __all__ = [
     "MAX_RUNTIME_EXECUTION_VALUES",
     "RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES",
     "RUNTIME_EXECUTOR_CONTRACT",
+    "TRUSTED_RUNTIME_EXECUTOR_REGISTRY",
     "TRUSTED_REFERENCE_EXECUTOR_BACKEND",
     "RuntimeExecutionResult",
     "RuntimeExecutionStep",
     "RuntimeExecutionTrace",
+    "TrustedRuntimeBackendExecutor",
     "dump_execution_trace",
     "execute_graph",
+    "trusted_runtime_executor_registry",
 ]

@@ -137,8 +137,9 @@ Completed evidence:
 - Triton idiom coverage reports track which Triton-like idioms are covered by
   schema-versioned metadata examples and golden evidence while direct source
   ingestion remains blocked.
-- Runtime Executor v0 executes already-compiled graphs through trusted
-  in-process reference kernels and emits deterministic execution traces.
+- Runtime Executor v0 executes already-compiled graphs through a fixed trusted
+  in-process prototype executor registry and emits deterministic execution
+  traces.
 - Proof-of-execution compiles, plans, executes, traces, and verifies a graph
   against independent reference semantics without plugin discovery, device
   access, subprocesses, JIT, or generated-artifact execution.

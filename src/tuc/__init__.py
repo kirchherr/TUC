@@ -237,6 +237,7 @@ from tuc.runtime import (
     RUNTIME_EXECUTOR_CONTRACT,
     RUNTIME_OVERRIDE_SCHEMA_VERSION,
     TRUSTED_REFERENCE_EXECUTOR_BACKEND,
+    TRUSTED_RUNTIME_EXECUTOR_REGISTRY,
     CandidateScore,
     RuntimeExecutionResult,
     RuntimeExecutionStep,
@@ -246,8 +247,10 @@ from tuc.runtime import (
     RuntimeOverrideError,
     RuntimeOverrideRule,
     RuntimeOverrideSet,
+    TrustedRuntimeBackendExecutor,
     dump_execution_trace,
     execute_graph,
+    trusted_runtime_executor_registry,
 )
 
 __all__ = [
@@ -402,6 +405,7 @@ __all__ = [
     "SourceToIntentReadinessReport",
     "TRITON_METADATA_INTAKE_CONTRACT",
     "TRITON_METADATA_SCHEMA_VERSION",
+    "TRUSTED_RUNTIME_EXECUTOR_REGISTRY",
     "TRUSTED_REFERENCE_EXECUTOR_BACKEND",
     "TensorRef",
     "TritonIdiomCoverage",
@@ -411,6 +415,7 @@ __all__ = [
     "TritonOperationMetadata",
     "TritonTensorMetadata",
     "TOOLCHAIN_COMPONENT_KINDS",
+    "TrustedRuntimeBackendExecutor",
     "TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS",
     "TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS",
     "TOOLCHAIN_ENVIRONMENT_DEFAULT_ISSUES",
@@ -489,5 +494,6 @@ __all__ = [
     "toolchain_environment_report_to_dict",
     "triton_idiom_coverage_report_to_dict",
     "triton_metadata_to_compute_graph",
+    "trusted_runtime_executor_registry",
     "workload_scope_report_to_dict",
 ]

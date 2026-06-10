@@ -22,13 +22,16 @@ Add:
 - `RuntimeExecutionStep`
 - `RuntimeExecutionResult`
 - `dump_execution_trace(trace)`
-- executor contract `runtime_executor.trusted_reference.v0`
+- executor contract `runtime_executor.trusted_backend.v0`
+- fixed trusted registry `trusted_runtime_executor_registry.v0`
+- trusted prototype executors `linear-sim` and `reference-cpu`
 - example `examples/proof_of_execution.py`
 - proof golden `tests/golden/proofs/proof_of_execution.txt`
 - execution-trace golden `tests/golden/execution_traces/proof_of_execution.txt`
 
-Runtime Executor v0 executes only through trusted in-process reference kernels.
-It records the planned backend separately from the actual executor backend.
+Runtime Executor v0 executes only through fixed trusted in-process prototype
+executors. It records the planned backend separately from the actual executor
+backend.
 
 ## Security Model
 
@@ -39,6 +42,9 @@ network, or execute generated artifacts.
 Inputs must be explicit NumPy arrays in a plain mapping. Unexpected inputs,
 missing inputs, partition-plan mismatches, unsupported arity, invalid axes, and
 output-shape mismatches fail closed.
+
+Plans that name an executor outside the trusted registry fail closed. Plans that
+ask a trusted executor to run an unsupported operation kind also fail closed.
 
 ## Consequences
 

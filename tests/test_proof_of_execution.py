@@ -19,11 +19,16 @@ def test_proof_of_execution_example_runs() -> None:
 
     assert "== runtime plan ==" in completed.stdout
     assert "== execution trace ==" in completed.stdout
-    assert "executor_contract = \"runtime_executor.trusted_reference.v0\"" in (
+    assert "executor_contract = \"runtime_executor.trusted_backend.v0\"" in (
         completed.stdout
     )
-    assert "linear_projection planned_backend=linear-sim" in completed.stdout
-    assert "activation planned_backend=reference-cpu" in completed.stdout
+    assert "linear_projection planned_backend=linear-sim executor_backend=linear-sim" in (
+        completed.stdout
+    )
+    assert (
+        "activation planned_backend=reference-cpu executor_backend=reference-cpu"
+        in completed.stdout
+    )
     assert completed.stdout.rstrip().endswith("PASS")
     assert completed.stdout.rstrip("\n") == _GOLDEN_PROOF.read_text(
         encoding="utf-8"

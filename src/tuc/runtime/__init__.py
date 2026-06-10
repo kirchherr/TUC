@@ -6,11 +6,14 @@ from tuc.runtime.executor import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RUNTIME_EXECUTOR_CONTRACT,
     TRUSTED_REFERENCE_EXECUTOR_BACKEND,
+    TRUSTED_RUNTIME_EXECUTOR_REGISTRY,
     RuntimeExecutionResult,
     RuntimeExecutionStep,
     RuntimeExecutionTrace,
+    TrustedRuntimeBackendExecutor,
     dump_execution_trace,
     execute_graph,
+    trusted_runtime_executor_registry,
 )
 from tuc.runtime.overrides import (
     RUNTIME_OVERRIDE_SCHEMA_VERSION,
@@ -62,10 +65,13 @@ __all__ = [
     "TransferCostParameters",
     "TransferCostEstimate",
     "TransferCostProfile",
+    "TRUSTED_RUNTIME_EXECUTOR_REGISTRY",
     "TRUSTED_REFERENCE_EXECUTOR_BACKEND",
+    "TrustedRuntimeBackendExecutor",
     "dump_execution_trace",
     "dump_partition_plan",
     "execute_graph",
     "estimate_default_transfer_cost",
     "partition_graph",
+    "trusted_runtime_executor_registry",
 ]

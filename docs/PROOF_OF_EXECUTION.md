@@ -19,7 +19,7 @@ against an independent reference result.
 
 - TUC can compile a graph into HAC-IR and a runtime plan.
 - Runtime placement remains visible before execution.
-- Execution uses a trusted in-process reference executor.
+- Execution uses fixed trusted in-process prototype executors.
 - The execution trace records planned backend and actual executor separately.
 - The final result matches an independent reference calculation.
 

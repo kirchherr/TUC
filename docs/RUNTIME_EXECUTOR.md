@@ -3,17 +3,18 @@
 Runtime Executor v0 is TUC's first practical execution path.
 
 It executes an already-compiled `ComputeGraph` with an already-built
-`PartitionPlan` through trusted in-process reference kernels and emits a
-deterministic execution trace.
+`PartitionPlan` through a fixed trusted in-process backend executor registry
+and emits a deterministic execution trace.
 
 It is not a backend plugin system.
 
 ## Contract
 
-- Executor contract: `runtime_executor.trusted_reference.v0`
+- Executor contract: `runtime_executor.trusted_backend.v0`
+- Executor registry: `trusted_runtime_executor_registry.v0`
 - API: `execute_graph(graph, partition_plan, inputs)`
 - Trace API: `dump_execution_trace(trace)`
-- Trusted executor backend: `trusted-reference-kernel`
+- Trusted prototype executors: `linear-sim`, `reference-cpu`
 - Trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
 - Tests: `tests/test_runtime_executor.py`
 
@@ -35,6 +36,10 @@ Missing inputs, unexpected intermediate tensors, non-plain mappings, partition
 plan mismatches, unsupported arity, invalid axes, and output-shape mismatches
 fail closed.
 
+If a runtime plan names a backend that is not in the trusted registry, execution
+fails closed. If a trusted executor is asked to execute an unsupported operation
+kind, execution also fails closed.
+
 ## Trace Semantics
 
 The execution trace records:
@@ -48,8 +53,9 @@ The execution trace records:
 - output dtypes
 - execution status
 
-The trace proves controlled execution. It does not make native performance
-claims and does not authorize executable external backends.
+The trace proves controlled execution by named trusted prototype executors. It
+does not make native performance claims and does not authorize executable
+external backends.
 
 ## Next Boundary
 

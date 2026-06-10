@@ -47,13 +47,13 @@ runtime.plan @proof_of_execution {
 
 == execution trace ==
 runtime.execution_trace @proof_of_execution {
-  executor_contract = "runtime_executor.trusted_reference.v0"
-  trusted_executor = "trusted-reference-kernel"
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
   blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
   steps {
-    linear_projection planned_backend=linear-sim executor_backend=trusted-reference-kernel kind=matmul inputs=lhs,rhs outputs=projection output_shapes=2x2 output_dtypes=float64 status=executed
-    row_reduction planned_backend=linear-sim executor_backend=trusted-reference-kernel kind=reduction inputs=projection outputs=row_sum output_shapes=2 output_dtypes=float64 status=executed
-    activation planned_backend=reference-cpu executor_backend=trusted-reference-kernel kind=elementwise inputs=row_sum outputs=activated output_shapes=2 output_dtypes=float64 status=executed
+    linear_projection planned_backend=linear-sim executor_backend=linear-sim kind=matmul inputs=lhs,rhs outputs=projection output_shapes=2x2 output_dtypes=float64 status=executed
+    row_reduction planned_backend=linear-sim executor_backend=linear-sim kind=reduction inputs=projection outputs=row_sum output_shapes=2 output_dtypes=float64 status=executed
+    activation planned_backend=reference-cpu executor_backend=reference-cpu kind=elementwise inputs=row_sum outputs=activated output_shapes=2 output_dtypes=float64 status=executed
   }
 }
 

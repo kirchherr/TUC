@@ -11,7 +11,7 @@ from examples.proof_of_execution import build_graph, proof_inputs
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
 from tuc.ir import ComputeGraph
-from tuc.runtime import execute_graph
+from tuc.runtime import execute_graph, trusted_runtime_executor_registry
 
 _GOLDEN_TRACE = (
     Path(__file__).parent / "golden" / "execution_traces" / "proof_of_execution.txt"
@@ -73,6 +73,44 @@ def test_runtime_executor_rejects_partition_plan_mismatch() -> None:
     )
 
     with pytest.raises(ValueError, match="partition plan must match graph operations"):
+        execute_graph(compiled.hac_ir.graph, bad_plan, proof_inputs())
+
+
+def test_runtime_executor_uses_trusted_registry_for_planned_backends() -> None:
+    registry = trusted_runtime_executor_registry()
+
+    assert sorted(registry) == ["linear-sim", "reference-cpu"]
+
+
+def test_runtime_executor_rejects_missing_trusted_executor() -> None:
+    graph = build_graph()
+    compiled = compile_graph(
+        graph,
+        [LinearAlgebraSimulatorBackend().capability],
+        fallback_backend="unknown-executor",
+    )
+
+    with pytest.raises(ValueError, match="no trusted executor"):
+        execute_graph(compiled.hac_ir.graph, compiled.partition_plan, proof_inputs())
+
+
+def test_runtime_executor_rejects_unsupported_executor_operation() -> None:
+    graph = build_graph()
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    activation_assignment = replace(
+        compiled.partition_plan.assignments[2],
+        backend_name="linear-sim",
+    )
+    bad_plan = replace(
+        compiled.partition_plan,
+        assignments=(
+            compiled.partition_plan.assignments[0],
+            compiled.partition_plan.assignments[1],
+            activation_assignment,
+        ),
+    )
+
+    with pytest.raises(ValueError, match="does not support"):
         execute_graph(compiled.hac_ir.graph, bad_plan, proof_inputs())
 
 
