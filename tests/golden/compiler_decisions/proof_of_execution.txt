@@ -1,0 +1,14 @@
+compiler.decision_report @proof_of_execution {
+  operation linear_projection kind=matmul assigned=linear-sim accepted_backends="linear-sim" rejected_backends="-" reason="preferred_for:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
+  support {
+    linear-sim accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+  }
+  operation row_reduction kind=reduction assigned=linear-sim accepted_backends="linear-sim" rejected_backends="-" reason="supported:reduction;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
+  support {
+    linear-sim accepted reason="accepted" detail="capability accepts operation kind, layout, and error budget"
+  }
+  operation activation kind=elementwise assigned=reference-cpu accepted_backends="-" rejected_backends="linear-sim" reason="fallback:transfer_bytes=8;layout_conversion_bytes=0;actual_transfer_bytes=8;actual_layout_conversion_bytes=0"
+  support {
+    linear-sim rejected reason="unsupported_operation_kind" detail="elementwise not declared in supported_ops"
+  }
+}

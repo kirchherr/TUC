@@ -30,6 +30,10 @@ It is not a backend plugin system.
 - MVP readiness golden:
   `tests/golden/execution_readiness/triton_metadata_mvp_families.txt`
 - Proof trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
+- Proof-of-execution independent compiler-contract goldens:
+  `tests/golden/hac_ir/proof_of_execution.txt`,
+  `tests/golden/runtime_plans/proof_of_execution.txt`,
+  `tests/golden/compiler_decisions/proof_of_execution.txt`
 - Objective Alpha trace goldens:
   `tests/golden/execution_traces/proof_of_abstraction.txt`,
   `tests/golden/execution_traces/proof_of_reduction.txt`,

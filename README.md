@@ -90,7 +90,7 @@ The current prototype contains:
   `softmax`, `reduction`, and `elementwise` before execution.
 - Runtime Evidence Matrix v0 with schema-versioned, data-only proof inventory
   for HAC-IR, runtime-plan, compiler-decision, readiness, trace, and correctness
-  evidence.
+  evidence, now complete across current graph fixtures.
 - Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
   Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and

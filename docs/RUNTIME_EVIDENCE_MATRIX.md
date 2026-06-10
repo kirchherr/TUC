@@ -33,16 +33,16 @@ Additional evidence, such as `proof_report_golden` and
 
 ## Current Meaning
 
-The current matrix is intentionally honest:
+The current matrix is complete across every accepted graph fixture:
 
 - `proof_of_abstraction`, `proof_of_reduction`, `proof_of_softmax`, and
   `triton_metadata_mvp_families` are complete across the required runtime
   evidence kinds.
-- `proof_of_execution` has execution readiness and trace evidence, but does not
-  yet have separate HAC-IR, runtime-plan, or compiler-decision goldens.
+- `proof_of_execution` is complete across HAC-IR, runtime-plan,
+  compiler-decision, readiness, trace, and reference-correctness evidence.
 
-The remaining `proof_of_execution` gaps are roadmap information, not hidden
-failures.
+Future graph fixtures must either make every required evidence kind present or
+show missing evidence as explicit matrix issues.
 
 ## Security Boundary
 

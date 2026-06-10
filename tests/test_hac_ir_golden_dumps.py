@@ -7,6 +7,7 @@ import pytest
 
 from examples.phase1_ir_pipeline import build_graph as build_phase1_graph
 from examples.proof_of_abstraction import build_graph as build_proof_graph
+from examples.proof_of_execution import build_graph as build_execution_proof_graph
 from examples.proof_of_reduction import build_graph as build_reduction_proof_graph
 from examples.proof_of_softmax import build_graph as build_softmax_proof_graph
 from tuc.backends import LinearAlgebraSimulatorBackend
@@ -22,6 +23,7 @@ _GOLDEN_DIR = Path(__file__).parent / "golden" / "hac_ir"
         ("proof_of_abstraction.txt", build_proof_graph),
         ("proof_of_reduction.txt", build_reduction_proof_graph),
         ("proof_of_softmax.txt", build_softmax_proof_graph),
+        ("proof_of_execution.txt", build_execution_proof_graph),
         ("phase1_mlp_block.txt", build_phase1_graph),
     ),
 )

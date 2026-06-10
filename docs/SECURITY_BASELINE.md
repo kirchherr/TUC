@@ -91,7 +91,8 @@ Implemented now:
 - Runtime Evidence Matrix v0 inventories proof/runtime evidence through bounded
   identifiers only, rejects path-like IDs and known execution surfaces, derives
   missing-evidence issues deterministically, and never scans repositories,
-  imports code, discovers plugins, or executes artifacts.
+  imports code, discovers plugins, or executes artifacts. The current matrix is
+  complete across all accepted graph fixtures.
 - Objective Alpha abstraction, reduction, and softmax proofs now validate
   Runtime Execution Readiness before trusted in-process execution and emit
   deterministic traces without adding plugin discovery, device access, dynamic

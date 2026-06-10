@@ -105,6 +105,15 @@ def build_matrix_report() -> RuntimeEvidenceMatrixReport:
                 source_boundary="typed_compute_graph",
                 artifacts=(
                     artifact("proof_report_golden", "proof_of_execution_report"),
+                    artifact("hac_ir_golden", "proof_of_execution_hac_ir"),
+                    artifact(
+                        "runtime_plan_golden",
+                        "proof_of_execution_runtime_plan",
+                    ),
+                    artifact(
+                        "compiler_decision_golden",
+                        "proof_of_execution_compiler_decision",
+                    ),
                     artifact(
                         "execution_readiness_golden",
                         "proof_of_execution_readiness",

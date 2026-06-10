@@ -153,6 +153,21 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_execution_hac_ir",
+          "artifact_kind": "hac_ir_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_runtime_plan",
+          "artifact_kind": "runtime_plan_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_compiler_decision",
+          "artifact_kind": "compiler_decision_golden",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_execution_readiness",
           "artifact_kind": "execution_readiness_golden",
           "artifact_status": "present"
@@ -170,12 +185,8 @@
       ],
       "graph_family": "objective_alpha_execution",
       "graph_id": "proof_of_execution",
-      "missing_required_artifact_kinds": [
-        "hac_ir_golden",
-        "runtime_plan_golden",
-        "compiler_decision_golden"
-      ],
-      "runtime_evidence_complete": false,
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
       "source_boundary": "typed_compute_graph"
     },
     {
@@ -223,11 +234,7 @@
       "source_boundary": "triton_metadata"
     }
   ],
-  "issues": [
-    "proof_of_execution.missing_hac_ir_golden",
-    "proof_of_execution.missing_runtime_plan_golden",
-    "proof_of_execution.missing_compiler_decision_golden"
-  ],
+  "issues": [],
   "matrix_id": "runtime_evidence_matrix_v0",
   "required_artifact_kinds": [
     "hac_ir_golden",
@@ -237,6 +244,6 @@
     "execution_trace_golden",
     "reference_correctness"
   ],
-  "runtime_evidence_matrix_complete": false,
+  "runtime_evidence_matrix_complete": true,
   "schema_version": "tuc.runtime_evidence_matrix_report.v0"
 }

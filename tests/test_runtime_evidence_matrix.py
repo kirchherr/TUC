@@ -27,21 +27,13 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
 
     assert report.evidence_contract == RUNTIME_EVIDENCE_MATRIX_CONTRACT
     assert len(report.graphs) == 5
-    assert not report.runtime_evidence_matrix_complete
+    assert report.runtime_evidence_matrix_complete
     assert graphs["proof_of_abstraction"].runtime_evidence_complete
     assert graphs["proof_of_reduction"].runtime_evidence_complete
     assert graphs["proof_of_softmax"].runtime_evidence_complete
+    assert graphs["proof_of_execution"].runtime_evidence_complete
     assert graphs["triton_metadata_mvp_families"].runtime_evidence_complete
-    assert graphs["proof_of_execution"].missing_required_artifact_kinds == (
-        "hac_ir_golden",
-        "runtime_plan_golden",
-        "compiler_decision_golden",
-    )
-    assert report.issues == (
-        "proof_of_execution.missing_hac_ir_golden",
-        "proof_of_execution.missing_runtime_plan_golden",
-        "proof_of_execution.missing_compiler_decision_golden",
-    )
+    assert report.issues == ()
     assert tuple(runtime_evidence_matrix_report_to_dict(report)) == (
         "artifact_status",
         "blocked_execution_surfaces",
@@ -71,7 +63,7 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     )
 
     assert "runtime_evidence_matrix.data_only.v0" in completed.stdout
-    assert '"runtime_evidence_matrix_complete": false' in completed.stdout
+    assert '"runtime_evidence_matrix_complete": true' in completed.stdout
     assert "triton_metadata_mvp_families" in completed.stdout
 
 
