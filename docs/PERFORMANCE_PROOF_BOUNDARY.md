@@ -61,6 +61,31 @@ diagnostic report contract at
 HAC-IR hardware-leakage guard and records where performance-specific facts must
 live outside HAC-IR.
 
+## Workload Scope Gate
+
+Before TUC may claim performance for a workload class, a proposal must define
+the workload family and problem-size bounds as review data.
+
+The proposal must include:
+
+- operation family
+- shape profile identifier
+- dtype policy identifier
+- minimum problem size
+- maximum problem size
+- correctness reference identifier
+
+The current [Workload Scope Report](WORKLOAD_SCOPE_REPORT.md) defines the
+diagnostic report contract at
+`schemas/workload_scope_report.v0.schema.json`. It records workload boundaries,
+but it does not run benchmarks, store tensors, load artifacts, or prove native
+performance.
+
+Workload scope reports must not include tensors, host paths, command lines,
+environment variables, raw benchmark output, raw timing samples, backend
+binaries, generated code, device identifiers, dynamic-library paths, or native
+source contents.
+
 ## Planner Overhead Gate
 
 Before TUC may claim runtime planning is beneficial for a workload class, a
@@ -149,6 +174,7 @@ Any future performance proof must add:
 
 - dedicated performance proof RFC
 - benchmark methodology document
+- explicit workload scope report
 - native baseline provenance
 - benchmark report schema
 - deterministic benchmark fixtures or stored report artifacts
@@ -196,20 +222,21 @@ until this boundary is satisfied.
 Reviewers must reject performance claims unless every answer is yes:
 
 1. Is the claim scoped to a specific workload family and shape range?
-2. Is the native baseline reproducible?
-3. Is the native baseline provenance report present and bounded?
-4. Is mathematical correctness still proven independently?
-5. Are planner overhead and execution time reported separately?
-6. Is the break-even workload size reported?
-7. Are cache effects explicit rather than hidden?
-8. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+2. Is the workload scope report present and bounded?
+3. Is the native baseline reproducible?
+4. Is the native baseline provenance report present and bounded?
+5. Is mathematical correctness still proven independently?
+6. Are planner overhead and execution time reported separately?
+7. Is the break-even workload size reported?
+8. Are cache effects explicit rather than hidden?
+9. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-9. Is HAC-IR still hardware-neutral?
-10. Are runtime plans and compiler decisions golden-tested?
-11. Is benchmark provenance versioned?
-12. Is the benchmark artifact manifest present and bounded?
-13. Are any executable backend or device surfaces threat-modeled?
-14. Does the claim avoid broad wording such as "near native" unless the
+10. Is HAC-IR still hardware-neutral?
+11. Are runtime plans and compiler decisions golden-tested?
+12. Is benchmark provenance versioned?
+13. Is the benchmark artifact manifest present and bounded?
+14. Are any executable backend or device surfaces threat-modeled?
+15. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

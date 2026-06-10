@@ -105,6 +105,20 @@ BENCHMARK_ARTIFACT_MANIFEST_DEFAULT_ISSUES = (
     "benchmark_artifacts_not_supplied",
     "native_performance_claim_blocked",
 )
+WORKLOAD_SCOPE_REPORT_SCHEMA_VERSION = "tuc.workload_scope_report.v0"
+WORKLOAD_SCOPE_ARTIFACT_STATUS = "diagnostic_only"
+WORKLOAD_SCOPE_CLAIM_STATUS = "blocked"
+WORKLOAD_OPERATION_FAMILIES = (
+    "matmul",
+    "elementwise",
+    "reduction",
+    "softmax",
+)
+WORKLOAD_SCOPE_DEFAULT_ISSUES = (
+    "workload_scopes_not_supplied",
+    "native_performance_claim_blocked",
+)
+WORKLOAD_SCOPE_MAX_PROBLEM_SIZE = 1_000_000_000_000
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
@@ -119,6 +133,9 @@ MAX_NATIVE_BASELINES = 64
 MAX_BENCHMARK_ARTIFACT_MANIFEST_REPORT_BYTES = 64 * 1024
 MAX_BENCHMARK_ARTIFACT_FIELD_BYTES = 512
 MAX_BENCHMARK_ARTIFACTS = 128
+MAX_WORKLOAD_SCOPE_REPORT_BYTES = 64 * 1024
+MAX_WORKLOAD_SCOPE_FIELD_BYTES = 512
+MAX_WORKLOAD_SCOPES = 128
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
@@ -281,6 +298,35 @@ class BenchmarkArtifactManifestReport:
         return bool(self.artifacts) and not benchmark_issues
 
 
+@dataclass(frozen=True)
+class WorkloadScope:
+    """One bounded workload scope for future performance claims."""
+
+    scope_id: str
+    operation_family: str
+    shape_profile_id: str
+    dtype_policy_id: str
+    problem_size_min: int
+    problem_size_max: int
+    correctness_reference_id: str
+
+
+@dataclass(frozen=True)
+class WorkloadScopeReport:
+    """Diagnostic report for workload-scope review."""
+
+    proposal_name: str
+    scopes: tuple[WorkloadScope, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def workload_scope_ready(self) -> bool:
+        workload_issues = tuple(
+            issue for issue in self.issues if issue.startswith("workload_scope")
+        )
+        return bool(self.scopes) and not workload_issues
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -435,6 +481,25 @@ def build_benchmark_artifact_manifest_report(
     )
 
 
+def build_workload_scope_report(
+    proposal_name: str,
+    scopes: Iterable[WorkloadScope] = (),
+) -> WorkloadScopeReport:
+    """Build a bounded data-only workload scope report."""
+
+    _validate_workload_scope_text(proposal_name, "proposal_name")
+    normalized_scopes = _normalize_workload_scopes(scopes)
+    issues = list(WORKLOAD_SCOPE_DEFAULT_ISSUES)
+    if normalized_scopes:
+        issues.remove("workload_scopes_not_supplied")
+
+    return WorkloadScopeReport(
+        proposal_name=proposal_name,
+        scopes=normalized_scopes,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def assert_performance_proof_readiness(
     proposal_name: str,
     evidence: Iterable[PerformanceProofReadinessEvidence],
@@ -578,6 +643,34 @@ def benchmark_artifact_manifest_report_to_dict(
     }
 
 
+def workload_scope_report_to_dict(report: WorkloadScopeReport) -> dict[str, object]:
+    """Return a deterministic JSON-compatible workload scope report."""
+
+    _validate_workload_scope_report(report)
+    return {
+        "artifact_status": WORKLOAD_SCOPE_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": WORKLOAD_SCOPE_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "schema_version": WORKLOAD_SCOPE_REPORT_SCHEMA_VERSION,
+        "scopes": [
+            {
+                "correctness_reference_id": scope.correctness_reference_id,
+                "dtype_policy_id": scope.dtype_policy_id,
+                "operation_family": scope.operation_family,
+                "problem_size_max": scope.problem_size_max,
+                "problem_size_min": scope.problem_size_min,
+                "scope_id": scope.scope_id,
+                "shape_profile_id": scope.shape_profile_id,
+            }
+            for scope in report.scopes
+        ],
+        "workload_scope_ready": report.workload_scope_ready,
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -629,6 +722,15 @@ def dump_benchmark_artifact_manifest_report(
     )
     if len(text.encode("utf-8")) > MAX_BENCHMARK_ARTIFACT_MANIFEST_REPORT_BYTES:
         raise ValueError("benchmark artifact manifest report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_workload_scope_report(report: WorkloadScopeReport) -> str:
+    """Render a stable diagnostic workload scope report."""
+
+    text = json.dumps(workload_scope_report_to_dict(report), indent=2, sort_keys=True)
+    if len(text.encode("utf-8")) > MAX_WORKLOAD_SCOPE_REPORT_BYTES:
+        raise ValueError("workload scope report exceeds byte limit")
     return text + "\n"
 
 
@@ -716,6 +818,35 @@ def _normalize_benchmark_artifacts(
             raise ValueError("unsupported benchmark artifact storage scope")
         _validate_benchmark_artifact_digest(artifact.artifact_digest)
         seen.add(artifact.artifact_id)
+    return normalized
+
+
+def _normalize_workload_scopes(
+    scopes: Iterable[WorkloadScope],
+) -> tuple[WorkloadScope, ...]:
+    normalized = tuple(scopes)
+    if len(normalized) > MAX_WORKLOAD_SCOPES:
+        raise ValueError("workload scope count exceeds limit")
+    seen: set[str] = set()
+    for scope in normalized:
+        if not isinstance(scope, WorkloadScope):
+            raise TypeError("workload scopes must be WorkloadScope")
+        _validate_workload_scope_text(scope.scope_id, "scope_id")
+        _validate_workload_scope_text(scope.shape_profile_id, "shape_profile_id")
+        _validate_workload_scope_text(scope.dtype_policy_id, "dtype_policy_id")
+        _validate_workload_scope_text(
+            scope.correctness_reference_id,
+            "correctness_reference_id",
+        )
+        if scope.scope_id in seen:
+            raise ValueError("duplicate workload scope id")
+        if scope.operation_family not in WORKLOAD_OPERATION_FAMILIES:
+            raise ValueError("unsupported workload operation family")
+        _validate_workload_problem_size(scope.problem_size_min, "problem_size_min")
+        _validate_workload_problem_size(scope.problem_size_max, "problem_size_max")
+        if scope.problem_size_min > scope.problem_size_max:
+            raise ValueError("workload problem size min must not exceed max")
+        seen.add(scope.scope_id)
     return normalized
 
 
@@ -836,6 +967,15 @@ def _validate_benchmark_artifact_manifest_report(
         _validate_benchmark_artifact_text(issue, "issue")
 
 
+def _validate_workload_scope_report(report: WorkloadScopeReport) -> None:
+    if not isinstance(report, WorkloadScopeReport):
+        raise TypeError("workload scope report must be report object")
+    _validate_workload_scope_text(report.proposal_name, "proposal_name")
+    _normalize_workload_scopes(report.scopes)
+    for issue in report.issues:
+        _validate_workload_scope_text(issue, "issue")
+
+
 def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
     if not isinstance(report, LeakyAbstractionReport):
         raise TypeError("leaky abstraction report must be report object")
@@ -900,6 +1040,20 @@ def _validate_benchmark_artifact_digest(value: str) -> None:
         raise ValueError("artifact_digest must be not_supplied or sha256 digest")
 
 
+def _validate_workload_scope_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe workload scope identifier")
+    if len(value.encode("utf-8")) > MAX_WORKLOAD_SCOPE_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds workload scope field limit")
+
+
+def _validate_workload_problem_size(value: int, label: str) -> None:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise ValueError(f"{label} must be an integer")
+    if value < 1 or value > WORKLOAD_SCOPE_MAX_PROBLEM_SIZE:
+        raise ValueError(f"{label} exceeds workload scope problem size limit")
+
+
 def _validate_leaky_abstraction_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{label} must be a non-empty string")
@@ -934,6 +1088,14 @@ __all__ = [
     "NATIVE_BASELINE_REPRODUCIBILITY_STATUSES",
     "NativeBaselineProvenance",
     "NativeBaselineProvenanceReport",
+    "WORKLOAD_OPERATION_FAMILIES",
+    "WORKLOAD_SCOPE_ARTIFACT_STATUS",
+    "WORKLOAD_SCOPE_CLAIM_STATUS",
+    "WORKLOAD_SCOPE_DEFAULT_ISSUES",
+    "WORKLOAD_SCOPE_MAX_PROBLEM_SIZE",
+    "WORKLOAD_SCOPE_REPORT_SCHEMA_VERSION",
+    "WorkloadScope",
+    "WorkloadScopeReport",
     "MAX_PROOF_BACKENDS",
     "MAX_PROOF_METADATA_STRING_BYTES",
     "PERFORMANCE_PROOF_BLOCKED_CLAIMS",
@@ -952,12 +1114,15 @@ __all__ = [
     "build_leaky_abstraction_report",
     "build_native_baseline_provenance_report",
     "build_performance_proof_readiness_report",
+    "build_workload_scope_report",
     "dump_benchmark_artifact_manifest_report",
     "dump_leaky_abstraction_report",
     "dump_native_baseline_provenance_report",
     "dump_performance_proof_readiness_report",
+    "dump_workload_scope_report",
     "leaky_abstraction_report_to_dict",
     "native_baseline_provenance_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "proof_metadata_from_partition_plan",
+    "workload_scope_report_to_dict",
 ]

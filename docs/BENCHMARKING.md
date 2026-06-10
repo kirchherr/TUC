@@ -78,6 +78,13 @@ output must not be used as a native performance parity claim until leaky
 abstraction evidence, planner-overhead evidence, native baseline provenance,
 correctness goldens, and security review exist.
 
+Future performance proposals must also provide a bounded
+[Workload Scope Report](WORKLOAD_SCOPE_REPORT.md) matching
+`schemas/workload_scope_report.v0.schema.json` before benchmark output can be
+interpreted as scoped evidence. The workload scope report records operation
+families, shape profiles, dtype policies, problem-size bounds, and correctness
+references without storing tensors or running benchmarks.
+
 Future native performance proposals must also pass the
 [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md). That
 readiness report does not run benchmarks, does not ingest raw benchmark output,

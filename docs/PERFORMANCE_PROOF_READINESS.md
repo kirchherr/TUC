@@ -57,6 +57,12 @@ satisfy native baseline comparison, planner-overhead report,
 leaky-abstraction report, benchmark report artifacts, or executable backend
 security review.
 
+The current diagnostic workload scope report schema is
+`schemas/workload_scope_report.v0.schema.json`. It can satisfy only the
+existence of a bounded workload-scope contract. It does not satisfy benchmark
+methodology, native baseline comparison, benchmark artifacts, execution timing,
+or native performance parity.
+
 The current diagnostic planner-overhead report schema is
 `schemas/planner_overhead_report.v0.schema.json`. It can satisfy only the
 existence of a bounded planner phase-separation report. It does not satisfy
@@ -120,6 +126,10 @@ The readiness report is not a benchmark artifact manifest. Benchmark report
 artifact inventory is tracked by
 [Benchmark Artifact Manifest Report](BENCHMARK_ARTIFACT_MANIFEST.md), which is
 data-only and remains separate from benchmark result validation.
+
+The readiness report is not a workload scope report. Workload boundaries are
+tracked by [Workload Scope Report](WORKLOAD_SCOPE_REPORT.md), which is
+data-only and remains separate from benchmark methodology and execution.
 
 ## Evidence
 

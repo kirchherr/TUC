@@ -132,6 +132,9 @@ Completed evidence:
   bounded review data while keeping native performance claims blocked.
 - Benchmark-artifact manifest reports inventory future benchmark report
   artifacts through bounded IDs and digests without loading raw outputs.
+- Workload-scope reports bound future performance claims to explicit operation
+  families, shape profiles, dtype policies, problem-size ranges, and correctness
+  references.
 
 Next work:
 
@@ -319,6 +322,8 @@ Deliverables:
   provenance.
 - Benchmark Artifact Manifest Report for diagnostic benchmark artifact
   inventory.
+- Workload Scope Report for diagnostic workload-family and problem-size
+  boundaries.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -381,6 +386,9 @@ Go/No-Go:
 - Benchmark-artifact manifest reports must remain data-only and must not include
   host paths, URLs, raw timing samples, backend binaries, generated code, or
   embedded benchmark outputs.
+- Workload-scope reports must remain data-only and must not include tensors,
+  host paths, raw benchmark output, backend artifacts, device identifiers, or
+  hardware-specific performance knobs.
 
 ## Phase Zeta: Specialized Hardware Proofs
 

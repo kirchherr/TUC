@@ -85,6 +85,8 @@ The current prototype contains:
   comparison candidates without executing native code or claiming parity.
 - Diagnostic benchmark-artifact manifest reports that inventory benchmark
   report artifacts through bounded IDs and digests.
+- Diagnostic workload-scope reports that bound future performance claims to
+  explicit operation families, shape profiles, dtype policies, and problem sizes.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.
@@ -236,6 +238,12 @@ Inspect the diagnostic benchmark-artifact manifest report:
 python examples/benchmark_artifact_manifest.py
 ```
 
+Inspect the diagnostic workload-scope report:
+
+```bash
+python examples/workload_scope_report.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -283,6 +291,7 @@ pytest -q
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
 - [Native baseline provenance report](docs/NATIVE_BASELINE_PROVENANCE.md)
 - [Benchmark artifact manifest report](docs/BENCHMARK_ARTIFACT_MANIFEST.md)
+- [Workload scope report](docs/WORKLOAD_SCOPE_REPORT.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

@@ -120,6 +120,8 @@ Current slice:
   candidate review without native execution or performance claims.
 - Diagnostic Benchmark Artifact Manifest Report for benchmark report inventory
   through bounded IDs, schema versions, digest status, and storage scopes.
+- Diagnostic Workload Scope Report for operation-family, shape-profile,
+  dtype-policy, problem-size, and correctness-reference boundaries.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, leaky-abstraction evidence, planner-overhead
   evidence, correctness goldens, and security review exist.

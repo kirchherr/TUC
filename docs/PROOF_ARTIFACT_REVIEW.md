@@ -22,6 +22,7 @@ docs/PROOF_*.md
 docs/PERFORMANCE_PROOF_READINESS.md
 docs/NATIVE_BASELINE_PROVENANCE.md
 docs/BENCHMARK_ARTIFACT_MANIFEST.md
+docs/WORKLOAD_SCOPE_REPORT.md
 src/tuc/proof.py
 ```
 
@@ -89,6 +90,7 @@ the performance proof boundary and readiness report supply:
 
 - native baseline provenance
 - native baseline provenance report
+- workload scope report
 - leaky-abstraction report
 - planner-overhead report
 - break-even workload size
