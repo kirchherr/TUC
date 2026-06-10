@@ -99,6 +99,11 @@ Implemented now:
   device access, network access, JIT, dynamic libraries, generated-artifact
   execution, host-path reads, command-line capture, raw benchmark output, or
   arbitrary issue text.
+- Runtime Evidence Gate v0 composes the complete Runtime Evidence Matrix and
+  passing Runtime Executor Conformance into CI without adding repository
+  scanning, plugin discovery, device access, network access, subprocesses,
+  dynamic imports, JIT, dynamic libraries, generated-artifact execution, raw
+  benchmark loading, or native performance claims.
 - Objective Alpha abstraction, reduction, and softmax proofs now validate
   Runtime Execution Readiness before trusted in-process execution and emit
   deterministic traces without adding plugin discovery, device access, dynamic

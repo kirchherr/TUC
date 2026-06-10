@@ -227,6 +227,12 @@ Inspect trusted runtime executor conformance:
 python examples/runtime_executor_conformance.py
 ```
 
+Run the Runtime Evidence Gate used by CI:
+
+```bash
+python examples/runtime_evidence_gate.py
+```
+
 Inspect data-movement metadata:
 
 ```bash
@@ -403,6 +409,7 @@ pytest -q
 - [Runtime Executor v0](docs/RUNTIME_EXECUTOR.md)
 - [Runtime Executor Conformance](docs/RUNTIME_EXECUTOR_CONFORMANCE.md)
 - [Runtime evidence matrix](docs/RUNTIME_EVIDENCE_MATRIX.md)
+- [Runtime Evidence Gate](docs/RUNTIME_EVIDENCE_GATE.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)

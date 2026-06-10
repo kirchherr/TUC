@@ -13,9 +13,11 @@ explicitly provided evidence identifiers.
 - Report schema version: `tuc.runtime_evidence_matrix_report.v0`
 - Evidence contract: `runtime_evidence_matrix.data_only.v0`
 - API: `build_runtime_evidence_matrix_report(matrix_id, graphs)`
+- Current matrix API: `build_current_runtime_evidence_matrix_report()`
 - Dump API: `dump_runtime_evidence_matrix_report(report)`
 - Example: `examples/runtime_evidence_matrix.py`
 - Golden: `tests/golden/proofs/runtime_evidence_matrix_report.json`
+- CI gate: `examples/runtime_evidence_gate.py`
 
 ## Required Evidence Kinds
 
@@ -43,6 +45,10 @@ The current matrix is complete across every accepted graph fixture:
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.
+
+The CI-facing [Runtime Evidence Gate](RUNTIME_EVIDENCE_GATE.md) requires this
+matrix to be complete before runtime executor conformance can count as passing
+merge evidence.
 
 ## Security Boundary
 

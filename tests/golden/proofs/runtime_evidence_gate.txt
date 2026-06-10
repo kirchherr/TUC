@@ -1,0 +1,8 @@
+runtime.evidence_gate @runtime_evidence_gate_v0 {
+  runtime_evidence_matrix = "complete"
+  runtime_evidence_graphs = "5"
+  runtime_executor_conformance = "passed"
+  runtime_executor_conformance_cases = "8"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "PASS"
+}

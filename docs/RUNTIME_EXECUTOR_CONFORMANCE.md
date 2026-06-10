@@ -18,6 +18,7 @@ files.
 - Golden report:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`
 - Example: `examples/runtime_executor_conformance.py`
+- CI gate: `examples/runtime_evidence_gate.py`
 - Tests: `tests/test_runtime_executor_conformance.py`,
   `tests/test_runtime_executor_conformance_schema.py`
 
@@ -60,6 +61,9 @@ issue text as evidence.
 Runtime Evidence Matrix v0 proves that accepted graph fixtures have the right
 artifact coverage. Runtime Executor Conformance v0 proves the trusted executor
 registry itself still behaves according to its contract.
+
+The CI-facing [Runtime Evidence Gate](RUNTIME_EVIDENCE_GATE.md) requires both
+conditions before a runtime evidence change can pass the main `python` job.
 
 This makes future backend work safer: a new executable or external backend path
 must first preserve explicit support and rejection behavior before it can be

@@ -60,6 +60,9 @@ hardware-independent interface into capability-driven runtime planning.
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
+- Runtime Evidence Gate v0 with deterministic golden at
+  `tests/golden/proofs/runtime_evidence_gate.txt` and CI coverage in the
+  `python` workflow job.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
@@ -134,6 +137,8 @@ Current slice:
   `schemas/runtime_executor_conformance_report.v0.schema.json`, with golden
   evidence at
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
+- Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
+  evidence at `tests/golden/proofs/runtime_evidence_gate.txt`.
 - Proof-of-execution independent evidence goldens at
   `tests/golden/hac_ir/proof_of_execution.txt`,
   `tests/golden/runtime_plans/proof_of_execution.txt`, and

@@ -870,6 +870,176 @@ def build_runtime_evidence_matrix_report(
     )
 
 
+def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixReport:
+    """Return the curated current runtime evidence matrix used by CI gates."""
+
+    return build_runtime_evidence_matrix_report(
+        "runtime_evidence_matrix_v0",
+        (
+            RuntimeEvidenceGraph(
+                graph_id="proof_of_abstraction",
+                graph_family="objective_alpha",
+                source_boundary="typed_compute_graph",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "proof_report_golden",
+                        "proof_of_abstraction_report",
+                    ),
+                    _runtime_evidence_artifact(
+                        "hac_ir_golden",
+                        "proof_of_abstraction_hac_ir",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_plan_golden",
+                        "proof_of_abstraction_runtime_plan",
+                    ),
+                    _runtime_evidence_artifact(
+                        "compiler_decision_golden",
+                        "proof_of_abstraction_compiler_decision",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_readiness_golden",
+                        "proof_of_abstraction_readiness",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_trace_golden",
+                        "proof_of_abstraction_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "reference_correctness",
+                        "proof_of_abstraction_reference_semantics",
+                    ),
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="proof_of_reduction",
+                graph_family="objective_alpha",
+                source_boundary="typed_compute_graph",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "proof_report_golden",
+                        "proof_of_reduction_report",
+                    ),
+                    _runtime_evidence_artifact("hac_ir_golden", "proof_of_reduction_hac_ir"),
+                    _runtime_evidence_artifact(
+                        "runtime_plan_golden",
+                        "proof_of_reduction_runtime_plan",
+                    ),
+                    _runtime_evidence_artifact(
+                        "compiler_decision_golden",
+                        "proof_of_reduction_compiler_decision",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_readiness_golden",
+                        "proof_of_reduction_readiness",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_trace_golden",
+                        "proof_of_reduction_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "reference_correctness",
+                        "proof_of_reduction_reference_semantics",
+                    ),
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="proof_of_softmax",
+                graph_family="objective_alpha",
+                source_boundary="typed_compute_graph",
+                artifacts=(
+                    _runtime_evidence_artifact("proof_report_golden", "proof_of_softmax_report"),
+                    _runtime_evidence_artifact("hac_ir_golden", "proof_of_softmax_hac_ir"),
+                    _runtime_evidence_artifact(
+                        "runtime_plan_golden",
+                        "proof_of_softmax_runtime_plan",
+                    ),
+                    _runtime_evidence_artifact(
+                        "compiler_decision_golden",
+                        "proof_of_softmax_compiler_decision",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_readiness_golden",
+                        "proof_of_softmax_readiness",
+                    ),
+                    _runtime_evidence_artifact("execution_trace_golden", "proof_of_softmax_trace"),
+                    _runtime_evidence_artifact(
+                        "reference_correctness",
+                        "proof_of_softmax_reference_semantics",
+                    ),
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="proof_of_execution",
+                graph_family="objective_alpha_execution",
+                source_boundary="typed_compute_graph",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "proof_report_golden",
+                        "proof_of_execution_report",
+                    ),
+                    _runtime_evidence_artifact("hac_ir_golden", "proof_of_execution_hac_ir"),
+                    _runtime_evidence_artifact(
+                        "runtime_plan_golden",
+                        "proof_of_execution_runtime_plan",
+                    ),
+                    _runtime_evidence_artifact(
+                        "compiler_decision_golden",
+                        "proof_of_execution_compiler_decision",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_readiness_golden",
+                        "proof_of_execution_readiness",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_trace_golden",
+                        "proof_of_execution_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "reference_correctness",
+                        "proof_of_execution_reference_semantics",
+                    ),
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="triton_metadata_mvp_families",
+                graph_family="triton_metadata_mvp",
+                source_boundary="triton_metadata",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "frontend_intake_golden",
+                        "triton_metadata_mvp_families_intake",
+                    ),
+                    _runtime_evidence_artifact(
+                        "hac_ir_golden",
+                        "triton_metadata_mvp_families_hac_ir",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_plan_golden",
+                        "triton_metadata_mvp_families_runtime_plan",
+                    ),
+                    _runtime_evidence_artifact(
+                        "compiler_decision_golden",
+                        "triton_metadata_mvp_families_compiler_decision",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_readiness_golden",
+                        "triton_metadata_mvp_families_readiness",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_trace_golden",
+                        "triton_metadata_mvp_families_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "reference_correctness",
+                        "triton_metadata_mvp_families_reference_semantics",
+                    ),
+                ),
+            ),
+        ),
+    )
+
+
 def build_performance_proof_readiness_report(
     proposal_name: str,
     evidence: Iterable[PerformanceProofReadinessEvidence],
@@ -1949,6 +2119,16 @@ def dump_executable_backend_security_review_report(
     ):
         raise ValueError("executable backend security report exceeds byte limit")
     return text + "\n"
+
+
+def _runtime_evidence_artifact(
+    artifact_kind: str,
+    artifact_id: str,
+) -> RuntimeEvidenceArtifact:
+    return RuntimeEvidenceArtifact(
+        artifact_kind=artifact_kind,
+        artifact_id=artifact_id,
+    )
 
 
 def _backend_set_from_assignments(
@@ -3154,6 +3334,7 @@ __all__ = [
     "build_native_baseline_provenance_report",
     "build_performance_proof_readiness_report",
     "build_performance_proof_rfc_report",
+    "build_current_runtime_evidence_matrix_report",
     "build_runtime_evidence_matrix_report",
     "build_workload_scope_report",
     "dump_benchmark_artifact_manifest_report",
