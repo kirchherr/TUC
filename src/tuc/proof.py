@@ -19,6 +19,18 @@ PROOF_REPORT_SCHEMA_VERSION = "proof-report.v0"
 PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION = (
     "tuc.performance_proof_readiness_report.v0"
 )
+PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION = "tuc.performance_proof_rfc_report.v0"
+PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS = "diagnostic_only"
+PERFORMANCE_PROOF_RFC_CLAIM_STATUS = "blocked"
+PERFORMANCE_PROOF_RFC_STATUSES = (
+    "draft",
+    "reviewed_not_accepted",
+    "accepted_by_maintainers",
+)
+PERFORMANCE_PROOF_RFC_DEFAULT_ISSUES = (
+    "performance_proof_rfcs_not_supplied",
+    "native_performance_claim_blocked",
+)
 PERFORMANCE_PROOF_BOUNDARY_CONTRACT = "performance_proof_boundary.blocking.v0"
 PERFORMANCE_PROOF_REQUIRED_EVIDENCE = (
     "performance_proof_rfc",
@@ -219,6 +231,9 @@ MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES = 512
 MAX_PERFORMANCE_PROOF_READINESS_ISSUES = 128
+MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES = 64 * 1024
+MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES = 512
+MAX_PERFORMANCE_PROOF_RFCS = 128
 MAX_LEAKY_ABSTRACTION_REPORT_BYTES = 64 * 1024
 MAX_LEAKY_ABSTRACTION_FIELD_BYTES = 512
 MAX_LEAKY_ABSTRACTION_FACTS = 128
@@ -316,6 +331,36 @@ class PerformanceProofReadinessReport:
 
 class PerformanceProofReadinessError(AssertionError):
     """Raised when a performance proof proposal is not ready."""
+
+
+@dataclass(frozen=True)
+class PerformanceProofRFC:
+    """One bounded RFC entry for a future native performance claim."""
+
+    rfc_id: str
+    workload_scope_id: str
+    claim_threshold_policy_id: str
+    acceptance_criteria_id: str
+    evidence_bundle_id: str
+    security_review_id: str
+    rfc_status: str = "draft"
+    rfc_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class PerformanceProofRFCReport:
+    """Diagnostic report for performance-proof RFC review."""
+
+    proposal_name: str
+    rfcs: tuple[PerformanceProofRFC, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def performance_proof_rfc_ready(self) -> bool:
+        rfc_issues = tuple(
+            issue for issue in self.issues if issue.startswith("performance_proof_rfc")
+        )
+        return bool(self.rfcs) and not rfc_issues
 
 
 @dataclass(frozen=True)
@@ -640,6 +685,42 @@ def build_performance_proof_readiness_report(
     )
 
 
+def build_performance_proof_rfc_report(
+    proposal_name: str,
+    rfcs: Iterable[PerformanceProofRFC] = (),
+) -> PerformanceProofRFCReport:
+    """Build a bounded data-only report for performance-proof RFC review."""
+
+    _validate_performance_proof_rfc_text(proposal_name, "proposal_name")
+    normalized_rfcs = _normalize_performance_proof_rfcs(rfcs)
+    issues = list(PERFORMANCE_PROOF_RFC_DEFAULT_ISSUES)
+    if normalized_rfcs:
+        issues.remove("performance_proof_rfcs_not_supplied")
+    if any(
+        rfc.rfc_status != "accepted_by_maintainers" for rfc in normalized_rfcs
+    ):
+        issues.append("performance_proof_rfc_not_accepted")
+    if any(
+        "not_supplied"
+        in {
+            rfc.claim_threshold_policy_id,
+            rfc.acceptance_criteria_id,
+            rfc.evidence_bundle_id,
+            rfc.security_review_id,
+        }
+        for rfc in normalized_rfcs
+    ):
+        issues.append("performance_proof_rfc_evidence_not_supplied")
+    if any(rfc.rfc_digest == "not_supplied" for rfc in normalized_rfcs):
+        issues.append("performance_proof_rfc_digest_not_supplied")
+
+    return PerformanceProofRFCReport(
+        proposal_name=proposal_name,
+        rfcs=normalized_rfcs,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def build_leaky_abstraction_report(
     hac_ir: IRModule,
     performance_facts: Iterable[LeakyAbstractionFact] = (),
@@ -947,6 +1028,37 @@ def performance_proof_readiness_report_to_dict(
     }
 
 
+def performance_proof_rfc_report_to_dict(
+    report: PerformanceProofRFCReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible performance RFC report."""
+
+    _validate_performance_proof_rfc_report(report)
+    return {
+        "artifact_status": PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": PERFORMANCE_PROOF_RFC_CLAIM_STATUS,
+        "performance_proof_rfc_ready": report.performance_proof_rfc_ready,
+        "proposal_name": report.proposal_name,
+        "rfcs": [
+            {
+                "acceptance_criteria_id": rfc.acceptance_criteria_id,
+                "claim_threshold_policy_id": rfc.claim_threshold_policy_id,
+                "evidence_bundle_id": rfc.evidence_bundle_id,
+                "rfc_digest": rfc.rfc_digest,
+                "rfc_id": rfc.rfc_id,
+                "rfc_status": rfc.rfc_status,
+                "security_review_id": rfc.security_review_id,
+                "workload_scope_id": rfc.workload_scope_id,
+            }
+            for rfc in report.rfcs
+        ],
+        "schema_version": PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION,
+    }
+
+
 def leaky_abstraction_report_to_dict(
     report: LeakyAbstractionReport,
 ) -> dict[str, object]:
@@ -1251,6 +1363,19 @@ def dump_performance_proof_readiness_report(
     )
     if len(text.encode("utf-8")) > MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES:
         raise ValueError("performance proof readiness report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_performance_proof_rfc_report(report: PerformanceProofRFCReport) -> str:
+    """Render a stable diagnostic performance-proof RFC report."""
+
+    text = json.dumps(
+        performance_proof_rfc_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES:
+        raise ValueError("performance proof RFC report exceeds byte limit")
     return text + "\n"
 
 
@@ -1695,6 +1820,46 @@ def _normalize_executable_backend_security_reviews(
     return normalized
 
 
+def _normalize_performance_proof_rfcs(
+    rfcs: Iterable[PerformanceProofRFC],
+) -> tuple[PerformanceProofRFC, ...]:
+    normalized = tuple(rfcs)
+    if len(normalized) > MAX_PERFORMANCE_PROOF_RFCS:
+        raise ValueError("performance proof RFC count exceeds limit")
+    seen: set[str] = set()
+    for rfc in normalized:
+        if not isinstance(rfc, PerformanceProofRFC):
+            raise TypeError("performance proof RFCs must be PerformanceProofRFC")
+        _validate_performance_proof_rfc_text(rfc.rfc_id, "rfc_id")
+        _validate_performance_proof_rfc_text(
+            rfc.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_performance_proof_rfc_text(
+            rfc.claim_threshold_policy_id,
+            "claim_threshold_policy_id",
+        )
+        _validate_performance_proof_rfc_text(
+            rfc.acceptance_criteria_id,
+            "acceptance_criteria_id",
+        )
+        _validate_performance_proof_rfc_text(
+            rfc.evidence_bundle_id,
+            "evidence_bundle_id",
+        )
+        _validate_performance_proof_rfc_text(
+            rfc.security_review_id,
+            "security_review_id",
+        )
+        if rfc.rfc_id in seen:
+            raise ValueError("duplicate performance proof RFC id")
+        if rfc.rfc_status not in PERFORMANCE_PROOF_RFC_STATUSES:
+            raise ValueError("unsupported performance proof RFC status")
+        _validate_performance_proof_rfc_digest(rfc.rfc_digest)
+        seen.add(rfc.rfc_id)
+    return normalized
+
+
 def _normalize_performance_evidence(
     evidence: Iterable[PerformanceProofReadinessEvidence],
 ) -> dict[str, bool]:
@@ -1786,6 +1951,17 @@ def _validate_performance_readiness_report(
             raise TypeError("performance proof readiness issues must be issue objects")
         _validate_performance_report_text(issue.evidence_id, "issue evidence_id")
         _validate_performance_report_text(issue.message, "issue message")
+
+
+def _validate_performance_proof_rfc_report(
+    report: PerformanceProofRFCReport,
+) -> None:
+    if not isinstance(report, PerformanceProofRFCReport):
+        raise TypeError("performance proof RFC report must be report object")
+    _validate_performance_proof_rfc_text(report.proposal_name, "proposal_name")
+    _normalize_performance_proof_rfcs(report.rfcs)
+    for issue in report.issues:
+        _validate_performance_proof_rfc_text(issue, "issue")
 
 
 def _validate_native_baseline_report(
@@ -1915,6 +2091,22 @@ def _validate_performance_report_text(value: str, label: str) -> None:
         raise ValueError(f"{label} must be a non-empty string")
     if len(value.encode("utf-8")) > MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES:
         raise ValueError(f"{label} exceeds performance proof readiness field limit")
+
+
+def _validate_performance_proof_rfc_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe performance proof RFC identifier")
+    if len(value.encode("utf-8")) > MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds performance proof RFC field limit")
+
+
+def _validate_performance_proof_rfc_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("rfc_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("rfc_digest must be not_supplied or sha256 digest")
 
 
 def _validate_native_baseline_text(value: str, label: str) -> None:
@@ -2106,6 +2298,9 @@ __all__ = [
     "LeakyAbstractionLeak",
     "LeakyAbstractionReport",
     "MAX_PERFORMANCE_PROOF_READINESS_ISSUES",
+    "MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES",
+    "MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES",
+    "MAX_PERFORMANCE_PROOF_RFCS",
     "NATIVE_BASELINE_COMPARISON_ARTIFACT_STATUS",
     "NATIVE_BASELINE_COMPARISON_CLAIM_STATUS",
     "NATIVE_BASELINE_COMPARISON_DEFAULT_ISSUES",
@@ -2141,11 +2336,18 @@ __all__ = [
     "PERFORMANCE_PROOF_BLOCKED_CLAIMS",
     "PERFORMANCE_PROOF_BOUNDARY_CONTRACT",
     "PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION",
+    "PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS",
+    "PERFORMANCE_PROOF_RFC_CLAIM_STATUS",
+    "PERFORMANCE_PROOF_RFC_DEFAULT_ISSUES",
+    "PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION",
+    "PERFORMANCE_PROOF_RFC_STATUSES",
     "PERFORMANCE_PROOF_REQUIRED_EVIDENCE",
     "PerformanceProofReadinessError",
     "PerformanceProofReadinessEvidence",
     "PerformanceProofReadinessIssue",
     "PerformanceProofReadinessReport",
+    "PerformanceProofRFC",
+    "PerformanceProofRFCReport",
     "PROOF_REPORT_SCHEMA_VERSION",
     "ProofReportMetadata",
     "assert_performance_proof_readiness",
@@ -2161,6 +2363,7 @@ __all__ = [
     "build_native_baseline_comparison_report",
     "build_native_baseline_provenance_report",
     "build_performance_proof_readiness_report",
+    "build_performance_proof_rfc_report",
     "build_workload_scope_report",
     "dump_benchmark_artifact_manifest_report",
     "dump_benchmark_methodology_report",
@@ -2171,11 +2374,13 @@ __all__ = [
     "dump_native_baseline_comparison_report",
     "dump_native_baseline_provenance_report",
     "dump_performance_proof_readiness_report",
+    "dump_performance_proof_rfc_report",
     "dump_workload_scope_report",
     "leaky_abstraction_report_to_dict",
     "native_baseline_comparison_report_to_dict",
     "native_baseline_provenance_report_to_dict",
     "performance_proof_readiness_report_to_dict",
+    "performance_proof_rfc_report_to_dict",
     "proof_metadata_from_partition_plan",
     "executable_backend_security_review_report_to_dict",
     "toolchain_environment_report_to_dict",

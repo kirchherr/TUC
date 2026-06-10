@@ -29,6 +29,36 @@ The current proof claim is not:
 TUC matches native vendor performance.
 ```
 
+## Performance Proof RFC Gate
+
+Before TUC may evaluate a native performance claim, a proposal must identify
+the claim contract itself as bounded review data.
+
+The proposal must include:
+
+- performance-proof RFC identifier
+- workload-scope report identifier
+- predefined claim-threshold policy identifier
+- acceptance-criteria identifier
+- evidence-bundle identifier
+- executable-surface security review identifier
+- maintainer acceptance status
+- RFC digest status
+
+The current
+[Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md) defines the
+diagnostic report contract at
+`schemas/performance_proof_rfc_report.v0.schema.json`. It records only scoped
+claim-proposal metadata, acceptance status, evidence identifiers, security
+review identifier, and digest status. It does not run benchmarks, load
+artifacts, execute backend code, grant device access, or prove native
+performance.
+
+Performance proof RFC reports must not include raw benchmark output, raw timing
+samples, host paths, command lines, environment variables, device identifiers,
+backend artifacts, generated code, dynamic-library paths, native source
+contents, or execution permission.
+
 ## Leaky Abstraction Gate
 
 Before TUC may claim native performance parity, a proposal must show where
@@ -314,6 +344,7 @@ native source contents.
 Any future performance proof must add:
 
 - dedicated performance proof RFC
+- explicit performance proof RFC report
 - benchmark methodology document
 - explicit benchmark methodology report
 - explicit toolchain environment report
@@ -365,25 +396,26 @@ until this boundary is satisfied.
 
 Reviewers must reject performance claims unless every answer is yes:
 
-1. Is the claim scoped to a specific workload family and shape range?
-2. Is the workload scope report present and bounded?
-3. Is the benchmark methodology report present and bounded?
-4. Is the toolchain environment report present and bounded?
-5. Is the native baseline reproducible?
-6. Is the native baseline provenance report present and bounded?
-7. Is the native baseline comparison report present and bounded?
-8. Is mathematical correctness still proven independently?
-9. Are planner overhead and execution time reported separately?
-10. Is the break-even workload-size report present and bounded?
-11. Are cache effects explicit rather than hidden?
-12. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+1. Is the performance proof RFC report present and bounded?
+2. Is the claim scoped to a specific workload family and shape range?
+3. Is the workload scope report present and bounded?
+4. Is the benchmark methodology report present and bounded?
+5. Is the toolchain environment report present and bounded?
+6. Is the native baseline reproducible?
+7. Is the native baseline provenance report present and bounded?
+8. Is the native baseline comparison report present and bounded?
+9. Is mathematical correctness still proven independently?
+10. Are planner overhead and execution time reported separately?
+11. Is the break-even workload-size report present and bounded?
+12. Are cache effects explicit rather than hidden?
+13. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-13. Is HAC-IR still hardware-neutral?
-14. Are runtime plans and compiler decisions golden-tested?
-15. Is benchmark provenance versioned?
-16. Is the benchmark artifact manifest present and bounded?
-17. Is the executable backend security review report present and bounded?
-18. Does the claim avoid broad wording such as "near native" unless the
+14. Is HAC-IR still hardware-neutral?
+15. Are runtime plans and compiler decisions golden-tested?
+16. Is benchmark provenance versioned?
+17. Is the benchmark artifact manifest present and bounded?
+18. Is the executable backend security review report present and bounded?
+19. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

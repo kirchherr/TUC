@@ -151,6 +151,12 @@ Implemented now:
   maintainer approval, and digest identifiers before an executable surface can
   count as performance-proof evidence. They do not approve execution by
   themselves.
+- Performance proof RFC reports provide a diagnostic, data-only governance
+  contract for future native performance claims. They require scoped workload,
+  threshold-policy, acceptance-criteria, evidence-bundle, security-review,
+  maintainer-acceptance, and digest identifiers before benchmark artifacts can
+  be interpreted as claim evidence. They do not load artifacts, parse raw
+  benchmark output, grant execution permission, or prove native performance.
 - Backend capability schema documentation separates error-budget, latency,
   energy, calibration, and noise assumptions from HAC-IR semantics, backend
   executable behavior, and hardware certification claims.

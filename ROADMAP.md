@@ -122,6 +122,9 @@ Completed evidence:
 - Performance proof readiness is machine-readable and intentionally blocked
   until leaky-abstraction, planner-overhead, native-baseline, benchmark-artifact,
   and executable-backend security evidence exists.
+- Performance-proof RFC reports track future native performance claim proposals,
+  acceptance status, evidence links, security review IDs, and digests while
+  keeping native performance claims blocked.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution
@@ -344,6 +347,8 @@ Deliverables:
 - Toolchain Environment Report for diagnostic versioned environment review.
 - Executable Backend Security Review Report for diagnostic executable-surface
   security review.
+- Performance Proof RFC Report for diagnostic claim-proposal governance before
+  benchmark artifacts can support a native performance claim.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -393,10 +398,15 @@ Go/No-Go:
   turning TUC into a Triton fork.
 - Performance claims remain blocked until leaky-abstraction evidence,
   planner-overhead evidence, native baseline provenance, native baseline
-  comparison, correctness goldens, security review, and a passing Performance
-  Proof Readiness report exist.
+  comparison, correctness goldens, security review, an accepted bounded
+  Performance Proof RFC Report, and a passing Performance Proof Readiness
+  report exist.
 - Baseline benchmark reports must remain diagnostic-only unless a future native
   benchmark RFC adds separate provenance, artifact, and security gates.
+- Performance proof RFC reports must remain data-only and must not include raw
+  benchmark output, raw timing samples, host paths, command lines, environment
+  variables, device identifiers, backend artifacts, generated code, native
+  source contents, or execution permission.
 - Planner-overhead reports must keep execution timing and break-even workload
   claims explicit rather than hidden in aggregate benchmark numbers.
 - Break-even workload-size reports must remain data-only and must not include

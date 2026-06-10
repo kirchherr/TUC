@@ -97,6 +97,8 @@ The current prototype contains:
   package, compiler, driver, container, and OS components without host discovery.
 - Diagnostic executable-backend security review reports that track future
   executable surfaces without approving execution.
+- Diagnostic performance-proof RFC reports that track future native performance
+  claim proposals, acceptance status, evidence links, and digests.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, native comparison, benchmark artifact, and
   executable-backend security evidence before native performance claims.
@@ -224,6 +226,12 @@ Inspect the intentionally blocked performance proof readiness report:
 python examples/performance_proof_readiness.py
 ```
 
+Inspect the diagnostic performance-proof RFC report:
+
+```bash
+python examples/performance_proof_rfc_report.py
+```
+
 Inspect the diagnostic planner-overhead report:
 
 ```bash
@@ -327,6 +335,7 @@ pytest -q
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
+- [Performance proof RFC report](docs/PERFORMANCE_PROOF_RFC_REPORT.md)
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
 - [Break-even workload size report](docs/BREAK_EVEN_WORKLOAD_SIZE_REPORT.md)
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)

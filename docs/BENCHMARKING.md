@@ -106,6 +106,13 @@ Future native performance proposals must also pass the
 readiness report does not run benchmarks, does not ingest raw benchmark output,
 and does not turn local timing data into a proof claim.
 
+Performance-proof claim proposal metadata is tracked separately by the
+[Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md) and
+`schemas/performance_proof_rfc_report.v0.schema.json`. Baseline benchmark
+reports must not embed broad performance claims, claim thresholds, acceptance
+criteria, security-review approval, RFC text, evidence bundles, or execution
+permission.
+
 Planner timing is tracked separately by the
 [Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md). Baseline benchmark
 reports must not hide planner overhead inside execution timing.

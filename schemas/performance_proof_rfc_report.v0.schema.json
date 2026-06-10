@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/performance_proof_rfc_report.v0.schema.json",
+  "title": "TUC Performance Proof RFC Report v0",
+  "description": "Diagnostic-only schema for performance-proof RFC review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "claim_boundary",
+    "issues",
+    "native_performance_claim",
+    "performance_claim_status",
+    "performance_proof_rfc_ready",
+    "proposal_name",
+    "rfcs",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "performance_proof_rfc_ready": {"type": "boolean"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "rfcs": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/performance_proof_rfc"}
+    },
+    "schema_version": {"const": "tuc.performance_proof_rfc_report.v0"}
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "oneOf": [
+        {"const": "not_supplied"},
+        {"pattern": "^sha256:[0-9a-f]{64}$"}
+      ]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "rfc_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "reviewed_not_accepted",
+        "accepted_by_maintainers"
+      ]
+    },
+    "performance_proof_rfc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "acceptance_criteria_id",
+        "claim_threshold_policy_id",
+        "evidence_bundle_id",
+        "rfc_digest",
+        "rfc_id",
+        "rfc_status",
+        "security_review_id",
+        "workload_scope_id"
+      ],
+      "properties": {
+        "acceptance_criteria_id": {"$ref": "#/$defs/report_text"},
+        "claim_threshold_policy_id": {"$ref": "#/$defs/report_text"},
+        "evidence_bundle_id": {"$ref": "#/$defs/report_text"},
+        "rfc_digest": {"$ref": "#/$defs/digest"},
+        "rfc_id": {"$ref": "#/$defs/report_text"},
+        "rfc_status": {"$ref": "#/$defs/rfc_status"},
+        "security_review_id": {"$ref": "#/$defs/report_text"},
+        "workload_scope_id": {"$ref": "#/$defs/report_text"}
+      }
+    }
+  }
+}
