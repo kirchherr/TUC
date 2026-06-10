@@ -119,6 +119,30 @@ WORKLOAD_SCOPE_DEFAULT_ISSUES = (
     "native_performance_claim_blocked",
 )
 WORKLOAD_SCOPE_MAX_PROBLEM_SIZE = 1_000_000_000_000
+BENCHMARK_METHODOLOGY_REPORT_SCHEMA_VERSION = "tuc.benchmark_methodology_report.v0"
+BENCHMARK_METHODOLOGY_ARTIFACT_STATUS = "diagnostic_only"
+BENCHMARK_METHODOLOGY_CLAIM_STATUS = "blocked"
+BENCHMARK_METHODOLOGY_CLOCKS = (
+    "monotonic_ns",
+    "device_event_timer",
+    "external_profiler",
+)
+BENCHMARK_METHODOLOGY_STATISTIC_POLICIES = (
+    "min_median_mean",
+    "median_iqr",
+    "confidence_interval",
+)
+BENCHMARK_METHODOLOGY_ISOLATION_LEVELS = (
+    "none",
+    "process_isolated",
+    "dedicated_runner",
+    "ci_controlled",
+)
+BENCHMARK_METHODOLOGY_DEFAULT_ISSUES = (
+    "benchmark_methodology_not_supplied",
+    "native_performance_claim_blocked",
+)
+BENCHMARK_METHODOLOGY_MAX_ITERATIONS = 1_000_000
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
@@ -136,6 +160,9 @@ MAX_BENCHMARK_ARTIFACTS = 128
 MAX_WORKLOAD_SCOPE_REPORT_BYTES = 64 * 1024
 MAX_WORKLOAD_SCOPE_FIELD_BYTES = 512
 MAX_WORKLOAD_SCOPES = 128
+MAX_BENCHMARK_METHODOLOGY_REPORT_BYTES = 64 * 1024
+MAX_BENCHMARK_METHODOLOGY_FIELD_BYTES = 512
+MAX_BENCHMARK_METHODOLOGIES = 128
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
@@ -327,6 +354,37 @@ class WorkloadScopeReport:
         return bool(self.scopes) and not workload_issues
 
 
+@dataclass(frozen=True)
+class BenchmarkMethodology:
+    """One bounded benchmark methodology policy entry."""
+
+    methodology_id: str
+    workload_scope_id: str
+    measurement_clock: str
+    warmup_iterations: int
+    measurement_iterations: int
+    statistic_policy: str
+    isolation_level: str
+    outlier_policy_id: str
+    reproducibility_policy_id: str
+
+
+@dataclass(frozen=True)
+class BenchmarkMethodologyReport:
+    """Diagnostic report for benchmark methodology review."""
+
+    proposal_name: str
+    methodologies: tuple[BenchmarkMethodology, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def benchmark_methodology_ready(self) -> bool:
+        methodology_issues = tuple(
+            issue for issue in self.issues if issue.startswith("benchmark_methodology")
+        )
+        return bool(self.methodologies) and not methodology_issues
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -496,6 +554,25 @@ def build_workload_scope_report(
     return WorkloadScopeReport(
         proposal_name=proposal_name,
         scopes=normalized_scopes,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
+def build_benchmark_methodology_report(
+    proposal_name: str,
+    methodologies: Iterable[BenchmarkMethodology] = (),
+) -> BenchmarkMethodologyReport:
+    """Build a bounded data-only benchmark methodology report."""
+
+    _validate_benchmark_methodology_text(proposal_name, "proposal_name")
+    normalized_methodologies = _normalize_benchmark_methodologies(methodologies)
+    issues = list(BENCHMARK_METHODOLOGY_DEFAULT_ISSUES)
+    if normalized_methodologies:
+        issues.remove("benchmark_methodology_not_supplied")
+
+    return BenchmarkMethodologyReport(
+        proposal_name=proposal_name,
+        methodologies=normalized_methodologies,
         issues=tuple(dict.fromkeys(issues)),
     )
 
@@ -671,6 +748,40 @@ def workload_scope_report_to_dict(report: WorkloadScopeReport) -> dict[str, obje
     }
 
 
+def benchmark_methodology_report_to_dict(
+    report: BenchmarkMethodologyReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible benchmark methodology report."""
+
+    _validate_benchmark_methodology_report(report)
+    return {
+        "artifact_status": BENCHMARK_METHODOLOGY_ARTIFACT_STATUS,
+        "benchmark_methodology_ready": report.benchmark_methodology_ready,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "methodologies": [
+            {
+                "isolation_level": methodology.isolation_level,
+                "measurement_clock": methodology.measurement_clock,
+                "measurement_iterations": methodology.measurement_iterations,
+                "methodology_id": methodology.methodology_id,
+                "outlier_policy_id": methodology.outlier_policy_id,
+                "reproducibility_policy_id": (
+                    methodology.reproducibility_policy_id
+                ),
+                "statistic_policy": methodology.statistic_policy,
+                "warmup_iterations": methodology.warmup_iterations,
+                "workload_scope_id": methodology.workload_scope_id,
+            }
+            for methodology in report.methodologies
+        ],
+        "native_performance_claim": False,
+        "performance_claim_status": BENCHMARK_METHODOLOGY_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "schema_version": BENCHMARK_METHODOLOGY_REPORT_SCHEMA_VERSION,
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -731,6 +842,19 @@ def dump_workload_scope_report(report: WorkloadScopeReport) -> str:
     text = json.dumps(workload_scope_report_to_dict(report), indent=2, sort_keys=True)
     if len(text.encode("utf-8")) > MAX_WORKLOAD_SCOPE_REPORT_BYTES:
         raise ValueError("workload scope report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_benchmark_methodology_report(report: BenchmarkMethodologyReport) -> str:
+    """Render a stable diagnostic benchmark methodology report."""
+
+    text = json.dumps(
+        benchmark_methodology_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_BENCHMARK_METHODOLOGY_REPORT_BYTES:
+        raise ValueError("benchmark methodology report exceeds byte limit")
     return text + "\n"
 
 
@@ -847,6 +971,57 @@ def _normalize_workload_scopes(
         if scope.problem_size_min > scope.problem_size_max:
             raise ValueError("workload problem size min must not exceed max")
         seen.add(scope.scope_id)
+    return normalized
+
+
+def _normalize_benchmark_methodologies(
+    methodologies: Iterable[BenchmarkMethodology],
+) -> tuple[BenchmarkMethodology, ...]:
+    normalized = tuple(methodologies)
+    if len(normalized) > MAX_BENCHMARK_METHODOLOGIES:
+        raise ValueError("benchmark methodology count exceeds limit")
+    seen: set[str] = set()
+    for methodology in normalized:
+        if not isinstance(methodology, BenchmarkMethodology):
+            raise TypeError("benchmark methodologies must be BenchmarkMethodology")
+        _validate_benchmark_methodology_text(
+            methodology.methodology_id,
+            "methodology_id",
+        )
+        _validate_benchmark_methodology_text(
+            methodology.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_benchmark_methodology_text(
+            methodology.outlier_policy_id,
+            "outlier_policy_id",
+        )
+        _validate_benchmark_methodology_text(
+            methodology.reproducibility_policy_id,
+            "reproducibility_policy_id",
+        )
+        if methodology.methodology_id in seen:
+            raise ValueError("duplicate benchmark methodology id")
+        if methodology.measurement_clock not in BENCHMARK_METHODOLOGY_CLOCKS:
+            raise ValueError("unsupported benchmark methodology measurement clock")
+        if (
+            methodology.statistic_policy
+            not in BENCHMARK_METHODOLOGY_STATISTIC_POLICIES
+        ):
+            raise ValueError("unsupported benchmark methodology statistic policy")
+        if methodology.isolation_level not in BENCHMARK_METHODOLOGY_ISOLATION_LEVELS:
+            raise ValueError("unsupported benchmark methodology isolation level")
+        _validate_benchmark_iteration_count(
+            methodology.warmup_iterations,
+            "warmup_iterations",
+            minimum=0,
+        )
+        _validate_benchmark_iteration_count(
+            methodology.measurement_iterations,
+            "measurement_iterations",
+            minimum=1,
+        )
+        seen.add(methodology.methodology_id)
     return normalized
 
 
@@ -976,6 +1151,17 @@ def _validate_workload_scope_report(report: WorkloadScopeReport) -> None:
         _validate_workload_scope_text(issue, "issue")
 
 
+def _validate_benchmark_methodology_report(
+    report: BenchmarkMethodologyReport,
+) -> None:
+    if not isinstance(report, BenchmarkMethodologyReport):
+        raise TypeError("benchmark methodology report must be report object")
+    _validate_benchmark_methodology_text(report.proposal_name, "proposal_name")
+    _normalize_benchmark_methodologies(report.methodologies)
+    for issue in report.issues:
+        _validate_benchmark_methodology_text(issue, "issue")
+
+
 def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
     if not isinstance(report, LeakyAbstractionReport):
         raise TypeError("leaky abstraction report must be report object")
@@ -1054,6 +1240,25 @@ def _validate_workload_problem_size(value: int, label: str) -> None:
         raise ValueError(f"{label} exceeds workload scope problem size limit")
 
 
+def _validate_benchmark_methodology_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe benchmark methodology identifier")
+    if len(value.encode("utf-8")) > MAX_BENCHMARK_METHODOLOGY_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds benchmark methodology field limit")
+
+
+def _validate_benchmark_iteration_count(
+    value: int,
+    label: str,
+    *,
+    minimum: int,
+) -> None:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise ValueError(f"{label} must be an integer")
+    if value < minimum or value > BENCHMARK_METHODOLOGY_MAX_ITERATIONS:
+        raise ValueError(f"{label} exceeds benchmark methodology iteration limit")
+
+
 def _validate_leaky_abstraction_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{label} must be a non-empty string")
@@ -1071,6 +1276,16 @@ __all__ = [
     "BENCHMARK_ARTIFACT_STORAGE_SCOPES",
     "BenchmarkArtifactManifestReport",
     "BenchmarkArtifactReference",
+    "BENCHMARK_METHODOLOGY_ARTIFACT_STATUS",
+    "BENCHMARK_METHODOLOGY_CLAIM_STATUS",
+    "BENCHMARK_METHODOLOGY_CLOCKS",
+    "BENCHMARK_METHODOLOGY_DEFAULT_ISSUES",
+    "BENCHMARK_METHODOLOGY_ISOLATION_LEVELS",
+    "BENCHMARK_METHODOLOGY_MAX_ITERATIONS",
+    "BENCHMARK_METHODOLOGY_REPORT_SCHEMA_VERSION",
+    "BENCHMARK_METHODOLOGY_STATISTIC_POLICIES",
+    "BenchmarkMethodology",
+    "BenchmarkMethodologyReport",
     "LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES",
     "LEAKY_ABSTRACTION_ARTIFACT_STATUS",
     "LEAKY_ABSTRACTION_DEFAULT_ISSUES",
@@ -1110,12 +1325,15 @@ __all__ = [
     "ProofReportMetadata",
     "assert_performance_proof_readiness",
     "benchmark_artifact_manifest_report_to_dict",
+    "benchmark_methodology_report_to_dict",
     "build_benchmark_artifact_manifest_report",
+    "build_benchmark_methodology_report",
     "build_leaky_abstraction_report",
     "build_native_baseline_provenance_report",
     "build_performance_proof_readiness_report",
     "build_workload_scope_report",
     "dump_benchmark_artifact_manifest_report",
+    "dump_benchmark_methodology_report",
     "dump_leaky_abstraction_report",
     "dump_native_baseline_provenance_report",
     "dump_performance_proof_readiness_report",

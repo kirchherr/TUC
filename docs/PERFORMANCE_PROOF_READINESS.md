@@ -63,6 +63,12 @@ existence of a bounded workload-scope contract. It does not satisfy benchmark
 methodology, native baseline comparison, benchmark artifacts, execution timing,
 or native performance parity.
 
+The current diagnostic benchmark methodology report schema is
+`schemas/benchmark_methodology_report.v0.schema.json`. It can satisfy only the
+existence of a bounded benchmark methodology contract. It does not run
+benchmarks, load benchmark artifacts, validate raw native output, or prove
+native performance parity.
+
 The current diagnostic planner-overhead report schema is
 `schemas/planner_overhead_report.v0.schema.json`. It can satisfy only the
 existence of a bounded planner phase-separation report. It does not satisfy
@@ -130,6 +136,11 @@ data-only and remains separate from benchmark result validation.
 The readiness report is not a workload scope report. Workload boundaries are
 tracked by [Workload Scope Report](WORKLOAD_SCOPE_REPORT.md), which is
 data-only and remains separate from benchmark methodology and execution.
+
+The readiness report is not a benchmark methodology report. Measurement policy
+is tracked by
+[Benchmark Methodology Report](BENCHMARK_METHODOLOGY_REPORT.md), which is
+data-only and remains separate from benchmark execution and raw timing samples.
 
 ## Evidence
 

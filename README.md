@@ -87,6 +87,8 @@ The current prototype contains:
   report artifacts through bounded IDs and digests.
 - Diagnostic workload-scope reports that bound future performance claims to
   explicit operation families, shape profiles, dtype policies, and problem sizes.
+- Diagnostic benchmark-methodology reports that define measurement clocks,
+  iteration policy, statistic policy, isolation, and reproducibility policy.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.
@@ -244,6 +246,12 @@ Inspect the diagnostic workload-scope report:
 python examples/workload_scope_report.py
 ```
 
+Inspect the diagnostic benchmark-methodology report:
+
+```bash
+python examples/benchmark_methodology_report.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -292,6 +300,7 @@ pytest -q
 - [Native baseline provenance report](docs/NATIVE_BASELINE_PROVENANCE.md)
 - [Benchmark artifact manifest report](docs/BENCHMARK_ARTIFACT_MANIFEST.md)
 - [Workload scope report](docs/WORKLOAD_SCOPE_REPORT.md)
+- [Benchmark methodology report](docs/BENCHMARK_METHODOLOGY_REPORT.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

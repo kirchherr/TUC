@@ -86,6 +86,33 @@ environment variables, raw benchmark output, raw timing samples, backend
 binaries, generated code, device identifiers, dynamic-library paths, or native
 source contents.
 
+## Benchmark Methodology Gate
+
+Before benchmark output can count as future performance-proof evidence, a
+proposal must define how measurements are taken and summarized.
+
+The proposal must include:
+
+- measurement clock
+- warmup iteration policy
+- measurement iteration policy
+- statistical summary policy
+- runner isolation level
+- outlier policy
+- reproducibility policy
+
+The current
+[Benchmark Methodology Report](BENCHMARK_METHODOLOGY_REPORT.md) defines the
+diagnostic report contract at
+`schemas/benchmark_methodology_report.v0.schema.json`. It records benchmark
+policy choices, but it does not run benchmarks, store timing samples, load
+artifacts, or prove native performance.
+
+Benchmark methodology reports must not include host paths, command lines,
+environment variables, raw benchmark output, raw timing samples, backend
+binaries, generated code, device identifiers, dynamic-library paths, or native
+source contents.
+
 ## Planner Overhead Gate
 
 Before TUC may claim runtime planning is beneficial for a workload class, a
@@ -174,6 +201,7 @@ Any future performance proof must add:
 
 - dedicated performance proof RFC
 - benchmark methodology document
+- explicit benchmark methodology report
 - explicit workload scope report
 - native baseline provenance
 - benchmark report schema
@@ -223,20 +251,21 @@ Reviewers must reject performance claims unless every answer is yes:
 
 1. Is the claim scoped to a specific workload family and shape range?
 2. Is the workload scope report present and bounded?
-3. Is the native baseline reproducible?
-4. Is the native baseline provenance report present and bounded?
-5. Is mathematical correctness still proven independently?
-6. Are planner overhead and execution time reported separately?
-7. Is the break-even workload size reported?
-8. Are cache effects explicit rather than hidden?
-9. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+3. Is the benchmark methodology report present and bounded?
+4. Is the native baseline reproducible?
+5. Is the native baseline provenance report present and bounded?
+6. Is mathematical correctness still proven independently?
+7. Are planner overhead and execution time reported separately?
+8. Is the break-even workload size reported?
+9. Are cache effects explicit rather than hidden?
+10. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-10. Is HAC-IR still hardware-neutral?
-11. Are runtime plans and compiler decisions golden-tested?
-12. Is benchmark provenance versioned?
-13. Is the benchmark artifact manifest present and bounded?
-14. Are any executable backend or device surfaces threat-modeled?
-15. Does the claim avoid broad wording such as "near native" unless the
+11. Is HAC-IR still hardware-neutral?
+12. Are runtime plans and compiler decisions golden-tested?
+13. Is benchmark provenance versioned?
+14. Is the benchmark artifact manifest present and bounded?
+15. Are any executable backend or device surfaces threat-modeled?
+16. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

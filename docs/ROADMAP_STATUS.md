@@ -122,6 +122,9 @@ Current slice:
   through bounded IDs, schema versions, digest status, and storage scopes.
 - Diagnostic Workload Scope Report for operation-family, shape-profile,
   dtype-policy, problem-size, and correctness-reference boundaries.
+- Diagnostic Benchmark Methodology Report for measurement clocks, warmup and
+  iteration policy, statistic policy, isolation, outlier handling, and
+  reproducibility policy.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, leaky-abstraction evidence, planner-overhead
   evidence, correctness goldens, and security review exist.

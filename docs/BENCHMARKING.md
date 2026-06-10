@@ -85,6 +85,14 @@ interpreted as scoped evidence. The workload scope report records operation
 families, shape profiles, dtype policies, problem-size bounds, and correctness
 references without storing tensors or running benchmarks.
 
+Future performance proposals must also provide a bounded
+[Benchmark Methodology Report](BENCHMARK_METHODOLOGY_REPORT.md) matching
+`schemas/benchmark_methodology_report.v0.schema.json` before benchmark output
+can be interpreted as reproducible evidence. The methodology report records
+timers, warmup and iteration policies, statistic policy, isolation level,
+outlier handling, and reproducibility policy without storing raw timing samples
+or running benchmarks.
+
 Future native performance proposals must also pass the
 [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md). That
 readiness report does not run benchmarks, does not ingest raw benchmark output,

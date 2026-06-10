@@ -135,6 +135,9 @@ Completed evidence:
 - Workload-scope reports bound future performance claims to explicit operation
   families, shape profiles, dtype policies, problem-size ranges, and correctness
   references.
+- Benchmark-methodology reports define measurement clocks, iteration policies,
+  statistic policy, isolation, outlier handling, and reproducibility policy
+  before benchmark numbers can become evidence.
 
 Next work:
 
@@ -324,6 +327,7 @@ Deliverables:
   inventory.
 - Workload Scope Report for diagnostic workload-family and problem-size
   boundaries.
+- Benchmark Methodology Report for diagnostic measurement policy review.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -389,6 +393,9 @@ Go/No-Go:
 - Workload-scope reports must remain data-only and must not include tensors,
   host paths, raw benchmark output, backend artifacts, device identifiers, or
   hardware-specific performance knobs.
+- Benchmark-methodology reports must remain data-only and must not include raw
+  timing samples, host paths, environment variables, backend artifacts, device
+  identifiers, or generated code.
 
 ## Phase Zeta: Specialized Hardware Proofs
 
