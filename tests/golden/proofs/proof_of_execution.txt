@@ -1,0 +1,66 @@
+== proof metadata ==
+report_schema: proof-report.v0
+proof_id: proof_of_execution
+proof_version: alpha.execution.v0
+graph_family: execution
+backend_set: linear-sim, reference-cpu
+
+== input graph ==
+linear_projection: matmul
+row_reduction: reduction
+activation: elementwise
+
+== hac-ir ==
+hac-ir.module @proof_of_execution {
+  metadata {
+    graph.dialect_version = "tlir.v0"
+    graph.lowered_from = "tlir"
+    graph.movement_model = "movement.v0"
+    graph.movement_summary = {arithmetic_intensity: 0.2692307692307692, movement_model: "movement.v0", operation_count: 3, total_arithmetic_ops: 28, total_bytes_read: 72, total_bytes_written: 32}
+    graph.mvp_operation_count = 3
+    graph.source = "triton-like-python"
+    module.dialect_version = "hac-ir.v0"
+  }
+  %projection = tuc.matmul @linear_projection(%lhs: tensor<2x3xf32>, %rhs: tensor<3x2xf32>) -> (%projection: tensor<2x2xf32>) {max_error_budget = 0.05, prefer_linear_accelerator = true, tuc.arithmetic_intensity = 0.375, tuc.arithmetic_ops = 24, tuc.bytes_read = 48, tuc.bytes_written = 16, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "analog_weight_bank", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
+  %row_sum = tuc.reduction @row_reduction(%projection: tensor<2x2xf32>) -> (%row_sum: tensor<2xf32>) {axis = 1, tuc.arithmetic_intensity = 0.08333333333333333, tuc.arithmetic_ops = 2, tuc.bytes_read = 16, tuc.bytes_written = 8, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["bounded_reduction"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "reduction", tuc.source_stage = "tlir"}
+  %activated = tuc.elementwise @activation(%row_sum: tensor<2xf32>) -> (%activated: tensor<2xf32>) {kernel = "relu", tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 2, tuc.bytes_read = 8, tuc.bytes_written = 8, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["exact_shape_elementwise"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "elementwise", tuc.source_stage = "tlir"}
+}
+
+== runtime plan ==
+runtime.plan @proof_of_execution {
+  assignments {
+    linear_projection -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major;preferred_memory_domain_match"
+    row_reduction -> linear-sim domain=analog_weight_bank produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason="supported:reduction;domain=analog_weight_bank;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major"
+    activation -> reference-cpu domain=host_ram produced_layout=row_major transfer_bytes=8 layout_conversion_bytes=0 reason="fallback:transfer_bytes=8;layout_conversion_bytes=0;actual_transfer_bytes=8;actual_layout_conversion_bytes=0"
+  }
+  transfers {
+    %row_sum: row_reduction/linear-sim/analog_weight_bank/row_major -> activation/reference-cpu/host_ram/row_major bytes=8 bandwidth_gb_s=16 latency_ns=20000.5 energy_pj=800
+  }
+  summary {
+    total_transfer_bytes = 8
+    total_layout_conversion_bytes = 0
+    total_data_movement_bytes = 8
+    estimated_transfer_latency_ns = 20000.5
+    estimated_transfer_energy_pj = 800
+  }
+}
+
+== execution trace ==
+runtime.execution_trace @proof_of_execution {
+  executor_contract = "runtime_executor.trusted_reference.v0"
+  trusted_executor = "trusted-reference-kernel"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  steps {
+    linear_projection planned_backend=linear-sim executor_backend=trusted-reference-kernel kind=matmul inputs=lhs,rhs outputs=projection output_shapes=2x2 output_dtypes=float64 status=executed
+    row_reduction planned_backend=linear-sim executor_backend=trusted-reference-kernel kind=reduction inputs=projection outputs=row_sum output_shapes=2 output_dtypes=float64 status=executed
+    activation planned_backend=reference-cpu executor_backend=trusted-reference-kernel kind=elementwise inputs=row_sum outputs=activated output_shapes=2 output_dtypes=float64 status=executed
+  }
+}
+
+== result ==
+[0.   1.75]
+
+== reference result ==
+[0.   1.75]
+
+PASS

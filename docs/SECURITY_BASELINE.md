@@ -70,6 +70,12 @@ Implemented now:
 - Triton source preflight fuzz/property tests cover arbitrary decoded bytes,
   invalid Unicode, seed-corpus combinations, and diagnostic-volume pressure
   without opening source-to-IR ingestion.
+- Runtime Executor v0 executes already-compiled graphs only through trusted
+  in-process reference kernels, requires plain explicit NumPy inputs, validates
+  partition-plan alignment and output shapes, and emits deterministic execution
+  traces without plugin discovery, dynamic imports, subprocesses, device
+  access, network access, JIT, dynamic libraries, or generated-artifact
+  execution.
 - Movement-aware partition plan metadata with transfer-byte accounting.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.

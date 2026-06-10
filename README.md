@@ -78,6 +78,10 @@ The current prototype contains:
   golden evidence while direct source ingestion remains blocked.
 - Deterministic Triton idiom coverage golden report for reviewer-visible
   frontend coverage evidence.
+- Runtime Executor v0 with trusted in-process reference execution and
+  deterministic execution traces.
+- Proof-of-execution example that compiles, plans, executes, traces, and
+  verifies a graph against independent reference semantics.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Schema-versioned diagnostic baseline benchmark reports that are explicitly
   marked as non-performance-proof artifacts.
@@ -184,6 +188,12 @@ Run the proof-of-softmax example:
 
 ```bash
 python examples/proof_of_softmax.py
+```
+
+Run the proof-of-execution example:
+
+```bash
+python examples/proof_of_execution.py
 ```
 
 Inspect data-movement metadata:
@@ -358,6 +368,8 @@ pytest -q
 - [Proof of abstraction](docs/PROOF_OF_ABSTRACTION.md)
 - [Proof of reduction](docs/PROOF_OF_REDUCTION.md)
 - [Proof of softmax](docs/PROOF_OF_SOFTMAX.md)
+- [Proof of execution](docs/PROOF_OF_EXECUTION.md)
+- [Runtime Executor v0](docs/RUNTIME_EXECUTOR.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)

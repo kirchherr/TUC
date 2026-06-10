@@ -90,12 +90,17 @@ Required artifacts:
 - `examples/proof_of_abstraction.py`
 - `examples/proof_of_reduction.py`
 - `examples/proof_of_softmax.py`
+- `examples/proof_of_execution.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
+- `tests/golden/proofs/proof_of_execution.txt`
+- `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
 - `docs/PROOF_OF_SOFTMAX.md`
+- `docs/PROOF_OF_EXECUTION.md`
+- `docs/RUNTIME_EXECUTOR.md`
 
 Completed evidence:
 
@@ -132,6 +137,11 @@ Completed evidence:
 - Triton idiom coverage reports track which Triton-like idioms are covered by
   schema-versioned metadata examples and golden evidence while direct source
   ingestion remains blocked.
+- Runtime Executor v0 executes already-compiled graphs through trusted
+  in-process reference kernels and emits deterministic execution traces.
+- Proof-of-execution compiles, plans, executes, traces, and verifies a graph
+  against independent reference semantics without plugin discovery, device
+  access, subprocesses, JIT, or generated-artifact execution.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution

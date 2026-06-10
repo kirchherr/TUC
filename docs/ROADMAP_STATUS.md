@@ -43,6 +43,10 @@ hardware-independent interface into capability-driven runtime planning.
   pass/fail metadata before benchmark artifacts can count as passing evidence.
 - Diagnostic Triton idiom coverage report for execution-free metadata examples
   and golden evidence, with direct source ingestion still blocked.
+- Runtime Executor v0 for trusted in-process reference execution of
+  already-compiled graphs.
+- Proof-of-execution example with deterministic proof and execution-trace
+  goldens.
 
 ## In Progress
 
@@ -87,6 +91,12 @@ Current slice:
   decision goldens without source parsing.
 - Deterministic Triton idiom coverage golden at
   `tests/golden/frontend/triton_idiom_coverage_report.json`.
+- Runtime Executor v0 with contract `runtime_executor.trusted_reference.v0`,
+  plain-mapping input validation, partition-plan matching, output-shape checks,
+  and deterministic execution traces.
+- Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
+  execution-trace golden at
+  `tests/golden/execution_traces/proof_of_execution.txt`.
 - Triton source threat model that blocks direct source parsing and `@triton.jit`
   handling until parser budgets, negative tests, fuzzing, diagnostics, and
   sandboxing gates exist.
