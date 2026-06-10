@@ -18,6 +18,8 @@ It supports:
 - Optional non-reserved operation attributes.
 - Optional layout metadata through a dedicated field.
 - Deterministic intake reports through `TritonIntakeReport`.
+- Diagnostic Triton idiom coverage reports through
+  `schemas/triton_idiom_coverage_report.v0.schema.json`.
 
 ## Non-Goals
 
@@ -72,6 +74,12 @@ evidence exist.
 deterministic report for reviewing whether a future parser proposal has every
 required gate artifact. The current golden report intentionally remains
 blocked.
+
+[`TRITON_IDIOM_COVERAGE_REPORT.md`](TRITON_IDIOM_COVERAGE_REPORT.md) defines a
+diagnostic report for Triton-like idioms covered through metadata examples and
+goldens. It uses
+`schemas/triton_idiom_coverage_report.v0.schema.json`, keeps
+`direct_triton_source_ingestion` false, and does not authorize source parsing.
 
 ## Security Rules
 
@@ -134,4 +142,6 @@ tests/golden/frontend/source_intent_frontend_conformance_report.json
 See `examples/triton_metadata_adapter.py` for a small metadata-to-pipeline
 vertical slice. See `examples/triton_mvp_metadata.py` for a frontend-originated
 graph that covers all MVP operation families without source parsing or Triton
-JIT execution.
+JIT execution. See `examples/triton_idiom_coverage_report.py` for a
+machine-readable coverage summary that references metadata and golden evidence
+without loading source text or compiler artifacts.

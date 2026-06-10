@@ -41,6 +41,8 @@ hardware-independent interface into capability-driven runtime planning.
   digest-pinned threshold metadata before "near native" claims can be reviewed.
 - Diagnostic performance acceptance criteria report for accepted, digest-pinned
   pass/fail metadata before benchmark artifacts can count as passing evidence.
+- Diagnostic Triton idiom coverage report for execution-free metadata examples
+  and golden evidence, with direct source ingestion still blocked.
 
 ## In Progress
 
@@ -79,6 +81,10 @@ Current slice:
   runtime-plan, and compiler decision-report review.
 - Triton metadata MVP family coverage for `matmul`, `softmax`, `reduction`,
   and `elementwise` in one execution-free frontend-originated graph.
+- Machine-readable Triton idiom coverage report at
+  `schemas/triton_idiom_coverage_report.v0.schema.json` for tracking metadata
+  examples, intake goldens, HAC-IR goldens, runtime-plan goldens, and compiler
+  decision goldens without source parsing.
 - Triton source threat model that blocks direct source parsing and `@triton.jit`
   handling until parser budgets, negative tests, fuzzing, diagnostics, and
   sandboxing gates exist.
@@ -267,8 +273,9 @@ Current focus:
 - Real Triton integration as a credibility milestone after the abstraction proof
   remains stable.
 - Future Triton idiom coverage should enter through the schema-versioned
-  metadata intake contract before any source parser or `@triton.jit` handling
-  is accepted.
+  metadata intake contract and
+  [Triton Idiom Coverage Report](TRITON_IDIOM_COVERAGE_REPORT.md) before any
+  source parser or `@triton.jit` handling is accepted.
 - Source parser work must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before it can
   produce metadata, HAC-IR, runtime-plan, or decision-report artifacts.

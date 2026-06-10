@@ -74,6 +74,8 @@ The current prototype contains:
   and deterministic report goldens before any source-to-IR conversion.
 - Triton source preflight fuzz/property corpus for arbitrary decoded bytes,
   invalid Unicode, seed combinations, and bounded diagnostics.
+- Diagnostic Triton idiom coverage reports that track metadata examples and
+  golden evidence while direct source ingestion remains blocked.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Schema-versioned diagnostic baseline benchmark reports that are explicitly
   marked as non-performance-proof artifacts.
@@ -198,6 +200,12 @@ Run the execution-free Triton source preflight example:
 
 ```bash
 python examples/triton_source_preflight.py
+```
+
+Inspect Triton idiom coverage through metadata and golden evidence:
+
+```bash
+python examples/triton_idiom_coverage_report.py
 ```
 
 Run the Backend API v0.1 authoring example:
@@ -368,6 +376,7 @@ pytest -q
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)
 - [Triton-like metadata adapter](docs/FRONTEND_ADAPTER.md)
+- [Triton idiom coverage report](docs/TRITON_IDIOM_COVERAGE_REPORT.md)
 - [Triton compatibility](docs/TRITON_COMPATIBILITY.md)
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)

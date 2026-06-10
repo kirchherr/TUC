@@ -53,6 +53,11 @@ Implemented now:
   surface keys before producing a `ComputeGraph`; deterministic intake reports
   make the frontend boundary reviewable without importing, parsing, JITing, or
   executing Triton code.
+- Triton idiom coverage reports use
+  `schemas/triton_idiom_coverage_report.v0.schema.json` to track only bounded
+  metadata-example and golden-evidence identifiers; they keep direct Triton
+  source ingestion blocked and do not load source, Python objects, devices,
+  plugins, backend artifacts, or generated code.
 - Triton source ingestion is explicitly blocked by
   [TRITON_SOURCE_THREAT_MODEL.md](TRITON_SOURCE_THREAT_MODEL.md) until a
   data-only parser design includes source budgets, negative tests, fuzzing or

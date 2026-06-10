@@ -129,6 +129,9 @@ Completed evidence:
   threshold metadata before "near native" or percentage claims can be reviewed.
 - Performance acceptance criteria reports require accepted, digest-pinned
   pass/fail metadata before benchmark artifacts can count as passing evidence.
+- Triton idiom coverage reports track which Triton-like idioms are covered by
+  schema-versioned metadata examples and golden evidence while direct source
+  ingestion remains blocked.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution
@@ -404,6 +407,9 @@ Go/No-Go:
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
+- Triton idiom coverage must be represented through
+  `schemas/triton_idiom_coverage_report.v0.schema.json` before source syntax or
+  `@triton.jit` integration is considered.
 - Performance claims remain blocked until leaky-abstraction evidence,
   planner-overhead evidence, native baseline provenance, native baseline
   comparison, correctness goldens, security review, an accepted bounded
