@@ -135,6 +135,7 @@ tests/golden/hac_ir/source_intent_metadata_mlp.txt
 tests/golden/runtime_plans/source_intent_metadata_mlp.txt
 tests/golden/compiler_decisions/source_intent_metadata_mlp.txt
 tests/golden/frontend/source_intent_frontend_conformance_report.json
+tests/golden/frontend/triton_idiom_coverage_report.json
 ```
 
 ## Example

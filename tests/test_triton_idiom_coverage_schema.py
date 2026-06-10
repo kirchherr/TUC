@@ -15,6 +15,7 @@ from tuc.frontend import (
 from tuc.ir import OperationKind
 
 SCHEMA_PATH = Path("schemas/triton_idiom_coverage_report.v0.schema.json")
+GOLDEN_PATH = Path("tests/golden/frontend/triton_idiom_coverage_report.json")
 
 
 def test_triton_idiom_coverage_report_schema_matches_runtime() -> None:
@@ -68,6 +69,26 @@ def test_triton_idiom_coverage_report_schema_fails_closed() -> None:
     assert schema["$defs"]["report_text"]["maxLength"] == 512
     assert "python_source" in schema["$defs"]["report_text"]["not"]["enum"]
     assert "plugin_entrypoint" in schema["$defs"]["report_text"]["not"]["enum"]
+
+
+def test_triton_idiom_coverage_report_golden_matches_schema_shape() -> None:
+    schema = _load_schema()
+    golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
+
+    assert sorted(golden) == sorted(schema["required"])
+    assert golden["schema_version"] == TRITON_IDIOM_COVERAGE_REPORT_SCHEMA_VERSION
+    assert golden["artifact_status"] == TRITON_IDIOM_COVERAGE_ARTIFACT_STATUS
+    assert golden["coverage_contract"] == TRITON_IDIOM_COVERAGE_CONTRACT
+    assert golden["direct_triton_source_ingestion"] is False
+    assert golden["parser_status"] == TRITON_IDIOM_COVERAGE_PARSER_STATUS
+    assert golden["triton_idiom_coverage_ready"] is True
+    assert golden["issues"] == []
+    assert [item["operation_family"] for item in golden["coverages"]] == [
+        "matmul",
+        "softmax",
+        "reduction",
+        "elementwise",
+    ]
 
 
 def test_triton_idiom_coverage_report_schema_is_referenced() -> None:

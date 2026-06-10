@@ -16,6 +16,7 @@ object inspector, and not a compiler lowering path.
 - API: `build_triton_idiom_coverage_report(proposal_name, coverages)`
 - Dump API: `dump_triton_idiom_coverage_report(report)`
 - Example: `examples/triton_idiom_coverage_report.py`
+- Golden: `tests/golden/frontend/triton_idiom_coverage_report.json`
 - Tests: `tests/test_triton_idiom_coverage_report.py`
 - Schema tests: `tests/test_triton_idiom_coverage_schema.py`
 

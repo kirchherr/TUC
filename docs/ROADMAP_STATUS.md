@@ -85,6 +85,8 @@ Current slice:
   `schemas/triton_idiom_coverage_report.v0.schema.json` for tracking metadata
   examples, intake goldens, HAC-IR goldens, runtime-plan goldens, and compiler
   decision goldens without source parsing.
+- Deterministic Triton idiom coverage golden at
+  `tests/golden/frontend/triton_idiom_coverage_report.json`.
 - Triton source threat model that blocks direct source parsing and `@triton.jit`
   handling until parser budgets, negative tests, fuzzing, diagnostics, and
   sandboxing gates exist.

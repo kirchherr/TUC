@@ -33,6 +33,7 @@ Add:
 - report schema version `tuc.triton_idiom_coverage_report.v0`
 - schema file `schemas/triton_idiom_coverage_report.v0.schema.json`
 - example `examples/triton_idiom_coverage_report.py`
+- golden `tests/golden/frontend/triton_idiom_coverage_report.json`
 - documentation `docs/TRITON_IDIOM_COVERAGE_REPORT.md`
 
 The report records bounded identifiers for:
@@ -101,3 +102,4 @@ or run generated artifacts.
 - [Triton Source Threat Model](../docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Frontend Adapter](../docs/FRONTEND_ADAPTER.md)
 - `schemas/triton_idiom_coverage_report.v0.schema.json`
+- `tests/golden/frontend/triton_idiom_coverage_report.json`

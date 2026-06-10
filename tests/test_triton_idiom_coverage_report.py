@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pytest
 
+from examples.triton_idiom_coverage_report import build_report as build_example_report
 from tuc.frontend import (
     TRITON_IDIOM_COVERAGE_ARTIFACT_STATUS,
     TRITON_IDIOM_COVERAGE_CONTRACT,
@@ -15,6 +17,8 @@ from tuc.frontend import (
     dump_triton_idiom_coverage_report,
     triton_idiom_coverage_report_to_dict,
 )
+
+GOLDEN_PATH = Path("tests/golden/frontend/triton_idiom_coverage_report.json")
 
 
 def test_triton_idiom_coverage_report_defaults_to_blocked() -> None:
@@ -110,6 +114,10 @@ def test_triton_idiom_coverage_report_json_is_stable() -> None:
 
     assert payload["schema_version"] == "tuc.triton_idiom_coverage_report.v0"
     assert payload["coverages"][0]["idiom_id"] == "metadata_matmul"
+
+
+def test_triton_idiom_coverage_example_matches_golden() -> None:
+    assert build_example_report() == GOLDEN_PATH.read_text(encoding="utf-8")
 
 
 def test_triton_idiom_coverage_report_rejects_duplicate_ids() -> None:

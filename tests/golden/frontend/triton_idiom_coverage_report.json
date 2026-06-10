@@ -1,0 +1,65 @@
+{
+  "artifact_status": "diagnostic_only",
+  "blocked_execution_surfaces": [
+    "bytecode_inspection",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_import",
+    "source_parsing",
+    "subprocess_execution"
+  ],
+  "coverage_contract": "triton_idiom_coverage.execution_free.v0",
+  "coverages": [
+    {
+      "compiler_decision_golden_id": "triton_metadata_mvp_families_compiler_decision",
+      "coverage_status": "metadata_golden_covered",
+      "hac_ir_golden_id": "triton_metadata_mvp_families_hac_ir",
+      "idiom_id": "metadata_matmul_projection",
+      "intake_golden_id": "triton_metadata_mvp_families_intake",
+      "metadata_example_id": "triton_mvp_metadata",
+      "operation_family": "matmul",
+      "runtime_plan_golden_id": "triton_metadata_mvp_families_runtime_plan"
+    },
+    {
+      "compiler_decision_golden_id": "triton_metadata_mvp_families_compiler_decision",
+      "coverage_status": "metadata_golden_covered",
+      "hac_ir_golden_id": "triton_metadata_mvp_families_hac_ir",
+      "idiom_id": "metadata_softmax_axis",
+      "intake_golden_id": "triton_metadata_mvp_families_intake",
+      "metadata_example_id": "triton_mvp_metadata",
+      "operation_family": "softmax",
+      "runtime_plan_golden_id": "triton_metadata_mvp_families_runtime_plan"
+    },
+    {
+      "compiler_decision_golden_id": "triton_metadata_mvp_families_compiler_decision",
+      "coverage_status": "metadata_golden_covered",
+      "hac_ir_golden_id": "triton_metadata_mvp_families_hac_ir",
+      "idiom_id": "metadata_reduction_axis",
+      "intake_golden_id": "triton_metadata_mvp_families_intake",
+      "metadata_example_id": "triton_mvp_metadata",
+      "operation_family": "reduction",
+      "runtime_plan_golden_id": "triton_metadata_mvp_families_runtime_plan"
+    },
+    {
+      "compiler_decision_golden_id": "triton_metadata_mvp_families_compiler_decision",
+      "coverage_status": "metadata_golden_covered",
+      "hac_ir_golden_id": "triton_metadata_mvp_families_hac_ir",
+      "idiom_id": "metadata_elementwise_activation",
+      "intake_golden_id": "triton_metadata_mvp_families_intake",
+      "metadata_example_id": "triton_mvp_metadata",
+      "operation_family": "elementwise",
+      "runtime_plan_golden_id": "triton_metadata_mvp_families_runtime_plan"
+    }
+  ],
+  "direct_triton_source_ingestion": false,
+  "issues": [],
+  "parser_status": "direct_triton_source_ingestion_blocked",
+  "proposal_name": "triton_metadata_mvp_coverage",
+  "schema_version": "tuc.triton_idiom_coverage_report.v0",
+  "triton_idiom_coverage_ready": true
+}

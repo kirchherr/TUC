@@ -76,6 +76,8 @@ The current prototype contains:
   invalid Unicode, seed combinations, and bounded diagnostics.
 - Diagnostic Triton idiom coverage reports that track metadata examples and
   golden evidence while direct source ingestion remains blocked.
+- Deterministic Triton idiom coverage golden report for reviewer-visible
+  frontend coverage evidence.
 - CPU-first baseline benchmark harness with explicit CUDA capability status.
 - Schema-versioned diagnostic baseline benchmark reports that are explicitly
   marked as non-performance-proof artifacts.
