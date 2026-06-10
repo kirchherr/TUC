@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/runtime_evidence_matrix_report.v0.schema.json",
+  "title": "TUC Runtime Evidence Matrix Report v0",
+  "description": "Data-only schema for curated proof and runtime evidence coverage across graph fixtures.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "evidence_contract",
+    "graph_count",
+    "graphs",
+    "issues",
+    "matrix_id",
+    "required_artifact_kinds",
+    "runtime_evidence_matrix_complete",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "review_evidence"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "evidence_contract": {"const": "runtime_evidence_matrix.data_only.v0"},
+    "graph_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 64
+    },
+    "graphs": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/graph"}
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 512,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "matrix_id": {"$ref": "#/$defs/report_text"},
+    "required_artifact_kinds": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/artifact_kind"}
+    },
+    "runtime_evidence_matrix_complete": {"type": "boolean"},
+    "schema_version": {"const": "tuc.runtime_evidence_matrix_report.v0"}
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "artifact_kind",
+        "artifact_status"
+      ],
+      "properties": {
+        "artifact_id": {"$ref": "#/$defs/report_text"},
+        "artifact_kind": {"$ref": "#/$defs/artifact_kind"},
+        "artifact_status": {"const": "present"}
+      }
+    },
+    "artifact_kind": {
+      "enum": [
+        "proof_report_golden",
+        "frontend_intake_golden",
+        "hac_ir_golden",
+        "runtime_plan_golden",
+        "compiler_decision_golden",
+        "execution_readiness_golden",
+        "execution_trace_golden",
+        "reference_correctness"
+      ]
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifacts",
+        "graph_family",
+        "graph_id",
+        "missing_required_artifact_kinds",
+        "runtime_evidence_complete",
+        "source_boundary"
+      ],
+      "properties": {
+        "artifacts": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {"$ref": "#/$defs/artifact"}
+        },
+        "graph_family": {"$ref": "#/$defs/report_text"},
+        "graph_id": {"$ref": "#/$defs/report_text"},
+        "missing_required_artifact_kinds": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/artifact_kind"}
+        },
+        "runtime_evidence_complete": {"type": "boolean"},
+        "source_boundary": {
+          "enum": [
+            "typed_compute_graph",
+            "triton_metadata",
+            "source_intent_metadata"
+          ]
+        }
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      }
+    }
+  }
+}

@@ -53,6 +53,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime execution readiness report that gates proof execution against trusted
   backend executor contracts before kernels run.
 - Triton metadata MVP-family runtime readiness golden before execution.
+- Runtime Evidence Matrix v0 with schema-versioned proof inventory and
+  deterministic golden at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
 - Runtime operation semantic contract checks for MVP operation shapes, axes,
   scalar-output rejection, and supported elementwise kernels.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
@@ -116,6 +118,9 @@ Current slice:
   `tests/golden/execution_readiness/proof_of_execution.txt`.
 - Triton metadata MVP-family readiness golden at
   `tests/golden/execution_readiness/triton_metadata_mvp_families.txt`.
+- Runtime Evidence Matrix report at
+  `schemas/runtime_evidence_matrix_report.v0.schema.json`, with golden evidence
+  at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
 - Runtime Executor negative tests for input shape mismatch, non-`float64`
   inputs, non-finite inputs, and non-finite outputs.
 - Runtime Executor negative tests for matmul dimension mismatch, elementwise
