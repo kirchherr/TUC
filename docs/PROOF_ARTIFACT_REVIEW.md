@@ -22,6 +22,7 @@ docs/PROOF_*.md
 docs/PERFORMANCE_PROOF_READINESS.md
 docs/NATIVE_BASELINE_PROVENANCE.md
 docs/NATIVE_BASELINE_COMPARISON_REPORT.md
+docs/BREAK_EVEN_WORKLOAD_SIZE_REPORT.md
 docs/BENCHMARK_ARTIFACT_MANIFEST.md
 docs/WORKLOAD_SCOPE_REPORT.md
 docs/BENCHMARK_METHODOLOGY_REPORT.md
@@ -99,7 +100,7 @@ the performance proof boundary and readiness report supply:
 - toolchain environment report
 - leaky-abstraction report
 - planner-overhead report
-- break-even workload size
+- break-even workload-size report
 - benchmark methodology
 - correctness goldens for benchmarked workloads
 - runtime-plan and compiler decision-report goldens

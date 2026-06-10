@@ -175,6 +175,20 @@ TOOLCHAIN_ENVIRONMENT_DEFAULT_ISSUES = (
     "toolchain_environment_not_supplied",
     "native_performance_claim_blocked",
 )
+BREAK_EVEN_WORKLOAD_SIZE_REPORT_SCHEMA_VERSION = (
+    "tuc.break_even_workload_size_report.v0"
+)
+BREAK_EVEN_WORKLOAD_SIZE_ARTIFACT_STATUS = "diagnostic_only"
+BREAK_EVEN_WORKLOAD_SIZE_CLAIM_STATUS = "blocked"
+BREAK_EVEN_WORKLOAD_SIZE_STATUSES = (
+    "not_established",
+    "estimated_not_validated",
+    "validated_by_ci",
+)
+BREAK_EVEN_WORKLOAD_SIZE_DEFAULT_ISSUES = (
+    "break_even_workloads_not_supplied",
+    "native_performance_claim_blocked",
+)
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
@@ -201,6 +215,10 @@ MAX_BENCHMARK_METHODOLOGIES = 128
 MAX_TOOLCHAIN_ENVIRONMENT_REPORT_BYTES = 64 * 1024
 MAX_TOOLCHAIN_ENVIRONMENT_FIELD_BYTES = 512
 MAX_TOOLCHAIN_COMPONENTS = 128
+MAX_BREAK_EVEN_WORKLOAD_SIZE_REPORT_BYTES = 64 * 1024
+MAX_BREAK_EVEN_WORKLOAD_SIZE_FIELD_BYTES = 512
+MAX_BREAK_EVEN_WORKLOADS = 128
+MAX_BREAK_EVEN_WORKLOAD_SIZE = WORKLOAD_SCOPE_MAX_PROBLEM_SIZE
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
@@ -482,6 +500,36 @@ class ToolchainEnvironmentReport:
         return bool(self.components) and not toolchain_issues
 
 
+@dataclass(frozen=True)
+class BreakEvenWorkloadSize:
+    """One bounded break-even workload-size evidence entry."""
+
+    break_even_id: str
+    workload_scope_id: str
+    planner_overhead_report_id: str
+    execution_metric_id: str
+    amortization_policy_id: str
+    break_even_status: str = "not_established"
+    break_even_problem_size: int | None = None
+    evidence_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class BreakEvenWorkloadSizeReport:
+    """Diagnostic report for future break-even workload-size review."""
+
+    proposal_name: str
+    workloads: tuple[BreakEvenWorkloadSize, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def break_even_workload_size_ready(self) -> bool:
+        break_even_issues = tuple(
+            issue for issue in self.issues if issue.startswith("break_even")
+        )
+        return bool(self.workloads) and not break_even_issues
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -723,6 +771,36 @@ def build_toolchain_environment_report(
     return ToolchainEnvironmentReport(
         proposal_name=proposal_name,
         components=normalized_components,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
+def build_break_even_workload_size_report(
+    proposal_name: str,
+    workloads: Iterable[BreakEvenWorkloadSize] = (),
+) -> BreakEvenWorkloadSizeReport:
+    """Build a bounded data-only break-even workload-size report."""
+
+    _validate_break_even_workload_text(proposal_name, "proposal_name")
+    normalized_workloads = _normalize_break_even_workloads(workloads)
+    issues = list(BREAK_EVEN_WORKLOAD_SIZE_DEFAULT_ISSUES)
+    if normalized_workloads:
+        issues.remove("break_even_workloads_not_supplied")
+    if any(
+        workload.break_even_status != "validated_by_ci"
+        for workload in normalized_workloads
+    ):
+        issues.append("break_even_workload_not_validated_by_ci")
+    if any(
+        workload.break_even_problem_size is None for workload in normalized_workloads
+    ):
+        issues.append("break_even_workload_size_not_supplied")
+    if any(workload.evidence_digest == "not_supplied" for workload in normalized_workloads):
+        issues.append("break_even_workload_digest_not_supplied")
+
+    return BreakEvenWorkloadSizeReport(
+        proposal_name=proposal_name,
+        workloads=normalized_workloads,
         issues=tuple(dict.fromkeys(issues)),
     )
 
@@ -993,6 +1071,39 @@ def toolchain_environment_report_to_dict(
     }
 
 
+def break_even_workload_size_report_to_dict(
+    report: BreakEvenWorkloadSizeReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible break-even workload report."""
+
+    _validate_break_even_workload_report(report)
+    return {
+        "artifact_status": BREAK_EVEN_WORKLOAD_SIZE_ARTIFACT_STATUS,
+        "break_even_workload_size_ready": report.break_even_workload_size_ready,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": BREAK_EVEN_WORKLOAD_SIZE_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "schema_version": BREAK_EVEN_WORKLOAD_SIZE_REPORT_SCHEMA_VERSION,
+        "workloads": [
+            {
+                "amortization_policy_id": workload.amortization_policy_id,
+                "break_even_id": workload.break_even_id,
+                "break_even_problem_size": workload.break_even_problem_size,
+                "break_even_status": workload.break_even_status,
+                "evidence_digest": workload.evidence_digest,
+                "execution_metric_id": workload.execution_metric_id,
+                "planner_overhead_report_id": (
+                    workload.planner_overhead_report_id
+                ),
+                "workload_scope_id": workload.workload_scope_id,
+            }
+            for workload in report.workloads
+        ],
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -1094,6 +1205,21 @@ def dump_toolchain_environment_report(report: ToolchainEnvironmentReport) -> str
     )
     if len(text.encode("utf-8")) > MAX_TOOLCHAIN_ENVIRONMENT_REPORT_BYTES:
         raise ValueError("toolchain environment report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_break_even_workload_size_report(
+    report: BreakEvenWorkloadSizeReport,
+) -> str:
+    """Render a stable diagnostic break-even workload-size report."""
+
+    text = json.dumps(
+        break_even_workload_size_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_BREAK_EVEN_WORKLOAD_SIZE_REPORT_BYTES:
+        raise ValueError("break-even workload-size report exceeds byte limit")
     return text + "\n"
 
 
@@ -1331,6 +1457,46 @@ def _normalize_toolchain_components(
     return normalized
 
 
+def _normalize_break_even_workloads(
+    workloads: Iterable[BreakEvenWorkloadSize],
+) -> tuple[BreakEvenWorkloadSize, ...]:
+    normalized = tuple(workloads)
+    if len(normalized) > MAX_BREAK_EVEN_WORKLOADS:
+        raise ValueError("break-even workload count exceeds limit")
+    seen: set[str] = set()
+    for workload in normalized:
+        if not isinstance(workload, BreakEvenWorkloadSize):
+            raise TypeError("break-even workloads must be BreakEvenWorkloadSize")
+        _validate_break_even_workload_text(workload.break_even_id, "break_even_id")
+        _validate_break_even_workload_text(
+            workload.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_break_even_workload_text(
+            workload.planner_overhead_report_id,
+            "planner_overhead_report_id",
+        )
+        _validate_break_even_workload_text(
+            workload.execution_metric_id,
+            "execution_metric_id",
+        )
+        _validate_break_even_workload_text(
+            workload.amortization_policy_id,
+            "amortization_policy_id",
+        )
+        if workload.break_even_id in seen:
+            raise ValueError("duplicate break-even workload id")
+        if workload.break_even_status not in BREAK_EVEN_WORKLOAD_SIZE_STATUSES:
+            raise ValueError("unsupported break-even workload status")
+        _validate_break_even_problem_size(
+            workload.break_even_problem_size,
+            workload.break_even_status,
+        )
+        _validate_break_even_workload_digest(workload.evidence_digest)
+        seen.add(workload.break_even_id)
+    return normalized
+
+
 def _normalize_performance_evidence(
     evidence: Iterable[PerformanceProofReadinessEvidence],
 ) -> dict[str, bool]:
@@ -1490,6 +1656,17 @@ def _validate_toolchain_environment_report(
         _validate_toolchain_environment_text(issue, "issue")
 
 
+def _validate_break_even_workload_report(
+    report: BreakEvenWorkloadSizeReport,
+) -> None:
+    if not isinstance(report, BreakEvenWorkloadSizeReport):
+        raise TypeError("break-even workload-size report must be report object")
+    _validate_break_even_workload_text(report.proposal_name, "proposal_name")
+    _normalize_break_even_workloads(report.workloads)
+    for issue in report.issues:
+        _validate_break_even_workload_text(issue, "issue")
+
+
 def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
     if not isinstance(report, LeakyAbstractionReport):
         raise TypeError("leaky abstraction report must be report object")
@@ -1621,6 +1798,36 @@ def _validate_toolchain_component_digest(value: str) -> None:
         raise ValueError("component_digest must be not_supplied or sha256 digest")
 
 
+def _validate_break_even_workload_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe break-even workload identifier")
+    if len(value.encode("utf-8")) > MAX_BREAK_EVEN_WORKLOAD_SIZE_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds break-even workload field limit")
+
+
+def _validate_break_even_problem_size(
+    value: int | None,
+    break_even_status: str,
+) -> None:
+    if break_even_status == "not_established":
+        if value is not None:
+            raise ValueError("not_established break-even workload must not supply size")
+        return
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise ValueError("break_even_problem_size must be an integer")
+    if value < 1 or value > MAX_BREAK_EVEN_WORKLOAD_SIZE:
+        raise ValueError("break_even_problem_size exceeds limit")
+
+
+def _validate_break_even_workload_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("evidence_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("evidence_digest must be not_supplied or sha256 digest")
+
+
 def _validate_leaky_abstraction_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{label} must be a non-empty string")
@@ -1648,6 +1855,13 @@ __all__ = [
     "BENCHMARK_METHODOLOGY_STATISTIC_POLICIES",
     "BenchmarkMethodology",
     "BenchmarkMethodologyReport",
+    "BREAK_EVEN_WORKLOAD_SIZE_ARTIFACT_STATUS",
+    "BREAK_EVEN_WORKLOAD_SIZE_CLAIM_STATUS",
+    "BREAK_EVEN_WORKLOAD_SIZE_DEFAULT_ISSUES",
+    "BREAK_EVEN_WORKLOAD_SIZE_REPORT_SCHEMA_VERSION",
+    "BREAK_EVEN_WORKLOAD_SIZE_STATUSES",
+    "BreakEvenWorkloadSize",
+    "BreakEvenWorkloadSizeReport",
     "LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES",
     "LEAKY_ABSTRACTION_ARTIFACT_STATUS",
     "LEAKY_ABSTRACTION_DEFAULT_ISSUES",
@@ -1702,9 +1916,11 @@ __all__ = [
     "assert_performance_proof_readiness",
     "benchmark_artifact_manifest_report_to_dict",
     "benchmark_methodology_report_to_dict",
+    "break_even_workload_size_report_to_dict",
     "build_toolchain_environment_report",
     "build_benchmark_artifact_manifest_report",
     "build_benchmark_methodology_report",
+    "build_break_even_workload_size_report",
     "build_leaky_abstraction_report",
     "build_native_baseline_comparison_report",
     "build_native_baseline_provenance_report",
@@ -1712,6 +1928,7 @@ __all__ = [
     "build_workload_scope_report",
     "dump_benchmark_artifact_manifest_report",
     "dump_benchmark_methodology_report",
+    "dump_break_even_workload_size_report",
     "dump_toolchain_environment_report",
     "dump_leaky_abstraction_report",
     "dump_native_baseline_comparison_report",

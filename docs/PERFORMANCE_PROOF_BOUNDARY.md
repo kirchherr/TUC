@@ -168,6 +168,35 @@ diagnostic report contract at
 runtime-planning phases from execution time, but execution time and break-even
 workload size remain explicitly not measured.
 
+## Break-Even Workload Size Gate
+
+Before TUC may claim that planning overhead is amortized for a workload class,
+a proposal must identify the scoped break-even workload size as bounded review
+data.
+
+The proposal must include:
+
+- workload scope identifier
+- planner-overhead report identifier
+- execution metric identifier
+- amortization policy identifier
+- break-even validation status
+- break-even problem size
+- evidence digest status
+
+The current
+[Break-Even Workload Size Report](BREAK_EVEN_WORKLOAD_SIZE_REPORT.md) defines
+the diagnostic report contract at
+`schemas/break_even_workload_size_report.v0.schema.json`. It records only
+break-even metadata, validation status, bounded problem size, and digest status.
+It does not run benchmarks, load benchmark artifacts, parse raw benchmark
+output, store raw timing samples, or prove native performance.
+
+Break-even workload-size reports must not include host paths, command lines,
+environment variables, raw timing samples, raw native output, backend binaries,
+generated code, device identifiers, dynamic-library paths, or benchmark report
+contents.
+
 ## Native Baseline Provenance Gate
 
 Before TUC may compare against a native implementation, a proposal must identify
@@ -266,6 +295,7 @@ Any future performance proof must add:
 - correctness goldens for every benchmarked workload
 - runtime-plan and compiler decision-report goldens
 - explicit planner-overhead report
+- explicit break-even workload-size report
 - explicit leaky-abstraction report
 - explicit native baseline provenance report
 - security review for any executable backend, device access, generated artifact,
@@ -314,7 +344,7 @@ Reviewers must reject performance claims unless every answer is yes:
 7. Is the native baseline comparison report present and bounded?
 8. Is mathematical correctness still proven independently?
 9. Are planner overhead and execution time reported separately?
-10. Is the break-even workload size reported?
+10. Is the break-even workload-size report present and bounded?
 11. Are cache effects explicit rather than hidden?
 12. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?

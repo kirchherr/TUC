@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/break_even_workload_size_report.v0.schema.json",
+  "title": "TUC Break-Even Workload Size Report v0",
+  "description": "Diagnostic-only schema for break-even workload-size review. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "break_even_workload_size_ready",
+    "claim_boundary",
+    "issues",
+    "native_performance_claim",
+    "performance_claim_status",
+    "proposal_name",
+    "schema_version",
+    "workloads"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "break_even_workload_size_ready": {"type": "boolean"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "native_performance_claim": {"const": false},
+    "performance_claim_status": {"const": "blocked"},
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "schema_version": {"const": "tuc.break_even_workload_size_report.v0"},
+    "workloads": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/break_even_workload"}
+    }
+  },
+  "$defs": {
+    "break_even_problem_size": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "maximum": 1000000000000
+    },
+    "break_even_status": {
+      "type": "string",
+      "enum": [
+        "not_established",
+        "estimated_not_validated",
+        "validated_by_ci"
+      ]
+    },
+    "evidence_digest": {
+      "type": "string",
+      "oneOf": [
+        {"const": "not_supplied"},
+        {"pattern": "^sha256:[0-9a-f]{64}$"}
+      ]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "break_even_workload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "amortization_policy_id",
+        "break_even_id",
+        "break_even_problem_size",
+        "break_even_status",
+        "evidence_digest",
+        "execution_metric_id",
+        "planner_overhead_report_id",
+        "workload_scope_id"
+      ],
+      "properties": {
+        "amortization_policy_id": {"$ref": "#/$defs/report_text"},
+        "break_even_id": {"$ref": "#/$defs/report_text"},
+        "break_even_problem_size": {"$ref": "#/$defs/break_even_problem_size"},
+        "break_even_status": {"$ref": "#/$defs/break_even_status"},
+        "evidence_digest": {"$ref": "#/$defs/evidence_digest"},
+        "execution_metric_id": {"$ref": "#/$defs/report_text"},
+        "planner_overhead_report_id": {"$ref": "#/$defs/report_text"},
+        "workload_scope_id": {"$ref": "#/$defs/report_text"}
+      }
+    }
+  }
+}

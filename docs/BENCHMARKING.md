@@ -110,6 +110,12 @@ Planner timing is tracked separately by the
 [Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md). Baseline benchmark
 reports must not hide planner overhead inside execution timing.
 
+Break-even workload-size metadata is tracked separately by the
+[Break-Even Workload Size Report](BREAK_EVEN_WORKLOAD_SIZE_REPORT.md) and
+`schemas/break_even_workload_size_report.v0.schema.json`. Baseline benchmark
+reports must not embed planner-benefit claims, raw timing samples, benchmark
+report contents, or unscoped break-even thresholds.
+
 Hardware-specific performance facts are tracked separately by the
 [Leaky Abstraction Report](LEAKY_ABSTRACTION_REPORT.md). Baseline benchmark
 reports must not turn backend-specific optimization details into HAC-IR
