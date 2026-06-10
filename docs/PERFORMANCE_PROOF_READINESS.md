@@ -69,6 +69,12 @@ existence of a bounded benchmark methodology contract. It does not run
 benchmarks, load benchmark artifacts, validate raw native output, or prove
 native performance parity.
 
+The current diagnostic toolchain environment report schema is
+`schemas/toolchain_environment_report.v0.schema.json`. It can satisfy only the
+existence of a bounded versioned toolchain environment contract. It does not
+inspect the host, read environment variables, run discovery commands, access
+devices, or prove native performance parity.
+
 The current diagnostic planner-overhead report schema is
 `schemas/planner_overhead_report.v0.schema.json`. It can satisfy only the
 existence of a bounded planner phase-separation report. It does not satisfy
@@ -141,6 +147,11 @@ The readiness report is not a benchmark methodology report. Measurement policy
 is tracked by
 [Benchmark Methodology Report](BENCHMARK_METHODOLOGY_REPORT.md), which is
 data-only and remains separate from benchmark execution and raw timing samples.
+
+The readiness report is not a toolchain environment report. Versioned toolchain
+inventory is tracked by
+[Toolchain Environment Report](TOOLCHAIN_ENVIRONMENT_REPORT.md), which is
+data-only and remains separate from host discovery.
 
 ## Evidence
 

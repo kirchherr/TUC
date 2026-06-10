@@ -143,6 +143,24 @@ BENCHMARK_METHODOLOGY_DEFAULT_ISSUES = (
     "native_performance_claim_blocked",
 )
 BENCHMARK_METHODOLOGY_MAX_ITERATIONS = 1_000_000
+TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION = (
+    "tuc.toolchain_environment_report.v0"
+)
+TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS = "diagnostic_only"
+TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS = "blocked"
+TOOLCHAIN_COMPONENT_KINDS = (
+    "python_runtime",
+    "python_package",
+    "native_compiler",
+    "device_runtime",
+    "device_driver",
+    "container_image",
+    "operating_system",
+)
+TOOLCHAIN_ENVIRONMENT_DEFAULT_ISSUES = (
+    "toolchain_environment_not_supplied",
+    "native_performance_claim_blocked",
+)
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
@@ -163,6 +181,9 @@ MAX_WORKLOAD_SCOPES = 128
 MAX_BENCHMARK_METHODOLOGY_REPORT_BYTES = 64 * 1024
 MAX_BENCHMARK_METHODOLOGY_FIELD_BYTES = 512
 MAX_BENCHMARK_METHODOLOGIES = 128
+MAX_TOOLCHAIN_ENVIRONMENT_REPORT_BYTES = 64 * 1024
+MAX_TOOLCHAIN_ENVIRONMENT_FIELD_BYTES = 512
+MAX_TOOLCHAIN_COMPONENTS = 128
 
 _PROOF_IDENTIFIER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]*$")
 _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
@@ -385,6 +406,33 @@ class BenchmarkMethodologyReport:
         return bool(self.methodologies) and not methodology_issues
 
 
+@dataclass(frozen=True)
+class ToolchainComponent:
+    """One bounded toolchain environment component entry."""
+
+    component_id: str
+    component_kind: str
+    version_id: str
+    provenance_id: str
+    component_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class ToolchainEnvironmentReport:
+    """Diagnostic report for versioned toolchain environment review."""
+
+    proposal_name: str
+    components: tuple[ToolchainComponent, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def toolchain_environment_ready(self) -> bool:
+        toolchain_issues = tuple(
+            issue for issue in self.issues if issue.startswith("toolchain")
+        )
+        return bool(self.components) and not toolchain_issues
+
+
 def proof_metadata_from_partition_plan(
     *,
     proof_id: str,
@@ -573,6 +621,30 @@ def build_benchmark_methodology_report(
     return BenchmarkMethodologyReport(
         proposal_name=proposal_name,
         methodologies=normalized_methodologies,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
+def build_toolchain_environment_report(
+    proposal_name: str,
+    components: Iterable[ToolchainComponent] = (),
+) -> ToolchainEnvironmentReport:
+    """Build a bounded data-only toolchain environment report."""
+
+    _validate_toolchain_environment_text(proposal_name, "proposal_name")
+    normalized_components = _normalize_toolchain_components(components)
+    issues = list(TOOLCHAIN_ENVIRONMENT_DEFAULT_ISSUES)
+    if normalized_components:
+        issues.remove("toolchain_environment_not_supplied")
+    if any(
+        component.component_digest == "not_supplied"
+        for component in normalized_components
+    ):
+        issues.append("toolchain_component_digest_not_supplied")
+
+    return ToolchainEnvironmentReport(
+        proposal_name=proposal_name,
+        components=normalized_components,
         issues=tuple(dict.fromkeys(issues)),
     )
 
@@ -782,6 +854,34 @@ def benchmark_methodology_report_to_dict(
     }
 
 
+def toolchain_environment_report_to_dict(
+    report: ToolchainEnvironmentReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible toolchain environment report."""
+
+    _validate_toolchain_environment_report(report)
+    return {
+        "artifact_status": TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "components": [
+            {
+                "component_digest": component.component_digest,
+                "component_id": component.component_id,
+                "component_kind": component.component_kind,
+                "provenance_id": component.provenance_id,
+                "version_id": component.version_id,
+            }
+            for component in report.components
+        ],
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS,
+        "proposal_name": report.proposal_name,
+        "schema_version": TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION,
+        "toolchain_environment_ready": report.toolchain_environment_ready,
+    }
+
+
 def dump_performance_proof_readiness_report(
     report: PerformanceProofReadinessReport,
 ) -> str:
@@ -855,6 +955,19 @@ def dump_benchmark_methodology_report(report: BenchmarkMethodologyReport) -> str
     )
     if len(text.encode("utf-8")) > MAX_BENCHMARK_METHODOLOGY_REPORT_BYTES:
         raise ValueError("benchmark methodology report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_toolchain_environment_report(report: ToolchainEnvironmentReport) -> str:
+    """Render a stable diagnostic toolchain environment report."""
+
+    text = json.dumps(
+        toolchain_environment_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_TOOLCHAIN_ENVIRONMENT_REPORT_BYTES:
+        raise ValueError("toolchain environment report exceeds byte limit")
     return text + "\n"
 
 
@@ -1025,6 +1138,28 @@ def _normalize_benchmark_methodologies(
     return normalized
 
 
+def _normalize_toolchain_components(
+    components: Iterable[ToolchainComponent],
+) -> tuple[ToolchainComponent, ...]:
+    normalized = tuple(components)
+    if len(normalized) > MAX_TOOLCHAIN_COMPONENTS:
+        raise ValueError("toolchain component count exceeds limit")
+    seen: set[str] = set()
+    for component in normalized:
+        if not isinstance(component, ToolchainComponent):
+            raise TypeError("toolchain components must be ToolchainComponent")
+        _validate_toolchain_environment_text(component.component_id, "component_id")
+        _validate_toolchain_environment_text(component.version_id, "version_id")
+        _validate_toolchain_environment_text(component.provenance_id, "provenance_id")
+        if component.component_id in seen:
+            raise ValueError("duplicate toolchain component id")
+        if component.component_kind not in TOOLCHAIN_COMPONENT_KINDS:
+            raise ValueError("unsupported toolchain component kind")
+        _validate_toolchain_component_digest(component.component_digest)
+        seen.add(component.component_id)
+    return normalized
+
+
 def _normalize_performance_evidence(
     evidence: Iterable[PerformanceProofReadinessEvidence],
 ) -> dict[str, bool]:
@@ -1162,6 +1297,17 @@ def _validate_benchmark_methodology_report(
         _validate_benchmark_methodology_text(issue, "issue")
 
 
+def _validate_toolchain_environment_report(
+    report: ToolchainEnvironmentReport,
+) -> None:
+    if not isinstance(report, ToolchainEnvironmentReport):
+        raise TypeError("toolchain environment report must be report object")
+    _validate_toolchain_environment_text(report.proposal_name, "proposal_name")
+    _normalize_toolchain_components(report.components)
+    for issue in report.issues:
+        _validate_toolchain_environment_text(issue, "issue")
+
+
 def _validate_leaky_abstraction_report(report: LeakyAbstractionReport) -> None:
     if not isinstance(report, LeakyAbstractionReport):
         raise TypeError("leaky abstraction report must be report object")
@@ -1259,6 +1405,22 @@ def _validate_benchmark_iteration_count(
         raise ValueError(f"{label} exceeds benchmark methodology iteration limit")
 
 
+def _validate_toolchain_environment_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe toolchain environment identifier")
+    if len(value.encode("utf-8")) > MAX_TOOLCHAIN_ENVIRONMENT_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds toolchain environment field limit")
+
+
+def _validate_toolchain_component_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("component_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("component_digest must be not_supplied or sha256 digest")
+
+
 def _validate_leaky_abstraction_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"{label} must be a non-empty string")
@@ -1303,6 +1465,13 @@ __all__ = [
     "NATIVE_BASELINE_REPRODUCIBILITY_STATUSES",
     "NativeBaselineProvenance",
     "NativeBaselineProvenanceReport",
+    "TOOLCHAIN_COMPONENT_KINDS",
+    "TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS",
+    "TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS",
+    "TOOLCHAIN_ENVIRONMENT_DEFAULT_ISSUES",
+    "TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION",
+    "ToolchainComponent",
+    "ToolchainEnvironmentReport",
     "WORKLOAD_OPERATION_FAMILIES",
     "WORKLOAD_SCOPE_ARTIFACT_STATUS",
     "WORKLOAD_SCOPE_CLAIM_STATUS",
@@ -1326,6 +1495,7 @@ __all__ = [
     "assert_performance_proof_readiness",
     "benchmark_artifact_manifest_report_to_dict",
     "benchmark_methodology_report_to_dict",
+    "build_toolchain_environment_report",
     "build_benchmark_artifact_manifest_report",
     "build_benchmark_methodology_report",
     "build_leaky_abstraction_report",
@@ -1334,6 +1504,7 @@ __all__ = [
     "build_workload_scope_report",
     "dump_benchmark_artifact_manifest_report",
     "dump_benchmark_methodology_report",
+    "dump_toolchain_environment_report",
     "dump_leaky_abstraction_report",
     "dump_native_baseline_provenance_report",
     "dump_performance_proof_readiness_report",
@@ -1342,5 +1513,6 @@ __all__ = [
     "native_baseline_provenance_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "proof_metadata_from_partition_plan",
+    "toolchain_environment_report_to_dict",
     "workload_scope_report_to_dict",
 ]

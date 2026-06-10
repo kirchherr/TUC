@@ -89,6 +89,8 @@ The current prototype contains:
   explicit operation families, shape profiles, dtype policies, and problem sizes.
 - Diagnostic benchmark-methodology reports that define measurement clocks,
   iteration policy, statistic policy, isolation, and reproducibility policy.
+- Diagnostic toolchain-environment reports that identify versioned runtime,
+  package, compiler, driver, container, and OS components without host discovery.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, benchmark artifact, and executable-backend
   security evidence before native performance claims.
@@ -252,6 +254,12 @@ Inspect the diagnostic benchmark-methodology report:
 python examples/benchmark_methodology_report.py
 ```
 
+Inspect the diagnostic toolchain-environment report:
+
+```bash
+python examples/toolchain_environment_report.py
+```
+
 Verify the MLIR design-spike artifact:
 
 ```bash
@@ -301,6 +309,7 @@ pytest -q
 - [Benchmark artifact manifest report](docs/BENCHMARK_ARTIFACT_MANIFEST.md)
 - [Workload scope report](docs/WORKLOAD_SCOPE_REPORT.md)
 - [Benchmark methodology report](docs/BENCHMARK_METHODOLOGY_REPORT.md)
+- [Toolchain environment report](docs/TOOLCHAIN_ENVIRONMENT_REPORT.md)
 - [MVP kernels](docs/MVP_KERNELS.md)
 - [Softmax operation-family planning](docs/SOFTMAX_OPERATION_PLANNING.md)
 - [Golden kernel correctness](docs/GOLDEN_KERNELS.md)

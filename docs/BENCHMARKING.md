@@ -93,6 +93,14 @@ timers, warmup and iteration policies, statistic policy, isolation level,
 outlier handling, and reproducibility policy without storing raw timing samples
 or running benchmarks.
 
+Future performance proposals must also provide a bounded
+[Toolchain Environment Report](TOOLCHAIN_ENVIRONMENT_REPORT.md) matching
+`schemas/toolchain_environment_report.v0.schema.json` before benchmark output
+can be interpreted as reproducible evidence. The toolchain report records
+component identifiers, kinds, version IDs, provenance IDs, and digest status
+without reading environment variables, scanning packages, or discovering
+devices.
+
 Future native performance proposals must also pass the
 [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md). That
 readiness report does not run benchmarks, does not ingest raw benchmark output,

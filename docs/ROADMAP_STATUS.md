@@ -125,6 +125,9 @@ Current slice:
 - Diagnostic Benchmark Methodology Report for measurement clocks, warmup and
   iteration policy, statistic policy, isolation, outlier handling, and
   reproducibility policy.
+- Diagnostic Toolchain Environment Report for versioned runtime, package,
+  compiler, driver, container, and OS component inventory without host
+  discovery.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, leaky-abstraction evidence, planner-overhead
   evidence, correctness goldens, and security review exist.

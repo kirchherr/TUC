@@ -24,6 +24,7 @@ docs/NATIVE_BASELINE_PROVENANCE.md
 docs/BENCHMARK_ARTIFACT_MANIFEST.md
 docs/WORKLOAD_SCOPE_REPORT.md
 docs/BENCHMARK_METHODOLOGY_REPORT.md
+docs/TOOLCHAIN_ENVIRONMENT_REPORT.md
 src/tuc/proof.py
 ```
 
@@ -93,6 +94,7 @@ the performance proof boundary and readiness report supply:
 - native baseline provenance report
 - workload scope report
 - benchmark methodology report
+- toolchain environment report
 - leaky-abstraction report
 - planner-overhead report
 - break-even workload size

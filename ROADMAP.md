@@ -138,6 +138,8 @@ Completed evidence:
 - Benchmark-methodology reports define measurement clocks, iteration policies,
   statistic policy, isolation, outlier handling, and reproducibility policy
   before benchmark numbers can become evidence.
+- Toolchain-environment reports identify versioned runtime, package, compiler,
+  driver, container, and OS components without host discovery.
 
 Next work:
 
@@ -328,6 +330,7 @@ Deliverables:
 - Workload Scope Report for diagnostic workload-family and problem-size
   boundaries.
 - Benchmark Methodology Report for diagnostic measurement policy review.
+- Toolchain Environment Report for diagnostic versioned environment review.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -396,6 +399,9 @@ Go/No-Go:
 - Benchmark-methodology reports must remain data-only and must not include raw
   timing samples, host paths, environment variables, backend artifacts, device
   identifiers, or generated code.
+- Toolchain-environment reports must remain data-only and must not include host
+  paths, environment variables, secrets, package-manager output, device
+  identifiers, backend binaries, or generated code.
 
 ## Phase Zeta: Specialized Hardware Proofs
 
