@@ -125,6 +125,8 @@ Completed evidence:
 - Performance-proof RFC reports track future native performance claim proposals,
   acceptance status, evidence links, security review IDs, and digests while
   keeping native performance claims blocked.
+- Performance claim threshold policy reports require accepted, digest-pinned
+  threshold metadata before "near native" or percentage claims can be reviewed.
 - Baseline benchmark reports are schema-versioned diagnostic artifacts with an
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution
@@ -349,6 +351,8 @@ Deliverables:
   security review.
 - Performance Proof RFC Report for diagnostic claim-proposal governance before
   benchmark artifacts can support a native performance claim.
+- Performance Claim Threshold Policy Report for diagnostic threshold governance
+  before benchmark artifacts can support "near native" or percentage claims.
 - Performance proof boundary covering leaky abstraction and planner overhead
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
@@ -399,14 +403,19 @@ Go/No-Go:
 - Performance claims remain blocked until leaky-abstraction evidence,
   planner-overhead evidence, native baseline provenance, native baseline
   comparison, correctness goldens, security review, an accepted bounded
-  Performance Proof RFC Report, and a passing Performance Proof Readiness
-  report exist.
+  Performance Proof RFC Report, an accepted bounded Performance Claim
+  Threshold Policy Report, and a passing Performance Proof Readiness report
+  exist.
 - Baseline benchmark reports must remain diagnostic-only unless a future native
   benchmark RFC adds separate provenance, artifact, and security gates.
 - Performance proof RFC reports must remain data-only and must not include raw
   benchmark output, raw timing samples, host paths, command lines, environment
   variables, device identifiers, backend artifacts, generated code, native
   source contents, or execution permission.
+- Performance claim threshold policy reports must remain data-only and must not
+  include raw benchmark output, raw timing samples, host paths, command lines,
+  environment variables, device identifiers, backend artifacts, generated code,
+  native source contents, or execution permission.
 - Planner-overhead reports must keep execution timing and break-even workload
   claims explicit rather than hidden in aggregate benchmark numbers.
 - Break-even workload-size reports must remain data-only and must not include

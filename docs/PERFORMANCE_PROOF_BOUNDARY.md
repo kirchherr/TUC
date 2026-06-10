@@ -59,6 +59,35 @@ samples, host paths, command lines, environment variables, device identifiers,
 backend artifacts, generated code, dynamic-library paths, native source
 contents, or execution permission.
 
+## Performance Claim Threshold Policy Gate
+
+Before TUC may use benchmark artifacts to support a native performance claim,
+the claim threshold must be predefined as bounded review data.
+
+The proposal must include:
+
+- threshold-policy identifier
+- workload-scope report identifier
+- comparison metric identifier
+- summary policy identifier
+- threshold kind
+- threshold value in basis points
+- maintainer acceptance status
+- threshold-policy digest status
+
+The current
+[Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
+defines the diagnostic report contract at
+`schemas/performance_claim_threshold_policy_report.v0.schema.json`. It records
+only scoped threshold-policy metadata, acceptance status, and digest status. It
+does not run benchmarks, load artifacts, evaluate raw timing samples, grant
+device access, or prove native performance.
+
+Performance claim threshold policy reports must not include raw benchmark
+output, raw timing samples, host paths, command lines, environment variables,
+device identifiers, backend artifacts, generated code, dynamic-library paths,
+native source contents, or execution permission.
+
 ## Leaky Abstraction Gate
 
 Before TUC may claim native performance parity, a proposal must show where
@@ -345,6 +374,7 @@ Any future performance proof must add:
 
 - dedicated performance proof RFC
 - explicit performance proof RFC report
+- explicit performance claim threshold policy report
 - benchmark methodology document
 - explicit benchmark methodology report
 - explicit toolchain environment report
@@ -397,25 +427,26 @@ until this boundary is satisfied.
 Reviewers must reject performance claims unless every answer is yes:
 
 1. Is the performance proof RFC report present and bounded?
-2. Is the claim scoped to a specific workload family and shape range?
-3. Is the workload scope report present and bounded?
-4. Is the benchmark methodology report present and bounded?
-5. Is the toolchain environment report present and bounded?
-6. Is the native baseline reproducible?
-7. Is the native baseline provenance report present and bounded?
-8. Is the native baseline comparison report present and bounded?
-9. Is mathematical correctness still proven independently?
-10. Are planner overhead and execution time reported separately?
-11. Is the break-even workload-size report present and bounded?
-12. Are cache effects explicit rather than hidden?
-13. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
+2. Is the performance claim threshold policy report present and bounded?
+3. Is the claim scoped to a specific workload family and shape range?
+4. Is the workload scope report present and bounded?
+5. Is the benchmark methodology report present and bounded?
+6. Is the toolchain environment report present and bounded?
+7. Is the native baseline reproducible?
+8. Is the native baseline provenance report present and bounded?
+9. Is the native baseline comparison report present and bounded?
+10. Is mathematical correctness still proven independently?
+11. Are planner overhead and execution time reported separately?
+12. Is the break-even workload-size report present and bounded?
+13. Are cache effects explicit rather than hidden?
+14. Are abstraction leaks listed and assigned to capabilities, HS-IR, runtime
    plans, backend contracts, or backend implementation?
-14. Is HAC-IR still hardware-neutral?
-15. Are runtime plans and compiler decisions golden-tested?
-16. Is benchmark provenance versioned?
-17. Is the benchmark artifact manifest present and bounded?
-18. Is the executable backend security review report present and bounded?
-19. Does the claim avoid broad wording such as "near native" unless the
+15. Is HAC-IR still hardware-neutral?
+16. Are runtime plans and compiler decisions golden-tested?
+17. Is benchmark provenance versioned?
+18. Is the benchmark artifact manifest present and bounded?
+19. Is the executable backend security review report present and bounded?
+20. Does the claim avoid broad wording such as "near native" unless the
     threshold is predefined and measured?
 
 ## Still Blocked

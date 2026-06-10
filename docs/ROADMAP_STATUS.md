@@ -37,6 +37,8 @@ hardware-independent interface into capability-driven runtime planning.
   of the current correctness proof.
 - Diagnostic performance-proof RFC report for future native performance claim
   proposals without benchmark execution or execution permission.
+- Diagnostic performance claim threshold policy report for accepted,
+  digest-pinned threshold metadata before "near native" claims can be reviewed.
 
 ## In Progress
 
@@ -139,6 +141,9 @@ Current slice:
 - Diagnostic Performance Proof RFC Report for future native performance claim
   proposals, acceptance status, evidence links, security review IDs, and
   digests while keeping native performance claims blocked.
+- Diagnostic Performance Claim Threshold Policy Report for future native
+  performance threshold metadata while keeping measured performance claims
+  blocked.
 - Performance Proof Boundary documenting that benchmarks are diagnostic until
   native baseline provenance, native baseline comparison, leaky-abstraction
   evidence, planner-overhead evidence, correctness goldens, and executable
@@ -285,7 +290,9 @@ Current focus:
   decisions can be explained next to manual override effects.
 - Native performance claims remain blocked until
   [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied and
-  [Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md) and
+  [Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md),
+  [Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md),
+  and
   [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) pass.
 - Noise/error-budget score components only after those models are documented
   outside HAC-IR semantics and covered by goldens.

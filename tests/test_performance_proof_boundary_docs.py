@@ -24,6 +24,7 @@ def test_performance_proof_boundary_blocks_native_parity_claims() -> None:
         "Benchmark Artifact Manifest Gate",
         "Executable Backend Security Review Gate",
         "Performance Proof RFC Gate",
+        "Performance Claim Threshold Policy Gate",
         "Planner overhead must not be hidden inside execution time",
         "If planning time is greater than execution time",
         "If a workload requires a hardware-specific optimization",
@@ -37,8 +38,10 @@ def test_performance_proof_boundary_blocks_native_parity_claims() -> None:
         "schemas/benchmark_artifact_manifest_report.v0.schema.json",
         "schemas/executable_backend_security_review_report.v0.schema.json",
         "schemas/performance_proof_rfc_report.v0.schema.json",
+        "schemas/performance_claim_threshold_policy_report.v0.schema.json",
         "hardware-specific performance knobs to HAC-IR",
         "Performance Proof RFC Report",
+        "Performance Claim Threshold Policy Report",
         "Performance Proof Readiness Report",
         "PERFORMANCE_PROOF_REQUIRED_EVIDENCE",
         "tests/golden/proofs/performance_proof_readiness_report.json",
@@ -93,7 +96,9 @@ def test_performance_proof_readiness_doc_is_report_only() -> None:
         "PERFORMANCE_PROOF_BLOCKED_CLAIMS",
         "tests/golden/proofs/performance_proof_readiness_report.json",
         "schemas/performance_proof_rfc_report.v0.schema.json",
+        "schemas/performance_claim_threshold_policy_report.v0.schema.json",
         "not a performance proof RFC report",
+        "not a performance claim threshold policy report",
         "Missing evidence keeps native performance claims blocked",
         "schemas/native_baseline_provenance_report.v0.schema.json",
         "schemas/native_baseline_comparison_report.v0.schema.json",
@@ -135,6 +140,7 @@ def test_benchmarking_doc_references_performance_boundary() -> None:
         "This is not a performance claim",
         "Performance Proof Boundary",
         "Performance Proof RFC Report",
+        "Performance Claim Threshold Policy Report",
         "Performance Proof Readiness Report",
         "must not be used as a native performance parity claim",
         "does not run benchmarks",
@@ -160,10 +166,12 @@ def test_proof_review_doc_blocks_performance_claims() -> None:
         "100 percent native performance",
         "Performance Proof Boundary",
         "Performance Proof RFC Report",
+        "Performance Claim Threshold Policy Report",
         "Performance Proof Readiness Report",
         "Hidden planner overhead",
         "not performance evidence",
         "performance proof RFC report",
+        "performance claim threshold policy report",
         "leaky-abstraction report",
         "native baseline provenance report",
         "native baseline comparison report",
@@ -190,6 +198,8 @@ def test_master_plan_and_roadmap_expose_performance_limits() -> None:
     assert "No native performance parity claim" in roadmap
     assert "Leaky Abstraction And Planner Overhead" in roadmap
     assert "Performance Proof RFC Report" in roadmap
+    assert "Performance Claim Threshold Policy Report" in roadmap
     assert "Performance Proof Readiness Report" in roadmap
     assert "Performance Proof RFC Report" in status
+    assert "Performance Claim Threshold Policy Report" in status
     assert "Performance proof boundary" in status

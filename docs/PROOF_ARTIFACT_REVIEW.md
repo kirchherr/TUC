@@ -21,6 +21,7 @@ tests/test_proof_*.py
 docs/PROOF_*.md
 docs/PERFORMANCE_PROOF_READINESS.md
 docs/PERFORMANCE_PROOF_RFC_REPORT.md
+docs/PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md
 docs/NATIVE_BASELINE_PROVENANCE.md
 docs/NATIVE_BASELINE_COMPARISON_REPORT.md
 docs/BREAK_EVEN_WORKLOAD_SIZE_REPORT.md
@@ -68,6 +69,9 @@ Before approving a proof artifact change, reviewers should confirm:
 - Future native performance claims include a bounded
   [Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md) before
   benchmark artifacts are interpreted as proof evidence.
+- Future native performance claims include a bounded
+  [Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
+  before "near native" or percentage claims are reviewed.
 - The proof does not claim 100 percent native performance.
 
 ## Security Checks
@@ -99,6 +103,7 @@ the performance proof boundary and readiness report supply:
 
 - native baseline provenance
 - performance proof RFC report
+- performance claim threshold policy report
 - native baseline provenance report
 - native baseline comparison report
 - workload scope report

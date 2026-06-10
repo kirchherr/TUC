@@ -99,6 +99,8 @@ The current prototype contains:
   executable surfaces without approving execution.
 - Diagnostic performance-proof RFC reports that track future native performance
   claim proposals, acceptance status, evidence links, and digests.
+- Diagnostic performance claim threshold policy reports that make "near native"
+  or percentage claims require accepted, digest-pinned threshold policy first.
 - Performance proof boundary and readiness report for leaky-abstraction,
   planner-overhead, native baseline, native comparison, benchmark artifact, and
   executable-backend security evidence before native performance claims.
@@ -232,6 +234,12 @@ Inspect the diagnostic performance-proof RFC report:
 python examples/performance_proof_rfc_report.py
 ```
 
+Inspect the diagnostic performance claim threshold policy report:
+
+```bash
+python examples/performance_claim_threshold_policy_report.py
+```
+
 Inspect the diagnostic planner-overhead report:
 
 ```bash
@@ -336,6 +344,7 @@ pytest -q
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
 - [Performance proof RFC report](docs/PERFORMANCE_PROOF_RFC_REPORT.md)
+- [Performance claim threshold policy report](docs/PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
 - [Break-even workload size report](docs/BREAK_EVEN_WORKLOAD_SIZE_REPORT.md)
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)

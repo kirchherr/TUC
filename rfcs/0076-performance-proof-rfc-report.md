@@ -23,6 +23,7 @@ must be reviewable:
 
 - What workload is being claimed?
 - What threshold is being claimed?
+- Which bounded threshold-policy report defines that threshold?
 - What evidence bundle is allowed to support the claim?
 - What acceptance criteria apply?
 - Which executable surfaces were security-reviewed?
@@ -100,4 +101,5 @@ auditable across forks, releases, and future hardware classes.
 - [Performance Proof Boundary](../docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance Proof Readiness Report](../docs/PERFORMANCE_PROOF_READINESS.md)
 - [Performance Proof RFC Report](../docs/PERFORMANCE_PROOF_RFC_REPORT.md)
+- [Performance Claim Threshold Policy Report](../docs/PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
 - `schemas/performance_proof_rfc_report.v0.schema.json`

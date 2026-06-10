@@ -113,6 +113,12 @@ reports must not embed broad performance claims, claim thresholds, acceptance
 criteria, security-review approval, RFC text, evidence bundles, or execution
 permission.
 
+Performance claim thresholds are tracked separately by the
+[Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md)
+and `schemas/performance_claim_threshold_policy_report.v0.schema.json`.
+Baseline benchmark reports must not define "near native" thresholds, acceptance
+thresholds, basis-point policy, or post-hoc claim criteria.
+
 Planner timing is tracked separately by the
 [Planner Overhead Report](PLANNER_OVERHEAD_REPORT.md). Baseline benchmark
 reports must not hide planner overhead inside execution timing.

@@ -31,9 +31,28 @@ PERFORMANCE_PROOF_RFC_DEFAULT_ISSUES = (
     "performance_proof_rfcs_not_supplied",
     "native_performance_claim_blocked",
 )
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION = (
+    "tuc.performance_claim_threshold_policy_report.v0"
+)
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_ARTIFACT_STATUS = "diagnostic_only"
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_CLAIM_STATUS = "blocked"
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_KINDS = (
+    "ratio_to_native_at_least",
+    "overhead_over_native_at_most",
+)
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_STATUSES = (
+    "draft",
+    "reviewed_not_accepted",
+    "accepted_by_maintainers",
+)
+PERFORMANCE_CLAIM_THRESHOLD_POLICY_DEFAULT_ISSUES = (
+    "performance_claim_threshold_policies_not_supplied",
+    "native_performance_claim_blocked",
+)
 PERFORMANCE_PROOF_BOUNDARY_CONTRACT = "performance_proof_boundary.blocking.v0"
 PERFORMANCE_PROOF_REQUIRED_EVIDENCE = (
     "performance_proof_rfc",
+    "performance_claim_threshold_policy",
     "benchmark_methodology",
     "native_baseline_provenance",
     "versioned_toolchain_environment",
@@ -234,6 +253,10 @@ MAX_PERFORMANCE_PROOF_READINESS_ISSUES = 128
 MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES = 512
 MAX_PERFORMANCE_PROOF_RFCS = 128
+MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_BYTES = 64 * 1024
+MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_FIELD_BYTES = 512
+MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICIES = 128
+MAX_PERFORMANCE_CLAIM_THRESHOLD_BASIS_POINTS = 100_000
 MAX_LEAKY_ABSTRACTION_REPORT_BYTES = 64 * 1024
 MAX_LEAKY_ABSTRACTION_FIELD_BYTES = 512
 MAX_LEAKY_ABSTRACTION_FACTS = 128
@@ -361,6 +384,43 @@ class PerformanceProofRFCReport:
             issue for issue in self.issues if issue.startswith("performance_proof_rfc")
         )
         return bool(self.rfcs) and not rfc_issues
+
+
+@dataclass(frozen=True)
+class PerformanceClaimThresholdPolicy:
+    """One bounded threshold policy for a future native performance claim."""
+
+    policy_id: str
+    workload_scope_id: str
+    comparison_metric_id: str
+    summary_policy_id: str
+    threshold_kind: str
+    threshold_basis_points: int
+    policy_status: str = "draft"
+    policy_digest: str = "not_supplied"
+
+
+@dataclass(frozen=True)
+class PerformanceClaimThresholdPolicyReport:
+    """Diagnostic report for future performance claim threshold policies."""
+
+    proposal_name: str
+    policies: tuple[PerformanceClaimThresholdPolicy, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def performance_claim_threshold_policy_ready(self) -> bool:
+        threshold_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue.startswith(
+                (
+                    "performance_claim_threshold_policy",
+                    "performance_claim_threshold_policies",
+                )
+            )
+        )
+        return bool(self.policies) and not threshold_issues
 
 
 @dataclass(frozen=True)
@@ -721,6 +781,35 @@ def build_performance_proof_rfc_report(
     )
 
 
+def build_performance_claim_threshold_policy_report(
+    proposal_name: str,
+    policies: Iterable[PerformanceClaimThresholdPolicy] = (),
+) -> PerformanceClaimThresholdPolicyReport:
+    """Build a bounded data-only report for performance threshold review."""
+
+    _validate_performance_claim_threshold_policy_text(
+        proposal_name,
+        "proposal_name",
+    )
+    normalized_policies = _normalize_performance_claim_threshold_policies(policies)
+    issues = list(PERFORMANCE_CLAIM_THRESHOLD_POLICY_DEFAULT_ISSUES)
+    if normalized_policies:
+        issues.remove("performance_claim_threshold_policies_not_supplied")
+    if any(
+        policy.policy_status != "accepted_by_maintainers"
+        for policy in normalized_policies
+    ):
+        issues.append("performance_claim_threshold_policy_not_accepted")
+    if any(policy.policy_digest == "not_supplied" for policy in normalized_policies):
+        issues.append("performance_claim_threshold_policy_digest_not_supplied")
+
+    return PerformanceClaimThresholdPolicyReport(
+        proposal_name=proposal_name,
+        policies=normalized_policies,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
+
 def build_leaky_abstraction_report(
     hac_ir: IRModule,
     performance_facts: Iterable[LeakyAbstractionFact] = (),
@@ -1059,6 +1148,39 @@ def performance_proof_rfc_report_to_dict(
     }
 
 
+def performance_claim_threshold_policy_report_to_dict(
+    report: PerformanceClaimThresholdPolicyReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible threshold policy report."""
+
+    _validate_performance_claim_threshold_policy_report(report)
+    return {
+        "artifact_status": PERFORMANCE_CLAIM_THRESHOLD_POLICY_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": list(report.issues),
+        "native_performance_claim": False,
+        "performance_claim_status": PERFORMANCE_CLAIM_THRESHOLD_POLICY_CLAIM_STATUS,
+        "performance_claim_threshold_policy_ready": (
+            report.performance_claim_threshold_policy_ready
+        ),
+        "policies": [
+            {
+                "comparison_metric_id": policy.comparison_metric_id,
+                "policy_digest": policy.policy_digest,
+                "policy_id": policy.policy_id,
+                "policy_status": policy.policy_status,
+                "summary_policy_id": policy.summary_policy_id,
+                "threshold_basis_points": policy.threshold_basis_points,
+                "threshold_kind": policy.threshold_kind,
+                "workload_scope_id": policy.workload_scope_id,
+            }
+            for policy in report.policies
+        ],
+        "proposal_name": report.proposal_name,
+        "schema_version": PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION,
+    }
+
+
 def leaky_abstraction_report_to_dict(
     report: LeakyAbstractionReport,
 ) -> dict[str, object]:
@@ -1376,6 +1498,24 @@ def dump_performance_proof_rfc_report(report: PerformanceProofRFCReport) -> str:
     )
     if len(text.encode("utf-8")) > MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES:
         raise ValueError("performance proof RFC report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_performance_claim_threshold_policy_report(
+    report: PerformanceClaimThresholdPolicyReport,
+) -> str:
+    """Render a stable diagnostic performance threshold policy report."""
+
+    text = json.dumps(
+        performance_claim_threshold_policy_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if (
+        len(text.encode("utf-8"))
+        > MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_BYTES
+    ):
+        raise ValueError("performance claim threshold policy report exceeds byte limit")
     return text + "\n"
 
 
@@ -1860,6 +2000,49 @@ def _normalize_performance_proof_rfcs(
     return normalized
 
 
+def _normalize_performance_claim_threshold_policies(
+    policies: Iterable[PerformanceClaimThresholdPolicy],
+) -> tuple[PerformanceClaimThresholdPolicy, ...]:
+    normalized = tuple(policies)
+    if len(normalized) > MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICIES:
+        raise ValueError("performance claim threshold policy count exceeds limit")
+    seen: set[str] = set()
+    for policy in normalized:
+        if not isinstance(policy, PerformanceClaimThresholdPolicy):
+            raise TypeError(
+                "performance claim threshold policies must be "
+                "PerformanceClaimThresholdPolicy"
+            )
+        _validate_performance_claim_threshold_policy_text(
+            policy.policy_id,
+            "policy_id",
+        )
+        _validate_performance_claim_threshold_policy_text(
+            policy.workload_scope_id,
+            "workload_scope_id",
+        )
+        _validate_performance_claim_threshold_policy_text(
+            policy.comparison_metric_id,
+            "comparison_metric_id",
+        )
+        _validate_performance_claim_threshold_policy_text(
+            policy.summary_policy_id,
+            "summary_policy_id",
+        )
+        if policy.policy_id in seen:
+            raise ValueError("duplicate performance claim threshold policy id")
+        if policy.threshold_kind not in PERFORMANCE_CLAIM_THRESHOLD_POLICY_KINDS:
+            raise ValueError("unsupported performance claim threshold kind")
+        if policy.policy_status not in PERFORMANCE_CLAIM_THRESHOLD_POLICY_STATUSES:
+            raise ValueError("unsupported performance claim threshold policy status")
+        _validate_performance_claim_threshold_basis_points(
+            policy.threshold_basis_points
+        )
+        _validate_performance_claim_threshold_policy_digest(policy.policy_digest)
+        seen.add(policy.policy_id)
+    return normalized
+
+
 def _normalize_performance_evidence(
     evidence: Iterable[PerformanceProofReadinessEvidence],
 ) -> dict[str, bool]:
@@ -1962,6 +2145,20 @@ def _validate_performance_proof_rfc_report(
     _normalize_performance_proof_rfcs(report.rfcs)
     for issue in report.issues:
         _validate_performance_proof_rfc_text(issue, "issue")
+
+
+def _validate_performance_claim_threshold_policy_report(
+    report: PerformanceClaimThresholdPolicyReport,
+) -> None:
+    if not isinstance(report, PerformanceClaimThresholdPolicyReport):
+        raise TypeError("performance claim threshold policy report must be report object")
+    _validate_performance_claim_threshold_policy_text(
+        report.proposal_name,
+        "proposal_name",
+    )
+    _normalize_performance_claim_threshold_policies(report.policies)
+    for issue in report.issues:
+        _validate_performance_claim_threshold_policy_text(issue, "issue")
 
 
 def _validate_native_baseline_report(
@@ -2107,6 +2304,34 @@ def _validate_performance_proof_rfc_digest(value: str) -> None:
         return
     if not _SHA256_DIGEST_RE.fullmatch(value):
         raise ValueError("rfc_digest must be not_supplied or sha256 digest")
+
+
+def _validate_performance_claim_threshold_policy_text(
+    value: str,
+    label: str,
+) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(
+            f"{label} must be a safe performance claim threshold policy identifier"
+        )
+    if len(value.encode("utf-8")) > MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds performance claim threshold policy limit")
+
+
+def _validate_performance_claim_threshold_basis_points(value: int) -> None:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise ValueError("threshold_basis_points must be an integer")
+    if value < 1 or value > MAX_PERFORMANCE_CLAIM_THRESHOLD_BASIS_POINTS:
+        raise ValueError("threshold_basis_points exceeds limit")
+
+
+def _validate_performance_claim_threshold_policy_digest(value: str) -> None:
+    if not isinstance(value, str):
+        raise ValueError("policy_digest must be a string")
+    if value == "not_supplied":
+        return
+    if not _SHA256_DIGEST_RE.fullmatch(value):
+        raise ValueError("policy_digest must be not_supplied or sha256 digest")
 
 
 def _validate_native_baseline_text(value: str, label: str) -> None:
@@ -2289,6 +2514,10 @@ __all__ = [
     "EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES",
     "ExecutableBackendSecurityReview",
     "ExecutableBackendSecurityReviewReport",
+    "MAX_PERFORMANCE_CLAIM_THRESHOLD_BASIS_POINTS",
+    "MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICIES",
+    "MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_FIELD_BYTES",
+    "MAX_PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_BYTES",
     "LEAKY_ABSTRACTION_ALLOWED_FACT_HOMES",
     "LEAKY_ABSTRACTION_ARTIFACT_STATUS",
     "LEAKY_ABSTRACTION_DEFAULT_ISSUES",
@@ -2335,6 +2564,12 @@ __all__ = [
     "MAX_PROOF_METADATA_STRING_BYTES",
     "PERFORMANCE_PROOF_BLOCKED_CLAIMS",
     "PERFORMANCE_PROOF_BOUNDARY_CONTRACT",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_ARTIFACT_STATUS",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_CLAIM_STATUS",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_DEFAULT_ISSUES",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_KINDS",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION",
+    "PERFORMANCE_CLAIM_THRESHOLD_POLICY_STATUSES",
     "PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION",
     "PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS",
     "PERFORMANCE_PROOF_RFC_CLAIM_STATUS",
@@ -2342,6 +2577,8 @@ __all__ = [
     "PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION",
     "PERFORMANCE_PROOF_RFC_STATUSES",
     "PERFORMANCE_PROOF_REQUIRED_EVIDENCE",
+    "PerformanceClaimThresholdPolicy",
+    "PerformanceClaimThresholdPolicyReport",
     "PerformanceProofReadinessError",
     "PerformanceProofReadinessEvidence",
     "PerformanceProofReadinessIssue",
@@ -2359,6 +2596,7 @@ __all__ = [
     "build_benchmark_methodology_report",
     "build_break_even_workload_size_report",
     "build_executable_backend_security_review_report",
+    "build_performance_claim_threshold_policy_report",
     "build_leaky_abstraction_report",
     "build_native_baseline_comparison_report",
     "build_native_baseline_provenance_report",
@@ -2369,6 +2607,7 @@ __all__ = [
     "dump_benchmark_methodology_report",
     "dump_break_even_workload_size_report",
     "dump_executable_backend_security_review_report",
+    "dump_performance_claim_threshold_policy_report",
     "dump_toolchain_environment_report",
     "dump_leaky_abstraction_report",
     "dump_native_baseline_comparison_report",
@@ -2379,6 +2618,7 @@ __all__ = [
     "leaky_abstraction_report_to_dict",
     "native_baseline_comparison_report_to_dict",
     "native_baseline_provenance_report_to_dict",
+    "performance_claim_threshold_policy_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "performance_proof_rfc_report_to_dict",
     "proof_metadata_from_partition_plan",

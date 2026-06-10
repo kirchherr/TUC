@@ -47,6 +47,7 @@ The report is ready only when every required evidence ID is present.
 The v0 report requires:
 
 - `performance_proof_rfc`
+- `performance_claim_threshold_policy`
 - `benchmark_methodology`
 - `native_baseline_provenance`
 - `versioned_toolchain_environment`
