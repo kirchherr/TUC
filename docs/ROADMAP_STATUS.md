@@ -63,6 +63,11 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Gate v0 with deterministic golden at
   `tests/golden/proofs/runtime_evidence_gate.txt` and CI coverage in the
   `python` workflow job.
+- Runtime Candidate Score Evidence v0 with schema at
+  `schemas/runtime_candidate_score_evidence_report.v0.schema.json`,
+  deterministic golden at
+  `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`,
+  and CI coverage in the `python` workflow job.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
   deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
@@ -162,6 +167,9 @@ Current slice:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`.
+- Runtime Candidate Score Evidence at
+  `examples/runtime_candidate_score_evidence.py`, with golden evidence at
+  `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -385,6 +393,8 @@ Current focus:
   and separate from HAC-IR semantics.
 - Use `CandidateScore` diagnostics as the review surface before adding richer
   transfer/noise-aware candidate scoring.
+- Keep Runtime Candidate Score Evidence passing before accepting richer scoring
+  components or changing candidate score semantics.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 

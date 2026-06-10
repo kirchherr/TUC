@@ -248,6 +248,10 @@ Implemented now:
   Manifest Claim Review plus Backend Author Readiness without requiring
   repository write permissions, secrets, publishing tokens, device access,
   network access, or backend artifact execution.
+- Runtime Candidate Score Evidence runs in the read-only CI job and verifies
+  score diagnostics as bounded data without adding plugin discovery, backend
+  imports, host-path reads, environment reads, device access, network access,
+  generated artifact execution, JIT, or backend execution permission.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

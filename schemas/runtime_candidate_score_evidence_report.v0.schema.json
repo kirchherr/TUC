@@ -1,0 +1,263 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_candidate_score_evidence_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "candidate_score_count": {
+      "maximum": 128,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "candidate_score_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "candidate_scores": {
+      "items": {
+        "$ref": "#/$defs/candidate_score"
+      },
+      "maxItems": 128,
+      "type": "array"
+    },
+    "compiler_decision_candidate_score_count": {
+      "maximum": 128,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "compiler_decision_candidate_score_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "default_plan_candidate_score_count": {
+      "maximum": 128,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "evidence_contract": {
+      "const": "runtime_candidate_score_evidence.data_only.v0"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "operation_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "rejected_candidate_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_candidate_score_evidence_report.v0"
+    },
+    "score_units": {
+      "items": {
+        "enum": [
+          "bytes",
+          "latency_ns"
+        ]
+      },
+      "maxItems": 2,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "selected_candidate_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "selection_stages": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 8,
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "candidate_score_count",
+    "candidate_score_digest",
+    "candidate_scores",
+    "compiler_decision_candidate_score_count",
+    "compiler_decision_candidate_score_digest",
+    "default_plan_candidate_score_count",
+    "evidence_contract",
+    "graph_name",
+    "issues",
+    "operation_count",
+    "passed",
+    "rejected_candidate_count",
+    "schema_version",
+    "score_units",
+    "selected_candidate_count",
+    "selection_stages"
+  ],
+  "type": "object",
+  "$defs": {
+    "candidate_score": {
+      "additionalProperties": false,
+      "properties": {
+        "backend_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout_conversion_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "memory_domain": {
+          "enum": [
+            "host_ram",
+            "gpu_hbm",
+            "device_sram",
+            "analog_weight_bank",
+            "neuromorphic_synapse_array",
+            "persistent_nvm",
+            "stream_buffer",
+            "unknown"
+          ]
+        },
+        "operation_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "preferred_memory_domain_match": {
+          "type": "boolean"
+        },
+        "produced_layout": {
+          "enum": [
+            "row_major",
+            "column_major",
+            "blocked",
+            "vector",
+            "unknown"
+          ]
+        },
+        "selected": {
+          "type": "boolean"
+        },
+        "selection_stage": {
+          "$ref": "#/$defs/report_text"
+        },
+        "transfer_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "transfer_score": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "transfer_score_unit": {
+          "enum": [
+            "bytes",
+            "latency_ns"
+          ]
+        }
+      },
+      "required": [
+        "backend_name",
+        "layout_conversion_bytes",
+        "memory_domain",
+        "operation_name",
+        "preferred_memory_domain_match",
+        "produced_layout",
+        "selected",
+        "selection_stage",
+        "transfer_bytes",
+        "transfer_score",
+        "transfer_score_unit"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "operation_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "operation_name"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    }
+  }
+}

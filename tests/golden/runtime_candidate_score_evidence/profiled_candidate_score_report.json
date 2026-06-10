@@ -1,0 +1,85 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_score_count": 4,
+  "candidate_score_digest": "85b67bbc10d3e31a08ccbb567b0ba1a9587eaf212f03fb419b224862fa6829fc",
+  "candidate_scores": [
+    {
+      "backend_name": "analog",
+      "layout_conversion_bytes": 0,
+      "memory_domain": "analog_weight_bank",
+      "operation_name": "projection",
+      "preferred_memory_domain_match": false,
+      "produced_layout": "row_major",
+      "selected": true,
+      "selection_stage": "supported",
+      "transfer_bytes": 0,
+      "transfer_score": 0.0,
+      "transfer_score_unit": "latency_ns"
+    },
+    {
+      "backend_name": "gpu",
+      "layout_conversion_bytes": 0,
+      "memory_domain": "gpu_hbm",
+      "operation_name": "projection",
+      "preferred_memory_domain_match": false,
+      "produced_layout": "row_major",
+      "selected": false,
+      "selection_stage": "supported",
+      "transfer_bytes": 0,
+      "transfer_score": 0.0,
+      "transfer_score_unit": "latency_ns"
+    },
+    {
+      "backend_name": "analog",
+      "layout_conversion_bytes": 0,
+      "memory_domain": "analog_weight_bank",
+      "operation_name": "activation",
+      "preferred_memory_domain_match": false,
+      "produced_layout": "row_major",
+      "selected": true,
+      "selection_stage": "supported",
+      "transfer_bytes": 0,
+      "transfer_score": 0.0,
+      "transfer_score_unit": "latency_ns"
+    },
+    {
+      "backend_name": "gpu",
+      "layout_conversion_bytes": 0,
+      "memory_domain": "gpu_hbm",
+      "operation_name": "activation",
+      "preferred_memory_domain_match": false,
+      "produced_layout": "row_major",
+      "selected": false,
+      "selection_stage": "supported",
+      "transfer_bytes": 64,
+      "transfer_score": 5001.0,
+      "transfer_score_unit": "latency_ns"
+    }
+  ],
+  "compiler_decision_candidate_score_count": 4,
+  "compiler_decision_candidate_score_digest": "85b67bbc10d3e31a08ccbb567b0ba1a9587eaf212f03fb419b224862fa6829fc",
+  "default_plan_candidate_score_count": 0,
+  "evidence_contract": "runtime_candidate_score_evidence.data_only.v0",
+  "graph_name": "runtime_candidate_score_evidence",
+  "issues": [],
+  "operation_count": 2,
+  "passed": true,
+  "rejected_candidate_count": 2,
+  "schema_version": "tuc.runtime_candidate_score_evidence_report.v0",
+  "score_units": [
+    "latency_ns"
+  ],
+  "selected_candidate_count": 2,
+  "selection_stages": [
+    "supported"
+  ]
+}

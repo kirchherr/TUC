@@ -84,6 +84,15 @@ when multiple accepted backend candidates remain:
 Runtime-plan dumps include a `candidate_scores` block only when diagnostics are
 enabled. Compiler decision reports carry the same evidence per operation.
 
+Runtime Candidate Score Evidence adds a schema-versioned review artifact for
+this boundary:
+
+```bash
+python examples/runtime_candidate_score_evidence.py
+```
+
+See [Runtime Candidate Score Evidence](RUNTIME_CANDIDATE_SCORE_EVIDENCE.md).
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:

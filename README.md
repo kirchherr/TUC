@@ -93,6 +93,8 @@ The current prototype contains:
   evidence, now complete across current graph fixtures.
 - Runtime Executor Conformance v0 with schema-versioned golden evidence for
   trusted executor support and rejection behavior.
+- Runtime Candidate Score Evidence v0 with schema-versioned golden evidence for
+  opt-in score diagnostics and default score silence.
 - `systolic-sim` as a second trusted in-process accelerator simulator with
   blocked-layout output, runtime transfer/layout-conversion evidence, and a
   dedicated proof.
@@ -263,6 +265,12 @@ Run the Runtime Evidence Gate used by CI:
 
 ```bash
 python examples/runtime_evidence_gate.py
+```
+
+Inspect runtime candidate score evidence:
+
+```bash
+python examples/runtime_candidate_score_evidence.py
 ```
 
 Inspect data-movement metadata:
@@ -454,6 +462,7 @@ pytest -q
 - [Runtime Executor Conformance](docs/RUNTIME_EXECUTOR_CONFORMANCE.md)
 - [Runtime evidence matrix](docs/RUNTIME_EVIDENCE_MATRIX.md)
 - [Runtime Evidence Gate](docs/RUNTIME_EVIDENCE_GATE.md)
+- [Runtime Candidate Score Evidence](docs/RUNTIME_CANDIDATE_SCORE_EVIDENCE.md)
 - [Systolic simulator proof](docs/SYSTOLIC_SIMULATOR.md)
 - [Manifest Claim Review](docs/MANIFEST_CLAIM_REVIEW.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)

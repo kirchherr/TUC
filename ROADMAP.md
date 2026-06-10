@@ -365,6 +365,9 @@ Completed evidence:
 - Opt-in `CandidateScore` diagnostics expose deterministic transfer, layout,
   and preferred-domain score components without changing default placement
   behavior.
+- Runtime Candidate Score Evidence reports verify default score silence,
+  opt-in score emission, compiler decision-report parity, and selected/rejected
+  candidate visibility.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -385,6 +388,8 @@ Go/No-Go:
 - Movement costs are explicit.
 - Fallbacks do not hide semantic changes.
 - Runtime planning remains deterministic for test fixtures.
+- Candidate score diagnostics remain evidence, not hidden automatic global
+  optimization.
 
 ## Phase Epsilon: Real Triton Integration
 
