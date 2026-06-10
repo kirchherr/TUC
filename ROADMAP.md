@@ -126,6 +126,8 @@ Completed evidence:
   explicit non-performance-claim boundary.
 - Planner-overhead reports separate compiler/planner phases from execution
   timing and keep break-even claims blocked.
+- Break-even workload-size reports identify future planning-amortization
+  thresholds as bounded metadata while keeping planner-benefit claims blocked.
 - Leaky-abstraction reports keep hardware-specific performance facts assigned
   to homes outside HAC-IR.
 - Native-baseline provenance reports identify native comparison candidates as
@@ -325,6 +327,8 @@ Deliverables:
   core success metric.
 - Baseline benchmark report schema for diagnostic-only timing artifacts.
 - Planner Overhead Report for diagnostic compiler/planner phase separation.
+- Break-Even Workload Size Report for diagnostic planning-amortization
+  metadata.
 - Leaky Abstraction Report for diagnostic HAC-IR boundary review.
 - Native Baseline Provenance Report for diagnostic native comparison
   provenance.
@@ -390,6 +394,9 @@ Go/No-Go:
   benchmark RFC adds separate provenance, artifact, and security gates.
 - Planner-overhead reports must keep execution timing and break-even workload
   claims explicit rather than hidden in aggregate benchmark numbers.
+- Break-even workload-size reports must remain data-only and must not include
+  host paths, command lines, raw timing samples, raw native output, backend
+  artifacts, device identifiers, benchmark report contents, or generated code.
 - Leaky-abstraction reports must keep hardware-specific performance facts out
   of HAC-IR even when those facts are required for future native speed.
 - Native-baseline provenance reports must remain data-only and must not include

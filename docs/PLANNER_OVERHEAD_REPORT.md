@@ -45,6 +45,11 @@ reported as `not_measured`.
 Execution is also explicitly reported as `not_measured`. Planner overhead must
 not be hidden inside execution time.
 
+Break-even workload-size evidence is tracked separately by
+[Break-Even Workload Size Report](BREAK_EVEN_WORKLOAD_SIZE_REPORT.md) and
+`schemas/break_even_workload_size_report.v0.schema.json`. The planner-overhead
+report must not embed raw timing samples or unscoped break-even claims.
+
 ## Security Boundary
 
 The report must not include raw timing samples, host paths, hardware serials,

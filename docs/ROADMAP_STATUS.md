@@ -114,6 +114,8 @@ Current slice:
   non-performance-proof markers.
 - Diagnostic Planner Overhead Report for compiler/planner phase separation
   with execution timing and break-even claims still blocked.
+- Diagnostic Break-Even Workload Size Report for planning-amortization metadata
+  without raw timing samples or benchmark artifact loading.
 - Diagnostic Leaky Abstraction Report for HAC-IR boundary review with
   hardware-specific performance facts assigned outside HAC-IR.
 - Diagnostic Native Baseline Provenance Report for bounded native comparison

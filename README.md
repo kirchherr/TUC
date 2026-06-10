@@ -79,6 +79,8 @@ The current prototype contains:
   marked as non-performance-proof artifacts.
 - Diagnostic planner-overhead reports that separate compiler/planner phases
   from execution timing.
+- Diagnostic break-even workload-size reports that track future amortization
+  thresholds without embedding raw timing samples.
 - Diagnostic leaky-abstraction reports that keep hardware-specific performance
   facts outside HAC-IR.
 - Diagnostic native-baseline provenance reports that identify future native
@@ -226,6 +228,12 @@ Inspect the diagnostic planner-overhead report:
 python examples/planner_overhead_report.py
 ```
 
+Inspect the diagnostic break-even workload-size report:
+
+```bash
+python examples/break_even_workload_size_report.py
+```
+
 Inspect the diagnostic leaky-abstraction report:
 
 ```bash
@@ -312,6 +320,7 @@ pytest -q
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
+- [Break-even workload size report](docs/BREAK_EVEN_WORKLOAD_SIZE_REPORT.md)
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
 - [Native baseline provenance report](docs/NATIVE_BASELINE_PROVENANCE.md)
 - [Native baseline comparison report](docs/NATIVE_BASELINE_COMPARISON_REPORT.md)

@@ -41,7 +41,7 @@ The readiness report tracks:
 - native baseline comparison
 - leaky-abstraction report
 - planner-overhead report
-- break-even workload size
+- break-even workload-size report
 - runtime-plan goldens
 - compiler decision-report goldens
 - benchmark report schema
@@ -80,6 +80,12 @@ The current diagnostic planner-overhead report schema is
 existence of a bounded planner phase-separation report. It does not satisfy
 break-even workload-size evidence, execution timing evidence, native baseline
 comparison, or native performance parity.
+
+The current diagnostic break-even workload-size report schema is
+`schemas/break_even_workload_size_report.v0.schema.json`. It can satisfy only
+the existence of a bounded break-even workload-size metadata contract. It does
+not run benchmarks, load benchmark artifacts, ingest raw timing samples, or
+prove native performance parity.
 
 The current diagnostic leaky-abstraction report schema is
 `schemas/leaky_abstraction_report.v0.schema.json`. It can satisfy only the
@@ -163,6 +169,11 @@ The readiness report is not a toolchain environment report. Versioned toolchain
 inventory is tracked by
 [Toolchain Environment Report](TOOLCHAIN_ENVIRONMENT_REPORT.md), which is
 data-only and remains separate from host discovery.
+
+The readiness report is not a break-even workload-size report. Break-even
+metadata is tracked by
+[Break-Even Workload Size Report](BREAK_EVEN_WORKLOAD_SIZE_REPORT.md), which is
+data-only and remains separate from raw timing samples.
 
 ## Evidence
 
