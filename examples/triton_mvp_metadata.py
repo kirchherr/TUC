@@ -18,7 +18,12 @@ from tuc.reference import (
     reference_reduction_sum,
     reference_softmax,
 )
-from tuc.runtime import RuntimeExecutionResult, execute_graph
+from tuc.runtime import (
+    RuntimeExecutionReadinessReport,
+    RuntimeExecutionResult,
+    execute_graph,
+    runtime_execution_readiness_report,
+)
 
 FloatArray = NDArray[np.float64]
 
@@ -30,6 +35,7 @@ class TritonMvpMetadataReport:
     metadata: TritonKernelMetadata
     graph: ComputeGraph
     compiled: CompilationResult
+    readiness: RuntimeExecutionReadinessReport
     execution: RuntimeExecutionResult
     result: FloatArray
     reference: FloatArray
@@ -179,6 +185,10 @@ def run_report() -> TritonMvpMetadataReport:
     graph = metadata.to_compute_graph()
     compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
     inputs = mvp_inputs()
+    readiness = runtime_execution_readiness_report(
+        compiled.hac_ir.graph,
+        compiled.partition_plan,
+    )
     execution = execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)
     result = execution.output_for("activated")
     expected = reference_result(inputs)
@@ -186,6 +196,7 @@ def run_report() -> TritonMvpMetadataReport:
         metadata=metadata,
         graph=graph,
         compiled=compiled,
+        readiness=readiness,
         execution=execution,
         result=result,
         reference=expected,
@@ -205,6 +216,9 @@ def main() -> None:
 
     print("\n== runtime plan ==")
     print(report.compiled.dump_runtime_plan())
+
+    print("\n== execution readiness ==")
+    print(report.readiness.dump())
 
     print("\n== execution trace ==")
     print(report.execution.trace.dump())

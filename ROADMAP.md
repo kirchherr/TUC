@@ -148,6 +148,8 @@ Completed evidence:
   forbidden.
 - Runtime execution readiness reports validate runtime plans against trusted
   backend executor contracts before any operation executes.
+- Triton-like MVP metadata graph readiness evidence covers `matmul`,
+  `softmax`, `reduction`, and `elementwise` before execution.
 - Runtime operation semantic contracts validate MVP operation shapes, axes, and
   supported elementwise kernels before trusted kernels run.
 - Runtime tensor value contracts enforce declared shapes, `float64` dtype, and

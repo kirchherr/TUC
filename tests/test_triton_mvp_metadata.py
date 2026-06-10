@@ -23,6 +23,12 @@ _GOLDEN_TRACE = (
     / "execution_traces"
     / "triton_metadata_mvp_families.txt"
 )
+_GOLDEN_READINESS = (
+    Path(__file__).parent
+    / "golden"
+    / "execution_readiness"
+    / "triton_metadata_mvp_families.txt"
+)
 
 
 def test_triton_mvp_metadata_covers_all_mvp_operation_families() -> None:
@@ -94,6 +100,28 @@ def test_triton_mvp_metadata_runtime_executor_covers_all_mvp_families() -> None:
     ).rstrip("\n")
 
 
+def test_triton_mvp_metadata_runtime_readiness_covers_all_mvp_families() -> None:
+    report = run_report()
+
+    assert tuple(step.operation_kind for step in report.readiness.steps) == (
+        OperationKind.MATMUL,
+        OperationKind.SOFTMAX,
+        OperationKind.MATMUL,
+        OperationKind.REDUCTION,
+        OperationKind.ELEMENTWISE,
+    )
+    assert tuple(step.planned_backend for step in report.readiness.steps) == (
+        "linear-sim",
+        DEFAULT_FALLBACK_BACKEND,
+        "linear-sim",
+        "linear-sim",
+        DEFAULT_FALLBACK_BACKEND,
+    )
+    assert report.readiness.dump() == _GOLDEN_READINESS.read_text(
+        encoding="utf-8"
+    ).rstrip("\n")
+
+
 def test_triton_mvp_metadata_example_runs() -> None:
     completed = subprocess.run(
         [sys.executable, "examples/triton_mvp_metadata.py"],
@@ -103,6 +131,7 @@ def test_triton_mvp_metadata_example_runs() -> None:
     )
 
     assert "== intake report ==" in completed.stdout
+    assert "== execution readiness ==" in completed.stdout
     assert "== execution trace ==" in completed.stdout
     assert "triton_metadata_mvp_families" in completed.stdout
     assert 'operation_kinds = "matmul,softmax,matmul,reduction,elementwise"' in completed.stdout
