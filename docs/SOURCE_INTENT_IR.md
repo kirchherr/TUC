@@ -101,3 +101,8 @@ ComputeGraph
 Only the plain-data to Source Intent IR and Source Intent IR to metadata arrows
 exist today. The source-text and preflight arrows around them remain future
 work.
+
+[Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) defines the
+required future RFC, budgets, corpus, diagnostics, goldens, HAC-IR neutrality
+review, and conformance evidence before source text may create Source Intent
+IR.

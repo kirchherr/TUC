@@ -5,7 +5,13 @@ from math import isfinite
 
 import pytest
 
-from tuc.benchmarks import BenchmarkError, run_baseline_benchmarks
+from tuc.benchmarks import (
+    BENCHMARK_REPORT_ARTIFACT_STATUS,
+    BENCHMARK_REPORT_CLAIM_BOUNDARY,
+    BENCHMARK_REPORT_SCHEMA_VERSION,
+    BenchmarkError,
+    run_baseline_benchmarks,
+)
 
 
 def test_baseline_benchmark_runs_cpu_cases() -> None:
@@ -47,5 +53,26 @@ def test_baseline_benchmark_report_is_json_serializable() -> None:
 
     payload = json.loads(report.to_json())
 
+    assert payload["schema_version"] == BENCHMARK_REPORT_SCHEMA_VERSION
     assert payload["suite_version"] == "baseline.v0"
+    assert payload["artifact_status"] == BENCHMARK_REPORT_ARTIFACT_STATUS
+    assert payload["claim_boundary"] == BENCHMARK_REPORT_CLAIM_BOUNDARY
+    assert payload["native_performance_claim"] is False
     assert len(payload["results"]) == 4
+
+
+def test_baseline_benchmark_report_blocks_native_claim_fields() -> None:
+    report = run_baseline_benchmarks(iterations=1, warmup=0, include_cuda=True)
+    payload = report.to_mapping()
+
+    for forbidden in (
+        "native_performance_parity",
+        "host_path",
+        "device_id",
+        "hardware_serial",
+        "plugin_entrypoint",
+        "backend_artifact",
+        "generated_code",
+        "raw_timing_samples",
+    ):
+        assert forbidden not in payload

@@ -112,3 +112,8 @@ direct source can affect the compiler pipeline.
 
 The Source Intent IR data model is documented in
 [Source Intent IR](SOURCE_INTENT_IR.md). The preflight must not create it.
+
+[Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) defines the
+required future evidence before source text or preflight-adjacent syntax data
+may create `source_intent.v0` plain data. The preflight remains diagnostic
+only and must not feed Source Intent Intake.

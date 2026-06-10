@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/baseline_benchmark_report.v0.schema.json",
+  "title": "TUC Baseline Benchmark Report v0",
+  "description": "Diagnostic-only schema for CPU-first baseline benchmark reports. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "claim_boundary",
+    "devices",
+    "metadata",
+    "native_performance_claim",
+    "results",
+    "schema_version",
+    "suite_version"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "devices": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/device_status"}
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["numpy_version", "python_version", "system"],
+      "properties": {
+        "numpy_version": {"$ref": "#/$defs/report_text"},
+        "python_version": {"$ref": "#/$defs/report_text"},
+        "system": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "native_performance_claim": {"const": false},
+    "results": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {"$ref": "#/$defs/result"}
+    },
+    "schema_version": {"const": "tuc.baseline_benchmark_report.v0"},
+    "suite_version": {"const": "baseline.v0"}
+  },
+  "$defs": {
+    "benchmark_name": {
+      "type": "string",
+      "enum": [
+        "matmul_64x64",
+        "elementwise_relu_4096",
+        "reduction_sum_128x64_axis1",
+        "softmax_128x32_axis1"
+      ]
+    },
+    "device_name": {
+      "type": "string",
+      "enum": ["cpu", "cuda"]
+    },
+    "device_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["available", "name", "reason"],
+      "properties": {
+        "available": {"type": "boolean"},
+        "name": {"$ref": "#/$defs/device_name"},
+        "reason": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "duration_ns": {
+      "type": "number",
+      "minimum": 0
+    },
+    "iteration_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10000
+    },
+    "operation_name": {
+      "type": "string",
+      "enum": ["matmul", "elementwise.relu", "reduction.sum", "softmax"]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device",
+        "iterations",
+        "mean_ns",
+        "median_ns",
+        "min_ns",
+        "name",
+        "operation",
+        "output_checksum",
+        "warmup"
+      ],
+      "properties": {
+        "device": {"const": "cpu"},
+        "iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "mean_ns": {"$ref": "#/$defs/duration_ns"},
+        "median_ns": {"$ref": "#/$defs/duration_ns"},
+        "min_ns": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {"$ref": "#/$defs/benchmark_name"},
+        "operation": {"$ref": "#/$defs/operation_name"},
+        "output_checksum": {"type": "number"},
+        "warmup": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      }
+    }
+  }
+}

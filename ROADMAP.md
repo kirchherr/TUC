@@ -40,6 +40,11 @@ If the answer to the first question is no, the item is not core roadmap work.
 - No complete Triton fork.
 - No production CUDA, HIP, photonic, or neuromorphic backend.
 - No performance-parity claim against vendor libraries.
+- No native performance parity claim before
+  [Performance Proof Boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md) is
+  satisfied and
+  [Performance Proof Readiness Report](docs/PERFORMANCE_PROOF_READINESS.md)
+  passes.
 - No auto-discovery or execution of third-party backend plugins.
 - No arbitrary PyTorch model support.
 - No native parser, native MLIR dialect, or executable artifact path without a
@@ -112,6 +117,13 @@ Completed evidence:
 - Proof reports include deterministic metadata for proof version, graph family,
   and backend set.
 - Proof artifact changes have a reviewer-facing checklist and merge gate.
+- Performance proof boundaries are documented: Objective Alpha proves
+  correctness and inspectability, not native performance parity.
+- Performance proof readiness is machine-readable and intentionally blocked
+  until leaky-abstraction, planner-overhead, native-baseline, benchmark-artifact,
+  and executable-backend security evidence exists.
+- Baseline benchmark reports are schema-versioned diagnostic artifacts with an
+  explicit non-performance-claim boundary.
 
 Next work:
 
@@ -284,11 +296,19 @@ Deliverables:
 - Execution-free Triton source preflight with bounded diagnostics.
 - Triton source preflight fuzz/property corpus.
 - Source Intent Frontend Conformance report for external frontend authors.
+- Source Intent Frontend Conformance report JSON Schema.
+- Source-To-Intent Parser Gate for future source parser proposals.
+- Source-To-Intent Readiness report for parser proposal evidence.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
 - Optional performance baselines, treated as diagnostic data rather than the
   core success metric.
+- Baseline benchmark report schema for diagnostic-only timing artifacts.
+- Performance proof boundary covering leaky abstraction and planner overhead
+  before native performance claims.
+- Performance Proof Readiness report for future native performance proposal
+  evidence.
 
 Go/No-Go:
 
@@ -323,10 +343,20 @@ Go/No-Go:
   constructed `SourceIntentModule`; source text and preflight reports remain
   disconnected until a separate source-to-intent security gate is accepted.
 - External frontend authors must first provide Source Intent Frontend
-  Conformance evidence for accepted plain data and rejected hostile cases.
+  Conformance evidence for accepted plain data and rejected hostile cases,
+  using the versioned conformance report schema.
+- Source-to-intent parser proposals must satisfy the Source-To-Intent Parser
+  Gate before source text can create `source_intent.v0` plain data.
+- Source-to-intent parser proposals must pass the Source-To-Intent Readiness
+  report before source text can influence compiler artifacts.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
+- Performance claims remain blocked until leaky-abstraction evidence,
+  planner-overhead evidence, native baseline provenance, correctness goldens,
+  security review, and a passing Performance Proof Readiness report exist.
+- Baseline benchmark reports must remain diagnostic-only unless a future native
+  benchmark RFC adds separate provenance, artifact, and security gates.
 
 ## Phase Zeta: Specialized Hardware Proofs
 
@@ -436,6 +466,16 @@ references, and reproducible golden reports.
 
 Mitigation: keep rule-based deterministic planning until candidate scoring is
 testable and explainable.
+
+### Risk: Leaky Abstraction And Planner Overhead
+
+Mitigation: do not claim native performance parity until
+[Performance Proof Boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md) is satisfied
+and
+[Performance Proof Readiness Report](docs/PERFORMANCE_PROOF_READINESS.md)
+passes.
+Hardware-specific optimization details must stay outside HAC-IR, and planning
+overhead must be measured separately from execution time.
 
 ### Risk: Insecure Plugin Surface
 

@@ -90,8 +90,8 @@ All budget failures must fail closed with bounded diagnostics.
 
 ## Parser Output Contract
 
-The only accepted output of a future Triton source parser is validated
-Triton-like metadata or a validated `ComputeGraph`.
+The only accepted first semantic output of a future Triton source parser is
+`source_intent.v0` plain data that passes Source Intent Intake.
 
 The accepted architecture is:
 
@@ -111,6 +111,9 @@ Equivalently: source text -> bounded syntax data -> canonical source-intent IR -
 No stage may execute user-controlled code,
 inspect runtime Python objects, discover backends, or attach hardware-specific
 placement semantics.
+
+A future source parser must not produce metadata, `ComputeGraph`, TLIR, HAC-IR,
+HS-IR, runtime plans, backend decisions, or backend artifacts directly.
 
 The output must include deterministic evidence equivalent to the current
 metadata intake path:
@@ -171,15 +174,17 @@ Canonical Source Intent IR v0 exists as a data model. RFC 0054 permits only
 execution-free conversion from an already constructed `SourceIntentModule` to
 schema-versioned metadata. Source text and preflight reports must remain
 disconnected from Source Intent IR, `ComputeGraph`, TLIR, HAC-IR, HS-IR,
-runtime plans, and compiler decision reports until a separate source-to-intent
-RFC adds parser budgets, corpus, deterministic diagnostics, goldens, and
-security-review evidence.
+runtime plans, and compiler decision reports until
+[Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is satisfied by
+a separate parser implementation RFC.
 
 RFC 0054 permits only execution-free conversion from an already constructed
 `SourceIntentModule` to schema-versioned metadata.
 
 Source text and preflight reports must remain disconnected from Source Intent
 IR.
+
+Source-To-Intent Parser Gate blocks source text from compiler artifacts until Source Intent Intake succeeds.
 
 ## HAC-IR Neutrality Gate
 

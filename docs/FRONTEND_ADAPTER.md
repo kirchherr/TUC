@@ -57,6 +57,22 @@ defines a reusable certification path for external frontend authors that emit
 frontend packages, parse source text, discover plugins, or execute backend
 artifacts.
 
+[`SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md`](SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md)
+documents the machine-readable JSON Schema for deterministic frontend
+conformance report artifacts:
+`schemas/source_intent_frontend_conformance_report.v0.schema.json`.
+
+[`SOURCE_TO_INTENT_PARSER_GATE.md`](SOURCE_TO_INTENT_PARSER_GATE.md) defines
+the required future gate before source text or preflight reports may create
+`source_intent.v0` plain data. It keeps parser work blocked until budgets,
+corpus, diagnostics, goldens, HAC-IR neutrality review, and conformance
+evidence exist.
+
+[`SOURCE_TO_INTENT_READINESS.md`](SOURCE_TO_INTENT_READINESS.md) defines a
+deterministic report for reviewing whether a future parser proposal has every
+required gate artifact. The current golden report intentionally remains
+blocked.
+
 ## Security Rules
 
 Frontend metadata is treated as untrusted data:

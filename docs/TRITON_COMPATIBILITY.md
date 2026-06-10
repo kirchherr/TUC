@@ -23,7 +23,9 @@ compatibility on day one.
 | Source Intent JSON Schema | L1 | Machine-readable `source_intent.v0` schema documents the plain-data contract for external frontend authors while runtime validation remains in Source Intent Intake. |
 | Canonical Source Intent IR | L1 | Data-only frontend contract exists with deterministic dump and negative hardware-leakage tests; conversion is exposed only through a separate Source Intent Metadata adapter. |
 | Source Intent Metadata Conversion | L2 | Execution-free adapter converts already constructed Source Intent IR to schema-versioned metadata, with source-intake, HAC-IR, runtime-plan, and compiler decision-report goldens. |
-| Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, metadata conversion, graph construction, and neutral planning while rejected cases fail closed at intake. |
+| Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, metadata conversion, graph construction, and neutral planning while rejected cases fail closed at intake; report artifacts have a JSON Schema. |
+| Source-To-Intent Parser Gate | L0 | Parser implementation remains blocked, but the required future RFC, budgets, corpus, diagnostics, goldens, neutrality review, and conformance evidence are defined. |
+| Source-To-Intent Readiness Report | L0 | Parser implementation remains blocked, with deterministic readiness evidence showing which required gate artifacts are still missing. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
@@ -64,6 +66,17 @@ compatibility on day one.
   [Source Intent Frontend Conformance](SOURCE_INTENT_FRONTEND_CONFORMANCE.md).
   It checks in-memory plain-data cases and does not load frontend packages,
   parse source text, discover plugins, or execute backend artifacts.
+- Source Intent Frontend Conformance reports use the schema documented in
+  [Source Intent Frontend Conformance Report Schema](SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md).
+  The schema covers report artifacts, not frontend payload semantics.
+- Source-To-Intent Parser Gate is documented in
+  [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md). It keeps
+  parser implementation blocked until source text can produce Source Intent
+  plain data without bypassing intake, conformance, metadata conversion, HAC-IR
+  neutrality review, runtime-plan goldens, or decision-report goldens.
+- Source-To-Intent Readiness Report is documented in
+  [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md). It is a
+  review artifact for parser proposals, not a source parser or ingestion path.
 
 ## Next Step
 

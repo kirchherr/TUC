@@ -33,6 +33,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Proof-report metadata for proof version, graph family, and backend set.
 - Proof artifact review checklist for proof examples, metadata, goldens, and
   proof documentation.
+- Performance proof boundary for leaky abstraction and planner-overhead limits
+  of the current correctness proof.
 
 ## In Progress
 
@@ -90,6 +92,14 @@ Current slice:
 - Source Intent Frontend Conformance fixtures with deterministic JSON report
   artifacts for external frontend authors that emit `source_intent.v0` plain
   data.
+- Machine-readable Source Intent Frontend Conformance report JSON Schema at
+  `schemas/source_intent_frontend_conformance_report.v0.schema.json`.
+- Source-To-Intent Parser Gate defining the required future parser RFC,
+  budgets, accepted/rejected corpus, deterministic diagnostics, goldens,
+  HAC-IR neutrality review, and conformance evidence before source text may
+  create `source_intent.v0` plain data.
+- Source-To-Intent Readiness report with deterministic blocked golden evidence
+  for future parser proposals.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -100,6 +110,13 @@ Current slice:
   already constructed `SourceIntentModule` into schema-versioned metadata, with
   frontend, HAC-IR, runtime-plan, and compiler decision-report goldens.
 - Baseline benchmark harness that can run with or without CUDA.
+- Schema-versioned diagnostic baseline benchmark report contract with explicit
+  non-performance-proof markers.
+- Performance Proof Boundary documenting that benchmarks are diagnostic until
+  native baseline provenance, leaky-abstraction evidence, planner-overhead
+  evidence, correctness goldens, and security review exist.
+- Performance Proof Readiness report with deterministic blocked golden evidence
+  for future native performance proposals.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
 - HAC-IR semantic charter for compute intent, compiler facts, planning
@@ -226,12 +243,21 @@ Current focus:
   must add its own corpus, source-intent goldens, deterministic diagnostics,
   and security review before any source connection.
 - External frontend proposals should provide a Source Intent Frontend
-  Conformance report before maintainers consider any source-text parser or
-  frontend package integration.
+  Conformance report matching the report schema before maintainers consider
+  any source-text parser or frontend package integration.
+- Source-to-intent parser work remains blocked until
+  [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is satisfied
+  by a dedicated parser implementation RFC and executable evidence.
+- Future parser proposals must pass
+  [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) before
+  source text can influence compiler artifacts.
 - Future softmax decomposition only after runtime/HS-IR planning evidence,
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its
   decisions can be explained next to manual override effects.
+- Native performance claims remain blocked until
+  [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied and
+  [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) passes.
 - Noise/error-budget score components only after those models are documented
   outside HAC-IR semantics and covered by goldens.
 - Maintainer teams or organization-backed owner groups before broad external
