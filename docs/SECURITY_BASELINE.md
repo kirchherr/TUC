@@ -234,6 +234,11 @@ Implemented now:
 - Capability-schema negative examples and tests reject misleading latency,
   energy, calibration, benchmark, certificate, measured-error, and executable
   backend claims from backend capability manifests.
+- Manifest Claim Review adds a data-only report at
+  `schemas/manifest_claim_review_report.v0.schema.json` for syntactically valid
+  but overreaching specialized accelerator claims, including universal
+  operation-family claims and noise/calibration claims without explicit
+  error-budget boundaries.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

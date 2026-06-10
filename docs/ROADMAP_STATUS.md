@@ -70,6 +70,11 @@ hardware-independent interface into capability-driven runtime planning.
 - Systolic capability manifest path proving that `systolic-sim` can enter TUC
   as explicit JSON capability data for planning while execution remains gated
   by the trusted Runtime Executor registry.
+- Manifest Claim Review report for accepted and intentionally blocked backend
+  capability manifests, with schema at
+  `schemas/manifest_claim_review_report.v0.schema.json` and deterministic
+  golden evidence at
+  `tests/golden/backend_claim_review/manifest_claim_review_report.json`.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
@@ -260,6 +265,9 @@ Current slice:
   diagnostics, compiler planning, conformance, and trusted lowering.
 - Specialized accelerator manifest path showing `device_sram` and `blocked`
   layout capability self-description without backend code execution.
+- Manifest Claim Review for syntactically valid but overreaching specialized
+  accelerator claims, including universal operation-family claims and
+  noise/calibration claims without explicit error-budget boundaries.
 - Deterministic backend conformance report artifacts for reviewable backend
   author evidence.
 - Backend capability schema guidance for error-budget, latency, energy,
@@ -337,6 +345,8 @@ Current focus:
   executable backend behavior.
 - Keep invalid or misleading capability claims covered by examples and negative
   tests.
+- Use Manifest Claim Review before accepting specialized accelerator manifests
+  as planning evidence.
 
 ### Phase Delta: Runtime Planning
 

@@ -309,6 +309,12 @@ that a specialized accelerator capability can be loaded as explicit manifest
 data, planned by the compiler, checked by runtime readiness, and executed only
 through an already trusted Runtime Executor backend.
 
+Specialized accelerator manifests should also pass
+[Manifest Claim Review](MANIFEST_CLAIM_REVIEW.md) before maintainers treat them
+as acceptable planning evidence. The current report schema is
+`schemas/manifest_claim_review_report.v0.schema.json`, and the runnable example
+is `examples/manifest_claim_review.py`.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:

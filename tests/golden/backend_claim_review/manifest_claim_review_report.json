@@ -1,0 +1,88 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_count": 4,
+  "cases": [
+    {
+      "backend_name": "systolic-sim",
+      "expected_review_status": "accepted",
+      "issue_codes": [],
+      "load_status": "loaded",
+      "manifest_id": "systolic_sim_backend",
+      "memory_domain": "device_sram",
+      "observed_review_status": "accepted",
+      "produced_layouts": [
+        "blocked"
+      ],
+      "source_label": "systolic_sim_backend.json",
+      "supported_ops": [
+        "matmul"
+      ]
+    },
+    {
+      "backend_name": "unloaded",
+      "expected_review_status": "blocked",
+      "issue_codes": [
+        "manifest_loader_rejected_claim"
+      ],
+      "load_status": "rejected",
+      "manifest_id": "invalid_executable_surface_backend",
+      "memory_domain": "unloaded",
+      "observed_review_status": "blocked",
+      "produced_layouts": [],
+      "source_label": "invalid_executable_surface_backend.json",
+      "supported_ops": []
+    },
+    {
+      "backend_name": "invalid-noise-without-budget",
+      "expected_review_status": "blocked",
+      "issue_codes": [
+        "noise_model_requires_explicit_error_budget"
+      ],
+      "load_status": "loaded",
+      "manifest_id": "invalid_noise_without_error_budget_backend",
+      "memory_domain": "device_sram",
+      "observed_review_status": "blocked",
+      "produced_layouts": [
+        "blocked"
+      ],
+      "source_label": "invalid_noise_without_error_budget_backend.json",
+      "supported_ops": [
+        "matmul"
+      ]
+    },
+    {
+      "backend_name": "invalid-universal-accelerator",
+      "expected_review_status": "blocked",
+      "issue_codes": [
+        "non_reference_backend_claims_all_mvp_ops"
+      ],
+      "load_status": "loaded",
+      "manifest_id": "invalid_overbroad_accelerator_backend",
+      "memory_domain": "device_sram",
+      "observed_review_status": "blocked",
+      "produced_layouts": [
+        "blocked"
+      ],
+      "source_label": "invalid_overbroad_accelerator_backend.json",
+      "supported_ops": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ]
+    }
+  ],
+  "claim_review_contract": "manifest_claim_review.data_only.v0",
+  "passed": true,
+  "report_issues": [],
+  "schema_version": "tuc.manifest_claim_review_report.v0"
+}

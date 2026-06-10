@@ -135,6 +135,11 @@ backend code, access devices, or execute artifacts.
 
 These examples must be rejected or moved to another contract.
 
+Some invalid examples are rejected directly by the bounded manifest loader.
+Other syntactically valid but overreaching examples are blocked by
+[Manifest Claim Review](MANIFEST_CLAIM_REVIEW.md), whose schema is
+`schemas/manifest_claim_review_report.v0.schema.json`.
+
 ### Latency Or Energy In A Backend Manifest
 
 Invalid:
@@ -206,6 +211,43 @@ Invalid:
 Why this is wrong: error-budget limits must be finite and non-negative. A
 backend must not use an invalid limit to imply correctness or certification.
 
+### Overbroad Specialized Accelerator Claims
+
+Blocked by Manifest Claim Review:
+
+```json
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "invalid-universal-accelerator",
+  "supported_ops": ["matmul", "elementwise", "reduction", "softmax"],
+  "preferred_for": ["matmul", "elementwise", "reduction", "softmax"],
+  "memory_domain": "device_sram",
+  "produced_layouts": ["blocked"]
+}
+```
+
+Why this is wrong: a non-reference backend claiming every MVP operation family
+is a strategic claim, not a simple capability fact. It needs a dedicated RFC,
+conformance evidence, runtime executor evidence, and maintainer review before
+it can be accepted.
+
+### Noise Without Error-Budget Boundary
+
+Blocked by Manifest Claim Review:
+
+```json
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "invalid-noise-without-budget",
+  "supported_ops": ["matmul"],
+  "supports_noise_model": true
+}
+```
+
+Why this is wrong: a noise-model claim implies approximate or variable
+behavior. TUC requires an explicit `max_error_budget` boundary before such a
+claim can pass review.
+
 ## Reviewer Checklist
 
 Before accepting a capability-schema change, verify:
@@ -219,3 +261,5 @@ Before accepting a capability-schema change, verify:
   host-path leakage.
 - Documentation states whether the field is an assumption, a capability claim,
   or a measured artifact.
+- The manifest passes Manifest Claim Review when it makes specialized,
+  approximate, calibration, or broad operation-family claims.

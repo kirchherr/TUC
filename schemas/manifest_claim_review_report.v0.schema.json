@@ -1,0 +1,301 @@
+{
+  "$id": "https://tuc.dev/schemas/manifest_claim_review_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "case_count": {
+      "maximum": 64,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "cases": {
+      "items": {
+        "$ref": "#/$defs/review_case"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "type": "array"
+    },
+    "claim_review_contract": {
+      "const": "manifest_claim_review.data_only.v0"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "report_issues": {
+      "items": {
+        "$ref": "#/$defs/report_issue"
+      },
+      "maxItems": 128,
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.manifest_claim_review_report.v0"
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "claim_review_contract",
+    "passed",
+    "report_issues",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "issue_code": {
+      "enum": [
+        "calibration_claim_requires_error_budget",
+        "host_backend_claims_specialized_blocked_layout",
+        "manifest_claim_review_status_mismatch",
+        "manifest_loader_rejected_claim",
+        "noise_model_requires_explicit_error_budget",
+        "non_reference_backend_claims_all_mvp_ops",
+        "reference_cpu_must_use_host_ram"
+      ],
+      "type": "string"
+    },
+    "layout": {
+      "enum": [
+        "blocked",
+        "column_major",
+        "row_major",
+        "unknown",
+        "vector"
+      ],
+      "type": "string"
+    },
+    "load_status": {
+      "enum": [
+        "loaded",
+        "rejected"
+      ],
+      "type": "string"
+    },
+    "memory_domain": {
+      "enum": [
+        "analog_weight_bank",
+        "device_sram",
+        "gpu_hbm",
+        "host_ram",
+        "neuromorphic_synapse_array",
+        "persistent_nvm",
+        "stream_buffer",
+        "unknown",
+        "unloaded"
+      ],
+      "type": "string"
+    },
+    "operation_kind": {
+      "enum": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "type": "string"
+    },
+    "report_issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/issue_code"
+        },
+        "manifest_id": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "manifest_id"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "review_case": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "observed_review_status": {
+                "const": "accepted"
+              }
+            },
+            "required": [
+              "observed_review_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "issue_codes": {
+                "maxItems": 0
+              },
+              "load_status": {
+                "const": "loaded"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "load_status": {
+                "const": "rejected"
+              }
+            },
+            "required": [
+              "load_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "backend_name": {
+                "const": "unloaded"
+              },
+              "memory_domain": {
+                "const": "unloaded"
+              },
+              "observed_review_status": {
+                "const": "blocked"
+              },
+              "produced_layouts": {
+                "maxItems": 0
+              },
+              "supported_ops": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "backend_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "expected_review_status": {
+          "$ref": "#/$defs/review_status"
+        },
+        "issue_codes": {
+          "items": {
+            "$ref": "#/$defs/issue_code"
+          },
+          "maxItems": 128,
+          "type": "array"
+        },
+        "load_status": {
+          "$ref": "#/$defs/load_status"
+        },
+        "manifest_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "observed_review_status": {
+          "$ref": "#/$defs/review_status"
+        },
+        "produced_layouts": {
+          "items": {
+            "$ref": "#/$defs/layout"
+          },
+          "maxItems": 5,
+          "type": "array"
+        },
+        "source_label": {
+          "$ref": "#/$defs/report_text"
+        },
+        "supported_ops": {
+          "items": {
+            "$ref": "#/$defs/operation_kind"
+          },
+          "maxItems": 4,
+          "type": "array"
+        }
+      },
+      "required": [
+        "backend_name",
+        "expected_review_status",
+        "issue_codes",
+        "load_status",
+        "manifest_id",
+        "memory_domain",
+        "observed_review_status",
+        "produced_layouts",
+        "source_label",
+        "supported_ops"
+      ],
+      "type": "object"
+    },
+    "review_status": {
+      "enum": [
+        "accepted",
+        "blocked"
+      ],
+      "type": "string"
+    }
+  }
+}

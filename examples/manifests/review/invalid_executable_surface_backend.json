@@ -1,0 +1,6 @@
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "invalid-plugin-surface",
+  "supported_ops": ["matmul"],
+  "plugin_module": "vendor_backend"
+}

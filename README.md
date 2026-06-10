@@ -99,6 +99,8 @@ The current prototype contains:
 - A systolic capability manifest path showing specialized accelerator
   self-description as JSON planning data while execution remains gated by the
   trusted Runtime Executor registry.
+- Manifest Claim Review with negative fixtures for overreaching specialized
+  accelerator manifests.
 - Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
   Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and
@@ -231,6 +233,12 @@ Run the systolic manifest-loaded author path:
 
 ```bash
 python examples/systolic_manifest_path.py
+```
+
+Inspect backend capability manifest claim review:
+
+```bash
+python examples/manifest_claim_review.py
 ```
 
 Inspect the runtime evidence matrix:
@@ -429,6 +437,7 @@ pytest -q
 - [Runtime evidence matrix](docs/RUNTIME_EVIDENCE_MATRIX.md)
 - [Runtime Evidence Gate](docs/RUNTIME_EVIDENCE_GATE.md)
 - [Systolic simulator proof](docs/SYSTOLIC_SIMULATOR.md)
+- [Manifest Claim Review](docs/MANIFEST_CLAIM_REVIEW.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
