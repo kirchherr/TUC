@@ -37,6 +37,14 @@ def build_matrix_report() -> RuntimeEvidenceMatrixReport:
                         "proof_of_abstraction_compiler_decision",
                     ),
                     artifact(
+                        "execution_readiness_golden",
+                        "proof_of_abstraction_readiness",
+                    ),
+                    artifact(
+                        "execution_trace_golden",
+                        "proof_of_abstraction_trace",
+                    ),
+                    artifact(
                         "reference_correctness",
                         "proof_of_abstraction_reference_semantics",
                     ),
@@ -53,6 +61,14 @@ def build_matrix_report() -> RuntimeEvidenceMatrixReport:
                     artifact(
                         "compiler_decision_golden",
                         "proof_of_reduction_compiler_decision",
+                    ),
+                    artifact(
+                        "execution_readiness_golden",
+                        "proof_of_reduction_readiness",
+                    ),
+                    artifact(
+                        "execution_trace_golden",
+                        "proof_of_reduction_trace",
                     ),
                     artifact(
                         "reference_correctness",
@@ -72,6 +88,11 @@ def build_matrix_report() -> RuntimeEvidenceMatrixReport:
                         "compiler_decision_golden",
                         "proof_of_softmax_compiler_decision",
                     ),
+                    artifact(
+                        "execution_readiness_golden",
+                        "proof_of_softmax_readiness",
+                    ),
+                    artifact("execution_trace_golden", "proof_of_softmax_trace"),
                     artifact(
                         "reference_correctness",
                         "proof_of_softmax_reference_semantics",

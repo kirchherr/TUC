@@ -7,12 +7,18 @@ from pathlib import Path
 
 import pytest
 
-from examples.proof_of_softmax import build_graph, evaluate_graph, proof_inputs
+from examples.proof_of_softmax import build_graph, evaluate_graph, proof_inputs, run_proof
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
 from tuc.ir import ComputeGraph
 
 _GOLDEN_PROOF = Path(__file__).parent / "golden" / "proofs" / "proof_of_softmax.txt"
+_GOLDEN_READINESS = (
+    Path(__file__).parent / "golden" / "execution_readiness" / "proof_of_softmax.txt"
+)
+_GOLDEN_TRACE = (
+    Path(__file__).parent / "golden" / "execution_traces" / "proof_of_softmax.txt"
+)
 
 
 def test_proof_of_softmax_example_runs() -> None:
@@ -29,10 +35,32 @@ def test_proof_of_softmax_example_runs() -> None:
     assert "backend_set: linear-sim, reference-cpu" in completed.stdout
     assert "== input graph ==" in completed.stdout
     assert "== hac-ir ==" in completed.stdout
+    assert "== execution readiness ==" in completed.stdout
+    assert "== execution trace ==" in completed.stdout
     assert "linear_projection -> linear-sim" in completed.stdout
     assert "row_softmax -> reference-cpu" in completed.stdout
     assert completed.stdout.rstrip().endswith("PASS")
     assert completed.stdout.rstrip("\n") == _GOLDEN_PROOF.read_text(
+        encoding="utf-8"
+    ).rstrip("\n")
+
+
+def test_proof_of_softmax_runtime_evidence_goldens() -> None:
+    report = run_proof()
+
+    assert report.readiness.status == "ready"
+    assert tuple(step.planned_backend for step in report.readiness.steps) == (
+        "linear-sim",
+        "reference-cpu",
+    )
+    assert tuple(step.operation_name for step in report.execution.trace.steps) == (
+        "linear_projection",
+        "row_softmax",
+    )
+    assert report.readiness.dump() == _GOLDEN_READINESS.read_text(
+        encoding="utf-8"
+    ).rstrip("\n")
+    assert report.execution.trace.dump() == _GOLDEN_TRACE.read_text(
         encoding="utf-8"
     ).rstrip("\n")
 

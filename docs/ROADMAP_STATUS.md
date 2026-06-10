@@ -55,6 +55,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Triton metadata MVP-family runtime readiness golden before execution.
 - Runtime Evidence Matrix v0 with schema-versioned proof inventory and
   deterministic golden at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
+- Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
+  `proof_of_reduction`, and `proof_of_softmax`.
 - Runtime operation semantic contract checks for MVP operation shapes, axes,
   scalar-output rejection, and supported elementwise kernels.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
@@ -121,6 +123,14 @@ Current slice:
 - Runtime Evidence Matrix report at
   `schemas/runtime_evidence_matrix_report.v0.schema.json`, with golden evidence
   at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
+- Objective Alpha proof readiness goldens at
+  `tests/golden/execution_readiness/proof_of_abstraction.txt`,
+  `tests/golden/execution_readiness/proof_of_reduction.txt`, and
+  `tests/golden/execution_readiness/proof_of_softmax.txt`.
+- Objective Alpha proof execution-trace goldens at
+  `tests/golden/execution_traces/proof_of_abstraction.txt`,
+  `tests/golden/execution_traces/proof_of_reduction.txt`, and
+  `tests/golden/execution_traces/proof_of_softmax.txt`.
 - Runtime Executor negative tests for input shape mismatch, non-`float64`
   inputs, non-finite inputs, and non-finite outputs.
 - Runtime Executor negative tests for matmul dimension mismatch, elementwise

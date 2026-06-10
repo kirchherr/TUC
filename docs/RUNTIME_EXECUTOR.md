@@ -23,9 +23,17 @@ It is not a backend plugin system.
 - Trusted prototype executors: `linear-sim`, `reference-cpu`
 - Readiness golden:
   `tests/golden/execution_readiness/proof_of_execution.txt`
+- Objective Alpha readiness goldens:
+  `tests/golden/execution_readiness/proof_of_abstraction.txt`,
+  `tests/golden/execution_readiness/proof_of_reduction.txt`,
+  `tests/golden/execution_readiness/proof_of_softmax.txt`
 - MVP readiness golden:
   `tests/golden/execution_readiness/triton_metadata_mvp_families.txt`
 - Proof trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
+- Objective Alpha trace goldens:
+  `tests/golden/execution_traces/proof_of_abstraction.txt`,
+  `tests/golden/execution_traces/proof_of_reduction.txt`,
+  `tests/golden/execution_traces/proof_of_softmax.txt`
 - MVP trace golden:
   `tests/golden/execution_traces/triton_metadata_mvp_families.txt`
 - Trusted backend contract golden:
@@ -77,9 +85,9 @@ If the runtime plan names an untrusted backend contract or assigns an operation
 to a backend contract that does not support its operation family, execution is
 rejected before input normalization or kernel execution.
 
-The proof-of-execution graph and the Triton-like MVP metadata graph both have
-readiness goldens, so contract gates are validated before their execution
-traces are accepted as evidence.
+The Objective Alpha proof graphs, proof-of-execution graph, and Triton-like MVP
+metadata graph all have readiness goldens, so contract gates are validated
+before their execution traces are accepted as evidence.
 
 ## Operation Semantic Contract
 

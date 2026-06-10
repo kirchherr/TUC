@@ -36,6 +36,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_abstraction_readiness",
+          "artifact_kind": "execution_readiness_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_abstraction_trace",
+          "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_abstraction_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -43,11 +53,8 @@
       ],
       "graph_family": "objective_alpha",
       "graph_id": "proof_of_abstraction",
-      "missing_required_artifact_kinds": [
-        "execution_readiness_golden",
-        "execution_trace_golden"
-      ],
-      "runtime_evidence_complete": false,
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
       "source_boundary": "typed_compute_graph"
     },
     {
@@ -73,6 +80,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_reduction_readiness",
+          "artifact_kind": "execution_readiness_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_reduction_trace",
+          "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_reduction_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -80,11 +97,8 @@
       ],
       "graph_family": "objective_alpha",
       "graph_id": "proof_of_reduction",
-      "missing_required_artifact_kinds": [
-        "execution_readiness_golden",
-        "execution_trace_golden"
-      ],
-      "runtime_evidence_complete": false,
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
       "source_boundary": "typed_compute_graph"
     },
     {
@@ -110,6 +124,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_softmax_readiness",
+          "artifact_kind": "execution_readiness_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_softmax_trace",
+          "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_softmax_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -117,11 +141,8 @@
       ],
       "graph_family": "objective_alpha",
       "graph_id": "proof_of_softmax",
-      "missing_required_artifact_kinds": [
-        "execution_readiness_golden",
-        "execution_trace_golden"
-      ],
-      "runtime_evidence_complete": false,
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
       "source_boundary": "typed_compute_graph"
     },
     {
@@ -203,12 +224,6 @@
     }
   ],
   "issues": [
-    "proof_of_abstraction.missing_execution_readiness_golden",
-    "proof_of_abstraction.missing_execution_trace_golden",
-    "proof_of_reduction.missing_execution_readiness_golden",
-    "proof_of_reduction.missing_execution_trace_golden",
-    "proof_of_softmax.missing_execution_readiness_golden",
-    "proof_of_softmax.missing_execution_trace_golden",
     "proof_of_execution.missing_hac_ir_golden",
     "proof_of_execution.missing_runtime_plan_golden",
     "proof_of_execution.missing_compiler_decision_golden"

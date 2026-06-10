@@ -35,14 +35,14 @@ Additional evidence, such as `proof_report_golden` and
 
 The current matrix is intentionally honest:
 
-- `triton_metadata_mvp_families` is complete across the required runtime
+- `proof_of_abstraction`, `proof_of_reduction`, `proof_of_softmax`, and
+  `triton_metadata_mvp_families` are complete across the required runtime
   evidence kinds.
-- Earlier Objective Alpha proof graphs still lack Runtime Execution Readiness
-  and Execution Trace goldens.
 - `proof_of_execution` has execution readiness and trace evidence, but does not
   yet have separate HAC-IR, runtime-plan, or compiler-decision goldens.
 
-Those gaps are roadmap information, not hidden failures.
+The remaining `proof_of_execution` gaps are roadmap information, not hidden
+failures.
 
 ## Security Boundary
 

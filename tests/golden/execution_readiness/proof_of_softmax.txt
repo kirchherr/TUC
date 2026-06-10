@@ -1,0 +1,11 @@
+runtime.execution_readiness @proof_of_softmax {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  backend_contract = "runtime_backend_executor.trusted.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "ready"
+  steps {
+    linear_projection planned_backend=linear-sim backend_contract=runtime_backend_executor.trusted.v0 kind=matmul supported_ops=matmul,reduction status=ready reason=contract_allows_operation
+    row_softmax planned_backend=reference-cpu backend_contract=runtime_backend_executor.trusted.v0 kind=softmax supported_ops=elementwise,matmul,reduction,softmax status=ready reason=contract_allows_operation
+  }
+}

@@ -153,6 +153,9 @@ Completed evidence:
 - Runtime Evidence Matrix v0 inventories HAC-IR, runtime-plan,
   compiler-decision, readiness, trace, and correctness evidence across current
   graph fixtures with deterministic schema and golden output.
+- Objective Alpha abstraction, reduction, and softmax proofs now execute through
+  Runtime Executor v0 and emit readiness and trace goldens before their
+  correctness result is accepted.
 - Runtime operation semantic contracts validate MVP operation shapes, axes, and
   supported elementwise kernels before trusted kernels run.
 - Runtime tensor value contracts enforce declared shapes, `float64` dtype, and

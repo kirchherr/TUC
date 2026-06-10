@@ -91,6 +91,8 @@ The current prototype contains:
 - Runtime Evidence Matrix v0 with schema-versioned, data-only proof inventory
   for HAC-IR, runtime-plan, compiler-decision, readiness, trace, and correctness
   evidence.
+- Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
+  Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and
   elementwise kernels before trusted kernels run.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,

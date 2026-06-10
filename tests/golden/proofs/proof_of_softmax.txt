@@ -46,6 +46,30 @@ runtime.plan @proof_of_softmax {
   }
 }
 
+== execution readiness ==
+runtime.execution_readiness @proof_of_softmax {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  backend_contract = "runtime_backend_executor.trusted.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "ready"
+  steps {
+    linear_projection planned_backend=linear-sim backend_contract=runtime_backend_executor.trusted.v0 kind=matmul supported_ops=matmul,reduction status=ready reason=contract_allows_operation
+    row_softmax planned_backend=reference-cpu backend_contract=runtime_backend_executor.trusted.v0 kind=softmax supported_ops=elementwise,matmul,reduction,softmax status=ready reason=contract_allows_operation
+  }
+}
+
+== execution trace ==
+runtime.execution_trace @proof_of_softmax {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  steps {
+    linear_projection planned_backend=linear-sim executor_backend=linear-sim kind=matmul inputs=lhs,rhs outputs=logits output_shapes=2x4 output_dtypes=float64 status=executed
+    row_softmax planned_backend=reference-cpu executor_backend=reference-cpu kind=softmax inputs=logits outputs=probabilities output_shapes=2x4 output_dtypes=float64 status=executed
+  }
+}
+
 == result ==
 [[3.471616e-01 3.003536e-03 5.723727e-01 7.746222e-02]
  [3.825311e-03 5.983793e-02 3.140007e-04 9.360228e-01]]

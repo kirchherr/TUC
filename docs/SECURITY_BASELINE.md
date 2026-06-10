@@ -92,6 +92,11 @@ Implemented now:
   identifiers only, rejects path-like IDs and known execution surfaces, derives
   missing-evidence issues deterministically, and never scans repositories,
   imports code, discovers plugins, or executes artifacts.
+- Objective Alpha abstraction, reduction, and softmax proofs now validate
+  Runtime Execution Readiness before trusted in-process execution and emit
+  deterministic traces without adding plugin discovery, device access, dynamic
+  imports, subprocesses, JIT, network, dynamic libraries, or generated-artifact
+  execution.
 - Runtime operation semantic contracts validate MVP operation shape and axis
   rules before trusted reference kernels run, preventing implicit NumPy
   broadcasting, scalar reductions, unsupported elementwise kernels, or
