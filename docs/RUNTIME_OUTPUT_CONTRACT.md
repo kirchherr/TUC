@@ -62,5 +62,5 @@ as a bounded safe identifier.
 - Public output aliases must bind terminal graph tensors exactly; aliases to
   intermediates remain invalid.
 - The contract records output metadata, not values.
-- The contract is not yet part of Runtime Evidence Gate; it is separately
-  golden-tested while the alias policy stabilizes.
+- The contract is part of Runtime Evidence Gate, but v0 still uses the fixed
+  multi-output fixture while broader user API return semantics stabilize.

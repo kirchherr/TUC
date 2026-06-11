@@ -153,6 +153,10 @@ hardware-independent interface into capability-driven runtime planning.
   evidence at `tests/golden/runtime_output_contract/current_report.json`, and
   explicit public output aliases for terminal graph tensors without raw tensor
   values.
+- Runtime Evidence Gate now requires Runtime Output Contract evidence in
+  addition to Runtime Evidence Matrix, Runtime Executor Conformance, Runtime
+  Tensor Store Evidence, Runtime Output Manifest, and Runtime Reference
+  Correctness.
 
 ## In Progress
 
@@ -241,7 +245,8 @@ Current slice:
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
-  Evidence, Runtime Output Manifest, and Runtime Reference Correctness.
+  Evidence, Runtime Output Manifest, Runtime Output Contract, and Runtime
+  Reference Correctness.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
