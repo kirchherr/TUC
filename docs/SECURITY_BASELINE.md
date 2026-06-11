@@ -260,6 +260,11 @@ Implemented now:
   plugin discovery, backend imports, host-path reads, environment reads, device
   access, network access, generated artifact execution, JIT, benchmark loading,
   or backend execution permission.
+- Runtime Candidate Scoring Gate runs in the read-only CI job and composes
+  Runtime Candidate Score Evidence, Runtime Candidate Scoring Policy, and
+  Runtime Candidate Scoring Conformance without adding repository write
+  permissions, secrets, device access, network access, backend artifact
+  execution, benchmark loading, or native performance claims.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

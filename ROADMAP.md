@@ -373,6 +373,8 @@ Completed evidence:
   until separately modeled.
 - Runtime Candidate Scoring Conformance reports verify that the current
   planner's observable candidate choices match the active comparator policy.
+- Runtime Candidate Scoring Gate composes score evidence, scoring policy, and
+  conformance as one CI-facing runtime-planning check.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -385,6 +387,8 @@ Next work:
   candidate-score comparator semantics.
 - Keep Runtime Candidate Scoring Conformance passing before changing candidate
   score comparator behavior.
+- Keep Runtime Candidate Scoring Gate passing before accepting richer
+  candidate-scoring behavior.
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.

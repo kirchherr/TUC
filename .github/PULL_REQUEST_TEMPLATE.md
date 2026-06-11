@@ -11,6 +11,7 @@ ruff check .
 mypy src/tuc
 pytest -q
 python examples/runtime_evidence_gate.py
+python examples/runtime_candidate_scoring_gate.py
 ```
 
 ## RFC / Design Impact

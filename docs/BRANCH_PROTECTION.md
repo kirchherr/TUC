@@ -43,7 +43,8 @@ Dependency Review
 ```
 
 `python` is the main CI job. It runs linting, typing, unit tests, current
-examples, the Runtime Evidence Gate, and a baseline benchmark smoke test.
+examples, the Runtime Evidence Gate, the Runtime Candidate Scoring Gate, and a
+baseline benchmark smoke test.
 
 `CodeQL` and `Dependency Review` are security workflow jobs. `OpenSSF Scorecard`
 runs on push and schedule, but not on pull requests, so it should not be a

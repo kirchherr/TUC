@@ -113,6 +113,15 @@ python examples/runtime_candidate_scoring_conformance.py
 See
 [Runtime Candidate Scoring Conformance](RUNTIME_CANDIDATE_SCORING_CONFORMANCE.md).
 
+Runtime Candidate Scoring Gate composes score evidence, policy, and conformance
+as the CI-facing check:
+
+```bash
+python examples/runtime_candidate_scoring_gate.py
+```
+
+See [Runtime Candidate Scoring Gate](RUNTIME_CANDIDATE_SCORING_GATE.md).
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:
@@ -138,6 +147,8 @@ Runtime plan objects are declarative data:
 - Candidate scoring conformance is bounded data derived from typed in-memory
   planning fixtures; it does not add benchmark execution, backend execution, or
   plugin/device access.
+- Candidate scoring gate is a read-only composition of score evidence, policy,
+  and conformance for CI; it does not add new planning behavior.
 
 ## Current Limitations
 
@@ -159,5 +170,7 @@ This is still a prototype:
    decision-report and runtime-plan golden fixtures.
 4. Keep Runtime Candidate Scoring Conformance passing before changing
    comparator semantics.
-5. Add noise/error-budget candidate score components only after those models are
+5. Keep Runtime Candidate Scoring Gate passing in CI before accepting richer
+   scoring behavior.
+6. Add noise/error-budget candidate score components only after those models are
    stable and documented.

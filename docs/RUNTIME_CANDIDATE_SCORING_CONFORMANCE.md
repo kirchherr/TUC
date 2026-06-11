@@ -38,6 +38,10 @@ The cases are deliberately small. They are not benchmarks and they do not claim
 global optimality. Their purpose is to catch accidental comparator drift before
 candidate scoring becomes richer.
 
+The CI-facing
+[Runtime Candidate Scoring Gate](RUNTIME_CANDIDATE_SCORING_GATE.md) requires
+this conformance report to pass.
+
 ## Security Boundary
 
 The conformance report is data-only. It constructs typed `ComputeGraph` and
