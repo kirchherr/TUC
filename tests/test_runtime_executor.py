@@ -20,6 +20,7 @@ from tuc.ir import (
 )
 from tuc.runtime import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
+    RUNTIME_EXECUTOR_CONTRACT,
     TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE,
     TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT,
     TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT,
@@ -27,6 +28,8 @@ from tuc.runtime import (
     Assignment,
     PartitionPlan,
     RuntimeBackendExecutorContract,
+    RuntimeExecutionResult,
+    RuntimeExecutionTrace,
     dump_runtime_execution_readiness,
     dump_trusted_runtime_executor_contracts,
     execute_graph,
@@ -177,6 +180,27 @@ def test_runtime_tensor_store_rejects_duplicate_records() -> None:
 
     with pytest.raises(ValueError, match="duplicate value"):
         RuntimeTensorStore((record, record))
+
+
+def test_runtime_execution_result_rejects_record_value_mismatch() -> None:
+    record = RuntimeValueRecord(
+        tensor_name="value",
+        value=np.zeros((2,), dtype=np.float64),
+        shape=(2,),
+        dtype="float64",
+        value_role="input",
+    )
+
+    with pytest.raises(ValueError, match="record values must match values"):
+        RuntimeExecutionResult(
+            values={"value": np.ones((2,), dtype=np.float64)},
+            trace=RuntimeExecutionTrace(
+                graph_name="record_mismatch",
+                executor_contract=RUNTIME_EXECUTOR_CONTRACT,
+                steps=(),
+            ),
+            records=(record,),
+        )
 
 
 def test_runtime_tensor_store_is_documented() -> None:

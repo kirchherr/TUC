@@ -62,6 +62,7 @@ Current runtime surfaces:
 
 - Runtime Execution Readiness before kernels run.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects.
+- Runtime Tensor Store Evidence v0 without serialized tensor values.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, and Memory Planning
   Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
@@ -72,6 +73,7 @@ CI-facing runtime gates:
 
 ```text
 examples/runtime_evidence_gate.py
+examples/runtime_tensor_store_evidence.py
 examples/runtime_candidate_scoring_gate.py
 examples/runtime_memory_planning_gate.py
 ```
@@ -80,6 +82,7 @@ Key docs:
 
 - [Runtime Executor](docs/RUNTIME_EXECUTOR.md)
 - [Runtime Tensor Store](docs/RUNTIME_TENSOR_STORE.md)
+- [Runtime Tensor Store Evidence](docs/RUNTIME_TENSOR_STORE_EVIDENCE.md)
 - [Runtime Memory Planning Gate](docs/RUNTIME_MEMORY_PLANNING_GATE.md)
 - [Runtime Candidate Scoring Gate](docs/RUNTIME_CANDIDATE_SCORING_GATE.md)
 - [Runtime override policy](docs/RUNTIME_OVERRIDE_POLICY.md)

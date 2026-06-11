@@ -1,0 +1,129 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "evidence_contract": "runtime_tensor_store_evidence.data_only.v0",
+  "expected_record_count": 5,
+  "expected_records": [
+    {
+      "dtype": "float64",
+      "shape": [
+        2,
+        3
+      ],
+      "tensor_name": "lhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "shape": [
+        3,
+        2
+      ],
+      "tensor_name": "rhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "shape": [
+        2,
+        2
+      ],
+      "tensor_name": "projection",
+      "value_role": "computed"
+    },
+    {
+      "dtype": "float64",
+      "shape": [
+        2
+      ],
+      "tensor_name": "row_sum",
+      "value_role": "computed"
+    },
+    {
+      "dtype": "float64",
+      "shape": [
+        2
+      ],
+      "tensor_name": "activated",
+      "value_role": "computed"
+    }
+  ],
+  "graph_name": "proof_of_execution",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "record_count": 5,
+  "record_metadata_digest": "sha256:47f5b6f5d913ff1165273aea281403d356676eec4b8d8d1944b3a026aaa68ace",
+  "records": [
+    {
+      "dtype": "float64",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2,
+        3
+      ],
+      "tensor_name": "lhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        3,
+        2
+      ],
+      "tensor_name": "rhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2,
+        2
+      ],
+      "tensor_name": "projection",
+      "value_role": "computed"
+    },
+    {
+      "dtype": "float64",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2
+      ],
+      "tensor_name": "row_sum",
+      "value_role": "computed"
+    },
+    {
+      "dtype": "float64",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2
+      ],
+      "tensor_name": "activated",
+      "value_role": "computed"
+    }
+  ],
+  "schema_version": "tuc.runtime_tensor_store_evidence_report.v0",
+  "store_contract": "runtime_tensor_store.internal.v0",
+  "value_record_contract": "runtime_value_record.internal.v0"
+}

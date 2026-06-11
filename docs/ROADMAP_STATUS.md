@@ -124,6 +124,11 @@ hardware-independent interface into capability-driven runtime planning.
   and finite values at input and output boundaries.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects
   for accepted input and computed runtime values.
+- Runtime Tensor Store Evidence v0 with schema at
+  `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
+  raw tensor values omitted by policy.
 
 ## In Progress
 
@@ -173,6 +178,9 @@ Current slice:
   input validation, partition-plan matching, output-shape checks, unsupported
   executor rejection, internal `RuntimeValueRecord` storage, and deterministic
   execution traces.
+- Runtime Tensor Store Evidence at `examples/runtime_tensor_store_evidence.py`,
+  with golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.

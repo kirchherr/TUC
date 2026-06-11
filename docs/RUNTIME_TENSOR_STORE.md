@@ -6,6 +6,9 @@ tensor values.
 It introduces `RuntimeValueRecord` objects so the executor does not pass raw
 mutable tensor dictionaries through the execution path.
 
+Review evidence for the current record boundary is documented in
+[`RUNTIME_TENSOR_STORE_EVIDENCE.md`](RUNTIME_TENSOR_STORE_EVIDENCE.md).
+
 ## Contract
 
 - Tensor store contract: `runtime_tensor_store.internal.v0`
@@ -36,6 +39,9 @@ It does not allocate device memory, discover plugins, import backend modules,
 load dynamic libraries, spawn subprocesses, access devices, touch the network,
 execute generated artifacts, run JIT code, read host paths, read environment
 variables, or authorize executable backend surfaces.
+
+Runtime Tensor Store Evidence follows the same boundary: it serializes record
+metadata only and omits tensor values by policy.
 
 ## Current Limitations
 

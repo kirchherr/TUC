@@ -412,11 +412,29 @@ class RuntimeExecutionResult:
 
     values: Mapping[str, FloatArray]
     trace: RuntimeExecutionTrace
+    records: tuple[RuntimeValueRecord, ...] = ()
 
     def __post_init__(self) -> None:
         if not isinstance(self.values, Mapping):
             raise TypeError("runtime execution result values must be a mapping")
         object.__setattr__(self, "values", MappingProxyType(dict(self.values)))
+        if type(self.records) is not tuple:
+            raise TypeError("runtime execution result records must be a tuple")
+        record_names: list[str] = []
+        for record in self.records:
+            if not isinstance(record, RuntimeValueRecord):
+                raise TypeError("runtime execution result records must be value records")
+            record_names.append(record.tensor_name)
+        if len(record_names) != len(set(record_names)):
+            raise ValueError("runtime execution result records must be unique")
+        if self.records:
+            if set(record_names) != set(self.values):
+                raise ValueError("runtime execution result records must match values")
+            for record in self.records:
+                if self.values[record.tensor_name] is not record.value:
+                    raise ValueError(
+                        "runtime execution result record values must match values"
+                    )
 
     def output_for(self, tensor_name: str) -> FloatArray:
         """Return one output value by tensor name."""
@@ -426,6 +444,15 @@ class RuntimeExecutionResult:
         if value is None:
             raise KeyError(tensor_name)
         return value
+
+    def record_for(self, tensor_name: str) -> RuntimeValueRecord:
+        """Return one internal runtime value record by tensor name."""
+
+        _require_trace_name(tensor_name, "tensor_name")
+        for record in self.records:
+            if record.tensor_name == tensor_name:
+                return record
+        raise KeyError(tensor_name)
 
 
 def execute_graph(
@@ -468,6 +495,7 @@ def execute_graph(
             executor_contract=RUNTIME_EXECUTOR_CONTRACT,
             steps=tuple(steps),
         ),
+        records=tensor_store.records,
     )
 
 

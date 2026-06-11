@@ -178,6 +178,10 @@ manager, and not an aliasing model. It is the minimum internal value-record
 surface needed before future runtime memory work can reason about value
 identity without passing raw mutable mappings around.
 
+The review artifact for this boundary is
+[`RUNTIME_TENSOR_STORE_EVIDENCE.md`](RUNTIME_TENSOR_STORE_EVIDENCE.md). It
+serializes record metadata and read-only status, but never tensor values.
+
 ## Trusted Backend Contract
 
 Each in-process prototype executor exposes a `RuntimeBackendExecutorContract`.
