@@ -13,7 +13,7 @@ x-dev-base: &dev-base
     - .:/workspace
   environment: &dev-env
     TUC_IN_CONTAINER: "1"
-    PYTHONPATH: /workspace/src
+    PYTHONPATH: /workspace:/workspace/src
     CC: clang-18
     CXX: clang++-18
     LLVM_CONFIG: /usr/bin/llvm-config-18

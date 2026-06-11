@@ -83,7 +83,7 @@ def test_triton_source_preflight_dump_is_deterministic() -> None:
             "forbidden_call",
         ),
         (
-            "@triton.jit\ndef kernel(a):\n    return tl.secret(a)\n",
+            "@triton.jit\ndef kernel(a):\n    return tl.unknown_kernel_primitive(a)\n",
             "unsupported_call_target",
         ),
         (
@@ -135,3 +135,16 @@ def test_triton_source_preflight_does_not_return_compute_graph() -> None:
     report = preflight_triton_source(SAFE_SOURCE)
 
     assert not hasattr(report, "to_compute_graph")
+
+
+def test_triton_source_preflight_redacts_untrusted_call_names() -> None:
+    report = preflight_triton_source(
+        "@triton.jit\ndef kernel(a):\n    return tl.unknown_kernel_primitive(a)\n"
+    )
+
+    dumped = report.dump()
+
+    assert report.accepted is False
+    assert "unsupported_call_target" in report.rejected_features
+    assert "unknown_kernel_primitive" not in dumped
+    assert "tl." not in dumped

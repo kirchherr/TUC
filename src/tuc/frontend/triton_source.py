@@ -299,7 +299,7 @@ def _inspect_call(node: ast.Call, state: _PreflightState) -> None:
         _reject(state, "dynamic_call", f"dynamic call at line {_node_line(node)}")
         return
     if name in _DANGEROUS_CALLS or name.startswith(_DANGEROUS_CALL_PREFIXES):
-        _reject(state, "forbidden_call", f"forbidden call {name} at line {_node_line(node)}")
+        _reject(state, "forbidden_call", f"forbidden call at line {_node_line(node)}")
         return
     if name.startswith("tuc."):
         _reject(state, "hac_ir_neutrality_leak", f"tuc.* reference at line {_node_line(node)}")
@@ -309,12 +309,12 @@ def _inspect_call(node: ast.Call, state: _PreflightState) -> None:
             _reject(
                 state,
                 "unsupported_call_target",
-                f"unsupported Triton call {name} at line {_node_line(node)}",
+                f"unsupported Triton call at line {_node_line(node)}",
             )
             return
         _record_operation_family(name, state)
         return
-    _reject(state, "unsupported_call_target", f"unsupported call {name} at line {_node_line(node)}")
+    _reject(state, "unsupported_call_target", f"unsupported call at line {_node_line(node)}")
 
 
 def _inspect_attribute(node: ast.Attribute, state: _PreflightState) -> None:
