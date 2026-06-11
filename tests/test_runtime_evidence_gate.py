@@ -54,6 +54,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_output_contract = "passed"' in completed.stdout
     assert 'runtime_public_output_bundle = "passed"' in completed.stdout
     assert 'runtime_reference_correctness = "passed"' in completed.stdout
+    assert 'source_intent_runtime_returns = "passed"' in completed.stdout
 
 
 def test_runtime_evidence_gate_rejects_incomplete_matrix() -> None:
@@ -188,3 +189,8 @@ def test_runtime_evidence_gate_rejects_failed_reference_correctness() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="reference correctness failed"):
         build_gate_report(reference_correctness_report=failed_reference_correctness)
+
+
+def test_runtime_evidence_gate_rejects_invalid_source_intent_runtime_returns() -> None:
+    with pytest.raises(RuntimeEvidenceGateError, match="source intent runtime returns"):
+        build_gate_report(source_intent_runtime_returns_report="not_a_report")  # type: ignore[arg-type]

@@ -1,6 +1,6 @@
 runtime.evidence_gate @runtime_evidence_gate_v0 {
   runtime_evidence_matrix = "complete"
-  runtime_evidence_graphs = "6"
+  runtime_evidence_graphs = "7"
   runtime_executor_conformance = "passed"
   runtime_executor_conformance_cases = "12"
   runtime_tensor_store_evidence = "passed"
@@ -19,6 +19,10 @@ runtime.evidence_gate @runtime_evidence_gate_v0 {
   runtime_reference_correctness = "passed"
   runtime_reference_comparisons = "1"
   runtime_reference_raw_value_policy = "omitted_by_policy"
+  source_intent_runtime_returns = "passed"
+  source_intent_runtime_return_count = "1"
+  source_intent_runtime_public_output_count = "1"
+  source_intent_runtime_returns_raw_value_policy = "omitted_by_policy"
   blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
   status = "PASS"
 }

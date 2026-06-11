@@ -5,8 +5,10 @@ from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
+from examples.source_intent_runtime_returns import run_evidence as run_runtime_returns
 from tuc import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
+    SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT,
     RuntimeEvidenceMatrixReport,
     RuntimeExecutorConformanceReport,
     RuntimeOutputContractReport,
@@ -14,6 +16,7 @@ from tuc import (
     RuntimePublicOutputBundle,
     RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceReport,
+    SourceIntentRuntimeReturnsReport,
     build_current_runtime_evidence_matrix_report,
     run_runtime_executor_conformance,
 )
@@ -31,6 +34,9 @@ def build_gate_report(
     output_manifest_report: RuntimeOutputManifestReport | None = None,
     public_output_bundle: RuntimePublicOutputBundle | None = None,
     reference_correctness_report: RuntimeReferenceCorrectnessReport | None = None,
+    source_intent_runtime_returns_report: (
+        SourceIntentRuntimeReturnsReport | None
+    ) = None,
     tensor_store_report: RuntimeTensorStoreEvidenceReport | None = None,
 ) -> str:
     """Return the stable CI-facing runtime evidence gate report."""
@@ -70,6 +76,11 @@ def build_gate_report(
         if reference_correctness_report is None
         else reference_correctness_report
     )
+    source_intent_runtime_returns = (
+        run_runtime_returns().runtime_returns
+        if source_intent_runtime_returns_report is None
+        else source_intent_runtime_returns_report
+    )
     _assert_matrix_complete(matrix)
     _assert_conformance_passed(conformance)
     _assert_tensor_store_evidence_passed(tensor_store)
@@ -77,6 +88,7 @@ def build_gate_report(
     _assert_output_contract_passed(output_contract)
     _assert_public_output_bundle_passed(public_bundle, output_contract)
     _assert_reference_correctness_passed(reference_correctness)
+    _assert_source_intent_runtime_returns_passed(source_intent_runtime_returns)
     return _render_gate_report(
         matrix,
         conformance,
@@ -85,6 +97,7 @@ def build_gate_report(
         output_contract,
         public_bundle,
         reference_correctness,
+        source_intent_runtime_returns,
     )
 
 
@@ -186,6 +199,25 @@ def _assert_reference_correctness_passed(
         )
 
 
+def _assert_source_intent_runtime_returns_passed(
+    report: SourceIntentRuntimeReturnsReport,
+) -> None:
+    if not isinstance(report, SourceIntentRuntimeReturnsReport):
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns failed: not a report object"
+        )
+    if not report.passed:
+        raise RuntimeEvidenceGateError("source intent runtime returns failed")
+    if report.runtime_returns_contract != SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns failed: contract mismatch"
+        )
+    if report.raw_value_policy != "omitted_by_policy":
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns failed: raw value policy mismatch"
+        )
+
+
 def _render_gate_report(
     matrix: RuntimeEvidenceMatrixReport,
     conformance: RuntimeExecutorConformanceReport,
@@ -194,6 +226,7 @@ def _render_gate_report(
     output_contract: RuntimeOutputContractReport,
     public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness: RuntimeReferenceCorrectnessReport,
+    source_intent_runtime_returns: SourceIntentRuntimeReturnsReport,
 ) -> str:
     lines = ["runtime.evidence_gate @runtime_evidence_gate_v0 {"]
     lines.append('  runtime_evidence_matrix = "complete"')
@@ -230,6 +263,19 @@ def _render_gate_report(
     )
     lines.append(
         f'  runtime_reference_raw_value_policy = "{reference_correctness.raw_value_policy}"'
+    )
+    lines.append('  source_intent_runtime_returns = "passed"')
+    lines.append(
+        "  source_intent_runtime_return_count = "
+        f'"{source_intent_runtime_returns.return_count}"'
+    )
+    lines.append(
+        "  source_intent_runtime_public_output_count = "
+        f'"{len(source_intent_runtime_returns.public_output_names)}"'
+    )
+    lines.append(
+        "  source_intent_runtime_returns_raw_value_policy = "
+        f'"{source_intent_runtime_returns.raw_value_policy}"'
     )
     lines.append(
         "  blocked_execution_surfaces = "

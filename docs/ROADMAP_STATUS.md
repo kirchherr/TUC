@@ -184,6 +184,12 @@ hardware-independent interface into capability-driven runtime planning.
   explicit proof that frontend return intent resolves through Runtime Output
   Contract and Runtime Public Output Bundle after trusted prototype execution,
   documented in `docs/SOURCE_INTENT_RUNTIME_RETURNS.md`.
+- Runtime Evidence Matrix now inventories `source_intent_return_mlp` as a
+  complete Source Intent metadata graph with Source Intent return semantics and
+  Source Intent Runtime Returns evidence.
+- Runtime Evidence Gate now requires Source Intent Runtime Returns evidence in
+  addition to matrix, executor conformance, tensor store, output manifest,
+  output contract, public output bundle, and reference correctness evidence.
 
 ## In Progress
 
@@ -288,7 +294,8 @@ Current slice:
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
   Evidence, Runtime Output Manifest, Runtime Output Contract, Runtime Public
-  Output Bundle, and Runtime Reference Correctness.
+  Output Bundle, Runtime Reference Correctness, and Source Intent Runtime
+  Returns.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

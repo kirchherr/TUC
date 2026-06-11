@@ -67,6 +67,8 @@
       "enum": [
         "proof_report_golden",
         "frontend_intake_golden",
+        "source_intent_return_semantics",
+        "source_intent_runtime_returns",
         "hac_ir_golden",
         "runtime_plan_golden",
         "compiler_decision_golden",

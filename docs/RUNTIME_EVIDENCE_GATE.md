@@ -4,7 +4,8 @@ Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
 Evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, and Runtime Reference Correctness
-evidence.
+evidence, plus Source Intent Runtime Returns evidence for the frontend return
+boundary.
 
 It runs:
 
@@ -15,6 +16,7 @@ It runs:
 - `build_output_contract_report()`
 - `build_public_output_bundle()`
 - `build_reference_correctness_report()`
+- `examples/source_intent_runtime_returns.py`
 - `examples/runtime_evidence_gate.py`
 
 The gate passes only when:
@@ -30,6 +32,8 @@ The gate passes only when:
   values without serializing tensor values into review evidence
 - Runtime Reference Correctness passes for terminal proof-of-execution outputs
   against independent reference tensors
+- Source Intent Runtime Returns passes, proving explicit frontend return aliases
+  resolve through Runtime Output Contract and Runtime Public Output Bundle
 
 Runtime Output Manifest schema:
 
@@ -53,6 +57,12 @@ Runtime Reference Correctness schema:
 
 ```text
 schemas/runtime_reference_correctness_report.v0.schema.json
+```
+
+Source Intent Runtime Returns schema:
+
+```text
+schemas/source_intent_runtime_returns_report.v0.schema.json
 ```
 
 Golden output:
@@ -88,6 +98,9 @@ It composes bounded in-repository checks:
   raw tensor values omitted by policy
 - data-only Runtime Reference Correctness metadata with output and reference
   tensor values omitted by policy
+- data-only Source Intent Runtime Returns metadata proving frontend public
+  returns resolve to runtime public outputs with raw tensor values omitted by
+  policy
 
 The output is a small deterministic text report ending in `PASS`.
 

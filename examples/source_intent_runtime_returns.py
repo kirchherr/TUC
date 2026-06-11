@@ -11,17 +11,23 @@ from examples.source_intent_return_semantics import build_source_intent_return_d
 from tuc import (
     CompilationResult,
     ComputeGraph,
+    RuntimeExecutionReadinessReport,
     RuntimeExecutionResult,
     RuntimeOutputContractReport,
+    RuntimeOutputManifestReport,
     RuntimePublicOutputBundle,
+    RuntimeReferenceCorrectnessReport,
     SourceIntentModule,
     SourceIntentRuntimeReturnsReport,
     build_runtime_output_contract_report,
+    build_runtime_output_manifest_report,
     build_runtime_public_output_bundle,
+    build_runtime_reference_correctness_report,
     build_source_intent_runtime_returns_report,
     compile_graph,
     dump_source_intent_runtime_returns_report,
     execute_graph,
+    runtime_execution_readiness_report,
     source_intent_from_mapping,
     source_intent_return_aliases,
     source_intent_to_triton_metadata,
@@ -38,9 +44,12 @@ class SourceIntentRuntimeReturnsEvidence:
     module: SourceIntentModule
     graph: ComputeGraph
     compiled: CompilationResult
+    readiness: RuntimeExecutionReadinessReport
     execution: RuntimeExecutionResult
+    output_manifest: RuntimeOutputManifestReport
     output_contract: RuntimeOutputContractReport
     public_output_bundle: RuntimePublicOutputBundle
+    reference_correctness: RuntimeReferenceCorrectnessReport
     runtime_returns: SourceIntentRuntimeReturnsReport
 
 
@@ -73,6 +82,12 @@ def runtime_inputs() -> dict[str, FloatArray]:
     }
 
 
+def reference_outputs(inputs: dict[str, FloatArray]) -> dict[str, FloatArray]:
+    """Return independent reference outputs for Source Intent public returns."""
+
+    return {"y": inputs["a"] @ inputs["b"]}
+
+
 def run_evidence() -> SourceIntentRuntimeReturnsEvidence:
     """Compile, execute, and link Source Intent returns to runtime outputs."""
 
@@ -80,7 +95,15 @@ def run_evidence() -> SourceIntentRuntimeReturnsEvidence:
     metadata = source_intent_to_triton_metadata(module)
     graph = metadata.to_compute_graph()
     compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    readiness = runtime_execution_readiness_report(
+        compiled.hac_ir.graph,
+        compiled.partition_plan,
+    )
     execution = execute_graph(compiled.hac_ir.graph, compiled.partition_plan, runtime_inputs())
+    output_manifest = build_runtime_output_manifest_report(
+        compiled.hac_ir.graph,
+        execution,
+    )
     aliases = source_intent_return_aliases(module)
     output_contract = build_runtime_output_contract_report(
         compiled.hac_ir.graph,
@@ -88,6 +111,11 @@ def run_evidence() -> SourceIntentRuntimeReturnsEvidence:
         aliases,
     )
     public_output_bundle = build_runtime_public_output_bundle(execution, output_contract)
+    reference_correctness = build_runtime_reference_correctness_report(
+        compiled.hac_ir.graph,
+        execution,
+        reference_outputs(runtime_inputs()),
+    )
     runtime_returns = build_source_intent_runtime_returns_report(
         module,
         compiled.hac_ir.graph,
@@ -97,9 +125,12 @@ def run_evidence() -> SourceIntentRuntimeReturnsEvidence:
         module=module,
         graph=compiled.hac_ir.graph,
         compiled=compiled,
+        readiness=readiness,
         execution=execution,
+        output_manifest=output_manifest,
         output_contract=output_contract,
         public_output_bundle=public_output_bundle,
+        reference_correctness=reference_correctness,
         runtime_returns=runtime_returns,
     )
 

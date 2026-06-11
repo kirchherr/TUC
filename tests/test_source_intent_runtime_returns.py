@@ -25,10 +25,14 @@ from tuc import (
     SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT,
     SOURCE_INTENT_RUNTIME_RETURNS_REPORT_SCHEMA_VERSION,
     ComputeGraph,
+    IRStage,
     SourceIntentRuntimeReturnBinding,
     SourceIntentRuntimeReturnsError,
     build_source_intent_runtime_returns_report,
     compile_graph,
+    dump_runtime_output_contract_report,
+    dump_runtime_public_output_bundle_report,
+    dump_runtime_reference_correctness_report,
     dump_source_intent_runtime_returns_report,
     execute_graph,
     source_intent_from_mapping,
@@ -105,6 +109,60 @@ def test_source_intent_runtime_returns_dump_matches_golden() -> None:
     assert dump_source_intent_runtime_returns_report(run_evidence().runtime_returns) == (
         build_report()
     )
+
+
+@pytest.mark.parametrize(
+    ("fixture_path", "artifact_builder"),
+    (
+        (
+            Path("hac_ir") / "source_intent_return_mlp.txt",
+            lambda: run_evidence().compiled.dump(IRStage.HAC_IR),
+        ),
+        (
+            Path("runtime_plans") / "source_intent_return_mlp.txt",
+            lambda: run_evidence().compiled.dump_runtime_plan(),
+        ),
+        (
+            Path("compiler_decisions") / "source_intent_return_mlp.txt",
+            lambda: run_evidence().compiled.dump_decision_report(),
+        ),
+        (
+            Path("execution_readiness") / "source_intent_return_mlp.txt",
+            lambda: run_evidence().readiness.dump(),
+        ),
+        (
+            Path("execution_traces") / "source_intent_return_mlp.txt",
+            lambda: run_evidence().execution.trace.dump(),
+        ),
+        (
+            Path("runtime_output_contract") / "source_intent_return_mlp.json",
+            lambda: dump_runtime_output_contract_report(
+                run_evidence().output_contract
+            ).rstrip("\n"),
+        ),
+        (
+            Path("runtime_public_output_bundle") / "source_intent_return_mlp.json",
+            lambda: dump_runtime_public_output_bundle_report(
+                run_evidence().public_output_bundle
+            ).rstrip("\n"),
+        ),
+        (
+            Path("runtime_reference_correctness") / "source_intent_return_mlp.json",
+            lambda: dump_runtime_reference_correctness_report(
+                run_evidence().reference_correctness
+            ).rstrip("\n"),
+        ),
+    ),
+)
+def test_source_intent_runtime_returns_artifacts_match_goldens(
+    fixture_path: Path,
+    artifact_builder: Any,
+) -> None:
+    expected = (Path("tests/golden") / fixture_path).read_text(
+        encoding="utf-8"
+    ).rstrip("\n")
+
+    assert artifact_builder() == expected
 
 
 def test_source_intent_runtime_returns_example_runs_without_raw_values() -> None:

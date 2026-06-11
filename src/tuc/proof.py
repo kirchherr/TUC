@@ -277,6 +277,8 @@ RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES = (
 RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "proof_report_golden",
     "frontend_intake_golden",
+    "source_intent_return_semantics",
+    "source_intent_runtime_returns",
     "hac_ir_golden",
     "runtime_plan_golden",
     "compiler_decision_golden",
@@ -1120,6 +1122,57 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "triton_metadata_mvp_families_reference_semantics",
+                    ),
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="source_intent_return_mlp",
+                graph_family="source_intent_runtime_returns",
+                source_boundary="source_intent_metadata",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "frontend_intake_golden",
+                        "source_intent_return_mlp_intake",
+                    ),
+                    _runtime_evidence_artifact(
+                        "source_intent_return_semantics",
+                        "source_intent_return_mlp_return_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "source_intent_runtime_returns",
+                        "source_intent_return_mlp_runtime_returns",
+                    ),
+                    _runtime_evidence_artifact(
+                        "hac_ir_golden",
+                        "source_intent_return_mlp_hac_ir",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_plan_golden",
+                        "source_intent_return_mlp_runtime_plan",
+                    ),
+                    _runtime_evidence_artifact(
+                        "compiler_decision_golden",
+                        "source_intent_return_mlp_compiler_decision",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_readiness_golden",
+                        "source_intent_return_mlp_readiness",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_trace_golden",
+                        "source_intent_return_mlp_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "output_contract",
+                        "source_intent_return_mlp_output_contract",
+                    ),
+                    _runtime_evidence_artifact(
+                        "public_output_bundle",
+                        "source_intent_return_mlp_public_output_bundle",
+                    ),
+                    _runtime_evidence_artifact(
+                        "reference_correctness",
+                        "source_intent_return_mlp_reference_semantics",
                     ),
                 ),
             ),
