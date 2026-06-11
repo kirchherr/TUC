@@ -255,6 +255,11 @@ Implemented now:
 - Runtime Candidate Scoring Policy records comparator semantics as bounded data
   and keeps automatic global optimization, noise/error-budget scoring,
   calibration scoring, and benchmark score inputs disabled.
+- Runtime Candidate Scoring Conformance verifies the current planner comparator
+  behavior through bounded typed in-memory planning fixtures without adding
+  plugin discovery, backend imports, host-path reads, environment reads, device
+  access, network access, generated artifact execution, JIT, benchmark loading,
+  or backend execution permission.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

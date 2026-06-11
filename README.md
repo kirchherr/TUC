@@ -97,6 +97,8 @@ The current prototype contains:
   opt-in score diagnostics and default score silence.
 - Runtime Candidate Scoring Policy v0 with schema-versioned golden evidence for
   active comparator order and blocked future scoring inputs.
+- Runtime Candidate Scoring Conformance v0 with schema-versioned golden
+  evidence proving current planner behavior matches the scoring policy.
 - `systolic-sim` as a second trusted in-process accelerator simulator with
   blocked-layout output, runtime transfer/layout-conversion evidence, and a
   dedicated proof.
@@ -279,6 +281,12 @@ Inspect runtime candidate scoring policy:
 
 ```bash
 python examples/runtime_candidate_scoring_policy.py
+```
+
+Inspect runtime candidate scoring conformance:
+
+```bash
+python examples/runtime_candidate_scoring_conformance.py
 ```
 
 Inspect data-movement metadata:
@@ -472,6 +480,7 @@ pytest -q
 - [Runtime Evidence Gate](docs/RUNTIME_EVIDENCE_GATE.md)
 - [Runtime Candidate Score Evidence](docs/RUNTIME_CANDIDATE_SCORE_EVIDENCE.md)
 - [Runtime Candidate Scoring Policy](docs/RUNTIME_CANDIDATE_SCORING_POLICY.md)
+- [Runtime Candidate Scoring Conformance](docs/RUNTIME_CANDIDATE_SCORING_CONFORMANCE.md)
 - [Systolic simulator proof](docs/SYSTOLIC_SIMULATOR.md)
 - [Manifest Claim Review](docs/MANIFEST_CLAIM_REVIEW.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)

@@ -28,6 +28,9 @@ Policy v0 documents the current deterministic sort order:
 This matches the current rule-based runtime planner. The policy report does not
 change placement behavior.
 
+The current planner behavior is checked by
+[Runtime Candidate Scoring Conformance](RUNTIME_CANDIDATE_SCORING_CONFORMANCE.md).
+
 ## Blocked Components
 
 The following components are intentionally blocked:

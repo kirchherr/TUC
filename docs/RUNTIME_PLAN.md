@@ -103,6 +103,16 @@ python examples/runtime_candidate_scoring_policy.py
 
 See [Runtime Candidate Scoring Policy](RUNTIME_CANDIDATE_SCORING_POLICY.md).
 
+Runtime Candidate Scoring Conformance verifies that the current planner's
+observable candidate choices match the active policy:
+
+```bash
+python examples/runtime_candidate_scoring_conformance.py
+```
+
+See
+[Runtime Candidate Scoring Conformance](RUNTIME_CANDIDATE_SCORING_CONFORMANCE.md).
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:
@@ -125,6 +135,9 @@ Runtime plan objects are declarative data:
   profiles, and validated override effects.
 - Candidate scoring policy is bounded data and keeps automatic global
   optimization plus noise/error-budget score components disabled in v0.
+- Candidate scoring conformance is bounded data derived from typed in-memory
+  planning fixtures; it does not add benchmark execution, backend execution, or
+  plugin/device access.
 
 ## Current Limitations
 
@@ -144,5 +157,7 @@ This is still a prototype:
 2. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
 3. Add richer override diagnostics only if they stay bounded and visible in
    decision-report and runtime-plan golden fixtures.
-4. Add noise/error-budget candidate score components only after those models are
+4. Keep Runtime Candidate Scoring Conformance passing before changing
+   comparator semantics.
+5. Add noise/error-budget candidate score components only after those models are
    stable and documented.

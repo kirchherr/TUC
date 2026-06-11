@@ -1,0 +1,74 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_count": 5,
+  "cases": [
+    {
+      "case_name": "transfer_score_latency_prefers_lower",
+      "component_name": "transfer_score",
+      "detail": "lower_latency_score_selected",
+      "expected_backend": "analog-target",
+      "observed_backend": "analog-target",
+      "status": "passed"
+    },
+    {
+      "case_name": "layout_conversion_bytes_recorded",
+      "component_name": "layout_conversion_bytes",
+      "detail": "layout_conversion_component_recorded",
+      "expected_backend": "a-target",
+      "observed_backend": "a-target",
+      "status": "passed"
+    },
+    {
+      "case_name": "transfer_bytes_tiebreaker",
+      "component_name": "transfer_bytes",
+      "detail": "lower_transfer_bytes_selected_after_score_tie",
+      "expected_backend": "z-target",
+      "observed_backend": "z-target",
+      "status": "passed"
+    },
+    {
+      "case_name": "preferred_memory_domain_match_tiebreaker",
+      "component_name": "preferred_memory_domain_match",
+      "detail": "preferred_memory_domain_selected_after_equal_scores",
+      "expected_backend": "z-target",
+      "observed_backend": "z-target",
+      "status": "passed"
+    },
+    {
+      "case_name": "backend_name_tiebreaker",
+      "component_name": "backend_name_tiebreaker",
+      "detail": "lexical_backend_name_selected_after_equal_scores",
+      "expected_backend": "a-target",
+      "observed_backend": "a-target",
+      "status": "passed"
+    }
+  ],
+  "conformance_contract": "runtime_candidate_scoring_conformance.data_only.v0",
+  "covered_components": [
+    "transfer_score",
+    "layout_conversion_bytes",
+    "transfer_bytes",
+    "preferred_memory_domain_match",
+    "backend_name_tiebreaker"
+  ],
+  "issues": [],
+  "passed": true,
+  "policy_active_component_order": [
+    "transfer_score",
+    "layout_conversion_bytes",
+    "transfer_bytes",
+    "preferred_memory_domain_match",
+    "backend_name_tiebreaker"
+  ],
+  "policy_contract": "runtime_candidate_scoring_policy.data_only.v0",
+  "schema_version": "tuc.runtime_candidate_scoring_conformance_report.v0"
+}

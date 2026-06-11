@@ -371,6 +371,8 @@ Completed evidence:
 - Runtime Candidate Scoring Policy reports fix the active comparator order and
   keep noise, error-budget, calibration, and benchmark score inputs blocked
   until separately modeled.
+- Runtime Candidate Scoring Conformance reports verify that the current
+  planner's observable candidate choices match the active comparator policy.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -381,6 +383,8 @@ Next work:
 - Add candidate scoring once transfer/noise-aware models are stable.
 - Use Runtime Candidate Scoring Policy as the review contract before changing
   candidate-score comparator semantics.
+- Keep Runtime Candidate Scoring Conformance passing before changing candidate
+  score comparator behavior.
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
