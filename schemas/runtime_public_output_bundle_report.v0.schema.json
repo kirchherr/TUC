@@ -1,0 +1,231 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_public_output_bundle_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "bundle_contract": {
+      "const": "runtime_public_output_bundle.readonly_values.v0"
+    },
+    "bundle_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "output_contract": {
+      "const": "runtime_output_contract.data_only.v0"
+    },
+    "passed": {
+      "const": true
+    },
+    "public_output_count": {
+      "maximum": 4096,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "public_output_names": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    },
+    "public_outputs": {
+      "items": {
+        "$ref": "#/$defs/public_output"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_public_output_bundle_report.v0"
+    },
+    "tensor_names": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "bundle_contract",
+    "bundle_metadata_digest",
+    "executor_contract",
+    "graph_name",
+    "output_contract",
+    "passed",
+    "public_output_count",
+    "public_output_names",
+    "public_outputs",
+    "raw_value_policy",
+    "schema_version",
+    "tensor_names"
+  ],
+  "type": "object",
+  "$defs": {
+    "producer_kind": {
+      "enum": [
+        "external_input",
+        "operation"
+      ]
+    },
+    "public_output": {
+      "additionalProperties": false,
+      "properties": {
+        "dtype": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_kind": {
+          "$ref": "#/$defs/producer_kind"
+        },
+        "public_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "raw_value_status": {
+          "const": "omitted_by_policy"
+        },
+        "readonly": {
+          "const": true
+        },
+        "record_contract": {
+          "const": "runtime_value_record.internal.v0"
+        },
+        "shape": {
+          "$ref": "#/$defs/shape"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "value_contract": {
+          "const": "runtime_public_output_value.readonly_numpy.v0"
+        },
+        "value_role": {
+          "$ref": "#/$defs/value_role"
+        }
+      },
+      "required": [
+        "dtype",
+        "producer_id",
+        "producer_kind",
+        "public_name",
+        "raw_value_status",
+        "readonly",
+        "record_contract",
+        "shape",
+        "tensor_name",
+        "value_contract",
+        "value_role"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "output_value",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_output_value",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "reference_value",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "tensor_values",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "shape": {
+      "items": {
+        "maximum": 2147483647,
+        "minimum": 1,
+        "type": "integer"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "type": "array"
+    },
+    "value_role": {
+      "enum": [
+        "input",
+        "computed"
+      ]
+    }
+  }
+}

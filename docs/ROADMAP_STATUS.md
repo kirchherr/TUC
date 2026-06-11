@@ -153,6 +153,24 @@ hardware-independent interface into capability-driven runtime planning.
   evidence at `tests/golden/runtime_output_contract/current_report.json`, and
   explicit public output aliases for terminal graph tensors without raw tensor
   values.
+- Runtime Public Output Bundle v0 with schema at
+  `schemas/runtime_public_output_bundle_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_public_output_bundle/current_report.json`, and
+  read-only public-name-to-runtime-value mapping while review evidence remains
+  metadata-only.
+- Runtime Evidence Gate now requires Runtime Output Contract and Runtime Public
+  Output Bundle evidence in addition to Runtime Evidence Matrix, Runtime
+  Executor Conformance, Runtime Tensor Store Evidence, Runtime Output Manifest,
+  and Runtime Reference Correctness.
+- Runtime Evidence Matrix now treats `output_contract` as required graph
+  evidence, aligning the curated proof inventory with the Runtime Evidence Gate
+  contract, with the decision captured in
+  `rfcs/0113-runtime-evidence-matrix-output-contract.md`.
+- Runtime Evidence Matrix now treats `public_output_bundle` as required graph
+  evidence, aligning curated proof inventory with the read-only public runtime
+  return boundary, with the decision captured in
+  `rfcs/0115-runtime-evidence-public-output-bundle.md`.
 
 ## In Progress
 
@@ -220,6 +238,11 @@ Current slice:
 - Runtime Output Contract at `examples/runtime_output_contract.py`, with golden
   evidence at `tests/golden/runtime_output_contract/current_report.json`,
   separating public output aliases from terminal graph tensor names.
+- Runtime Public Output Bundle at `examples/runtime_public_output_bundle.py`,
+  with golden evidence at
+  `tests/golden/runtime_public_output_bundle/current_report.json`, resolving
+  public aliases to read-only runtime values without serializing tensor values
+  into review artifacts.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.
@@ -241,7 +264,8 @@ Current slice:
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
-  Evidence, Runtime Output Manifest, and Runtime Reference Correctness.
+  Evidence, Runtime Output Manifest, Runtime Output Contract, Runtime Public
+  Output Bundle, and Runtime Reference Correctness.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

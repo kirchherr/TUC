@@ -72,6 +72,8 @@
         "compiler_decision_golden",
         "execution_readiness_golden",
         "execution_trace_golden",
+        "output_contract",
+        "public_output_bundle",
         "reference_correctness"
       ]
     },

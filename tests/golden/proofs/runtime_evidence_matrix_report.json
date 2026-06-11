@@ -46,6 +46,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_abstraction_output_contract",
+          "artifact_kind": "output_contract",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_abstraction_public_output_bundle",
+          "artifact_kind": "public_output_bundle",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_abstraction_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -87,6 +97,16 @@
         {
           "artifact_id": "proof_of_reduction_trace",
           "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_reduction_output_contract",
+          "artifact_kind": "output_contract",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_reduction_public_output_bundle",
+          "artifact_kind": "public_output_bundle",
           "artifact_status": "present"
         },
         {
@@ -134,6 +154,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_softmax_output_contract",
+          "artifact_kind": "output_contract",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_softmax_public_output_bundle",
+          "artifact_kind": "public_output_bundle",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_softmax_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -175,6 +205,16 @@
         {
           "artifact_id": "proof_of_execution_trace",
           "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_output_contract",
+          "artifact_kind": "output_contract",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_public_output_bundle",
+          "artifact_kind": "public_output_bundle",
           "artifact_status": "present"
         },
         {
@@ -222,6 +262,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_systolic_execution_output_contract",
+          "artifact_kind": "output_contract",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_public_output_bundle",
+          "artifact_kind": "public_output_bundle",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_systolic_execution_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -266,6 +316,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "triton_metadata_mvp_families_output_contract",
+          "artifact_kind": "output_contract",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "triton_metadata_mvp_families_public_output_bundle",
+          "artifact_kind": "public_output_bundle",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "triton_metadata_mvp_families_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -286,6 +346,8 @@
     "compiler_decision_golden",
     "execution_readiness_golden",
     "execution_trace_golden",
+    "output_contract",
+    "public_output_bundle",
     "reference_correctness"
   ],
   "runtime_evidence_matrix_complete": true,
