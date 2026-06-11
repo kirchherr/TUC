@@ -40,6 +40,8 @@ The gate passes only when:
   against independent reference tensors
 - Runtime Execution Receipt passes, proving runtime evidence reports link to
   the same trusted runtime execution by metadata digest and graph name
+- Runtime Execution Receipt binding passes, proving receipt links match the
+  specific evidence reports evaluated by this gate invocation
 - Source Intent Runtime Returns passes, proving explicit frontend return aliases
   resolve through Runtime Output Contract and Runtime Public Output Bundle
 - the Source Intent Runtime Returns report is bound to the
@@ -127,6 +129,9 @@ It composes bounded in-repository checks:
   tensor values omitted by policy
 - data-only Runtime Execution Receipt metadata linking runtime evidence digests
   with raw tensor values omitted by policy
+- a bounded Runtime Execution Receipt binding check that compares receipt graph
+  names, contracts, metadata digests, item counts, pass status, and raw-value
+  policy against the reports already checked by the gate
 - data-only Source Intent Runtime Returns metadata proving frontend public
   returns resolve to runtime public outputs with raw tensor values omitted by
   policy

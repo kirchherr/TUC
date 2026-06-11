@@ -70,6 +70,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_public_output_bundle = "passed"' in completed.stdout
     assert 'runtime_reference_correctness = "passed"' in completed.stdout
     assert 'runtime_execution_receipt = "passed"' in completed.stdout
+    assert 'runtime_execution_receipt_binding = "verified"' in completed.stdout
     assert 'source_intent_runtime_returns = "passed"' in completed.stdout
 
 
@@ -243,6 +244,27 @@ def test_runtime_evidence_gate_rejects_failed_execution_receipt() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="execution receipt failed"):
         build_gate_report(execution_receipt_report=failed_receipt)
+
+
+def test_runtime_evidence_gate_rejects_unbound_execution_receipt_digest() -> None:
+    report = build_execution_receipt_report()
+    forged_link = replace(
+        report.evidence_links[1],
+        metadata_digest="sha256:" + "1" * 64,
+    )
+    forged_receipt = RuntimeExecutionReceiptReport(
+        graph_name=report.graph_name,
+        evidence_links=(
+            report.evidence_links[0],
+            forged_link,
+            *report.evidence_links[2:],
+        ),
+        operations=report.operations,
+        issues=(),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="receipt binding failed"):
+        build_gate_report(execution_receipt_report=forged_receipt)
 
 
 def test_runtime_evidence_gate_rejects_invalid_source_intent_runtime_returns() -> None:

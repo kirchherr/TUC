@@ -155,6 +155,11 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
   tensor-store, input-manifest, output-manifest, and reference-correctness
   evidence by metadata digest without raw tensor values.
+- Runtime Execution Receipt Binding in Runtime Evidence Gate, rejecting receipts
+  whose graph names, contracts, metadata digests, item counts, pass status, or
+  raw-value policy do not match the evidence reports evaluated by the same gate
+  invocation, with the decision captured in
+  `rfcs/0128-runtime-execution-receipt-gate-binding.md`.
 - Runtime Multi-Output Evidence fixture with deterministic golden evidence at
   `tests/golden/runtime_multi_output_evidence/current_report.json`, proving
   Runtime Output Manifest and Runtime Reference Correctness across two terminal

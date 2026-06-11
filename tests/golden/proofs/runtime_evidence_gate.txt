@@ -23,6 +23,7 @@ runtime.evidence_gate @runtime_evidence_gate_v0 {
   runtime_reference_comparisons = "1"
   runtime_reference_raw_value_policy = "omitted_by_policy"
   runtime_execution_receipt = "passed"
+  runtime_execution_receipt_binding = "verified"
   runtime_execution_receipt_links = "4"
   runtime_execution_receipt_operations = "3"
   runtime_execution_receipt_raw_value_policy = "omitted_by_policy"

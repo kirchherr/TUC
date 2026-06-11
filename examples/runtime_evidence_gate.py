@@ -114,6 +114,13 @@ def build_gate_report(
     _assert_public_output_bundle_passed(public_bundle, output_contract)
     _assert_reference_correctness_passed(reference_correctness)
     _assert_execution_receipt_passed(execution_receipt)
+    _assert_execution_receipt_matches_gate_reports(
+        execution_receipt,
+        tensor_store,
+        input_manifest,
+        output_manifest,
+        reference_correctness,
+    )
     _assert_source_intent_runtime_returns_passed(source_intent_runtime_returns)
     _assert_source_intent_runtime_returns_matrix_covered(
         matrix,
@@ -247,6 +254,72 @@ def _assert_execution_receipt_passed(report: RuntimeExecutionReceiptReport) -> N
         raise RuntimeEvidenceGateError(f"runtime execution receipt failed: {issues}")
 
 
+def _assert_execution_receipt_matches_gate_reports(
+    receipt: RuntimeExecutionReceiptReport,
+    tensor_store: RuntimeTensorStoreEvidenceReport,
+    input_manifest: RuntimeInputManifestReport,
+    output_manifest: RuntimeOutputManifestReport,
+    reference_correctness: RuntimeReferenceCorrectnessReport,
+) -> None:
+    links = {link.evidence_kind: link for link in receipt.evidence_links}
+    expected_links = {
+        "tensor_store_evidence": {
+            "evidence_contract": tensor_store.evidence_contract,
+            "graph_name": tensor_store.graph_name,
+            "item_count": len(tensor_store.records),
+            "metadata_digest": tensor_store.record_metadata_digest,
+            "passed": tensor_store.passed,
+            "raw_value_policy": tensor_store.raw_value_policy,
+        },
+        "input_manifest": {
+            "evidence_contract": input_manifest.manifest_contract,
+            "graph_name": input_manifest.graph_name,
+            "item_count": len(input_manifest.inputs),
+            "metadata_digest": input_manifest.input_metadata_digest,
+            "passed": input_manifest.passed,
+            "raw_value_policy": input_manifest.raw_value_policy,
+        },
+        "output_manifest": {
+            "evidence_contract": output_manifest.manifest_contract,
+            "graph_name": output_manifest.graph_name,
+            "item_count": len(output_manifest.outputs),
+            "metadata_digest": output_manifest.output_metadata_digest,
+            "passed": output_manifest.passed,
+            "raw_value_policy": output_manifest.raw_value_policy,
+        },
+        "reference_correctness": {
+            "evidence_contract": reference_correctness.correctness_contract,
+            "graph_name": reference_correctness.graph_name,
+            "item_count": len(reference_correctness.comparisons),
+            "metadata_digest": reference_correctness.comparison_metadata_digest,
+            "passed": reference_correctness.passed,
+            "raw_value_policy": reference_correctness.raw_value_policy,
+        },
+    }
+
+    for evidence_kind, expected in expected_links.items():
+        link = links.get(evidence_kind)
+        if link is None:
+            raise RuntimeEvidenceGateError(
+                "runtime execution receipt binding failed: "
+                f"{evidence_kind}:missing_link"
+            )
+        actual = {
+            "evidence_contract": link.evidence_contract,
+            "graph_name": link.graph_name,
+            "item_count": link.item_count,
+            "metadata_digest": link.metadata_digest,
+            "passed": link.passed,
+            "raw_value_policy": link.raw_value_policy,
+        }
+        for field_name, expected_value in expected.items():
+            if actual[field_name] != expected_value:
+                raise RuntimeEvidenceGateError(
+                    "runtime execution receipt binding failed: "
+                    f"{evidence_kind}:{field_name}_mismatch"
+                )
+
+
 def _assert_source_intent_runtime_returns_passed(
     report: SourceIntentRuntimeReturnsReport,
 ) -> None:
@@ -370,6 +443,7 @@ def _render_gate_report(
         f'  runtime_reference_raw_value_policy = "{reference_correctness.raw_value_policy}"'
     )
     lines.append('  runtime_execution_receipt = "passed"')
+    lines.append('  runtime_execution_receipt_binding = "verified"')
     lines.append(
         f'  runtime_execution_receipt_links = "{len(execution_receipt.evidence_links)}"'
     )
