@@ -1,0 +1,155 @@
+{
+  "allocation_contract": "runtime_allocation_plan.data_only.v0",
+  "bindings": [
+    {
+      "bytes_required": 64,
+      "dtype": "float32",
+      "first_live_index": 0,
+      "last_use_index": 1,
+      "layout": "row_major",
+      "lifetime_kind": "intermediate",
+      "memory_domain": "host_ram",
+      "producer_index": 0,
+      "producer_operation": "left_projection",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_001",
+      "tensor_name": "left_tmp"
+    },
+    {
+      "bytes_required": 64,
+      "dtype": "float32",
+      "first_live_index": 1,
+      "last_use_index": 4,
+      "layout": "row_major",
+      "lifetime_kind": "graph_output",
+      "memory_domain": "host_ram",
+      "producer_index": 1,
+      "producer_operation": "left_activation",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_002",
+      "tensor_name": "left_out"
+    },
+    {
+      "bytes_required": 64,
+      "dtype": "float32",
+      "first_live_index": 2,
+      "last_use_index": 3,
+      "layout": "row_major",
+      "lifetime_kind": "intermediate",
+      "memory_domain": "host_ram",
+      "producer_index": 2,
+      "producer_operation": "right_projection",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_001",
+      "tensor_name": "right_tmp"
+    },
+    {
+      "bytes_required": 64,
+      "dtype": "float32",
+      "first_live_index": 3,
+      "last_use_index": 4,
+      "layout": "row_major",
+      "lifetime_kind": "graph_output",
+      "memory_domain": "host_ram",
+      "producer_index": 3,
+      "producer_operation": "right_activation",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_003",
+      "tensor_name": "right_out"
+    }
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "committed_reuse_savings_bytes": 64,
+  "graph_name": "runtime_buffer_lifetime",
+  "issues": [],
+  "operation_count": 4,
+  "passed": true,
+  "peak_live_bytes": 192,
+  "reuse_slot_count": 1,
+  "schema_version": "tuc.runtime_allocation_plan_report.v0",
+  "slot_count": 3,
+  "slots": [
+    {
+      "allocation_kind": "reused",
+      "bytes_reserved": 64,
+      "dtype": "float32",
+      "layout": "row_major",
+      "live_ranges_non_overlapping": true,
+      "memory_domain": "host_ram",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_001",
+      "source_reuse_group_id": "reuse_group_001",
+      "tensor_count": 2,
+      "tensor_names": [
+        "left_tmp",
+        "right_tmp"
+      ]
+    },
+    {
+      "allocation_kind": "exclusive",
+      "bytes_reserved": 64,
+      "dtype": "float32",
+      "layout": "row_major",
+      "live_ranges_non_overlapping": true,
+      "memory_domain": "host_ram",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_002",
+      "source_reuse_group_id": "reuse_group_002",
+      "tensor_count": 1,
+      "tensor_names": [
+        "left_out"
+      ]
+    },
+    {
+      "allocation_kind": "exclusive",
+      "bytes_reserved": 64,
+      "dtype": "float32",
+      "layout": "row_major",
+      "live_ranges_non_overlapping": true,
+      "memory_domain": "host_ram",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_003",
+      "source_reuse_group_id": "reuse_group_003",
+      "tensor_count": 1,
+      "tensor_names": [
+        "right_out"
+      ]
+    }
+  ],
+  "source_lifetime_contract": "runtime_buffer_lifetime.data_only.v0",
+  "source_lifetime_issue_count": 0,
+  "source_lifetime_schema_version": "tuc.runtime_buffer_lifetime_report.v0",
+  "tensor_binding_count": 4,
+  "total_reserved_bytes": 192,
+  "total_tensor_bytes": 256
+}
