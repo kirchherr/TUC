@@ -33,9 +33,12 @@ path remains `run_source_intent_frontend_conformance(frontend_name, cases)`.
 Accepted cases must pass:
 
 - Source Intent Intake through `source_intent_from_mapping(data)`
+- Source Intent return semantics when explicit `returns` are present
 - Source Intent Metadata Conversion through
   `source_intent_to_triton_metadata(module)`
 - Metadata to `ComputeGraph` through the existing metadata adapter
+- Source Intent return policy and return alias metadata preservation when
+  explicit `returns` are present
 - The neutral compiler pipeline with explicit backend capability data and the
   default `reference-cpu` fallback
 
@@ -58,9 +61,13 @@ The conformance suite may produce a deterministic JSON report. It must not becom
 The example suite includes:
 
 - one accepted Source Intent MLP plain-data case
+- one accepted Source Intent MLP plain-data case with explicit public returns
 - a rejected source-text escape case
 - a rejected backend-specific hint escape case
 - a rejected unknown tensor reference case
+- a rejected return to an unknown tensor
+- a rejected return to an intermediate, non-terminal tensor
+- a rejected duplicate public return name case
 
 The deterministic report is golden-tested at:
 

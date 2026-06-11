@@ -1,14 +1,18 @@
 {
-  "accepted_case_count": 1,
+  "accepted_case_count": 2,
   "checked_cases": [
     "valid_source_intent_mlp",
+    "valid_source_intent_return_mlp",
     "reject_source_text_escape",
     "reject_backend_hint_escape",
-    "reject_unknown_tensor_reference"
+    "reject_unknown_tensor_reference",
+    "reject_return_unknown_tensor",
+    "reject_return_intermediate_tensor",
+    "reject_duplicate_public_returns"
   ],
   "frontend_name": "example-source-intent-frontend",
   "issues": [],
   "passed": true,
-  "rejected_case_count": 3,
+  "rejected_case_count": 6,
   "schema_version": "tuc.source_intent_frontend_conformance_report.v0"
 }

@@ -194,6 +194,9 @@ hardware-independent interface into capability-driven runtime planning.
   `source_intent_return_mlp` Runtime Evidence Matrix graph, failing closed when
   the matrix graph, source boundary, required Source Intent artifacts, or report
   graph name drift.
+- Source Intent Frontend Conformance now includes explicit public-return
+  fixtures, return-alias preservation checks, and fail-closed rejected cases for
+  unknown, intermediate, and duplicate public returns.
 
 ## In Progress
 
@@ -368,7 +371,8 @@ Current slice:
   `schemas/source_intent.v0.schema.json` for external frontend authors.
 - Source Intent Frontend Conformance fixtures with deterministic JSON report
   artifacts for external frontend authors that emit `source_intent.v0` plain
-  data.
+  data, including explicit public-return fixtures and rejected malformed return
+  cases.
 - Machine-readable Source Intent Frontend Conformance report JSON Schema at
   `schemas/source_intent_frontend_conformance_report.v0.schema.json`.
 - Source-To-Intent Parser Gate defining the required future parser RFC,
