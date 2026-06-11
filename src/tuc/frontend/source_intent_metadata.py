@@ -13,9 +13,11 @@ from dataclasses import dataclass
 from tuc.frontend.hints import CompilationHints
 from tuc.frontend.source_intent import (
     SOURCE_INTENT_IR_CONTRACT,
+    SOURCE_INTENT_RETURN_POLICY,
     SourceIntentModule,
     SourceIntentOperation,
 )
+from tuc.frontend.source_intent_returns import source_intent_return_aliases
 from tuc.frontend.triton_metadata import (
     TRITON_METADATA_SCHEMA_VERSION,
     TritonKernelMetadata,
@@ -99,16 +101,24 @@ def source_intent_to_triton_metadata(
         for tensor in module.tensors
     )
     operations = tuple(_operation_to_metadata(operation) for operation in module.operations)
+    graph_metadata: dict[str, object] = {
+        "frontend.source_intent_contract": module.contract,
+        "frontend.source_intent_conversion_contract": SOURCE_INTENT_METADATA_CONTRACT,
+    }
+    if module.returns:
+        aliases = source_intent_return_aliases(module)
+        graph_metadata["frontend.source_intent_return_policy"] = (
+            SOURCE_INTENT_RETURN_POLICY
+        )
+        graph_metadata["frontend.source_intent_return_aliases"] = tuple(
+            f"{public_name}:{tensor_name}"
+            for public_name, tensor_name in aliases.items()
+        )
     return TritonKernelMetadata(
         name=module.name,
         tensors=tensors,
         operations=operations,
-        metadata={
-            "frontend.source_intent_contract": module.contract,
-            "frontend.source_intent_conversion_contract": (
-                SOURCE_INTENT_METADATA_CONTRACT
-            ),
-        },
+        metadata=graph_metadata,
     )
 
 

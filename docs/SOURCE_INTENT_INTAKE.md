@@ -24,9 +24,12 @@ It does not parse source text.
 
 Accepted plain data:
 
-- top-level `name`, `schema_version`, `tensors`, and `operations`
+- top-level `name`, `schema_version`, `tensors`, `operations`, and optional
+  `returns`
 - tensor `name`, `shape`, and optional `dtype`
 - operation `name`, `family`, `inputs`, `outputs`, and optional `hints`
+- return `public_name`, `tensor_name`, and optional `required`, as specified by
+  [Source Intent Return Semantics](SOURCE_INTENT_RETURN_SEMANTICS.md)
 - neutral source-intent hints already accepted by Source Intent IR
 
 Unsupported keys fail closed.
@@ -65,6 +68,12 @@ The HAC-IR, runtime-plan, and compiler decision-report goldens are produced
 only after the separate Source Intent Metadata Conversion adapter and existing
 metadata intake path validate the module. Source Intent Intake itself still
 does not produce compiler artifacts directly.
+
+Return semantics evidence is produced separately at:
+
+```text
+tests/golden/frontend/source_intent_return_semantics_report.txt
+```
 
 The intake also has property-test and seed-corpus coverage for:
 

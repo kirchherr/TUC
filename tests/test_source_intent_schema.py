@@ -33,6 +33,10 @@ def test_source_intent_json_schema_matches_runtime_contract() -> None:
     assert defs["tensor"]["properties"]["shape"]["maxItems"] == 8
     assert defs["tensor_name_list"]["maxItems"] == 16
     assert defs["dimension"]["maximum"] == 2147483647
+    assert "returns" not in schema["required"]
+    assert schema["properties"]["returns"]["items"]["$ref"] == "#/$defs/return"
+    assert defs["return"]["additionalProperties"] is False
+    assert defs["return"]["required"] == ["public_name", "tensor_name"]
 
 
 def test_source_intent_json_schema_rejects_unknown_fields_by_contract() -> None:
@@ -46,6 +50,7 @@ def test_source_intent_json_schema_rejects_unknown_fields_by_contract() -> None:
     assert "python_source" not in schema["properties"]
     assert "file_path" not in defs["tensor"]["properties"]
     assert "plugin_entrypoint" not in defs["operation"]["properties"]
+    assert "python_source" not in defs["return"]["properties"]
 
 
 def test_source_intent_json_schema_corpus_examples_align_with_intake() -> None:

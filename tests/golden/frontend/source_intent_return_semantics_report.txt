@@ -1,0 +1,10 @@
+source_intent.return_semantics @source_intent_return_mlp {
+  source_intent_contract = "source_intent_ir.canonical.v0"
+  return_semantics_contract = "source_intent_return_semantics.data_only.v0"
+  return_policy = "explicit_public_returns"
+  return_count = 1
+  terminal_tensor_names = "y"
+  returns = "api_y:y"
+  blocked_execution_surfaces = "bytecode_inspection,decorator_evaluation,device_access,dynamic_library_loading,file_system_access,generated_artifact_execution,jit_execution,network_access,plugin_discovery,python_import,source_parsing,subprocess_execution"
+  blocked_compiler_outputs = "metadata,compute_graph,tlir,hac_ir,hs_ir,runtime_plan,backend_decision,runtime_output_contract,runtime_public_output_bundle"
+}

@@ -126,7 +126,8 @@ Current frontend surfaces:
 
 - Triton-like metadata adapter.
 - Execution-free Triton Source Preflight.
-- Source Intent IR, schema, intake, conformance, and metadata conversion.
+- Source Intent IR, schema, intake, return semantics, conformance, and metadata
+  conversion.
 - Source-to-Intent parser gate remains blocked until dedicated parser evidence
   exists.
 
@@ -136,6 +137,7 @@ Key docs:
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)
+- [Source Intent return semantics](docs/SOURCE_INTENT_RETURN_SEMANTICS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)
 
 ## Backend Authoring

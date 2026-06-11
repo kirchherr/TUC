@@ -171,6 +171,12 @@ hardware-independent interface into capability-driven runtime planning.
   evidence, aligning curated proof inventory with the read-only public runtime
   return boundary, with the decision captured in
   `rfcs/0115-runtime-evidence-public-output-bundle.md`.
+- Source Intent Return Semantics v0 with optional `returns` in
+  `schemas/source_intent.v0.schema.json`, deterministic golden evidence at
+  `tests/golden/frontend/source_intent_return_semantics_report.txt`, and
+  execution-free public-name-to-terminal-tensor intent before Runtime Output
+  Contract evidence is built, documented in
+  `docs/SOURCE_INTENT_RETURN_SEMANTICS.md`.
 
 ## In Progress
 
@@ -243,6 +249,11 @@ Current slice:
   `tests/golden/runtime_public_output_bundle/current_report.json`, resolving
   public aliases to read-only runtime values without serializing tensor values
   into review artifacts.
+- Source Intent Return Semantics at
+  `examples/source_intent_return_semantics.py`, with golden evidence at
+  `tests/golden/frontend/source_intent_return_semantics_report.txt`, connecting
+  frontend public output intent to future Runtime Output Contract aliases
+  without source parsing or runtime execution.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.
