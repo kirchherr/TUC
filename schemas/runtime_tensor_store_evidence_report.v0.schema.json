@@ -119,6 +119,12 @@
         "dtype": {
           "$ref": "#/$defs/report_text"
         },
+        "producer_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_kind": {
+          "$ref": "#/$defs/producer_kind"
+        },
         "shape": {
           "$ref": "#/$defs/shape"
         },
@@ -131,6 +137,8 @@
       },
       "required": [
         "dtype",
+        "producer_id",
+        "producer_kind",
         "shape",
         "tensor_name",
         "value_role"
@@ -186,6 +194,12 @@
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
       "type": "string"
     },
+    "producer_kind": {
+      "enum": [
+        "external_input",
+        "operation"
+      ]
+    },
     "sha256_digest": {
       "pattern": "^sha256:[0-9a-f]{64}$",
       "type": "string"
@@ -205,6 +219,12 @@
       "properties": {
         "dtype": {
           "$ref": "#/$defs/report_text"
+        },
+        "producer_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_kind": {
+          "$ref": "#/$defs/producer_kind"
         },
         "raw_value_status": {
           "const": "omitted_by_policy"
@@ -227,6 +247,8 @@
       },
       "required": [
         "dtype",
+        "producer_id",
+        "producer_kind",
         "raw_value_status",
         "readonly",
         "record_contract",

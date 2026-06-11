@@ -51,6 +51,7 @@ RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
 MAX_RUNTIME_EXECUTION_VALUES = 4096
 MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS = 64
 _RUNTIME_VALUE_ROLES = frozenset({"input", "computed"})
+_RUNTIME_PRODUCER_KINDS = frozenset({"external_input", "operation"})
 
 FloatArray = NDArray[np.float64]
 
@@ -311,6 +312,8 @@ class RuntimeValueRecord:
     shape: tuple[int, ...]
     dtype: str
     value_role: str
+    producer_kind: str
+    producer_id: str
     record_contract: str = RUNTIME_VALUE_RECORD_CONTRACT
 
     def __post_init__(self) -> None:
@@ -320,6 +323,16 @@ class RuntimeValueRecord:
         _require_shape(self.shape)
         if self.value_role not in _RUNTIME_VALUE_ROLES:
             raise ValueError("runtime value record role is unsupported")
+        if self.producer_kind not in _RUNTIME_PRODUCER_KINDS:
+            raise ValueError("runtime value record producer kind is unsupported")
+        _require_trace_name(self.producer_id, "runtime value record producer_id")
+        if self.value_role == "input":
+            if self.producer_kind != "external_input":
+                raise ValueError("runtime input record producer must be external_input")
+            if self.producer_id != self.tensor_name:
+                raise ValueError("runtime input record producer_id must match tensor name")
+        if self.value_role == "computed" and self.producer_kind != "operation":
+            raise ValueError("runtime computed record producer must be operation")
         if not isinstance(self.value, np.ndarray):
             raise TypeError("runtime value record value must be NumPy array")
         if self.dtype != str(self.value.dtype):
@@ -392,9 +405,16 @@ class RuntimeTensorStore:
             raise KeyError(tensor_name)
         return record
 
-    def store_computed(self, tensor: TensorRef, value: FloatArray) -> None:
+    def store_computed(
+        self,
+        tensor: TensorRef,
+        value: FloatArray,
+        *,
+        producer_operation: str,
+    ) -> None:
         """Store one computed tensor output value."""
 
+        _require_trace_name(producer_operation, "producer_operation")
         self.add(
             RuntimeValueRecord(
                 tensor_name=tensor.name,
@@ -402,6 +422,8 @@ class RuntimeTensorStore:
                 shape=tensor.shape,
                 dtype=str(value.dtype),
                 value_role="computed",
+                producer_kind="operation",
+                producer_id=producer_operation,
             )
         )
 
@@ -483,7 +505,11 @@ def execute_graph(
             raise ValueError("runtime executor v0 supports one output per operation")
         output = operation.outputs[0]
         _validate_declared_output(operation, result)
-        tensor_store.store_computed(output, result)
+        tensor_store.store_computed(
+            output,
+            result,
+            producer_operation=operation.name,
+        )
         steps.append(_build_step(operation, assignment, executor, result))
         if tensor_store.record_count > MAX_RUNTIME_EXECUTION_VALUES:
             raise ValueError("runtime executor value count exceeds limit")
@@ -801,6 +827,8 @@ def _normalize_inputs(
                 shape=external_inputs[name].shape,
                 dtype=str(value.dtype),
                 value_role="input",
+                producer_kind="external_input",
+                producer_id=name,
             )
         )
     return RuntimeTensorStore(tuple(records))

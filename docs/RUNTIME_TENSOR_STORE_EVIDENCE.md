@@ -21,6 +21,7 @@ Runtime Tensor Store records for a graph:
 - operation outputs have `computed` records
 - record shapes match graph tensor shapes
 - record dtype matches the Runtime Executor `float64` value contract
+- record producer kind and producer identifier match graph provenance
 - record values are read-only
 - unexpected records fail evidence review
 
@@ -56,8 +57,8 @@ plugin entrypoints, commands, environment variables, benchmark samples, or
 backend artifacts.
 
 The metadata digest covers record metadata only: tensor name, shape, dtype,
-role, read-only status, and raw-value omission status. It never hashes tensor
-contents.
+role, producer kind, producer identifier, read-only status, and raw-value
+omission status. It never hashes tensor contents.
 
 ## Current Limitations
 

@@ -182,12 +182,14 @@ accepted runtime tensor value as a `RuntimeValueRecord` with:
 - declared shape
 - dtype
 - value role, either `input` or `computed`
+- producer kind and producer identifier
 
 External inputs are copied into read-only records before execution starts, and
 computed outputs are copied into read-only records before they become visible to
 later operations or `RuntimeExecutionResult`. This prevents caller-side input
 mutation and accidental output mutation from changing already accepted runtime
-evidence.
+evidence. Input records point to their external tensor name; computed records
+point to their producer operation name.
 
 The tensor store is not a memory allocator, not a cache, not a device buffer
 manager, and not an aliasing model. It is the minimum internal value-record

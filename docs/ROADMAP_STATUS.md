@@ -126,7 +126,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
   and finite values at input and output boundaries.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects
-  for accepted input and computed runtime values.
+  for accepted input and computed runtime values, including data-only producer
+  provenance for external inputs and operation-produced values.
 - Runtime Tensor Store Evidence v0 with schema at
   `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, deterministic
   golden evidence at
@@ -183,7 +184,8 @@ Current slice:
   `RuntimeValueRecord` storage, and deterministic execution traces.
 - Runtime Tensor Store Evidence at `examples/runtime_tensor_store_evidence.py`,
   with golden evidence at
-  `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`.
+  `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`,
+  including producer-kind and producer-id metadata without tensor values.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.

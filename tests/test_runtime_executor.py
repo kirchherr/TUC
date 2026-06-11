@@ -182,6 +182,8 @@ def test_runtime_value_record_rejects_shape_mismatch() -> None:
             shape=(2,),
             dtype="float64",
             value_role="input",
+            producer_kind="external_input",
+            producer_id="value",
         )
 
 
@@ -192,6 +194,8 @@ def test_runtime_tensor_store_rejects_duplicate_records() -> None:
         shape=(2,),
         dtype="float64",
         value_role="input",
+        producer_kind="external_input",
+        producer_id="value",
     )
 
     with pytest.raises(ValueError, match="duplicate value"):
@@ -205,6 +209,8 @@ def test_runtime_execution_result_rejects_record_value_mismatch() -> None:
         shape=(2,),
         dtype="float64",
         value_role="input",
+        producer_kind="external_input",
+        producer_id="value",
     )
 
     with pytest.raises(ValueError, match="record values must match values"):
@@ -216,6 +222,32 @@ def test_runtime_execution_result_rejects_record_value_mismatch() -> None:
                 steps=(),
             ),
             records=(record,),
+        )
+
+
+def test_runtime_value_record_rejects_invalid_input_provenance() -> None:
+    with pytest.raises(ValueError, match="producer_id must match tensor name"):
+        RuntimeValueRecord(
+            tensor_name="value",
+            value=np.zeros((2,), dtype=np.float64),
+            shape=(2,),
+            dtype="float64",
+            value_role="input",
+            producer_kind="external_input",
+            producer_id="other",
+        )
+
+
+def test_runtime_value_record_rejects_invalid_computed_provenance() -> None:
+    with pytest.raises(ValueError, match="computed record producer"):
+        RuntimeValueRecord(
+            tensor_name="value",
+            value=np.zeros((2,), dtype=np.float64),
+            shape=(2,),
+            dtype="float64",
+            value_role="computed",
+            producer_kind="external_input",
+            producer_id="value",
         )
 
 

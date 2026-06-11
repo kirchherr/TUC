@@ -25,10 +25,14 @@ Each `RuntimeValueRecord` records:
 - declared shape
 - dtype
 - value role
+- producer kind, either `external_input` or `operation`
+- producer identifier, either the external tensor name or producer operation name
 
 External inputs are copied into read-only records before execution starts.
+Their producer is recorded as `external_input/<tensor_name>`.
 Computed outputs are copied into read-only records before later operations or
-`RuntimeExecutionResult` can observe them.
+`RuntimeExecutionResult` can observe them. Their producer is recorded as
+`operation/<operation_name>`.
 
 ## Security Boundary
 
@@ -41,7 +45,10 @@ execute generated artifacts, run JIT code, read host paths, read environment
 variables, or authorize executable backend surfaces.
 
 Runtime Tensor Store Evidence follows the same boundary: it serializes record
-metadata only and omits tensor values by policy.
+metadata and producer provenance only, and omits tensor values by policy.
+
+The accepted producer-provenance design note is
+[`RFC 0108: Runtime Value Provenance v0`](../rfcs/0108-runtime-value-provenance.md).
 
 ## Current Limitations
 
