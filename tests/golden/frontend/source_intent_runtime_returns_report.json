@@ -1,0 +1,71 @@
+{
+  "alias_policy": "explicit_output_aliases",
+  "artifact_status": "review_evidence",
+  "bindings": [
+    {
+      "public_name": "api_y",
+      "required": true,
+      "tensor_name": "y"
+    }
+  ],
+  "bundle_metadata_digest": "sha256:6eeaa118634e0f6f77799f6a983ee3f9ad6419a3839b0c91ea47bbf7ddb869ad",
+  "contract_metadata_digest": "sha256:9fd224f6fa6b1fdd227afc6747152b4b4b86c649be81da34075f0adc5c765b27",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "source_intent_return_mlp",
+  "link_metadata_digest": "sha256:193ae097dafd074a37c4c5f8469549433b7c7a676216ff12249134615e03ed88",
+  "module_name": "source_intent_return_mlp",
+  "output_contract": "runtime_output_contract.data_only.v0",
+  "output_contract_passed": true,
+  "passed": true,
+  "public_output_bundle_contract": "runtime_public_output_bundle.readonly_values.v0",
+  "public_output_bundle_passed": true,
+  "public_output_count": 1,
+  "public_output_names": [
+    "api_y"
+  ],
+  "raw_value_policy": "omitted_by_policy",
+  "return_count": 1,
+  "return_policy": "explicit_public_returns",
+  "return_semantics_contract": "source_intent_return_semantics.data_only.v0",
+  "runtime_blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "runtime_returns_contract": "source_intent_runtime_returns.evidence.v0",
+  "schema_version": "tuc.source_intent_runtime_returns_report.v0",
+  "source_intent_blocked_compiler_outputs": [
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision",
+    "runtime_output_contract",
+    "runtime_public_output_bundle"
+  ],
+  "source_intent_blocked_execution_surfaces": [
+    "bytecode_inspection",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "file_system_access",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_import",
+    "source_parsing",
+    "subprocess_execution"
+  ],
+  "source_intent_contract": "source_intent_ir.canonical.v0",
+  "terminal_tensor_names": [
+    "y"
+  ]
+}

@@ -43,6 +43,11 @@ The follow-on runtime value boundary is documented in
 metadata-only evidence at
 `schemas/runtime_public_output_bundle_report.v0.schema.json`.
 
+Frontend-originated public return aliases are connected through
+[Source Intent Runtime Returns](SOURCE_INTENT_RUNTIME_RETURNS.md), with
+schema-versioned evidence at
+`schemas/source_intent_runtime_returns_report.v0.schema.json`.
+
 The current fixture uses the multi-output runtime graph:
 
 ```text

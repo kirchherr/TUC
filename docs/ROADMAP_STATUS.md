@@ -177,6 +177,13 @@ hardware-independent interface into capability-driven runtime planning.
   execution-free public-name-to-terminal-tensor intent before Runtime Output
   Contract evidence is built, documented in
   `docs/SOURCE_INTENT_RETURN_SEMANTICS.md`.
+- Source Intent Runtime Returns v0 with schema at
+  `schemas/source_intent_runtime_returns_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/frontend/source_intent_runtime_returns_report.json`, and
+  explicit proof that frontend return intent resolves through Runtime Output
+  Contract and Runtime Public Output Bundle after trusted prototype execution,
+  documented in `docs/SOURCE_INTENT_RUNTIME_RETURNS.md`.
 
 ## In Progress
 
@@ -252,8 +259,13 @@ Current slice:
 - Source Intent Return Semantics at
   `examples/source_intent_return_semantics.py`, with golden evidence at
   `tests/golden/frontend/source_intent_return_semantics_report.txt`, connecting
-  frontend public output intent to future Runtime Output Contract aliases
+  frontend public output intent to Runtime Output Contract aliases
   without source parsing or runtime execution.
+- Source Intent Runtime Returns at `examples/source_intent_runtime_returns.py`,
+  with golden evidence at
+  `tests/golden/frontend/source_intent_runtime_returns_report.json`, proving
+  explicit frontend return aliases resolve through Runtime Output Contract and
+  Runtime Public Output Bundle after trusted prototype execution.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.

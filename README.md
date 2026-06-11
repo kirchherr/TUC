@@ -69,6 +69,8 @@ Current runtime surfaces:
   serialized tensor values.
 - Runtime Public Output Bundle v0 for resolving public aliases to read-only
   runtime values while keeping review evidence metadata-only.
+- Source Intent Runtime Returns v0 for proving frontend public return intent
+  resolves through Runtime Output Contract and Runtime Public Output Bundle.
 - Runtime Reference Correctness v0 for output/reference comparison without
   serialized tensor values.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, and Memory Planning
@@ -84,6 +86,7 @@ examples/runtime_evidence_gate.py
 examples/runtime_tensor_store_evidence.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
+examples/source_intent_runtime_returns.py
 examples/runtime_reference_correctness.py
 examples/runtime_candidate_scoring_gate.py
 examples/runtime_memory_planning_gate.py
@@ -107,6 +110,7 @@ Runtime output schemas:
 ```text
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
+schemas/source_intent_runtime_returns_report.v0.schema.json
 ```
 
 ## Frontend Intake
@@ -128,6 +132,8 @@ Current frontend surfaces:
 - Execution-free Triton Source Preflight.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
+- Source Intent Runtime Returns evidence connecting explicit frontend returns
+  to runtime public outputs after trusted execution.
 - Source-to-Intent parser gate remains blocked until dedicated parser evidence
   exists.
 
@@ -138,6 +144,7 @@ Key docs:
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)
 - [Source Intent return semantics](docs/SOURCE_INTENT_RETURN_SEMANTICS.md)
+- [Source Intent runtime returns](docs/SOURCE_INTENT_RUNTIME_RETURNS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)
 
 ## Backend Authoring

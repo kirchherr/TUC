@@ -28,6 +28,8 @@ The schema defines:
   `robust_to_noise`, and `max_error_budget`
 - optional public return bindings through `returns`, documented in
   [Source Intent Return Semantics](SOURCE_INTENT_RETURN_SEMANTICS.md)
+  and connected to runtime evidence by
+  [Source Intent Runtime Returns](SOURCE_INTENT_RUNTIME_RETURNS.md)
 
 All object shapes use `additionalProperties: false`.
 
@@ -46,6 +48,7 @@ The schema does not add:
 - plugin discovery
 - runtime output contract generation
 - runtime public output bundle generation
+- source-intent runtime returns generation
 - metadata output
 - `ComputeGraph` output
 - lowering or runtime planning

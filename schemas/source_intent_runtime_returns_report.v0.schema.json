@@ -1,0 +1,315 @@
+{
+  "$id": "https://tuc.dev/schemas/source_intent_runtime_returns_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "alias_policy": {
+      "const": "explicit_output_aliases"
+    },
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "bindings": {
+      "items": {
+        "$ref": "#/$defs/binding"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    },
+    "bundle_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "contract_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "link_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "module_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "output_contract": {
+      "const": "runtime_output_contract.data_only.v0"
+    },
+    "output_contract_passed": {
+      "const": true
+    },
+    "passed": {
+      "const": true
+    },
+    "public_output_bundle_contract": {
+      "const": "runtime_public_output_bundle.readonly_values.v0"
+    },
+    "public_output_bundle_passed": {
+      "const": true
+    },
+    "public_output_count": {
+      "maximum": 4096,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "public_output_names": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "return_count": {
+      "maximum": 4096,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "return_policy": {
+      "const": "explicit_public_returns"
+    },
+    "return_semantics_contract": {
+      "const": "source_intent_return_semantics.data_only.v0"
+    },
+    "runtime_blocked_execution_surfaces": {
+      "$ref": "#/$defs/runtime_blocked_execution_surfaces"
+    },
+    "runtime_returns_contract": {
+      "const": "source_intent_runtime_returns.evidence.v0"
+    },
+    "schema_version": {
+      "const": "tuc.source_intent_runtime_returns_report.v0"
+    },
+    "source_intent_blocked_compiler_outputs": {
+      "$ref": "#/$defs/source_intent_blocked_compiler_outputs"
+    },
+    "source_intent_blocked_execution_surfaces": {
+      "$ref": "#/$defs/source_intent_blocked_execution_surfaces"
+    },
+    "source_intent_contract": {
+      "const": "source_intent_ir.canonical.v0"
+    },
+    "terminal_tensor_names": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "alias_policy",
+    "artifact_status",
+    "bindings",
+    "bundle_metadata_digest",
+    "contract_metadata_digest",
+    "executor_contract",
+    "graph_name",
+    "link_metadata_digest",
+    "module_name",
+    "output_contract",
+    "output_contract_passed",
+    "passed",
+    "public_output_bundle_contract",
+    "public_output_bundle_passed",
+    "public_output_count",
+    "public_output_names",
+    "raw_value_policy",
+    "return_count",
+    "return_policy",
+    "return_semantics_contract",
+    "runtime_blocked_execution_surfaces",
+    "runtime_returns_contract",
+    "schema_version",
+    "source_intent_blocked_compiler_outputs",
+    "source_intent_blocked_execution_surfaces",
+    "source_intent_contract",
+    "terminal_tensor_names"
+  ],
+  "type": "object",
+  "$defs": {
+    "binding": {
+      "additionalProperties": false,
+      "properties": {
+        "public_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "required": {
+          "const": true
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "public_name",
+        "required",
+        "tensor_name"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "output_value",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_output_value",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "reference_value",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "tensor_values",
+          "url",
+          "value",
+          "values"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "runtime_blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_intent_blocked_compiler_outputs": {
+      "items": false,
+      "maxItems": 9,
+      "minItems": 9,
+      "prefixItems": [
+        {
+          "const": "metadata"
+        },
+        {
+          "const": "compute_graph"
+        },
+        {
+          "const": "tlir"
+        },
+        {
+          "const": "hac_ir"
+        },
+        {
+          "const": "hs_ir"
+        },
+        {
+          "const": "runtime_plan"
+        },
+        {
+          "const": "backend_decision"
+        },
+        {
+          "const": "runtime_output_contract"
+        },
+        {
+          "const": "runtime_public_output_bundle"
+        }
+      ],
+      "type": "array"
+    },
+    "source_intent_blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 12,
+      "minItems": 12,
+      "prefixItems": [
+        {
+          "const": "bytecode_inspection"
+        },
+        {
+          "const": "decorator_evaluation"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "file_system_access"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "plugin_discovery"
+        },
+        {
+          "const": "python_import"
+        },
+        {
+          "const": "source_parsing"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    }
+  }
+}
