@@ -368,6 +368,9 @@ Completed evidence:
 - Runtime Candidate Score Evidence reports verify default score silence,
   opt-in score emission, compiler decision-report parity, and selected/rejected
   candidate visibility.
+- Runtime Candidate Scoring Policy reports fix the active comparator order and
+  keep noise, error-budget, calibration, and benchmark score inputs blocked
+  until separately modeled.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -376,6 +379,8 @@ Completed evidence:
 Next work:
 
 - Add candidate scoring once transfer/noise-aware models are stable.
+- Use Runtime Candidate Scoring Policy as the review contract before changing
+  candidate-score comparator semantics.
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.

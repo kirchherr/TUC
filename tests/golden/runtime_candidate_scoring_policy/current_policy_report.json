@@ -1,0 +1,97 @@
+{
+  "active_component_order": [
+    "transfer_score",
+    "layout_conversion_bytes",
+    "transfer_bytes",
+    "preferred_memory_domain_match",
+    "backend_name_tiebreaker"
+  ],
+  "automatic_global_optimization_enabled": false,
+  "blocked_component_names": [
+    "noise_penalty",
+    "error_budget_margin",
+    "calibration_confidence",
+    "benchmark_score"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "component_count": 9,
+  "components": [
+    {
+      "blocker": "none",
+      "component_name": "transfer_score",
+      "evidence_source": "CandidateScore.transfer_score",
+      "ordering": "minimize",
+      "status": "active"
+    },
+    {
+      "blocker": "none",
+      "component_name": "layout_conversion_bytes",
+      "evidence_source": "CandidateScore.layout_conversion_bytes",
+      "ordering": "minimize",
+      "status": "active"
+    },
+    {
+      "blocker": "none",
+      "component_name": "transfer_bytes",
+      "evidence_source": "CandidateScore.transfer_bytes",
+      "ordering": "minimize",
+      "status": "active"
+    },
+    {
+      "blocker": "none",
+      "component_name": "preferred_memory_domain_match",
+      "evidence_source": "CandidateScore.preferred_memory_domain_match",
+      "ordering": "prefer_true",
+      "status": "active"
+    },
+    {
+      "blocker": "none",
+      "component_name": "backend_name_tiebreaker",
+      "evidence_source": "CandidateScore.backend_name",
+      "ordering": "lexical_ascending",
+      "status": "active"
+    },
+    {
+      "blocker": "noise_model_not_stable",
+      "component_name": "noise_penalty",
+      "evidence_source": "future_noise_model",
+      "ordering": "blocked",
+      "status": "blocked"
+    },
+    {
+      "blocker": "error_budget_model_not_stable",
+      "component_name": "error_budget_margin",
+      "evidence_source": "future_error_budget_model",
+      "ordering": "blocked",
+      "status": "blocked"
+    },
+    {
+      "blocker": "calibration_evidence_not_stable",
+      "component_name": "calibration_confidence",
+      "evidence_source": "future_calibration_artifact",
+      "ordering": "blocked",
+      "status": "blocked"
+    },
+    {
+      "blocker": "performance_claim_boundary",
+      "component_name": "benchmark_score",
+      "evidence_source": "future_benchmark_artifact",
+      "ordering": "blocked",
+      "status": "blocked"
+    }
+  ],
+  "issues": [],
+  "noise_error_budget_components_enabled": false,
+  "policy_complete": true,
+  "policy_contract": "runtime_candidate_scoring_policy.data_only.v0",
+  "schema_version": "tuc.runtime_candidate_scoring_policy.v0"
+}

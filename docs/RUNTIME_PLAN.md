@@ -93,6 +93,16 @@ python examples/runtime_candidate_score_evidence.py
 
 See [Runtime Candidate Score Evidence](RUNTIME_CANDIDATE_SCORE_EVIDENCE.md).
 
+Runtime Candidate Scoring Policy fixes the accepted comparator order and keeps
+future noise, error-budget, calibration, and benchmark score inputs blocked
+until separate models exist:
+
+```bash
+python examples/runtime_candidate_scoring_policy.py
+```
+
+See [Runtime Candidate Scoring Policy](RUNTIME_CANDIDATE_SCORING_POLICY.md).
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:
@@ -113,6 +123,8 @@ Runtime plan objects are declarative data:
 - Candidate score diagnostics are bounded, opt-in, and derived only from
   validated graph operations, capability data, movement estimates, transfer-cost
   profiles, and validated override effects.
+- Candidate scoring policy is bounded data and keeps automatic global
+  optimization plus noise/error-budget score components disabled in v0.
 
 ## Current Limitations
 

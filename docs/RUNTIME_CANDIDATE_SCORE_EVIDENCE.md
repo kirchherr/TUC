@@ -35,6 +35,9 @@ Candidate scores remain diagnostics. They are not automatic global
 optimization, benchmark evidence, native performance proof, backend approval, or
 runtime execution permission.
 
+Comparator semantics are documented separately in
+[Runtime Candidate Scoring Policy](RUNTIME_CANDIDATE_SCORING_POLICY.md).
+
 ## Acceptance
 
 The report passes only when:
