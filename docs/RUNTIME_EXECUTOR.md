@@ -200,6 +200,18 @@ The review artifact for this boundary is
 [`RUNTIME_TENSOR_STORE_EVIDENCE.md`](RUNTIME_TENSOR_STORE_EVIDENCE.md). It
 serializes record metadata and read-only status, but never tensor values.
 
+## Runtime Output Manifest
+
+Runtime Output Manifest v0 is the data-only review artifact for terminal graph
+outputs. It derives terminal outputs from the already-compiled graph, then
+checks that Runtime Tensor Store records expose those outputs as read-only
+`computed` values with operation producer provenance.
+
+The schema-versioned report is documented in
+[`RUNTIME_OUTPUT_MANIFEST.md`](RUNTIME_OUTPUT_MANIFEST.md), with schema at
+`schemas/runtime_output_manifest_report.v0.schema.json`. It serializes output
+metadata only and omits raw tensor values by policy.
+
 ## Trusted Backend Contract
 
 Each in-process prototype executor exposes a `RuntimeBackendExecutorContract`.

@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from examples.runtime_evidence_gate import RuntimeEvidenceGateError, build_gate_report
+from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
 from tuc import (
     RuntimeEvidenceArtifact,
@@ -15,6 +16,8 @@ from tuc import (
     RuntimeExecutorConformanceCase,
     RuntimeExecutorConformanceIssue,
     RuntimeExecutorConformanceReport,
+    RuntimeOutputManifestIssue,
+    RuntimeOutputManifestReport,
     RuntimeTensorStoreEvidenceIssue,
     RuntimeTensorStoreEvidenceReport,
     build_runtime_evidence_matrix_report,
@@ -40,6 +43,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_evidence_matrix = "complete"' in completed.stdout
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
+    assert 'runtime_output_manifest = "passed"' in completed.stdout
 
 
 def test_runtime_evidence_gate_rejects_incomplete_matrix() -> None:
@@ -106,3 +110,22 @@ def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="tensor store evidence failed"):
         build_gate_report(tensor_store_report=failed_tensor_store)
+
+
+def test_runtime_evidence_gate_rejects_failed_output_manifest() -> None:
+    report = build_output_manifest_report()
+    mutable_outputs = (replace(report.outputs[0], readonly=False),)
+    failed_output_manifest = RuntimeOutputManifestReport(
+        graph_name=report.graph_name,
+        expected_outputs=report.expected_outputs,
+        outputs=mutable_outputs,
+        issues=(
+            RuntimeOutputManifestIssue(
+                tensor_name=report.outputs[0].tensor_name,
+                issue_code="record_value_mutable",
+            ),
+        ),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="output manifest failed"):
+        build_gate_report(output_manifest_report=failed_output_manifest)

@@ -133,6 +133,11 @@ hardware-independent interface into capability-driven runtime planning.
   golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
   Runtime Evidence Gate coverage with raw tensor values omitted by policy.
+- Runtime Output Manifest v0 with schema at
+  `schemas/runtime_output_manifest_report.v0.schema.json`, deterministic golden
+  evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
+  and Runtime Evidence Gate coverage for terminal graph outputs without raw
+  tensor values.
 
 ## In Progress
 
@@ -186,6 +191,9 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`,
   including producer-kind and producer-id metadata without tensor values.
+- Runtime Output Manifest at `examples/runtime_output_manifest.py`, with golden
+  evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
+  including terminal-output producer metadata without tensor values.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.
@@ -206,8 +214,8 @@ Current slice:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
-  Runtime Evidence Matrix, Runtime Executor Conformance, and Runtime Tensor
-  Store Evidence.
+  Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
+  Evidence, and Runtime Output Manifest.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

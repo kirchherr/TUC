@@ -1,0 +1,279 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_output_manifest_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "expected_output_count": {
+      "maximum": 4096,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "expected_outputs": {
+      "items": {
+        "$ref": "#/$defs/expected_output"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "manifest_contract": {
+      "const": "runtime_output_manifest.data_only.v0"
+    },
+    "output_count": {
+      "maximum": 4096,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "output_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "outputs": {
+      "items": {
+        "$ref": "#/$defs/output_record"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_output_manifest_report.v0"
+    },
+    "store_contract": {
+      "const": "runtime_tensor_store.internal.v0"
+    },
+    "terminal_output_policy": {
+      "const": "graph_terminal_outputs"
+    },
+    "value_record_contract": {
+      "const": "runtime_value_record.internal.v0"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "executor_contract",
+    "expected_output_count",
+    "expected_outputs",
+    "graph_name",
+    "issues",
+    "manifest_contract",
+    "output_count",
+    "output_metadata_digest",
+    "outputs",
+    "passed",
+    "raw_value_policy",
+    "schema_version",
+    "store_contract",
+    "terminal_output_policy",
+    "value_record_contract"
+  ],
+  "type": "object",
+  "$defs": {
+    "expected_output": {
+      "additionalProperties": false,
+      "properties": {
+        "dtype": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_kind": {
+          "const": "operation"
+        },
+        "shape": {
+          "$ref": "#/$defs/shape"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "value_role": {
+          "const": "computed"
+        }
+      },
+      "required": [
+        "dtype",
+        "producer_id",
+        "producer_kind",
+        "shape",
+        "tensor_name",
+        "value_role"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "tensor_name"
+      ],
+      "type": "object"
+    },
+    "output_record": {
+      "additionalProperties": false,
+      "properties": {
+        "dtype": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_kind": {
+          "$ref": "#/$defs/producer_kind"
+        },
+        "raw_value_status": {
+          "const": "omitted_by_policy"
+        },
+        "readonly": {
+          "type": "boolean"
+        },
+        "record_contract": {
+          "const": "runtime_value_record.internal.v0"
+        },
+        "shape": {
+          "$ref": "#/$defs/shape"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "value_role": {
+          "$ref": "#/$defs/value_role"
+        }
+      },
+      "required": [
+        "dtype",
+        "producer_id",
+        "producer_kind",
+        "raw_value_status",
+        "readonly",
+        "record_contract",
+        "shape",
+        "tensor_name",
+        "value_role"
+      ],
+      "type": "object"
+    },
+    "producer_kind": {
+      "enum": [
+        "external_input",
+        "operation"
+      ]
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "output_value",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "shape": {
+      "items": {
+        "maximum": 2147483647,
+        "minimum": 1,
+        "type": "integer"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "type": "array"
+    },
+    "value_role": {
+      "enum": [
+        "input",
+        "computed"
+      ]
+    }
+  }
+}

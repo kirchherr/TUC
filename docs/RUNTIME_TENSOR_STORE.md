@@ -47,6 +47,10 @@ variables, or authorize executable backend surfaces.
 Runtime Tensor Store Evidence follows the same boundary: it serializes record
 metadata and producer provenance only, and omits tensor values by policy.
 
+Runtime Output Manifest uses the same internal records for terminal graph
+outputs only. It documents the output-facing proof boundary separately in
+[`RUNTIME_OUTPUT_MANIFEST.md`](RUNTIME_OUTPUT_MANIFEST.md).
+
 The accepted producer-provenance design note is
 [`RFC 0108: Runtime Value Provenance v0`](../rfcs/0108-runtime-value-provenance.md).
 

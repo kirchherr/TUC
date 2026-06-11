@@ -99,11 +99,12 @@ Implemented now:
   device access, network access, JIT, dynamic libraries, generated-artifact
   execution, host-path reads, command-line capture, raw benchmark output, or
   arbitrary issue text.
-- Runtime Evidence Gate v0 composes the complete Runtime Evidence Matrix and
-  passing Runtime Executor Conformance into CI without adding repository
-  scanning, plugin discovery, device access, network access, subprocesses,
-  dynamic imports, JIT, dynamic libraries, generated-artifact execution, raw
-  benchmark loading, or native performance claims.
+- Runtime Evidence Gate v0 composes the complete Runtime Evidence Matrix,
+  passing Runtime Executor Conformance, Runtime Tensor Store Evidence, and
+  Runtime Output Manifest into CI without adding repository scanning, plugin
+  discovery, device access, network access, subprocesses, dynamic imports, JIT,
+  dynamic libraries, generated-artifact execution, raw benchmark loading, raw
+  tensor-value serialization, or native performance claims.
 - `systolic-sim` adds a second trusted in-process accelerator simulator for
   matmul-only placement and blocked-layout output. It remains capability-only
   at planning time and uses trusted runtime reference execution; it does not add
