@@ -12,6 +12,7 @@ from examples.runtime_evidence_gate import (
     RuntimeEvidenceGateError,
     build_gate_report,
 )
+from examples.runtime_input_manifest import build_input_manifest_report
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_public_output_bundle import build_public_output_bundle
@@ -26,6 +27,8 @@ from tuc import (
     RuntimeExecutorConformanceCase,
     RuntimeExecutorConformanceIssue,
     RuntimeExecutorConformanceReport,
+    RuntimeInputManifestIssue,
+    RuntimeInputManifestReport,
     RuntimeOutputContractIssue,
     RuntimeOutputContractReport,
     RuntimeOutputManifestIssue,
@@ -58,6 +61,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_evidence_matrix = "complete"' in completed.stdout
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
+    assert 'runtime_input_manifest = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
     assert 'runtime_output_contract = "passed"' in completed.stdout
     assert 'runtime_public_output_bundle = "passed"' in completed.stdout
@@ -129,6 +133,25 @@ def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="tensor store evidence failed"):
         build_gate_report(tensor_store_report=failed_tensor_store)
+
+
+def test_runtime_evidence_gate_rejects_failed_input_manifest() -> None:
+    report = build_input_manifest_report()
+    mutable_inputs = (replace(report.inputs[0], readonly=False), *report.inputs[1:])
+    failed_input_manifest = RuntimeInputManifestReport(
+        graph_name=report.graph_name,
+        expected_inputs=report.expected_inputs,
+        inputs=mutable_inputs,
+        issues=(
+            RuntimeInputManifestIssue(
+                tensor_name=report.inputs[0].tensor_name,
+                issue_code="record_value_mutable",
+            ),
+        ),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="input manifest failed"):
+        build_gate_report(input_manifest_report=failed_input_manifest)
 
 
 def test_runtime_evidence_gate_rejects_failed_output_manifest() -> None:

@@ -200,6 +200,18 @@ The review artifact for this boundary is
 [`RUNTIME_TENSOR_STORE_EVIDENCE.md`](RUNTIME_TENSOR_STORE_EVIDENCE.md). It
 serializes record metadata and read-only status, but never tensor values.
 
+## Runtime Input Manifest
+
+Runtime Input Manifest v0 is the data-only review artifact for graph external
+inputs. It derives external inputs from the already-compiled graph, then checks
+that Runtime Tensor Store records expose those inputs as read-only `input`
+values with `external_input` producer provenance.
+
+The schema-versioned report is documented in
+[`RUNTIME_INPUT_MANIFEST.md`](RUNTIME_INPUT_MANIFEST.md), with schema at
+`schemas/runtime_input_manifest_report.v0.schema.json`. It serializes input
+metadata only and omits raw tensor values by policy.
+
 ## Runtime Output Manifest
 
 Runtime Output Manifest v0 is the data-only review artifact for terminal graph

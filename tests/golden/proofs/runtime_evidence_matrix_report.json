@@ -46,6 +46,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_abstraction_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_abstraction_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -97,6 +102,11 @@
         {
           "artifact_id": "proof_of_reduction_trace",
           "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_reduction_input_manifest",
+          "artifact_kind": "input_manifest",
           "artifact_status": "present"
         },
         {
@@ -154,6 +164,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_softmax_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_softmax_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -205,6 +220,11 @@
         {
           "artifact_id": "proof_of_execution_trace",
           "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_input_manifest",
+          "artifact_kind": "input_manifest",
           "artifact_status": "present"
         },
         {
@@ -262,6 +282,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_systolic_execution_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_systolic_execution_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -313,6 +338,11 @@
         {
           "artifact_id": "triton_metadata_mvp_families_trace",
           "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "triton_metadata_mvp_families_input_manifest",
+          "artifact_kind": "input_manifest",
           "artifact_status": "present"
         },
         {
@@ -380,6 +410,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "source_intent_return_mlp_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "source_intent_return_mlp_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -410,6 +445,7 @@
     "compiler_decision_golden",
     "execution_readiness_golden",
     "execution_trace_golden",
+    "input_manifest",
     "output_contract",
     "public_output_bundle",
     "reference_correctness"

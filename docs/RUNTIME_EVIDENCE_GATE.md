@@ -2,10 +2,11 @@
 
 Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
-Evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
-Runtime Public Output Bundle evidence, and Runtime Reference Correctness
-evidence, plus Source Intent Runtime Returns evidence for the frontend return
-boundary. Source Intent Runtime Returns must also be bound to the curated
+Evidence, Runtime Input Manifest evidence, Runtime Output Manifest evidence,
+Runtime Output Contract evidence, Runtime Public Output Bundle evidence, and
+Runtime Reference Correctness evidence, plus Source Intent Runtime Returns
+evidence for the frontend return boundary. Source Intent Runtime Returns must
+also be bound to the curated
 Runtime Evidence Matrix graph that inventories the same frontend-originated
 fixture.
 
@@ -14,6 +15,7 @@ It runs:
 - `build_current_runtime_evidence_matrix_report()`
 - `run_runtime_executor_conformance()`
 - `build_tensor_store_evidence_report()`
+- `build_input_manifest_report()`
 - `build_output_manifest_report()`
 - `build_output_contract_report()`
 - `build_public_output_bundle()`
@@ -27,6 +29,7 @@ The gate passes only when:
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
+- Runtime Input Manifest passes for accepted graph external inputs
 - Runtime Output Manifest passes for terminal proof-of-execution outputs
 - Runtime Output Contract passes for explicit public output aliases on the
   multi-output runtime fixture
@@ -41,6 +44,12 @@ The gate passes only when:
   `source_intent_metadata` source boundary and list both
   `source_intent_return_semantics` and `source_intent_runtime_returns`
   artifact kinds
+
+Runtime Input Manifest schema:
+
+```text
+schemas/runtime_input_manifest_report.v0.schema.json
+```
 
 Runtime Output Manifest schema:
 
@@ -97,6 +106,8 @@ It composes bounded in-repository checks:
 - fixed in-memory operation fixtures from Runtime Executor Conformance v0
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
+- data-only Runtime Input Manifest metadata for accepted graph external inputs
+  with raw tensor values omitted by policy
 - data-only Runtime Output Manifest metadata for terminal graph outputs with raw
   tensor values omitted by policy
 - data-only Runtime Output Contract metadata for public output aliases with raw

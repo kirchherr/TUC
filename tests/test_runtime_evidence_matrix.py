@@ -43,6 +43,9 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "source_intent_runtime_returns",
     }
     assert all(
+        "input_manifest" in graph.present_artifact_kinds for graph in report.graphs
+    )
+    assert all(
         "output_contract" in graph.present_artifact_kinds for graph in report.graphs
     )
     assert all(
@@ -80,6 +83,7 @@ def test_runtime_evidence_matrix_example_runs() -> None:
 
     assert "runtime_evidence_matrix.data_only.v0" in completed.stdout
     assert '"runtime_evidence_matrix_complete": true' in completed.stdout
+    assert '"input_manifest"' in completed.stdout
     assert '"output_contract"' in completed.stdout
     assert '"public_output_bundle"' in completed.stdout
     assert "triton_metadata_mvp_families" in completed.stdout
@@ -215,6 +219,7 @@ def test_runtime_evidence_required_artifact_order_is_stable() -> None:
         "compiler_decision_golden",
         "execution_readiness_golden",
         "execution_trace_golden",
+        "input_manifest",
         "output_contract",
         "public_output_bundle",
         "reference_correctness",

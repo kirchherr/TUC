@@ -133,6 +133,11 @@ hardware-independent interface into capability-driven runtime planning.
   golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
   Runtime Evidence Gate coverage with raw tensor values omitted by policy.
+- Runtime Input Manifest v0 with schema at
+  `schemas/runtime_input_manifest_report.v0.schema.json`, deterministic golden
+  evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
+  and Runtime Evidence Gate coverage for accepted graph external inputs without
+  raw tensor values.
 - Runtime Output Manifest v0 with schema at
   `schemas/runtime_output_manifest_report.v0.schema.json`, deterministic golden
   evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
@@ -159,10 +164,10 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_public_output_bundle/current_report.json`, and
   read-only public-name-to-runtime-value mapping while review evidence remains
   metadata-only.
-- Runtime Evidence Gate now requires Runtime Output Contract and Runtime Public
-  Output Bundle evidence in addition to Runtime Evidence Matrix, Runtime
-  Executor Conformance, Runtime Tensor Store Evidence, Runtime Output Manifest,
-  and Runtime Reference Correctness.
+- Runtime Evidence Gate now requires Runtime Input Manifest, Runtime Output
+  Contract, and Runtime Public Output Bundle evidence in addition to Runtime
+  Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store Evidence,
+  Runtime Output Manifest, and Runtime Reference Correctness.
 - Runtime Evidence Matrix now treats `output_contract` as required graph
   evidence, aligning the curated proof inventory with the Runtime Evidence Gate
   contract, with the decision captured in
@@ -171,6 +176,11 @@ hardware-independent interface into capability-driven runtime planning.
   evidence, aligning curated proof inventory with the read-only public runtime
   return boundary, with the decision captured in
   `rfcs/0115-runtime-evidence-public-output-bundle.md`.
+- Runtime Evidence Matrix now treats `input_manifest` as required graph
+  evidence, aligning accepted external runtime inputs with Runtime Evidence
+  Gate coverage and `schemas/runtime_input_manifest_report.v0.schema.json`,
+  with the decision captured in
+  `rfcs/0125-runtime-evidence-matrix-input-manifest.md`.
 - Source Intent Return Semantics v0 with optional `returns` in
   `schemas/source_intent.v0.schema.json`, deterministic golden evidence at
   `tests/golden/frontend/source_intent_return_semantics_report.txt`, and
@@ -188,8 +198,9 @@ hardware-independent interface into capability-driven runtime planning.
   complete Source Intent metadata graph with Source Intent return semantics and
   Source Intent Runtime Returns evidence.
 - Runtime Evidence Gate now requires Source Intent Runtime Returns evidence in
-  addition to matrix, executor conformance, tensor store, output manifest,
-  output contract, public output bundle, and reference correctness evidence.
+  addition to matrix, executor conformance, tensor store, input manifest,
+  output manifest, output contract, public output bundle, and reference
+  correctness evidence.
 - Runtime Evidence Gate now binds Source Intent Runtime Returns to the curated
   `source_intent_return_mlp` Runtime Evidence Matrix graph, failing closed when
   the matrix graph, source boundary, required Source Intent artifacts, or report
@@ -261,6 +272,9 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`,
   including producer-kind and producer-id metadata without tensor values.
+- Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
+  evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
+  including accepted external-input metadata without tensor values.
 - Runtime Output Manifest at `examples/runtime_output_manifest.py`, with golden
   evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
   including terminal-output producer metadata without tensor values.
@@ -311,10 +325,10 @@ Current slice:
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
-  Evidence, Runtime Output Manifest, Runtime Output Contract, Runtime Public
-  Output Bundle, Runtime Reference Correctness, and Source Intent Runtime
-  Returns, with a matrix binding check for the `source_intent_return_mlp`
-  frontend fixture.
+  Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
+  Contract, Runtime Public Output Bundle, Runtime Reference Correctness, and
+  Source Intent Runtime Returns, with a matrix binding check for the
+  `source_intent_return_mlp` frontend fixture.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

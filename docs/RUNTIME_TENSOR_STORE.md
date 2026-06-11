@@ -47,6 +47,10 @@ variables, or authorize executable backend surfaces.
 Runtime Tensor Store Evidence follows the same boundary: it serializes record
 metadata and producer provenance only, and omits tensor values by policy.
 
+Runtime Input Manifest uses the same internal records for external graph inputs
+only. It documents the input-facing proof boundary separately in
+[`RUNTIME_INPUT_MANIFEST.md`](RUNTIME_INPUT_MANIFEST.md).
+
 Runtime Output Manifest uses the same internal records for terminal graph
 outputs only. It documents the output-facing proof boundary separately in
 [`RUNTIME_OUTPUT_MANIFEST.md`](RUNTIME_OUTPUT_MANIFEST.md).

@@ -28,6 +28,7 @@ A graph is runtime-evidence complete only when it has:
 - `compiler_decision_golden`
 - `execution_readiness_golden`
 - `execution_trace_golden`
+- `input_manifest`
 - `output_contract`
 - `public_output_bundle`
 - `reference_correctness`
@@ -39,6 +40,9 @@ listed without changing completeness.
 For Runtime Executor v0, `reference_correctness` is backed by the
 schema-versioned [Runtime Reference Correctness](RUNTIME_REFERENCE_CORRECTNESS.md)
 report at `schemas/runtime_reference_correctness_report.v0.schema.json`.
+`input_manifest` is backed by the schema-versioned
+[Runtime Input Manifest](RUNTIME_INPUT_MANIFEST.md) report at
+`schemas/runtime_input_manifest_report.v0.schema.json`.
 `output_contract` is backed by the schema-versioned
 [Runtime Output Contract](RUNTIME_OUTPUT_CONTRACT.md) report at
 `schemas/runtime_output_contract_report.v0.schema.json`.
@@ -57,11 +61,11 @@ The current matrix is complete across every accepted graph fixture:
   `triton_metadata_mvp_families` are complete across the required runtime
   evidence kinds.
 - `proof_of_execution` is complete across HAC-IR, runtime-plan,
-  compiler-decision, readiness, trace, output-contract, public-output-bundle,
-  and reference-correctness evidence.
+  compiler-decision, readiness, trace, input-manifest, output-contract,
+  public-output-bundle, and reference-correctness evidence.
 - `proof_of_systolic_execution` is complete across HAC-IR, runtime-plan,
-  compiler-decision, readiness, trace, output-contract, public-output-bundle,
-  and reference-correctness evidence.
+  compiler-decision, readiness, trace, input-manifest, output-contract,
+  public-output-bundle, and reference-correctness evidence.
 - `source_intent_return_mlp` is complete across required runtime evidence and
   also records Source Intent return semantics plus Source Intent Runtime
   Returns evidence.

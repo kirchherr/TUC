@@ -1,5 +1,6 @@
 """Run the CI-facing Runtime Evidence Gate."""
 
+from examples.runtime_input_manifest import build_input_manifest_report
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_public_output_bundle import build_public_output_bundle
@@ -12,6 +13,7 @@ from tuc import (
     RuntimeEvidenceGraph,
     RuntimeEvidenceMatrixReport,
     RuntimeExecutorConformanceReport,
+    RuntimeInputManifestReport,
     RuntimeOutputContractReport,
     RuntimeOutputManifestReport,
     RuntimePublicOutputBundle,
@@ -38,6 +40,7 @@ def build_gate_report(
     *,
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
     conformance_report: RuntimeExecutorConformanceReport | None = None,
+    input_manifest_report: RuntimeInputManifestReport | None = None,
     output_contract_report: RuntimeOutputContractReport | None = None,
     output_manifest_report: RuntimeOutputManifestReport | None = None,
     public_output_bundle: RuntimePublicOutputBundle | None = None,
@@ -63,6 +66,11 @@ def build_gate_report(
         build_tensor_store_evidence_report()
         if tensor_store_report is None
         else tensor_store_report
+    )
+    input_manifest = (
+        build_input_manifest_report()
+        if input_manifest_report is None
+        else input_manifest_report
     )
     output_manifest = (
         build_output_manifest_report()
@@ -92,6 +100,7 @@ def build_gate_report(
     _assert_matrix_complete(matrix)
     _assert_conformance_passed(conformance)
     _assert_tensor_store_evidence_passed(tensor_store)
+    _assert_input_manifest_passed(input_manifest)
     _assert_output_manifest_passed(output_manifest)
     _assert_output_contract_passed(output_contract)
     _assert_public_output_bundle_passed(public_bundle, output_contract)
@@ -105,6 +114,7 @@ def build_gate_report(
         matrix,
         conformance,
         tensor_store,
+        input_manifest,
         output_manifest,
         output_contract,
         public_bundle,
@@ -140,6 +150,14 @@ def _assert_tensor_store_evidence_passed(
             f"{issue.tensor_name}:{issue.issue_code}" for issue in report.issues
         )
         raise RuntimeEvidenceGateError(f"runtime tensor store evidence failed: {issues}")
+
+
+def _assert_input_manifest_passed(report: RuntimeInputManifestReport) -> None:
+    if report.issues:
+        issues = ",".join(
+            f"{issue.tensor_name}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(f"runtime input manifest failed: {issues}")
 
 
 def _assert_output_manifest_passed(report: RuntimeOutputManifestReport) -> None:
@@ -284,6 +302,7 @@ def _render_gate_report(
     matrix: RuntimeEvidenceMatrixReport,
     conformance: RuntimeExecutorConformanceReport,
     tensor_store: RuntimeTensorStoreEvidenceReport,
+    input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
     output_contract: RuntimeOutputContractReport,
     public_output_bundle: RuntimePublicOutputBundle,
@@ -299,6 +318,11 @@ def _render_gate_report(
     lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')
     lines.append(
         f'  runtime_tensor_store_raw_value_policy = "{tensor_store.raw_value_policy}"'
+    )
+    lines.append('  runtime_input_manifest = "passed"')
+    lines.append(f'  runtime_input_count = "{len(input_manifest.inputs)}"')
+    lines.append(
+        f'  runtime_input_raw_value_policy = "{input_manifest.raw_value_policy}"'
     )
     lines.append('  runtime_output_manifest = "passed"')
     lines.append(f'  runtime_output_count = "{len(output_manifest.outputs)}"')
