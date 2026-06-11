@@ -29,6 +29,7 @@ A graph is runtime-evidence complete only when it has:
 - `execution_readiness_golden`
 - `execution_trace_golden`
 - `output_contract`
+- `public_output_bundle`
 - `reference_correctness`
 
 Additional evidence, such as `proof_report_golden` and
@@ -40,6 +41,9 @@ report at `schemas/runtime_reference_correctness_report.v0.schema.json`.
 `output_contract` is backed by the schema-versioned
 [Runtime Output Contract](RUNTIME_OUTPUT_CONTRACT.md) report at
 `schemas/runtime_output_contract_report.v0.schema.json`.
+`public_output_bundle` is backed by the schema-versioned
+[Runtime Public Output Bundle](RUNTIME_PUBLIC_OUTPUT_BUNDLE.md) report at
+`schemas/runtime_public_output_bundle_report.v0.schema.json`.
 
 ## Current Meaning
 
@@ -49,11 +53,11 @@ The current matrix is complete across every accepted graph fixture:
   `triton_metadata_mvp_families` are complete across the required runtime
   evidence kinds.
 - `proof_of_execution` is complete across HAC-IR, runtime-plan,
-  compiler-decision, readiness, trace, output-contract, and
-  reference-correctness evidence.
+  compiler-decision, readiness, trace, output-contract, public-output-bundle,
+  and reference-correctness evidence.
 - `proof_of_systolic_execution` is complete across HAC-IR, runtime-plan,
-  compiler-decision, readiness, trace, output-contract, and
-  reference-correctness evidence.
+  compiler-decision, readiness, trace, output-contract, public-output-bundle,
+  and reference-correctness evidence.
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.

@@ -61,7 +61,7 @@ or tensor names are unsafe, or when values are not copied into read-only arrays.
 
 - Positional tuple return semantics are still out of scope.
 - The bundle currently targets NumPy `float64` Runtime Executor values.
-- This evidence is documented and golden-tested, but not yet required by Runtime
-  Evidence Gate or Runtime Evidence Matrix.
+- This evidence is required by Runtime Evidence Gate and Runtime Evidence
+  Matrix as `public_output_bundle`.
 - Public API ergonomics are intentionally deferred until Source Intent return
   semantics stabilize.

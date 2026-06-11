@@ -10,6 +10,7 @@ import pytest
 from examples.runtime_evidence_gate import RuntimeEvidenceGateError, build_gate_report
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
+from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
 from tuc import (
@@ -51,6 +52,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
     assert 'runtime_output_contract = "passed"' in completed.stdout
+    assert 'runtime_public_output_bundle = "passed"' in completed.stdout
     assert 'runtime_reference_correctness = "passed"' in completed.stdout
 
 
@@ -159,6 +161,14 @@ def test_runtime_evidence_gate_rejects_failed_output_contract() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="output contract failed"):
         build_gate_report(output_contract_report=failed_output_contract)
+
+
+def test_runtime_evidence_gate_rejects_mismatched_public_output_bundle() -> None:
+    bundle = build_public_output_bundle()
+    mismatched_bundle = replace(bundle, graph_name="other_graph")
+
+    with pytest.raises(RuntimeEvidenceGateError, match="public output bundle failed"):
+        build_gate_report(public_output_bundle=mismatched_bundle)
 
 
 def test_runtime_evidence_gate_rejects_failed_reference_correctness() -> None:
