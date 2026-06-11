@@ -38,6 +38,11 @@ Golden evidence:
 tests/golden/runtime_output_contract/current_report.json
 ```
 
+The follow-on runtime value boundary is documented in
+[Runtime Public Output Bundle](RUNTIME_PUBLIC_OUTPUT_BUNDLE.md) and emits
+metadata-only evidence at
+`schemas/runtime_public_output_bundle_report.v0.schema.json`.
+
 The current fixture uses the multi-output runtime graph:
 
 ```text

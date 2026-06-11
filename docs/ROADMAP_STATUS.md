@@ -153,6 +153,12 @@ hardware-independent interface into capability-driven runtime planning.
   evidence at `tests/golden/runtime_output_contract/current_report.json`, and
   explicit public output aliases for terminal graph tensors without raw tensor
   values.
+- Runtime Public Output Bundle v0 with schema at
+  `schemas/runtime_public_output_bundle_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_public_output_bundle/current_report.json`, and
+  read-only public-name-to-runtime-value mapping while review evidence remains
+  metadata-only.
 - Runtime Evidence Gate now requires Runtime Output Contract evidence in
   addition to Runtime Evidence Matrix, Runtime Executor Conformance, Runtime
   Tensor Store Evidence, Runtime Output Manifest, and Runtime Reference
@@ -228,6 +234,11 @@ Current slice:
 - Runtime Output Contract at `examples/runtime_output_contract.py`, with golden
   evidence at `tests/golden/runtime_output_contract/current_report.json`,
   separating public output aliases from terminal graph tensor names.
+- Runtime Public Output Bundle at `examples/runtime_public_output_bundle.py`,
+  with golden evidence at
+  `tests/golden/runtime_public_output_bundle/current_report.json`, resolving
+  public aliases to read-only runtime values without serializing tensor values
+  into review artifacts.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.

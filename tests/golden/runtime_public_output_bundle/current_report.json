@@ -1,0 +1,63 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "bundle_contract": "runtime_public_output_bundle.readonly_values.v0",
+  "bundle_metadata_digest": "sha256:863a8a7b7e481a48629b404cd495a8df2435bf046a338f7aca647eeba14328ea",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "multi_output_execution",
+  "output_contract": "runtime_output_contract.data_only.v0",
+  "passed": true,
+  "public_output_count": 2,
+  "public_output_names": [
+    "api_positive_projection",
+    "api_row_sums"
+  ],
+  "public_outputs": [
+    {
+      "dtype": "float64",
+      "producer_id": "positive_branch",
+      "producer_kind": "operation",
+      "public_name": "api_positive_projection",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2,
+        2
+      ],
+      "tensor_name": "positive_projection",
+      "value_contract": "runtime_public_output_value.readonly_numpy.v0",
+      "value_role": "computed"
+    },
+    {
+      "dtype": "float64",
+      "producer_id": "row_reduction",
+      "producer_kind": "operation",
+      "public_name": "api_row_sums",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2
+      ],
+      "tensor_name": "row_sum",
+      "value_contract": "runtime_public_output_value.readonly_numpy.v0",
+      "value_role": "computed"
+    }
+  ],
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.runtime_public_output_bundle_report.v0",
+  "tensor_names": [
+    "positive_projection",
+    "row_sum"
+  ]
+}
