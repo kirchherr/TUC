@@ -201,6 +201,10 @@ hardware-independent interface into capability-driven runtime planning.
   required public-return coverage as CI-facing merge evidence, with deterministic
   golden output at
   `tests/golden/frontend/source_intent_frontend_conformance_gate.txt`.
+- Source-To-Intent Readiness now requires
+  `source_intent_frontend_conformance_gate`, keeping future parser proposals
+  blocked unless frontend conformance and public-return coverage pass the
+  merge-facing gate.
 
 ## In Progress
 
@@ -388,7 +392,8 @@ Current slice:
   HAC-IR neutrality review, and conformance evidence before source text may
   create `source_intent.v0` plain data.
 - Source-To-Intent Readiness report with deterministic blocked golden evidence
-  for future parser proposals.
+  for future parser proposals, now requiring Source Intent Frontend Conformance
+  Gate evidence before source text can influence compiler artifacts.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -598,8 +603,9 @@ Current focus:
   must add its own corpus, source-intent goldens, deterministic diagnostics,
   and security review before any source connection.
 - External frontend proposals should provide a Source Intent Frontend
-  Conformance report matching the report schema before maintainers consider
-  any source-text parser or frontend package integration.
+  Conformance report matching the report schema and pass Source Intent Frontend
+  Conformance Gate before maintainers consider any source-text parser or
+  frontend package integration.
 - Source-to-intent parser work remains blocked until
   [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is satisfied
   by a dedicated parser implementation RFC and executable evidence.

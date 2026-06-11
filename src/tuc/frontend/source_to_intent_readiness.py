@@ -32,6 +32,7 @@ SOURCE_TO_INTENT_REQUIRED_EVIDENCE = (
     "compiler_decision_report_golden",
     "hac_ir_neutrality_review",
     "source_intent_frontend_conformance_report",
+    "source_intent_frontend_conformance_gate",
 )
 SOURCE_TO_INTENT_BLOCKED_EXECUTION_SURFACES = (
     "backend_artifact_execution",

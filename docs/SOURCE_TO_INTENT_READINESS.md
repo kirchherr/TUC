@@ -43,6 +43,7 @@ The readiness report tracks:
 - compiler decision-report golden
 - HAC-IR neutrality review
 - Source Intent Frontend Conformance report
+- Source Intent Frontend Conformance Gate output
 
 Missing evidence keeps parser implementation blocked.
 

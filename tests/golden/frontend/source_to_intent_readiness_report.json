@@ -79,6 +79,10 @@
     {
       "evidence_id": "source_intent_frontend_conformance_report",
       "present": false
+    },
+    {
+      "evidence_id": "source_intent_frontend_conformance_gate",
+      "present": false
     }
   ],
   "gate_contract": "source_to_intent_parser_gate.blocking.v0",
@@ -145,6 +149,10 @@
     },
     {
       "evidence_id": "source_intent_frontend_conformance_report",
+      "message": "required source-to-intent parser gate evidence is missing"
+    },
+    {
+      "evidence_id": "source_intent_frontend_conformance_gate",
       "message": "required source-to-intent parser gate evidence is missing"
     }
   ],

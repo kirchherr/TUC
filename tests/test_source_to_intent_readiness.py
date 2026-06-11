@@ -11,6 +11,7 @@ from tuc.frontend import (
     SOURCE_TO_INTENT_REQUIRED_EVIDENCE,
     SourceToIntentReadinessError,
     SourceToIntentReadinessEvidence,
+    SourceToIntentReadinessIssue,
     SourceToIntentReadinessReport,
     assert_source_to_intent_readiness,
     build_source_to_intent_readiness_report,
@@ -59,6 +60,25 @@ def test_source_to_intent_readiness_passes_with_all_required_evidence() -> None:
     assert report.ready
     assert report.issues == ()
     assert all(item.present for item in report.checked_evidence)
+
+
+def test_source_to_intent_readiness_requires_frontend_conformance_gate() -> None:
+    report = build_source_to_intent_readiness_report(
+        "missing-frontend-conformance-gate",
+        tuple(
+            SourceToIntentReadinessEvidence(evidence_id=evidence_id, present=True)
+            for evidence_id in SOURCE_TO_INTENT_REQUIRED_EVIDENCE
+            if evidence_id != "source_intent_frontend_conformance_gate"
+        ),
+    )
+
+    assert not report.ready
+    assert report.issues == (
+        SourceToIntentReadinessIssue(
+            evidence_id="source_intent_frontend_conformance_gate",
+            message="required source-to-intent parser gate evidence is missing",
+        ),
+    )
 
 
 def test_source_to_intent_readiness_rejects_unknown_evidence() -> None:
