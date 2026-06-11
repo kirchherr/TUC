@@ -157,6 +157,10 @@ hardware-independent interface into capability-driven runtime planning.
   addition to Runtime Evidence Matrix, Runtime Executor Conformance, Runtime
   Tensor Store Evidence, Runtime Output Manifest, and Runtime Reference
   Correctness.
+- Runtime Evidence Matrix now treats `output_contract` as required graph
+  evidence, aligning the curated proof inventory with the Runtime Evidence Gate
+  contract, with the decision captured in
+  `rfcs/0113-runtime-evidence-matrix-output-contract.md`.
 
 ## In Progress
 

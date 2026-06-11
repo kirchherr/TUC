@@ -282,6 +282,7 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "compiler_decision_golden",
     "execution_readiness_golden",
     "execution_trace_golden",
+    "output_contract",
     "reference_correctness",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
@@ -290,6 +291,7 @@ RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "compiler_decision_golden",
     "execution_readiness_golden",
     "execution_trace_golden",
+    "output_contract",
     "reference_correctness",
 )
 MAX_PROOF_METADATA_STRING_BYTES = 128
@@ -906,6 +908,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "proof_of_abstraction_trace",
                     ),
                     _runtime_evidence_artifact(
+                        "output_contract",
+                        "proof_of_abstraction_output_contract",
+                    ),
+                    _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_abstraction_reference_semantics",
                     ),
@@ -938,6 +944,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "proof_of_reduction_trace",
                     ),
                     _runtime_evidence_artifact(
+                        "output_contract",
+                        "proof_of_reduction_output_contract",
+                    ),
+                    _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_reduction_reference_semantics",
                     ),
@@ -963,6 +973,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "proof_of_softmax_readiness",
                     ),
                     _runtime_evidence_artifact("execution_trace_golden", "proof_of_softmax_trace"),
+                    _runtime_evidence_artifact(
+                        "output_contract",
+                        "proof_of_softmax_output_contract",
+                    ),
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_softmax_reference_semantics",
@@ -994,6 +1008,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "execution_trace_golden",
                         "proof_of_execution_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "output_contract",
+                        "proof_of_execution_output_contract",
                     ),
                     _runtime_evidence_artifact(
                         "reference_correctness",
@@ -1031,6 +1049,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "proof_of_systolic_execution_trace",
                     ),
                     _runtime_evidence_artifact(
+                        "output_contract",
+                        "proof_of_systolic_execution_output_contract",
+                    ),
+                    _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_systolic_execution_reference_semantics",
                     ),
@@ -1064,6 +1086,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "execution_trace_golden",
                         "triton_metadata_mvp_families_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "output_contract",
+                        "triton_metadata_mvp_families_output_contract",
                     ),
                     _runtime_evidence_artifact(
                         "reference_correctness",
