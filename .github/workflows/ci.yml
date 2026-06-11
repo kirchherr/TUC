@@ -51,5 +51,7 @@ jobs:
         run: python examples/backend_author_evidence_gate.py
       - name: Source Intent frontend conformance gate
         run: python examples/source_intent_frontend_conformance_gate.py
+      - name: Source-To-Intent parser block gate
+        run: python examples/source_to_intent_parser_block_gate.py
       - name: Baseline benchmark smoke test
         run: python scripts/benchmark.py --iterations 1 --warmup 0

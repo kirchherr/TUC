@@ -1,0 +1,12 @@
+source_to_intent.parser_block_gate @source_to_intent_parser_block_gate_v0 {
+  gate_contract = "source_to_intent_parser_block_gate.ci.v0"
+  parser_gate_contract = "source_to_intent_parser_gate.blocking.v0"
+  parser_status = "blocked"
+  readiness_status = "blocked"
+  proposal_name = "blocked-source-to-intent-parser-proposal"
+  required_evidence_count = "17"
+  missing_evidence_count = "17"
+  frontend_conformance_gate_evidence = "missing"
+  blocked_execution_surfaces = "backend_artifact_execution,bytecode_compilation,decorator_evaluation,device_access,dynamic_library_loading,environment_dependent_behavior,frontend_module_import,generated_artifact_execution,host_file_read_after_source_buffer,network_access,plugin_discovery,python_function_inspection,subprocess_execution,triton_jit_execution"
+  status = "PASS"
+}

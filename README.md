@@ -136,6 +136,8 @@ Current frontend surfaces:
   plain-data and public-return evidence.
 - Source Intent Runtime Returns evidence connecting explicit frontend returns
   to runtime public outputs after trusted execution.
+- Source-To-Intent Parser Block Gate proving the default source parser path
+  remains intentionally closed.
 - Source-to-Intent parser gate remains blocked until dedicated parser evidence
   exists.
 
@@ -145,6 +147,7 @@ CI-facing frontend evidence entry points:
 examples/source_intent_frontend_conformance_gate.py
 examples/source_intent_frontend_conformance.py
 examples/source_intent_runtime_returns.py
+examples/source_to_intent_parser_block_gate.py
 ```
 
 Key docs:
@@ -156,6 +159,7 @@ Key docs:
 - [Source Intent frontend conformance gate](docs/SOURCE_INTENT_FRONTEND_CONFORMANCE_GATE.md)
 - [Source Intent return semantics](docs/SOURCE_INTENT_RETURN_SEMANTICS.md)
 - [Source Intent runtime returns](docs/SOURCE_INTENT_RUNTIME_RETURNS.md)
+- [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)
 
 ## Backend Authoring

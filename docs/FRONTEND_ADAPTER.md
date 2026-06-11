@@ -75,6 +75,9 @@ deterministic report for reviewing whether a future parser proposal has every
 required gate artifact. The current golden report intentionally remains
 blocked.
 
+[`SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md`](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
+turns that current blocked parser state into CI-facing merge evidence.
+
 [`TRITON_IDIOM_COVERAGE_REPORT.md`](TRITON_IDIOM_COVERAGE_REPORT.md) defines a
 diagnostic report for Triton-like idioms covered through metadata examples and
 goldens. It uses

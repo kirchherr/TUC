@@ -155,6 +155,10 @@ backend artifacts.
 deterministic report that keeps parser proposals blocked until all required
 evidence is present.
 
+[Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
+turns the current blocked parser state into CI-facing merge evidence through
+`examples/source_to_intent_parser_block_gate.py`.
+
 ## Review Checklist
 
 Maintainers must reject parser work unless every answer is yes:

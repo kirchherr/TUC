@@ -18,6 +18,7 @@ IR, plan runtime placement, or execute backend artifacts.
 - Dump API: `dump_source_to_intent_readiness_report(report)`
 - Required evidence IDs: `SOURCE_TO_INTENT_REQUIRED_EVIDENCE`
 - Example: `examples/source_to_intent_readiness.py`
+- Parser block gate: `examples/source_to_intent_parser_block_gate.py`
 - Golden: `tests/golden/frontend/source_to_intent_readiness_report.json`
 - Tests: `tests/test_source_to_intent_readiness.py`
 
@@ -71,6 +72,12 @@ The current golden report intentionally remains blocked:
 
 ```text
 tests/golden/frontend/source_to_intent_readiness_report.json
+```
+
+The blocked state is also checked by:
+
+```text
+examples/source_to_intent_parser_block_gate.py
 ```
 
 This makes the current roadmap state explicit: TUC has a parser gate and a

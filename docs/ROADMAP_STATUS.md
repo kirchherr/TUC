@@ -205,6 +205,9 @@ hardware-independent interface into capability-driven runtime planning.
   `source_intent_frontend_conformance_gate`, keeping future parser proposals
   blocked unless frontend conformance and public-return coverage pass the
   merge-facing gate.
+- Source-To-Intent Parser Block Gate now asserts in CI that the default
+  source-to-intent parser path remains blocked, with deterministic golden
+  output at `tests/golden/frontend/source_to_intent_parser_block_gate.txt`.
 
 ## In Progress
 
@@ -394,6 +397,10 @@ Current slice:
 - Source-To-Intent Readiness report with deterministic blocked golden evidence
   for future parser proposals, now requiring Source Intent Frontend Conformance
   Gate evidence before source text can influence compiler artifacts.
+- Source-To-Intent Parser Block Gate at
+  `examples/source_to_intent_parser_block_gate.py`, with golden evidence at
+  `tests/golden/frontend/source_to_intent_parser_block_gate.txt` and CI
+  coverage in the `python` workflow job.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
