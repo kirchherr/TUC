@@ -88,6 +88,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Memory Budget v0 with schema at
   `schemas/runtime_memory_budget_report.v0.schema.json` and deterministic
   golden at `tests/golden/runtime_memory_budget/current_report.json`.
+- Runtime Memory Planning Gate v0 with deterministic golden evidence at
+  `tests/golden/runtime_memory_planning_gate/current_gate.txt` and CI coverage
+  in the `python` workflow job.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
   deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
@@ -205,6 +208,9 @@ Current slice:
   evidence at `tests/golden/runtime_allocation_plan/current_report.json`.
 - Runtime Memory Budget at `examples/runtime_memory_budget.py`, with golden
   evidence at `tests/golden/runtime_memory_budget/current_report.json`.
+- Runtime Memory Planning Gate at `examples/runtime_memory_planning_gate.py`,
+  with golden evidence at
+  `tests/golden/runtime_memory_planning_gate/current_gate.txt`.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -442,6 +448,8 @@ Current focus:
   aliasing, or real allocator behavior.
 - Use Runtime Memory Budget before accepting memory pools, device allocation,
   aliasing, or allocator behavior that can reserve runtime memory.
+- Keep Runtime Memory Planning Gate passing in CI before accepting allocator,
+  memory-pool, device-allocation, or aliasing changes.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 

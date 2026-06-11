@@ -305,6 +305,24 @@ Inspect runtime buffer lifetime evidence:
 python examples/runtime_buffer_lifetime.py
 ```
 
+Inspect runtime allocation-plan evidence:
+
+```bash
+python examples/runtime_allocation_plan.py
+```
+
+Inspect runtime memory-budget evidence:
+
+```bash
+python examples/runtime_memory_budget.py
+```
+
+Run the Runtime Memory Planning Gate used by CI:
+
+```bash
+python examples/runtime_memory_planning_gate.py
+```
+
 Inspect data-movement metadata:
 
 ```bash
@@ -498,6 +516,7 @@ pytest -q
 - [Runtime Candidate Scoring Policy](docs/RUNTIME_CANDIDATE_SCORING_POLICY.md)
 - [Runtime Candidate Scoring Conformance](docs/RUNTIME_CANDIDATE_SCORING_CONFORMANCE.md)
 - [Runtime Candidate Scoring Gate](docs/RUNTIME_CANDIDATE_SCORING_GATE.md)
+- [Runtime Memory Planning Gate](docs/RUNTIME_MEMORY_PLANNING_GATE.md)
 - [Runtime Buffer Lifetime](docs/RUNTIME_BUFFER_LIFETIME.md)
 - [Systolic simulator proof](docs/SYSTOLIC_SIMULATOR.md)
 - [Manifest Claim Review](docs/MANIFEST_CLAIM_REVIEW.md)

@@ -1,0 +1,13 @@
+runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {
+  allocation_plan = "passed"
+  allocation_bindings = "4"
+  allocation_slots = "3"
+  allocation_reuse_slots = "1"
+  memory_budget = "passed"
+  memory_budget_count = "1"
+  memory_usage_count = "1"
+  total_reserved_bytes = "192"
+  total_peak_live_bytes = "192"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "PASS"
+}
