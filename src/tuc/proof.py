@@ -288,6 +288,7 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "output_contract",
     "public_output_bundle",
     "reference_correctness",
+    "execution_receipt",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "hac_ir_golden",
@@ -299,6 +300,7 @@ RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "output_contract",
     "public_output_bundle",
     "reference_correctness",
+    "execution_receipt",
 )
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
@@ -929,6 +931,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "reference_correctness",
                         "proof_of_abstraction_reference_semantics",
                     ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_abstraction_execution_receipt",
+                    ),
                 ),
             ),
             RuntimeEvidenceGraph(
@@ -973,6 +979,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "reference_correctness",
                         "proof_of_reduction_reference_semantics",
                     ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_reduction_execution_receipt",
+                    ),
                 ),
             ),
             RuntimeEvidenceGraph(
@@ -1010,6 +1020,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_softmax_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_softmax_execution_receipt",
                     ),
                 ),
             ),
@@ -1054,6 +1068,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_execution_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_execution_execution_receipt",
                     ),
                 ),
             ),
@@ -1102,6 +1120,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "reference_correctness",
                         "proof_of_systolic_execution_reference_semantics",
                     ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_systolic_execution_execution_receipt",
+                    ),
                 ),
             ),
             RuntimeEvidenceGraph(
@@ -1148,6 +1170,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "triton_metadata_mvp_families_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "triton_metadata_mvp_families_execution_receipt",
                     ),
                 ),
             ),
@@ -1203,6 +1229,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "source_intent_return_mlp_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "source_intent_return_mlp_execution_receipt",
                     ),
                 ),
             ),

@@ -149,6 +149,12 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_reference_correctness/proof_of_execution.json`, Runtime
   Evidence Gate coverage, and proof-of-execution reporting without raw
   result/reference tensor values.
+- Runtime Execution Receipt v0 with schema at
+  `schemas/runtime_execution_receipt_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
+  tensor-store, input-manifest, output-manifest, and reference-correctness
+  evidence by metadata digest without raw tensor values.
 - Runtime Multi-Output Evidence fixture with deterministic golden evidence at
   `tests/golden/runtime_multi_output_evidence/current_report.json`, proving
   Runtime Output Manifest and Runtime Reference Correctness across two terminal
@@ -164,10 +170,11 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_public_output_bundle/current_report.json`, and
   read-only public-name-to-runtime-value mapping while review evidence remains
   metadata-only.
-- Runtime Evidence Gate now requires Runtime Input Manifest, Runtime Output
-  Contract, and Runtime Public Output Bundle evidence in addition to Runtime
-  Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store Evidence,
-  Runtime Output Manifest, and Runtime Reference Correctness.
+- Runtime Evidence Gate now requires Runtime Input Manifest, Runtime Execution
+  Receipt, Runtime Output Contract, and Runtime Public Output Bundle evidence
+  in addition to Runtime Evidence Matrix, Runtime Executor Conformance, Runtime
+  Tensor Store Evidence, Runtime Output Manifest, and Runtime Reference
+  Correctness.
 - Runtime Evidence Matrix now treats `output_contract` as required graph
   evidence, aligning the curated proof inventory with the Runtime Evidence Gate
   contract, with the decision captured in
@@ -181,6 +188,11 @@ hardware-independent interface into capability-driven runtime planning.
   Gate coverage and `schemas/runtime_input_manifest_report.v0.schema.json`,
   with the decision captured in
   `rfcs/0125-runtime-evidence-matrix-input-manifest.md`.
+- Runtime Evidence Matrix now treats `execution_receipt` as required graph
+  evidence, aligning linked runtime execution evidence with Runtime Evidence
+  Gate coverage and
+  `schemas/runtime_execution_receipt_report.v0.schema.json`, with the decision
+  captured in `rfcs/0127-runtime-evidence-matrix-execution-receipt.md`.
 - Source Intent Return Semantics v0 with optional `returns` in
   `schemas/source_intent.v0.schema.json`, deterministic golden evidence at
   `tests/golden/frontend/source_intent_return_semantics_report.txt`, and
@@ -199,8 +211,8 @@ hardware-independent interface into capability-driven runtime planning.
   Source Intent Runtime Returns evidence.
 - Runtime Evidence Gate now requires Source Intent Runtime Returns evidence in
   addition to matrix, executor conformance, tensor store, input manifest,
-  output manifest, output contract, public output bundle, and reference
-  correctness evidence.
+  output manifest, output contract, public output bundle, reference correctness,
+  and execution receipt evidence.
 - Runtime Evidence Gate now binds Source Intent Runtime Returns to the curated
   `source_intent_return_mlp` Runtime Evidence Matrix graph, failing closed when
   the matrix graph, source boundary, required Source Intent artifacts, or report
@@ -282,6 +294,10 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_reference_correctness/proof_of_execution.json`,
   including output/reference comparison status without tensor values.
+- Runtime Execution Receipt at `examples/runtime_execution_receipt.py`, with
+  golden evidence at
+  `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
+  runtime evidence digests and operation trace metadata without tensor values.
 - Runtime Multi-Output Evidence at `examples/runtime_multi_output_evidence.py`,
   with golden evidence at
   `tests/golden/runtime_multi_output_evidence/current_report.json`, covering
@@ -326,9 +342,9 @@ Current slice:
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
   Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
-  Contract, Runtime Public Output Bundle, Runtime Reference Correctness, and
-  Source Intent Runtime Returns, with a matrix binding check for the
-  `source_intent_return_mlp` frontend fixture.
+  Contract, Runtime Public Output Bundle, Runtime Reference Correctness,
+  Runtime Execution Receipt, and Source Intent Runtime Returns, with a matrix
+  binding check for the `source_intent_return_mlp` frontend fixture.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

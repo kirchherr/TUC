@@ -231,6 +231,18 @@ terminal graph outputs against independent reference tensors. It performs the
 comparison in memory, but serializes only shapes, dtypes, tolerances, comparison
 status, and omitted-value policies.
 
+## Runtime Execution Receipt
+
+Runtime Execution Receipt v0 links one trusted runtime execution to its
+metadata-only evidence reports: Runtime Tensor Store Evidence, Runtime Input
+Manifest, Runtime Output Manifest, and Runtime Reference Correctness.
+
+The schema-versioned report is documented in
+[`RUNTIME_EXECUTION_RECEIPT.md`](RUNTIME_EXECUTION_RECEIPT.md), with schema at
+`schemas/runtime_execution_receipt_report.v0.schema.json`. It records graph
+names, evidence contracts, metadata digests, item counts, operation trace
+metadata, and omitted-value policy, but never tensor values.
+
 The schema-versioned report is documented in
 [`RUNTIME_REFERENCE_CORRECTNESS.md`](RUNTIME_REFERENCE_CORRECTNESS.md), with
 schema at `schemas/runtime_reference_correctness_report.v0.schema.json`.

@@ -1,0 +1,300 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_execution_receipt_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "evidence_link_count": {
+      "maximum": 16,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "evidence_links": {
+      "items": {
+        "$ref": "#/$defs/evidence_link"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "type": "array"
+    },
+    "execution_trace_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "linkage_policy": {
+      "const": "metadata_digest_linkage"
+    },
+    "operation_count": {
+      "maximum": 4096,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "operations": {
+      "items": {
+        "$ref": "#/$defs/operation"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "receipt_contract": {
+      "const": "runtime_execution_receipt.data_only.v0"
+    },
+    "receipt_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "required_evidence_kinds": {
+      "const": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "reference_correctness"
+      ]
+    },
+    "schema_version": {
+      "const": "tuc.runtime_execution_receipt_report.v0"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "evidence_link_count",
+    "evidence_links",
+    "execution_trace_metadata_digest",
+    "executor_contract",
+    "graph_name",
+    "issues",
+    "linkage_policy",
+    "operation_count",
+    "operations",
+    "passed",
+    "raw_value_policy",
+    "receipt_contract",
+    "receipt_metadata_digest",
+    "required_evidence_kinds",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "evidence_kind": {
+      "enum": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "reference_correctness"
+      ]
+    },
+    "evidence_link": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_contract": {
+          "$ref": "#/$defs/report_text"
+        },
+        "evidence_kind": {
+          "$ref": "#/$defs/evidence_kind"
+        },
+        "graph_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "item_count": {
+          "maximum": 4096,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "metadata_digest": {
+          "$ref": "#/$defs/sha256_digest"
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "raw_value_policy": {
+          "const": "omitted_by_policy"
+        }
+      },
+      "required": [
+        "evidence_contract",
+        "evidence_kind",
+        "graph_name",
+        "item_count",
+        "metadata_digest",
+        "passed",
+        "raw_value_policy"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_kind": {
+          "$ref": "#/$defs/evidence_kind"
+        },
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "evidence_kind",
+        "issue_code"
+      ],
+      "type": "object"
+    },
+    "operation": {
+      "additionalProperties": false,
+      "properties": {
+        "executor_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "input_tensors": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "type": "array"
+        },
+        "operation_kind": {
+          "$ref": "#/$defs/report_text"
+        },
+        "operation_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "output_shapes": {
+          "items": {
+            "$ref": "#/$defs/shape"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "type": "array"
+        },
+        "output_tensors": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "type": "array"
+        },
+        "planned_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "status": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "executor_backend",
+        "input_tensors",
+        "operation_kind",
+        "operation_name",
+        "output_shapes",
+        "output_tensors",
+        "planned_backend",
+        "status"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "input_value",
+          "jit_function",
+          "module",
+          "network",
+          "output_value",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "reference_value",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "shape": {
+      "items": {
+        "maximum": 2147483647,
+        "minimum": 1,
+        "type": "integer"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "type": "array"
+    }
+  }
+}

@@ -64,6 +64,11 @@
           "artifact_id": "proof_of_abstraction_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_abstraction_execution_receipt",
+          "artifact_kind": "execution_receipt",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "objective_alpha",
@@ -122,6 +127,11 @@
         {
           "artifact_id": "proof_of_reduction_reference_semantics",
           "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_reduction_execution_receipt",
+          "artifact_kind": "execution_receipt",
           "artifact_status": "present"
         }
       ],
@@ -182,6 +192,11 @@
           "artifact_id": "proof_of_softmax_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_softmax_execution_receipt",
+          "artifact_kind": "execution_receipt",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "objective_alpha",
@@ -240,6 +255,11 @@
         {
           "artifact_id": "proof_of_execution_reference_semantics",
           "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_execution_receipt",
+          "artifact_kind": "execution_receipt",
           "artifact_status": "present"
         }
       ],
@@ -300,6 +320,11 @@
           "artifact_id": "proof_of_systolic_execution_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_execution_receipt",
+          "artifact_kind": "execution_receipt",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "systolic_execution",
@@ -358,6 +383,11 @@
         {
           "artifact_id": "triton_metadata_mvp_families_reference_semantics",
           "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "triton_metadata_mvp_families_execution_receipt",
+          "artifact_kind": "execution_receipt",
           "artifact_status": "present"
         }
       ],
@@ -428,6 +458,11 @@
           "artifact_id": "source_intent_return_mlp_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_execution_receipt",
+          "artifact_kind": "execution_receipt",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "source_intent_runtime_returns",
@@ -448,7 +483,8 @@
     "input_manifest",
     "output_contract",
     "public_output_bundle",
-    "reference_correctness"
+    "reference_correctness",
+    "execution_receipt"
   ],
   "runtime_evidence_matrix_complete": true,
   "schema_version": "tuc.runtime_evidence_matrix_report.v0"

@@ -1,5 +1,6 @@
 """Run the CI-facing Runtime Evidence Gate."""
 
+from examples.runtime_execution_receipt import build_execution_receipt_report
 from examples.runtime_input_manifest import build_input_manifest_report
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
@@ -12,6 +13,7 @@ from tuc import (
     SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT,
     RuntimeEvidenceGraph,
     RuntimeEvidenceMatrixReport,
+    RuntimeExecutionReceiptReport,
     RuntimeExecutorConformanceReport,
     RuntimeInputManifestReport,
     RuntimeOutputContractReport,
@@ -40,6 +42,7 @@ def build_gate_report(
     *,
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
     conformance_report: RuntimeExecutorConformanceReport | None = None,
+    execution_receipt_report: RuntimeExecutionReceiptReport | None = None,
     input_manifest_report: RuntimeInputManifestReport | None = None,
     output_contract_report: RuntimeOutputContractReport | None = None,
     output_manifest_report: RuntimeOutputManifestReport | None = None,
@@ -92,6 +95,11 @@ def build_gate_report(
         if reference_correctness_report is None
         else reference_correctness_report
     )
+    execution_receipt = (
+        build_execution_receipt_report()
+        if execution_receipt_report is None
+        else execution_receipt_report
+    )
     source_intent_runtime_returns = (
         run_runtime_returns().runtime_returns
         if source_intent_runtime_returns_report is None
@@ -105,6 +113,7 @@ def build_gate_report(
     _assert_output_contract_passed(output_contract)
     _assert_public_output_bundle_passed(public_bundle, output_contract)
     _assert_reference_correctness_passed(reference_correctness)
+    _assert_execution_receipt_passed(execution_receipt)
     _assert_source_intent_runtime_returns_passed(source_intent_runtime_returns)
     _assert_source_intent_runtime_returns_matrix_covered(
         matrix,
@@ -119,6 +128,7 @@ def build_gate_report(
         output_contract,
         public_bundle,
         reference_correctness,
+        execution_receipt,
         source_intent_runtime_returns,
     )
 
@@ -229,6 +239,14 @@ def _assert_reference_correctness_passed(
         )
 
 
+def _assert_execution_receipt_passed(report: RuntimeExecutionReceiptReport) -> None:
+    if report.issues:
+        issues = ",".join(
+            f"{issue.evidence_kind}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(f"runtime execution receipt failed: {issues}")
+
+
 def _assert_source_intent_runtime_returns_passed(
     report: SourceIntentRuntimeReturnsReport,
 ) -> None:
@@ -307,6 +325,7 @@ def _render_gate_report(
     output_contract: RuntimeOutputContractReport,
     public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness: RuntimeReferenceCorrectnessReport,
+    execution_receipt: RuntimeExecutionReceiptReport,
     source_intent_runtime_returns: SourceIntentRuntimeReturnsReport,
 ) -> str:
     lines = ["runtime.evidence_gate @runtime_evidence_gate_v0 {"]
@@ -349,6 +368,17 @@ def _render_gate_report(
     )
     lines.append(
         f'  runtime_reference_raw_value_policy = "{reference_correctness.raw_value_policy}"'
+    )
+    lines.append('  runtime_execution_receipt = "passed"')
+    lines.append(
+        f'  runtime_execution_receipt_links = "{len(execution_receipt.evidence_links)}"'
+    )
+    lines.append(
+        f'  runtime_execution_receipt_operations = "{len(execution_receipt.operations)}"'
+    )
+    lines.append(
+        "  runtime_execution_receipt_raw_value_policy = "
+        f'"{execution_receipt.raw_value_policy}"'
     )
     lines.append('  source_intent_runtime_returns_matrix = "covered"')
     lines.append('  source_intent_runtime_returns = "passed"')

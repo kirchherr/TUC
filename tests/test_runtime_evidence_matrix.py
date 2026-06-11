@@ -52,6 +52,10 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "public_output_bundle" in graph.present_artifact_kinds
         for graph in report.graphs
     )
+    assert all(
+        "execution_receipt" in graph.present_artifact_kinds
+        for graph in report.graphs
+    )
     assert report.issues == ()
     assert tuple(runtime_evidence_matrix_report_to_dict(report)) == (
         "artifact_status",
@@ -86,6 +90,7 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert '"input_manifest"' in completed.stdout
     assert '"output_contract"' in completed.stdout
     assert '"public_output_bundle"' in completed.stdout
+    assert '"execution_receipt"' in completed.stdout
     assert "triton_metadata_mvp_families" in completed.stdout
     assert "source_intent_return_mlp" in completed.stdout
     assert '"source_intent_runtime_returns"' in completed.stdout
@@ -223,4 +228,5 @@ def test_runtime_evidence_required_artifact_order_is_stable() -> None:
         "output_contract",
         "public_output_bundle",
         "reference_correctness",
+        "execution_receipt",
     )

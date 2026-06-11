@@ -12,6 +12,7 @@ from examples.runtime_evidence_gate import (
     RuntimeEvidenceGateError,
     build_gate_report,
 )
+from examples.runtime_execution_receipt import build_execution_receipt_report
 from examples.runtime_input_manifest import build_input_manifest_report
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
@@ -24,6 +25,8 @@ from examples.source_intent_runtime_returns import (
 from tuc import (
     RuntimeEvidenceArtifact,
     RuntimeEvidenceGraph,
+    RuntimeExecutionReceiptIssue,
+    RuntimeExecutionReceiptReport,
     RuntimeExecutorConformanceCase,
     RuntimeExecutorConformanceIssue,
     RuntimeExecutorConformanceReport,
@@ -66,6 +69,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_output_contract = "passed"' in completed.stdout
     assert 'runtime_public_output_bundle = "passed"' in completed.stdout
     assert 'runtime_reference_correctness = "passed"' in completed.stdout
+    assert 'runtime_execution_receipt = "passed"' in completed.stdout
     assert 'source_intent_runtime_returns = "passed"' in completed.stdout
 
 
@@ -220,6 +224,25 @@ def test_runtime_evidence_gate_rejects_failed_reference_correctness() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="reference correctness failed"):
         build_gate_report(reference_correctness_report=failed_reference_correctness)
+
+
+def test_runtime_evidence_gate_rejects_failed_execution_receipt() -> None:
+    report = build_execution_receipt_report()
+    failed_link = replace(report.evidence_links[0], passed=False)
+    failed_receipt = RuntimeExecutionReceiptReport(
+        graph_name=report.graph_name,
+        evidence_links=(failed_link, *report.evidence_links[1:]),
+        operations=report.operations,
+        issues=(
+            RuntimeExecutionReceiptIssue(
+                evidence_kind=failed_link.evidence_kind,
+                issue_code="evidence_not_passed",
+            ),
+        ),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="execution receipt failed"):
+        build_gate_report(execution_receipt_report=failed_receipt)
 
 
 def test_runtime_evidence_gate_rejects_invalid_source_intent_runtime_returns() -> None:
