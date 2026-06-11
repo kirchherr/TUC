@@ -45,6 +45,8 @@ jobs:
         run: python examples/runtime_candidate_score_evidence.py
       - name: Runtime candidate scoring gate
         run: python examples/runtime_candidate_scoring_gate.py
+      - name: Runtime memory planning gate
+        run: python examples/runtime_memory_planning_gate.py
       - name: Backend author evidence gate
         run: python examples/backend_author_evidence_gate.py
       - name: Baseline benchmark smoke test

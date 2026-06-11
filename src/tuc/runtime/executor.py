@@ -36,6 +36,8 @@ TRUSTED_RUNTIME_BACKEND_OUTPUT_CONTRACT = (
 )
 TRUSTED_REFERENCE_EXECUTOR_BACKEND = "trusted-reference-kernel"
 TRUSTED_RUNTIME_EXECUTOR_REGISTRY = "trusted_runtime_executor_registry.v0"
+RUNTIME_VALUE_RECORD_CONTRACT = "runtime_value_record.internal.v0"
+RUNTIME_TENSOR_STORE_CONTRACT = "runtime_tensor_store.internal.v0"
 RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
     "backend_plugin_discovery",
     "device_access",
@@ -48,6 +50,7 @@ RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
 )
 MAX_RUNTIME_EXECUTION_VALUES = 4096
 MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS = 64
+_RUNTIME_VALUE_ROLES = frozenset({"input", "computed"})
 
 FloatArray = NDArray[np.float64]
 
@@ -300,16 +303,138 @@ class RuntimeExecutionReadinessReport:
 
 
 @dataclass(frozen=True)
+class RuntimeValueRecord:
+    """Internal immutable tensor value record for Runtime Executor v0."""
+
+    tensor_name: str
+    value: FloatArray
+    shape: tuple[int, ...]
+    dtype: str
+    value_role: str
+    record_contract: str = RUNTIME_VALUE_RECORD_CONTRACT
+
+    def __post_init__(self) -> None:
+        _require_trace_name(self.tensor_name, "runtime value record tensor_name")
+        if self.record_contract != RUNTIME_VALUE_RECORD_CONTRACT:
+            raise ValueError("runtime value record contract mismatch")
+        _require_shape(self.shape)
+        if self.value_role not in _RUNTIME_VALUE_ROLES:
+            raise ValueError("runtime value record role is unsupported")
+        if not isinstance(self.value, np.ndarray):
+            raise TypeError("runtime value record value must be NumPy array")
+        if self.dtype != str(self.value.dtype):
+            raise ValueError("runtime value record dtype must match value dtype")
+        _validate_runtime_tensor_value(
+            tensor_name=self.tensor_name,
+            value=self.value,
+            expected_shape=self.shape,
+            value_role=self.value_role,
+        )
+        stored_value = np.array(self.value, copy=True)
+        stored_value.setflags(write=False)
+        object.__setattr__(self, "value", stored_value)
+
+
+class RuntimeTensorStore:
+    """Internal bounded tensor-value store backed by RuntimeValueRecord objects."""
+
+    store_contract = RUNTIME_TENSOR_STORE_CONTRACT
+
+    def __init__(self, records: tuple[RuntimeValueRecord, ...] = ()) -> None:
+        if type(records) is not tuple:
+            raise TypeError("runtime tensor store records must be a tuple")
+        self._records: dict[str, RuntimeValueRecord] = {}
+        for record in records:
+            self.add(record)
+
+    @property
+    def record_count(self) -> int:
+        """Return stored tensor value count."""
+
+        return len(self._records)
+
+    @property
+    def records(self) -> tuple[RuntimeValueRecord, ...]:
+        """Return stored tensor records in insertion order."""
+
+        return tuple(self._records.values())
+
+    @property
+    def values(self) -> Mapping[str, FloatArray]:
+        """Return a read-only tensor-name to tensor-value mapping."""
+
+        return MappingProxyType(
+            {name: record.value for name, record in self._records.items()}
+        )
+
+    def add(self, record: RuntimeValueRecord) -> None:
+        """Add one tensor value record fail-closed on duplicate or excessive values."""
+
+        if not isinstance(record, RuntimeValueRecord):
+            raise TypeError("runtime tensor store records must be RuntimeValueRecord")
+        if record.tensor_name in self._records:
+            raise ValueError(f"runtime tensor store duplicate value: {record.tensor_name}")
+        if len(self._records) >= MAX_RUNTIME_EXECUTION_VALUES:
+            raise ValueError("runtime executor value count exceeds limit")
+        self._records[record.tensor_name] = record
+
+    def value_for(self, tensor_name: str) -> FloatArray:
+        """Return one tensor value by name."""
+
+        return self.record_for(tensor_name).value
+
+    def record_for(self, tensor_name: str) -> RuntimeValueRecord:
+        """Return one tensor value record by name."""
+
+        _require_trace_name(tensor_name, "tensor_name")
+        record = self._records.get(tensor_name)
+        if record is None:
+            raise KeyError(tensor_name)
+        return record
+
+    def store_computed(self, tensor: TensorRef, value: FloatArray) -> None:
+        """Store one computed tensor output value."""
+
+        self.add(
+            RuntimeValueRecord(
+                tensor_name=tensor.name,
+                value=value,
+                shape=tensor.shape,
+                dtype=str(value.dtype),
+                value_role="computed",
+            )
+        )
+
+
+@dataclass(frozen=True)
 class RuntimeExecutionResult:
     """Executed graph values plus deterministic trace evidence."""
 
     values: Mapping[str, FloatArray]
     trace: RuntimeExecutionTrace
+    records: tuple[RuntimeValueRecord, ...] = ()
 
     def __post_init__(self) -> None:
         if not isinstance(self.values, Mapping):
             raise TypeError("runtime execution result values must be a mapping")
         object.__setattr__(self, "values", MappingProxyType(dict(self.values)))
+        if type(self.records) is not tuple:
+            raise TypeError("runtime execution result records must be a tuple")
+        record_names: list[str] = []
+        for record in self.records:
+            if not isinstance(record, RuntimeValueRecord):
+                raise TypeError("runtime execution result records must be value records")
+            record_names.append(record.tensor_name)
+        if len(record_names) != len(set(record_names)):
+            raise ValueError("runtime execution result records must be unique")
+        if self.records:
+            if set(record_names) != set(self.values):
+                raise ValueError("runtime execution result records must match values")
+            for record in self.records:
+                if self.values[record.tensor_name] is not record.value:
+                    raise ValueError(
+                        "runtime execution result record values must match values"
+                    )
 
     def output_for(self, tensor_name: str) -> FloatArray:
         """Return one output value by tensor name."""
@@ -319,6 +444,15 @@ class RuntimeExecutionResult:
         if value is None:
             raise KeyError(tensor_name)
         return value
+
+    def record_for(self, tensor_name: str) -> RuntimeValueRecord:
+        """Return one internal runtime value record by tensor name."""
+
+        _require_trace_name(tensor_name, "tensor_name")
+        for record in self.records:
+            if record.tensor_name == tensor_name:
+                return record
+        raise KeyError(tensor_name)
 
 
 def execute_graph(
@@ -334,7 +468,7 @@ def execute_graph(
         raise TypeError("runtime executor partition_plan must be PartitionPlan")
     _validate_partition_plan(graph, partition_plan)
     runtime_execution_readiness_report(graph, partition_plan)
-    values = _normalize_inputs(graph, inputs)
+    tensor_store = _normalize_inputs(graph, inputs)
     assignments = {
         assignment.operation_name: assignment for assignment in partition_plan.assignments
     }
@@ -344,23 +478,24 @@ def execute_graph(
     for operation in graph.operations:
         assignment = assignments[operation.name]
         executor = _executor_for_assignment(assignment, executors)
-        result = executor.execute(operation, values)
+        result = executor.execute(operation, tensor_store.values)
         if len(operation.outputs) != 1:
             raise ValueError("runtime executor v0 supports one output per operation")
         output = operation.outputs[0]
         _validate_declared_output(operation, result)
-        values[output.name] = result
+        tensor_store.store_computed(output, result)
         steps.append(_build_step(operation, assignment, executor, result))
-        if len(values) > MAX_RUNTIME_EXECUTION_VALUES:
+        if tensor_store.record_count > MAX_RUNTIME_EXECUTION_VALUES:
             raise ValueError("runtime executor value count exceeds limit")
 
     return RuntimeExecutionResult(
-        values=values,
+        values=tensor_store.values,
         trace=RuntimeExecutionTrace(
             graph_name=graph.name,
             executor_contract=RUNTIME_EXECUTOR_CONTRACT,
             steps=tuple(steps),
         ),
+        records=tensor_store.records,
     )
 
 
@@ -635,7 +770,7 @@ def _validate_softmax_operation(operation: ComputeOperation) -> None:
 def _normalize_inputs(
     graph: ComputeGraph,
     inputs: Mapping[str, object],
-) -> dict[str, FloatArray]:
+) -> RuntimeTensorStore:
     if type(inputs) is not dict:
         raise TypeError("runtime executor inputs must be a plain mapping")
     external_inputs = _external_input_tensors(graph)
@@ -647,7 +782,7 @@ def _normalize_inputs(
     extra = sorted(supplied_inputs - required_inputs)
     if extra:
         raise ValueError(f"runtime executor unexpected inputs: {','.join(extra)}")
-    normalized: dict[str, FloatArray] = {}
+    records: list[RuntimeValueRecord] = []
     for name in sorted(required_inputs):
         _require_trace_name(name, "input name")
         value = inputs[name]
@@ -659,8 +794,16 @@ def _normalize_inputs(
             expected_shape=external_inputs[name].shape,
             value_role="input",
         )
-        normalized[name] = cast(FloatArray, value)
-    return normalized
+        records.append(
+            RuntimeValueRecord(
+                tensor_name=name,
+                value=cast(FloatArray, value),
+                shape=external_inputs[name].shape,
+                dtype=str(value.dtype),
+                value_role="input",
+            )
+        )
+    return RuntimeTensorStore(tuple(records))
 
 
 def _external_input_tensors(graph: ComputeGraph) -> dict[str, TensorRef]:
@@ -892,6 +1035,8 @@ __all__ = [
     "MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS",
     "RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES",
     "RUNTIME_EXECUTOR_CONTRACT",
+    "RUNTIME_TENSOR_STORE_CONTRACT",
+    "RUNTIME_VALUE_RECORD_CONTRACT",
     "TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE",
     "TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT",
     "TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT",
@@ -904,6 +1049,8 @@ __all__ = [
     "RuntimeExecutionResult",
     "RuntimeExecutionStep",
     "RuntimeExecutionTrace",
+    "RuntimeTensorStore",
+    "RuntimeValueRecord",
     "TrustedRuntimeBackendExecutor",
     "dump_execution_trace",
     "dump_runtime_execution_readiness",

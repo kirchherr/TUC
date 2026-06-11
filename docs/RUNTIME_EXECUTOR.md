@@ -13,6 +13,8 @@ It is not a backend plugin system.
 - Executor contract: `runtime_executor.trusted_backend.v0`
 - Executor registry: `trusted_runtime_executor_registry.v0`
 - Trusted backend contract: `runtime_backend_executor.trusted.v0`
+- Internal tensor store contract: `runtime_tensor_store.internal.v0`
+- Internal value record contract: `runtime_value_record.internal.v0`
 - Operation semantic contract: `runtime_executor.operation_semantics.v0`
 - Input value contract: `runtime_executor.numpy_float64_inputs.v0`
 - Output value contract: `runtime_executor.declared_shape_float64_output.v0`
@@ -153,6 +155,32 @@ Runtime Executor v0 validates tensor values at the runtime boundary:
 
 This keeps trusted prototype execution deterministic and prevents hidden dtype,
 shape, or non-finite-value drift from becoming backend-specific behavior.
+
+## Runtime Tensor Store
+
+Runtime Tensor Store v0 is an internal executor boundary. It records every
+accepted runtime tensor value as a `RuntimeValueRecord` with:
+
+- tensor name
+- immutable copied value
+- declared shape
+- dtype
+- value role, either `input` or `computed`
+
+External inputs are copied into read-only records before execution starts, and
+computed outputs are copied into read-only records before they become visible to
+later operations or `RuntimeExecutionResult`. This prevents caller-side input
+mutation and accidental output mutation from changing already accepted runtime
+evidence.
+
+The tensor store is not a memory allocator, not a cache, not a device buffer
+manager, and not an aliasing model. It is the minimum internal value-record
+surface needed before future runtime memory work can reason about value
+identity without passing raw mutable mappings around.
+
+The review artifact for this boundary is
+[`RUNTIME_TENSOR_STORE_EVIDENCE.md`](RUNTIME_TENSOR_STORE_EVIDENCE.md). It
+serializes record metadata and read-only status, but never tensor values.
 
 ## Trusted Backend Contract
 

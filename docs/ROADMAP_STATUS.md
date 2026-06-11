@@ -88,6 +88,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Memory Budget v0 with schema at
   `schemas/runtime_memory_budget_report.v0.schema.json` and deterministic
   golden at `tests/golden/runtime_memory_budget/current_report.json`.
+- Runtime Memory Planning Gate v0 with deterministic golden evidence at
+  `tests/golden/runtime_memory_planning_gate/current_gate.txt` and CI coverage
+  in the `python` workflow job.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
   deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
@@ -119,6 +122,13 @@ hardware-independent interface into capability-driven runtime planning.
   scalar-output rejection, and supported elementwise kernels.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
   and finite values at input and output boundaries.
+- Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects
+  for accepted input and computed runtime values.
+- Runtime Tensor Store Evidence v0 with schema at
+  `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
+  Runtime Evidence Gate coverage with raw tensor values omitted by policy.
 
 ## In Progress
 
@@ -166,7 +176,11 @@ Current slice:
 - Runtime Executor v0 with contract `runtime_executor.trusted_backend.v0`,
   fixed trusted registry `trusted_runtime_executor_registry.v0`, plain-mapping
   input validation, partition-plan matching, output-shape checks, unsupported
-  executor rejection, and deterministic execution traces.
+  executor rejection, internal `RuntimeValueRecord` storage, and deterministic
+  execution traces.
+- Runtime Tensor Store Evidence at `examples/runtime_tensor_store_evidence.py`,
+  with golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.
@@ -186,7 +200,9 @@ Current slice:
   evidence at
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
-  evidence at `tests/golden/proofs/runtime_evidence_gate.txt`.
+  evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
+  Runtime Evidence Matrix, Runtime Executor Conformance, and Runtime Tensor
+  Store Evidence.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
@@ -205,6 +221,9 @@ Current slice:
   evidence at `tests/golden/runtime_allocation_plan/current_report.json`.
 - Runtime Memory Budget at `examples/runtime_memory_budget.py`, with golden
   evidence at `tests/golden/runtime_memory_budget/current_report.json`.
+- Runtime Memory Planning Gate at `examples/runtime_memory_planning_gate.py`,
+  with golden evidence at
+  `tests/golden/runtime_memory_planning_gate/current_gate.txt`.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -442,6 +461,8 @@ Current focus:
   aliasing, or real allocator behavior.
 - Use Runtime Memory Budget before accepting memory pools, device allocation,
   aliasing, or allocator behavior that can reserve runtime memory.
+- Keep Runtime Memory Planning Gate passing in CI before accepting allocator,
+  memory-pool, device-allocation, or aliasing changes.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 
