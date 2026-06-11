@@ -22,6 +22,7 @@ It does not parse source text.
 - Assertion API: `assert_source_intent_frontend_conformance(frontend_name, cases)`
 - Report dump: `dump_source_intent_frontend_conformance_report(report)`
 - Example: `examples/source_intent_frontend_conformance.py`
+- CI gate: `examples/source_intent_frontend_conformance_gate.py`
 - Golden: `tests/golden/frontend/source_intent_frontend_conformance_report.json`
 - Tests: `tests/test_source_intent_conformance.py`
 
@@ -29,6 +30,8 @@ The machine-readable report schema is documented in
 [Source Intent Frontend Conformance Report Schema](SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md).
 It is an interoperability artifact for review reports; the trusted conformance
 path remains `run_source_intent_frontend_conformance(frontend_name, cases)`.
+The merge-facing gate is documented in
+[Source Intent Frontend Conformance Gate](SOURCE_INTENT_FRONTEND_CONFORMANCE_GATE.md).
 
 Accepted cases must pass:
 

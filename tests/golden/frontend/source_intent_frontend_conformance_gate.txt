@@ -1,0 +1,12 @@
+source_intent.frontend_conformance_gate @source_intent_frontend_conformance_gate_v0 {
+  gate_contract = "source_intent_frontend_conformance_gate.ci.v0"
+  frontend_conformance = "passed"
+  frontend_name = "example-source-intent-frontend"
+  accepted_cases = "2"
+  rejected_cases = "6"
+  checked_cases = "8"
+  return_conformance = "covered"
+  required_return_conformance_cases = "valid_source_intent_return_mlp,reject_return_unknown_tensor,reject_return_intermediate_tensor,reject_duplicate_public_returns"
+  blocked_execution_surfaces = "device_access,file_system_access,frontend_package_import,generated_artifact_execution,jit_execution,network_access,plugin_discovery,source_parsing,subprocess_execution"
+  status = "PASS"
+}

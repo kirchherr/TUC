@@ -197,6 +197,10 @@ hardware-independent interface into capability-driven runtime planning.
 - Source Intent Frontend Conformance now includes explicit public-return
   fixtures, return-alias preservation checks, and fail-closed rejected cases for
   unknown, intermediate, and duplicate public returns.
+- Source Intent Frontend Conformance Gate now enforces the conformance suite and
+  required public-return coverage as CI-facing merge evidence, with deterministic
+  golden output at
+  `tests/golden/frontend/source_intent_frontend_conformance_gate.txt`.
 
 ## In Progress
 
@@ -373,6 +377,10 @@ Current slice:
   artifacts for external frontend authors that emit `source_intent.v0` plain
   data, including explicit public-return fixtures and rejected malformed return
   cases.
+- Source Intent Frontend Conformance Gate at
+  `examples/source_intent_frontend_conformance_gate.py`, with golden evidence at
+  `tests/golden/frontend/source_intent_frontend_conformance_gate.txt` and CI
+  coverage in the `python` workflow job.
 - Machine-readable Source Intent Frontend Conformance report JSON Schema at
   `schemas/source_intent_frontend_conformance_report.v0.schema.json`.
 - Source-To-Intent Parser Gate defining the required future parser RFC,
