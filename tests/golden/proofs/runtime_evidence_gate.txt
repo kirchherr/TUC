@@ -3,6 +3,9 @@ runtime.evidence_gate @runtime_evidence_gate_v0 {
   runtime_evidence_graphs = "6"
   runtime_executor_conformance = "passed"
   runtime_executor_conformance_cases = "12"
+  runtime_tensor_store_evidence = "passed"
+  runtime_tensor_store_records = "5"
+  runtime_tensor_store_raw_value_policy = "omitted_by_policy"
   blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
   status = "PASS"
 }

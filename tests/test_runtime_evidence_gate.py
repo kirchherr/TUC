@@ -2,17 +2,21 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
 
 from examples.runtime_evidence_gate import RuntimeEvidenceGateError, build_gate_report
+from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
 from tuc import (
     RuntimeEvidenceArtifact,
     RuntimeEvidenceGraph,
     RuntimeExecutorConformanceCase,
     RuntimeExecutorConformanceIssue,
     RuntimeExecutorConformanceReport,
+    RuntimeTensorStoreEvidenceIssue,
+    RuntimeTensorStoreEvidenceReport,
     build_runtime_evidence_matrix_report,
 )
 from tuc.ir import OperationKind
@@ -35,6 +39,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'status = "PASS"' in completed.stdout
     assert 'runtime_evidence_matrix = "complete"' in completed.stdout
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
+    assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
 
 
 def test_runtime_evidence_gate_rejects_incomplete_matrix() -> None:
@@ -82,3 +87,22 @@ def test_runtime_evidence_gate_rejects_failed_conformance() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="conformance failed"):
         build_gate_report(conformance_report=failed_conformance)
+
+
+def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:
+    report = build_tensor_store_evidence_report()
+    mutable_records = (replace(report.records[0], readonly=False), *report.records[1:])
+    failed_tensor_store = RuntimeTensorStoreEvidenceReport(
+        graph_name=report.graph_name,
+        expected_records=report.expected_records,
+        records=mutable_records,
+        issues=(
+            RuntimeTensorStoreEvidenceIssue(
+                tensor_name=report.records[0].tensor_name,
+                issue_code="record_value_mutable",
+            ),
+        ),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="tensor store evidence failed"):
+        build_gate_report(tensor_store_report=failed_tensor_store)

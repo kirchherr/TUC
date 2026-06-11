@@ -128,7 +128,7 @@ hardware-independent interface into capability-driven runtime planning.
   `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, deterministic
   golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
-  raw tensor values omitted by policy.
+  Runtime Evidence Gate coverage with raw tensor values omitted by policy.
 
 ## In Progress
 
@@ -200,7 +200,9 @@ Current slice:
   evidence at
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
-  evidence at `tests/golden/proofs/runtime_evidence_gate.txt`.
+  evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
+  Runtime Evidence Matrix, Runtime Executor Conformance, and Runtime Tensor
+  Store Evidence.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

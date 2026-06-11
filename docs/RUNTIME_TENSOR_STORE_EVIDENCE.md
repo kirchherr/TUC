@@ -30,10 +30,22 @@ The deterministic example is:
 python examples/runtime_tensor_store_evidence.py
 ```
 
+The CI-facing composition point is:
+
+```bash
+python examples/runtime_evidence_gate.py
+```
+
 Its golden evidence is:
 
 ```text
 tests/golden/runtime_tensor_store_evidence/proof_of_execution.json
+```
+
+The gate golden is:
+
+```text
+tests/golden/proofs/runtime_evidence_gate.txt
 ```
 
 ## Security Boundary

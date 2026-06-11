@@ -1,9 +1,11 @@
 """Run the CI-facing Runtime Evidence Gate."""
 
+from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
 from tuc import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RuntimeEvidenceMatrixReport,
     RuntimeExecutorConformanceReport,
+    RuntimeTensorStoreEvidenceReport,
     build_current_runtime_evidence_matrix_report,
     run_runtime_executor_conformance,
 )
@@ -17,6 +19,7 @@ def build_gate_report(
     *,
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
     conformance_report: RuntimeExecutorConformanceReport | None = None,
+    tensor_store_report: RuntimeTensorStoreEvidenceReport | None = None,
 ) -> str:
     """Return the stable CI-facing runtime evidence gate report."""
 
@@ -30,9 +33,15 @@ def build_gate_report(
         if conformance_report is None
         else conformance_report
     )
+    tensor_store = (
+        build_tensor_store_evidence_report()
+        if tensor_store_report is None
+        else tensor_store_report
+    )
     _assert_matrix_complete(matrix)
     _assert_conformance_passed(conformance)
-    return _render_gate_report(matrix, conformance)
+    _assert_tensor_store_evidence_passed(tensor_store)
+    return _render_gate_report(matrix, conformance, tensor_store)
 
 
 def main() -> None:
@@ -54,15 +63,31 @@ def _assert_conformance_passed(report: RuntimeExecutorConformanceReport) -> None
         raise RuntimeEvidenceGateError(f"runtime executor conformance failed: {issues}")
 
 
+def _assert_tensor_store_evidence_passed(
+    report: RuntimeTensorStoreEvidenceReport,
+) -> None:
+    if report.issues:
+        issues = ",".join(
+            f"{issue.tensor_name}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(f"runtime tensor store evidence failed: {issues}")
+
+
 def _render_gate_report(
     matrix: RuntimeEvidenceMatrixReport,
     conformance: RuntimeExecutorConformanceReport,
+    tensor_store: RuntimeTensorStoreEvidenceReport,
 ) -> str:
     lines = ["runtime.evidence_gate @runtime_evidence_gate_v0 {"]
     lines.append('  runtime_evidence_matrix = "complete"')
     lines.append(f'  runtime_evidence_graphs = "{len(matrix.graphs)}"')
     lines.append('  runtime_executor_conformance = "passed"')
     lines.append(f'  runtime_executor_conformance_cases = "{len(conformance.checked_cases)}"')
+    lines.append('  runtime_tensor_store_evidence = "passed"')
+    lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')
+    lines.append(
+        f'  runtime_tensor_store_raw_value_policy = "{tensor_store.raw_value_policy}"'
+    )
     lines.append(
         "  blocked_execution_surfaces = "
         f'"{",".join(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)}"'
