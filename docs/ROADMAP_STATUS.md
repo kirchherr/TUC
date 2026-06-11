@@ -120,15 +120,39 @@ hardware-independent interface into capability-driven runtime planning.
   goldens.
 - Runtime operation semantic contract checks for MVP operation shapes, axes,
   scalar-output rejection, and supported elementwise kernels.
+- Runtime graph topology contract checks for unique tensor producers,
+  topological operation order, and external-input overwrite rejection before
+  trusted kernels run.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
   and finite values at input and output boundaries.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects
-  for accepted input and computed runtime values.
+  for accepted input and computed runtime values, including data-only producer
+  provenance for external inputs and operation-produced values.
 - Runtime Tensor Store Evidence v0 with schema at
   `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, deterministic
   golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
   Runtime Evidence Gate coverage with raw tensor values omitted by policy.
+- Runtime Output Manifest v0 with schema at
+  `schemas/runtime_output_manifest_report.v0.schema.json`, deterministic golden
+  evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
+  and Runtime Evidence Gate coverage for terminal graph outputs without raw
+  tensor values.
+- Runtime Reference Correctness v0 with schema at
+  `schemas/runtime_reference_correctness_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_reference_correctness/proof_of_execution.json`, Runtime
+  Evidence Gate coverage, and proof-of-execution reporting without raw
+  result/reference tensor values.
+- Runtime Multi-Output Evidence fixture with deterministic golden evidence at
+  `tests/golden/runtime_multi_output_evidence/current_report.json`, proving
+  Runtime Output Manifest and Runtime Reference Correctness across two terminal
+  graph outputs without raw tensor values.
+- Runtime Output Contract v0 with schema at
+  `schemas/runtime_output_contract_report.v0.schema.json`, deterministic golden
+  evidence at `tests/golden/runtime_output_contract/current_report.json`, and
+  explicit public output aliases for terminal graph tensors without raw tensor
+  values.
 
 ## In Progress
 
@@ -175,12 +199,27 @@ Current slice:
   `tests/golden/frontend/triton_idiom_coverage_report.json`.
 - Runtime Executor v0 with contract `runtime_executor.trusted_backend.v0`,
   fixed trusted registry `trusted_runtime_executor_registry.v0`, plain-mapping
-  input validation, partition-plan matching, output-shape checks, unsupported
-  executor rejection, internal `RuntimeValueRecord` storage, and deterministic
-  execution traces.
+  input validation, partition-plan matching, graph-topology checks,
+  output-shape checks, unsupported executor rejection, internal
+  `RuntimeValueRecord` storage, and deterministic execution traces.
 - Runtime Tensor Store Evidence at `examples/runtime_tensor_store_evidence.py`,
   with golden evidence at
-  `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`.
+  `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`,
+  including producer-kind and producer-id metadata without tensor values.
+- Runtime Output Manifest at `examples/runtime_output_manifest.py`, with golden
+  evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
+  including terminal-output producer metadata without tensor values.
+- Runtime Reference Correctness at `examples/runtime_reference_correctness.py`,
+  with golden evidence at
+  `tests/golden/runtime_reference_correctness/proof_of_execution.json`,
+  including output/reference comparison status without tensor values.
+- Runtime Multi-Output Evidence at `examples/runtime_multi_output_evidence.py`,
+  with golden evidence at
+  `tests/golden/runtime_multi_output_evidence/current_report.json`, covering
+  branched terminal outputs without tensor values.
+- Runtime Output Contract at `examples/runtime_output_contract.py`, with golden
+  evidence at `tests/golden/runtime_output_contract/current_report.json`,
+  separating public output aliases from terminal graph tensor names.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.
@@ -201,8 +240,8 @@ Current slice:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
-  Runtime Evidence Matrix, Runtime Executor Conformance, and Runtime Tensor
-  Store Evidence.
+  Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
+  Evidence, Runtime Output Manifest, and Runtime Reference Correctness.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
@@ -247,6 +286,8 @@ Current slice:
   `tests/golden/execution_traces/proof_of_softmax.txt`.
 - Runtime Executor negative tests for input shape mismatch, non-`float64`
   inputs, non-finite inputs, and non-finite outputs.
+- Runtime Executor negative tests for non-topological graph order, duplicate
+  output tensor definitions, and external-input overwrite attempts.
 - Runtime Executor negative tests for matmul dimension mismatch, elementwise
   output mismatch, unsupported elementwise kernels, reduction axis/output
   errors, scalar reduction output, and softmax axis/output errors.

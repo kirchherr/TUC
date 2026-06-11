@@ -20,7 +20,9 @@ def test_proof_of_execution_example_runs() -> None:
     assert "== runtime plan ==" in completed.stdout
     assert "== execution readiness ==" in completed.stdout
     assert "== execution trace ==" in completed.stdout
+    assert "== reference correctness ==" in completed.stdout
     assert "runtime.execution_readiness @proof_of_execution" in completed.stdout
+    assert "runtime_reference_correctness.data_only.v0" in completed.stdout
     assert "executor_contract = \"runtime_executor.trusted_backend.v0\"" in (
         completed.stdout
     )
@@ -31,6 +33,8 @@ def test_proof_of_execution_example_runs() -> None:
         "activation planned_backend=reference-cpu executor_backend=reference-cpu"
         in completed.stdout
     )
+    assert "== result ==" not in completed.stdout
+    assert "== reference result ==" not in completed.stdout
     assert completed.stdout.rstrip().endswith("PASS")
     assert completed.stdout.rstrip("\n") == _GOLDEN_PROOF.read_text(
         encoding="utf-8"
@@ -46,3 +50,5 @@ def test_proof_of_execution_result_is_checked_against_reference() -> None:
     assert report.compiled.partition_plan.backend_for("activation") == "reference-cpu"
     assert report.readiness.status == "ready"
     assert report.execution.trace.steps[-1].output_tensors == ("activated",)
+    assert report.correctness.passed
+    assert report.correctness.comparisons[0].comparison_status == "matched"

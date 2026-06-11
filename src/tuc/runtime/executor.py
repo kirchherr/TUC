@@ -51,6 +51,7 @@ RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
 MAX_RUNTIME_EXECUTION_VALUES = 4096
 MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS = 64
 _RUNTIME_VALUE_ROLES = frozenset({"input", "computed"})
+_RUNTIME_PRODUCER_KINDS = frozenset({"external_input", "operation"})
 
 FloatArray = NDArray[np.float64]
 
@@ -311,6 +312,8 @@ class RuntimeValueRecord:
     shape: tuple[int, ...]
     dtype: str
     value_role: str
+    producer_kind: str
+    producer_id: str
     record_contract: str = RUNTIME_VALUE_RECORD_CONTRACT
 
     def __post_init__(self) -> None:
@@ -320,6 +323,16 @@ class RuntimeValueRecord:
         _require_shape(self.shape)
         if self.value_role not in _RUNTIME_VALUE_ROLES:
             raise ValueError("runtime value record role is unsupported")
+        if self.producer_kind not in _RUNTIME_PRODUCER_KINDS:
+            raise ValueError("runtime value record producer kind is unsupported")
+        _require_trace_name(self.producer_id, "runtime value record producer_id")
+        if self.value_role == "input":
+            if self.producer_kind != "external_input":
+                raise ValueError("runtime input record producer must be external_input")
+            if self.producer_id != self.tensor_name:
+                raise ValueError("runtime input record producer_id must match tensor name")
+        if self.value_role == "computed" and self.producer_kind != "operation":
+            raise ValueError("runtime computed record producer must be operation")
         if not isinstance(self.value, np.ndarray):
             raise TypeError("runtime value record value must be NumPy array")
         if self.dtype != str(self.value.dtype):
@@ -392,9 +405,16 @@ class RuntimeTensorStore:
             raise KeyError(tensor_name)
         return record
 
-    def store_computed(self, tensor: TensorRef, value: FloatArray) -> None:
+    def store_computed(
+        self,
+        tensor: TensorRef,
+        value: FloatArray,
+        *,
+        producer_operation: str,
+    ) -> None:
         """Store one computed tensor output value."""
 
+        _require_trace_name(producer_operation, "producer_operation")
         self.add(
             RuntimeValueRecord(
                 tensor_name=tensor.name,
@@ -402,6 +422,8 @@ class RuntimeTensorStore:
                 shape=tensor.shape,
                 dtype=str(value.dtype),
                 value_role="computed",
+                producer_kind="operation",
+                producer_id=producer_operation,
             )
         )
 
@@ -483,7 +505,11 @@ def execute_graph(
             raise ValueError("runtime executor v0 supports one output per operation")
         output = operation.outputs[0]
         _validate_declared_output(operation, result)
-        tensor_store.store_computed(output, result)
+        tensor_store.store_computed(
+            output,
+            result,
+            producer_operation=operation.name,
+        )
         steps.append(_build_step(operation, assignment, executor, result))
         if tensor_store.record_count > MAX_RUNTIME_EXECUTION_VALUES:
             raise ValueError("runtime executor value count exceeds limit")
@@ -801,12 +827,15 @@ def _normalize_inputs(
                 shape=external_inputs[name].shape,
                 dtype=str(value.dtype),
                 value_role="input",
+                producer_kind="external_input",
+                producer_id=name,
             )
         )
     return RuntimeTensorStore(tuple(records))
 
 
 def _external_input_tensors(graph: ComputeGraph) -> dict[str, TensorRef]:
+    _validate_runtime_graph_topology(graph)
     produced: set[str] = set()
     required: dict[str, TensorRef] = {}
     for operation in graph.operations:
@@ -819,12 +848,61 @@ def _external_input_tensors(graph: ComputeGraph) -> dict[str, TensorRef]:
 
 
 def _validate_partition_plan(graph: ComputeGraph, partition_plan: PartitionPlan) -> None:
+    _validate_runtime_graph_topology(graph)
     if graph.name != partition_plan.graph_name:
         raise ValueError("runtime executor graph and partition plan names must match")
     operation_names = tuple(operation.name for operation in graph.operations)
     assignment_names = tuple(assignment.operation_name for assignment in partition_plan.assignments)
     if assignment_names != operation_names:
         raise ValueError("runtime executor partition plan must match graph operations")
+
+
+def _validate_runtime_graph_topology(graph: ComputeGraph) -> None:
+    all_output_names: list[str] = [
+        tensor.name for operation in graph.operations for tensor in operation.outputs
+    ]
+    seen_outputs: set[str] = set()
+    duplicate_outputs: set[str] = set()
+    for name in all_output_names:
+        if name in seen_outputs:
+            duplicate_outputs.add(name)
+        seen_outputs.add(name)
+    if duplicate_outputs:
+        raise ValueError(
+            "runtime executor graph has duplicate output tensor definitions: "
+            f"{','.join(sorted(duplicate_outputs))}"
+        )
+
+    future_outputs = set(all_output_names)
+    available: set[str] = set()
+    external_inputs: set[str] = set()
+    produced: set[str] = set()
+    for operation in graph.operations:
+        for tensor in operation.outputs:
+            future_outputs.discard(tensor.name)
+        for tensor in operation.inputs:
+            if tensor.name in available:
+                continue
+            if tensor.name in future_outputs:
+                raise ValueError(
+                    "runtime executor graph is not topologically ordered: "
+                    f"{operation.name} reads {tensor.name} before it is produced"
+                )
+            external_inputs.add(tensor.name)
+            available.add(tensor.name)
+        for tensor in operation.outputs:
+            if tensor.name in external_inputs:
+                raise ValueError(
+                    "runtime executor graph output collides with external input: "
+                    f"{tensor.name}"
+                )
+            if tensor.name in produced:
+                raise ValueError(
+                    "runtime executor graph has duplicate output tensor definitions: "
+                    f"{tensor.name}"
+                )
+            produced.add(tensor.name)
+            available.add(tensor.name)
 
 
 def _validate_declared_output(operation: ComputeOperation, value: FloatArray) -> None:

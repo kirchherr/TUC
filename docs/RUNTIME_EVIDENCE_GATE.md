@@ -1,14 +1,17 @@
 # Runtime Evidence Gate
 
 Runtime Evidence Gate v0 is the CI-facing check that combines the current
-runtime evidence inventory, trusted executor conformance, and Runtime Tensor
-Store Evidence.
+runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
+Evidence, Runtime Output Manifest evidence, and Runtime Reference Correctness
+evidence.
 
 It runs:
 
 - `build_current_runtime_evidence_matrix_report()`
 - `run_runtime_executor_conformance()`
 - `build_tensor_store_evidence_report()`
+- `build_output_manifest_report()`
+- `build_reference_correctness_report()`
 - `examples/runtime_evidence_gate.py`
 
 The gate passes only when:
@@ -17,6 +20,21 @@ The gate passes only when:
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
+- Runtime Output Manifest passes for terminal proof-of-execution outputs
+- Runtime Reference Correctness passes for terminal proof-of-execution outputs
+  against independent reference tensors
+
+Runtime Output Manifest schema:
+
+```text
+schemas/runtime_output_manifest_report.v0.schema.json
+```
+
+Runtime Reference Correctness schema:
+
+```text
+schemas/runtime_reference_correctness_report.v0.schema.json
+```
 
 Golden output:
 
@@ -43,6 +61,10 @@ It composes three bounded in-repository checks:
 - fixed in-memory operation fixtures from Runtime Executor Conformance v0
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
+- data-only Runtime Output Manifest metadata for terminal graph outputs with raw
+  tensor values omitted by policy
+- data-only Runtime Reference Correctness metadata with output and reference
+  tensor values omitted by policy
 
 The output is a small deterministic text report ending in `PASS`.
 

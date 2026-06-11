@@ -15,6 +15,8 @@
   "expected_records": [
     {
       "dtype": "float64",
+      "producer_id": "lhs",
+      "producer_kind": "external_input",
       "shape": [
         2,
         3
@@ -24,6 +26,8 @@
     },
     {
       "dtype": "float64",
+      "producer_id": "rhs",
+      "producer_kind": "external_input",
       "shape": [
         3,
         2
@@ -33,6 +37,8 @@
     },
     {
       "dtype": "float64",
+      "producer_id": "linear_projection",
+      "producer_kind": "operation",
       "shape": [
         2,
         2
@@ -42,6 +48,8 @@
     },
     {
       "dtype": "float64",
+      "producer_id": "row_reduction",
+      "producer_kind": "operation",
       "shape": [
         2
       ],
@@ -50,6 +58,8 @@
     },
     {
       "dtype": "float64",
+      "producer_id": "activation",
+      "producer_kind": "operation",
       "shape": [
         2
       ],
@@ -62,10 +72,12 @@
   "passed": true,
   "raw_value_policy": "omitted_by_policy",
   "record_count": 5,
-  "record_metadata_digest": "sha256:47f5b6f5d913ff1165273aea281403d356676eec4b8d8d1944b3a026aaa68ace",
+  "record_metadata_digest": "sha256:cc8341abcf5a4bc30b809106856629e4c626aa16e22b5d3ea51286835ff4142d",
   "records": [
     {
       "dtype": "float64",
+      "producer_id": "lhs",
+      "producer_kind": "external_input",
       "raw_value_status": "omitted_by_policy",
       "readonly": true,
       "record_contract": "runtime_value_record.internal.v0",
@@ -78,6 +90,8 @@
     },
     {
       "dtype": "float64",
+      "producer_id": "rhs",
+      "producer_kind": "external_input",
       "raw_value_status": "omitted_by_policy",
       "readonly": true,
       "record_contract": "runtime_value_record.internal.v0",
@@ -90,6 +104,8 @@
     },
     {
       "dtype": "float64",
+      "producer_id": "linear_projection",
+      "producer_kind": "operation",
       "raw_value_status": "omitted_by_policy",
       "readonly": true,
       "record_contract": "runtime_value_record.internal.v0",
@@ -102,6 +118,8 @@
     },
     {
       "dtype": "float64",
+      "producer_id": "row_reduction",
+      "producer_kind": "operation",
       "raw_value_status": "omitted_by_policy",
       "readonly": true,
       "record_contract": "runtime_value_record.internal.v0",
@@ -113,6 +131,8 @@
     },
     {
       "dtype": "float64",
+      "producer_id": "activation",
+      "producer_kind": "operation",
       "raw_value_status": "omitted_by_policy",
       "readonly": true,
       "record_contract": "runtime_value_record.internal.v0",

@@ -5,8 +5,8 @@ runtime planning into controlled execution.
 
 The proof compiles a graph, inspects the runtime plan, executes the graph
 through Runtime Executor v0, emits a pre-execution readiness report, emits an
-execution trace, and compares the result against an independent reference
-result.
+execution trace, emits data-only output evidence, and emits data-only reference
+correctness evidence against an independent reference result.
 
 ## Contract
 
@@ -27,6 +27,10 @@ result.
   runs.
 - Runtime tensor values are checked against shape, dtype, and finite-value
   contracts at input and output boundaries.
+- Terminal graph outputs are captured in Runtime Output Manifest evidence
+  without serializing raw tensor values.
+- Terminal graph outputs are compared with independent reference tensors in
+  Runtime Reference Correctness evidence without serializing raw tensor values.
 - Execution uses fixed trusted in-process prototype executors.
 - The execution trace records planned backend and actual executor separately.
 - The final result matches an independent reference calculation.
@@ -35,6 +39,7 @@ result.
 
 - native backend speed
 - native backend correctness
+- raw result/reference logging
 - generated artifact safety
 - plugin sandboxing
 - direct device execution

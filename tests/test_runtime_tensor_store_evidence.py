@@ -68,6 +68,10 @@ def test_runtime_tensor_store_evidence_passes_for_execution_proof() -> None:
         "store_contract",
         "value_record_contract",
     )
+    assert report.records[0].producer_kind == "external_input"
+    assert report.records[0].producer_id == "lhs"
+    assert report.records[-1].producer_kind == "operation"
+    assert report.records[-1].producer_id == "activation"
 
 
 def test_runtime_tensor_store_evidence_dump_matches_golden() -> None:
@@ -115,6 +119,8 @@ def test_runtime_tensor_store_evidence_records_mutable_values_as_issue() -> None
         shape=report.records[0].shape,
         dtype=report.records[0].dtype,
         value_role=report.records[0].value_role,
+        producer_kind=report.records[0].producer_kind,
+        producer_id=report.records[0].producer_id,
         readonly=False,
     )
     failing = RuntimeTensorStoreEvidenceReport(
@@ -140,6 +146,8 @@ def test_runtime_tensor_store_evidence_rejects_raw_value_status() -> None:
             shape=(2,),
             dtype="float64",
             value_role="input",
+            producer_kind="external_input",
+            producer_id="value",
             readonly=True,
             raw_value_status="included",
         )
@@ -152,8 +160,37 @@ def test_runtime_tensor_store_evidence_rejects_forbidden_surface_names() -> None
             shape=(2,),
             dtype="float64",
             value_role="input",
+            producer_kind="external_input",
+            producer_id="python_source",
             readonly=True,
         )
+
+
+def test_runtime_tensor_store_evidence_records_provenance_mismatch_as_issue() -> None:
+    report = build_tensor_store_evidence_report()
+    bad_record = RuntimeTensorValueEvidence(
+        tensor_name=report.records[-1].tensor_name,
+        shape=report.records[-1].shape,
+        dtype=report.records[-1].dtype,
+        value_role=report.records[-1].value_role,
+        producer_kind=report.records[-1].producer_kind,
+        producer_id="other_operation",
+        readonly=True,
+    )
+    failing = RuntimeTensorStoreEvidenceReport(
+        graph_name=report.graph_name,
+        expected_records=report.expected_records[-1:],
+        records=(bad_record,),
+        issues=(
+            RuntimeTensorStoreEvidenceIssue(
+                tensor_name=bad_record.tensor_name,
+                issue_code="producer_id_mismatch",
+            ),
+        ),
+    )
+
+    assert not failing.passed
+    assert failing.issues[0].issue_code == "producer_id_mismatch"
 
 
 def test_runtime_tensor_store_evidence_schema_matches_contract() -> None:
@@ -185,6 +222,10 @@ def test_runtime_tensor_store_evidence_schema_matches_contract() -> None:
     assert schema["properties"]["records"]["maxItems"] == (
         MAX_RUNTIME_TENSOR_STORE_EVIDENCE_RECORDS
     )
+    assert schema["$defs"]["producer_kind"]["enum"] == [
+        "external_input",
+        "operation",
+    ]
     assert [
         item["const"]
         for item in schema["properties"]["blocked_execution_surfaces"]["prefixItems"]
@@ -235,6 +276,10 @@ def test_runtime_tensor_store_evidence_golden_matches_schema_shape() -> None:
     assert golden["expected_record_count"] == len(golden["expected_records"]) == 5
     assert golden["record_count"] == len(golden["records"]) == 5
     assert all(record["readonly"] is True for record in golden["records"])
+    assert golden["records"][0]["producer_kind"] == "external_input"
+    assert golden["records"][0]["producer_id"] == "lhs"
+    assert golden["records"][-1]["producer_kind"] == "operation"
+    assert golden["records"][-1]["producer_id"] == "activation"
 
 
 def test_runtime_tensor_store_evidence_schema_is_referenced() -> None:
@@ -244,6 +289,7 @@ def test_runtime_tensor_store_evidence_schema_is_referenced() -> None:
         Path("docs/RUNTIME_TENSOR_STORE_EVIDENCE.md"),
         Path("docs/ROADMAP_STATUS.md"),
         Path("rfcs/0106-runtime-tensor-store-evidence.md"),
+        Path("rfcs/0108-runtime-value-provenance.md"),
     ):
         assert schema_path in path.read_text(encoding="utf-8")
 

@@ -19,6 +19,9 @@ from tuc.reference import (
 from tuc.runtime import (
     RuntimeExecutionReadinessReport,
     RuntimeExecutionResult,
+    RuntimeReferenceCorrectnessReport,
+    build_runtime_reference_correctness_report,
+    dump_runtime_reference_correctness_report,
     execute_graph,
     runtime_execution_readiness_report,
 )
@@ -35,6 +38,7 @@ class ProofOfExecutionReport:
     compiled: CompilationResult
     readiness: RuntimeExecutionReadinessReport
     execution: RuntimeExecutionResult
+    correctness: RuntimeReferenceCorrectnessReport
     result: FloatArray
     reference: FloatArray
     passed: bool
@@ -117,15 +121,21 @@ def run_proof() -> ProofOfExecutionReport:
     result = execution.output_for("activated")
     expected = reference_result(inputs)
     passed = np.allclose(result, expected, rtol=1e-12, atol=1e-12)
+    correctness = build_runtime_reference_correctness_report(
+        compiled.hac_ir.graph,
+        execution,
+        {"activated": expected},
+    )
     return ProofOfExecutionReport(
         graph=graph,
         metadata=metadata,
         compiled=compiled,
         readiness=readiness,
         execution=execution,
+        correctness=correctness,
         result=result,
         reference=expected,
-        passed=passed,
+        passed=bool(passed) and correctness.passed,
     )
 
 
@@ -157,12 +167,8 @@ def render_proof_report(report: ProofOfExecutionReport) -> str:
     lines.append(report.execution.trace.dump())
 
     lines.append("")
-    lines.append("== result ==")
-    lines.append(_format_array(report.result))
-
-    lines.append("")
-    lines.append("== reference result ==")
-    lines.append(_format_array(report.reference))
+    lines.append("== reference correctness ==")
+    lines.append(dump_runtime_reference_correctness_report(report.correctness).rstrip("\n"))
 
     lines.append("")
     lines.append("PASS" if report.passed else "FAIL")
@@ -174,11 +180,6 @@ def main() -> None:
     print(render_proof_report(report))
     if not report.passed:
         raise SystemExit(1)
-
-
-def _format_array(value: FloatArray) -> str:
-    return np.array2string(value, precision=6, suppress_small=False)
-
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,53 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "expected_output_count": 1,
+  "expected_outputs": [
+    {
+      "dtype": "float64",
+      "producer_id": "activation",
+      "producer_kind": "operation",
+      "shape": [
+        2
+      ],
+      "tensor_name": "activated",
+      "value_role": "computed"
+    }
+  ],
+  "graph_name": "proof_of_execution",
+  "issues": [],
+  "manifest_contract": "runtime_output_manifest.data_only.v0",
+  "output_count": 1,
+  "output_metadata_digest": "sha256:39d09e42752ab1232ee50253b9cfc3f1f83a3f5f417c754f30af090c0291ad11",
+  "outputs": [
+    {
+      "dtype": "float64",
+      "producer_id": "activation",
+      "producer_kind": "operation",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2
+      ],
+      "tensor_name": "activated",
+      "value_role": "computed"
+    }
+  ],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.runtime_output_manifest_report.v0",
+  "store_contract": "runtime_tensor_store.internal.v0",
+  "terminal_output_policy": "graph_terminal_outputs",
+  "value_record_contract": "runtime_value_record.internal.v0"
+}

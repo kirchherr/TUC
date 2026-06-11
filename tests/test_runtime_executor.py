@@ -69,6 +69,22 @@ def _single_operation_plan(graph: ComputeGraph) -> PartitionPlan:
     )
 
 
+def _reference_plan(graph: ComputeGraph) -> PartitionPlan:
+    return PartitionPlan(
+        graph_name=graph.name,
+        assignments=tuple(
+            Assignment(
+                operation_name=operation.name,
+                backend_name="reference-cpu",
+                reason="test",
+                memory_domain=MemoryDomainKind.HOST_RAM,
+                produced_layout=LayoutKind.ROW_MAJOR,
+            )
+            for operation in graph.operations
+        ),
+    )
+
+
 def test_runtime_executor_executes_compiled_graph_and_trace_matches_golden() -> None:
     graph = build_graph()
     compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
@@ -166,6 +182,8 @@ def test_runtime_value_record_rejects_shape_mismatch() -> None:
             shape=(2,),
             dtype="float64",
             value_role="input",
+            producer_kind="external_input",
+            producer_id="value",
         )
 
 
@@ -176,6 +194,8 @@ def test_runtime_tensor_store_rejects_duplicate_records() -> None:
         shape=(2,),
         dtype="float64",
         value_role="input",
+        producer_kind="external_input",
+        producer_id="value",
     )
 
     with pytest.raises(ValueError, match="duplicate value"):
@@ -189,6 +209,8 @@ def test_runtime_execution_result_rejects_record_value_mismatch() -> None:
         shape=(2,),
         dtype="float64",
         value_role="input",
+        producer_kind="external_input",
+        producer_id="value",
     )
 
     with pytest.raises(ValueError, match="record values must match values"):
@@ -203,6 +225,32 @@ def test_runtime_execution_result_rejects_record_value_mismatch() -> None:
         )
 
 
+def test_runtime_value_record_rejects_invalid_input_provenance() -> None:
+    with pytest.raises(ValueError, match="producer_id must match tensor name"):
+        RuntimeValueRecord(
+            tensor_name="value",
+            value=np.zeros((2,), dtype=np.float64),
+            shape=(2,),
+            dtype="float64",
+            value_role="input",
+            producer_kind="external_input",
+            producer_id="other",
+        )
+
+
+def test_runtime_value_record_rejects_invalid_computed_provenance() -> None:
+    with pytest.raises(ValueError, match="computed record producer"):
+        RuntimeValueRecord(
+            tensor_name="value",
+            value=np.zeros((2,), dtype=np.float64),
+            shape=(2,),
+            dtype="float64",
+            value_role="computed",
+            producer_kind="external_input",
+            producer_id="value",
+        )
+
+
 def test_runtime_tensor_store_is_documented() -> None:
     for path in (
         Path("README.md"),
@@ -211,6 +259,15 @@ def test_runtime_tensor_store_is_documented() -> None:
         Path("rfcs/0105-runtime-tensor-store.md"),
     ):
         assert "Runtime Tensor Store" in path.read_text(encoding="utf-8")
+
+
+def test_runtime_graph_topology_contract_is_documented() -> None:
+    for path in (
+        Path("docs/RUNTIME_EXECUTOR.md"),
+        Path("docs/ROADMAP_STATUS.md"),
+        Path("rfcs/0107-runtime-graph-topology-contract.md"),
+    ):
+        assert "topology" in path.read_text(encoding="utf-8").lower()
 
 
 def test_runtime_executor_rejects_partition_plan_mismatch() -> None:
@@ -223,6 +280,78 @@ def test_runtime_executor_rejects_partition_plan_mismatch() -> None:
 
     with pytest.raises(ValueError, match="partition plan must match graph operations"):
         execute_graph(compiled.hac_ir.graph, bad_plan, proof_inputs())
+
+
+def test_runtime_readiness_rejects_non_topological_graph_order() -> None:
+    mid = TensorRef("mid", (2,))
+    x = TensorRef("x", (2,))
+    y = TensorRef("y", (2,))
+    graph = ComputeGraph(
+        name="bad_runtime_order",
+        operations=(
+            ComputeOperation(
+                name="consumer",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(mid,),
+                outputs=(y,),
+                attributes={"kernel": "relu"},
+            ),
+            ComputeOperation(
+                name="producer",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(x,),
+                outputs=(mid,),
+                attributes={"kernel": "relu"},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="not topologically ordered"):
+        runtime_execution_readiness_report(graph, _reference_plan(graph))
+
+
+def test_runtime_readiness_rejects_duplicate_output_tensor_definitions() -> None:
+    out = TensorRef("dup", (2,))
+    graph = ComputeGraph(
+        name="bad_duplicate_outputs",
+        operations=(
+            ComputeOperation(
+                name="first",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(TensorRef("x", (2,)),),
+                outputs=(out,),
+                attributes={"kernel": "relu"},
+            ),
+            ComputeOperation(
+                name="second",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(TensorRef("y", (2,)),),
+                outputs=(out,),
+                attributes={"kernel": "relu"},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="duplicate output tensor definitions"):
+        runtime_execution_readiness_report(graph, _reference_plan(graph))
+
+
+def test_runtime_readiness_rejects_output_external_input_collision() -> None:
+    graph = ComputeGraph(
+        name="bad_external_collision",
+        operations=(
+            ComputeOperation(
+                name="overwrite_input",
+                kind=OperationKind.ELEMENTWISE,
+                inputs=(TensorRef("x", (2,)),),
+                outputs=(TensorRef("x", (2,)),),
+                attributes={"kernel": "relu"},
+            ),
+        ),
+    )
+
+    with pytest.raises(ValueError, match="output collides with external input"):
+        runtime_execution_readiness_report(graph, _single_operation_plan(graph))
 
 
 def test_runtime_executor_uses_trusted_registry_for_planned_backends() -> None:

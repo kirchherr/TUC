@@ -35,6 +35,7 @@ MAX_RUNTIME_TENSOR_STORE_EVIDENCE_FIELD_BYTES = 512
 
 _EVIDENCE_TEXT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
 _VALUE_ROLES = frozenset({"input", "computed"})
+_PRODUCER_KINDS = frozenset({"external_input", "operation"})
 _FORBIDDEN_EVIDENCE_TEXT = frozenset(
     {
         "backend_artifact",
@@ -73,12 +74,15 @@ class RuntimeTensorExpectedRecord:
     shape: tuple[int, ...]
     dtype: str
     value_role: str
+    producer_kind: str
+    producer_id: str
 
     def __post_init__(self) -> None:
         _validate_evidence_text(self.tensor_name, "expected tensor_name")
         _validate_shape(self.shape, "expected shape")
         _validate_evidence_text(self.dtype, "expected dtype")
         _validate_value_role(self.value_role)
+        _validate_producer(self.value_role, self.producer_kind, self.producer_id)
 
 
 @dataclass(frozen=True)
@@ -89,6 +93,8 @@ class RuntimeTensorValueEvidence:
     shape: tuple[int, ...]
     dtype: str
     value_role: str
+    producer_kind: str
+    producer_id: str
     readonly: bool
     record_contract: str = RUNTIME_VALUE_RECORD_CONTRACT
     raw_value_status: str = RUNTIME_TENSOR_STORE_RAW_VALUE_STATUS
@@ -98,6 +104,7 @@ class RuntimeTensorValueEvidence:
         _validate_shape(self.shape, "record shape")
         _validate_evidence_text(self.dtype, "record dtype")
         _validate_value_role(self.value_role)
+        _validate_producer(self.value_role, self.producer_kind, self.producer_id)
         if not isinstance(self.readonly, bool):
             raise TypeError("record readonly must be bool")
         if self.record_contract != RUNTIME_VALUE_RECORD_CONTRACT:
@@ -175,6 +182,8 @@ class RuntimeTensorStoreEvidenceReport:
         payload = [
             {
                 "dtype": record.dtype,
+                "producer_id": record.producer_id,
+                "producer_kind": record.producer_kind,
                 "raw_value_status": record.raw_value_status,
                 "readonly": record.readonly,
                 "shape": list(record.shape),
@@ -246,6 +255,8 @@ def runtime_tensor_store_evidence_report_to_dict(
         "expected_records": [
             {
                 "dtype": record.dtype,
+                "producer_id": record.producer_id,
+                "producer_kind": record.producer_kind,
                 "shape": list(record.shape),
                 "tensor_name": record.tensor_name,
                 "value_role": record.value_role,
@@ -267,6 +278,8 @@ def runtime_tensor_store_evidence_report_to_dict(
         "records": [
             {
                 "dtype": record.dtype,
+                "producer_id": record.producer_id,
+                "producer_kind": record.producer_kind,
                 "raw_value_status": record.raw_value_status,
                 "readonly": record.readonly,
                 "record_contract": record.record_contract,
@@ -315,6 +328,8 @@ def _expected_records_for_graph(
             shape=input_tensors[name].shape,
             dtype=RUNTIME_TENSOR_STORE_RUNTIME_DTYPE,
             value_role="input",
+            producer_kind="external_input",
+            producer_id=name,
         )
         for name in sorted(input_tensors)
     ]
@@ -326,6 +341,8 @@ def _expected_records_for_graph(
                     shape=tensor.shape,
                     dtype=RUNTIME_TENSOR_STORE_RUNTIME_DTYPE,
                     value_role="computed",
+                    producer_kind="operation",
+                    producer_id=operation.name,
                 )
             )
     return tuple(expected)
@@ -339,6 +356,8 @@ def _record_to_evidence(record: RuntimeValueRecord) -> RuntimeTensorValueEvidenc
         shape=record.shape,
         dtype=record.dtype,
         value_role=record.value_role,
+        producer_kind=record.producer_kind,
+        producer_id=record.producer_id,
         readonly=not record.value.flags.writeable,
     )
 
@@ -381,6 +400,20 @@ def _derive_issues(
                 RuntimeTensorStoreEvidenceIssue(
                     tensor_name=tensor_name,
                     issue_code="value_role_mismatch",
+                )
+            )
+        if record.producer_kind != expected.producer_kind:
+            issues.append(
+                RuntimeTensorStoreEvidenceIssue(
+                    tensor_name=tensor_name,
+                    issue_code="producer_kind_mismatch",
+                )
+            )
+        if record.producer_id != expected.producer_id:
+            issues.append(
+                RuntimeTensorStoreEvidenceIssue(
+                    tensor_name=tensor_name,
+                    issue_code="producer_id_mismatch",
                 )
             )
         if not record.readonly:
@@ -444,6 +477,16 @@ def _validate_record_count(count: int) -> None:
 def _validate_value_role(value: str) -> None:
     if value not in _VALUE_ROLES:
         raise ValueError("runtime tensor store evidence value role unsupported")
+
+
+def _validate_producer(value_role: str, producer_kind: str, producer_id: str) -> None:
+    if producer_kind not in _PRODUCER_KINDS:
+        raise ValueError("runtime tensor store evidence producer kind unsupported")
+    _validate_evidence_text(producer_id, "producer_id")
+    if value_role == "input" and producer_kind != "external_input":
+        raise ValueError("runtime tensor store input producer must be external_input")
+    if value_role == "computed" and producer_kind != "operation":
+        raise ValueError("runtime tensor store computed producer must be operation")
 
 
 def _validate_shape(value: tuple[int, ...], label: str) -> None:

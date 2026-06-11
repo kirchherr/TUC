@@ -1,10 +1,32 @@
 {
-  "$id": "https://tuc.dev/schemas/runtime_tensor_store_evidence_report.v0.schema.json",
+  "$id": "https://tuc.dev/schemas/runtime_output_contract_report.v0.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
+    "alias_count": {
+      "maximum": 4096,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "alias_policy": {
+      "const": "explicit_output_aliases"
+    },
+    "aliases": {
+      "items": {
+        "$ref": "#/$defs/output_alias"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
     "artifact_status": {
       "const": "review_evidence"
+    },
+    "available_tensor_names": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 4096,
+      "type": "array"
     },
     "blocked_execution_surfaces": {
       "items": false,
@@ -38,20 +60,11 @@
       ],
       "type": "array"
     },
-    "evidence_contract": {
-      "const": "runtime_tensor_store_evidence.data_only.v0"
+    "contract_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
     },
-    "expected_record_count": {
-      "maximum": 4096,
-      "minimum": 0,
-      "type": "integer"
-    },
-    "expected_records": {
-      "items": {
-        "$ref": "#/$defs/expected_record"
-      },
-      "maxItems": 4096,
-      "type": "array"
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
     },
     "graph_name": {
       "$ref": "#/$defs/report_text"
@@ -63,57 +76,119 @@
       "maxItems": 256,
       "type": "array"
     },
+    "output_contract": {
+      "const": "runtime_output_contract.data_only.v0"
+    },
+    "output_manifest_contract": {
+      "const": "runtime_output_manifest.data_only.v0"
+    },
+    "output_manifest_passed": {
+      "type": "boolean"
+    },
     "passed": {
       "type": "boolean"
     },
-    "raw_value_policy": {
-      "const": "omitted_by_policy"
-    },
-    "record_count": {
+    "public_output_count": {
       "maximum": 4096,
       "minimum": 0,
       "type": "integer"
     },
-    "record_metadata_digest": {
-      "$ref": "#/$defs/sha256_digest"
-    },
-    "records": {
+    "public_outputs": {
       "items": {
-        "$ref": "#/$defs/value_record"
+        "$ref": "#/$defs/public_output"
       },
       "maxItems": 4096,
       "type": "array"
     },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
     "schema_version": {
-      "const": "tuc.runtime_tensor_store_evidence_report.v0"
+      "const": "tuc.runtime_output_contract_report.v0"
     },
-    "store_contract": {
-      "const": "runtime_tensor_store.internal.v0"
+    "terminal_output_policy": {
+      "const": "graph_terminal_outputs"
     },
-    "value_record_contract": {
-      "const": "runtime_value_record.internal.v0"
+    "terminal_tensor_names": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
     }
   },
   "required": [
+    "alias_count",
+    "alias_policy",
+    "aliases",
     "artifact_status",
+    "available_tensor_names",
     "blocked_execution_surfaces",
-    "evidence_contract",
-    "expected_record_count",
-    "expected_records",
+    "contract_metadata_digest",
+    "executor_contract",
     "graph_name",
     "issues",
+    "output_contract",
+    "output_manifest_contract",
+    "output_manifest_passed",
     "passed",
+    "public_output_count",
+    "public_outputs",
     "raw_value_policy",
-    "record_count",
-    "record_metadata_digest",
-    "records",
     "schema_version",
-    "store_contract",
-    "value_record_contract"
+    "terminal_output_policy",
+    "terminal_tensor_names"
   ],
   "type": "object",
   "$defs": {
-    "expected_record": {
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "public_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "public_name",
+        "tensor_name"
+      ],
+      "type": "object"
+    },
+    "output_alias": {
+      "additionalProperties": false,
+      "properties": {
+        "public_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "required": {
+          "const": true
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "public_name",
+        "required",
+        "tensor_name"
+      ],
+      "type": "object"
+    },
+    "producer_kind": {
+      "enum": [
+        "external_input",
+        "operation"
+      ]
+    },
+    "public_output": {
       "additionalProperties": false,
       "properties": {
         "dtype": {
@@ -124,6 +199,12 @@
         },
         "producer_kind": {
           "$ref": "#/$defs/producer_kind"
+        },
+        "public_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "raw_value_status": {
+          "const": "omitted_by_policy"
         },
         "shape": {
           "$ref": "#/$defs/shape"
@@ -139,25 +220,11 @@
         "dtype",
         "producer_id",
         "producer_kind",
+        "public_name",
+        "raw_value_status",
         "shape",
         "tensor_name",
         "value_role"
-      ],
-      "type": "object"
-    },
-    "issue": {
-      "additionalProperties": false,
-      "properties": {
-        "issue_code": {
-          "$ref": "#/$defs/report_text"
-        },
-        "tensor_name": {
-          "$ref": "#/$defs/report_text"
-        }
-      },
-      "required": [
-        "issue_code",
-        "tensor_name"
       ],
       "type": "object"
     },
@@ -180,25 +247,24 @@
           "jit_function",
           "module",
           "network",
+          "output_value",
           "plugin_entrypoint",
           "python_module",
           "python_source",
           "raw_benchmark_output",
+          "raw_output_value",
           "raw_tensor_value",
           "raw_timing_samples",
+          "reference_value",
+          "source_text",
           "subprocess",
           "tensor_value",
+          "tensor_values",
           "url"
         ]
       },
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
       "type": "string"
-    },
-    "producer_kind": {
-      "enum": [
-        "external_input",
-        "operation"
-      ]
     },
     "sha256_digest": {
       "pattern": "^sha256:[0-9a-f]{64}$",
@@ -213,50 +279,6 @@
       "maxItems": 8,
       "minItems": 1,
       "type": "array"
-    },
-    "value_record": {
-      "additionalProperties": false,
-      "properties": {
-        "dtype": {
-          "$ref": "#/$defs/report_text"
-        },
-        "producer_id": {
-          "$ref": "#/$defs/report_text"
-        },
-        "producer_kind": {
-          "$ref": "#/$defs/producer_kind"
-        },
-        "raw_value_status": {
-          "const": "omitted_by_policy"
-        },
-        "readonly": {
-          "type": "boolean"
-        },
-        "record_contract": {
-          "const": "runtime_value_record.internal.v0"
-        },
-        "shape": {
-          "$ref": "#/$defs/shape"
-        },
-        "tensor_name": {
-          "$ref": "#/$defs/report_text"
-        },
-        "value_role": {
-          "$ref": "#/$defs/value_role"
-        }
-      },
-      "required": [
-        "dtype",
-        "producer_id",
-        "producer_kind",
-        "raw_value_status",
-        "readonly",
-        "record_contract",
-        "shape",
-        "tensor_name",
-        "value_role"
-      ],
-      "type": "object"
     },
     "value_role": {
       "enum": [

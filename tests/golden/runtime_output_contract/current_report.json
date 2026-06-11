@@ -1,0 +1,74 @@
+{
+  "alias_count": 2,
+  "alias_policy": "explicit_output_aliases",
+  "aliases": [
+    {
+      "public_name": "api_positive_projection",
+      "required": true,
+      "tensor_name": "positive_projection"
+    },
+    {
+      "public_name": "api_row_sums",
+      "required": true,
+      "tensor_name": "row_sum"
+    }
+  ],
+  "artifact_status": "review_evidence",
+  "available_tensor_names": [
+    "row_sum",
+    "positive_projection"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "contract_metadata_digest": "sha256:4a51b2b2c1d172ce54da5e6bad03f4c3e48f0600480736e08fad438f8d323832",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "multi_output_execution",
+  "issues": [],
+  "output_contract": "runtime_output_contract.data_only.v0",
+  "output_manifest_contract": "runtime_output_manifest.data_only.v0",
+  "output_manifest_passed": true,
+  "passed": true,
+  "public_output_count": 2,
+  "public_outputs": [
+    {
+      "dtype": "float64",
+      "producer_id": "positive_branch",
+      "producer_kind": "operation",
+      "public_name": "api_positive_projection",
+      "raw_value_status": "omitted_by_policy",
+      "shape": [
+        2,
+        2
+      ],
+      "tensor_name": "positive_projection",
+      "value_role": "computed"
+    },
+    {
+      "dtype": "float64",
+      "producer_id": "row_reduction",
+      "producer_kind": "operation",
+      "public_name": "api_row_sums",
+      "raw_value_status": "omitted_by_policy",
+      "shape": [
+        2
+      ],
+      "tensor_name": "row_sum",
+      "value_role": "computed"
+    }
+  ],
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.runtime_output_contract_report.v0",
+  "terminal_output_policy": "graph_terminal_outputs",
+  "terminal_tensor_names": [
+    "row_sum",
+    "positive_projection"
+  ]
+}

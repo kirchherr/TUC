@@ -63,17 +63,25 @@ Current runtime surfaces:
 - Runtime Execution Readiness before kernels run.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects.
 - Runtime Tensor Store Evidence v0 without serialized tensor values.
+- Runtime Output Manifest v0 for terminal graph outputs without serialized
+  tensor values.
+- Runtime Output Contract v0 for explicit public output aliases without
+  serialized tensor values.
+- Runtime Reference Correctness v0 for output/reference comparison without
+  serialized tensor values.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, and Memory Planning
   Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
-CI-facing runtime gates:
+CI-facing runtime evidence entry points:
 
 ```text
 examples/runtime_evidence_gate.py
 examples/runtime_tensor_store_evidence.py
+examples/runtime_output_contract.py
+examples/runtime_reference_correctness.py
 examples/runtime_candidate_scoring_gate.py
 examples/runtime_memory_planning_gate.py
 ```
@@ -83,9 +91,15 @@ Key docs:
 - [Runtime Executor](docs/RUNTIME_EXECUTOR.md)
 - [Runtime Tensor Store](docs/RUNTIME_TENSOR_STORE.md)
 - [Runtime Tensor Store Evidence](docs/RUNTIME_TENSOR_STORE_EVIDENCE.md)
+- [Runtime Output Manifest](docs/RUNTIME_OUTPUT_MANIFEST.md)
+- [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
+- [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
 - [Runtime Memory Planning Gate](docs/RUNTIME_MEMORY_PLANNING_GATE.md)
 - [Runtime Candidate Scoring Gate](docs/RUNTIME_CANDIDATE_SCORING_GATE.md)
 - [Runtime override policy](docs/RUNTIME_OVERRIDE_POLICY.md)
+
+Runtime output contract schema:
+`schemas/runtime_output_contract_report.v0.schema.json`
 
 ## Frontend Intake
 

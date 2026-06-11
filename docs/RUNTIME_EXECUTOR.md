@@ -140,6 +140,22 @@ readiness. They prevent NumPy broadcasting, implicit reductions, scalar
 outputs, or backend-specific shape interpretations from becoming hidden runtime
 behavior.
 
+## Graph Topology Contract
+
+Runtime Executor v0 validates the ordered graph before trusted kernels run:
+
+- every produced tensor name must have exactly one producer
+- operation inputs may read external inputs or previously produced tensors only
+- operation inputs may not read tensors produced by later operations
+- operation outputs may not overwrite external inputs
+
+These checks make graph ordering an explicit runtime contract instead of an
+accidental Python dictionary lookup. Invalid topology fails during execution
+readiness before any operation is executed.
+
+The accepted design note is
+[`RFC 0107: Runtime Graph Topology Contract v0`](../rfcs/0107-runtime-graph-topology-contract.md).
+
 ## Tensor Value Contract
 
 Runtime Executor v0 validates tensor values at the runtime boundary:
@@ -166,12 +182,14 @@ accepted runtime tensor value as a `RuntimeValueRecord` with:
 - declared shape
 - dtype
 - value role, either `input` or `computed`
+- producer kind and producer identifier
 
 External inputs are copied into read-only records before execution starts, and
 computed outputs are copied into read-only records before they become visible to
 later operations or `RuntimeExecutionResult`. This prevents caller-side input
 mutation and accidental output mutation from changing already accepted runtime
-evidence.
+evidence. Input records point to their external tensor name; computed records
+point to their producer operation name.
 
 The tensor store is not a memory allocator, not a cache, not a device buffer
 manager, and not an aliasing model. It is the minimum internal value-record
@@ -181,6 +199,29 @@ identity without passing raw mutable mappings around.
 The review artifact for this boundary is
 [`RUNTIME_TENSOR_STORE_EVIDENCE.md`](RUNTIME_TENSOR_STORE_EVIDENCE.md). It
 serializes record metadata and read-only status, but never tensor values.
+
+## Runtime Output Manifest
+
+Runtime Output Manifest v0 is the data-only review artifact for terminal graph
+outputs. It derives terminal outputs from the already-compiled graph, then
+checks that Runtime Tensor Store records expose those outputs as read-only
+`computed` values with operation producer provenance.
+
+The schema-versioned report is documented in
+[`RUNTIME_OUTPUT_MANIFEST.md`](RUNTIME_OUTPUT_MANIFEST.md), with schema at
+`schemas/runtime_output_manifest_report.v0.schema.json`. It serializes output
+metadata only and omits raw tensor values by policy.
+
+## Runtime Reference Correctness
+
+Runtime Reference Correctness v0 is the data-only review artifact for comparing
+terminal graph outputs against independent reference tensors. It performs the
+comparison in memory, but serializes only shapes, dtypes, tolerances, comparison
+status, and omitted-value policies.
+
+The schema-versioned report is documented in
+[`RUNTIME_REFERENCE_CORRECTNESS.md`](RUNTIME_REFERENCE_CORRECTNESS.md), with
+schema at `schemas/runtime_reference_correctness_report.v0.schema.json`.
 
 ## Trusted Backend Contract
 
