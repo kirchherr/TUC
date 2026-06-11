@@ -13,6 +13,12 @@ from tuc.compiler.pipeline import CompilationResult
 from tuc.ir import ComputeGraph, ComputeOperation, IRStage, OperationKind, TensorRef
 from tuc.proof import ProofReportMetadata, proof_metadata_from_partition_plan
 from tuc.reference import reference_elementwise, reference_matmul
+from tuc.runtime import (
+    RuntimeExecutionReadinessReport,
+    RuntimeExecutionResult,
+    execute_graph,
+    runtime_execution_readiness_report,
+)
 
 FloatArray = NDArray[np.float64]
 
@@ -24,6 +30,8 @@ class ProofOfAbstractionReport:
     graph: ComputeGraph
     metadata: ProofReportMetadata
     compiled: CompilationResult
+    readiness: RuntimeExecutionReadinessReport
+    execution: RuntimeExecutionResult
     result: FloatArray
     reference: FloatArray
     passed: bool
@@ -108,13 +116,20 @@ def run_proof() -> ProofOfAbstractionReport:
         graph_family="abstraction",
         partition_plan=compiled.partition_plan,
     )
-    result = evaluate_graph(graph, inputs)
+    readiness = runtime_execution_readiness_report(
+        compiled.hac_ir.graph,
+        compiled.partition_plan,
+    )
+    execution = execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)
+    result = execution.output_for("activated")
     expected = reference_result(inputs)
     passed = np.allclose(result, expected, rtol=1e-12, atol=1e-12)
     return ProofOfAbstractionReport(
         graph=graph,
         metadata=metadata,
         compiled=compiled,
+        readiness=readiness,
+        execution=execution,
         result=result,
         reference=expected,
         passed=passed,
@@ -144,6 +159,14 @@ def render_proof_report(report: ProofOfAbstractionReport) -> str:
     lines.append("")
     lines.append("== transfer plan ==")
     lines.append(report.compiled.dump_runtime_plan())
+
+    lines.append("")
+    lines.append("== execution readiness ==")
+    lines.append(report.readiness.dump())
+
+    lines.append("")
+    lines.append("== execution trace ==")
+    lines.append(report.execution.trace.dump())
 
     lines.append("")
     lines.append("== result ==")

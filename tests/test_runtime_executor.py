@@ -157,7 +157,7 @@ def test_runtime_executor_rejects_partition_plan_mismatch() -> None:
 def test_runtime_executor_uses_trusted_registry_for_planned_backends() -> None:
     registry = trusted_runtime_executor_registry()
 
-    assert sorted(registry) == ["linear-sim", "reference-cpu"]
+    assert sorted(registry) == ["linear-sim", "reference-cpu", "systolic-sim"]
 
 
 def test_runtime_execution_readiness_report_matches_golden() -> None:
@@ -349,11 +349,13 @@ def test_trusted_runtime_executor_contracts_are_stable_and_execution_free() -> N
     assert tuple(contract.backend_name for contract in contracts) == (
         "linear-sim",
         "reference-cpu",
+        "systolic-sim",
     )
     assert contracts[0].supported_ops == frozenset(
         {OperationKind.MATMUL, OperationKind.REDUCTION}
     )
     assert contracts[1].supported_ops == frozenset(OperationKind)
+    assert contracts[2].supported_ops == frozenset({OperationKind.MATMUL})
     for contract in contracts:
         assert contract.backend_contract == TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT
         assert contract.execution_mode == TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE

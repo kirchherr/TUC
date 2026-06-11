@@ -8,9 +8,12 @@ from examples.external_backend_author_path import (
     MANIFEST_PATH,
     assigned_graph_for_backend,
     build_backend_from_manifest,
+    build_external_backend_claim_review,
     build_graph,
     run_external_backend_author_path,
 )
+from examples.manifest_claim_review import REVIEW_ROOT
+from tuc.backends.claim_review import dump_manifest_claim_review_report
 from tuc.backends.conformance import build_conformance_graph, dump_backend_conformance_report
 from tuc.backends.registry import BackendRegistry
 from tuc.compiler import compile_graph
@@ -18,12 +21,15 @@ from tuc.ir import LayoutKind, OperationKind
 
 
 def test_external_backend_author_path_uses_explicit_manifest_registry() -> None:
+    claim_review = build_external_backend_claim_review()
     registry = BackendRegistry.from_manifest_paths([MANIFEST_PATH])
     graph = build_graph()
 
     compiled = compile_graph(graph, registry.capabilities())
     diagnostics = registry.diagnose_operation_support(graph.operations[0])
 
+    assert claim_review.passed
+    assert claim_review.cases[0].observed_review_status == "accepted"
     assert registry.names() == ("external-vector",)
     assert registry.registrations()[0].source_label == "external_vector_backend.json"
     assert diagnostics[0].supported is True
@@ -35,6 +41,7 @@ def test_external_backend_author_path_uses_explicit_manifest_registry() -> None:
 def test_external_backend_author_path_passes_conformance_and_lowers_assignment() -> None:
     report = run_external_backend_author_path()
 
+    assert report.claim_review.passed
     assert report.conformance.passed
     assert "conformance_elementwise_row_major" in report.conformance.checked_cases
     assert report.lowered.backend_name == "external-vector"
@@ -49,6 +56,22 @@ def test_external_backend_author_conformance_report_matches_golden() -> None:
     assert dump_backend_conformance_report(report.conformance) == golden.read_text(
         encoding="utf-8"
     )
+
+
+def test_external_backend_author_claim_review_report_matches_golden() -> None:
+    report = run_external_backend_author_path()
+    golden = Path("tests/golden/backend_claim_review/external_vector_author_report.json")
+
+    assert dump_manifest_claim_review_report(report.claim_review) == golden.read_text(
+        encoding="utf-8"
+    )
+
+
+def test_external_backend_author_path_rejects_blocked_manifest() -> None:
+    blocked_manifest = REVIEW_ROOT / "invalid_noise_without_error_budget_backend.json"
+
+    with pytest.raises(ValueError, match="claim review failed"):
+        run_external_backend_author_path(blocked_manifest)
 
 
 def test_external_backend_author_lowering_rejects_unsupported_work() -> None:

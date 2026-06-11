@@ -1,0 +1,11 @@
+runtime.candidate_scoring_gate @runtime_candidate_scoring_gate_v0 {
+  candidate_score_evidence = "passed"
+  candidate_score_count = "4"
+  candidate_scoring_policy = "complete"
+  candidate_scoring_policy_active_components = "5"
+  candidate_scoring_policy_blocked_components = "4"
+  candidate_scoring_conformance = "passed"
+  candidate_scoring_conformance_cases = "5"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "PASS"
+}

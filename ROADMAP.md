@@ -91,15 +91,20 @@ Required artifacts:
 - `examples/proof_of_reduction.py`
 - `examples/proof_of_softmax.py`
 - `examples/proof_of_execution.py`
+- `examples/proof_of_systolic_execution.py`
+- `examples/systolic_manifest_path.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
 - `tests/golden/proofs/proof_of_execution.txt`
+- `tests/golden/proofs/proof_of_systolic_execution.txt`
+- `tests/golden/proofs/systolic_manifest_path.txt`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
 - `docs/PROOF_OF_SOFTMAX.md`
 - `docs/PROOF_OF_EXECUTION.md`
+- `docs/SYSTOLIC_SIMULATOR.md`
 - `docs/RUNTIME_EXECUTOR.md`
 
 Completed evidence:
@@ -152,7 +157,26 @@ Completed evidence:
   `softmax`, `reduction`, and `elementwise` before execution.
 - Runtime Evidence Matrix v0 inventories HAC-IR, runtime-plan,
   compiler-decision, readiness, trace, and correctness evidence across current
-  graph fixtures with deterministic schema and golden output.
+  graph fixtures with deterministic schema and golden output; the current
+  matrix is complete across all accepted graph fixtures.
+- Runtime Executor Conformance v0 verifies the fixed trusted executor registry
+  against MVP operation-family support and rejection behavior with deterministic
+  schema and golden output.
+- Runtime Evidence Gate v0 composes the complete runtime evidence matrix and
+  trusted executor conformance into the main CI job.
+- Systolic simulator proof targets `systolic-sim`, records `device_sram`
+  placement and `blocked -> row_major` layout conversion, executes through the
+  trusted runtime executor, and validates against independent reference
+  semantics.
+- Systolic capability manifest path loads `systolic-sim` from explicit JSON
+  capability data for planning while execution remains authorized only through
+  the trusted Runtime Executor registry.
+- Objective Alpha abstraction, reduction, and softmax proofs now execute through
+  Runtime Executor v0 and emit readiness and trace goldens before their
+  correctness result is accepted.
+- Proof-of-execution now has separate HAC-IR, runtime-plan, and
+  compiler-decision goldens, so its full proof report is independently
+  reviewable across every matrix evidence layer.
 - Runtime operation semantic contracts validate MVP operation shapes, axes, and
   supported elementwise kernels before trusted kernels run.
 - Runtime tensor value contracts enforce declared shapes, `float64` dtype, and
@@ -278,6 +302,18 @@ Completed evidence:
   misleading and keep those cases covered by tests.
 - Compiler decision reports connect backend support diagnostics to final
   runtime assignments.
+- The systolic manifest path proves that specialized accelerator capabilities
+  can be described as data, planned, readiness-checked, and executed through a
+  pre-existing trusted runtime contract without plugin discovery.
+- Manifest Claim Review blocks syntactically valid but overreaching
+  specialized accelerator manifests before they become accepted planning
+  evidence.
+- The external backend author path runs Manifest Claim Review before registry
+  loading, compiler planning, conformance, or trusted lowering.
+- Backend Author Readiness summarizes the external author path as one
+  schema-versioned pass/fail evidence artifact.
+- Backend Author Evidence Gate composes manifest claim review and backend
+  author readiness as a CI-facing check.
 - Golden compiler decision-report fixtures cover proof and MVP graphs.
 - Softmax operation-family planning defines what future softmax capability,
   runtime, and decision-report fixtures must prove.
@@ -293,6 +329,11 @@ Go/No-Go:
 
 - A toy backend can be described through capability data.
 - Unsupported operations and layouts are rejected explicitly.
+- Specialized accelerator manifests pass claim review before acceptance.
+- External backend author onboarding fails closed when claim review blocks a
+  manifest.
+- External backend author onboarding has one deterministic readiness report.
+- External backend author onboarding evidence is checked by CI.
 - Capability checks never import backend code, run subprocesses, load dynamic
   libraries, touch devices, or execute artifacts.
 
@@ -324,6 +365,19 @@ Completed evidence:
 - Opt-in `CandidateScore` diagnostics expose deterministic transfer, layout,
   and preferred-domain score components without changing default placement
   behavior.
+- Runtime Candidate Score Evidence reports verify default score silence,
+  opt-in score emission, compiler decision-report parity, and selected/rejected
+  candidate visibility.
+- Runtime Candidate Scoring Policy reports fix the active comparator order and
+  keep noise, error-budget, calibration, and benchmark score inputs blocked
+  until separately modeled.
+- Runtime Candidate Scoring Conformance reports verify that the current
+  planner's observable candidate choices match the active comparator policy.
+- Runtime Candidate Scoring Gate composes score evidence, scoring policy, and
+  conformance as one CI-facing runtime-planning check.
+- Runtime Buffer Lifetime reports expose conservative produced tensor
+  lifetimes, peak live bytes, and exact-match reuse candidates before adding an
+  allocator.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -332,9 +386,17 @@ Completed evidence:
 Next work:
 
 - Add candidate scoring once transfer/noise-aware models are stable.
+- Use Runtime Candidate Scoring Policy as the review contract before changing
+  candidate-score comparator semantics.
+- Keep Runtime Candidate Scoring Conformance passing before changing candidate
+  score comparator behavior.
+- Keep Runtime Candidate Scoring Gate passing before accepting richer
+  candidate-scoring behavior.
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
+- Add explicit buffer allocation plans only after buffer lifetime evidence stays
+  deterministic and reviewable.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 
@@ -344,6 +406,8 @@ Go/No-Go:
 - Movement costs are explicit.
 - Fallbacks do not hide semantic changes.
 - Runtime planning remains deterministic for test fixtures.
+- Candidate score diagnostics remain evidence, not hidden automatic global
+  optimization.
 
 ## Phase Epsilon: Real Triton Integration
 

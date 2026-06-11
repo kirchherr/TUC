@@ -459,6 +459,10 @@ def trusted_runtime_executor_registry() -> dict[str, TrustedRuntimeBackendExecut
             name="reference-cpu",
             supported_ops=frozenset(OperationKind),
         ),
+        TrustedRuntimeBackendExecutor(
+            name="systolic-sim",
+            supported_ops=frozenset({OperationKind.MATMUL}),
+        ),
     )
     return {executor.name: executor for executor in executors}
 

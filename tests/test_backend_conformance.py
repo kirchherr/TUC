@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tuc.backends import LinearAlgebraSimulatorBackend
+from tuc.backends import LinearAlgebraSimulatorBackend, SystolicArraySimulatorBackend
 from tuc.backends.base import BackendCapability, LoweringResult
 from tuc.backends.conformance import (
     CONFORMANCE_REPORT_SCHEMA_VERSION,
@@ -25,6 +25,16 @@ def test_linear_algebra_simulator_passes_backend_conformance() -> None:
     assert "conformance_matmul_row_major" in report.checked_cases
     assert "conformance_reduction_row_major" in report.checked_cases
     assert "conformance_elementwise_row_major" in report.checked_cases
+    assert "conformance_softmax_row_major" in report.checked_cases
+
+
+def test_systolic_array_simulator_passes_backend_conformance() -> None:
+    report = assert_backend_conformance(SystolicArraySimulatorBackend())
+
+    assert report.passed
+    assert "conformance_matmul_row_major" in report.checked_cases
+    assert "conformance_elementwise_row_major" in report.checked_cases
+    assert "conformance_reduction_row_major" in report.checked_cases
     assert "conformance_softmax_row_major" in report.checked_cases
 
 

@@ -55,6 +55,60 @@ hardware-independent interface into capability-driven runtime planning.
 - Triton metadata MVP-family runtime readiness golden before execution.
 - Runtime Evidence Matrix v0 with schema-versioned proof inventory and
   deterministic golden at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
+- Runtime Evidence Matrix v0 is complete across current graph fixtures.
+- Runtime Executor Conformance v0 with schema-versioned trusted registry
+  conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
+  and deterministic golden at
+  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
+- Runtime Evidence Gate v0 with deterministic golden at
+  `tests/golden/proofs/runtime_evidence_gate.txt` and CI coverage in the
+  `python` workflow job.
+- Runtime Candidate Score Evidence v0 with schema at
+  `schemas/runtime_candidate_score_evidence_report.v0.schema.json`,
+  deterministic golden at
+  `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`,
+  and CI coverage in the `python` workflow job.
+- Runtime Candidate Scoring Policy v0 with schema at
+  `schemas/runtime_candidate_scoring_policy.v0.schema.json` and deterministic
+  golden at
+  `tests/golden/runtime_candidate_scoring_policy/current_policy_report.json`.
+- Runtime Candidate Scoring Conformance v0 with schema at
+  `schemas/runtime_candidate_scoring_conformance_report.v0.schema.json` and
+  deterministic golden at
+  `tests/golden/runtime_candidate_scoring_conformance/current_conformance_report.json`.
+- Runtime Candidate Scoring Gate v0 with deterministic golden evidence at
+  `tests/golden/runtime_candidate_scoring_gate/current_gate.txt` and CI coverage
+  in the `python` workflow job.
+- Runtime Buffer Lifetime v0 with schema at
+  `schemas/runtime_buffer_lifetime_report.v0.schema.json` and deterministic
+  golden at `tests/golden/runtime_buffer_lifetime/current_report.json`.
+- Systolic simulator proof with `systolic-sim` placement, `device_sram`
+  memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
+  deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
+  goldens, and Runtime Evidence Matrix coverage.
+- Systolic capability manifest path proving that `systolic-sim` can enter TUC
+  as explicit JSON capability data for planning while execution remains gated
+  by the trusted Runtime Executor registry.
+- Manifest Claim Review report for accepted and intentionally blocked backend
+  capability manifests, with schema at
+  `schemas/manifest_claim_review_report.v0.schema.json` and deterministic
+  golden evidence at
+  `tests/golden/backend_claim_review/manifest_claim_review_report.json`.
+- Backend author path now runs Manifest Claim Review before registry loading,
+  compiler planning, conformance, or trusted lowering, with golden evidence at
+  `tests/golden/backend_claim_review/external_vector_author_report.json`.
+- Backend Author Readiness report that summarizes claim review, registry
+  loading, compiler assignment, conformance, and assigned-subgraph lowering,
+  with schema at `schemas/backend_author_readiness_report.v0.schema.json` and
+  deterministic golden evidence at
+  `tests/golden/backend_author_readiness/external_vector_readiness_report.json`.
+- Backend Author Evidence Gate with deterministic golden evidence at
+  `tests/golden/backend_author_readiness/backend_author_evidence_gate.txt` and
+  CI coverage in the `python` workflow job.
+- Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
+  `proof_of_reduction`, and `proof_of_softmax`.
+- Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision
+  goldens.
 - Runtime operation semantic contract checks for MVP operation shapes, axes,
   scalar-output rejection, and supported elementwise kernels.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
@@ -121,6 +175,47 @@ Current slice:
 - Runtime Evidence Matrix report at
   `schemas/runtime_evidence_matrix_report.v0.schema.json`, with golden evidence
   at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
+- Runtime Executor Conformance report at
+  `schemas/runtime_executor_conformance_report.v0.schema.json`, with golden
+  evidence at
+  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
+- Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
+  evidence at `tests/golden/proofs/runtime_evidence_gate.txt`.
+- Runtime Candidate Score Evidence at
+  `examples/runtime_candidate_score_evidence.py`, with golden evidence at
+  `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
+- Runtime Candidate Scoring Policy at
+  `examples/runtime_candidate_scoring_policy.py`, with golden evidence at
+  `tests/golden/runtime_candidate_scoring_policy/current_policy_report.json`.
+- Runtime Candidate Scoring Conformance at
+  `examples/runtime_candidate_scoring_conformance.py`, with golden evidence at
+  `tests/golden/runtime_candidate_scoring_conformance/current_conformance_report.json`.
+- Runtime Candidate Scoring Gate at `examples/runtime_candidate_scoring_gate.py`,
+  with golden evidence at
+  `tests/golden/runtime_candidate_scoring_gate/current_gate.txt`.
+- Runtime Buffer Lifetime at `examples/runtime_buffer_lifetime.py`, with golden
+  evidence at `tests/golden/runtime_buffer_lifetime/current_report.json`.
+- Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
+  evidence goldens under `tests/golden/proofs/`,
+  `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
+  `tests/golden/compiler_decisions/`, `tests/golden/execution_readiness/`, and
+  `tests/golden/execution_traces/`.
+- Systolic capability manifest at
+  `examples/manifests/systolic_sim_backend.json` and manifest-loaded proof at
+  `examples/systolic_manifest_path.py`, with deterministic golden evidence at
+  `tests/golden/proofs/systolic_manifest_path.txt`.
+- Proof-of-execution independent evidence goldens at
+  `tests/golden/hac_ir/proof_of_execution.txt`,
+  `tests/golden/runtime_plans/proof_of_execution.txt`, and
+  `tests/golden/compiler_decisions/proof_of_execution.txt`.
+- Objective Alpha proof readiness goldens at
+  `tests/golden/execution_readiness/proof_of_abstraction.txt`,
+  `tests/golden/execution_readiness/proof_of_reduction.txt`, and
+  `tests/golden/execution_readiness/proof_of_softmax.txt`.
+- Objective Alpha proof execution-trace goldens at
+  `tests/golden/execution_traces/proof_of_abstraction.txt`,
+  `tests/golden/execution_traces/proof_of_reduction.txt`, and
+  `tests/golden/execution_traces/proof_of_softmax.txt`.
 - Runtime Executor negative tests for input shape mismatch, non-`float64`
   inputs, non-finite inputs, and non-finite outputs.
 - Runtime Executor negative tests for matmul dimension mismatch, elementwise
@@ -212,6 +307,17 @@ Current slice:
 - Backend conformance fixtures for prototype operation semantics and diagnostics.
 - External-style backend author path covering manifest loading, registry
   diagnostics, compiler planning, conformance, and trusted lowering.
+- Specialized accelerator manifest path showing `device_sram` and `blocked`
+  layout capability self-description without backend code execution.
+- Manifest Claim Review for syntactically valid but overreaching specialized
+  accelerator claims, including universal operation-family claims and
+  noise/calibration claims without explicit error-budget boundaries.
+- External backend author path gate that blocks manifests failing Manifest
+  Claim Review before they can reach registry diagnostics or lowering.
+- Backend Author Readiness report for a single pass/fail external-backend
+  onboarding artifact built from bounded review evidence.
+- Backend Author Evidence Gate for CI-facing manifest claim review and backend
+  author readiness enforcement.
 - Deterministic backend conformance report artifacts for reviewable backend
   author evidence.
 - Backend capability schema guidance for error-budget, latency, energy,
@@ -289,6 +395,12 @@ Current focus:
   executable backend behavior.
 - Keep invalid or misleading capability claims covered by examples and negative
   tests.
+- Use Manifest Claim Review before accepting specialized accelerator manifests
+  as planning evidence.
+- Use Backend Author Readiness before treating an external backend author path
+  as complete.
+- Keep Backend Author Evidence Gate passing in CI before accepting backend
+  onboarding changes.
 
 ### Phase Delta: Runtime Planning
 
@@ -306,6 +418,16 @@ Current focus:
   and separate from HAC-IR semantics.
 - Use `CandidateScore` diagnostics as the review surface before adding richer
   transfer/noise-aware candidate scoring.
+- Keep Runtime Candidate Score Evidence passing before accepting richer scoring
+  components or changing candidate score semantics.
+- Use Runtime Candidate Scoring Policy before changing comparator order or
+  enabling noise, error-budget, calibration, or benchmark score inputs.
+- Keep Runtime Candidate Scoring Conformance passing before changing runtime
+  candidate comparator behavior.
+- Keep Runtime Candidate Scoring Gate passing in CI before accepting richer
+  candidate scoring behavior.
+- Use Runtime Buffer Lifetime before adding explicit buffer allocation plans,
+  memory-pool behavior, or buffer-reuse claims.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 

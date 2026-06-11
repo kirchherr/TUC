@@ -1,0 +1,212 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_candidate_scoring_conformance_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "case_count": {
+      "const": 5
+    },
+    "cases": {
+      "items": {
+        "$ref": "#/$defs/case"
+      },
+      "maxItems": 32,
+      "minItems": 5,
+      "type": "array"
+    },
+    "conformance_contract": {
+      "const": "runtime_candidate_scoring_conformance.data_only.v0"
+    },
+    "covered_components": {
+      "items": false,
+      "maxItems": 5,
+      "minItems": 5,
+      "prefixItems": [
+        {
+          "const": "transfer_score"
+        },
+        {
+          "const": "layout_conversion_bytes"
+        },
+        {
+          "const": "transfer_bytes"
+        },
+        {
+          "const": "preferred_memory_domain_match"
+        },
+        {
+          "const": "backend_name_tiebreaker"
+        }
+      ],
+      "type": "array"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "policy_active_component_order": {
+      "items": false,
+      "maxItems": 5,
+      "minItems": 5,
+      "prefixItems": [
+        {
+          "const": "transfer_score"
+        },
+        {
+          "const": "layout_conversion_bytes"
+        },
+        {
+          "const": "transfer_bytes"
+        },
+        {
+          "const": "preferred_memory_domain_match"
+        },
+        {
+          "const": "backend_name_tiebreaker"
+        }
+      ],
+      "type": "array"
+    },
+    "policy_contract": {
+      "const": "runtime_candidate_scoring_policy.data_only.v0"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_candidate_scoring_conformance_report.v0"
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "conformance_contract",
+    "covered_components",
+    "issues",
+    "passed",
+    "policy_active_component_order",
+    "policy_contract",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "case": {
+      "additionalProperties": false,
+      "properties": {
+        "case_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "component_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "detail": {
+          "$ref": "#/$defs/report_text"
+        },
+        "expected_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "observed_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "status": {
+          "enum": [
+            "failed",
+            "passed"
+          ]
+        }
+      },
+      "required": [
+        "case_name",
+        "component_name",
+        "detail",
+        "expected_backend",
+        "observed_backend",
+        "status"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "case_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "case_name",
+        "issue_code"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

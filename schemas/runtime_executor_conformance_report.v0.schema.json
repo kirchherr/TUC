@@ -1,0 +1,245 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_executor_conformance_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "case_count": {
+      "maximum": 128,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "checked_cases": {
+      "items": {
+        "$ref": "#/$defs/checked_case"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "type": "array"
+    },
+    "conformance_contract": {
+      "const": "runtime_executor_conformance.trusted.v0"
+    },
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 128,
+      "type": "array"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_executor_conformance_report.v0"
+    },
+    "trusted_executor_registry": {
+      "const": "trusted_runtime_executor_registry.v0"
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "case_count",
+    "checked_cases",
+    "conformance_contract",
+    "executor_contract",
+    "issues",
+    "passed",
+    "schema_version",
+    "trusted_executor_registry"
+  ],
+  "type": "object",
+  "$defs": {
+    "checked_case": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "observed_status": {
+                "const": "executed"
+              }
+            },
+            "required": [
+              "observed_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "output_dtype": {
+                "const": "float64"
+              },
+              "output_shape": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "observed_status": {
+                "enum": [
+                  "failed",
+                  "rejected"
+                ]
+              }
+            },
+            "required": [
+              "observed_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "output_dtype": {
+                "const": "not_executed"
+              },
+              "output_shape": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "case_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "executor_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "expected_status": {
+          "enum": [
+            "supported",
+            "unsupported"
+          ]
+        },
+        "observed_status": {
+          "enum": [
+            "executed",
+            "failed",
+            "rejected"
+          ]
+        },
+        "operation_kind": {
+          "enum": [
+            "matmul",
+            "elementwise",
+            "reduction",
+            "softmax"
+          ]
+        },
+        "output_dtype": {
+          "enum": [
+            "float64",
+            "not_executed"
+          ]
+        },
+        "output_shape": {
+          "items": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 8,
+          "type": "array"
+        }
+      },
+      "required": [
+        "case_name",
+        "executor_name",
+        "expected_status",
+        "observed_status",
+        "operation_kind",
+        "output_dtype",
+        "output_shape"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "case_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "executor_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "message": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "case_name",
+        "executor_name",
+        "message"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

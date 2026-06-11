@@ -20,17 +20,36 @@ It is not a backend plugin system.
 - Readiness API: `runtime_execution_readiness_report(graph, partition_plan)`
 - Trace API: `dump_execution_trace(trace)`
 - Backend contract API: `trusted_runtime_executor_contracts()`
-- Trusted prototype executors: `linear-sim`, `reference-cpu`
+- Conformance API: `run_runtime_executor_conformance()`
+- Conformance report schema:
+  `schemas/runtime_executor_conformance_report.v0.schema.json`
+- Conformance golden:
+  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`
+- Trusted prototype executors: `linear-sim`, `reference-cpu`, `systolic-sim`
 - Readiness golden:
   `tests/golden/execution_readiness/proof_of_execution.txt`
+- Objective Alpha readiness goldens:
+  `tests/golden/execution_readiness/proof_of_abstraction.txt`,
+  `tests/golden/execution_readiness/proof_of_reduction.txt`,
+  `tests/golden/execution_readiness/proof_of_softmax.txt`
 - MVP readiness golden:
   `tests/golden/execution_readiness/triton_metadata_mvp_families.txt`
 - Proof trace golden: `tests/golden/execution_traces/proof_of_execution.txt`
+- Proof-of-execution independent compiler-contract goldens:
+  `tests/golden/hac_ir/proof_of_execution.txt`,
+  `tests/golden/runtime_plans/proof_of_execution.txt`,
+  `tests/golden/compiler_decisions/proof_of_execution.txt`
+- Objective Alpha trace goldens:
+  `tests/golden/execution_traces/proof_of_abstraction.txt`,
+  `tests/golden/execution_traces/proof_of_reduction.txt`,
+  `tests/golden/execution_traces/proof_of_softmax.txt`
 - MVP trace golden:
   `tests/golden/execution_traces/triton_metadata_mvp_families.txt`
 - Trusted backend contract golden:
   `tests/golden/runtime_backend_contracts/trusted_runtime_executor_registry.txt`
 - Tests: `tests/test_runtime_executor.py`
+- Conformance tests: `tests/test_runtime_executor_conformance.py`,
+  `tests/test_runtime_executor_conformance_schema.py`
 
 ## Security Boundary
 
@@ -77,9 +96,28 @@ If the runtime plan names an untrusted backend contract or assigns an operation
 to a backend contract that does not support its operation family, execution is
 rejected before input normalization or kernel execution.
 
-The proof-of-execution graph and the Triton-like MVP metadata graph both have
-readiness goldens, so contract gates are validated before their execution
-traces are accepted as evidence.
+The Objective Alpha proof graphs, proof-of-execution graph, and Triton-like MVP
+metadata graph all have readiness goldens, so contract gates are validated
+before their execution traces are accepted as evidence.
+
+## Executor Conformance
+
+Runtime Executor Conformance v0 checks the fixed trusted executor registry
+itself. It runs bounded in-memory fixtures for `matmul`, `elementwise`,
+`reduction`, and `softmax` against every trusted executor.
+
+The report requires:
+
+- `linear-sim` to execute `matmul` and `reduction`
+- `linear-sim` to reject `elementwise` and `softmax`
+- `reference-cpu` to execute all MVP operation families
+- `systolic-sim` to execute `matmul`
+- `systolic-sim` to reject `elementwise`, `reduction`, and `softmax`
+
+The schema-versioned report is documented in
+[Runtime Executor Conformance](RUNTIME_EXECUTOR_CONFORMANCE.md). It keeps
+unsupported execution visible as a clean rejection and does not authorize
+external backend artifacts.
 
 ## Operation Semantic Contract
 

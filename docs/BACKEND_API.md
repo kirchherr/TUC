@@ -59,6 +59,22 @@ plugin code.
 }
 ```
 
+Specialized accelerator-like capabilities use the same declarative surface:
+
+```json
+{
+  "schema_version": "tuc.backend_capability.v0",
+  "name": "systolic-sim",
+  "supported_ops": ["matmul"],
+  "supports_noise_model": false,
+  "supports_calibration": false,
+  "preferred_for": ["matmul"],
+  "memory_domain": "device_sram",
+  "supported_layouts": ["row_major"],
+  "produced_layouts": ["blocked"]
+}
+```
+
 This manifest is declarative. Loading it must not import backend modules, touch
 devices, open network connections, or execute vendor tools.
 
@@ -193,13 +209,15 @@ examples/external_backend_author_path.py
 It demonstrates the intended review flow for a toy backend author:
 
 1. Provide a schema-versioned manifest.
-2. Load it through `BackendRegistry.from_manifest_paths(...)`.
-3. Compile a graph using capability data only.
-4. Run `assert_backend_conformance(...)`.
-5. Lower only the HAC-IR subgraph assigned to the explicitly constructed
+2. Pass Manifest Claim Review for that explicit manifest path.
+3. Load it through `BackendRegistry.from_manifest_paths(...)`.
+4. Compile a graph using capability data only.
+5. Run `assert_backend_conformance(...)`.
+6. Lower only the HAC-IR subgraph assigned to the explicitly constructed
    trusted backend object.
-6. Emit `dump_backend_conformance_report(...)` as a deterministic review
+7. Emit claim-review and conformance reports as deterministic review
    artifact.
+8. Emit Backend Author Readiness as the top-level pass/fail authoring artifact.
 
 ## Transfer-Cost Profiles
 
@@ -287,6 +305,23 @@ capability fields or manifests.
 
 The executable test for the full author path is
 `tests/test_external_backend_author_path.py`.
+
+The systolic manifest path at `examples/systolic_manifest_path.py` demonstrates
+that a specialized accelerator capability can be loaded as explicit manifest
+data, planned by the compiler, checked by runtime readiness, and executed only
+through an already trusted Runtime Executor backend.
+
+Specialized accelerator manifests should also pass
+[Manifest Claim Review](MANIFEST_CLAIM_REVIEW.md) before maintainers treat them
+as acceptable planning evidence. The current report schema is
+`schemas/manifest_claim_review_report.v0.schema.json`, and the runnable example
+is `examples/manifest_claim_review.py`.
+
+The external-style backend author path runs Manifest Claim Review before
+registry loading and stops if the manifest is blocked.
+
+It also emits [Backend Author Readiness](BACKEND_AUTHOR_READINESS.md), whose
+schema is `schemas/backend_author_readiness_report.v0.schema.json`.
 
 ## Current Limitations
 

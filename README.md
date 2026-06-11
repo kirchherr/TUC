@@ -33,6 +33,8 @@ The current prototype contains:
 - Proof-of-softmax example for Objective Alpha's nonlinear operation family.
 - Data-movement-aware HAC-IR metadata for MVP kernels.
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
+- Runtime Buffer Lifetime v0 with schema-versioned golden evidence for
+  conservative tensor lifetimes and exact-match reuse candidates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
 - Backend API v0.1 authoring guide for external prototype backends.
 - Explicit backend capability registry for manifest-loaded planning data.
@@ -90,7 +92,33 @@ The current prototype contains:
   `softmax`, `reduction`, and `elementwise` before execution.
 - Runtime Evidence Matrix v0 with schema-versioned, data-only proof inventory
   for HAC-IR, runtime-plan, compiler-decision, readiness, trace, and correctness
+  evidence, now complete across current graph fixtures.
+- Runtime Executor Conformance v0 with schema-versioned golden evidence for
+  trusted executor support and rejection behavior.
+- Runtime Candidate Score Evidence v0 with schema-versioned golden evidence for
+  opt-in score diagnostics and default score silence.
+- Runtime Candidate Scoring Policy v0 with schema-versioned golden evidence for
+  active comparator order and blocked future scoring inputs.
+- Runtime Candidate Scoring Conformance v0 with schema-versioned golden
+  evidence proving current planner behavior matches the scoring policy.
+- Runtime Candidate Scoring Gate v0 as the CI-facing composition of score
+  evidence, scoring policy, and conformance.
+- `systolic-sim` as a second trusted in-process accelerator simulator with
+  blocked-layout output, runtime transfer/layout-conversion evidence, and a
+  dedicated proof.
+- A systolic capability manifest path showing specialized accelerator
+  self-description as JSON planning data while execution remains gated by the
+  trusted Runtime Executor registry.
+- Manifest Claim Review with negative fixtures for overreaching specialized
+  accelerator manifests.
+- External backend author onboarding that runs Manifest Claim Review before
+  registry loading, compiler planning, conformance, or trusted lowering.
+- Backend Author Readiness as a single schema-versioned pass/fail artifact for
+  the external backend author path.
+- Backend Author Evidence Gate for CI-facing external backend onboarding
   evidence.
+- Objective Alpha proof graphs for abstraction, reduction, and softmax now emit
+  Runtime Execution Readiness and Execution Trace evidence before `PASS`.
 - Runtime operation semantic checks for MVP operation shapes, axes, and
   elementwise kernels before trusted kernels run.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
@@ -211,10 +239,70 @@ Run the proof-of-execution example:
 python examples/proof_of_execution.py
 ```
 
+Run the systolic simulator proof:
+
+```bash
+python examples/proof_of_systolic_execution.py
+```
+
+Run the systolic manifest-loaded author path:
+
+```bash
+python examples/systolic_manifest_path.py
+```
+
+Inspect backend capability manifest claim review:
+
+```bash
+python examples/manifest_claim_review.py
+```
+
 Inspect the runtime evidence matrix:
 
 ```bash
 python examples/runtime_evidence_matrix.py
+```
+
+Inspect trusted runtime executor conformance:
+
+```bash
+python examples/runtime_executor_conformance.py
+```
+
+Run the Runtime Evidence Gate used by CI:
+
+```bash
+python examples/runtime_evidence_gate.py
+```
+
+Inspect runtime candidate score evidence:
+
+```bash
+python examples/runtime_candidate_score_evidence.py
+```
+
+Inspect runtime candidate scoring policy:
+
+```bash
+python examples/runtime_candidate_scoring_policy.py
+```
+
+Inspect runtime candidate scoring conformance:
+
+```bash
+python examples/runtime_candidate_scoring_conformance.py
+```
+
+Run the Runtime Candidate Scoring Gate used by CI:
+
+```bash
+python examples/runtime_candidate_scoring_gate.py
+```
+
+Inspect runtime buffer lifetime evidence:
+
+```bash
+python examples/runtime_buffer_lifetime.py
 ```
 
 Inspect data-movement metadata:
@@ -257,6 +345,18 @@ Run the external-style backend author path:
 
 ```bash
 python examples/external_backend_author_path.py
+```
+
+Inspect backend author readiness:
+
+```bash
+python examples/backend_author_readiness.py
+```
+
+Run the Backend Author Evidence Gate used by CI:
+
+```bash
+python examples/backend_author_evidence_gate.py
 ```
 
 Run the baseline benchmark harness:
@@ -391,7 +491,16 @@ pytest -q
 - [Proof of softmax](docs/PROOF_OF_SOFTMAX.md)
 - [Proof of execution](docs/PROOF_OF_EXECUTION.md)
 - [Runtime Executor v0](docs/RUNTIME_EXECUTOR.md)
+- [Runtime Executor Conformance](docs/RUNTIME_EXECUTOR_CONFORMANCE.md)
 - [Runtime evidence matrix](docs/RUNTIME_EVIDENCE_MATRIX.md)
+- [Runtime Evidence Gate](docs/RUNTIME_EVIDENCE_GATE.md)
+- [Runtime Candidate Score Evidence](docs/RUNTIME_CANDIDATE_SCORE_EVIDENCE.md)
+- [Runtime Candidate Scoring Policy](docs/RUNTIME_CANDIDATE_SCORING_POLICY.md)
+- [Runtime Candidate Scoring Conformance](docs/RUNTIME_CANDIDATE_SCORING_CONFORMANCE.md)
+- [Runtime Candidate Scoring Gate](docs/RUNTIME_CANDIDATE_SCORING_GATE.md)
+- [Runtime Buffer Lifetime](docs/RUNTIME_BUFFER_LIFETIME.md)
+- [Systolic simulator proof](docs/SYSTOLIC_SIMULATOR.md)
+- [Manifest Claim Review](docs/MANIFEST_CLAIM_REVIEW.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness report](docs/PERFORMANCE_PROOF_READINESS.md)
@@ -419,6 +528,8 @@ pytest -q
 - [Benchmarking](docs/BENCHMARKING.md)
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)
+- [Backend author readiness](docs/BACKEND_AUTHOR_READINESS.md)
+- [Backend Author Evidence Gate](docs/BACKEND_AUTHOR_EVIDENCE_GATE.md)
 - [Backend capability registry](docs/BACKEND_REGISTRY.md)
 - [Compiler decision report](docs/COMPILER_DECISION_REPORT.md)
 - [Runtime manual override policy](docs/RUNTIME_OVERRIDE_POLICY.md)

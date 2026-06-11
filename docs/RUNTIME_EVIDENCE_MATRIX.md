@@ -13,9 +13,11 @@ explicitly provided evidence identifiers.
 - Report schema version: `tuc.runtime_evidence_matrix_report.v0`
 - Evidence contract: `runtime_evidence_matrix.data_only.v0`
 - API: `build_runtime_evidence_matrix_report(matrix_id, graphs)`
+- Current matrix API: `build_current_runtime_evidence_matrix_report()`
 - Dump API: `dump_runtime_evidence_matrix_report(report)`
 - Example: `examples/runtime_evidence_matrix.py`
 - Golden: `tests/golden/proofs/runtime_evidence_matrix_report.json`
+- CI gate: `examples/runtime_evidence_gate.py`
 
 ## Required Evidence Kinds
 
@@ -33,16 +35,22 @@ Additional evidence, such as `proof_report_golden` and
 
 ## Current Meaning
 
-The current matrix is intentionally honest:
+The current matrix is complete across every accepted graph fixture:
 
-- `triton_metadata_mvp_families` is complete across the required runtime
+- `proof_of_abstraction`, `proof_of_reduction`, `proof_of_softmax`, and
+  `triton_metadata_mvp_families` are complete across the required runtime
   evidence kinds.
-- Earlier Objective Alpha proof graphs still lack Runtime Execution Readiness
-  and Execution Trace goldens.
-- `proof_of_execution` has execution readiness and trace evidence, but does not
-  yet have separate HAC-IR, runtime-plan, or compiler-decision goldens.
+- `proof_of_execution` is complete across HAC-IR, runtime-plan,
+  compiler-decision, readiness, trace, and reference-correctness evidence.
+- `proof_of_systolic_execution` is complete across HAC-IR, runtime-plan,
+  compiler-decision, readiness, trace, and reference-correctness evidence.
 
-Those gaps are roadmap information, not hidden failures.
+Future graph fixtures must either make every required evidence kind present or
+show missing evidence as explicit matrix issues.
+
+The CI-facing [Runtime Evidence Gate](RUNTIME_EVIDENCE_GATE.md) requires this
+matrix to be complete before runtime executor conformance can count as passing
+merge evidence.
 
 ## Security Boundary
 

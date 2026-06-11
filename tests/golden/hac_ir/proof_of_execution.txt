@@ -1,0 +1,14 @@
+hac-ir.module @proof_of_execution {
+  metadata {
+    graph.dialect_version = "tlir.v0"
+    graph.lowered_from = "tlir"
+    graph.movement_model = "movement.v0"
+    graph.movement_summary = {arithmetic_intensity: 0.2692307692307692, movement_model: "movement.v0", operation_count: 3, total_arithmetic_ops: 28, total_bytes_read: 72, total_bytes_written: 32}
+    graph.mvp_operation_count = 3
+    graph.source = "triton-like-python"
+    module.dialect_version = "hac-ir.v0"
+  }
+  %projection = tuc.matmul @linear_projection(%lhs: tensor<2x3xf32>, %rhs: tensor<3x2xf32>) -> (%projection: tensor<2x2xf32>) {max_error_budget = 0.05, prefer_linear_accelerator = true, tuc.arithmetic_intensity = 0.375, tuc.arithmetic_ops = 24, tuc.bytes_read = 48, tuc.bytes_written = 16, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["rank2_matmul"], tuc.preferred_memory_domain = "analog_weight_bank", tuc.semantic_op = "matmul", tuc.source_stage = "tlir"}
+  %row_sum = tuc.reduction @row_reduction(%projection: tensor<2x2xf32>) -> (%row_sum: tensor<2xf32>) {axis = 1, tuc.arithmetic_intensity = 0.08333333333333333, tuc.arithmetic_ops = 2, tuc.bytes_read = 16, tuc.bytes_written = 8, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "linear", tuc.movement_notes = ["bounded_reduction"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "reduction", tuc.source_stage = "tlir"}
+  %activated = tuc.elementwise @activation(%row_sum: tensor<2xf32>) -> (%activated: tensor<2xf32>) {kernel = "relu", tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 2, tuc.bytes_read = 8, tuc.bytes_written = 8, tuc.layout = "row_major", tuc.layout_tile_shape = [], tuc.linearity = "nonlinear", tuc.movement_notes = ["exact_shape_elementwise"], tuc.preferred_memory_domain = "host_ram", tuc.semantic_op = "elementwise", tuc.source_stage = "tlir"}
+}

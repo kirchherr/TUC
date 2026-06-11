@@ -181,6 +181,10 @@ Backends implement a minimal protocol:
 The first backend is `LinearAlgebraSimulatorBackend`, a toy backend that accepts
 linear algebra operations and emits a textual artifact.
 
+`SystolicArraySimulatorBackend` adds a second trusted in-process accelerator
+profile for `matmul`: it plans into `device_sram`, produces `blocked` layout,
+and is exercised by `examples/proof_of_systolic_execution.py`.
+
 ## Runtime Partitioning
 
 The early runtime uses simple rule-based partitioning:

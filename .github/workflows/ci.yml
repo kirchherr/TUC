@@ -39,5 +39,13 @@ jobs:
         run: python examples/triton_metadata_adapter.py
       - name: Backend API example
         run: python examples/backend_api_v0.py
+      - name: Runtime evidence gate
+        run: python examples/runtime_evidence_gate.py
+      - name: Runtime candidate score evidence
+        run: python examples/runtime_candidate_score_evidence.py
+      - name: Runtime candidate scoring gate
+        run: python examples/runtime_candidate_scoring_gate.py
+      - name: Backend author evidence gate
+        run: python examples/backend_author_evidence_gate.py
       - name: Baseline benchmark smoke test
         run: python scripts/benchmark.py --iterations 1 --warmup 0

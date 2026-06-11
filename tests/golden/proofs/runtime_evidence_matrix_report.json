@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "evidence_contract": "runtime_evidence_matrix.data_only.v0",
-  "graph_count": 5,
+  "graph_count": 6,
   "graphs": [
     {
       "artifacts": [
@@ -36,6 +36,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_abstraction_readiness",
+          "artifact_kind": "execution_readiness_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_abstraction_trace",
+          "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_abstraction_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -43,11 +53,8 @@
       ],
       "graph_family": "objective_alpha",
       "graph_id": "proof_of_abstraction",
-      "missing_required_artifact_kinds": [
-        "execution_readiness_golden",
-        "execution_trace_golden"
-      ],
-      "runtime_evidence_complete": false,
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
       "source_boundary": "typed_compute_graph"
     },
     {
@@ -73,6 +80,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_reduction_readiness",
+          "artifact_kind": "execution_readiness_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_reduction_trace",
+          "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_reduction_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -80,11 +97,8 @@
       ],
       "graph_family": "objective_alpha",
       "graph_id": "proof_of_reduction",
-      "missing_required_artifact_kinds": [
-        "execution_readiness_golden",
-        "execution_trace_golden"
-      ],
-      "runtime_evidence_complete": false,
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
       "source_boundary": "typed_compute_graph"
     },
     {
@@ -110,6 +124,16 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_softmax_readiness",
+          "artifact_kind": "execution_readiness_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_softmax_trace",
+          "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_softmax_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
@@ -117,11 +141,8 @@
       ],
       "graph_family": "objective_alpha",
       "graph_id": "proof_of_softmax",
-      "missing_required_artifact_kinds": [
-        "execution_readiness_golden",
-        "execution_trace_golden"
-      ],
-      "runtime_evidence_complete": false,
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
       "source_boundary": "typed_compute_graph"
     },
     {
@@ -129,6 +150,21 @@
         {
           "artifact_id": "proof_of_execution_report",
           "artifact_kind": "proof_report_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_hac_ir",
+          "artifact_kind": "hac_ir_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_runtime_plan",
+          "artifact_kind": "runtime_plan_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_compiler_decision",
+          "artifact_kind": "compiler_decision_golden",
           "artifact_status": "present"
         },
         {
@@ -149,12 +185,52 @@
       ],
       "graph_family": "objective_alpha_execution",
       "graph_id": "proof_of_execution",
-      "missing_required_artifact_kinds": [
-        "hac_ir_golden",
-        "runtime_plan_golden",
-        "compiler_decision_golden"
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
+      "source_boundary": "typed_compute_graph"
+    },
+    {
+      "artifacts": [
+        {
+          "artifact_id": "proof_of_systolic_execution_report",
+          "artifact_kind": "proof_report_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_hac_ir",
+          "artifact_kind": "hac_ir_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_runtime_plan",
+          "artifact_kind": "runtime_plan_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_compiler_decision",
+          "artifact_kind": "compiler_decision_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_readiness",
+          "artifact_kind": "execution_readiness_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_trace",
+          "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_reference_semantics",
+          "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        }
       ],
-      "runtime_evidence_complete": false,
+      "graph_family": "systolic_execution",
+      "graph_id": "proof_of_systolic_execution",
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
       "source_boundary": "typed_compute_graph"
     },
     {
@@ -202,17 +278,7 @@
       "source_boundary": "triton_metadata"
     }
   ],
-  "issues": [
-    "proof_of_abstraction.missing_execution_readiness_golden",
-    "proof_of_abstraction.missing_execution_trace_golden",
-    "proof_of_reduction.missing_execution_readiness_golden",
-    "proof_of_reduction.missing_execution_trace_golden",
-    "proof_of_softmax.missing_execution_readiness_golden",
-    "proof_of_softmax.missing_execution_trace_golden",
-    "proof_of_execution.missing_hac_ir_golden",
-    "proof_of_execution.missing_runtime_plan_golden",
-    "proof_of_execution.missing_compiler_decision_golden"
-  ],
+  "issues": [],
   "matrix_id": "runtime_evidence_matrix_v0",
   "required_artifact_kinds": [
     "hac_ir_golden",
@@ -222,6 +288,6 @@
     "execution_trace_golden",
     "reference_correctness"
   ],
-  "runtime_evidence_matrix_complete": false,
+  "runtime_evidence_matrix_complete": true,
   "schema_version": "tuc.runtime_evidence_matrix_report.v0"
 }

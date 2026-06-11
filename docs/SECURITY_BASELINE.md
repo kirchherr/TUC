@@ -91,7 +91,29 @@ Implemented now:
 - Runtime Evidence Matrix v0 inventories proof/runtime evidence through bounded
   identifiers only, rejects path-like IDs and known execution surfaces, derives
   missing-evidence issues deterministically, and never scans repositories,
-  imports code, discovers plugins, or executes artifacts.
+  imports code, discovers plugins, or executes artifacts. The current matrix is
+  complete across all accepted graph fixtures.
+- Runtime Executor Conformance v0 checks the fixed trusted in-process executor
+  registry with bounded in-memory operation fixtures only. It verifies support
+  and rejection behavior without backend discovery, imports, subprocesses,
+  device access, network access, JIT, dynamic libraries, generated-artifact
+  execution, host-path reads, command-line capture, raw benchmark output, or
+  arbitrary issue text.
+- Runtime Evidence Gate v0 composes the complete Runtime Evidence Matrix and
+  passing Runtime Executor Conformance into CI without adding repository
+  scanning, plugin discovery, device access, network access, subprocesses,
+  dynamic imports, JIT, dynamic libraries, generated-artifact execution, raw
+  benchmark loading, or native performance claims.
+- `systolic-sim` adds a second trusted in-process accelerator simulator for
+  matmul-only placement and blocked-layout output. It remains capability-only
+  at planning time and uses trusted runtime reference execution; it does not add
+  plugin discovery, device access, external artifact execution, native code, or
+  JIT.
+- Objective Alpha abstraction, reduction, and softmax proofs now validate
+  Runtime Execution Readiness before trusted in-process execution and emit
+  deterministic traces without adding plugin discovery, device access, dynamic
+  imports, subprocesses, JIT, network, dynamic libraries, or generated-artifact
+  execution.
 - Runtime operation semantic contracts validate MVP operation shape and axis
   rules before trusted reference kernels run, preventing implicit NumPy
   broadcasting, scalar reductions, unsupported elementwise kernels, or
@@ -101,6 +123,10 @@ Implemented now:
   failing closed before dtype, shape, or non-finite-value drift can reach later
   runtime steps.
 - Movement-aware partition plan metadata with transfer-byte accounting.
+- Runtime Buffer Lifetime reports derive conservative produced tensor
+  lifetimes, peak live bytes, and exact-match reuse candidates from already
+  constructed graph and plan data without allocating memory, executing kernels,
+  importing backend code, discovering plugins, or loading benchmark artifacts.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.
 - Schema-versioned JSON manifest loading with file-size, duplicate-key,
@@ -212,6 +238,37 @@ Implemented now:
 - Capability-schema negative examples and tests reject misleading latency,
   energy, calibration, benchmark, certificate, measured-error, and executable
   backend claims from backend capability manifests.
+- Manifest Claim Review adds a data-only report at
+  `schemas/manifest_claim_review_report.v0.schema.json` for syntactically valid
+  but overreaching specialized accelerator claims, including universal
+  operation-family claims and noise/calibration claims without explicit
+  error-budget boundaries.
+- Backend Author Readiness adds a data-only summary report at
+  `schemas/backend_author_readiness_report.v0.schema.json` for the external
+  backend author path, combining claim review, registry loading, compiler
+  assignment, conformance, and assigned-subgraph lowering without adding plugin
+  discovery or runtime execution permission.
+- Backend Author Evidence Gate runs in the read-only CI job and composes
+  Manifest Claim Review plus Backend Author Readiness without requiring
+  repository write permissions, secrets, publishing tokens, device access,
+  network access, or backend artifact execution.
+- Runtime Candidate Score Evidence runs in the read-only CI job and verifies
+  score diagnostics as bounded data without adding plugin discovery, backend
+  imports, host-path reads, environment reads, device access, network access,
+  generated artifact execution, JIT, or backend execution permission.
+- Runtime Candidate Scoring Policy records comparator semantics as bounded data
+  and keeps automatic global optimization, noise/error-budget scoring,
+  calibration scoring, and benchmark score inputs disabled.
+- Runtime Candidate Scoring Conformance verifies the current planner comparator
+  behavior through bounded typed in-memory planning fixtures without adding
+  plugin discovery, backend imports, host-path reads, environment reads, device
+  access, network access, generated artifact execution, JIT, benchmark loading,
+  or backend execution permission.
+- Runtime Candidate Scoring Gate runs in the read-only CI job and composes
+  Runtime Candidate Score Evidence, Runtime Candidate Scoring Policy, and
+  Runtime Candidate Scoring Conformance without adding repository write
+  permissions, secrets, device access, network access, backend artifact
+  execution, benchmark loading, or native performance claims.
 - Native MLIR design spike limited to repository-owned text artifacts; no
   external MLIR ingestion or native parser surface yet.
 - Read-only default GitHub workflow permissions.

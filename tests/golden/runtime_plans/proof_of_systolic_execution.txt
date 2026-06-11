@@ -1,0 +1,19 @@
+runtime.plan @proof_of_systolic_execution {
+  assignments {
+    systolic_projection -> systolic-sim domain=device_sram produced_layout=blocked transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=device_sram;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=blocked"
+    host_activation -> reference-cpu domain=host_ram produced_layout=row_major transfer_bytes=16 layout_conversion_bytes=16 reason="fallback:transfer_bytes=16;layout_conversion_bytes=16;actual_transfer_bytes=16;actual_layout_conversion_bytes=16"
+  }
+  transfers {
+    %projection: systolic_projection/systolic-sim/device_sram/blocked -> host_activation/reference-cpu/host_ram/row_major bytes=16 bandwidth_gb_s=16 latency_ns=20001 energy_pj=1600
+  }
+  layout_conversions {
+    %projection: systolic_projection -> host_activation blocked->row_major bytes=16 reason="layout_mismatch"
+  }
+  summary {
+    total_transfer_bytes = 16
+    total_layout_conversion_bytes = 16
+    total_data_movement_bytes = 32
+    estimated_transfer_latency_ns = 20001
+    estimated_transfer_energy_pj = 1600
+  }
+}

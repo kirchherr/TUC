@@ -1,0 +1,71 @@
+== manifest ==
+source_label: systolic_sim_backend.json
+name: systolic-sim
+supported_ops: matmul
+preferred_for: matmul
+memory_domain: device_sram
+supported_layouts: row_major
+produced_layouts: blocked
+
+== support diagnostics ==
+systolic-sim:manifest_systolic_projection accepted capability accepts operation kind, layout, and error budget
+systolic-sim:manifest_host_activation unsupported_operation_kind elementwise not declared in supported_ops
+
+== backend assignments ==
+manifest_systolic_projection -> systolic-sim
+manifest_host_activation -> reference-cpu
+
+== transfer plan ==
+runtime.plan @systolic_manifest_path {
+  assignments {
+    manifest_systolic_projection -> systolic-sim domain=device_sram produced_layout=blocked transfer_bytes=0 layout_conversion_bytes=0 reason="preferred_for:matmul;domain=device_sram;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=blocked"
+    manifest_host_activation -> reference-cpu domain=host_ram produced_layout=row_major transfer_bytes=16 layout_conversion_bytes=16 reason="fallback:transfer_bytes=16;layout_conversion_bytes=16;actual_transfer_bytes=16;actual_layout_conversion_bytes=16"
+  }
+  transfers {
+    %projection: manifest_systolic_projection/systolic-sim/device_sram/blocked -> manifest_host_activation/reference-cpu/host_ram/row_major bytes=16 bandwidth_gb_s=16 latency_ns=20001 energy_pj=1600
+  }
+  layout_conversions {
+    %projection: manifest_systolic_projection -> manifest_host_activation blocked->row_major bytes=16 reason="layout_mismatch"
+  }
+  summary {
+    total_transfer_bytes = 16
+    total_layout_conversion_bytes = 16
+    total_data_movement_bytes = 32
+    estimated_transfer_latency_ns = 20001
+    estimated_transfer_energy_pj = 1600
+  }
+}
+
+== execution readiness ==
+runtime.execution_readiness @systolic_manifest_path {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  backend_contract = "runtime_backend_executor.trusted.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  status = "ready"
+  steps {
+    manifest_systolic_projection planned_backend=systolic-sim backend_contract=runtime_backend_executor.trusted.v0 kind=matmul supported_ops=matmul status=ready reason=contract_allows_operation
+    manifest_host_activation planned_backend=reference-cpu backend_contract=runtime_backend_executor.trusted.v0 kind=elementwise supported_ops=elementwise,matmul,reduction,softmax status=ready reason=contract_allows_operation
+  }
+}
+
+== execution trace ==
+runtime.execution_trace @systolic_manifest_path {
+  executor_contract = "runtime_executor.trusted_backend.v0"
+  trusted_executor_registry = "trusted_runtime_executor_registry.v0"
+  blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
+  steps {
+    manifest_systolic_projection planned_backend=systolic-sim executor_backend=systolic-sim kind=matmul inputs=lhs,rhs outputs=projection output_shapes=2x2 output_dtypes=float64 status=executed
+    manifest_host_activation planned_backend=reference-cpu executor_backend=reference-cpu kind=elementwise inputs=projection outputs=activated output_shapes=2x2 output_dtypes=float64 status=executed
+  }
+}
+
+== result ==
+[[0. 4.]
+ [7. 0.]]
+
+== reference result ==
+[[0. 4.]
+ [7. 0.]]
+
+PASS

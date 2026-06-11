@@ -1,0 +1,58 @@
+{
+  "backend_name": "external-vector",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "check_count": 5,
+  "checks": [
+    {
+      "check_name": "manifest_claim_review",
+      "detail": "accepted",
+      "evidence_id": "external_vector_author_claim_review",
+      "status": "passed"
+    },
+    {
+      "check_name": "manifest_registry",
+      "detail": "registered",
+      "evidence_id": "external_vector_registry",
+      "status": "passed"
+    },
+    {
+      "check_name": "compiler_assignment",
+      "detail": "activation_external-vector",
+      "evidence_id": "external_backend_author_demo",
+      "status": "passed"
+    },
+    {
+      "check_name": "backend_conformance",
+      "detail": "cases_4",
+      "evidence_id": "external_vector_conformance_report",
+      "status": "passed"
+    },
+    {
+      "check_name": "assigned_subgraph_lowering",
+      "detail": "lowered_activation",
+      "evidence_id": "external_vector_assigned_lowering",
+      "status": "passed"
+    }
+  ],
+  "issues": [],
+  "manifest_id": "external_vector_backend",
+  "readiness_contract": "backend_author_readiness.data_only.v0",
+  "ready": true,
+  "required_checks": [
+    "manifest_claim_review",
+    "manifest_registry",
+    "compiler_assignment",
+    "backend_conformance",
+    "assigned_subgraph_lowering"
+  ],
+  "schema_version": "tuc.backend_author_readiness_report.v0"
+}

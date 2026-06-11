@@ -66,6 +66,13 @@ examples/external_backend_author_path.py
 tests/test_external_backend_author_path.py
 ```
 
+That path now runs Manifest Claim Review before conformance so backend authors
+cannot skip claim-shape review and jump directly to lowering evidence.
+
+The complete author path is summarized by
+[Backend Author Readiness](BACKEND_AUTHOR_READINESS.md), which includes the
+backend conformance result as one required check.
+
 It loads a schema-versioned capability manifest through the explicit registry,
 compiles a graph using only that capability data, runs the reusable conformance
 fixtures, and lowers only the compiler-assigned HAC-IR subgraph with a trusted

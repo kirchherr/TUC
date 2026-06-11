@@ -48,6 +48,15 @@ Compiler decision reports complement runtime-plan dumps by showing which
 registered backend capabilities accepted or rejected each operation before the
 runtime assignment was finalized.
 
+Runtime Buffer Lifetime adds a schema-versioned report for conservative
+produced tensor lifetimes and exact-match reuse candidates:
+
+```bash
+python examples/runtime_buffer_lifetime.py
+```
+
+See [Runtime Buffer Lifetime](RUNTIME_BUFFER_LIFETIME.md).
+
 ## Manual Override Policy
 
 TUC accepts a first operation-scoped manual placement override data surface
@@ -84,6 +93,44 @@ when multiple accepted backend candidates remain:
 Runtime-plan dumps include a `candidate_scores` block only when diagnostics are
 enabled. Compiler decision reports carry the same evidence per operation.
 
+Runtime Candidate Score Evidence adds a schema-versioned review artifact for
+this boundary:
+
+```bash
+python examples/runtime_candidate_score_evidence.py
+```
+
+See [Runtime Candidate Score Evidence](RUNTIME_CANDIDATE_SCORE_EVIDENCE.md).
+
+Runtime Candidate Scoring Policy fixes the accepted comparator order and keeps
+future noise, error-budget, calibration, and benchmark score inputs blocked
+until separate models exist:
+
+```bash
+python examples/runtime_candidate_scoring_policy.py
+```
+
+See [Runtime Candidate Scoring Policy](RUNTIME_CANDIDATE_SCORING_POLICY.md).
+
+Runtime Candidate Scoring Conformance verifies that the current planner's
+observable candidate choices match the active policy:
+
+```bash
+python examples/runtime_candidate_scoring_conformance.py
+```
+
+See
+[Runtime Candidate Scoring Conformance](RUNTIME_CANDIDATE_SCORING_CONFORMANCE.md).
+
+Runtime Candidate Scoring Gate composes score evidence, policy, and conformance
+as the CI-facing check:
+
+```bash
+python examples/runtime_candidate_scoring_gate.py
+```
+
+See [Runtime Candidate Scoring Gate](RUNTIME_CANDIDATE_SCORING_GATE.md).
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:
@@ -96,6 +143,9 @@ Runtime plan objects are declarative data:
   `tuple` data.
 - Transfer-cost profile files must pass the schema-versioned JSON loader before
   becoming runtime profile data.
+- Buffer lifetime reports are derived from already constructed `ComputeGraph`
+  and `PartitionPlan` objects. They are bounded data and do not allocate memory
+  or execute backend code.
 - Same-domain transfer edges are rejected.
 - No plugin, backend, subprocess, import, or filesystem path is executed while
   constructing a plan or validating a transfer profile.
@@ -104,6 +154,13 @@ Runtime plan objects are declarative data:
 - Candidate score diagnostics are bounded, opt-in, and derived only from
   validated graph operations, capability data, movement estimates, transfer-cost
   profiles, and validated override effects.
+- Candidate scoring policy is bounded data and keeps automatic global
+  optimization plus noise/error-budget score components disabled in v0.
+- Candidate scoring conformance is bounded data derived from typed in-memory
+  planning fixtures; it does not add benchmark execution, backend execution, or
+  plugin/device access.
+- Candidate scoring gate is a read-only composition of score evidence, policy,
+  and conformance for CI; it does not add new planning behavior.
 
 ## Current Limitations
 
@@ -119,9 +176,14 @@ This is still a prototype:
 
 ## Next Work
 
-1. Include buffer lifetime and reuse in runtime planning.
-2. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
-3. Add richer override diagnostics only if they stay bounded and visible in
+1. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
+2. Add richer override diagnostics only if they stay bounded and visible in
    decision-report and runtime-plan golden fixtures.
-4. Add noise/error-budget candidate score components only after those models are
+3. Keep Runtime Candidate Scoring Conformance passing before changing
+   comparator semantics.
+4. Keep Runtime Candidate Scoring Gate passing in CI before accepting richer
+   scoring behavior.
+5. Add explicit buffer allocation plans only after lifetime evidence stays
+   deterministic and reviewable.
+6. Add noise/error-budget candidate score components only after those models are
    stable and documented.

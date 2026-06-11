@@ -1,0 +1,214 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_candidate_scoring_policy.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "active_component_order": {
+      "items": false,
+      "maxItems": 5,
+      "minItems": 5,
+      "prefixItems": [
+        {
+          "const": "transfer_score"
+        },
+        {
+          "const": "layout_conversion_bytes"
+        },
+        {
+          "const": "transfer_bytes"
+        },
+        {
+          "const": "preferred_memory_domain_match"
+        },
+        {
+          "const": "backend_name_tiebreaker"
+        }
+      ],
+      "type": "array"
+    },
+    "automatic_global_optimization_enabled": {
+      "const": false
+    },
+    "blocked_component_names": {
+      "items": false,
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "const": "noise_penalty"
+        },
+        {
+          "const": "error_budget_margin"
+        },
+        {
+          "const": "calibration_confidence"
+        },
+        {
+          "const": "benchmark_score"
+        }
+      ],
+      "type": "array"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "component_count": {
+      "const": 9
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/component"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "type": "array"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "noise_error_budget_components_enabled": {
+      "const": false
+    },
+    "policy_complete": {
+      "type": "boolean"
+    },
+    "policy_contract": {
+      "const": "runtime_candidate_scoring_policy.data_only.v0"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_candidate_scoring_policy.v0"
+    }
+  },
+  "required": [
+    "active_component_order",
+    "automatic_global_optimization_enabled",
+    "blocked_component_names",
+    "blocked_execution_surfaces",
+    "component_count",
+    "components",
+    "issues",
+    "noise_error_budget_components_enabled",
+    "policy_complete",
+    "policy_contract",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "component": {
+      "additionalProperties": false,
+      "properties": {
+        "blocker": {
+          "$ref": "#/$defs/report_text"
+        },
+        "component_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "evidence_source": {
+          "$ref": "#/$defs/report_text"
+        },
+        "ordering": {
+          "enum": [
+            "minimize",
+            "prefer_true",
+            "lexical_ascending",
+            "blocked"
+          ]
+        },
+        "status": {
+          "enum": [
+            "active",
+            "blocked"
+          ]
+        }
+      },
+      "required": [
+        "blocker",
+        "component_name",
+        "evidence_source",
+        "ordering",
+        "status"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "component_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "component_name",
+        "issue_code"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

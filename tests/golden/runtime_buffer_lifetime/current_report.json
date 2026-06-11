@@ -1,0 +1,158 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "graph_name": "runtime_buffer_lifetime",
+  "issues": [],
+  "lifetime_contract": "runtime_buffer_lifetime.data_only.v0",
+  "lifetimes": [
+    {
+      "bytes_allocated": 64,
+      "dtype": "float32",
+      "first_live_index": 0,
+      "last_consumer_operation": "left_activation",
+      "last_use_index": 1,
+      "layout": "row_major",
+      "lifetime_kind": "intermediate",
+      "memory_domain": "host_ram",
+      "producer_index": 0,
+      "producer_operation": "left_projection",
+      "reusable": true,
+      "reuse_group_id": "reuse_group_001",
+      "shape": [
+        4,
+        4
+      ],
+      "tensor_name": "left_tmp"
+    },
+    {
+      "bytes_allocated": 64,
+      "dtype": "float32",
+      "first_live_index": 1,
+      "last_consumer_operation": "graph_output",
+      "last_use_index": 4,
+      "layout": "row_major",
+      "lifetime_kind": "graph_output",
+      "memory_domain": "host_ram",
+      "producer_index": 1,
+      "producer_operation": "left_activation",
+      "reusable": false,
+      "reuse_group_id": "reuse_group_002",
+      "shape": [
+        4,
+        4
+      ],
+      "tensor_name": "left_out"
+    },
+    {
+      "bytes_allocated": 64,
+      "dtype": "float32",
+      "first_live_index": 2,
+      "last_consumer_operation": "right_activation",
+      "last_use_index": 3,
+      "layout": "row_major",
+      "lifetime_kind": "intermediate",
+      "memory_domain": "host_ram",
+      "producer_index": 2,
+      "producer_operation": "right_projection",
+      "reusable": true,
+      "reuse_group_id": "reuse_group_001",
+      "shape": [
+        4,
+        4
+      ],
+      "tensor_name": "right_tmp"
+    },
+    {
+      "bytes_allocated": 64,
+      "dtype": "float32",
+      "first_live_index": 3,
+      "last_consumer_operation": "graph_output",
+      "last_use_index": 4,
+      "layout": "row_major",
+      "lifetime_kind": "graph_output",
+      "memory_domain": "host_ram",
+      "producer_index": 3,
+      "producer_operation": "right_activation",
+      "reusable": false,
+      "reuse_group_id": "reuse_group_003",
+      "shape": [
+        4,
+        4
+      ],
+      "tensor_name": "right_out"
+    }
+  ],
+  "operation_count": 4,
+  "passed": true,
+  "peak_live_bytes": 192,
+  "reuse_group_count": 3,
+  "reuse_groups": [
+    {
+      "bytes_per_buffer": 64,
+      "dtype": "float32",
+      "group_id": "reuse_group_001",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "non_overlapping": true,
+      "reuse_savings_upper_bound_bytes": 64,
+      "shape": [
+        4,
+        4
+      ],
+      "tensor_count": 2,
+      "tensor_names": [
+        "left_tmp",
+        "right_tmp"
+      ],
+      "total_tensor_bytes": 128
+    },
+    {
+      "bytes_per_buffer": 64,
+      "dtype": "float32",
+      "group_id": "reuse_group_002",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "non_overlapping": true,
+      "reuse_savings_upper_bound_bytes": 0,
+      "shape": [
+        4,
+        4
+      ],
+      "tensor_count": 1,
+      "tensor_names": [
+        "left_out"
+      ],
+      "total_tensor_bytes": 64
+    },
+    {
+      "bytes_per_buffer": 64,
+      "dtype": "float32",
+      "group_id": "reuse_group_003",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "non_overlapping": true,
+      "reuse_savings_upper_bound_bytes": 0,
+      "shape": [
+        4,
+        4
+      ],
+      "tensor_count": 1,
+      "tensor_names": [
+        "right_out"
+      ],
+      "total_tensor_bytes": 64
+    }
+  ],
+  "reuse_savings_upper_bound_bytes": 64,
+  "schema_version": "tuc.runtime_buffer_lifetime_report.v0",
+  "tensor_lifetime_count": 4,
+  "total_tensor_bytes": 256
+}
