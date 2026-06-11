@@ -33,6 +33,10 @@ A graph is runtime-evidence complete only when it has:
 Additional evidence, such as `proof_report_golden` and
 `frontend_intake_golden`, can be listed without changing completeness.
 
+For Runtime Executor v0, `reference_correctness` is backed by the
+schema-versioned [Runtime Reference Correctness](RUNTIME_REFERENCE_CORRECTNESS.md)
+report at `schemas/runtime_reference_correctness_report.v0.schema.json`.
+
 ## Current Meaning
 
 The current matrix is complete across every accepted graph fixture:

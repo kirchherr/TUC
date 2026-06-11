@@ -138,6 +138,12 @@ hardware-independent interface into capability-driven runtime planning.
   evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
   and Runtime Evidence Gate coverage for terminal graph outputs without raw
   tensor values.
+- Runtime Reference Correctness v0 with schema at
+  `schemas/runtime_reference_correctness_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_reference_correctness/proof_of_execution.json`, Runtime
+  Evidence Gate coverage, and proof-of-execution reporting without raw
+  result/reference tensor values.
 
 ## In Progress
 
@@ -194,6 +200,10 @@ Current slice:
 - Runtime Output Manifest at `examples/runtime_output_manifest.py`, with golden
   evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
   including terminal-output producer metadata without tensor values.
+- Runtime Reference Correctness at `examples/runtime_reference_correctness.py`,
+  with golden evidence at
+  `tests/golden/runtime_reference_correctness/proof_of_execution.json`,
+  including output/reference comparison status without tensor values.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.
@@ -215,7 +225,7 @@ Current slice:
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
-  Evidence, and Runtime Output Manifest.
+  Evidence, Runtime Output Manifest, and Runtime Reference Correctness.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

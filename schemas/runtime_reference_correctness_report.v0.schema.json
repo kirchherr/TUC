@@ -1,0 +1,286 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_reference_correctness_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "comparison_count": {
+      "maximum": 4096,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "comparison_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "comparisons": {
+      "items": {
+        "$ref": "#/$defs/comparison"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    },
+    "correctness_contract": {
+      "const": "runtime_reference_correctness.data_only.v0"
+    },
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "output_manifest_contract": {
+      "const": "runtime_output_manifest.data_only.v0"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "reference_tensor_names": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_reference_correctness_report.v0"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "comparison_count",
+    "comparison_metadata_digest",
+    "comparisons",
+    "correctness_contract",
+    "executor_contract",
+    "graph_name",
+    "issues",
+    "output_manifest_contract",
+    "passed",
+    "raw_value_policy",
+    "reference_tensor_names",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "comparison": {
+      "additionalProperties": false,
+      "properties": {
+        "atol": {
+          "$ref": "#/$defs/tolerance"
+        },
+        "comparison_status": {
+          "$ref": "#/$defs/comparison_status"
+        },
+        "expected_dtype": {
+          "$ref": "#/$defs/concrete_dtype"
+        },
+        "expected_shape": {
+          "$ref": "#/$defs/shape"
+        },
+        "output_dtype": {
+          "$ref": "#/$defs/dtype_or_status"
+        },
+        "output_shape": {
+          "$ref": "#/$defs/optional_shape"
+        },
+        "output_value_status": {
+          "const": "omitted_by_policy"
+        },
+        "reference_dtype": {
+          "$ref": "#/$defs/dtype_or_status"
+        },
+        "reference_shape": {
+          "$ref": "#/$defs/optional_shape"
+        },
+        "reference_value_status": {
+          "const": "omitted_by_policy"
+        },
+        "rtol": {
+          "$ref": "#/$defs/tolerance"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "atol",
+        "comparison_status",
+        "expected_dtype",
+        "expected_shape",
+        "output_dtype",
+        "output_shape",
+        "output_value_status",
+        "reference_dtype",
+        "reference_shape",
+        "reference_value_status",
+        "rtol",
+        "tensor_name"
+      ],
+      "type": "object"
+    },
+    "comparison_status": {
+      "enum": [
+        "invalid_output",
+        "invalid_reference",
+        "matched",
+        "mismatched",
+        "missing_output",
+        "missing_reference"
+      ]
+    },
+    "concrete_dtype": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/report_text"
+        },
+        {
+          "not": {
+            "enum": [
+              "invalid",
+              "missing"
+            ]
+          }
+        }
+      ]
+    },
+    "dtype_or_status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/report_text"
+        },
+        {
+          "enum": [
+            "invalid",
+            "missing"
+          ]
+        }
+      ]
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "tensor_name"
+      ],
+      "type": "object"
+    },
+    "optional_shape": {
+      "items": {
+        "maximum": 2147483647,
+        "minimum": 1,
+        "type": "integer"
+      },
+      "maxItems": 8,
+      "type": "array"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "output_value",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "reference_value",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "shape": {
+      "items": {
+        "maximum": 2147483647,
+        "minimum": 1,
+        "type": "integer"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "type": "array"
+    },
+    "tolerance": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    }
+  }
+}

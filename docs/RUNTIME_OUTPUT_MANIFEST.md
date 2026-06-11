@@ -52,6 +52,10 @@ Gate golden:
 tests/golden/proofs/runtime_evidence_gate.txt
 ```
 
+Runtime Reference Correctness builds on this boundary: it compares the terminal
+outputs named by the manifest against independent reference tensors while still
+omitting both output and reference values from serialized evidence.
+
 ## Security Boundary
 
 Runtime Output Manifest is metadata only. It does not serialize tensor values,

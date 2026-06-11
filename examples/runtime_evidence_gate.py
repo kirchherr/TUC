@@ -1,12 +1,14 @@
 """Run the CI-facing Runtime Evidence Gate."""
 
 from examples.runtime_output_manifest import build_output_manifest_report
+from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
 from tuc import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RuntimeEvidenceMatrixReport,
     RuntimeExecutorConformanceReport,
     RuntimeOutputManifestReport,
+    RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceReport,
     build_current_runtime_evidence_matrix_report,
     run_runtime_executor_conformance,
@@ -22,6 +24,7 @@ def build_gate_report(
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
     conformance_report: RuntimeExecutorConformanceReport | None = None,
     output_manifest_report: RuntimeOutputManifestReport | None = None,
+    reference_correctness_report: RuntimeReferenceCorrectnessReport | None = None,
     tensor_store_report: RuntimeTensorStoreEvidenceReport | None = None,
 ) -> str:
     """Return the stable CI-facing runtime evidence gate report."""
@@ -46,11 +49,23 @@ def build_gate_report(
         if output_manifest_report is None
         else output_manifest_report
     )
+    reference_correctness = (
+        build_reference_correctness_report()
+        if reference_correctness_report is None
+        else reference_correctness_report
+    )
     _assert_matrix_complete(matrix)
     _assert_conformance_passed(conformance)
     _assert_tensor_store_evidence_passed(tensor_store)
     _assert_output_manifest_passed(output_manifest)
-    return _render_gate_report(matrix, conformance, tensor_store, output_manifest)
+    _assert_reference_correctness_passed(reference_correctness)
+    return _render_gate_report(
+        matrix,
+        conformance,
+        tensor_store,
+        output_manifest,
+        reference_correctness,
+    )
 
 
 def main() -> None:
@@ -90,11 +105,24 @@ def _assert_output_manifest_passed(report: RuntimeOutputManifestReport) -> None:
         raise RuntimeEvidenceGateError(f"runtime output manifest failed: {issues}")
 
 
+def _assert_reference_correctness_passed(
+    report: RuntimeReferenceCorrectnessReport,
+) -> None:
+    if report.issues:
+        issues = ",".join(
+            f"{issue.tensor_name}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(
+            f"runtime reference correctness failed: {issues}"
+        )
+
+
 def _render_gate_report(
     matrix: RuntimeEvidenceMatrixReport,
     conformance: RuntimeExecutorConformanceReport,
     tensor_store: RuntimeTensorStoreEvidenceReport,
     output_manifest: RuntimeOutputManifestReport,
+    reference_correctness: RuntimeReferenceCorrectnessReport,
 ) -> str:
     lines = ["runtime.evidence_gate @runtime_evidence_gate_v0 {"]
     lines.append('  runtime_evidence_matrix = "complete"')
@@ -110,6 +138,13 @@ def _render_gate_report(
     lines.append(f'  runtime_output_count = "{len(output_manifest.outputs)}"')
     lines.append(
         f'  runtime_output_raw_value_policy = "{output_manifest.raw_value_policy}"'
+    )
+    lines.append('  runtime_reference_correctness = "passed"')
+    lines.append(
+        f'  runtime_reference_comparisons = "{len(reference_correctness.comparisons)}"'
+    )
+    lines.append(
+        f'  runtime_reference_raw_value_policy = "{reference_correctness.raw_value_policy}"'
     )
     lines.append(
         "  blocked_execution_surfaces = "

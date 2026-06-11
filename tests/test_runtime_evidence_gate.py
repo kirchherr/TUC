@@ -9,6 +9,7 @@ import pytest
 
 from examples.runtime_evidence_gate import RuntimeEvidenceGateError, build_gate_report
 from examples.runtime_output_manifest import build_output_manifest_report
+from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
 from tuc import (
     RuntimeEvidenceArtifact,
@@ -18,6 +19,8 @@ from tuc import (
     RuntimeExecutorConformanceReport,
     RuntimeOutputManifestIssue,
     RuntimeOutputManifestReport,
+    RuntimeReferenceCorrectnessIssue,
+    RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceIssue,
     RuntimeTensorStoreEvidenceReport,
     build_runtime_evidence_matrix_report,
@@ -44,6 +47,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
+    assert 'runtime_reference_correctness = "passed"' in completed.stdout
 
 
 def test_runtime_evidence_gate_rejects_incomplete_matrix() -> None:
@@ -129,3 +133,22 @@ def test_runtime_evidence_gate_rejects_failed_output_manifest() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="output manifest failed"):
         build_gate_report(output_manifest_report=failed_output_manifest)
+
+
+def test_runtime_evidence_gate_rejects_failed_reference_correctness() -> None:
+    report = build_reference_correctness_report()
+    bad_comparison = replace(report.comparisons[0], comparison_status="mismatched")
+    failed_reference_correctness = RuntimeReferenceCorrectnessReport(
+        graph_name=report.graph_name,
+        comparisons=(bad_comparison,),
+        reference_tensor_names=report.reference_tensor_names,
+        issues=(
+            RuntimeReferenceCorrectnessIssue(
+                tensor_name=bad_comparison.tensor_name,
+                issue_code="reference_value_mismatch",
+            ),
+        ),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="reference correctness failed"):
+        build_gate_report(reference_correctness_report=failed_reference_correctness)

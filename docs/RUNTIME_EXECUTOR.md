@@ -212,6 +212,17 @@ The schema-versioned report is documented in
 `schemas/runtime_output_manifest_report.v0.schema.json`. It serializes output
 metadata only and omits raw tensor values by policy.
 
+## Runtime Reference Correctness
+
+Runtime Reference Correctness v0 is the data-only review artifact for comparing
+terminal graph outputs against independent reference tensors. It performs the
+comparison in memory, but serializes only shapes, dtypes, tolerances, comparison
+status, and omitted-value policies.
+
+The schema-versioned report is documented in
+[`RUNTIME_REFERENCE_CORRECTNESS.md`](RUNTIME_REFERENCE_CORRECTNESS.md), with
+schema at `schemas/runtime_reference_correctness_report.v0.schema.json`.
+
 ## Trusted Backend Contract
 
 Each in-process prototype executor exposes a `RuntimeBackendExecutorContract`.
