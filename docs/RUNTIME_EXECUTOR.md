@@ -140,6 +140,22 @@ readiness. They prevent NumPy broadcasting, implicit reductions, scalar
 outputs, or backend-specific shape interpretations from becoming hidden runtime
 behavior.
 
+## Graph Topology Contract
+
+Runtime Executor v0 validates the ordered graph before trusted kernels run:
+
+- every produced tensor name must have exactly one producer
+- operation inputs may read external inputs or previously produced tensors only
+- operation inputs may not read tensors produced by later operations
+- operation outputs may not overwrite external inputs
+
+These checks make graph ordering an explicit runtime contract instead of an
+accidental Python dictionary lookup. Invalid topology fails during execution
+readiness before any operation is executed.
+
+The accepted design note is
+[`RFC 0107: Runtime Graph Topology Contract v0`](../rfcs/0107-runtime-graph-topology-contract.md).
+
 ## Tensor Value Contract
 
 Runtime Executor v0 validates tensor values at the runtime boundary:

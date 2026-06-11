@@ -120,6 +120,9 @@ hardware-independent interface into capability-driven runtime planning.
   goldens.
 - Runtime operation semantic contract checks for MVP operation shapes, axes,
   scalar-output rejection, and supported elementwise kernels.
+- Runtime graph topology contract checks for unique tensor producers,
+  topological operation order, and external-input overwrite rejection before
+  trusted kernels run.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
   and finite values at input and output boundaries.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects
@@ -175,9 +178,9 @@ Current slice:
   `tests/golden/frontend/triton_idiom_coverage_report.json`.
 - Runtime Executor v0 with contract `runtime_executor.trusted_backend.v0`,
   fixed trusted registry `trusted_runtime_executor_registry.v0`, plain-mapping
-  input validation, partition-plan matching, output-shape checks, unsupported
-  executor rejection, internal `RuntimeValueRecord` storage, and deterministic
-  execution traces.
+  input validation, partition-plan matching, graph-topology checks,
+  output-shape checks, unsupported executor rejection, internal
+  `RuntimeValueRecord` storage, and deterministic execution traces.
 - Runtime Tensor Store Evidence at `examples/runtime_tensor_store_evidence.py`,
   with golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`.
@@ -247,6 +250,8 @@ Current slice:
   `tests/golden/execution_traces/proof_of_softmax.txt`.
 - Runtime Executor negative tests for input shape mismatch, non-`float64`
   inputs, non-finite inputs, and non-finite outputs.
+- Runtime Executor negative tests for non-topological graph order, duplicate
+  output tensor definitions, and external-input overwrite attempts.
 - Runtime Executor negative tests for matmul dimension mismatch, elementwise
   output mismatch, unsupported elementwise kernels, reduction axis/output
   errors, scalar reduction output, and softmax axis/output errors.

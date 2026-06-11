@@ -807,6 +807,7 @@ def _normalize_inputs(
 
 
 def _external_input_tensors(graph: ComputeGraph) -> dict[str, TensorRef]:
+    _validate_runtime_graph_topology(graph)
     produced: set[str] = set()
     required: dict[str, TensorRef] = {}
     for operation in graph.operations:
@@ -819,12 +820,61 @@ def _external_input_tensors(graph: ComputeGraph) -> dict[str, TensorRef]:
 
 
 def _validate_partition_plan(graph: ComputeGraph, partition_plan: PartitionPlan) -> None:
+    _validate_runtime_graph_topology(graph)
     if graph.name != partition_plan.graph_name:
         raise ValueError("runtime executor graph and partition plan names must match")
     operation_names = tuple(operation.name for operation in graph.operations)
     assignment_names = tuple(assignment.operation_name for assignment in partition_plan.assignments)
     if assignment_names != operation_names:
         raise ValueError("runtime executor partition plan must match graph operations")
+
+
+def _validate_runtime_graph_topology(graph: ComputeGraph) -> None:
+    all_output_names: list[str] = [
+        tensor.name for operation in graph.operations for tensor in operation.outputs
+    ]
+    seen_outputs: set[str] = set()
+    duplicate_outputs: set[str] = set()
+    for name in all_output_names:
+        if name in seen_outputs:
+            duplicate_outputs.add(name)
+        seen_outputs.add(name)
+    if duplicate_outputs:
+        raise ValueError(
+            "runtime executor graph has duplicate output tensor definitions: "
+            f"{','.join(sorted(duplicate_outputs))}"
+        )
+
+    future_outputs = set(all_output_names)
+    available: set[str] = set()
+    external_inputs: set[str] = set()
+    produced: set[str] = set()
+    for operation in graph.operations:
+        for tensor in operation.outputs:
+            future_outputs.discard(tensor.name)
+        for tensor in operation.inputs:
+            if tensor.name in available:
+                continue
+            if tensor.name in future_outputs:
+                raise ValueError(
+                    "runtime executor graph is not topologically ordered: "
+                    f"{operation.name} reads {tensor.name} before it is produced"
+                )
+            external_inputs.add(tensor.name)
+            available.add(tensor.name)
+        for tensor in operation.outputs:
+            if tensor.name in external_inputs:
+                raise ValueError(
+                    "runtime executor graph output collides with external input: "
+                    f"{tensor.name}"
+                )
+            if tensor.name in produced:
+                raise ValueError(
+                    "runtime executor graph has duplicate output tensor definitions: "
+                    f"{tensor.name}"
+                )
+            produced.add(tensor.name)
+            available.add(tensor.name)
 
 
 def _validate_declared_output(operation: ComputeOperation, value: FloatArray) -> None:
