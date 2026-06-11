@@ -122,6 +122,8 @@ hardware-independent interface into capability-driven runtime planning.
   scalar-output rejection, and supported elementwise kernels.
 - Runtime tensor value contract checks for declared shapes, `float64` dtype,
   and finite values at input and output boundaries.
+- Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects
+  for accepted input and computed runtime values.
 
 ## In Progress
 
@@ -169,7 +171,8 @@ Current slice:
 - Runtime Executor v0 with contract `runtime_executor.trusted_backend.v0`,
   fixed trusted registry `trusted_runtime_executor_registry.v0`, plain-mapping
   input validation, partition-plan matching, output-shape checks, unsupported
-  executor rejection, and deterministic execution traces.
+  executor rejection, internal `RuntimeValueRecord` storage, and deterministic
+  execution traces.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.

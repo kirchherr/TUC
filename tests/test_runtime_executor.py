@@ -34,6 +34,7 @@ from tuc.runtime import (
     trusted_runtime_executor_contracts,
     trusted_runtime_executor_registry,
 )
+from tuc.runtime.executor import RuntimeTensorStore, RuntimeValueRecord
 
 _GOLDEN_TRACE = (
     Path(__file__).parent / "golden" / "execution_traces" / "proof_of_execution.txt"
@@ -140,6 +141,52 @@ def test_runtime_executor_rejects_non_plain_input_mapping() -> None:
             compiled.partition_plan,
             CustomInputs(proof_inputs()),
         )
+
+
+def test_runtime_executor_stores_read_only_value_records() -> None:
+    graph = build_graph()
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    inputs = proof_inputs()
+    execution = execute_graph(compiled.hac_ir.graph, compiled.partition_plan, inputs)
+    inputs["lhs"][0, 0] = 999.0
+
+    assert execution.values["lhs"][0, 0] != 999.0
+    assert execution.values["lhs"].flags.writeable is False
+    assert execution.output_for("activated").flags.writeable is False
+
+
+def test_runtime_value_record_rejects_shape_mismatch() -> None:
+    with pytest.raises(ValueError, match="shape mismatch"):
+        RuntimeValueRecord(
+            tensor_name="value",
+            value=np.zeros((2, 2), dtype=np.float64),
+            shape=(2,),
+            dtype="float64",
+            value_role="input",
+        )
+
+
+def test_runtime_tensor_store_rejects_duplicate_records() -> None:
+    record = RuntimeValueRecord(
+        tensor_name="value",
+        value=np.zeros((2,), dtype=np.float64),
+        shape=(2,),
+        dtype="float64",
+        value_role="input",
+    )
+
+    with pytest.raises(ValueError, match="duplicate value"):
+        RuntimeTensorStore((record, record))
+
+
+def test_runtime_tensor_store_is_documented() -> None:
+    for path in (
+        Path("README.md"),
+        Path("docs/RUNTIME_EXECUTOR.md"),
+        Path("docs/RUNTIME_TENSOR_STORE.md"),
+        Path("rfcs/0105-runtime-tensor-store.md"),
+    ):
+        assert "Runtime Tensor Store" in path.read_text(encoding="utf-8")
 
 
 def test_runtime_executor_rejects_partition_plan_mismatch() -> None:
