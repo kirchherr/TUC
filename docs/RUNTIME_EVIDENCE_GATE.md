@@ -5,7 +5,9 @@ runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
 Evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, and Runtime Reference Correctness
 evidence, plus Source Intent Runtime Returns evidence for the frontend return
-boundary.
+boundary. Source Intent Runtime Returns must also be bound to the curated
+Runtime Evidence Matrix graph that inventories the same frontend-originated
+fixture.
 
 It runs:
 
@@ -34,6 +36,11 @@ The gate passes only when:
   against independent reference tensors
 - Source Intent Runtime Returns passes, proving explicit frontend return aliases
   resolve through Runtime Output Contract and Runtime Public Output Bundle
+- the Source Intent Runtime Returns report is bound to the
+  `source_intent_return_mlp` Runtime Evidence Matrix graph, which must use the
+  `source_intent_metadata` source boundary and list both
+  `source_intent_return_semantics` and `source_intent_runtime_returns`
+  artifact kinds
 
 Runtime Output Manifest schema:
 
@@ -101,6 +108,9 @@ It composes bounded in-repository checks:
 - data-only Source Intent Runtime Returns metadata proving frontend public
   returns resolve to runtime public outputs with raw tensor values omitted by
   policy
+- a bounded matrix lookup for `source_intent_return_mlp`; the lookup checks only
+  graph IDs, source boundary labels, artifact-kind labels, and runtime evidence
+  completeness
 
 The output is a small deterministic text report ending in `PASS`.
 

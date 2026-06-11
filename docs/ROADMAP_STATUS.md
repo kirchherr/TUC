@@ -190,6 +190,10 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Gate now requires Source Intent Runtime Returns evidence in
   addition to matrix, executor conformance, tensor store, output manifest,
   output contract, public output bundle, and reference correctness evidence.
+- Runtime Evidence Gate now binds Source Intent Runtime Returns to the curated
+  `source_intent_return_mlp` Runtime Evidence Matrix graph, failing closed when
+  the matrix graph, source boundary, required Source Intent artifacts, or report
+  graph name drift.
 
 ## In Progress
 
@@ -295,7 +299,8 @@ Current slice:
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
   Evidence, Runtime Output Manifest, Runtime Output Contract, Runtime Public
   Output Bundle, Runtime Reference Correctness, and Source Intent Runtime
-  Returns.
+  Returns, with a matrix binding check for the `source_intent_return_mlp`
+  frontend fixture.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

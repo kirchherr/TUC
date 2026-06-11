@@ -9,6 +9,7 @@ from examples.source_intent_runtime_returns import run_evidence as run_runtime_r
 from tuc import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT,
+    RuntimeEvidenceGraph,
     RuntimeEvidenceMatrixReport,
     RuntimeExecutorConformanceReport,
     RuntimeOutputContractReport,
@@ -19,6 +20,13 @@ from tuc import (
     SourceIntentRuntimeReturnsReport,
     build_current_runtime_evidence_matrix_report,
     run_runtime_executor_conformance,
+)
+
+SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID = "source_intent_return_mlp"
+SOURCE_INTENT_RUNTIME_RETURNS_SOURCE_BOUNDARY = "source_intent_metadata"
+SOURCE_INTENT_RUNTIME_RETURNS_REQUIRED_MATRIX_ARTIFACTS = (
+    "source_intent_return_semantics",
+    "source_intent_runtime_returns",
 )
 
 
@@ -89,6 +97,10 @@ def build_gate_report(
     _assert_public_output_bundle_passed(public_bundle, output_contract)
     _assert_reference_correctness_passed(reference_correctness)
     _assert_source_intent_runtime_returns_passed(source_intent_runtime_returns)
+    _assert_source_intent_runtime_returns_matrix_covered(
+        matrix,
+        source_intent_runtime_returns,
+    )
     return _render_gate_report(
         matrix,
         conformance,
@@ -218,6 +230,56 @@ def _assert_source_intent_runtime_returns_passed(
         )
 
 
+def _assert_source_intent_runtime_returns_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+    report: SourceIntentRuntimeReturnsReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(
+        matrix,
+        SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
+    )
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: graph missing"
+        )
+    if graph.source_boundary != SOURCE_INTENT_RUNTIME_RETURNS_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: "
+            "source boundary mismatch"
+        )
+    if report.module_name != graph.graph_id or report.graph_name != graph.graph_id:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: "
+            "report graph mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: "
+            "runtime evidence incomplete"
+        )
+    missing_artifacts = tuple(
+        artifact_kind
+        for artifact_kind in SOURCE_INTENT_RUNTIME_RETURNS_REQUIRED_MATRIX_ARTIFACTS
+        if artifact_kind not in graph.present_artifact_kinds
+    )
+    if missing_artifacts:
+        missing = ",".join(missing_artifacts)
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: "
+            f"missing {missing}"
+        )
+
+
+def _find_runtime_evidence_graph(
+    matrix: RuntimeEvidenceMatrixReport,
+    graph_id: str,
+) -> RuntimeEvidenceGraph | None:
+    for graph in matrix.graphs:
+        if graph.graph_id == graph_id:
+            return graph
+    return None
+
+
 def _render_gate_report(
     matrix: RuntimeEvidenceMatrixReport,
     conformance: RuntimeExecutorConformanceReport,
@@ -264,6 +326,7 @@ def _render_gate_report(
     lines.append(
         f'  runtime_reference_raw_value_policy = "{reference_correctness.raw_value_policy}"'
     )
+    lines.append('  source_intent_runtime_returns_matrix = "covered"')
     lines.append('  source_intent_runtime_returns = "passed"')
     lines.append(
         "  source_intent_runtime_return_count = "

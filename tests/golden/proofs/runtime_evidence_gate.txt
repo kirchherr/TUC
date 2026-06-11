@@ -19,6 +19,7 @@ runtime.evidence_gate @runtime_evidence_gate_v0 {
   runtime_reference_correctness = "passed"
   runtime_reference_comparisons = "1"
   runtime_reference_raw_value_policy = "omitted_by_policy"
+  source_intent_runtime_returns_matrix = "covered"
   source_intent_runtime_returns = "passed"
   source_intent_runtime_return_count = "1"
   source_intent_runtime_public_output_count = "1"

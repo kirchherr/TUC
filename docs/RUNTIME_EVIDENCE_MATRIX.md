@@ -71,7 +71,10 @@ show missing evidence as explicit matrix issues.
 
 The CI-facing [Runtime Evidence Gate](RUNTIME_EVIDENCE_GATE.md) requires this
 matrix to be complete before runtime executor conformance can count as passing
-merge evidence.
+merge evidence. It also requires `source_intent_return_mlp` to remain present
+with the `source_intent_metadata` source boundary and the
+`source_intent_return_semantics` plus `source_intent_runtime_returns` artifact
+kinds before Source Intent Runtime Returns can count as passing gate evidence.
 
 ## Security Boundary
 

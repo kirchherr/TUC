@@ -7,12 +7,19 @@ from pathlib import Path
 
 import pytest
 
-from examples.runtime_evidence_gate import RuntimeEvidenceGateError, build_gate_report
+from examples.runtime_evidence_gate import (
+    SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
+    RuntimeEvidenceGateError,
+    build_gate_report,
+)
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
+from examples.source_intent_runtime_returns import (
+    run_evidence as run_source_intent_runtime_returns,
+)
 from tuc import (
     RuntimeEvidenceArtifact,
     RuntimeEvidenceGraph,
@@ -27,6 +34,7 @@ from tuc import (
     RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceIssue,
     RuntimeTensorStoreEvidenceReport,
+    build_current_runtime_evidence_matrix_report,
     build_runtime_evidence_matrix_report,
 )
 from tuc.ir import OperationKind
@@ -194,3 +202,55 @@ def test_runtime_evidence_gate_rejects_failed_reference_correctness() -> None:
 def test_runtime_evidence_gate_rejects_invalid_source_intent_runtime_returns() -> None:
     with pytest.raises(RuntimeEvidenceGateError, match="source intent runtime returns"):
         build_gate_report(source_intent_runtime_returns_report="not_a_report")  # type: ignore[arg-type]
+
+
+def test_runtime_evidence_gate_rejects_missing_source_intent_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    without_source_intent_graph = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_missing_source_intent_graph",
+        tuple(
+            graph
+            for graph in report.graphs
+            if graph.graph_id != SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID
+        ),
+    )
+
+    assert without_source_intent_graph.runtime_evidence_matrix_complete
+    with pytest.raises(RuntimeEvidenceGateError, match="matrix coverage"):
+        build_gate_report(matrix_report=without_source_intent_graph)
+
+
+def test_runtime_evidence_gate_rejects_missing_source_intent_matrix_artifact() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    without_runtime_returns_artifact = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_missing_source_intent_runtime_returns_artifact",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    artifact
+                    for artifact in graph.artifacts
+                    if artifact.artifact_kind != "source_intent_runtime_returns"
+                ),
+            )
+            if graph.graph_id == SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert without_runtime_returns_artifact.runtime_evidence_matrix_complete
+    with pytest.raises(RuntimeEvidenceGateError, match="matrix coverage"):
+        build_gate_report(matrix_report=without_runtime_returns_artifact)
+
+
+def test_runtime_evidence_gate_rejects_unbound_source_intent_return_report() -> None:
+    report = run_source_intent_runtime_returns().runtime_returns
+    mismatched_report = replace(
+        report,
+        module_name="other_graph",
+        graph_name="other_graph",
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="report graph mismatch"):
+        build_gate_report(source_intent_runtime_returns_report=mismatched_report)
