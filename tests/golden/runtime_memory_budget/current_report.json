@@ -1,0 +1,44 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "budget_contract": "runtime_memory_budget.data_only.v0",
+  "budget_count": 1,
+  "budgets": [
+    {
+      "budget_id": "host_ram_alpha_budget",
+      "max_peak_live_bytes": 192,
+      "max_reserved_bytes": 192,
+      "memory_domain": "host_ram"
+    }
+  ],
+  "graph_name": "runtime_buffer_lifetime",
+  "issues": [],
+  "operation_count": 4,
+  "passed": true,
+  "schema_version": "tuc.runtime_memory_budget_report.v0",
+  "source_allocation_contract": "runtime_allocation_plan.data_only.v0",
+  "source_allocation_issue_count": 0,
+  "source_allocation_schema_version": "tuc.runtime_allocation_plan_report.v0",
+  "total_peak_live_bytes": 192,
+  "total_reserved_bytes": 192,
+  "usage_count": 1,
+  "usages": [
+    {
+      "budget_id": "host_ram_alpha_budget",
+      "max_peak_live_bytes": 192,
+      "max_reserved_bytes": 192,
+      "memory_domain": "host_ram",
+      "peak_live_bytes": 192,
+      "status": "within_budget",
+      "total_reserved_bytes": 192
+    }
+  ]
+}

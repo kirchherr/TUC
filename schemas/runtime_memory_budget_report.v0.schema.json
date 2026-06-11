@@ -1,0 +1,250 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_memory_budget_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "budget_contract": {
+      "const": "runtime_memory_budget.data_only.v0"
+    },
+    "budget_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "budgets": {
+      "items": {
+        "$ref": "#/$defs/budget"
+      },
+      "maxItems": 32,
+      "type": "array"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "operation_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_memory_budget_report.v0"
+    },
+    "source_allocation_contract": {
+      "const": "runtime_allocation_plan.data_only.v0"
+    },
+    "source_allocation_issue_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_allocation_schema_version": {
+      "const": "tuc.runtime_allocation_plan_report.v0"
+    },
+    "total_peak_live_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "total_reserved_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "usage_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "usages": {
+      "items": {
+        "$ref": "#/$defs/usage"
+      },
+      "maxItems": 32,
+      "type": "array"
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "budget_contract",
+    "budget_count",
+    "budgets",
+    "graph_name",
+    "issues",
+    "operation_count",
+    "passed",
+    "schema_version",
+    "source_allocation_contract",
+    "source_allocation_issue_count",
+    "source_allocation_schema_version",
+    "total_peak_live_bytes",
+    "total_reserved_bytes",
+    "usage_count",
+    "usages"
+  ],
+  "type": "object",
+  "$defs": {
+    "budget": {
+      "additionalProperties": false,
+      "properties": {
+        "budget_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "max_peak_live_bytes": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "max_reserved_bytes": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        }
+      },
+      "required": [
+        "budget_id",
+        "max_peak_live_bytes",
+        "max_reserved_bytes",
+        "memory_domain"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "usage": {
+      "additionalProperties": false,
+      "properties": {
+        "budget_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "max_peak_live_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "max_reserved_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "peak_live_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "missing_budget",
+            "peak_exceeded",
+            "reserved_and_peak_exceeded",
+            "reserved_exceeded",
+            "within_budget"
+          ]
+        },
+        "total_reserved_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "budget_id",
+        "max_peak_live_bytes",
+        "max_reserved_bytes",
+        "memory_domain",
+        "peak_live_bytes",
+        "status",
+        "total_reserved_bytes"
+      ],
+      "type": "object"
+    },
+    "memory_domain": {
+      "enum": [
+        "analog_weight_bank",
+        "device_sram",
+        "gpu_hbm",
+        "host_ram"
+      ]
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}
