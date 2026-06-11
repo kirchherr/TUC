@@ -144,6 +144,10 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_reference_correctness/proof_of_execution.json`, Runtime
   Evidence Gate coverage, and proof-of-execution reporting without raw
   result/reference tensor values.
+- Runtime Multi-Output Evidence fixture with deterministic golden evidence at
+  `tests/golden/runtime_multi_output_evidence/current_report.json`, proving
+  Runtime Output Manifest and Runtime Reference Correctness across two terminal
+  graph outputs without raw tensor values.
 
 ## In Progress
 
@@ -204,6 +208,10 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_reference_correctness/proof_of_execution.json`,
   including output/reference comparison status without tensor values.
+- Runtime Multi-Output Evidence at `examples/runtime_multi_output_evidence.py`,
+  with golden evidence at
+  `tests/golden/runtime_multi_output_evidence/current_report.json`, covering
+  branched terminal outputs without tensor values.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.

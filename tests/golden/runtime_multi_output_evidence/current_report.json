@@ -1,0 +1,154 @@
+{
+  "evidence_fixture": "runtime_multi_output_evidence.v0",
+  "graph_name": "multi_output_execution",
+  "output_manifest": {
+    "artifact_status": "review_evidence",
+    "blocked_execution_surfaces": [
+      "backend_plugin_discovery",
+      "device_access",
+      "dynamic_import",
+      "dynamic_library_loading",
+      "generated_artifact_execution",
+      "jit_execution",
+      "network_access",
+      "subprocess_execution"
+    ],
+    "executor_contract": "runtime_executor.trusted_backend.v0",
+    "expected_output_count": 2,
+    "expected_outputs": [
+      {
+        "dtype": "float64",
+        "producer_id": "row_reduction",
+        "producer_kind": "operation",
+        "shape": [
+          2
+        ],
+        "tensor_name": "row_sum",
+        "value_role": "computed"
+      },
+      {
+        "dtype": "float64",
+        "producer_id": "positive_branch",
+        "producer_kind": "operation",
+        "shape": [
+          2,
+          2
+        ],
+        "tensor_name": "positive_projection",
+        "value_role": "computed"
+      }
+    ],
+    "graph_name": "multi_output_execution",
+    "issues": [],
+    "manifest_contract": "runtime_output_manifest.data_only.v0",
+    "output_count": 2,
+    "output_metadata_digest": "sha256:c3d1bbb0bdfbd390d4d8a72de58b67e0c8db6e73528db62ff830564a82285952",
+    "outputs": [
+      {
+        "dtype": "float64",
+        "producer_id": "row_reduction",
+        "producer_kind": "operation",
+        "raw_value_status": "omitted_by_policy",
+        "readonly": true,
+        "record_contract": "runtime_value_record.internal.v0",
+        "shape": [
+          2
+        ],
+        "tensor_name": "row_sum",
+        "value_role": "computed"
+      },
+      {
+        "dtype": "float64",
+        "producer_id": "positive_branch",
+        "producer_kind": "operation",
+        "raw_value_status": "omitted_by_policy",
+        "readonly": true,
+        "record_contract": "runtime_value_record.internal.v0",
+        "shape": [
+          2,
+          2
+        ],
+        "tensor_name": "positive_projection",
+        "value_role": "computed"
+      }
+    ],
+    "passed": true,
+    "raw_value_policy": "omitted_by_policy",
+    "schema_version": "tuc.runtime_output_manifest_report.v0",
+    "store_contract": "runtime_tensor_store.internal.v0",
+    "terminal_output_policy": "graph_terminal_outputs",
+    "value_record_contract": "runtime_value_record.internal.v0"
+  },
+  "reference_correctness": {
+    "artifact_status": "review_evidence",
+    "blocked_execution_surfaces": [
+      "backend_plugin_discovery",
+      "device_access",
+      "dynamic_import",
+      "dynamic_library_loading",
+      "generated_artifact_execution",
+      "jit_execution",
+      "network_access",
+      "subprocess_execution"
+    ],
+    "comparison_count": 2,
+    "comparison_metadata_digest": "sha256:73dad22d8f35fe78c025e20dfd6c4ac259701c83b32b9d5d725aed7d4a7b0d0b",
+    "comparisons": [
+      {
+        "atol": 1e-12,
+        "comparison_status": "matched",
+        "expected_dtype": "float64",
+        "expected_shape": [
+          2
+        ],
+        "output_dtype": "float64",
+        "output_shape": [
+          2
+        ],
+        "output_value_status": "omitted_by_policy",
+        "reference_dtype": "float64",
+        "reference_shape": [
+          2
+        ],
+        "reference_value_status": "omitted_by_policy",
+        "rtol": 1e-12,
+        "tensor_name": "row_sum"
+      },
+      {
+        "atol": 1e-12,
+        "comparison_status": "matched",
+        "expected_dtype": "float64",
+        "expected_shape": [
+          2,
+          2
+        ],
+        "output_dtype": "float64",
+        "output_shape": [
+          2,
+          2
+        ],
+        "output_value_status": "omitted_by_policy",
+        "reference_dtype": "float64",
+        "reference_shape": [
+          2,
+          2
+        ],
+        "reference_value_status": "omitted_by_policy",
+        "rtol": 1e-12,
+        "tensor_name": "positive_projection"
+      }
+    ],
+    "correctness_contract": "runtime_reference_correctness.data_only.v0",
+    "executor_contract": "runtime_executor.trusted_backend.v0",
+    "graph_name": "multi_output_execution",
+    "issues": [],
+    "output_manifest_contract": "runtime_output_manifest.data_only.v0",
+    "passed": true,
+    "raw_value_policy": "omitted_by_policy",
+    "reference_tensor_names": [
+      "positive_projection",
+      "row_sum"
+    ],
+    "schema_version": "tuc.runtime_reference_correctness_report.v0"
+  }
+}

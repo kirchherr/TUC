@@ -46,6 +46,12 @@ Golden evidence:
 tests/golden/runtime_output_manifest/proof_of_execution.json
 ```
 
+Multi-output fixture evidence:
+
+```text
+tests/golden/runtime_multi_output_evidence/current_report.json
+```
+
 Gate golden:
 
 ```text
