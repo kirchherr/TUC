@@ -148,6 +148,11 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_multi_output_evidence/current_report.json`, proving
   Runtime Output Manifest and Runtime Reference Correctness across two terminal
   graph outputs without raw tensor values.
+- Runtime Output Contract v0 with schema at
+  `schemas/runtime_output_contract_report.v0.schema.json`, deterministic golden
+  evidence at `tests/golden/runtime_output_contract/current_report.json`, and
+  explicit public output aliases for terminal graph tensors without raw tensor
+  values.
 
 ## In Progress
 
@@ -212,6 +217,9 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_multi_output_evidence/current_report.json`, covering
   branched terminal outputs without tensor values.
+- Runtime Output Contract at `examples/runtime_output_contract.py`, with golden
+  evidence at `tests/golden/runtime_output_contract/current_report.json`,
+  separating public output aliases from terminal graph tensor names.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.

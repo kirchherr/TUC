@@ -77,7 +77,7 @@ omission status.
 
 - The manifest tracks Runtime Executor v0 only.
 - The current runtime output dtype is `float64`.
-- The manifest identifies terminal graph outputs, not user-defined API return
-  aliases.
+- The manifest identifies terminal graph outputs. User-facing return names are
+  covered separately by [Runtime Output Contract](RUNTIME_OUTPUT_CONTRACT.md).
 - The manifest is not a correctness proof by itself; it complements proof
   reference checks, execution traces, and Runtime Tensor Store Evidence.
