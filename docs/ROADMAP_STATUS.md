@@ -79,6 +79,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Candidate Scoring Gate v0 with deterministic golden evidence at
   `tests/golden/runtime_candidate_scoring_gate/current_gate.txt` and CI coverage
   in the `python` workflow job.
+- Runtime Buffer Lifetime v0 with schema at
+  `schemas/runtime_buffer_lifetime_report.v0.schema.json` and deterministic
+  golden at `tests/golden/runtime_buffer_lifetime/current_report.json`.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
   deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
@@ -190,6 +193,8 @@ Current slice:
 - Runtime Candidate Scoring Gate at `examples/runtime_candidate_scoring_gate.py`,
   with golden evidence at
   `tests/golden/runtime_candidate_scoring_gate/current_gate.txt`.
+- Runtime Buffer Lifetime at `examples/runtime_buffer_lifetime.py`, with golden
+  evidence at `tests/golden/runtime_buffer_lifetime/current_report.json`.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -421,6 +426,8 @@ Current focus:
   candidate comparator behavior.
 - Keep Runtime Candidate Scoring Gate passing in CI before accepting richer
   candidate scoring behavior.
+- Use Runtime Buffer Lifetime before adding explicit buffer allocation plans,
+  memory-pool behavior, or buffer-reuse claims.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 

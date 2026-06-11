@@ -33,6 +33,8 @@ The current prototype contains:
 - Proof-of-softmax example for Objective Alpha's nonlinear operation family.
 - Data-movement-aware HAC-IR metadata for MVP kernels.
 - Runtime transfer-plan dumps with prototype transfer-cost estimates.
+- Runtime Buffer Lifetime v0 with schema-versioned golden evidence for
+  conservative tensor lifetimes and exact-match reuse candidates.
 - Validated transfer-cost profiles and backend-produced layout metadata.
 - Backend API v0.1 authoring guide for external prototype backends.
 - Explicit backend capability registry for manifest-loaded planning data.
@@ -297,6 +299,12 @@ Run the Runtime Candidate Scoring Gate used by CI:
 python examples/runtime_candidate_scoring_gate.py
 ```
 
+Inspect runtime buffer lifetime evidence:
+
+```bash
+python examples/runtime_buffer_lifetime.py
+```
+
 Inspect data-movement metadata:
 
 ```bash
@@ -490,6 +498,7 @@ pytest -q
 - [Runtime Candidate Scoring Policy](docs/RUNTIME_CANDIDATE_SCORING_POLICY.md)
 - [Runtime Candidate Scoring Conformance](docs/RUNTIME_CANDIDATE_SCORING_CONFORMANCE.md)
 - [Runtime Candidate Scoring Gate](docs/RUNTIME_CANDIDATE_SCORING_GATE.md)
+- [Runtime Buffer Lifetime](docs/RUNTIME_BUFFER_LIFETIME.md)
 - [Systolic simulator proof](docs/SYSTOLIC_SIMULATOR.md)
 - [Manifest Claim Review](docs/MANIFEST_CLAIM_REVIEW.md)
 - [Proof artifact review checklist](docs/PROOF_ARTIFACT_REVIEW.md)

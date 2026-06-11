@@ -375,6 +375,9 @@ Completed evidence:
   planner's observable candidate choices match the active comparator policy.
 - Runtime Candidate Scoring Gate composes score evidence, scoring policy, and
   conformance as one CI-facing runtime-planning check.
+- Runtime Buffer Lifetime reports expose conservative produced tensor
+  lifetimes, peak live bytes, and exact-match reuse candidates before adding an
+  allocator.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -392,6 +395,8 @@ Next work:
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
+- Add explicit buffer allocation plans only after buffer lifetime evidence stays
+  deterministic and reviewable.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 

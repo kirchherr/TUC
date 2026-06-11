@@ -48,6 +48,15 @@ Compiler decision reports complement runtime-plan dumps by showing which
 registered backend capabilities accepted or rejected each operation before the
 runtime assignment was finalized.
 
+Runtime Buffer Lifetime adds a schema-versioned report for conservative
+produced tensor lifetimes and exact-match reuse candidates:
+
+```bash
+python examples/runtime_buffer_lifetime.py
+```
+
+See [Runtime Buffer Lifetime](RUNTIME_BUFFER_LIFETIME.md).
+
 ## Manual Override Policy
 
 TUC accepts a first operation-scoped manual placement override data surface
@@ -134,6 +143,9 @@ Runtime plan objects are declarative data:
   `tuple` data.
 - Transfer-cost profile files must pass the schema-versioned JSON loader before
   becoming runtime profile data.
+- Buffer lifetime reports are derived from already constructed `ComputeGraph`
+  and `PartitionPlan` objects. They are bounded data and do not allocate memory
+  or execute backend code.
 - Same-domain transfer edges are rejected.
 - No plugin, backend, subprocess, import, or filesystem path is executed while
   constructing a plan or validating a transfer profile.
@@ -164,13 +176,14 @@ This is still a prototype:
 
 ## Next Work
 
-1. Include buffer lifetime and reuse in runtime planning.
-2. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
-3. Add richer override diagnostics only if they stay bounded and visible in
+1. Add benchmark hooks that compare transfer-aware and transfer-blind plans.
+2. Add richer override diagnostics only if they stay bounded and visible in
    decision-report and runtime-plan golden fixtures.
-4. Keep Runtime Candidate Scoring Conformance passing before changing
+3. Keep Runtime Candidate Scoring Conformance passing before changing
    comparator semantics.
-5. Keep Runtime Candidate Scoring Gate passing in CI before accepting richer
+4. Keep Runtime Candidate Scoring Gate passing in CI before accepting richer
    scoring behavior.
+5. Add explicit buffer allocation plans only after lifetime evidence stays
+   deterministic and reviewable.
 6. Add noise/error-budget candidate score components only after those models are
    stable and documented.

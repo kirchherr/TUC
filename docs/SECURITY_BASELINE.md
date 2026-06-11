@@ -123,6 +123,10 @@ Implemented now:
   failing closed before dtype, shape, or non-finite-value drift can reach later
   runtime steps.
 - Movement-aware partition plan metadata with transfer-byte accounting.
+- Runtime Buffer Lifetime reports derive conservative produced tensor
+  lifetimes, peak live bytes, and exact-match reuse candidates from already
+  constructed graph and plan data without allocating memory, executing kernels,
+  importing backend code, discovering plugins, or loading benchmark artifacts.
 - Validated in-memory transfer-cost profiles with finite numeric bounds and no
   executable backend hooks.
 - Schema-versioned JSON manifest loading with file-size, duplicate-key,

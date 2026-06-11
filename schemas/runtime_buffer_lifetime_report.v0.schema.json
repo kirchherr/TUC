@@ -1,0 +1,321 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_buffer_lifetime_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "lifetime_contract": {
+      "const": "runtime_buffer_lifetime.data_only.v0"
+    },
+    "lifetimes": {
+      "items": {
+        "$ref": "#/$defs/lifetime"
+      },
+      "maxItems": 8192,
+      "minItems": 1,
+      "type": "array"
+    },
+    "operation_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "peak_live_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "reuse_group_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "reuse_groups": {
+      "items": {
+        "$ref": "#/$defs/reuse_group"
+      },
+      "maxItems": 8192,
+      "type": "array"
+    },
+    "reuse_savings_upper_bound_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_buffer_lifetime_report.v0"
+    },
+    "tensor_lifetime_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "total_tensor_bytes": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "graph_name",
+    "issues",
+    "lifetime_contract",
+    "lifetimes",
+    "operation_count",
+    "passed",
+    "peak_live_bytes",
+    "reuse_group_count",
+    "reuse_groups",
+    "reuse_savings_upper_bound_bytes",
+    "schema_version",
+    "tensor_lifetime_count",
+    "total_tensor_bytes"
+  ],
+  "type": "object",
+  "$defs": {
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "lifetime": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes_allocated": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "dtype": {
+          "$ref": "#/$defs/dtype"
+        },
+        "first_live_index": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "last_consumer_operation": {
+          "$ref": "#/$defs/report_text"
+        },
+        "last_use_index": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "lifetime_kind": {
+          "enum": [
+            "graph_output",
+            "intermediate"
+          ]
+        },
+        "memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "producer_index": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "producer_operation": {
+          "$ref": "#/$defs/report_text"
+        },
+        "reusable": {
+          "type": "boolean"
+        },
+        "reuse_group_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "shape": {
+          "$ref": "#/$defs/shape"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "bytes_allocated",
+        "dtype",
+        "first_live_index",
+        "last_consumer_operation",
+        "last_use_index",
+        "layout",
+        "lifetime_kind",
+        "memory_domain",
+        "producer_index",
+        "producer_operation",
+        "reusable",
+        "reuse_group_id",
+        "shape",
+        "tensor_name"
+      ],
+      "type": "object"
+    },
+    "reuse_group": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes_per_buffer": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "dtype": {
+          "$ref": "#/$defs/dtype"
+        },
+        "group_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "non_overlapping": {
+          "type": "boolean"
+        },
+        "reuse_savings_upper_bound_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "shape": {
+          "$ref": "#/$defs/shape"
+        },
+        "tensor_count": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "tensor_names": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "total_tensor_bytes": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bytes_per_buffer",
+        "dtype",
+        "group_id",
+        "layout",
+        "memory_domain",
+        "non_overlapping",
+        "reuse_savings_upper_bound_bytes",
+        "shape",
+        "tensor_count",
+        "tensor_names",
+        "total_tensor_bytes"
+      ],
+      "type": "object"
+    },
+    "dtype": {
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+      "type": "string"
+    },
+    "layout": {
+      "enum": [
+        "blocked",
+        "row_major"
+      ]
+    },
+    "memory_domain": {
+      "enum": [
+        "analog_weight_bank",
+        "device_sram",
+        "gpu_hbm",
+        "host_ram"
+      ]
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "shape": {
+      "items": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "type": "array"
+    }
+  }
+}
