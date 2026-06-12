@@ -28,6 +28,7 @@ MAX_RUNTIME_ALLOCATION_REPORT_BYTES = 128 * 1024
 MAX_RUNTIME_ALLOCATION_FIELD_BYTES = 512
 
 _ALLOCATION_TEXT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
+_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _FORBIDDEN_ALLOCATION_TEXT = frozenset(
     {
         "backend_artifact",
@@ -160,6 +161,7 @@ class RuntimeAllocationPlanReport:
     source_lifetime_contract: str
     source_lifetime_schema_version: str
     source_lifetime_issue_count: int
+    source_lifetime_metadata_digest: str
     bindings: tuple[RuntimeAllocationBinding, ...]
     slots: tuple[RuntimeAllocationSlot, ...]
     issues: tuple[RuntimeAllocationIssue, ...]
@@ -178,6 +180,10 @@ class RuntimeAllocationPlanReport:
         _require_non_negative_int(
             self.source_lifetime_issue_count,
             "source_lifetime_issue_count",
+        )
+        _validate_digest(
+            self.source_lifetime_metadata_digest,
+            "source_lifetime_metadata_digest",
         )
         if self.allocation_contract != RUNTIME_ALLOCATION_PLAN_CONTRACT:
             raise ValueError("runtime allocation plan contract mismatch")
@@ -288,6 +294,7 @@ class RuntimeAllocationPlanReport:
             "operation_count": self.operation_count,
             "source_lifetime_contract": self.source_lifetime_contract,
             "source_lifetime_issue_count": self.source_lifetime_issue_count,
+            "source_lifetime_metadata_digest": self.source_lifetime_metadata_digest,
             "source_lifetime_schema_version": self.source_lifetime_schema_version,
             "slots": [
                 {
@@ -360,6 +367,7 @@ def build_runtime_allocation_plan_report(
         source_lifetime_contract=lifetime_report.lifetime_contract,
         source_lifetime_schema_version=RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION,
         source_lifetime_issue_count=len(lifetime_report.issues),
+        source_lifetime_metadata_digest=lifetime_report.lifetime_metadata_digest,
         bindings=bindings,
         slots=slots,
         issues=issues,
@@ -441,6 +449,7 @@ def runtime_allocation_plan_report_to_dict(
         ],
         "source_lifetime_contract": report.source_lifetime_contract,
         "source_lifetime_issue_count": report.source_lifetime_issue_count,
+        "source_lifetime_metadata_digest": report.source_lifetime_metadata_digest,
         "source_lifetime_schema_version": report.source_lifetime_schema_version,
         "tensor_binding_count": report.tensor_binding_count,
         "total_reserved_bytes": report.total_reserved_bytes,
@@ -628,6 +637,11 @@ def _validate_text(value: str, label: str) -> None:
         raise ValueError(f"{label} exceeds runtime allocation field limit")
     if value in _FORBIDDEN_ALLOCATION_TEXT:
         raise ValueError(f"{label} names a forbidden execution surface")
+
+
+def _validate_digest(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _DIGEST_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a sha256 metadata digest")
 
 
 def _validate_dtype(value: str) -> None:

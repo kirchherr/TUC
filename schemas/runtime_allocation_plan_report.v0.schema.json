@@ -99,6 +99,9 @@
       "minimum": 0,
       "type": "integer"
     },
+    "source_lifetime_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
     "source_lifetime_schema_version": {
       "const": "tuc.runtime_buffer_lifetime_report.v0"
     },
@@ -132,6 +135,7 @@
     "slots",
     "source_lifetime_contract",
     "source_lifetime_issue_count",
+    "source_lifetime_metadata_digest",
     "source_lifetime_schema_version",
     "tensor_binding_count",
     "total_reserved_bytes",

@@ -81,19 +81,22 @@ hardware-independent interface into capability-driven runtime planning.
   in the `python` workflow job.
 - Runtime Buffer Lifetime v0 with schema at
   `schemas/runtime_buffer_lifetime_report.v0.schema.json` and deterministic
-  golden at `tests/golden/runtime_buffer_lifetime/current_report.json`.
+  golden at `tests/golden/runtime_buffer_lifetime/current_report.json`,
+  exposing `lifetime_metadata_digest` for downstream allocation binding.
 - Runtime Allocation Plan v0 with schema at
   `schemas/runtime_allocation_plan_report.v0.schema.json`, deterministic
   golden at `tests/golden/runtime_allocation_plan/current_report.json`, and a
-  metadata digest for downstream budget binding.
+  source lifetime metadata digest plus allocation metadata digest for
+  downstream budget binding.
 - Runtime Memory Budget v0 with schema at
   `schemas/runtime_memory_budget_report.v0.schema.json`, deterministic golden
   at `tests/golden/runtime_memory_budget/current_report.json`, and source
   allocation metadata digest binding.
 - Runtime Memory Planning Gate v0 with deterministic golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt` and CI coverage
-  in the `python` workflow job, now verifying Memory Budget binding to the
-  Allocation Plan evaluated by the same gate invocation.
+  in the `python` workflow job, now verifying Allocation Plan binding to Buffer
+  Lifetime and Memory Budget binding to Allocation Plan in the same gate
+  invocation.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
   deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
@@ -385,17 +388,21 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_candidate_scoring_gate/current_gate.txt`.
 - Runtime Buffer Lifetime at `examples/runtime_buffer_lifetime.py`, with golden
-  evidence at `tests/golden/runtime_buffer_lifetime/current_report.json`.
+  evidence at `tests/golden/runtime_buffer_lifetime/current_report.json`,
+  exposing `lifetime_metadata_digest`.
 - Runtime Allocation Plan at `examples/runtime_allocation_plan.py`, with golden
   evidence at `tests/golden/runtime_allocation_plan/current_report.json`,
-  exposing `allocation_metadata_digest` for downstream binding.
+  bound to the source Buffer Lifetime metadata digest and exposing
+  `allocation_metadata_digest` for downstream binding.
 - Runtime Memory Budget at `examples/runtime_memory_budget.py`, with golden
   evidence at `tests/golden/runtime_memory_budget/current_report.json`, bound
   to the source Allocation Plan metadata digest.
 - Runtime Memory Planning Gate at `examples/runtime_memory_planning_gate.py`,
   with golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt`, rejecting stale
-  Memory Budget evidence whose source Allocation Plan digest does not match.
+  Allocation Plan evidence whose source Buffer Lifetime digest does not match
+  and stale Memory Budget evidence whose source Allocation Plan digest does not
+  match.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -650,6 +657,9 @@ Current focus:
 - Keep Memory Budget reports bound to the Allocation Plan evaluated by the same
   gate invocation before accepting allocator, memory-pool, device-allocation, or
   aliasing changes.
+- Keep Allocation Plan reports bound to the Buffer Lifetime report evaluated by
+  the same gate invocation before accepting allocator, memory-pool,
+  device-allocation, or aliasing changes.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 

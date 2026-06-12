@@ -385,7 +385,8 @@ Completed evidence:
   check explicit memory-domain budgets before adding memory pools or device
   allocation.
 - Runtime Memory Planning Gate verifies allocation-plan, memory-budget, and
-  allocation-digest binding evidence before allocator behavior can be accepted.
+  lifetime/allocation/budget digest-binding evidence before allocator behavior
+  can be accepted.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and

@@ -34,6 +34,10 @@ byte size. Lifetimes must be non-overlapping with a strict operation-index gap.
 This avoids silently treating an operation input and output as reusable during
 the same operation.
 
+The report also records `lifetime_metadata_digest`, a deterministic digest over
+buffer-lifetime metadata used by Runtime Allocation Plan and Runtime Memory
+Planning Gate binding checks.
+
 ## Why It Exists
 
 The current runtime planner explains placement, transfers, layout conversion,

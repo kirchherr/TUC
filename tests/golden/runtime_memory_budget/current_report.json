@@ -26,7 +26,7 @@
   "schema_version": "tuc.runtime_memory_budget_report.v0",
   "source_allocation_contract": "runtime_allocation_plan.data_only.v0",
   "source_allocation_issue_count": 0,
-  "source_allocation_metadata_digest": "sha256:f9019ac0bb44f9287e0bbb04544d24a5b38c804d7d185618fd35696ad59ef525",
+  "source_allocation_metadata_digest": "sha256:45f693be572dd776078e7fb0211b1562a48c4d50ad62b55e7f680975b36f2ede",
   "source_allocation_schema_version": "tuc.runtime_allocation_plan_report.v0",
   "total_peak_live_bytes": 192,
   "total_reserved_bytes": 192,

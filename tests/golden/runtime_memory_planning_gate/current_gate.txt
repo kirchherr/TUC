@@ -1,5 +1,9 @@
 runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {
+  buffer_lifetime = "passed"
+  buffer_lifetimes = "4"
+  buffer_reuse_groups = "3"
   allocation_plan = "passed"
+  allocation_lifetime_binding = "verified"
   allocation_bindings = "4"
   allocation_slots = "3"
   allocation_reuse_slots = "1"

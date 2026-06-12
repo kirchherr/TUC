@@ -44,6 +44,7 @@ def test_runtime_allocation_plan_report_passes() -> None:
         RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION
     )
     assert report.source_lifetime_issue_count == 0
+    assert report.source_lifetime_metadata_digest.startswith("sha256:")
     assert report.tensor_binding_count == 4
     assert report.slot_count == 3
     assert report.reuse_slot_count == 1
@@ -70,6 +71,7 @@ def test_runtime_allocation_plan_report_passes() -> None:
         "slots",
         "source_lifetime_contract",
         "source_lifetime_issue_count",
+        "source_lifetime_metadata_digest",
         "source_lifetime_schema_version",
         "tensor_binding_count",
         "total_reserved_bytes",
@@ -126,6 +128,7 @@ def test_runtime_allocation_plan_issues_must_be_derived() -> None:
             source_lifetime_contract=report.source_lifetime_contract,
             source_lifetime_schema_version=report.source_lifetime_schema_version,
             source_lifetime_issue_count=report.source_lifetime_issue_count,
+            source_lifetime_metadata_digest=report.source_lifetime_metadata_digest,
             bindings=report.bindings,
             slots=bad_slots,
             issues=(),
@@ -144,6 +147,7 @@ def test_runtime_allocation_plan_assertion_raises() -> None:
         source_lifetime_contract=report.source_lifetime_contract,
         source_lifetime_schema_version=report.source_lifetime_schema_version,
         source_lifetime_issue_count=report.source_lifetime_issue_count,
+        source_lifetime_metadata_digest=report.source_lifetime_metadata_digest,
         bindings=report.bindings,
         slots=bad_slots,
         issues=(
@@ -167,6 +171,7 @@ def test_runtime_allocation_plan_rejects_reserved_byte_overflow() -> None:
         source_lifetime_contract=report.source_lifetime_contract,
         source_lifetime_schema_version=report.source_lifetime_schema_version,
         source_lifetime_issue_count=report.source_lifetime_issue_count,
+        source_lifetime_metadata_digest=report.source_lifetime_metadata_digest,
         bindings=report.bindings,
         slots=bad_slots,
         issues=(
@@ -224,6 +229,9 @@ def test_runtime_allocation_plan_schema_matches_contract() -> None:
     assert schema["properties"]["source_lifetime_schema_version"]["const"] == (
         RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION
     )
+    assert schema["properties"]["source_lifetime_metadata_digest"] == {
+        "$ref": "#/$defs/sha256_digest"
+    }
     assert schema["properties"]["bindings"]["maxItems"] == MAX_RUNTIME_ALLOCATION_BINDINGS
     assert schema["properties"]["slots"]["maxItems"] == MAX_RUNTIME_ALLOCATION_SLOTS
     assert schema["properties"]["issues"]["maxItems"] == MAX_RUNTIME_ALLOCATION_ISSUES
@@ -268,6 +276,7 @@ def test_runtime_allocation_plan_golden_matches_schema_shape() -> None:
     assert golden["source_lifetime_schema_version"] == (
         RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION
     )
+    assert golden["source_lifetime_metadata_digest"].startswith("sha256:")
     assert golden["blocked_execution_surfaces"] == list(
         RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
     )
