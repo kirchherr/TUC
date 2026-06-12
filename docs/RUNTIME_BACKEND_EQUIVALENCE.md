@@ -44,6 +44,9 @@ Its golden evidence is:
 tests/golden/runtime_backend_equivalence/current_report.json
 ```
 
+The CI-facing Runtime Evidence Gate requires this evidence and binds it to the
+expected `reference_cpu` baseline and `systolic_sim` candidate placement.
+
 ## Security Boundary
 
 Runtime Backend Equivalence is metadata only. It does not include tensor values,

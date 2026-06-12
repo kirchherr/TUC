@@ -269,6 +269,10 @@ hardware-independent interface into capability-driven runtime planning.
   `source_intent_return_mlp` Runtime Evidence Matrix graph, failing closed when
   the matrix graph, source boundary, required Source Intent artifacts, or report
   graph name drift.
+- Runtime Evidence Gate now requires Runtime Backend Equivalence evidence and
+  binds it to the expected `reference_cpu` baseline versus `systolic_sim`
+  candidate placement, failing closed on graph, run ID, backend-sequence,
+  comparison-status, or raw-value-policy drift.
 - Source Intent Frontend Conformance now includes explicit public-return
   fixtures, return-alias preservation checks, and fail-closed rejected cases for
   unknown, intermediate, and duplicate public returns.
@@ -404,12 +408,13 @@ Current slice:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
-  Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
-  Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
-  Contract, Runtime Public Output Bundle, Runtime Reference Correctness,
-  Runtime Execution Receipt, Runtime Execution Evidence Bundle, and Source
-  Intent Runtime Returns, with a matrix binding check for the
-  `source_intent_return_mlp` frontend fixture.
+  Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Backend
+  Equivalence, Runtime Tensor Store Evidence, Runtime Input Manifest, Runtime
+  Output Manifest, Runtime Output Contract, Runtime Public Output Bundle,
+  Runtime Reference Correctness, Runtime Execution Receipt, Runtime Execution
+  Evidence Bundle, and Source Intent Runtime Returns, with binding checks for
+  the backend-equivalence fixture and the `source_intent_return_mlp` frontend
+  fixture.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
