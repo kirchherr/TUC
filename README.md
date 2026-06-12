@@ -195,6 +195,8 @@ Current frontend surfaces:
   output slice passes the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Diagnostics proving accepted parser cases and
   whitelisted rejected cases remain deterministic, source-free, and bounded.
+- Source-To-Intent Research Evidence Gate binding research readiness,
+  conformance, and diagnostics by digest.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
 - Source Intent Axis Attributes for neutral `softmax` and `reduction` axis
@@ -229,6 +231,7 @@ examples/source_to_intent_parser_report.py
 examples/source_to_intent_research_parser.py
 examples/source_to_intent_research_parser_conformance_gate.py
 examples/source_to_intent_research_diagnostics.py
+examples/source_to_intent_research_evidence_gate.py
 examples/source_to_intent_research_readiness.py
 examples/source_to_intent_parser_block_gate.py
 ```
@@ -249,6 +252,7 @@ Key docs:
 - [Source-to-Intent research parser](docs/SOURCE_TO_INTENT_RESEARCH_PARSER.md)
 - [Source-to-Intent research parser conformance gate](docs/SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md)
 - [Source-to-Intent research diagnostics](docs/SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md)
+- [Source-to-Intent research evidence gate](docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)

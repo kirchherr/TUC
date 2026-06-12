@@ -23,6 +23,10 @@ path.
   `tests/golden/frontend/source_to_intent_research_diagnostics_report.json`
 - Tests: `tests/test_source_to_intent_research_diagnostics.py`
 - CI entry: `.github/workflows/ci.yml`
+- Evidence gate:
+  [Source-To-Intent Research Evidence Gate](SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
+- Evidence gate example:
+  `examples/source_to_intent_research_evidence_gate.py`
 
 ## What It Proves
 
@@ -67,6 +71,9 @@ This evidence strengthens the parser research boundary by making negative
 coverage reviewable. It shows that the current accepted parser slice is small,
 that known hostile or unsupported source forms stay rejected, and that parser
 diagnostics remain source-free and bounded.
+
+The Source-To-Intent Research Evidence Gate binds this diagnostics report to
+Research Readiness and the Research Parser Conformance Gate by SHA-256 digest.
 
 Future parser syntax must add its own Source Intent semantic contract and
 extend this diagnostics report before it can be treated as accepted parser

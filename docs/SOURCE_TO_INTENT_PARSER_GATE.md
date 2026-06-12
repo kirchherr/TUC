@@ -157,6 +157,8 @@ A parser proposal must include all of these review artifacts:
 - emitted `source_intent.v0` plain-data golden
 - Source Intent Intake report golden
 - Source Intent Metadata Conversion report golden
+- Source-To-Intent Research Diagnostics covering accepted and rejected parser
+  cases with source-free reason IDs
 - metadata intake report golden
 - HAC-IR golden
 - runtime-plan golden
@@ -165,6 +167,8 @@ A parser proposal must include all of these review artifacts:
 - Source Intent Frontend Conformance report for emitted plain data
 - Source Intent Frontend Conformance Gate output proving merge-facing
   conformance and public-return coverage
+- Source-To-Intent Research Evidence Gate output binding readiness,
+  conformance, and diagnostics by digest
 - Source-To-Intent Readiness report with every required evidence ID present
 
 The parser report must not contain raw source text, raw payloads, host paths,
@@ -187,6 +191,14 @@ not implement source parsing.
 documents the accepted explicit research slice. It emits only
 `source_intent.v0` plain data and remains separate from compiler intake.
 
+[Source-To-Intent Research Diagnostics](SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md)
+checks the accepted parser scope and rejected source cases with source-free
+diagnostic reason IDs.
+
+[Source-To-Intent Research Evidence Gate](SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
+binds readiness, parser conformance, and diagnostics by digest through
+`examples/source_to_intent_research_evidence_gate.py`.
+
 [Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 turns the current blocked parser state into CI-facing merge evidence through
 `examples/source_to_intent_parser_block_gate.py`.
@@ -203,15 +215,17 @@ Maintainers must reject parser work unless every answer is yes:
 5. Does every emitted payload pass Source Intent Frontend Conformance?
 6. Does Source Intent Frontend Conformance Gate pass?
 7. Does the Source-To-Intent Readiness report pass?
-8. Are rejected source cases fail-closed with bounded diagnostics?
-9. Are operation-family mappings deterministic and golden-tested?
-10. Is softmax axis intent explicit?
-11. Are hardware, backend, vendor, device, plugin, memory-domain, placement,
+8. Does Source-To-Intent Research Evidence Gate bind readiness, conformance,
+   and diagnostics by digest?
+9. Are rejected source cases fail-closed with bounded diagnostics?
+10. Are operation-family mappings deterministic and golden-tested?
+11. Is softmax axis intent explicit?
+12. Are hardware, backend, vendor, device, plugin, memory-domain, placement,
    path, environment, and artifact details blocked?
-12. Are HAC-IR, runtime-plan, and compiler decision-report goldens present?
-13. Are fuzz or property tests part of CI?
-14. Is any proposed cache covered by a separate cache threat model?
-15. Is any native parser code covered by ASan/UBSan and ownership rules?
+13. Are HAC-IR, runtime-plan, and compiler decision-report goldens present?
+14. Are fuzz or property tests part of CI?
+15. Is any proposed cache covered by a separate cache threat model?
+16. Is any native parser code covered by ASan/UBSan and ownership rules?
 
 ## Still Blocked
 

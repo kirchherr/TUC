@@ -57,6 +57,10 @@
       "present": true
     },
     {
+      "evidence_id": "source_to_intent_research_diagnostics",
+      "present": true
+    },
+    {
       "evidence_id": "metadata_intake_report_golden",
       "present": true
     },

@@ -519,6 +519,8 @@ Deliverables:
   the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Diagnostics for source-free accepted/rejected
   parser diagnostic evidence.
+- Source-To-Intent Research Evidence Gate binding readiness, conformance, and
+  diagnostics by digest.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -622,6 +624,9 @@ Go/No-Go:
 - Source-To-Intent Research Diagnostics now binds the accepted parser slices
   and whitelisted rejected source cases to deterministic source-free diagnostic
   evidence with stable rejection reason IDs.
+- Source-To-Intent Research Evidence Gate now binds Research Readiness,
+  Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest
+  before the current research parser scope counts as CI-facing proof evidence.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

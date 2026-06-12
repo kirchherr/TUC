@@ -58,6 +58,7 @@ def test_source_to_intent_research_readiness_example_runs() -> None:
     assert '"ready": true' in completed.stdout
     assert "accepted_source_corpus" in completed.stdout
     assert "parser_report_golden" in completed.stdout
+    assert "source_to_intent_research_diagnostics" in completed.stdout
     assert "triton_jit_execution" in completed.stdout
     assert "raw_source" not in completed.stdout
     assert "python_source" not in completed.stdout

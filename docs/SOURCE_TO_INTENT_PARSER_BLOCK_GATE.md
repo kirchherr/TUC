@@ -19,7 +19,8 @@ artifacts.
 
 The gate passes only when the default Source-To-Intent Readiness report remains
 blocked and every required evidence ID is missing, including
-`source_intent_frontend_conformance_gate`.
+`source_intent_frontend_conformance_gate` and
+`source_to_intent_research_diagnostics`.
 
 Separate research readiness reports and explicit research parser slices may
 exist. They do not change this default block gate and must not let source text

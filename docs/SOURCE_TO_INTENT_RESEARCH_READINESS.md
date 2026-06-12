@@ -11,6 +11,7 @@ for the future Source-to-Intent path exists.
 - Gate contract: `source_to_intent_parser_gate.blocking.v0`
 - Report schema version: `tuc.source_to_intent_readiness_report.v0`
 - Example: `examples/source_to_intent_research_readiness.py`
+- Research evidence gate: `examples/source_to_intent_research_evidence_gate.py`
 - Golden: `tests/golden/frontend/source_to_intent_research_readiness.json`
 - Tests: `tests/test_source_to_intent_research_readiness.py`
 
@@ -34,6 +35,7 @@ Current present evidence:
 - Source Intent plain-data golden
 - Source Intent Intake report golden
 - Source Intent Metadata Conversion report golden
+- Source-To-Intent Research Diagnostics
 - metadata intake report golden
 - HAC-IR golden
 - runtime-plan golden
@@ -86,6 +88,18 @@ Explicit research parser evidence:
 
 ```bash
 python examples/source_to_intent_research_parser.py
+```
+
+Research diagnostics evidence:
+
+```bash
+python examples/source_to_intent_research_diagnostics.py
+```
+
+Digest-bound research evidence gate:
+
+```bash
+python examples/source_to_intent_research_evidence_gate.py
 ```
 
 Expected status:

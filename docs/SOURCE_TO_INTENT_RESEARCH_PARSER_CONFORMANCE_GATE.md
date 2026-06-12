@@ -19,6 +19,8 @@ It does not open the default source parser path.
 - CI entry: `.github/workflows/ci.yml`
 - Related diagnostics:
   [Source-To-Intent Research Diagnostics](SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md)
+- Research evidence gate:
+  [Source-To-Intent Research Evidence Gate](SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
 
 The gate passes only when:
 
@@ -63,6 +65,9 @@ suite.
 Source-To-Intent Research Diagnostics complements this gate by checking that
 the same accepted parser scope and its rejected source cases produce stable,
 source-free diagnostic evidence with whitelisted rejection reasons.
+
+Source-To-Intent Research Evidence Gate binds this gate output to Research
+Readiness and Research Diagnostics by SHA-256 digest.
 
 It is not a production parser approval, native performance claim, plugin
 certification runtime, or source-code execution path.

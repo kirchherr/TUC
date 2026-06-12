@@ -404,6 +404,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Source-To-Intent Research Diagnostics now checks the accepted research parser
   slices and whitelisted rejected source cases with source-free diagnostic
   reason IDs, deterministic golden evidence, and CI coverage.
+- Source-To-Intent Research Evidence Gate now binds Research Readiness,
+  Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest,
+  making the accepted parser proof scope CI-facing and drift-resistant.
 
 ## In Progress
 
@@ -672,6 +675,11 @@ Current slice:
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_diagnostics_report.json`,
   and source-free rejection reason IDs for accepted/rejected parser cases.
+- Source-To-Intent Research Evidence Gate at
+  `examples/source_to_intent_research_evidence_gate.py`, with deterministic
+  golden evidence at
+  `tests/golden/frontend/source_to_intent_research_evidence_gate.txt`, binding
+  readiness, conformance, and diagnostics by SHA-256 digest.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.

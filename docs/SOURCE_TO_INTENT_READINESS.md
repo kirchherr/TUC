@@ -23,6 +23,12 @@ IR, plan runtime placement, or execute backend artifacts.
 - Property corpus example: `examples/source_to_intent_property_corpus.py`
 - Parser report example: `examples/source_to_intent_parser_report.py`
 - Research parser example: `examples/source_to_intent_research_parser.py`
+- Research diagnostics example:
+  `examples/source_to_intent_research_diagnostics.py`
+- Research evidence gate:
+  `examples/source_to_intent_research_evidence_gate.py`
+- Research evidence gate docs:
+  [Source-To-Intent Research Evidence Gate](SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
 - Parser block gate: `examples/source_to_intent_parser_block_gate.py`
 - Golden: `tests/golden/frontend/source_to_intent_readiness_report.json`
 - Research golden:
@@ -52,6 +58,7 @@ The readiness report tracks:
 - emitted `source_intent.v0` plain-data golden
 - Source Intent Intake report golden
 - Source Intent Metadata Conversion report golden
+- Source-To-Intent Research Diagnostics
 - metadata intake report golden
 - HAC-IR golden
 - runtime-plan golden
@@ -121,6 +128,21 @@ The explicit research parser golden proves the first tiny source-buffer to
 
 ```text
 tests/golden/frontend/source_to_intent_research_parser.json
+```
+
+The research diagnostics report proves accepted and rejected parser cases with
+source-free reason IDs:
+
+```text
+tests/golden/frontend/source_to_intent_research_diagnostics_report.json
+```
+
+The research evidence gate binds readiness, conformance, and diagnostics by
+digest:
+
+```text
+examples/source_to_intent_research_evidence_gate.py
+tests/golden/frontend/source_to_intent_research_evidence_gate.txt
 ```
 
 The blocked state is also checked by:

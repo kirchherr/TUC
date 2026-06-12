@@ -22,6 +22,7 @@ SOURCE_TO_INTENT_PARSER_BLOCK_GATE_CONTRACT = (
 )
 DEFAULT_BLOCKED_PROPOSAL_NAME = "blocked-source-to-intent-parser-proposal"
 FRONTEND_CONFORMANCE_GATE_EVIDENCE_ID = "source_intent_frontend_conformance_gate"
+RESEARCH_DIAGNOSTICS_EVIDENCE_ID = "source_to_intent_research_diagnostics"
 
 
 class SourceToIntentParserBlockGateError(AssertionError):
@@ -95,6 +96,11 @@ def _assert_parser_remains_blocked(report: SourceToIntentReadinessReport) -> Non
             "source-to-intent parser block gate failed: "
             "frontend conformance gate is not blocking parser readiness"
         )
+    if RESEARCH_DIAGNOSTICS_EVIDENCE_ID not in missing_evidence:
+        raise SourceToIntentParserBlockGateError(
+            "source-to-intent parser block gate failed: "
+            "research diagnostics are not blocking parser readiness"
+        )
 
 
 def _render_gate_report(report: SourceToIntentReadinessReport) -> str:
@@ -112,6 +118,7 @@ def _render_gate_report(report: SourceToIntentReadinessReport) -> str:
     lines.append(f'  required_evidence_count = "{len(report.checked_evidence)}"')
     lines.append(f'  missing_evidence_count = "{len(report.issues)}"')
     lines.append('  frontend_conformance_gate_evidence = "missing"')
+    lines.append('  research_diagnostics_evidence = "missing"')
     lines.append(
         "  blocked_execution_surfaces = "
         f'"{",".join(report.blocked_execution_surfaces)}"'

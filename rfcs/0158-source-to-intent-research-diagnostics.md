@@ -72,6 +72,8 @@ The diagnostics path must not add:
   `schemas/source_to_intent_research_diagnostics_report.v0.schema.json`
 - Documentation:
   `docs/SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md`
+- Evidence gate:
+  `examples/source_to_intent_research_evidence_gate.py`
 - Golden:
   `tests/golden/frontend/source_to_intent_research_diagnostics_report.json`
 - Tests:
@@ -82,8 +84,10 @@ The diagnostics path must not add:
 ## Consequences
 
 The research parser now has source-free negative evidence alongside
-conformance evidence. Future parser syntax must extend diagnostics before it
-can be treated as accepted research parser scope.
+conformance evidence. Source-To-Intent Research Evidence Gate binds this
+diagnostics report to Research Readiness and Research Parser Conformance Gate
+by digest. Future parser syntax must extend diagnostics before it can be
+treated as accepted research parser scope.
 
 This does not approve a production parser or default source compiler input
 path.
