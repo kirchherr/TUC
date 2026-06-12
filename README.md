@@ -168,7 +168,8 @@ schemas/runtime_allocation_request_manifest_report.v0.schema.json
 
 ## Frontend Intake
 
-TUC does not directly ingest or execute Triton/Python source today.
+TUC does not accept Triton/Python source as a default compiler input path and
+does not execute source code.
 
 TUC's frontend goal is a research proof of a safe source-intent boundary, not a
 claim that this project replaces CUDA, ROCm, XLA, TVM, or production vendor
@@ -187,6 +188,9 @@ Current frontend surfaces:
 
 - Triton-like metadata adapter.
 - Execution-free Triton Source Preflight.
+- Explicit Source-To-Intent Research Parser v0 for a tiny caller-provided
+  Triton-like source subset that emits only validated `source_intent.v0` plain
+  data.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
 - Source Intent Frontend Conformance Gate for CI-facing external frontend
@@ -203,8 +207,9 @@ Current frontend surfaces:
   golden with `parser_enabled = false`.
 - Source-To-Intent Research Readiness evidence showing current progress toward
   the first narrow parser proof while the default parser path remains closed.
-- Source-to-Intent parser implementation remains blocked until a dedicated
-  implementation RFC accepts a minimal parser against these evidence contracts.
+- The default Source-to-Intent parser path remains blocked; the explicit
+  research parser is not wired into compiler intake and does not bypass Source
+  Intent Intake.
 
 CI-facing frontend evidence entry points:
 
@@ -215,6 +220,7 @@ examples/source_intent_runtime_returns.py
 examples/source_to_intent_corpus.py
 examples/source_to_intent_property_corpus.py
 examples/source_to_intent_parser_report.py
+examples/source_to_intent_research_parser.py
 examples/source_to_intent_research_readiness.py
 examples/source_to_intent_parser_block_gate.py
 ```
@@ -231,6 +237,7 @@ Key docs:
 - [Source-to-Intent corpus evidence](docs/SOURCE_TO_INTENT_CORPUS.md)
 - [Source-to-Intent property corpus](docs/SOURCE_TO_INTENT_PROPERTY_CORPUS.md)
 - [Source-to-Intent parser report](docs/SOURCE_TO_INTENT_PARSER_REPORT.md)
+- [Source-to-Intent research parser](docs/SOURCE_TO_INTENT_RESEARCH_PARSER.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)

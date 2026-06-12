@@ -18,8 +18,9 @@ for the future Source-to-Intent path exists.
 
 The research proposal evidence is complete.
 
-This means the proposal has all required review artifacts. It does not mean the
-parser is implemented, enabled, or accepted as a compiler input path.
+This means the proposal has all required review artifacts. A first explicit
+research parser slice now exists, but it is not enabled as a default compiler
+input path.
 
 Current present evidence:
 
@@ -81,6 +82,12 @@ Parser report evidence:
 python examples/source_to_intent_parser_report.py
 ```
 
+Explicit research parser evidence:
+
+```bash
+python examples/source_to_intent_research_parser.py
+```
+
 Expected status:
 
 ```text
@@ -88,5 +95,6 @@ ready = true
 ```
 
 That ready status means proposal evidence is complete. The default parser path
-remains closed by the Source-To-Intent Parser Block Gate, and the proposal
-parser report still says `parser_enabled = false`.
+remains closed by the Source-To-Intent Parser Block Gate, the proposal parser
+report still says `parser_enabled = false`, and the explicit research parser is
+limited to `source_intent.v0` plain-data output.

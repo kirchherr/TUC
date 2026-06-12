@@ -65,18 +65,22 @@ conformance report artifacts:
 `schemas/source_intent_frontend_conformance_report.v0.schema.json`.
 
 [`SOURCE_TO_INTENT_PARSER_GATE.md`](SOURCE_TO_INTENT_PARSER_GATE.md) defines
-the required future gate before source text or preflight reports may create
-`source_intent.v0` plain data. It keeps parser work blocked until budgets,
-corpus, diagnostics, goldens, HAC-IR neutrality review, and conformance
-evidence exist.
+the required gate before source text or preflight reports may broadly create
+`source_intent.v0` plain data. It keeps default parser intake blocked and
+requires budgets, corpus, diagnostics, goldens, HAC-IR neutrality review, and
+conformance evidence for parser expansion.
+
+[`SOURCE_TO_INTENT_RESEARCH_PARSER.md`](SOURCE_TO_INTENT_RESEARCH_PARSER.md)
+documents the first explicit source-buffer to `source_intent.v0` research
+parser slice. It emits only validated plain data and remains disconnected from
+metadata, `ComputeGraph`, IR, runtime-plan, and backend-decision output.
 
 [`SOURCE_TO_INTENT_READINESS.md`](SOURCE_TO_INTENT_READINESS.md) defines a
-deterministic report for reviewing whether a future parser proposal has every
-required gate artifact. The current golden report intentionally remains
-blocked.
+deterministic report for reviewing whether a parser proposal has every required
+gate artifact. The default golden report intentionally remains blocked.
 
 [`SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md`](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
-turns that current blocked parser state into CI-facing merge evidence.
+turns that default blocked parser state into CI-facing merge evidence.
 
 [`TRITON_IDIOM_COVERAGE_REPORT.md`](TRITON_IDIOM_COVERAGE_REPORT.md) defines a
 diagnostic report for Triton-like idioms covered through metadata examples and

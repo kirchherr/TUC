@@ -373,17 +373,22 @@ hardware-independent interface into capability-driven runtime planning.
   output at `tests/golden/frontend/source_to_intent_parser_block_gate.txt`.
 - Source-To-Intent Research Readiness now tracks the first narrow parser
   research proposal separately from the default block gate, showing current
-  evidence complete while keeping parser implementation blocked.
+  proposal evidence complete while keeping the default parser path blocked.
 - Source-To-Intent Corpus Evidence now adds accepted and rejected source-buffer
   fixtures plus a data-only corpus report, covering all MVP operation families
   in accepted cases while keeping source text disconnected from Source Intent
   IR and compiler artifacts.
 - Source-To-Intent Property Corpus now binds fuzz/property obligations to the
   source corpus report digest, marking `source_fuzz_or_property_corpus` present
-  while parser implementation remains blocked.
+  while default parser intake remains blocked.
 - Source-To-Intent Parser Report now adds the proposal-only parser report
   golden, completing research-readiness evidence while explicitly keeping
   `parser_enabled = false` and implementation status `not_implemented`.
+- Source-To-Intent Research Parser now adds the first explicit source-buffer to
+  `source_intent.v0` implementation slice for a tiny Triton-like subset, with a
+  schema-versioned metadata-only report and deterministic golden evidence while
+  keeping metadata, `ComputeGraph`, IR, runtime-plan, and backend-decision
+  outputs blocked.
 
 ## In Progress
 
@@ -624,7 +629,8 @@ Current slice:
 - Source-To-Intent Research Readiness at
   `examples/source_to_intent_research_readiness.py`, with golden evidence at
   `tests/golden/frontend/source_to_intent_research_readiness.json`, tracking
-  partial parser-readiness evidence while the parser remains blocked.
+  complete proposal-readiness evidence while the default parser path remains
+  blocked.
 - Source-To-Intent Corpus Evidence at `examples/source_to_intent_corpus.py`,
   with fixtures under `tests/corpus/source_to_intent_parser/` and golden
   evidence at `tests/golden/frontend/source_to_intent_corpus_report.json`.
@@ -634,6 +640,13 @@ Current slice:
 - Source-To-Intent Parser Report at `examples/source_to_intent_parser_report.py`,
   with golden evidence at
   `tests/golden/frontend/source_to_intent_parser_report.json`.
+- Source-To-Intent Research Parser at
+  `examples/source_to_intent_research_parser.py`, with schema at
+  `schemas/source_to_intent_research_parser_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_parser.json`, and
+  fail-closed tests for imports, decorator calls, ambiguous softmax axes,
+  unsupported assignments, shape mismatches, and unknown shape manifest entries.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -846,7 +859,7 @@ Current focus:
   metadata intake contract and
   [Triton Idiom Coverage Report](TRITON_IDIOM_COVERAGE_REPORT.md) before any
   source parser or `@triton.jit` handling is accepted.
-- Source parser work must satisfy
+- General source parser work must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before it can
   produce metadata, HAC-IR, runtime-plan, or decision-report artifacts.
 - Source preflight is allowed only as a diagnostic boundary; future canonical
@@ -854,16 +867,17 @@ Current focus:
   golden review evidence exist.
 - Source preflight fuzzing is now the baseline seed set; Source Intent IR v0
   can be built from schema-versioned plain data and can convert to metadata
-  only through separate reviewed adapters. Future source-text-to-intent work
-  must add its own corpus, source-intent goldens, deterministic diagnostics,
-  and security review before any source connection.
+  only through separate reviewed adapters. The explicit research parser may
+  emit `source_intent.v0` plain data for its narrow accepted subset, but any
+  broader source-text-to-intent work must add its own corpus, source-intent
+  goldens, deterministic diagnostics, and security review before expansion.
 - External frontend proposals should provide a Source Intent Frontend
   Conformance report matching the report schema and pass Source Intent Frontend
   Conformance Gate before maintainers consider any source-text parser or
   frontend package integration.
-- Source-to-intent parser work remains blocked until
-  [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is satisfied
-  by a dedicated parser implementation RFC and executable evidence.
+- Default source-to-intent parser intake remains blocked by
+  [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md); the accepted
+  research parser is explicit-only and must not become a compiler shortcut.
 - Future parser proposals must pass
   [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) before
   source text can influence compiler artifacts.

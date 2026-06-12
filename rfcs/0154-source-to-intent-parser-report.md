@@ -56,3 +56,6 @@ Source-to-Intent parser proof. The next step is not to open the default parser
 path; it is to decide, through a dedicated implementation RFC, whether a
 minimal parser implementation may target this report and the existing corpus
 contracts.
+
+RFC 0155 accepts that next step as an explicit research parser slice while
+keeping the default parser path closed.

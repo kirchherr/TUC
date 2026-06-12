@@ -60,4 +60,5 @@ omission policy, and blocked execution/compiler-output labels.
 TUC now has accepted source corpus, rejected source corpus, and parser
 property-corpus evidence for the first narrow parser proof. RFC 0154 later adds
 the proposal-only parser report golden and completes research-readiness
-evidence while parser implementation remains disabled.
+evidence while parser implementation remains disabled at that stage. RFC 0155
+later adds the explicit research parser slice.

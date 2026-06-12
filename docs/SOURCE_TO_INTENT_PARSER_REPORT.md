@@ -5,6 +5,10 @@ the first narrow parser proposal.
 
 It is proposal-only evidence. It does not implement a parser.
 
+The separate [Source-To-Intent Research Parser](SOURCE_TO_INTENT_RESEARCH_PARSER.md)
+is the first explicit implementation slice. This report remains the proposal
+golden that keeps the default parser path disabled.
+
 ## Contract
 
 - Report contract: `source_to_intent_parser_report.proposal.v0`

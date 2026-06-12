@@ -513,6 +513,8 @@ Deliverables:
 - Source Intent Frontend Conformance report JSON Schema.
 - Source-To-Intent Parser Gate for future source parser proposals.
 - Source-To-Intent Readiness report for parser proposal evidence.
+- Explicit Source-To-Intent Research Parser for the first tiny source-buffer to
+  `source_intent.v0` proof slice.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -553,9 +555,9 @@ Go/No-Go:
   source parser, Python import, or `@triton.jit` handling is accepted.
 - MVP operation-family coverage is demonstrated through frontend-originated
   metadata goldens before direct Triton syntax support is attempted.
-- Direct Triton source parsing is blocked until a threat model, parser budgets,
-  negative tests, fuzzing or property-test corpus, deterministic diagnostics,
-  and sandboxing gates are in place.
+- General Triton source parsing is blocked until a threat model, parser
+  budgets, negative tests, fuzzing or property-test corpus, deterministic
+  diagnostics, and sandboxing gates are in place.
 - Source preflight may inspect syntax as data, but it must not produce
   `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans, or backend decisions.
 - Preflight fuzz/property tests must keep arbitrary decoded source, invalid
@@ -576,12 +578,15 @@ Go/No-Go:
   `source_intent_to_metadata.execution_free.v0` adapter and its goldens.
 - Source Intent IR to metadata conversion may start only from an already
   constructed `SourceIntentModule`; source text and preflight reports remain
-  disconnected until a separate source-to-intent security gate is accepted.
+  disconnected except for explicitly accepted research parser slices whose
+  output is still only `source_intent.v0` plain data.
 - External frontend authors must first provide Source Intent Frontend
   Conformance evidence for accepted plain data and rejected hostile cases,
   using the versioned conformance report schema.
 - Source-to-intent parser proposals must satisfy the Source-To-Intent Parser
-  Gate before source text can create `source_intent.v0` plain data.
+  Gate before source text can create `source_intent.v0` plain data, except for
+  explicitly scoped research parser slices accepted as evidence with default
+  parser intake still blocked.
 - Source-to-intent parser proposals must pass the Source-To-Intent Readiness
   report before source text can influence compiler artifacts.
 - Source-To-Intent Research Readiness now tracks the first narrow parser
@@ -596,6 +601,10 @@ Go/No-Go:
 - Source-To-Intent Parser Report now provides that final proposal-only golden,
   making the research proposal evidence complete while keeping
   `parser_enabled = false` and source parsing outside the compiler input path.
+- Source-To-Intent Research Parser v0 now parses a tiny caller-provided
+  Triton-like source subset into validated `source_intent.v0` plain data while
+  keeping the default parser path blocked and avoiding metadata, graph,
+  runtime-plan, or backend-decision output.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

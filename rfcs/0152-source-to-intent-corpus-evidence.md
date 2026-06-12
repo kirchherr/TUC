@@ -60,5 +60,6 @@ execution/compiler-output labels. It does not serialize raw source text.
 ## Consequences
 
 TUC now has accepted and rejected source corpus evidence for the first narrow
-parser proof while the parser remains blocked. Later RFCs add parser
-fuzz/property obligations and a proposal-only parser report golden.
+parser proof while parser execution remains blocked at this RFC stage. Later
+RFCs add parser fuzz/property obligations, a proposal-only parser report
+golden, and the explicit research parser slice.

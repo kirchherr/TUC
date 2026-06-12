@@ -1,7 +1,7 @@
 # Source-To-Intent Corpus Evidence
 
 Source-To-Intent Corpus Evidence v0 inventories the first accepted and rejected
-source buffers for a future narrow parser proposal.
+source buffers for the narrow parser research path.
 
 It is not a parser and does not create `source_intent.v0` payloads.
 
@@ -45,8 +45,8 @@ It serializes only case IDs, accepted/rejected expectations, byte counts,
 source digests, operation-family labels, expected rejection labels, and blocked
 execution/compiler-output labels.
 
-The corpus may be used to define future parser obligations, but it must not let
-source text influence compiler artifacts.
+The corpus defines parser obligations and seeds the explicit research parser
+slice, but it must not let source text influence compiler artifacts directly.
 
 ## Evidence
 

@@ -1,0 +1,120 @@
+{
+  "report": {
+    "blocked_compiler_outputs": [
+      "metadata",
+      "compute_graph",
+      "tlir",
+      "hac_ir",
+      "hs_ir",
+      "runtime_plan",
+      "backend_decision"
+    ],
+    "blocked_execution_surfaces": [
+      "backend_artifact_execution",
+      "bytecode_compilation",
+      "decorator_evaluation",
+      "device_access",
+      "dynamic_library_loading",
+      "environment_dependent_behavior",
+      "file_system_access",
+      "frontend_module_import",
+      "generated_artifact_execution",
+      "network_access",
+      "plugin_discovery",
+      "python_function_inspection",
+      "subprocess_execution",
+      "triton_jit_execution"
+    ],
+    "default_parser_status": "default_parser_blocked",
+    "line_count": 5,
+    "operation_count": 2,
+    "operation_families": [
+      "elementwise",
+      "matmul"
+    ],
+    "output_policy": "source_intent.v0_plain_data_only",
+    "parser_contract": "source_to_intent_research_parser.execution_free.v0",
+    "parser_status": "research_explicit_only",
+    "preflight_ast_depth": 7,
+    "preflight_ast_node_count": 48,
+    "preflight_contract": "triton_source_preflight.execution_free.v0",
+    "return_count": 1,
+    "schema_version": "tuc.source_to_intent_research_parser_report.v0",
+    "source_bytes": 162,
+    "source_digest": "sha256:ad113b078fe24fcd871fbfb3f95b03e6192dbad3e607bbb737a9e09aa92f9bad",
+    "source_intent_contract": "source_intent_ir.canonical.v0",
+    "source_intent_schema_version": "source_intent.v0",
+    "source_name": "research_matmul_elementwise",
+    "tensor_count": 4
+  },
+  "source_intent": {
+    "name": "research_matmul_elementwise",
+    "operations": [
+      {
+        "family": "matmul",
+        "hints": {},
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "name": "projection",
+        "outputs": [
+          "projection"
+        ]
+      },
+      {
+        "family": "elementwise",
+        "hints": {},
+        "inputs": [
+          "projection"
+        ],
+        "name": "activated",
+        "outputs": [
+          "activated"
+        ]
+      }
+    ],
+    "returns": [
+      {
+        "public_name": "y",
+        "required": true,
+        "tensor_name": "activated"
+      }
+    ],
+    "schema_version": "source_intent.v0",
+    "tensors": [
+      {
+        "dtype": "float32",
+        "name": "a",
+        "shape": [
+          4,
+          8
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "b",
+        "shape": [
+          8,
+          2
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "projection",
+        "shape": [
+          4,
+          2
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "activated",
+        "shape": [
+          4,
+          2
+        ]
+      }
+    ]
+  }
+}

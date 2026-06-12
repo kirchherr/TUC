@@ -22,6 +22,7 @@ IR, plan runtime placement, or execute backend artifacts.
 - Corpus example: `examples/source_to_intent_corpus.py`
 - Property corpus example: `examples/source_to_intent_property_corpus.py`
 - Parser report example: `examples/source_to_intent_parser_report.py`
+- Research parser example: `examples/source_to_intent_research_parser.py`
 - Parser block gate: `examples/source_to_intent_parser_block_gate.py`
 - Golden: `tests/golden/frontend/source_to_intent_readiness_report.json`
 - Research golden:
@@ -59,7 +60,8 @@ The readiness report tracks:
 - Source Intent Frontend Conformance report
 - Source Intent Frontend Conformance Gate output
 
-Missing evidence keeps parser implementation blocked.
+Missing evidence keeps default parser intake and broader parser expansion
+blocked.
 
 ## Security Boundary
 
@@ -87,8 +89,8 @@ The default golden report intentionally remains blocked:
 tests/golden/frontend/source_to_intent_readiness_report.json
 ```
 
-The research proposal report tracks complete proposal evidence for a future
-parser:
+The research proposal report tracks complete proposal evidence for the first
+parser proof:
 
 ```text
 tests/golden/frontend/source_to_intent_research_readiness.json
@@ -114,20 +116,27 @@ The parser report golden defines the proposal-only parser report shape:
 tests/golden/frontend/source_to_intent_parser_report.json
 ```
 
+The explicit research parser golden proves the first tiny source-buffer to
+`source_intent.v0` slice:
+
+```text
+tests/golden/frontend/source_to_intent_research_parser.json
+```
+
 The blocked state is also checked by:
 
 ```text
 examples/source_to_intent_parser_block_gate.py
 ```
 
-This makes the current roadmap state explicit: TUC has a parser gate and a
-readiness report, but no source-to-intent parser implementation.
+This makes the current roadmap state explicit: TUC has a parser gate, a
+readiness report, and one explicit research parser slice, while the default
+source parser path remains blocked.
 
 ## Still Blocked
 
 These remain blocked after this report exists:
 
-- implementing a source parser
 - accepting source text as compiler input
 - converting preflight reports into Source Intent IR
 - loading source files by path

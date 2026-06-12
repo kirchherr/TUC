@@ -1,28 +1,34 @@
 # Source-To-Intent Parser Gate
 
-TUC still does not implement source text to Source Intent IR.
+TUC now has one explicit source text to Source Intent research parser slice.
+The default compiler input path still does not accept source text.
 
 This gate defines what must exist before any future Triton-like source parser
-may create `source_intent.v0` plain data or a `SourceIntentModule`.
+may broaden `source_intent.v0` creation or connect source text to compiler
+artifacts.
 
 ## Status
 
-Source-to-intent parsing is blocked.
+Default source-to-intent parsing is blocked.
 
 TUC treats the first parser as a research proof obligation, not a claim that the
 project replaces CUDA, ROCm, XLA, TVM, or production vendor compilers. The
-parser may become acceptable only when it proves a narrow, bounded path from a
-caller-provided source buffer to `source_intent.v0` plain data.
+general parser support may become acceptable only when it proves a narrow,
+bounded path from a caller-provided source buffer to `source_intent.v0` plain
+data.
 
 The only implemented frontend paths remain:
 
 - Triton source preflight as diagnostic syntax review only
+- Explicit Source-To-Intent Research Parser for a tiny accepted Triton-like
+  subset, emitting only validated `source_intent.v0` plain data
 - Source Intent Intake from already decoded plain data
 - Source Intent Metadata Conversion from an already constructed
   `SourceIntentModule`
 - Source Intent Frontend Conformance for external plain-data frontend authors
 
-No source text or preflight report may produce Source Intent IR today.
+No default compiler path accepts source text today. Preflight reports still may
+not produce Source Intent IR.
 
 ## Required Future Path
 
@@ -46,7 +52,7 @@ schema-versioned metadata
 ComputeGraph
 ```
 
-A future parser must not produce metadata, `ComputeGraph`, TLIR, HAC-IR, HS-IR,
+A parser must not produce metadata, `ComputeGraph`, TLIR, HAC-IR, HS-IR,
 runtime plans, backend decisions, or backend artifacts directly.
 
 ## Non-Negotiable Blocks
@@ -170,12 +176,16 @@ deterministic report that keeps parser proposals blocked until all required
 evidence is present.
 
 [Source-To-Intent Research Readiness](SOURCE_TO_INTENT_RESEARCH_READINESS.md)
-records the current complete proposal-evidence set while parser implementation
-remains blocked.
+records the complete proposal-evidence set while default parser intake remains
+blocked.
 
 [Source-To-Intent Parser Report](SOURCE_TO_INTENT_PARSER_REPORT.md) defines the
 proposal-only parser report golden. It keeps `parser_enabled = false` and does
 not implement source parsing.
+
+[Source-To-Intent Research Parser](SOURCE_TO_INTENT_RESEARCH_PARSER.md)
+documents the accepted explicit research slice. It emits only
+`source_intent.v0` plain data and remains separate from compiler intake.
 
 [Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 turns the current blocked parser state into CI-facing merge evidence through
@@ -207,7 +217,6 @@ Maintainers must reject parser work unless every answer is yes:
 
 These remain blocked after this gate:
 
-- implementing a source parser
 - accepting source text as compiler input
 - converting preflight reports into Source Intent IR
 - loading source files by path

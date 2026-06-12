@@ -7,7 +7,7 @@ def test_triton_source_threat_model_blocks_execution_surfaces() -> None:
     text = Path("docs/TRITON_SOURCE_THREAT_MODEL.md").read_text(encoding="utf-8")
 
     for expected in (
-        "Direct Triton source ingestion remains blocked",
+        "default Triton source ingestion remains blocked",
         "must not import user modules",
         "must not evaluate decorators",
         "must not execute `@triton.jit`",

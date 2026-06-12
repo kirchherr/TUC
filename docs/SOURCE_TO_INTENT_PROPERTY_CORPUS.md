@@ -1,7 +1,7 @@
 # Source-To-Intent Property Corpus
 
 Source-To-Intent Property Corpus v0 records fuzz/property obligations for the
-future narrow Source-to-Intent parser.
+narrow Source-to-Intent parser research path.
 
 It is not a parser, not a fuzz runner, and not an ingestion path into Source
 Intent IR or compiler artifacts.
