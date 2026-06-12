@@ -17,6 +17,7 @@ execute_graph
   -> Runtime Reference Correctness
   -> Runtime Execution Receipt
   -> Runtime Execution Evidence Bundle
+  -> Runtime Backend Equivalence
   -> Runtime Evidence Gate
 ```
 
@@ -82,6 +83,12 @@ Runtime evidence digests cover metadata only:
 
 Tensor contents are not serialized and are not hashed in review artifacts.
 
+`Runtime Backend Equivalence` compares terminal outputs across two trusted
+runtime executions, including current `reference-cpu` versus `systolic-sim`,
+`reference-cpu` versus `vector-sim`, and mixed `reference-cpu` versus
+`systolic-sim` plus `vector-sim` proof slices, but serializes only comparison
+metadata and output omission status. It does not hash tensor contents.
+
 ## What Is Never Serialized
 
 Runtime evidence does not serialize:
@@ -107,6 +114,11 @@ item counts, pass status, and raw-value policy.
 `Runtime Memory Planning Gate` separately checks Buffer Lifetime, Allocation
 Plan, Memory Budget, and Allocation Request Manifest evidence before allocator
 behavior can be accepted.
+
+`Runtime Backend Equivalence` is required by Runtime Evidence Gate for the
+systolic, vector, and mixed accelerator proof slices. It demonstrates that
+distinct backend placements can preserve observable output semantics before
+stronger portability or performance claims are made.
 
 Together, the gates keep the core proof visible:
 

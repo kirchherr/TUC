@@ -1,0 +1,87 @@
+{
+  "artifact_status": "review_evidence",
+  "baseline_run_id": "reference_cpu",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_run_id": "systolic_sim",
+  "comparison_count": 1,
+  "comparison_metadata_digest": "sha256:4db7b049c183fdb6b51b0b81570d78331f674ee7ca718dc2329b92577258679c",
+  "comparisons": [
+    {
+      "atol": 1e-12,
+      "baseline_dtype": "float64",
+      "baseline_output_value_status": "omitted_by_policy",
+      "baseline_run_id": "reference_cpu",
+      "baseline_shape": [
+        2,
+        2
+      ],
+      "candidate_dtype": "float64",
+      "candidate_output_value_status": "omitted_by_policy",
+      "candidate_run_id": "systolic_sim",
+      "candidate_shape": [
+        2,
+        2
+      ],
+      "comparison_status": "matched",
+      "expected_dtype": "float64",
+      "expected_shape": [
+        2,
+        2
+      ],
+      "rtol": 1e-12,
+      "tensor_name": "activated"
+    }
+  ],
+  "equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "runtime_backend_equivalence",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "run_count": 2,
+  "runs": [
+    {
+      "execution_status": "executed",
+      "graph_name": "runtime_backend_equivalence",
+      "output_metadata_digest": "sha256:ec5eeda9cfe4834ea992fb83e6795de095f4983babd5b736790e68f08bcb2620",
+      "output_tensor_names": [
+        "activated"
+      ],
+      "output_value_status": "omitted_by_policy",
+      "planned_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "run_id": "reference_cpu",
+      "tensor_record_count": 4,
+      "trace_step_count": 2
+    },
+    {
+      "execution_status": "executed",
+      "graph_name": "runtime_backend_equivalence",
+      "output_metadata_digest": "sha256:ec5eeda9cfe4834ea992fb83e6795de095f4983babd5b736790e68f08bcb2620",
+      "output_tensor_names": [
+        "activated"
+      ],
+      "output_value_status": "omitted_by_policy",
+      "planned_backend_sequence": [
+        "systolic-sim",
+        "reference-cpu"
+      ],
+      "run_id": "systolic_sim",
+      "tensor_record_count": 4,
+      "trace_step_count": 2
+    }
+  ],
+  "schema_version": "tuc.runtime_backend_equivalence_report.v0",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

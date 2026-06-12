@@ -185,6 +185,11 @@ linear algebra operations and emits a textual artifact.
 profile for `matmul`: it plans into `device_sram`, produces `blocked` layout,
 and is exercised by `examples/proof_of_systolic_execution.py`.
 
+`VectorSimulatorBackend` adds a third trusted in-process accelerator profile
+for row-major `elementwise`, `reduction`, and `softmax` operation families. It
+keeps execution inside the trusted Runtime Executor registry and is exercised
+by `examples/runtime_vector_backend_equivalence.py`.
+
 ## Runtime Partitioning
 
 The early runtime uses simple rule-based partitioning:

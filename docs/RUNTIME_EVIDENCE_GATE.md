@@ -2,11 +2,11 @@
 
 Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
-Evidence, Runtime Input Manifest evidence, Runtime Output Manifest evidence,
-Runtime Output Contract evidence, Runtime Public Output Bundle evidence, and
-Runtime Reference Correctness evidence, Runtime Execution Receipt evidence,
-Runtime Execution Evidence Bundle evidence, plus Source Intent Runtime Returns
-evidence for the frontend return boundary.
+Evidence, Runtime Backend Equivalence evidence, Runtime Input Manifest
+evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
+Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
+Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
+plus Source Intent Runtime Returns evidence for the frontend return boundary.
 Source Intent Runtime Returns must also be bound to the curated
 Runtime Evidence Matrix graph that inventories the same frontend-originated
 fixture.
@@ -15,6 +15,9 @@ It runs:
 
 - `build_current_runtime_evidence_matrix_report()`
 - `run_runtime_executor_conformance()`
+- `build_backend_equivalence_report()`
+- `build_vector_backend_equivalence_report()`
+- `build_mixed_backend_equivalence_report()`
 - `build_tensor_store_evidence_report()`
 - `build_input_manifest_report()`
 - `build_output_manifest_report()`
@@ -30,6 +33,23 @@ The gate passes only when:
 
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
 - Runtime Executor Conformance passes for the fixed trusted executor registry
+- Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
+  the `systolic_sim` candidate run
+- Runtime Backend Equivalence binding passes, proving the checked report is the
+  expected `reference-cpu,reference-cpu` versus `systolic-sim,reference-cpu`
+  placement comparison with raw values omitted
+- Runtime Vector Backend Equivalence passes for the `reference_cpu` baseline
+  run and the `vector_sim` candidate run
+- Runtime Vector Backend Equivalence binding passes, proving the checked report
+  is the expected `reference-cpu,reference-cpu,reference-cpu` versus
+  `vector-sim,vector-sim,vector-sim` placement comparison with raw values
+  omitted
+- Runtime Mixed Backend Equivalence passes for the `reference_cpu` baseline run
+  and the `mixed_accelerators` candidate run
+- Runtime Mixed Backend Equivalence binding passes, proving the checked report
+  is the expected `reference-cpu,reference-cpu,reference-cpu,reference-cpu`
+  versus `systolic-sim,vector-sim,vector-sim,vector-sim` placement comparison
+  with raw values omitted
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
 - Runtime Input Manifest passes for accepted graph external inputs
@@ -99,6 +119,12 @@ Runtime Execution Evidence Bundle schema:
 schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 ```
 
+Runtime Backend Equivalence schema:
+
+```text
+schemas/runtime_backend_equivalence_report.v0.schema.json
+```
+
 Source Intent Runtime Returns schema:
 
 ```text
@@ -128,6 +154,24 @@ It composes bounded in-repository checks:
 
 - data-only evidence identifiers from Runtime Evidence Matrix v0
 - fixed in-memory operation fixtures from Runtime Executor Conformance v0
+- data-only Runtime Backend Equivalence metadata comparing the expected
+  `reference_cpu` and `systolic_sim` trusted execution placements with raw
+  tensor values omitted by policy
+- a bounded Runtime Backend Equivalence binding check that verifies graph ID,
+  run IDs, planned backend sequences, matched comparison status, and raw-value
+  policy
+- data-only Runtime Vector Backend Equivalence metadata comparing the expected
+  `reference_cpu` and `vector_sim` trusted execution placements with raw tensor
+  values omitted by policy
+- a bounded Runtime Vector Backend Equivalence binding check that verifies graph
+  ID, run IDs, planned backend sequences, matched comparison status, and
+  raw-value policy
+- data-only Runtime Mixed Backend Equivalence metadata comparing the expected
+  `reference_cpu` and `mixed_accelerators` trusted execution placements with
+  raw tensor values omitted by policy
+- a bounded Runtime Mixed Backend Equivalence binding check that verifies graph
+  ID, run IDs, planned backend sequences, matched comparison status, and
+  raw-value policy
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
 - data-only Runtime Input Manifest metadata for accepted graph external inputs

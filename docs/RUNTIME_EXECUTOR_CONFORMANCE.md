@@ -33,6 +33,8 @@ family against each trusted executor:
   `softmax`
 - `systolic-sim` must execute `matmul`
 - `systolic-sim` must reject `elementwise`, `reduction`, and `softmax`
+- `vector-sim` must execute `elementwise`, `reduction`, and `softmax`
+- `vector-sim` must reject `matmul`
 
 Executed cases record output shape and dtype. Rejected cases record
 `not_executed` and no output shape.

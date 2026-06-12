@@ -115,6 +115,10 @@ Implemented now:
   at planning time and uses trusted runtime reference execution; it does not add
   plugin discovery, device access, external artifact execution, native code, or
   JIT.
+- `vector-sim` adds a trusted in-process accelerator simulator for row-major
+  `elementwise`, `reduction`, and `softmax` placement. It uses the same trusted
+  runtime reference execution boundary and does not add plugin discovery,
+  device access, external artifact execution, native code, or JIT.
 - Objective Alpha abstraction, reduction, and softmax proofs now validate
   Runtime Execution Readiness before trusted in-process execution and emit
   deterministic traces without adding plugin discovery, device access, dynamic

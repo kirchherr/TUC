@@ -54,7 +54,11 @@ from tuc.backends.registry import (
     BackendRegistryError,
     BackendSupportDiagnostic,
 )
-from tuc.backends.simulator import LinearAlgebraSimulatorBackend, SystolicArraySimulatorBackend
+from tuc.backends.simulator import (
+    LinearAlgebraSimulatorBackend,
+    SystolicArraySimulatorBackend,
+    VectorSimulatorBackend,
+)
 
 __all__ = [
     "BACKEND_AUTHOR_READINESS_CONTRACT",
@@ -95,6 +99,7 @@ __all__ = [
     "ManifestClaimReviewIssue",
     "ManifestClaimReviewReport",
     "SystolicArraySimulatorBackend",
+    "VectorSimulatorBackend",
     "assert_backend_author_readiness",
     "assert_backend_conformance",
     "backend_author_readiness_report_to_dict",

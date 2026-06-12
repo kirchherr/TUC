@@ -59,7 +59,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
-  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
+  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`,
+  now including `vector-sim` support/rejection behavior.
 - Runtime Evidence Gate v0 with deterministic golden at
   `tests/golden/proofs/runtime_evidence_gate.txt` and CI coverage in the
   `python` workflow job.
@@ -152,6 +153,32 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`,
   showing planned `systolic-sim`, `device_sram`, and `blocked` value-record
   metadata without raw tensor values.
+- Runtime Backend Equivalence v0 with schema at
+  `schemas/runtime_backend_equivalence_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_backend_equivalence/current_report.json`, and a
+  practical `reference-cpu` versus `systolic-sim` placement comparison for the
+  same neutral graph without serialized tensor values.
+- Runtime Vector Backend Equivalence evidence at
+  `examples/runtime_vector_backend_equivalence.py` with deterministic golden
+  evidence at `tests/golden/runtime_backend_equivalence/vector_sim_report.json`,
+  proving a `reference-cpu` baseline and `vector-sim` candidate preserve
+  terminal output semantics for `softmax -> reduction -> elementwise` without
+  serialized tensor values.
+- Runtime Evidence Gate now requires and binds Runtime Vector Backend
+  Equivalence evidence, verifying the expected `reference-cpu` versus
+  `vector-sim` placement sequence and raw-value omission policy in CI-facing
+  output.
+- Runtime Mixed Backend Equivalence evidence at
+  `examples/runtime_mixed_backend_equivalence.py` with deterministic golden
+  evidence at
+  `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`, proving a
+  `reference-cpu` baseline and a `systolic-sim` plus `vector-sim` candidate
+  compose in one graph while preserving terminal output semantics without
+  serialized tensor values.
+- Runtime Evidence Gate now requires and binds Runtime Mixed Backend
+  Equivalence evidence, verifying the expected heterogeneous accelerator
+  sequence and raw-value omission policy in CI-facing output.
 - Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
   explaining what runs, what is stored, what is public, what is hashed, what is
   never serialized, and which runtime gates must pass.
@@ -263,6 +290,10 @@ hardware-independent interface into capability-driven runtime planning.
   `source_intent_return_mlp` Runtime Evidence Matrix graph, failing closed when
   the matrix graph, source boundary, required Source Intent artifacts, or report
   graph name drift.
+- Runtime Evidence Gate now requires Runtime Backend Equivalence evidence and
+  binds it to the expected `reference_cpu` baseline versus `systolic_sim`
+  candidate placement, failing closed on graph, run ID, backend-sequence,
+  comparison-status, or raw-value-policy drift.
 - Source Intent Frontend Conformance now includes explicit public-return
   fixtures, return-alias preservation checks, and fail-closed rejected cases for
   unknown, intermediate, and duplicate public returns.
@@ -334,6 +365,15 @@ Current slice:
 - Systolic Runtime Tensor Store Evidence at
   `examples/runtime_systolic_tensor_store_evidence.py`, with golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`.
+- Runtime Backend Equivalence at `examples/runtime_backend_equivalence.py`,
+  with golden evidence at
+  `tests/golden/runtime_backend_equivalence/current_report.json`.
+- Runtime Vector Backend Equivalence at
+  `examples/runtime_vector_backend_equivalence.py`, with golden evidence at
+  `tests/golden/runtime_backend_equivalence/vector_sim_report.json`.
+- Runtime Mixed Backend Equivalence at
+  `examples/runtime_mixed_backend_equivalence.py`, with golden evidence at
+  `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`.
 - Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
   including accepted external-input metadata without tensor values.
@@ -395,12 +435,14 @@ Current slice:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
-  Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
-  Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
-  Contract, Runtime Public Output Bundle, Runtime Reference Correctness,
-  Runtime Execution Receipt, Runtime Execution Evidence Bundle, and Source
-  Intent Runtime Returns, with a matrix binding check for the
-  `source_intent_return_mlp` frontend fixture.
+  Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Backend
+  Equivalence, Runtime Vector Backend Equivalence, Runtime Mixed Backend
+  Equivalence, Runtime Tensor Store Evidence, Runtime Input Manifest, Runtime
+  Output Manifest, Runtime Output Contract, Runtime Public Output Bundle,
+  Runtime Reference Correctness, Runtime Execution Receipt, Runtime Execution
+  Evidence Bundle, and Source Intent Runtime Returns, with binding checks for
+  the backend-equivalence fixture and the `source_intent_return_mlp` frontend
+  fixture.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
