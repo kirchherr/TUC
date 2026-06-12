@@ -9,6 +9,7 @@ import pytest
 
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
 from examples.runtime_evidence_gate import (
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
     SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
     RuntimeEvidenceGateError,
     build_gate_report,
@@ -77,13 +78,22 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
     assert 'runtime_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_backend_equivalence_binding = "verified"' in completed.stdout
+    assert 'runtime_backend_equivalence_matrix = "covered"' in completed.stdout
     assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
     assert (
         'runtime_vector_backend_equivalence_binding = "verified"'
         in completed.stdout
     )
+    assert (
+        'runtime_vector_backend_equivalence_matrix = "covered"'
+        in completed.stdout
+    )
     assert 'runtime_mixed_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_mixed_backend_equivalence_binding = "verified"' in completed.stdout
+    assert (
+        'runtime_mixed_backend_equivalence_matrix = "covered"'
+        in completed.stdout
+    )
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
     assert 'runtime_input_manifest = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
@@ -280,6 +290,75 @@ def test_runtime_evidence_gate_rejects_unbound_mixed_backend_equivalence() -> No
         match="mixed backend equivalence binding",
     ):
         build_gate_report(mixed_backend_equivalence_report=mismatched_report)
+
+
+def test_runtime_evidence_gate_rejects_missing_backend_equivalence_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    without_mixed_equivalence = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_missing_mixed_backend_equivalence_graph",
+        tuple(
+            graph
+            for graph in report.graphs
+            if graph.graph_id != RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+        ),
+    )
+
+    assert without_mixed_equivalence.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed backend equivalence matrix coverage",
+    ):
+        build_gate_report(matrix_report=without_mixed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_malformed_backend_equivalence_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    malformed_mixed_equivalence = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_malformed_mixed_backend_equivalence_graph",
+        tuple(
+            replace(graph, source_boundary="typed_compute_graph")
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert malformed_mixed_equivalence.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed backend equivalence matrix coverage",
+    ):
+        build_gate_report(matrix_report=malformed_mixed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_broadened_backend_equivalence_matrix_scope() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    broadened_mixed_equivalence = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_broadened_mixed_backend_equivalence_graph",
+        tuple(
+            replace(
+                graph,
+                artifacts=(
+                    *graph.artifacts,
+                    RuntimeEvidenceArtifact(
+                        artifact_kind="input_manifest",
+                        artifact_id="runtime_mixed_backend_equivalence_input_manifest",
+                    ),
+                ),
+                required_artifact_kinds=("backend_equivalence", "input_manifest"),
+            )
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert broadened_mixed_equivalence.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed backend equivalence matrix coverage",
+    ):
+        build_gate_report(matrix_report=broadened_mixed_equivalence)
 
 
 def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:

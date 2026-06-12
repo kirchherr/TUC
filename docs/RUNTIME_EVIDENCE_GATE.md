@@ -40,18 +40,27 @@ The gate passes only when:
 - Runtime Backend Equivalence binding passes, proving the checked report is the
   expected `reference-cpu,reference-cpu` versus `systolic-sim,reference-cpu`
   placement comparison with raw values omitted
+- Runtime Backend Equivalence matrix coverage passes, proving the checked
+  report is inventoried by the Runtime Evidence Matrix as scoped
+  `backend_equivalence` evidence
 - Runtime Vector Backend Equivalence passes for the `reference_cpu` baseline
   run and the `vector_sim` candidate run
 - Runtime Vector Backend Equivalence binding passes, proving the checked report
   is the expected `reference-cpu,reference-cpu,reference-cpu` versus
   `vector-sim,vector-sim,vector-sim` placement comparison with raw values
   omitted
+- Runtime Vector Backend Equivalence matrix coverage passes, proving the
+  checked report is inventoried by the Runtime Evidence Matrix as scoped
+  `backend_equivalence` evidence
 - Runtime Mixed Backend Equivalence passes for the `reference_cpu` baseline run
   and the `mixed_accelerators` candidate run
 - Runtime Mixed Backend Equivalence binding passes, proving the checked report
   is the expected `reference-cpu,reference-cpu,reference-cpu,reference-cpu`
   versus `systolic-sim,vector-sim,vector-sim,vector-sim` placement comparison
   with raw values omitted
+- Runtime Mixed Backend Equivalence matrix coverage passes, proving the checked
+  report is inventoried by the Runtime Evidence Matrix as scoped
+  `backend_equivalence` evidence
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
 - Runtime Input Manifest passes for accepted graph external inputs
@@ -162,18 +171,27 @@ It composes bounded in-repository checks:
 - a bounded Runtime Backend Equivalence binding check that verifies graph ID,
   run IDs, planned backend sequences, matched comparison status, and raw-value
   policy
+- a bounded Runtime Backend Equivalence matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and
+  `backend_equivalence` artifact coverage
 - data-only Runtime Vector Backend Equivalence metadata comparing the expected
   `reference_cpu` and `vector_sim` trusted execution placements with raw tensor
   values omitted by policy
 - a bounded Runtime Vector Backend Equivalence binding check that verifies graph
   ID, run IDs, planned backend sequences, matched comparison status, and
   raw-value policy
+- a bounded Runtime Vector Backend Equivalence matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and
+  `backend_equivalence` artifact coverage
 - data-only Runtime Mixed Backend Equivalence metadata comparing the expected
   `reference_cpu` and `mixed_accelerators` trusted execution placements with
   raw tensor values omitted by policy
 - a bounded Runtime Mixed Backend Equivalence binding check that verifies graph
   ID, run IDs, planned backend sequences, matched comparison status, and
   raw-value policy
+- a bounded Runtime Mixed Backend Equivalence matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and
+  `backend_equivalence` artifact coverage
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
 - data-only Runtime Input Manifest metadata for accepted graph external inputs

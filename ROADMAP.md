@@ -195,6 +195,9 @@ Completed evidence:
   so backend-equivalence fixtures are inventoried honestly under the
   `backend_equivalence` requirement instead of pretending to own full
   proof/readiness/trace evidence.
+- Runtime Evidence Gate binds backend-equivalence reports back to their Matrix
+  graph entries, so report-level pass status and proof-inventory coverage
+  cannot drift apart.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

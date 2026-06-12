@@ -59,6 +59,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Matrix now records graph-scoped required evidence kinds and
   inventories the systolic, vector, and mixed backend-equivalence fixtures under
   the scoped `backend_equivalence` requirement.
+- Runtime Evidence Gate now binds each backend-equivalence report to its Runtime
+  Evidence Matrix graph entry, verifying scoped `backend_equivalence` inventory
+  coverage before the report can count as passing gate evidence.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
