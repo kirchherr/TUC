@@ -3,7 +3,7 @@
 Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
 Evidence, Runtime Backend Equivalence and Backend Equivalence Portfolio
-evidence, Runtime Input Manifest
+evidence, Runtime HS-IR Plan Alignment evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
@@ -19,6 +19,7 @@ It runs:
 - `build_backend_equivalence_report()`
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
+- `examples/runtime_hs_ir_plan_alignment.py`
 - `build_runtime_backend_equivalence_portfolio_report()`
 - `build_default_runtime_backend_equivalence_portfolio_policy_report()`
 - `build_runtime_evidence_gate_matrix_coverage_report()`
@@ -43,9 +44,11 @@ The gate passes only when:
   entry with scoped `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` requirements and exact artifact-ID
   bindings
+- the Runtime Evidence Matrix includes `runtime_hs_ir_plan_alignment` evidence
+  on the mixed backend-equivalence graph with exact artifact-ID binding
 - Runtime Evidence Gate Matrix Coverage passes, proving the exact
-  backend-equivalence and portfolio Matrix graph/artifact bindings are present
-  in one deterministic audit report
+  backend-equivalence, HS-IR alignment, and portfolio Matrix graph/artifact
+  bindings are present in one deterministic audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
@@ -76,6 +79,13 @@ The gate passes only when:
   report is inventoried by the Runtime Evidence Matrix as scoped
   `backend_equivalence` evidence with the exact
   `runtime_backend_equivalence_mixed` artifact ID
+- Runtime HS-IR Plan Alignment passes for the mixed accelerator proof slice
+- Runtime HS-IR Plan Alignment binding passes, proving the checked report is
+  the expected `systolic-sim,vector-sim,vector-sim,vector-sim` HS-IR,
+  PartitionPlan, and RuntimeExecutionTrace alignment with raw values omitted
+- Runtime HS-IR Plan Alignment matrix coverage passes, proving the checked
+  report is inventoried by the Runtime Evidence Matrix with the exact
+  `runtime_hs_ir_plan_alignment_mixed` artifact ID
 - Runtime Backend Equivalence Portfolio passes across the systolic, vector, and
   mixed accelerator proof slices
 - Runtime Backend Equivalence Portfolio binding passes, proving the aggregate
@@ -175,6 +185,12 @@ Runtime Backend Equivalence Portfolio Policy schema:
 schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
 ```
 
+Runtime HS-IR Plan Alignment schema:
+
+```text
+schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json
+```
+
 Runtime Evidence Gate Matrix Coverage schema:
 
 ```text
@@ -237,6 +253,15 @@ It composes bounded in-repository checks:
 - a bounded Runtime Mixed Backend Equivalence matrix lookup that verifies graph
   family, source boundary, required artifact kinds, completeness, and
   exact `backend_equivalence` artifact coverage
+- data-only Runtime HS-IR Plan Alignment metadata binding HS-IR backend/layout
+  facts to the accepted mixed `PartitionPlan` and observed trusted runtime
+  trace with raw tensor values omitted by policy
+- a bounded Runtime HS-IR Plan Alignment binding check that compares graph
+  names, backend sequences, step count, pass status, and raw-value policy
+  against the mixed Backend Equivalence report already checked by the gate
+- a bounded Runtime HS-IR Plan Alignment matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and exact
+  `runtime_hs_ir_plan_alignment` artifact coverage
 - data-only Runtime Backend Equivalence Portfolio metadata aggregating the
   systolic, vector, and mixed accelerator equivalence slices with raw tensor
   values omitted by policy

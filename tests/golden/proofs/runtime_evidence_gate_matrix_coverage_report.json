@@ -40,16 +40,19 @@
       "binding_id": "runtime_mixed_backend_equivalence_matrix",
       "coverage_status": "covered",
       "expected_artifact_ids": [
-        "runtime_backend_equivalence_mixed"
+        "runtime_backend_equivalence_mixed",
+        "runtime_hs_ir_plan_alignment_mixed"
       ],
       "graph_family": "backend_equivalence",
       "graph_id": "runtime_mixed_backend_equivalence",
       "issues": [],
       "observed_artifact_ids": [
-        "runtime_backend_equivalence_mixed"
+        "runtime_backend_equivalence_mixed",
+        "runtime_hs_ir_plan_alignment_mixed"
       ],
       "required_artifact_kinds": [
-        "backend_equivalence"
+        "backend_equivalence",
+        "runtime_hs_ir_plan_alignment"
       ],
       "source_boundary": "runtime_backend_equivalence"
     },

@@ -12,14 +12,17 @@ from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
+    RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
     RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
     RuntimeEvidenceGateError,
     build_gate_report,
 )
 from examples.runtime_execution_receipt import build_execution_receipt_report
+from examples.runtime_hs_ir_plan_alignment import build_alignment_report
 from examples.runtime_input_manifest import build_input_manifest_report
 from examples.runtime_mixed_backend_equivalence import (
     build_mixed_backend_equivalence_report,
@@ -50,6 +53,7 @@ from tuc import (
     RuntimeExecutorConformanceCase,
     RuntimeExecutorConformanceIssue,
     RuntimeExecutorConformanceReport,
+    RuntimeHsIrPlanAlignmentIssue,
     RuntimeInputManifestIssue,
     RuntimeInputManifestReport,
     RuntimeOutputContractIssue,
@@ -117,6 +121,18 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert (
         "runtime_mixed_backend_equivalence_matrix_artifact = "
         f'"{RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_hs_ir_plan_alignment = "passed"' in completed.stdout
+    assert 'runtime_hs_ir_plan_alignment_binding = "verified"' in completed.stdout
+    assert 'runtime_hs_ir_plan_alignment_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_hs_ir_plan_alignment_matrix_artifact = "
+        f'"{RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_hs_ir_plan_alignment_steps = "4"' in completed.stdout
+    assert (
+        'runtime_hs_ir_plan_alignment_backend_sequence = '
+        '"systolic-sim,vector-sim,vector-sim,vector-sim"'
     ) in completed.stdout
     assert 'runtime_backend_equivalence_portfolio = "passed"' in completed.stdout
     assert (
@@ -341,6 +357,47 @@ def test_runtime_evidence_gate_rejects_unbound_mixed_backend_equivalence() -> No
         build_gate_report(mixed_backend_equivalence_report=mismatched_report)
 
 
+def test_runtime_evidence_gate_rejects_failed_hs_ir_plan_alignment() -> None:
+    report = build_alignment_report()
+    failed_alignment = replace(
+        report,
+        partition_backend_sequence=("reference-cpu", *report.partition_backend_sequence[1:]),
+        issues=(
+            RuntimeHsIrPlanAlignmentIssue(
+                subject="backend_sequence",
+                issue_code="hs_ir_partition_backend_mismatch",
+            ),
+            RuntimeHsIrPlanAlignmentIssue(
+                subject="backend_sequence",
+                issue_code="partition_trace_backend_mismatch",
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="HS-IR plan alignment failed",
+    ):
+        build_gate_report(runtime_hs_ir_plan_alignment_report=failed_alignment)
+
+
+def test_runtime_evidence_gate_rejects_unbound_hs_ir_plan_alignment() -> None:
+    report = build_alignment_report()
+    unbound_alignment = replace(
+        report,
+        graph_name="runtime_other_backend_equivalence",
+        partition_plan_graph_name="runtime_other_backend_equivalence",
+        execution_trace_graph_name="runtime_other_backend_equivalence",
+    )
+
+    assert unbound_alignment.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="HS-IR plan alignment binding",
+    ):
+        build_gate_report(runtime_hs_ir_plan_alignment_report=unbound_alignment)
+
+
 def test_runtime_evidence_gate_rejects_missing_backend_equivalence_matrix_graph() -> None:
     report = build_current_runtime_evidence_matrix_report()
     without_mixed_equivalence = build_runtime_evidence_matrix_report(
@@ -394,7 +451,10 @@ def test_runtime_evidence_gate_rejects_broadened_backend_equivalence_matrix_scop
                         artifact_id="runtime_mixed_backend_equivalence_input_manifest",
                     ),
                 ),
-                required_artifact_kinds=("backend_equivalence", "input_manifest"),
+                required_artifact_kinds=(
+                    *RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
+                    "input_manifest",
+                ),
             )
             if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
             else graph
@@ -417,11 +477,14 @@ def test_runtime_evidence_gate_rejects_wrong_backend_equivalence_matrix_artifact
         tuple(
             replace(
                 graph,
-                artifacts=(
-                    RuntimeEvidenceArtifact(
-                        artifact_kind="backend_equivalence",
+                artifacts=tuple(
+                    replace(
+                        artifact,
                         artifact_id="runtime_backend_equivalence_other",
-                    ),
+                    )
+                    if artifact.artifact_kind == "backend_equivalence"
+                    else artifact
+                    for artifact in graph.artifacts
                 ),
             )
             if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
@@ -436,6 +499,37 @@ def test_runtime_evidence_gate_rejects_wrong_backend_equivalence_matrix_artifact
         match="mixed backend equivalence matrix coverage",
     ):
         build_gate_report(matrix_report=mismatched_mixed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_wrong_hs_ir_alignment_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_alignment = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_hs_ir_alignment_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_hs_ir_plan_alignment_other",
+                    )
+                    if artifact.artifact_kind == "runtime_hs_ir_plan_alignment"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_alignment.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="HS-IR plan alignment matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_alignment)
 
 
 def test_runtime_evidence_gate_rejects_failed_backend_equivalence_portfolio() -> None:

@@ -91,3 +91,16 @@ operation/backend/layout decisions.
 That makes future backend and performance work harder to fake: if HS-IR,
 planning, or execution drifts, reviewers get a deterministic JSON failure
 instead of a narrative claim.
+
+## Gate Binding
+
+Runtime Evidence Matrix now inventories this report on the
+`runtime_mixed_backend_equivalence` graph as:
+
+```text
+runtime_hs_ir_plan_alignment -> runtime_hs_ir_plan_alignment_mixed
+```
+
+Runtime Evidence Gate requires that Matrix entry, checks the report passes,
+binds its backend sequence to the mixed accelerator candidate run, and verifies
+the same graph is covered by Runtime Evidence Gate Matrix Coverage.

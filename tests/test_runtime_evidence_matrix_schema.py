@@ -104,8 +104,16 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "backend_equivalence"
     ]
     assert graphs["runtime_mixed_backend_equivalence"]["required_artifact_kinds"] == [
-        "backend_equivalence"
+        "backend_equivalence",
+        "runtime_hs_ir_plan_alignment",
     ]
+    assert {
+        artifact["artifact_kind"]
+        for artifact in graphs["runtime_mixed_backend_equivalence"]["artifacts"]
+    } == {
+        "backend_equivalence",
+        "runtime_hs_ir_plan_alignment",
+    }
     assert graphs["runtime_backend_equivalence_portfolio"][
         "required_artifact_kinds"
     ] == [

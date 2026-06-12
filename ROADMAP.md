@@ -228,6 +228,10 @@ Completed evidence:
   accepted `PartitionPlan` and observed `RuntimeExecutionTrace` for the mixed
   accelerator proof slice without serializing tensor values or adding
   execution surfaces.
+- Runtime Evidence Matrix and Runtime Evidence Gate now require Runtime HS-IR
+  Plan Alignment for the mixed accelerator proof slice, binding the exact
+  `runtime_hs_ir_plan_alignment_mixed` artifact ID before the slice can count
+  as merge evidence.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.
@@ -459,6 +463,8 @@ Completed evidence:
 - Runtime HS-IR Plan Alignment proves the current mixed accelerator HS-IR,
   runtime plan, and trusted execution trace agree on backend sequence,
   produced layouts, and layout-conversion accounting.
+- Runtime Evidence Gate checks the Runtime HS-IR Plan Alignment report and
+  Matrix artifact binding before accepting the mixed accelerator slice.
 
 Next work:
 

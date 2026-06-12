@@ -302,6 +302,7 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "backend_equivalence",
     "backend_equivalence_portfolio",
     "backend_equivalence_portfolio_policy",
+    "runtime_hs_ir_plan_alignment",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "hac_ir_golden",
@@ -1393,8 +1394,15 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "backend_equivalence",
                         "runtime_backend_equivalence_mixed",
                     ),
+                    _runtime_evidence_artifact(
+                        "runtime_hs_ir_plan_alignment",
+                        "runtime_hs_ir_plan_alignment_mixed",
+                    ),
                 ),
-                required_artifact_kinds=("backend_equivalence",),
+                required_artifact_kinds=(
+                    "backend_equivalence",
+                    "runtime_hs_ir_plan_alignment",
+                ),
             ),
             RuntimeEvidenceGraph(
                 graph_id="runtime_backend_equivalence_portfolio",

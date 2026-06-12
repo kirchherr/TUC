@@ -12,6 +12,7 @@ import pytest
 from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS,
     build_gate_matrix_bindings,
     build_gate_matrix_coverage_report,
 )
@@ -56,6 +57,15 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
         "runtime_mixed_backend_equivalence_matrix",
         "runtime_backend_equivalence_portfolio_matrix",
     )
+    mixed = {
+        binding.binding_id: binding for binding in report.bindings
+    }["runtime_mixed_backend_equivalence_matrix"]
+    assert mixed.expected_artifact_ids == (
+        RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS
+    )
+    assert mixed.observed_artifact_ids == (
+        RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS
+    )
     assert tuple(runtime_evidence_gate_matrix_coverage_report_to_dict(report)) == (
         "artifact_status",
         "binding_count",
@@ -89,6 +99,7 @@ def test_runtime_evidence_gate_matrix_coverage_example_runs() -> None:
     assert '"coverage_passed": true' in completed.stdout
     assert '"binding_count": 4' in completed.stdout
     assert "runtime_backend_equivalence_systolic" in completed.stdout
+    assert "runtime_hs_ir_plan_alignment_mixed" in completed.stdout
     assert "runtime_backend_equivalence_portfolio_policy" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "runtime_handle" not in completed.stdout
@@ -102,11 +113,14 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_artifact_id() -> No
         tuple(
             replace(
                 graph,
-                artifacts=(
+                artifacts=tuple(
                     RuntimeEvidenceArtifact(
-                        artifact_kind="backend_equivalence",
+                        artifact_kind=artifact.artifact_kind,
                         artifact_id="runtime_backend_equivalence_other",
-                    ),
+                    )
+                    if artifact.artifact_kind == "backend_equivalence"
+                    else artifact
+                    for artifact in graph.artifacts
                 ),
             )
             if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
@@ -129,7 +143,10 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_artifact_id() -> No
         binding.binding_id: binding for binding in report.bindings
     }["runtime_mixed_backend_equivalence_matrix"]
     assert mixed.coverage_status == "failed"
-    assert mixed.observed_artifact_ids == ("runtime_backend_equivalence_other",)
+    assert mixed.observed_artifact_ids == (
+        "runtime_backend_equivalence_other",
+        "runtime_hs_ir_plan_alignment_mixed",
+    )
 
 
 def test_runtime_evidence_gate_matrix_coverage_rejects_missing_portfolio_graph() -> None:
@@ -173,11 +190,14 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_forged_issues() -> None:
         tuple(
             replace(
                 graph,
-                artifacts=(
+                artifacts=tuple(
                     RuntimeEvidenceArtifact(
-                        artifact_kind="backend_equivalence",
+                        artifact_kind=artifact.artifact_kind,
                         artifact_id="runtime_backend_equivalence_other",
-                    ),
+                    )
+                    if artifact.artifact_kind == "backend_equivalence"
+                    else artifact
+                    for artifact in graph.artifacts
                 ),
             )
             if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID

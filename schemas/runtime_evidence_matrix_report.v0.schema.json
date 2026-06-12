@@ -82,7 +82,8 @@
         "execution_receipt",
         "backend_equivalence",
         "backend_equivalence_portfolio",
-        "backend_equivalence_portfolio_policy"
+        "backend_equivalence_portfolio_policy",
+        "runtime_hs_ir_plan_alignment"
       ]
     },
     "graph": {

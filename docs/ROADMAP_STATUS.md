@@ -101,6 +101,11 @@ hardware-independent interface into capability-driven runtime planning.
   `schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json` and
   deterministic golden evidence at
   `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`.
+- Runtime Evidence Matrix now inventories Runtime HS-IR Plan Alignment as
+  required scoped evidence for `runtime_mixed_backend_equivalence`, and Runtime
+  Evidence Gate verifies the report, backend-sequence binding, and exact
+  `runtime_hs_ir_plan_alignment_mixed` artifact ID before the mixed
+  accelerator slice can count as passing gate evidence.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at

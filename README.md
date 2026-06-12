@@ -90,7 +90,9 @@ Current runtime surfaces:
 - Runtime Backend Equivalence Portfolio Policy v0 declaring the accepted
   portfolio slice membership and backend-family coverage as data-only evidence.
 - Runtime HS-IR Plan Alignment v0 binding HS-IR backend/layout decisions to
-  the accepted `PartitionPlan` and observed `RuntimeExecutionTrace`.
+  the accepted `PartitionPlan` and observed `RuntimeExecutionTrace`, now
+  inventoried by Runtime Evidence Matrix and required by Runtime Evidence Gate
+  for the mixed accelerator proof slice.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
