@@ -132,6 +132,11 @@ remain present with the `source_intent_metadata` source boundary and the
 `source_intent_return_semantics` plus `source_intent_runtime_returns` artifact
 kinds before Source Intent Runtime Returns can count as passing gate evidence.
 
+[Runtime Evidence Gate Matrix Coverage](RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
+serializes the gate-required backend-equivalence and portfolio Matrix bindings
+as a deterministic JSON audit, so reviewers can inspect the exact graph and
+artifact IDs that the gate accepts.
+
 ## Security Boundary
 
 The report rejects path-like artifact IDs, known execution-surface identifiers,

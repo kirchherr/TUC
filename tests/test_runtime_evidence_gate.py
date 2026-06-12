@@ -86,6 +86,8 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'status = "PASS"' in completed.stdout
     assert 'runtime_evidence_matrix = "complete"' in completed.stdout
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
+    assert 'runtime_evidence_gate_matrix_coverage = "passed"' in completed.stdout
+    assert 'runtime_evidence_gate_matrix_bindings = "4"' in completed.stdout
     assert 'runtime_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_backend_equivalence_binding = "verified"' in completed.stdout
     assert 'runtime_backend_equivalence_matrix = "covered"' in completed.stdout

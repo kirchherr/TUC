@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json",
+  "title": "Runtime Evidence Gate Matrix Coverage Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "binding_count",
+    "bindings",
+    "blocked_execution_surfaces",
+    "coverage_contract",
+    "coverage_id",
+    "coverage_passed",
+    "issues",
+    "matrix_complete",
+    "matrix_id",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "binding_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 16
+    },
+    "bindings": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/binding"
+      }
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "coverage_contract": {
+      "const": "runtime_evidence_gate_matrix_coverage.data_only.v0"
+    },
+    "coverage_id": {
+      "$ref": "#/$defs/report_text"
+    },
+    "coverage_passed": {
+      "type": "boolean"
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/report_text"
+      }
+    },
+    "matrix_complete": {
+      "type": "boolean"
+    },
+    "matrix_id": {
+      "$ref": "#/$defs/report_text"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_evidence_gate_matrix_coverage_report.v0"
+    }
+  },
+  "$defs": {
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_id",
+        "coverage_status",
+        "expected_artifact_ids",
+        "graph_family",
+        "graph_id",
+        "issues",
+        "observed_artifact_ids",
+        "required_artifact_kinds",
+        "source_boundary"
+      ],
+      "properties": {
+        "binding_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "coverage_status": {
+          "enum": [
+            "covered",
+            "failed"
+          ]
+        },
+        "expected_artifact_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/report_text"
+          }
+        },
+        "graph_family": {
+          "$ref": "#/$defs/report_text"
+        },
+        "graph_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "issues": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/report_text"
+          }
+        },
+        "observed_artifact_ids": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/report_text"
+          }
+        },
+        "required_artifact_kinds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {
+            "enum": [
+              "backend_equivalence",
+              "backend_equivalence_portfolio",
+              "backend_equivalence_portfolio_policy"
+            ]
+          }
+        },
+        "source_boundary": {
+          "const": "runtime_backend_equivalence"
+        }
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "url"
+        ]
+      }
+    }
+  }
+}

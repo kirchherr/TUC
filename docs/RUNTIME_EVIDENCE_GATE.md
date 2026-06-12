@@ -21,6 +21,7 @@ It runs:
 - `build_mixed_backend_equivalence_report()`
 - `build_runtime_backend_equivalence_portfolio_report()`
 - `build_default_runtime_backend_equivalence_portfolio_policy_report()`
+- `build_runtime_evidence_gate_matrix_coverage_report()`
 - `build_tensor_store_evidence_report()`
 - `build_input_manifest_report()`
 - `build_output_manifest_report()`
@@ -42,6 +43,9 @@ The gate passes only when:
   entry with scoped `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` requirements and exact artifact-ID
   bindings
+- Runtime Evidence Gate Matrix Coverage passes, proving the exact
+  backend-equivalence and portfolio Matrix graph/artifact bindings are present
+  in one deterministic audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
@@ -171,6 +175,12 @@ Runtime Backend Equivalence Portfolio Policy schema:
 schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
 ```
 
+Runtime Evidence Gate Matrix Coverage schema:
+
+```text
+schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json
+```
+
 Source Intent Runtime Returns schema:
 
 ```text
@@ -243,6 +253,11 @@ It composes bounded in-repository checks:
   comparison counts, and covered candidate backend families
 - a bounded Runtime Backend Equivalence Portfolio Policy binding check that
   verifies the portfolio report matches that accepted membership policy
+- data-only Runtime Evidence Gate Matrix Coverage metadata auditing the exact
+  Matrix graph/artifact bindings accepted by the gate
+- a bounded Runtime Evidence Gate Matrix Coverage check that fails closed if a
+  gate-required graph, source boundary, required artifact kind, or concrete
+  artifact ID drifts
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
 - data-only Runtime Input Manifest metadata for accepted graph external inputs

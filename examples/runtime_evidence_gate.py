@@ -23,6 +23,8 @@ from tuc import (
     RuntimeBackendEquivalencePortfolioReport,
     RuntimeBackendEquivalencePortfolioSlice,
     RuntimeBackendEquivalenceReport,
+    RuntimeEvidenceGateMatrixBinding,
+    RuntimeEvidenceGateMatrixCoverageReport,
     RuntimeEvidenceGraph,
     RuntimeEvidenceMatrixReport,
     RuntimeExecutionEvidenceBundleReport,
@@ -39,6 +41,7 @@ from tuc import (
     build_current_runtime_evidence_matrix_report,
     build_default_runtime_backend_equivalence_portfolio_policy_report,
     build_runtime_backend_equivalence_portfolio_report,
+    build_runtime_evidence_gate_matrix_coverage_report,
     build_runtime_execution_evidence_bundle_report,
     run_runtime_executor_conformance,
 )
@@ -49,6 +52,7 @@ SOURCE_INTENT_RUNTIME_RETURNS_REQUIRED_MATRIX_ARTIFACTS = (
     "source_intent_return_semantics",
     "source_intent_runtime_returns",
 )
+RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ID = "runtime_evidence_gate_matrix_coverage"
 RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY = "runtime_backend_equivalence"
 RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY = "backend_equivalence"
 RUNTIME_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS = ("backend_equivalence",)
@@ -116,6 +120,64 @@ class RuntimeEvidenceGateError(AssertionError):
     """Raised when required runtime evidence is incomplete."""
 
 
+def build_gate_matrix_bindings() -> tuple[RuntimeEvidenceGateMatrixBinding, ...]:
+    """Return Matrix bindings that Runtime Evidence Gate requires exactly."""
+
+    return (
+        RuntimeEvidenceGateMatrixBinding(
+            binding_id="runtime_backend_equivalence_matrix",
+            graph_id=RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID,
+            graph_family=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY,
+            source_boundary=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY,
+            required_artifact_kinds=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
+            artifact_ids=(RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,),
+        ),
+        RuntimeEvidenceGateMatrixBinding(
+            binding_id="runtime_vector_backend_equivalence_matrix",
+            graph_id=RUNTIME_VECTOR_BACKEND_EQUIVALENCE_GRAPH_ID,
+            graph_family=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY,
+            source_boundary=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY,
+            required_artifact_kinds=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
+            artifact_ids=(RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,),
+        ),
+        RuntimeEvidenceGateMatrixBinding(
+            binding_id="runtime_mixed_backend_equivalence_matrix",
+            graph_id=RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
+            graph_family=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY,
+            source_boundary=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY,
+            required_artifact_kinds=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
+            artifact_ids=(RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,),
+        ),
+        RuntimeEvidenceGateMatrixBinding(
+            binding_id="runtime_backend_equivalence_portfolio_matrix",
+            graph_id=RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
+            graph_family=RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_GRAPH_FAMILY,
+            source_boundary=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY,
+            required_artifact_kinds=(
+                RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_REQUIRED_ARTIFACTS
+            ),
+            artifact_ids=RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
+        ),
+    )
+
+
+def build_gate_matrix_coverage_report(
+    matrix_report: RuntimeEvidenceMatrixReport | None = None,
+) -> RuntimeEvidenceGateMatrixCoverageReport:
+    """Return a data-only audit of Matrix bindings used by this gate."""
+
+    matrix = (
+        build_current_runtime_evidence_matrix_report()
+        if matrix_report is None
+        else matrix_report
+    )
+    return build_runtime_evidence_gate_matrix_coverage_report(
+        RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ID,
+        matrix,
+        build_gate_matrix_bindings(),
+    )
+
+
 def build_gate_report(
     *,
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
@@ -152,6 +214,7 @@ def build_gate_report(
         if matrix_report is None
         else matrix_report
     )
+    gate_matrix_coverage = build_gate_matrix_coverage_report(matrix)
     conformance = (
         run_runtime_executor_conformance()
         if conformance_report is None
@@ -303,6 +366,7 @@ def build_gate_report(
         backend_equivalence_portfolio_policy,
         backend_equivalence_portfolio,
     )
+    _assert_gate_matrix_coverage_passed(gate_matrix_coverage)
     _assert_tensor_store_evidence_passed(tensor_store)
     _assert_input_manifest_passed(input_manifest)
     _assert_output_manifest_passed(output_manifest)
@@ -339,6 +403,7 @@ def build_gate_report(
         mixed_backend_equivalence,
         backend_equivalence_portfolio,
         backend_equivalence_portfolio_policy,
+        gate_matrix_coverage,
         tensor_store,
         input_manifest,
         output_manifest,
@@ -604,6 +669,16 @@ def _assert_backend_equivalence_portfolio_policy_bound(
             "runtime backend equivalence portfolio policy failed: "
             f"{exc}"
         ) from exc
+
+
+def _assert_gate_matrix_coverage_passed(
+    report: RuntimeEvidenceGateMatrixCoverageReport,
+) -> None:
+    if not report.coverage_passed:
+        issues = ",".join(report.issues)
+        raise RuntimeEvidenceGateError(
+            f"runtime evidence gate matrix coverage failed: {issues}"
+        )
 
 
 def _assert_backend_equivalence_portfolio_slice_bound(
@@ -1013,6 +1088,7 @@ def _render_gate_report(
     backend_equivalence_portfolio_policy: (
         RuntimeBackendEquivalencePortfolioPolicyReport
     ),
+    gate_matrix_coverage: RuntimeEvidenceGateMatrixCoverageReport,
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
@@ -1026,6 +1102,11 @@ def _render_gate_report(
     lines = ["runtime.evidence_gate @runtime_evidence_gate_v0 {"]
     lines.append('  runtime_evidence_matrix = "complete"')
     lines.append(f'  runtime_evidence_graphs = "{len(matrix.graphs)}"')
+    lines.append('  runtime_evidence_gate_matrix_coverage = "passed"')
+    lines.append(
+        "  runtime_evidence_gate_matrix_bindings = "
+        f'"{gate_matrix_coverage.binding_count}"'
+    )
     lines.append('  runtime_executor_conformance = "passed"')
     lines.append(f'  runtime_executor_conformance_cases = "{len(conformance.checked_cases)}"')
     lines.append('  runtime_backend_equivalence = "passed"')

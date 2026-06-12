@@ -130,6 +130,7 @@ Key docs:
 - [Runtime Execution Evidence Bundle](docs/RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md)
 - [Runtime Backend Equivalence](docs/RUNTIME_BACKEND_EQUIVALENCE.md)
 - [Runtime Backend Equivalence Portfolio](docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md)
+- [Runtime Evidence Gate Matrix Coverage](docs/RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -147,6 +148,7 @@ schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 schemas/runtime_backend_equivalence_report.v0.schema.json
 schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
 schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
+schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json

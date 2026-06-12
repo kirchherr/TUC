@@ -89,6 +89,12 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Gate now binds backend-equivalence and portfolio Matrix
   coverage to exact artifact IDs, preventing kind-only Matrix coverage from
   accepting the wrong concrete evidence artifact.
+- Runtime Evidence Gate Matrix Coverage v0 emits the exact gate-required
+  backend-equivalence and portfolio Matrix bindings as schema-versioned JSON
+  at `schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json`,
+  with deterministic golden evidence at
+  `tests/golden/proofs/runtime_evidence_gate_matrix_coverage_report.json`, and
+  Runtime Evidence Gate requires that audit to pass.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at

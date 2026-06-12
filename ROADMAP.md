@@ -218,6 +218,9 @@ Completed evidence:
 - Runtime Evidence Gate now binds backend-equivalence and portfolio Matrix
   coverage to exact artifact IDs, so a complete Matrix with the right
   artifact kinds cannot silently point at a different evidence artifact.
+- Runtime Evidence Gate Matrix Coverage emits those exact Matrix graph/artifact
+  bindings as a schema-versioned JSON audit and the Runtime Evidence Gate
+  requires that audit to pass.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.
