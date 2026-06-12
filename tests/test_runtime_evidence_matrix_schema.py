@@ -108,11 +108,17 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
     ]
     assert graphs["runtime_backend_equivalence_portfolio"][
         "required_artifact_kinds"
-    ] == ["backend_equivalence_portfolio"]
+    ] == [
+        "backend_equivalence_portfolio",
+        "backend_equivalence_portfolio_policy",
+    ]
     assert {
         artifact["artifact_kind"]
         for artifact in graphs["runtime_backend_equivalence_portfolio"]["artifacts"]
-    } == {"backend_equivalence_portfolio"}
+    } == {
+        "backend_equivalence_portfolio",
+        "backend_equivalence_portfolio_policy",
+    }
 
 
 def test_runtime_evidence_matrix_schema_is_referenced() -> None:

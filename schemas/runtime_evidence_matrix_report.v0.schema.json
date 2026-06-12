@@ -81,7 +81,8 @@
         "reference_correctness",
         "execution_receipt",
         "backend_equivalence",
-        "backend_equivalence_portfolio"
+        "backend_equivalence_portfolio",
+        "backend_equivalence_portfolio_policy"
       ]
     },
     "graph": {

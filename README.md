@@ -87,6 +87,8 @@ Current runtime surfaces:
   and mixed accelerator equivalence slices into one backend-diversity evidence
   artifact inventoried by Runtime Evidence Matrix and bound by the Runtime
   Evidence Gate.
+- Runtime Backend Equivalence Portfolio Policy v0 declaring the accepted
+  portfolio slice membership and backend-family coverage as data-only evidence.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
@@ -104,6 +106,7 @@ examples/runtime_execution_receipt.py
 examples/runtime_execution_evidence_bundle.py
 examples/runtime_backend_equivalence.py
 examples/runtime_backend_equivalence_portfolio.py
+examples/runtime_backend_equivalence_portfolio_policy.py
 examples/runtime_vector_backend_equivalence.py
 examples/runtime_mixed_backend_equivalence.py
 examples/runtime_output_contract.py
@@ -143,6 +146,7 @@ schemas/runtime_execution_receipt_report.v0.schema.json
 schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 schemas/runtime_backend_equivalence_report.v0.schema.json
 schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
+schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json

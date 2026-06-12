@@ -62,6 +62,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "runtime_backend_equivalence_portfolio"
     ].required_artifact_kinds == (
         "backend_equivalence_portfolio",
+        "backend_equivalence_portfolio_policy",
     )
     assert all(
         "backend_equivalence" in graphs[graph_id].present_artifact_kinds
@@ -73,6 +74,10 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     )
     assert (
         "backend_equivalence_portfolio"
+        in graphs["runtime_backend_equivalence_portfolio"].present_artifact_kinds
+    )
+    assert (
+        "backend_equivalence_portfolio_policy"
         in graphs["runtime_backend_equivalence_portfolio"].present_artifact_kinds
     )
     full_runtime_graphs = tuple(
@@ -141,6 +146,7 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert '"backend_equivalence"' in completed.stdout
     assert "runtime_backend_equivalence_portfolio" in completed.stdout
     assert '"backend_equivalence_portfolio"' in completed.stdout
+    assert '"backend_equivalence_portfolio_policy"' in completed.stdout
 
 
 def test_runtime_evidence_matrix_rejects_unknown_artifact_kind() -> None:

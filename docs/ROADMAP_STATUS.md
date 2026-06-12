@@ -73,9 +73,19 @@ hardware-independent interface into capability-driven runtime planning.
   verifying slice IDs, run IDs, backend sequences, comparison metadata digests,
   backend families, pass status, and raw-value omission policy.
 - Runtime Evidence Matrix now inventories the Backend Equivalence Portfolio as
-  its own scoped `backend_equivalence_portfolio` graph, and Runtime Evidence
+  its own scoped graph with `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` requirements, and Runtime Evidence
   Gate verifies that Matrix coverage before portfolio evidence can count as
   passing merge evidence.
+- Runtime Backend Equivalence Portfolio Policy v0 declares the accepted
+  backend-diversity slice membership, backend sequences, minimum comparison
+  counts, and backend-family coverage at
+  `schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json`,
+  with deterministic golden evidence at
+  `tests/golden/runtime_backend_equivalence/portfolio_policy_report.json`.
+- Runtime Evidence Gate now binds the Backend Equivalence Portfolio Policy to
+  the checked portfolio before portfolio evidence can count as passing merge
+  evidence.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
@@ -205,6 +215,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Matrix now includes the Backend Equivalence Portfolio as
   scoped proof-inventory evidence, so backend diversity is visible in the
   matrix rather than only in gate-local checks.
+- Runtime Backend Equivalence Portfolio Policy makes the current accepted
+  portfolio membership explicit and schema-versioned, preventing silent changes
+  to the backend-diversity proof set.
 - Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
   explaining what runs, what is stored, what is public, what is hashed, what is
   never serialized, and which runtime gates must pass.

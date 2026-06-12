@@ -293,6 +293,7 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "execution_receipt",
     "backend_equivalence",
     "backend_equivalence_portfolio",
+    "backend_equivalence_portfolio_policy",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "hac_ir_golden",
@@ -1315,8 +1316,15 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "backend_equivalence_portfolio",
                         "runtime_backend_equivalence_portfolio",
                     ),
+                    _runtime_evidence_artifact(
+                        "backend_equivalence_portfolio_policy",
+                        "runtime_backend_equivalence_portfolio_policy",
+                    ),
                 ),
-                required_artifact_kinds=("backend_equivalence_portfolio",),
+                required_artifact_kinds=(
+                    "backend_equivalence_portfolio",
+                    "backend_equivalence_portfolio_policy",
+                ),
             ),
         ),
     )

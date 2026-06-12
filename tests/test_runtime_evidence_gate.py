@@ -33,7 +33,9 @@ from examples.source_intent_runtime_returns import (
 )
 from tuc import (
     RuntimeBackendEquivalenceIssue,
+    RuntimeBackendEquivalencePortfolioPolicyReport,
     RuntimeBackendEquivalencePortfolioReport,
+    RuntimeBackendEquivalencePortfolioRequirement,
     RuntimeBackendEquivalenceReport,
     RuntimeEvidenceArtifact,
     RuntimeEvidenceGraph,
@@ -55,6 +57,7 @@ from tuc import (
     RuntimeTensorStoreEvidenceIssue,
     RuntimeTensorStoreEvidenceReport,
     build_current_runtime_evidence_matrix_report,
+    build_default_runtime_backend_equivalence_portfolio_policy_report,
     build_runtime_backend_equivalence_portfolio_report,
     build_runtime_evidence_matrix_report,
     build_runtime_execution_evidence_bundle_report,
@@ -108,6 +111,14 @@ def test_runtime_evidence_gate_example_runs() -> None:
     ) in completed.stdout
     assert (
         'runtime_backend_equivalence_portfolio_matrix = "covered"'
+        in completed.stdout
+    )
+    assert (
+        'runtime_backend_equivalence_portfolio_policy = "accepted"'
+        in completed.stdout
+    )
+    assert (
+        'runtime_backend_equivalence_portfolio_policy_binding = "verified"'
         in completed.stdout
     )
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
@@ -525,6 +536,29 @@ def test_runtime_evidence_gate_rejects_broadened_backend_portfolio_matrix_scope(
         match="backend equivalence portfolio matrix coverage",
     ):
         build_gate_report(matrix_report=broadened_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_unbound_backend_equivalence_portfolio_policy() -> None:
+    policy = build_default_runtime_backend_equivalence_portfolio_policy_report()
+    forged_requirement = RuntimeBackendEquivalencePortfolioRequirement(
+        slice_id="runtime_backend_equivalence",
+        graph_name="runtime_backend_equivalence",
+        baseline_run_id="reference_cpu",
+        candidate_run_id="systolic_sim",
+        baseline_backend_sequence=("reference-cpu", "reference-cpu"),
+        candidate_backend_sequence=("vector-sim", "reference-cpu"),
+    )
+    forged_policy = RuntimeBackendEquivalencePortfolioPolicyReport(
+        portfolio_id=policy.portfolio_id,
+        requirements=(forged_requirement, *policy.requirements[1:]),
+        required_candidate_backend_families=policy.required_candidate_backend_families,
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio policy failed",
+    ):
+        build_gate_report(backend_equivalence_portfolio_policy_report=forged_policy)
 
 
 def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:

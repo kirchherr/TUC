@@ -28,8 +28,10 @@ The graph uses:
 
 - graph family: `backend_equivalence_portfolio`
 - source boundary: `runtime_backend_equivalence`
-- required artifact kind: `backend_equivalence_portfolio`
+- required artifact kinds: `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy`
 - artifact ID: `runtime_backend_equivalence_portfolio`
+- policy artifact ID: `runtime_backend_equivalence_portfolio_policy`
 
 Runtime Evidence Gate now verifies this Matrix coverage before portfolio
 evidence can count as passing merge evidence.

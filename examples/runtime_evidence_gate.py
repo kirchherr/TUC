@@ -18,6 +18,8 @@ from examples.source_intent_runtime_returns import run_evidence as run_runtime_r
 from tuc import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT,
+    RuntimeBackendEquivalencePortfolioPolicyError,
+    RuntimeBackendEquivalencePortfolioPolicyReport,
     RuntimeBackendEquivalencePortfolioReport,
     RuntimeBackendEquivalencePortfolioSlice,
     RuntimeBackendEquivalenceReport,
@@ -33,7 +35,9 @@ from tuc import (
     RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceReport,
     SourceIntentRuntimeReturnsReport,
+    assert_runtime_backend_equivalence_portfolio_matches_policy,
     build_current_runtime_evidence_matrix_report,
+    build_default_runtime_backend_equivalence_portfolio_policy_report,
     build_runtime_backend_equivalence_portfolio_report,
     build_runtime_execution_evidence_bundle_report,
     run_runtime_executor_conformance,
@@ -91,6 +95,7 @@ RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_GRAPH_FAMILY = (
 )
 RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_REQUIRED_ARTIFACTS = (
     "backend_equivalence_portfolio",
+    "backend_equivalence_portfolio_policy",
 )
 
 
@@ -109,6 +114,9 @@ def build_gate_report(
     mixed_backend_equivalence_report: RuntimeBackendEquivalenceReport | None = None,
     backend_equivalence_portfolio_report: (
         RuntimeBackendEquivalencePortfolioReport | None
+    ) = None,
+    backend_equivalence_portfolio_policy_report: (
+        RuntimeBackendEquivalencePortfolioPolicyReport | None
     ) = None,
     execution_evidence_bundle_report: (
         RuntimeExecutionEvidenceBundleReport | None
@@ -162,6 +170,11 @@ def build_gate_report(
         )
         if backend_equivalence_portfolio_report is None
         else backend_equivalence_portfolio_report
+    )
+    backend_equivalence_portfolio_policy = (
+        build_default_runtime_backend_equivalence_portfolio_policy_report()
+        if backend_equivalence_portfolio_policy_report is None
+        else backend_equivalence_portfolio_policy_report
     )
     tensor_store = (
         build_tensor_store_evidence_report()
@@ -270,6 +283,10 @@ def build_gate_report(
         matrix,
         backend_equivalence_portfolio,
     )
+    _assert_backend_equivalence_portfolio_policy_bound(
+        backend_equivalence_portfolio_policy,
+        backend_equivalence_portfolio,
+    )
     _assert_tensor_store_evidence_passed(tensor_store)
     _assert_input_manifest_passed(input_manifest)
     _assert_output_manifest_passed(output_manifest)
@@ -305,6 +322,7 @@ def build_gate_report(
         vector_backend_equivalence,
         mixed_backend_equivalence,
         backend_equivalence_portfolio,
+        backend_equivalence_portfolio_policy,
         tensor_store,
         input_manifest,
         output_manifest,
@@ -533,6 +551,22 @@ def _assert_backend_equivalence_portfolio_matrix_covered(
             "runtime backend equivalence portfolio matrix coverage failed: "
             f"missing {missing}"
         )
+
+
+def _assert_backend_equivalence_portfolio_policy_bound(
+    policy: RuntimeBackendEquivalencePortfolioPolicyReport,
+    portfolio: RuntimeBackendEquivalencePortfolioReport,
+) -> None:
+    try:
+        assert_runtime_backend_equivalence_portfolio_matches_policy(
+            policy,
+            portfolio,
+        )
+    except (RuntimeBackendEquivalencePortfolioPolicyError, TypeError) as exc:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio policy failed: "
+            f"{exc}"
+        ) from exc
 
 
 def _assert_backend_equivalence_portfolio_slice_bound(
@@ -939,6 +973,9 @@ def _render_gate_report(
     vector_backend_equivalence: RuntimeBackendEquivalenceReport,
     mixed_backend_equivalence: RuntimeBackendEquivalenceReport,
     backend_equivalence_portfolio: RuntimeBackendEquivalencePortfolioReport,
+    backend_equivalence_portfolio_policy: (
+        RuntimeBackendEquivalencePortfolioPolicyReport
+    ),
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
@@ -1011,6 +1048,12 @@ def _render_gate_report(
         f'"{backend_equivalence_portfolio.raw_value_policy}"'
     )
     lines.append('  runtime_backend_equivalence_portfolio_matrix = "covered"')
+    lines.append('  runtime_backend_equivalence_portfolio_policy = "accepted"')
+    lines.append('  runtime_backend_equivalence_portfolio_policy_binding = "verified"')
+    lines.append(
+        "  runtime_backend_equivalence_portfolio_policy_required_slices = "
+        f'"{backend_equivalence_portfolio_policy.requirement_count}"'
+    )
     lines.append('  runtime_tensor_store_evidence = "passed"')
     lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')
     lines.append(

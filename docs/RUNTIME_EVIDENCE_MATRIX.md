@@ -37,8 +37,9 @@ A graph is runtime-evidence complete only when it has:
 
 Additional evidence, such as `proof_report_golden`, `frontend_intake_golden`,
 `source_intent_return_semantics`, `source_intent_runtime_returns`,
-`backend_equivalence`, and `backend_equivalence_portfolio`, can be listed
-without changing completeness.
+`backend_equivalence`, `backend_equivalence_portfolio`, and
+`backend_equivalence_portfolio_policy`, can be listed without changing
+completeness.
 
 Each graph records its own `required_artifact_kinds`. Standard runtime proof
 graphs use the full required list above. Backend-equivalence fixtures use the
@@ -46,8 +47,10 @@ scoped requirement `backend_equivalence`, because their review artifact is a
 data-only equivalence report rather than a full proof-report/readiness/trace
 bundle.
 The backend-equivalence portfolio uses the scoped requirement
-`backend_equivalence_portfolio`, because it is an aggregate data-only review
-artifact over equivalence reports rather than a full runtime execution bundle.
+`backend_equivalence_portfolio` plus
+`backend_equivalence_portfolio_policy`, because it is an aggregate data-only
+review artifact over equivalence reports and an accepted membership policy
+rather than a full runtime execution bundle.
 
 For Runtime Executor v0, `reference_correctness` is backed by the
 schema-versioned [Runtime Reference Correctness](RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -103,8 +106,10 @@ The current matrix is complete across every accepted graph fixture:
   `runtime_mixed_backend_equivalence` are complete under their scoped
   `backend_equivalence` evidence requirement.
 - `runtime_backend_equivalence_portfolio` is complete under its scoped
-  `backend_equivalence_portfolio` evidence requirement and inventories the
-  aggregate backend-diversity artifact for the equivalence proof set.
+  `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` evidence requirements, inventorying
+  both the aggregate backend-diversity artifact and its accepted membership
+  policy.
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.
@@ -118,8 +123,9 @@ count as passing gate evidence; the gate binds each checked equivalence report
 to its matrix graph by graph ID. It also requires the
 `runtime_backend_equivalence_portfolio` graph to remain present with the
 `runtime_backend_equivalence` source boundary and
-`backend_equivalence_portfolio` artifact kind before portfolio evidence can
-count as passing gate evidence. It also requires `source_intent_return_mlp` to
+`backend_equivalence_portfolio` plus
+`backend_equivalence_portfolio_policy` artifact kinds before portfolio evidence
+can count as passing gate evidence. It also requires `source_intent_return_mlp` to
 remain present with the `source_intent_metadata` source boundary and the
 `source_intent_return_semantics` plus `source_intent_runtime_returns` artifact
 kinds before Source Intent Runtime Returns can count as passing gate evidence.

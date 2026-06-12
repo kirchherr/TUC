@@ -95,6 +95,7 @@ Required artifacts:
 - `examples/systolic_manifest_path.py`
 - `examples/runtime_backend_equivalence.py`
 - `examples/runtime_backend_equivalence_portfolio.py`
+- `examples/runtime_backend_equivalence_portfolio_policy.py`
 - `examples/runtime_vector_backend_equivalence.py`
 - `examples/runtime_mixed_backend_equivalence.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
@@ -107,6 +108,7 @@ Required artifacts:
 - `tests/golden/runtime_backend_equivalence/vector_sim_report.json`
 - `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`
 - `tests/golden/runtime_backend_equivalence/portfolio_report.json`
+- `tests/golden/runtime_backend_equivalence/portfolio_policy_report.json`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -206,8 +208,13 @@ Completed evidence:
   Runtime Evidence Gate binds that aggregate back to the exact reports checked
   in the same invocation.
 - Runtime Evidence Matrix inventories the Backend Equivalence Portfolio under
-  the scoped `backend_equivalence_portfolio` requirement, and Runtime Evidence
+  scoped `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` requirements, and Runtime Evidence
   Gate verifies that matrix coverage before accepting portfolio evidence.
+- Runtime Backend Equivalence Portfolio Policy declares the accepted portfolio
+  slice membership, backend sequences, minimum comparison counts, and required
+  backend families as data-only evidence, with Runtime Evidence Gate binding
+  the policy to the portfolio before accepting backend-diversity evidence.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

@@ -13,10 +13,16 @@ intent boundary without changing mathematical intent.
 
 - Report schema:
   `schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json`
+- Policy schema:
+  `schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json`
 - Report schema version:
   `tuc.runtime_backend_equivalence_portfolio_report.v0`
+- Policy schema version:
+  `tuc.runtime_backend_equivalence_portfolio_policy_report.v0`
 - Evidence contract:
   `runtime_backend_equivalence_portfolio.data_only.v0`
+- Policy contract:
+  `runtime_backend_equivalence_portfolio_policy.data_only.v0`
 - Executor contract: `runtime_executor.trusted_backend.v0`
 - Trusted executor registry: `trusted_runtime_executor_registry.v0`
 - Raw value policy: `omitted_by_policy`
@@ -39,12 +45,14 @@ Run it with:
 
 ```bash
 python examples/runtime_backend_equivalence_portfolio.py
+python examples/runtime_backend_equivalence_portfolio_policy.py
 ```
 
 Golden evidence:
 
 ```text
 tests/golden/runtime_backend_equivalence/portfolio_report.json
+tests/golden/runtime_backend_equivalence/portfolio_policy_report.json
 ```
 
 ## Gate Binding
@@ -53,8 +61,10 @@ Runtime Evidence Gate builds the portfolio from the same three Backend
 Equivalence reports it checks individually. The gate then verifies:
 
 - Runtime Evidence Matrix contains `runtime_backend_equivalence_portfolio`
-  with scoped `backend_equivalence_portfolio` coverage
+  with scoped `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` coverage
 - portfolio ID is `runtime_backend_equivalence_portfolio`
+- policy ID is `runtime_backend_equivalence_portfolio_policy`
 - slice count matches the expected three reports
 - slice IDs and graph names match the checked reports
 - baseline and candidate run IDs match the checked reports
@@ -62,6 +72,8 @@ Equivalence reports it checks individually. The gate then verifies:
 - comparison counts and comparison metadata digests match the checked reports
 - candidate backend families are `systolic-sim` and `vector-sim`
 - raw tensor values remain omitted by policy
+- the policy's accepted slice membership and backend sequences match the
+  portfolio slices
 
 This prevents a stale or unrelated aggregate report from counting as proof.
 

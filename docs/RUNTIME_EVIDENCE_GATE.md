@@ -20,6 +20,7 @@ It runs:
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
 - `build_runtime_backend_equivalence_portfolio_report()`
+- `build_default_runtime_backend_equivalence_portfolio_policy_report()`
 - `build_tensor_store_evidence_report()`
 - `build_input_manifest_report()`
 - `build_output_manifest_report()`
@@ -72,7 +73,10 @@ The gate passes only when:
   this gate invocation
 - Runtime Backend Equivalence Portfolio matrix coverage passes, proving the
   portfolio is inventoried by the Runtime Evidence Matrix as scoped
-  `backend_equivalence_portfolio` evidence
+  `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` evidence
+- Runtime Backend Equivalence Portfolio Policy binding passes, proving the
+  accepted slice membership and backend sequences match the portfolio report
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
 - Runtime Input Manifest passes for accepted graph external inputs
@@ -154,6 +158,12 @@ Runtime Backend Equivalence Portfolio schema:
 schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
 ```
 
+Runtime Backend Equivalence Portfolio Policy schema:
+
+```text
+schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
+```
+
 Source Intent Runtime Returns schema:
 
 ```text
@@ -219,7 +229,13 @@ It composes bounded in-repository checks:
   raw-value policy against the reports already checked by the gate
 - a bounded Runtime Backend Equivalence Portfolio matrix lookup that verifies
   graph family, source boundary, required artifact kinds, completeness, and
-  `backend_equivalence_portfolio` artifact coverage
+  `backend_equivalence_portfolio` plus
+  `backend_equivalence_portfolio_policy` artifact coverage
+- data-only Runtime Backend Equivalence Portfolio Policy metadata declaring the
+  accepted slice IDs, graph names, run IDs, backend sequences, minimum
+  comparison counts, and covered candidate backend families
+- a bounded Runtime Backend Equivalence Portfolio Policy binding check that
+  verifies the portfolio report matches that accepted membership policy
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
 - data-only Runtime Input Manifest metadata for accepted graph external inputs
