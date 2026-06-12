@@ -56,6 +56,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Matrix v0 with schema-versioned proof inventory and
   deterministic golden at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
 - Runtime Evidence Matrix v0 is complete across current graph fixtures.
+- Runtime Evidence Matrix now records graph-scoped required evidence kinds and
+  inventories the systolic, vector, and mixed backend-equivalence fixtures under
+  the scoped `backend_equivalence` requirement.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
@@ -428,7 +431,8 @@ Current slice:
   `tests/golden/execution_readiness/triton_metadata_mvp_families.txt`.
 - Runtime Evidence Matrix report at
   `schemas/runtime_evidence_matrix_report.v0.schema.json`, with golden evidence
-  at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
+  at `tests/golden/proofs/runtime_evidence_matrix_report.json`, now including
+  scoped backend-equivalence graph entries.
 - Runtime Executor Conformance report at
   `schemas/runtime_executor_conformance_report.v0.schema.json`, with golden
   evidence at

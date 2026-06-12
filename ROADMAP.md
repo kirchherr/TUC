@@ -191,6 +191,10 @@ Completed evidence:
   as a `systolic-sim -> vector-sim -> vector-sim -> vector-sim` candidate,
   proving two non-CPU trusted accelerator families can compose in one plan
   while preserving terminal output semantics.
+- Runtime Evidence Matrix now supports graph-scoped required evidence kinds,
+  so backend-equivalence fixtures are inventoried honestly under the
+  `backend_equivalence` requirement instead of pretending to own full
+  proof/readiness/trace evidence.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

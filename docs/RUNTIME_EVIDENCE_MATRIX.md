@@ -36,8 +36,14 @@ A graph is runtime-evidence complete only when it has:
 - `execution_receipt`
 
 Additional evidence, such as `proof_report_golden`, `frontend_intake_golden`,
-`source_intent_return_semantics`, and `source_intent_runtime_returns`, can be
-listed without changing completeness.
+`source_intent_return_semantics`, `source_intent_runtime_returns`, and
+`backend_equivalence`, can be listed without changing completeness.
+
+Each graph records its own `required_artifact_kinds`. Standard runtime proof
+graphs use the full required list above. Backend-equivalence fixtures use the
+scoped requirement `backend_equivalence`, because their review artifact is a
+data-only equivalence report rather than a full proof-report/readiness/trace
+bundle.
 
 For Runtime Executor v0, `reference_correctness` is backed by the
 schema-versioned [Runtime Reference Correctness](RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -89,14 +95,20 @@ The current matrix is complete across every accepted graph fixture:
 - `source_intent_return_mlp` is complete across required runtime evidence and
   also records Source Intent return semantics plus Source Intent Runtime
   Returns evidence.
+- `runtime_backend_equivalence`, `runtime_vector_backend_equivalence`, and
+  `runtime_mixed_backend_equivalence` are complete under their scoped
+  `backend_equivalence` evidence requirement.
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.
 
 The CI-facing [Runtime Evidence Gate](RUNTIME_EVIDENCE_GATE.md) requires this
 matrix to be complete before runtime executor conformance can count as passing
-merge evidence. It also requires `source_intent_return_mlp` to remain present
-with the `source_intent_metadata` source boundary and the
+merge evidence. It also requires the three backend-equivalence graph entries
+to remain present with the `runtime_backend_equivalence` source boundary and
+`backend_equivalence` artifact kind before backend-equivalence reports can
+count as passing gate evidence. It also requires `source_intent_return_mlp` to
+remain present with the `source_intent_metadata` source boundary and the
 `source_intent_return_semantics` plus `source_intent_runtime_returns` artifact
 kinds before Source Intent Runtime Returns can count as passing gate evidence.
 

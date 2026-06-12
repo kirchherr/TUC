@@ -273,6 +273,7 @@ RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES = (
     "typed_compute_graph",
     "triton_metadata",
     "source_intent_metadata",
+    "runtime_backend_equivalence",
 )
 RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "proof_report_golden",
@@ -290,6 +291,7 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "public_output_bundle",
     "reference_correctness",
     "execution_receipt",
+    "backend_equivalence",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "hac_ir_golden",
@@ -403,6 +405,7 @@ class RuntimeEvidenceGraph:
     graph_family: str
     source_boundary: str
     artifacts: tuple[RuntimeEvidenceArtifact, ...]
+    required_artifact_kinds: tuple[str, ...] = RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
 
     @property
     def present_artifact_kinds(self) -> frozenset[str]:
@@ -413,7 +416,7 @@ class RuntimeEvidenceGraph:
         present = self.present_artifact_kinds
         return tuple(
             artifact_kind
-            for artifact_kind in RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
+            for artifact_kind in self.required_artifact_kinds
             if artifact_kind not in present
         )
 
@@ -1266,6 +1269,42 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     ),
                 ),
             ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_backend_equivalence",
+                graph_family="backend_equivalence",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "backend_equivalence",
+                        "runtime_backend_equivalence_systolic",
+                    ),
+                ),
+                required_artifact_kinds=("backend_equivalence",),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_vector_backend_equivalence",
+                graph_family="backend_equivalence",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "backend_equivalence",
+                        "runtime_backend_equivalence_vector",
+                    ),
+                ),
+                required_artifact_kinds=("backend_equivalence",),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_mixed_backend_equivalence",
+                graph_family="backend_equivalence",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "backend_equivalence",
+                        "runtime_backend_equivalence_mixed",
+                    ),
+                ),
+                required_artifact_kinds=("backend_equivalence",),
+            ),
         ),
     )
 
@@ -1714,6 +1753,7 @@ def runtime_evidence_matrix_report_to_dict(
                 "missing_required_artifact_kinds": list(
                     graph.missing_required_artifact_kinds
                 ),
+                "required_artifact_kinds": list(graph.required_artifact_kinds),
                 "runtime_evidence_complete": graph.runtime_evidence_complete,
                 "source_boundary": graph.source_boundary,
             }
@@ -2410,9 +2450,30 @@ def _normalize_runtime_evidence_graphs(
                 graph_family=graph.graph_family,
                 source_boundary=graph.source_boundary,
                 artifacts=_normalize_runtime_evidence_artifacts(graph.artifacts),
+                required_artifact_kinds=(
+                    _normalize_runtime_evidence_required_artifact_kinds(
+                        graph.required_artifact_kinds
+                    )
+                ),
             )
         )
     return tuple(checked)
+
+
+def _normalize_runtime_evidence_required_artifact_kinds(
+    artifact_kinds: Iterable[str],
+) -> tuple[str, ...]:
+    normalized = tuple(artifact_kinds)
+    if not normalized:
+        raise ValueError("runtime evidence required artifact kinds must not be empty")
+    seen: set[str] = set()
+    for artifact_kind in normalized:
+        if artifact_kind not in RUNTIME_EVIDENCE_ARTIFACT_KINDS:
+            raise ValueError("unsupported runtime evidence required artifact kind")
+        if artifact_kind in seen:
+            raise ValueError("duplicate runtime evidence required artifact kind")
+        seen.add(artifact_kind)
+    return normalized
 
 
 def _normalize_runtime_evidence_artifacts(

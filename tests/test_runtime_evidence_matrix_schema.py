@@ -42,6 +42,10 @@ def test_runtime_evidence_matrix_schema_matches_runtime_contract() -> None:
     assert schema["$defs"]["graph"]["properties"]["source_boundary"]["enum"] == list(
         RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES
     )
+    assert "required_artifact_kinds" in schema["$defs"]["graph"]["required"]
+    assert schema["$defs"]["graph"]["properties"]["required_artifact_kinds"][
+        "minItems"
+    ] == 1
 
 
 def test_runtime_evidence_matrix_schema_fails_closed() -> None:
@@ -81,18 +85,27 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
     )
     assert golden["runtime_evidence_matrix_complete"] is True
-    assert golden["graph_count"] == len(golden["graphs"]) == 7
+    assert golden["graph_count"] == len(golden["graphs"]) == 10
     assert golden["issues"] == []
     assert all(graph["runtime_evidence_complete"] for graph in golden["graphs"])
-    assert golden["graphs"][-1]["graph_id"] == "source_intent_return_mlp"
-    assert golden["graphs"][-1]["runtime_evidence_complete"] is True
+    graphs = {graph["graph_id"]: graph for graph in golden["graphs"]}
+    assert graphs["source_intent_return_mlp"]["runtime_evidence_complete"] is True
     assert {
         artifact["artifact_kind"]
-        for artifact in golden["graphs"][-1]["artifacts"]
+        for artifact in graphs["source_intent_return_mlp"]["artifacts"]
     } >= {
         "source_intent_return_semantics",
         "source_intent_runtime_returns",
     }
+    assert graphs["runtime_backend_equivalence"]["required_artifact_kinds"] == [
+        "backend_equivalence"
+    ]
+    assert graphs["runtime_vector_backend_equivalence"]["required_artifact_kinds"] == [
+        "backend_equivalence"
+    ]
+    assert graphs["runtime_mixed_backend_equivalence"]["required_artifact_kinds"] == [
+        "backend_equivalence"
+    ]
 
 
 def test_runtime_evidence_matrix_schema_is_referenced() -> None:

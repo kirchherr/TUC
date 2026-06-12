@@ -26,7 +26,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     graphs = {graph.graph_id: graph for graph in report.graphs}
 
     assert report.evidence_contract == RUNTIME_EVIDENCE_MATRIX_CONTRACT
-    assert len(report.graphs) == 7
+    assert len(report.graphs) == 10
     assert report.runtime_evidence_matrix_complete
     assert graphs["proof_of_abstraction"].runtime_evidence_complete
     assert graphs["proof_of_reduction"].runtime_evidence_complete
@@ -35,6 +35,9 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     assert graphs["proof_of_systolic_execution"].runtime_evidence_complete
     assert graphs["triton_metadata_mvp_families"].runtime_evidence_complete
     assert graphs["source_intent_return_mlp"].runtime_evidence_complete
+    assert graphs["runtime_backend_equivalence"].runtime_evidence_complete
+    assert graphs["runtime_vector_backend_equivalence"].runtime_evidence_complete
+    assert graphs["runtime_mixed_backend_equivalence"].runtime_evidence_complete
     assert graphs["source_intent_return_mlp"].source_boundary == (
         "source_intent_metadata"
     )
@@ -42,23 +45,48 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "source_intent_return_semantics",
         "source_intent_runtime_returns",
     }
+    assert graphs["runtime_backend_equivalence"].source_boundary == (
+        "runtime_backend_equivalence"
+    )
+    assert graphs["runtime_backend_equivalence"].required_artifact_kinds == (
+        "backend_equivalence",
+    )
+    assert graphs["runtime_vector_backend_equivalence"].required_artifact_kinds == (
+        "backend_equivalence",
+    )
+    assert graphs["runtime_mixed_backend_equivalence"].required_artifact_kinds == (
+        "backend_equivalence",
+    )
     assert all(
-        "input_manifest" in graph.present_artifact_kinds for graph in report.graphs
+        "backend_equivalence" in graphs[graph_id].present_artifact_kinds
+        for graph_id in (
+            "runtime_backend_equivalence",
+            "runtime_vector_backend_equivalence",
+            "runtime_mixed_backend_equivalence",
+        )
+    )
+    full_runtime_graphs = tuple(
+        graph
+        for graph in report.graphs
+        if graph.required_artifact_kinds == RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
+    )
+    assert all(
+        "input_manifest" in graph.present_artifact_kinds for graph in full_runtime_graphs
     )
     assert all(
         "tensor_store_evidence" in graph.present_artifact_kinds
-        for graph in report.graphs
+        for graph in full_runtime_graphs
     )
     assert all(
-        "output_contract" in graph.present_artifact_kinds for graph in report.graphs
+        "output_contract" in graph.present_artifact_kinds for graph in full_runtime_graphs
     )
     assert all(
         "public_output_bundle" in graph.present_artifact_kinds
-        for graph in report.graphs
+        for graph in full_runtime_graphs
     )
     assert all(
         "execution_receipt" in graph.present_artifact_kinds
-        for graph in report.graphs
+        for graph in full_runtime_graphs
     )
     assert report.issues == ()
     assert tuple(runtime_evidence_matrix_report_to_dict(report)) == (
@@ -99,6 +127,8 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert "triton_metadata_mvp_families" in completed.stdout
     assert "source_intent_return_mlp" in completed.stdout
     assert '"source_intent_runtime_returns"' in completed.stdout
+    assert "runtime_mixed_backend_equivalence" in completed.stdout
+    assert '"backend_equivalence"' in completed.stdout
 
 
 def test_runtime_evidence_matrix_rejects_unknown_artifact_kind() -> None:
@@ -154,6 +184,52 @@ def test_runtime_evidence_matrix_rejects_duplicate_artifact_kinds() -> None:
                             artifact_kind="hac_ir_golden",
                             artifact_id="second_hac_ir",
                         ),
+                    ),
+                ),
+            ),
+        )
+
+
+def test_runtime_evidence_matrix_supports_scoped_required_artifacts() -> None:
+    report = build_runtime_evidence_matrix_report(
+        "scoped_required_matrix",
+        (
+            RuntimeEvidenceGraph(
+                graph_id="scoped_backend_equivalence",
+                graph_family="backend_equivalence",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    RuntimeEvidenceArtifact(
+                        artifact_kind="backend_equivalence",
+                        artifact_id="scoped_backend_equivalence_report",
+                    ),
+                ),
+                required_artifact_kinds=("backend_equivalence",),
+            ),
+        ),
+    )
+
+    assert report.runtime_evidence_matrix_complete
+    assert report.graphs[0].runtime_evidence_complete
+    assert report.graphs[0].missing_required_artifact_kinds == ()
+
+
+def test_runtime_evidence_matrix_rejects_bad_scoped_required_artifacts() -> None:
+    with pytest.raises(
+        ValueError,
+        match="duplicate runtime evidence required artifact kind",
+    ):
+        build_runtime_evidence_matrix_report(
+            "duplicate_required_matrix",
+            (
+                RuntimeEvidenceGraph(
+                    graph_id="duplicate_required",
+                    graph_family="backend_equivalence",
+                    source_boundary="runtime_backend_equivalence",
+                    artifacts=(),
+                    required_artifact_kinds=(
+                        "backend_equivalence",
+                        "backend_equivalence",
                     ),
                 ),
             ),

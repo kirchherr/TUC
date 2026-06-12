@@ -32,6 +32,8 @@ It runs:
 The gate passes only when:
 
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
+- the Runtime Evidence Matrix includes the three backend-equivalence graph
+  entries with scoped `backend_equivalence` requirements
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run

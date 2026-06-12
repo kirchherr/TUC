@@ -1,6 +1,6 @@
 runtime.evidence_gate @runtime_evidence_gate_v0 {
   runtime_evidence_matrix = "complete"
-  runtime_evidence_graphs = "7"
+  runtime_evidence_graphs = "10"
   runtime_executor_conformance = "passed"
   runtime_executor_conformance_cases = "16"
   runtime_backend_equivalence = "passed"
