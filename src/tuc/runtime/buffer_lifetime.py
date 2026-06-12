@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
+from hashlib import sha256
 from math import prod
 from typing import NamedTuple
 
@@ -233,6 +234,60 @@ class RuntimeBufferLifetimeReport:
         return sum(group.reuse_savings_upper_bound_bytes for group in self.reuse_groups)
 
     @property
+    def lifetime_metadata_digest(self) -> str:
+        """Return a digest over buffer-lifetime metadata only."""
+
+        payload = {
+            "graph_name": self.graph_name,
+            "issues": [
+                {
+                    "issue_code": issue.issue_code,
+                    "subject": issue.subject,
+                }
+                for issue in self.issues
+            ],
+            "lifetime_contract": self.lifetime_contract,
+            "lifetimes": [
+                {
+                    "bytes_allocated": lifetime.bytes_allocated,
+                    "dtype": lifetime.dtype,
+                    "first_live_index": lifetime.first_live_index,
+                    "last_consumer_operation": lifetime.last_consumer_operation,
+                    "last_use_index": lifetime.last_use_index,
+                    "layout": lifetime.layout.value,
+                    "lifetime_kind": lifetime.lifetime_kind,
+                    "memory_domain": lifetime.memory_domain.value,
+                    "producer_index": lifetime.producer_index,
+                    "producer_operation": lifetime.producer_operation,
+                    "reusable": lifetime.reusable,
+                    "reuse_group_id": lifetime.reuse_group_id,
+                    "shape": list(lifetime.shape),
+                    "tensor_name": lifetime.tensor_name,
+                }
+                for lifetime in self.lifetimes
+            ],
+            "operation_count": self.operation_count,
+            "reuse_groups": [
+                {
+                    "bytes_per_buffer": group.bytes_per_buffer,
+                    "dtype": group.dtype,
+                    "group_id": group.group_id,
+                    "layout": group.layout.value,
+                    "memory_domain": group.memory_domain.value,
+                    "non_overlapping": group.non_overlapping,
+                    "reuse_savings_upper_bound_bytes": (
+                        group.reuse_savings_upper_bound_bytes
+                    ),
+                    "shape": list(group.shape),
+                    "tensor_names": list(group.tensor_names),
+                    "total_tensor_bytes": group.total_tensor_bytes,
+                }
+                for group in self.reuse_groups
+            ],
+        }
+        return _metadata_digest(payload)
+
+    @property
     def peak_live_bytes(self) -> int:
         """Return conservative peak live bytes across operation boundaries."""
 
@@ -309,6 +364,7 @@ def runtime_buffer_lifetime_report_to_dict(
             for issue in report.issues
         ],
         "lifetime_contract": report.lifetime_contract,
+        "lifetime_metadata_digest": report.lifetime_metadata_digest,
         "lifetimes": [
             {
                 "bytes_allocated": lifetime.bytes_allocated,
@@ -587,6 +643,13 @@ def _require_positive_int(value: int, label: str) -> None:
 def _require_non_negative_int(value: int, label: str) -> None:
     if not isinstance(value, int) or isinstance(value, bool) or value < 0:
         raise ValueError(f"{label} must be a non-negative integer")
+
+
+def _metadata_digest(payload: object) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode(
+        "utf-8"
+    )
+    return f"sha256:{sha256(encoded).hexdigest()}"
 
 
 class LifetimeDraft(NamedTuple):

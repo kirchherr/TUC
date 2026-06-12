@@ -20,6 +20,7 @@ python examples/runtime_memory_budget.py
 The report records:
 
 - source Allocation Plan contract and issue count
+- source Allocation Plan metadata digest
 - explicit budgets per memory domain
 - reserved bytes per used memory domain
 - peak live bytes per used memory domain
@@ -31,6 +32,11 @@ The report records:
 Runtime Allocation Plan v0 proves planned slot bindings. Runtime Memory Budget
 v0 adds a resource-exhaustion boundary before TUC grows real memory pools,
 device allocation, alias analysis, or allocator behavior.
+
+The source Allocation Plan metadata digest binds a budget report to the
+allocation-plan evidence from which its usages were derived. This prevents a
+stale or forged budget report from being accepted as review evidence for a
+different allocation plan.
 
 Budgets are explicit data. The report does not ask the host or device how much
 memory exists and does not infer capacity from hardware-specific APIs.

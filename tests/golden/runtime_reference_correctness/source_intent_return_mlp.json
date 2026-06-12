@@ -1,0 +1,51 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "comparison_count": 1,
+  "comparison_metadata_digest": "sha256:aaa8297b66fc1761b2247879735be3169404dd6bee32030650b4c0bcbc0169fc",
+  "comparisons": [
+    {
+      "atol": 1e-12,
+      "comparison_status": "matched",
+      "expected_dtype": "float64",
+      "expected_shape": [
+        4,
+        2
+      ],
+      "output_dtype": "float64",
+      "output_shape": [
+        4,
+        2
+      ],
+      "output_value_status": "omitted_by_policy",
+      "reference_dtype": "float64",
+      "reference_shape": [
+        4,
+        2
+      ],
+      "reference_value_status": "omitted_by_policy",
+      "rtol": 1e-12,
+      "tensor_name": "y"
+    }
+  ],
+  "correctness_contract": "runtime_reference_correctness.data_only.v0",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "source_intent_return_mlp",
+  "issues": [],
+  "output_manifest_contract": "runtime_output_manifest.data_only.v0",
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "reference_tensor_names": [
+    "y"
+  ],
+  "schema_version": "tuc.runtime_reference_correctness_report.v0"
+}

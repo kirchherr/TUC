@@ -12,6 +12,7 @@
   "graph_name": "runtime_buffer_lifetime",
   "issues": [],
   "lifetime_contract": "runtime_buffer_lifetime.data_only.v0",
+  "lifetime_metadata_digest": "sha256:54b71a1afd8d73f399c583b116466cd6e85f6304a6cca71f033f1ef52b4063c9",
   "lifetimes": [
     {
       "bytes_allocated": 64,

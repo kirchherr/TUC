@@ -42,12 +42,14 @@ def test_runtime_buffer_lifetime_report_passes() -> None:
     assert report.total_tensor_bytes == 256
     assert report.peak_live_bytes == 192
     assert report.reuse_savings_upper_bound_bytes == 64
+    assert report.lifetime_metadata_digest.startswith("sha256:")
     assert assert_runtime_buffer_lifetime(report) is report
     assert tuple(runtime_buffer_lifetime_report_to_dict(report)) == (
         "blocked_execution_surfaces",
         "graph_name",
         "issues",
         "lifetime_contract",
+        "lifetime_metadata_digest",
         "lifetimes",
         "operation_count",
         "passed",
@@ -170,6 +172,9 @@ def test_runtime_buffer_lifetime_schema_matches_contract() -> None:
     assert schema["properties"]["lifetime_contract"]["const"] == (
         RUNTIME_BUFFER_LIFETIME_CONTRACT
     )
+    assert schema["properties"]["lifetime_metadata_digest"] == {
+        "$ref": "#/$defs/sha256_digest"
+    }
     assert schema["properties"]["lifetimes"]["maxItems"] == MAX_RUNTIME_BUFFER_LIFETIMES
     assert schema["properties"]["reuse_groups"]["maxItems"] == (
         MAX_RUNTIME_BUFFER_REUSE_GROUPS
@@ -213,6 +218,7 @@ def test_runtime_buffer_lifetime_golden_matches_schema_shape() -> None:
     assert sorted(golden) == sorted(schema["required"])
     assert golden["schema_version"] == RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION
     assert golden["lifetime_contract"] == RUNTIME_BUFFER_LIFETIME_CONTRACT
+    assert golden["lifetime_metadata_digest"].startswith("sha256:")
     assert golden["blocked_execution_surfaces"] == list(
         RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
     )

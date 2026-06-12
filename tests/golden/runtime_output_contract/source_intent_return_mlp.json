@@ -1,0 +1,55 @@
+{
+  "alias_count": 1,
+  "alias_policy": "explicit_output_aliases",
+  "aliases": [
+    {
+      "public_name": "api_y",
+      "required": true,
+      "tensor_name": "y"
+    }
+  ],
+  "artifact_status": "review_evidence",
+  "available_tensor_names": [
+    "y"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "contract_metadata_digest": "sha256:9fd224f6fa6b1fdd227afc6747152b4b4b86c649be81da34075f0adc5c765b27",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "source_intent_return_mlp",
+  "issues": [],
+  "output_contract": "runtime_output_contract.data_only.v0",
+  "output_manifest_contract": "runtime_output_manifest.data_only.v0",
+  "output_manifest_passed": true,
+  "passed": true,
+  "public_output_count": 1,
+  "public_outputs": [
+    {
+      "dtype": "float64",
+      "producer_id": "activation",
+      "producer_kind": "operation",
+      "public_name": "api_y",
+      "raw_value_status": "omitted_by_policy",
+      "shape": [
+        4,
+        2
+      ],
+      "tensor_name": "y",
+      "value_role": "computed"
+    }
+  ],
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.runtime_output_contract_report.v0",
+  "terminal_output_policy": "graph_terminal_outputs",
+  "terminal_tensor_names": [
+    "y"
+  ]
+}

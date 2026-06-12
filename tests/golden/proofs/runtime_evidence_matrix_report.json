@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "evidence_contract": "runtime_evidence_matrix.data_only.v0",
-  "graph_count": 6,
+  "graph_count": 7,
   "graphs": [
     {
       "artifacts": [
@@ -46,6 +46,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_abstraction_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_abstraction_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -58,6 +63,11 @@
         {
           "artifact_id": "proof_of_abstraction_reference_semantics",
           "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_abstraction_execution_receipt",
+          "artifact_kind": "execution_receipt",
           "artifact_status": "present"
         }
       ],
@@ -100,6 +110,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_reduction_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_reduction_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -112,6 +127,11 @@
         {
           "artifact_id": "proof_of_reduction_reference_semantics",
           "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_reduction_execution_receipt",
+          "artifact_kind": "execution_receipt",
           "artifact_status": "present"
         }
       ],
@@ -154,6 +174,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_softmax_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_softmax_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -166,6 +191,11 @@
         {
           "artifact_id": "proof_of_softmax_reference_semantics",
           "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_softmax_execution_receipt",
+          "artifact_kind": "execution_receipt",
           "artifact_status": "present"
         }
       ],
@@ -208,6 +238,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_execution_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_execution_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -220,6 +255,11 @@
         {
           "artifact_id": "proof_of_execution_reference_semantics",
           "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_execution_receipt",
+          "artifact_kind": "execution_receipt",
           "artifact_status": "present"
         }
       ],
@@ -262,6 +302,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_systolic_execution_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_systolic_execution_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -274,6 +319,11 @@
         {
           "artifact_id": "proof_of_systolic_execution_reference_semantics",
           "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_systolic_execution_execution_receipt",
+          "artifact_kind": "execution_receipt",
           "artifact_status": "present"
         }
       ],
@@ -316,6 +366,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "triton_metadata_mvp_families_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "triton_metadata_mvp_families_output_contract",
           "artifact_kind": "output_contract",
           "artifact_status": "present"
@@ -329,6 +384,11 @@
           "artifact_id": "triton_metadata_mvp_families_reference_semantics",
           "artifact_kind": "reference_correctness",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "triton_metadata_mvp_families_execution_receipt",
+          "artifact_kind": "execution_receipt",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "triton_metadata_mvp",
@@ -336,6 +396,80 @@
       "missing_required_artifact_kinds": [],
       "runtime_evidence_complete": true,
       "source_boundary": "triton_metadata"
+    },
+    {
+      "artifacts": [
+        {
+          "artifact_id": "source_intent_return_mlp_intake",
+          "artifact_kind": "frontend_intake_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_return_semantics",
+          "artifact_kind": "source_intent_return_semantics",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_runtime_returns",
+          "artifact_kind": "source_intent_runtime_returns",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_hac_ir",
+          "artifact_kind": "hac_ir_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_runtime_plan",
+          "artifact_kind": "runtime_plan_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_compiler_decision",
+          "artifact_kind": "compiler_decision_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_readiness",
+          "artifact_kind": "execution_readiness_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_trace",
+          "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_input_manifest",
+          "artifact_kind": "input_manifest",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_output_contract",
+          "artifact_kind": "output_contract",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_public_output_bundle",
+          "artifact_kind": "public_output_bundle",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_reference_semantics",
+          "artifact_kind": "reference_correctness",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "source_intent_return_mlp_execution_receipt",
+          "artifact_kind": "execution_receipt",
+          "artifact_status": "present"
+        }
+      ],
+      "graph_family": "source_intent_runtime_returns",
+      "graph_id": "source_intent_return_mlp",
+      "missing_required_artifact_kinds": [],
+      "runtime_evidence_complete": true,
+      "source_boundary": "source_intent_metadata"
     }
   ],
   "issues": [],
@@ -346,9 +480,11 @@
     "compiler_decision_golden",
     "execution_readiness_golden",
     "execution_trace_golden",
+    "input_manifest",
     "output_contract",
     "public_output_bundle",
-    "reference_correctness"
+    "reference_correctness",
+    "execution_receipt"
   ],
   "runtime_evidence_matrix_complete": true,
   "schema_version": "tuc.runtime_evidence_matrix_report.v0"

@@ -15,6 +15,7 @@ from types import MappingProxyType
 from typing import cast
 
 SOURCE_INTENT_IR_CONTRACT = "source_intent_ir.canonical.v0"
+SOURCE_INTENT_RETURN_POLICY = "explicit_public_returns"
 MAX_SOURCE_INTENT_TENSORS = 4096
 MAX_SOURCE_INTENT_OPERATIONS = 4096
 MAX_SOURCE_INTENT_ARITY = 16
@@ -154,6 +155,28 @@ class SourceIntentOperation:
 
 
 @dataclass(frozen=True)
+class SourceIntentReturn:
+    """Public return name bound to one source-intent terminal tensor."""
+
+    public_name: str
+    tensor_name: str
+    required: bool = True
+
+    def __post_init__(self) -> None:
+        _validate_identifier(self.public_name, "source-intent return public_name")
+        _validate_identifier(self.tensor_name, "source-intent return tensor_name")
+        if type(self.required) is not bool:
+            raise TypeError("source-intent return required flag must be a boolean")
+
+    def dump(self) -> str:
+        required = str(self.required).lower()
+        return (
+            f"return @{self.public_name} tensor=%{self.tensor_name} "
+            f"required={required}"
+        )
+
+
+@dataclass(frozen=True)
 class SourceIntentModule:
     """A canonical source-intent module that remains disconnected from lowering."""
 
@@ -161,6 +184,7 @@ class SourceIntentModule:
     tensors: tuple[SourceIntentTensor, ...]
     operations: tuple[SourceIntentOperation, ...]
     contract: str = SOURCE_INTENT_IR_CONTRACT
+    returns: tuple[SourceIntentReturn, ...] = ()
 
     def __post_init__(self) -> None:
         _validate_identifier(self.name, "source-intent module name")
@@ -171,6 +195,7 @@ class SourceIntentModule:
             )
         tensors = tuple(self.tensors)
         operations = tuple(self.operations)
+        returns = tuple(self.returns)
         if not tensors:
             raise ValueError("source-intent module must contain tensors")
         if not operations:
@@ -189,8 +214,10 @@ class SourceIntentModule:
                         f"source-intent operation {operation.name!r} "
                         f"references unknown tensor: {name}"
                     )
+        _validate_returns(returns, tensors, operations)
         object.__setattr__(self, "tensors", tensors)
         object.__setattr__(self, "operations", operations)
+        object.__setattr__(self, "returns", returns)
 
     def dump(self) -> str:
         lines = [
@@ -200,8 +227,12 @@ class SourceIntentModule:
             f"  operation_count = {len(self.operations)}",
             f'  blocked_lowering = "{",".join(_LOWERING_BLOCKS)}"',
         ]
+        if self.returns:
+            lines.append(f'  return_policy = "{SOURCE_INTENT_RETURN_POLICY}"')
+            lines.append(f"  return_count = {len(self.returns)}")
         lines.extend(f"  {tensor.dump()}" for tensor in self.tensors)
         lines.extend(f"  {operation.dump()}" for operation in self.operations)
+        lines.extend(f"  {source_return.dump()}" for source_return in self.returns)
         lines.append("}")
         return "\n".join(lines)
 
@@ -228,6 +259,44 @@ def _validate_unique_names(values: Iterable[str], label: str) -> None:
     names = tuple(values)
     if len(names) != len(set(names)):
         raise ValueError(f"source-intent {label} names must be unique")
+
+
+def _validate_returns(
+    returns: tuple[SourceIntentReturn, ...],
+    tensors: tuple[SourceIntentTensor, ...],
+    operations: tuple[SourceIntentOperation, ...],
+) -> None:
+    if type(returns) is not tuple:
+        raise TypeError("source-intent returns must be a tuple")
+    if len(returns) > MAX_SOURCE_INTENT_TENSORS:
+        raise ValueError("source-intent return count exceeds contract limit")
+    tensor_names = frozenset(tensor.name for tensor in tensors)
+    produced_names = frozenset(
+        output for operation in operations for output in operation.outputs
+    )
+    consumed_names = frozenset(
+        input_name for operation in operations for input_name in operation.inputs
+    )
+    public_names: list[str] = []
+    return_tensor_names: list[str] = []
+    for source_return in returns:
+        if not isinstance(source_return, SourceIntentReturn):
+            raise TypeError("source-intent returns must contain SourceIntentReturn")
+        public_names.append(source_return.public_name)
+        return_tensor_names.append(source_return.tensor_name)
+        if source_return.tensor_name not in tensor_names:
+            raise ValueError(
+                "source-intent return references unknown tensor: "
+                f"{source_return.tensor_name}"
+            )
+        if source_return.tensor_name not in produced_names:
+            raise ValueError(
+                "source-intent return tensor must be produced by an operation"
+            )
+        if source_return.tensor_name in consumed_names:
+            raise ValueError("source-intent return tensor must be terminal")
+    _validate_unique_names(public_names, "return public")
+    _validate_unique_names(return_tensor_names, "return tensor")
 
 
 def _freeze_hints(hints: Mapping[str, object]) -> Mapping[str, object]:
@@ -276,7 +345,9 @@ __all__ = [
     "MAX_SOURCE_INTENT_OPERATIONS",
     "MAX_SOURCE_INTENT_TENSORS",
     "SOURCE_INTENT_IR_CONTRACT",
+    "SOURCE_INTENT_RETURN_POLICY",
     "SourceIntentModule",
     "SourceIntentOperation",
+    "SourceIntentReturn",
     "SourceIntentTensor",
 ]

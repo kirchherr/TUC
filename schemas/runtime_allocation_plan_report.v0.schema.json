@@ -6,6 +6,9 @@
     "allocation_contract": {
       "const": "runtime_allocation_plan.data_only.v0"
     },
+    "allocation_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
     "bindings": {
       "items": {
         "$ref": "#/$defs/binding"
@@ -96,6 +99,9 @@
       "minimum": 0,
       "type": "integer"
     },
+    "source_lifetime_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
     "source_lifetime_schema_version": {
       "const": "tuc.runtime_buffer_lifetime_report.v0"
     },
@@ -114,6 +120,7 @@
   },
   "required": [
     "allocation_contract",
+    "allocation_metadata_digest",
     "bindings",
     "blocked_execution_surfaces",
     "committed_reuse_savings_bytes",
@@ -128,6 +135,7 @@
     "slots",
     "source_lifetime_contract",
     "source_lifetime_issue_count",
+    "source_lifetime_metadata_digest",
     "source_lifetime_schema_version",
     "tensor_binding_count",
     "total_reserved_bytes",
@@ -332,6 +340,10 @@
       "maxItems": 8,
       "minItems": 1,
       "type": "array"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
     }
   }
 }

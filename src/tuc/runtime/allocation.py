@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
+from hashlib import sha256
 
 from tuc.ir.memory import LayoutKind, MemoryDomainKind
 from tuc.runtime.buffer_lifetime import (
@@ -27,6 +28,7 @@ MAX_RUNTIME_ALLOCATION_REPORT_BYTES = 128 * 1024
 MAX_RUNTIME_ALLOCATION_FIELD_BYTES = 512
 
 _ALLOCATION_TEXT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
+_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _FORBIDDEN_ALLOCATION_TEXT = frozenset(
     {
         "backend_artifact",
@@ -159,6 +161,7 @@ class RuntimeAllocationPlanReport:
     source_lifetime_contract: str
     source_lifetime_schema_version: str
     source_lifetime_issue_count: int
+    source_lifetime_metadata_digest: str
     bindings: tuple[RuntimeAllocationBinding, ...]
     slots: tuple[RuntimeAllocationSlot, ...]
     issues: tuple[RuntimeAllocationIssue, ...]
@@ -177,6 +180,10 @@ class RuntimeAllocationPlanReport:
         _require_non_negative_int(
             self.source_lifetime_issue_count,
             "source_lifetime_issue_count",
+        )
+        _validate_digest(
+            self.source_lifetime_metadata_digest,
+            "source_lifetime_metadata_digest",
         )
         if self.allocation_contract != RUNTIME_ALLOCATION_PLAN_CONTRACT:
             raise ValueError("runtime allocation plan contract mismatch")
@@ -254,6 +261,60 @@ class RuntimeAllocationPlanReport:
         return max(0, self.total_tensor_bytes - self.total_reserved_bytes)
 
     @property
+    def allocation_metadata_digest(self) -> str:
+        """Return a digest over allocation-plan metadata only."""
+
+        payload = {
+            "allocation_contract": self.allocation_contract,
+            "bindings": [
+                {
+                    "bytes_required": binding.bytes_required,
+                    "dtype": binding.dtype,
+                    "first_live_index": binding.first_live_index,
+                    "last_use_index": binding.last_use_index,
+                    "layout": binding.layout.value,
+                    "lifetime_kind": binding.lifetime_kind,
+                    "memory_domain": binding.memory_domain.value,
+                    "producer_index": binding.producer_index,
+                    "producer_operation": binding.producer_operation,
+                    "shape": list(binding.shape),
+                    "slot_id": binding.slot_id,
+                    "tensor_name": binding.tensor_name,
+                }
+                for binding in self.bindings
+            ],
+            "graph_name": self.graph_name,
+            "issues": [
+                {
+                    "issue_code": issue.issue_code,
+                    "subject": issue.subject,
+                }
+                for issue in self.issues
+            ],
+            "operation_count": self.operation_count,
+            "source_lifetime_contract": self.source_lifetime_contract,
+            "source_lifetime_issue_count": self.source_lifetime_issue_count,
+            "source_lifetime_metadata_digest": self.source_lifetime_metadata_digest,
+            "source_lifetime_schema_version": self.source_lifetime_schema_version,
+            "slots": [
+                {
+                    "allocation_kind": slot.allocation_kind,
+                    "bytes_reserved": slot.bytes_reserved,
+                    "dtype": slot.dtype,
+                    "layout": slot.layout.value,
+                    "live_ranges_non_overlapping": slot.live_ranges_non_overlapping,
+                    "memory_domain": slot.memory_domain.value,
+                    "shape": list(slot.shape),
+                    "slot_id": slot.slot_id,
+                    "source_reuse_group_id": slot.source_reuse_group_id,
+                    "tensor_names": list(slot.tensor_names),
+                }
+                for slot in self.slots
+            ],
+        }
+        return _metadata_digest(payload)
+
+    @property
     def peak_live_bytes(self) -> int:
         """Return conservative peak live bytes across operation boundaries."""
 
@@ -306,6 +367,7 @@ def build_runtime_allocation_plan_report(
         source_lifetime_contract=lifetime_report.lifetime_contract,
         source_lifetime_schema_version=RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION,
         source_lifetime_issue_count=len(lifetime_report.issues),
+        source_lifetime_metadata_digest=lifetime_report.lifetime_metadata_digest,
         bindings=bindings,
         slots=slots,
         issues=issues,
@@ -335,6 +397,7 @@ def runtime_allocation_plan_report_to_dict(
         raise TypeError("runtime allocation plan report must be report object")
     return {
         "allocation_contract": report.allocation_contract,
+        "allocation_metadata_digest": report.allocation_metadata_digest,
         "bindings": [
             {
                 "bytes_required": binding.bytes_required,
@@ -386,6 +449,7 @@ def runtime_allocation_plan_report_to_dict(
         ],
         "source_lifetime_contract": report.source_lifetime_contract,
         "source_lifetime_issue_count": report.source_lifetime_issue_count,
+        "source_lifetime_metadata_digest": report.source_lifetime_metadata_digest,
         "source_lifetime_schema_version": report.source_lifetime_schema_version,
         "tensor_binding_count": report.tensor_binding_count,
         "total_reserved_bytes": report.total_reserved_bytes,
@@ -575,6 +639,11 @@ def _validate_text(value: str, label: str) -> None:
         raise ValueError(f"{label} names a forbidden execution surface")
 
 
+def _validate_digest(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _DIGEST_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a sha256 metadata digest")
+
+
 def _validate_dtype(value: str) -> None:
     if not isinstance(value, str) or not re.fullmatch(r"^[A-Za-z][A-Za-z0-9_]*$", value):
         raise ValueError("allocation dtype must be a safe dtype identifier")
@@ -595,6 +664,13 @@ def _require_positive_int(value: int, label: str) -> None:
 def _require_non_negative_int(value: int, label: str) -> None:
     if not isinstance(value, int) or isinstance(value, bool) or value < 0:
         raise ValueError(f"{label} must be a non-negative integer")
+
+
+def _metadata_digest(payload: object) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode(
+        "utf-8"
+    )
+    return f"sha256:{sha256(encoded).hexdigest()}"
 
 
 __all__ = [

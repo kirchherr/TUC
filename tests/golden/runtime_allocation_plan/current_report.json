@@ -1,5 +1,6 @@
 {
   "allocation_contract": "runtime_allocation_plan.data_only.v0",
+  "allocation_metadata_digest": "sha256:45f693be572dd776078e7fb0211b1562a48c4d50ad62b55e7f680975b36f2ede",
   "bindings": [
     {
       "bytes_required": 64,
@@ -148,6 +149,7 @@
   ],
   "source_lifetime_contract": "runtime_buffer_lifetime.data_only.v0",
   "source_lifetime_issue_count": 0,
+  "source_lifetime_metadata_digest": "sha256:54b71a1afd8d73f399c583b116466cd6e85f6304a6cca71f033f1ef52b4063c9",
   "source_lifetime_schema_version": "tuc.runtime_buffer_lifetime_report.v0",
   "tensor_binding_count": 4,
   "total_reserved_bytes": 192,

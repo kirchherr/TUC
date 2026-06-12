@@ -24,6 +24,7 @@ MAX_RUNTIME_MEMORY_BUDGET_REPORT_BYTES = 128 * 1024
 MAX_RUNTIME_MEMORY_BUDGET_FIELD_BYTES = 512
 
 _MEMORY_BUDGET_TEXT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
+_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _FORBIDDEN_MEMORY_BUDGET_TEXT = frozenset(
     {
         "backend_artifact",
@@ -131,6 +132,7 @@ class RuntimeMemoryBudgetReport:
     source_allocation_contract: str
     source_allocation_schema_version: str
     source_allocation_issue_count: int
+    source_allocation_metadata_digest: str
     budgets: tuple[RuntimeMemoryDomainBudget, ...]
     usages: tuple[RuntimeMemoryDomainUsage, ...]
     issues: tuple[RuntimeMemoryBudgetIssue, ...]
@@ -149,6 +151,10 @@ class RuntimeMemoryBudgetReport:
         _require_non_negative_int(
             self.source_allocation_issue_count,
             "source_allocation_issue_count",
+        )
+        _validate_digest(
+            self.source_allocation_metadata_digest,
+            "source_allocation_metadata_digest",
         )
         if self.budget_contract != RUNTIME_MEMORY_BUDGET_CONTRACT:
             raise ValueError("runtime memory budget contract mismatch")
@@ -244,6 +250,7 @@ def build_runtime_memory_budget_report(
         source_allocation_contract=allocation_report.allocation_contract,
         source_allocation_schema_version=RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION,
         source_allocation_issue_count=len(allocation_report.issues),
+        source_allocation_metadata_digest=allocation_report.allocation_metadata_digest,
         budgets=budgets,
         usages=usages,
         issues=issues,
@@ -297,6 +304,7 @@ def runtime_memory_budget_report_to_dict(
         "schema_version": RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION,
         "source_allocation_contract": report.source_allocation_contract,
         "source_allocation_issue_count": report.source_allocation_issue_count,
+        "source_allocation_metadata_digest": report.source_allocation_metadata_digest,
         "source_allocation_schema_version": report.source_allocation_schema_version,
         "total_peak_live_bytes": report.total_peak_live_bytes,
         "total_reserved_bytes": report.total_reserved_bytes,
@@ -489,6 +497,11 @@ def _validate_text(value: str, label: str) -> None:
         raise ValueError(f"{label} exceeds runtime memory budget field limit")
     if value in _FORBIDDEN_MEMORY_BUDGET_TEXT:
         raise ValueError(f"{label} names a forbidden execution surface")
+
+
+def _validate_digest(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _DIGEST_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a sha256 metadata digest")
 
 
 def _require_positive_int(value: int, label: str) -> None:

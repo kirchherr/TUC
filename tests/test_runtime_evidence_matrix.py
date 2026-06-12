@@ -26,7 +26,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     graphs = {graph.graph_id: graph for graph in report.graphs}
 
     assert report.evidence_contract == RUNTIME_EVIDENCE_MATRIX_CONTRACT
-    assert len(report.graphs) == 6
+    assert len(report.graphs) == 7
     assert report.runtime_evidence_matrix_complete
     assert graphs["proof_of_abstraction"].runtime_evidence_complete
     assert graphs["proof_of_reduction"].runtime_evidence_complete
@@ -34,11 +34,26 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     assert graphs["proof_of_execution"].runtime_evidence_complete
     assert graphs["proof_of_systolic_execution"].runtime_evidence_complete
     assert graphs["triton_metadata_mvp_families"].runtime_evidence_complete
+    assert graphs["source_intent_return_mlp"].runtime_evidence_complete
+    assert graphs["source_intent_return_mlp"].source_boundary == (
+        "source_intent_metadata"
+    )
+    assert graphs["source_intent_return_mlp"].present_artifact_kinds >= {
+        "source_intent_return_semantics",
+        "source_intent_runtime_returns",
+    }
+    assert all(
+        "input_manifest" in graph.present_artifact_kinds for graph in report.graphs
+    )
     assert all(
         "output_contract" in graph.present_artifact_kinds for graph in report.graphs
     )
     assert all(
         "public_output_bundle" in graph.present_artifact_kinds
+        for graph in report.graphs
+    )
+    assert all(
+        "execution_receipt" in graph.present_artifact_kinds
         for graph in report.graphs
     )
     assert report.issues == ()
@@ -72,9 +87,13 @@ def test_runtime_evidence_matrix_example_runs() -> None:
 
     assert "runtime_evidence_matrix.data_only.v0" in completed.stdout
     assert '"runtime_evidence_matrix_complete": true' in completed.stdout
+    assert '"input_manifest"' in completed.stdout
     assert '"output_contract"' in completed.stdout
     assert '"public_output_bundle"' in completed.stdout
+    assert '"execution_receipt"' in completed.stdout
     assert "triton_metadata_mvp_families" in completed.stdout
+    assert "source_intent_return_mlp" in completed.stdout
+    assert '"source_intent_runtime_returns"' in completed.stdout
 
 
 def test_runtime_evidence_matrix_rejects_unknown_artifact_kind() -> None:
@@ -205,7 +224,9 @@ def test_runtime_evidence_required_artifact_order_is_stable() -> None:
         "compiler_decision_golden",
         "execution_readiness_golden",
         "execution_trace_golden",
+        "input_manifest",
         "output_contract",
         "public_output_bundle",
         "reference_correctness",
+        "execution_receipt",
     )

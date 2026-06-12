@@ -23,9 +23,10 @@ compatibility on day one.
 | Source Intent JSON Schema | L1 | Machine-readable `source_intent.v0` schema documents the plain-data contract for external frontend authors while runtime validation remains in Source Intent Intake. |
 | Canonical Source Intent IR | L1 | Data-only frontend contract exists with deterministic dump and negative hardware-leakage tests; conversion is exposed only through a separate Source Intent Metadata adapter. |
 | Source Intent Metadata Conversion | L2 | Execution-free adapter converts already constructed Source Intent IR to schema-versioned metadata, with source-intake, HAC-IR, runtime-plan, and compiler decision-report goldens. |
-| Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, metadata conversion, graph construction, and neutral planning while rejected cases fail closed at intake; report artifacts have a JSON Schema. |
+| Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, optional public return semantics, metadata conversion, graph construction, return-alias preservation, and neutral planning while rejected cases fail closed at intake; report artifacts have a JSON Schema. |
 | Source-To-Intent Parser Gate | L0 | Parser implementation remains blocked, but the required future RFC, budgets, corpus, diagnostics, goldens, neutrality review, and conformance evidence are defined. |
 | Source-To-Intent Readiness Report | L0 | Parser implementation remains blocked, with deterministic readiness evidence showing which required gate artifacts are still missing. |
+| Source-To-Intent Parser Block Gate | L0 | CI-facing gate asserts the default source-to-intent parser path remains blocked and all required parser-readiness evidence is missing. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
 | MatMul | L3 | Lowered through TLIR -> HAC-IR -> HS-IR, covered by golden correctness fixtures, and included in Triton metadata frontend goldens. |
@@ -77,6 +78,9 @@ compatibility on day one.
 - Source-To-Intent Readiness Report is documented in
   [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md). It is a
   review artifact for parser proposals, not a source parser or ingestion path.
+- Source-To-Intent Parser Block Gate is documented in
+  [Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md).
+  It keeps the default source-to-intent parser path closed in CI.
 
 ## Next Step
 

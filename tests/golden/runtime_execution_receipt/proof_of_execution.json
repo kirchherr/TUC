@@ -1,0 +1,127 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "evidence_link_count": 4,
+  "evidence_links": [
+    {
+      "evidence_contract": "runtime_tensor_store_evidence.data_only.v0",
+      "evidence_kind": "tensor_store_evidence",
+      "graph_name": "proof_of_execution",
+      "item_count": 5,
+      "metadata_digest": "sha256:cc8341abcf5a4bc30b809106856629e4c626aa16e22b5d3ea51286835ff4142d",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy"
+    },
+    {
+      "evidence_contract": "runtime_input_manifest.data_only.v0",
+      "evidence_kind": "input_manifest",
+      "graph_name": "proof_of_execution",
+      "item_count": 2,
+      "metadata_digest": "sha256:256a4336f90134f37036ad33d77b6b02ea993d3f87e3be075a843313714ae71b",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy"
+    },
+    {
+      "evidence_contract": "runtime_output_manifest.data_only.v0",
+      "evidence_kind": "output_manifest",
+      "graph_name": "proof_of_execution",
+      "item_count": 1,
+      "metadata_digest": "sha256:39d09e42752ab1232ee50253b9cfc3f1f83a3f5f417c754f30af090c0291ad11",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy"
+    },
+    {
+      "evidence_contract": "runtime_reference_correctness.data_only.v0",
+      "evidence_kind": "reference_correctness",
+      "graph_name": "proof_of_execution",
+      "item_count": 1,
+      "metadata_digest": "sha256:6589ba5a4586e56397c562a8ba5fe8db4cb5a9d964ee2ee4d091a7686009df5f",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy"
+    }
+  ],
+  "execution_trace_metadata_digest": "sha256:d8b9896f669ce253e9761b8be8d7d5f73ee94322462d0d812ca227d4e9cad70f",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "proof_of_execution",
+  "issues": [],
+  "linkage_policy": "metadata_digest_linkage",
+  "operation_count": 3,
+  "operations": [
+    {
+      "executor_backend": "linear-sim",
+      "input_tensors": [
+        "lhs",
+        "rhs"
+      ],
+      "operation_kind": "matmul",
+      "operation_name": "linear_projection",
+      "output_shapes": [
+        [
+          2,
+          2
+        ]
+      ],
+      "output_tensors": [
+        "projection"
+      ],
+      "planned_backend": "linear-sim",
+      "status": "executed"
+    },
+    {
+      "executor_backend": "linear-sim",
+      "input_tensors": [
+        "projection"
+      ],
+      "operation_kind": "reduction",
+      "operation_name": "row_reduction",
+      "output_shapes": [
+        [
+          2
+        ]
+      ],
+      "output_tensors": [
+        "row_sum"
+      ],
+      "planned_backend": "linear-sim",
+      "status": "executed"
+    },
+    {
+      "executor_backend": "reference-cpu",
+      "input_tensors": [
+        "row_sum"
+      ],
+      "operation_kind": "elementwise",
+      "operation_name": "activation",
+      "output_shapes": [
+        [
+          2
+        ]
+      ],
+      "output_tensors": [
+        "activated"
+      ],
+      "planned_backend": "reference-cpu",
+      "status": "executed"
+    }
+  ],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "receipt_contract": "runtime_execution_receipt.data_only.v0",
+  "receipt_metadata_digest": "sha256:b936cbaa52263010f30e30b71bb4429686e703b4fe14b814227b283acda4cb2c",
+  "required_evidence_kinds": [
+    "tensor_store_evidence",
+    "input_manifest",
+    "output_manifest",
+    "reference_correctness"
+  ],
+  "schema_version": "tuc.runtime_execution_receipt_report.v0"
+}

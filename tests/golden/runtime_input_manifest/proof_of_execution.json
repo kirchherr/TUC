@@ -1,0 +1,81 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "expected_input_count": 2,
+  "expected_inputs": [
+    {
+      "dtype": "float64",
+      "producer_id": "lhs",
+      "producer_kind": "external_input",
+      "shape": [
+        2,
+        3
+      ],
+      "tensor_name": "lhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "producer_id": "rhs",
+      "producer_kind": "external_input",
+      "shape": [
+        3,
+        2
+      ],
+      "tensor_name": "rhs",
+      "value_role": "input"
+    }
+  ],
+  "external_input_policy": "graph_external_inputs",
+  "graph_name": "proof_of_execution",
+  "input_contract": "runtime_executor.numpy_float64_inputs.v0",
+  "input_count": 2,
+  "input_metadata_digest": "sha256:256a4336f90134f37036ad33d77b6b02ea993d3f87e3be075a843313714ae71b",
+  "inputs": [
+    {
+      "dtype": "float64",
+      "producer_id": "lhs",
+      "producer_kind": "external_input",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2,
+        3
+      ],
+      "tensor_name": "lhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "producer_id": "rhs",
+      "producer_kind": "external_input",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        3,
+        2
+      ],
+      "tensor_name": "rhs",
+      "value_role": "input"
+    }
+  ],
+  "issues": [],
+  "manifest_contract": "runtime_input_manifest.data_only.v0",
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.runtime_input_manifest_report.v0",
+  "store_contract": "runtime_tensor_store.internal.v0",
+  "value_record_contract": "runtime_value_record.internal.v0"
+}

@@ -67,14 +67,18 @@
       "enum": [
         "proof_report_golden",
         "frontend_intake_golden",
+        "source_intent_return_semantics",
+        "source_intent_runtime_returns",
         "hac_ir_golden",
         "runtime_plan_golden",
         "compiler_decision_golden",
         "execution_readiness_golden",
         "execution_trace_golden",
+        "input_manifest",
         "output_contract",
         "public_output_bundle",
-        "reference_correctness"
+        "reference_correctness",
+        "execution_receipt"
       ]
     },
     "graph": {

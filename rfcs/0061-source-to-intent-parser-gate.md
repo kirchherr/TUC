@@ -74,6 +74,8 @@ Parser implementation work remains blocked until a follow-up parser RFC adds:
 - compiler decision-report golden
 - HAC-IR neutrality review checklist result
 - Source Intent Frontend Conformance report for emitted plain data
+- Source Intent Frontend Conformance Gate output proving merge-facing
+  conformance and public-return coverage
 
 ## Security Boundary
 

@@ -13,8 +13,14 @@ from dataclasses import dataclass
 
 from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
+from tuc.frontend.source_intent import SOURCE_INTENT_RETURN_POLICY, SourceIntentModule
 from tuc.frontend.source_intent_intake import source_intent_from_mapping
 from tuc.frontend.source_intent_metadata import source_intent_to_triton_metadata
+from tuc.frontend.source_intent_returns import (
+    build_source_intent_return_semantics_report,
+    source_intent_return_aliases,
+)
+from tuc.ir import ComputeGraph
 
 SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA_VERSION = (
     "tuc.source_intent_frontend_conformance_report.v0"
@@ -194,7 +200,6 @@ def _check_accepted_case(
 
     try:
         graph = metadata.to_compute_graph()
-        compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
     except Exception as exc:
         return (
             SourceIntentFrontendConformanceIssue(
@@ -204,6 +209,20 @@ def _check_accepted_case(
         )
 
     issues: list[SourceIntentFrontendConformanceIssue] = []
+    if module.returns:
+        issues.extend(_check_return_metadata(case, module, graph))
+
+    try:
+        compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    except Exception as exc:
+        return (
+            *issues,
+            SourceIntentFrontendConformanceIssue(
+                case_name=case.name,
+                message=f"accepted case failed neutral pipeline with {type(exc).__name__}",
+            ),
+        )
+
     if not compiled.partition_plan.assignments:
         issues.append(
             SourceIntentFrontendConformanceIssue(
@@ -223,6 +242,49 @@ def _check_accepted_case(
             SourceIntentFrontendConformanceIssue(
                 case_name=case.name,
                 message="accepted case lost source-intent contract metadata",
+            )
+        )
+    return tuple(issues)
+
+
+def _check_return_metadata(
+    case: SourceIntentFrontendConformanceCase,
+    module: SourceIntentModule,
+    graph: ComputeGraph,
+) -> tuple[SourceIntentFrontendConformanceIssue, ...]:
+    issues: list[SourceIntentFrontendConformanceIssue] = []
+    try:
+        build_source_intent_return_semantics_report(module)
+    except Exception as exc:
+        issues.append(
+            SourceIntentFrontendConformanceIssue(
+                case_name=case.name,
+                message=(
+                    "accepted case failed source-intent return semantics "
+                    f"with {type(exc).__name__}"
+                ),
+            )
+        )
+
+    expected_aliases = tuple(
+        f"{public_name}:{tensor_name}"
+        for public_name, tensor_name in source_intent_return_aliases(module).items()
+    )
+    if (
+        graph.metadata.get("frontend.source_intent_return_policy")
+        != SOURCE_INTENT_RETURN_POLICY
+    ):
+        issues.append(
+            SourceIntentFrontendConformanceIssue(
+                case_name=case.name,
+                message="accepted case lost source-intent return policy metadata",
+            )
+        )
+    if graph.metadata.get("frontend.source_intent_return_aliases") != expected_aliases:
+        issues.append(
+            SourceIntentFrontendConformanceIssue(
+                case_name=case.name,
+                message="accepted case lost source-intent return aliases",
             )
         )
     return tuple(issues)

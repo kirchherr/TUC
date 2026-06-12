@@ -51,6 +51,7 @@ def test_triton_docs_reference_source_intent_without_ingestion() -> None:
     assert "Source Intent Metadata Conversion | L2" in compatibility
     assert "Source-To-Intent Parser Gate | L0" in compatibility
     assert "Source-To-Intent Readiness Report | L0" in compatibility
+    assert "Source-To-Intent Parser Block Gate | L0" in compatibility
     assert "not source text" in compatibility
     assert "RFC 0054 permits only execution-free conversion" in threat_model
     assert "Source text and preflight reports must remain disconnected" in threat_model
@@ -234,7 +235,9 @@ def test_source_to_intent_parser_gate_doc_blocks_parser_work() -> None:
         "Required Corpus",
         "Required Evidence",
         "Source Intent Frontend Conformance report",
+        "Source Intent Frontend Conformance Gate output",
         "Source-To-Intent Readiness report",
+        "Source-To-Intent Parser Block Gate",
         "SOURCE_TO_INTENT_READINESS.md",
         "The parser report must not contain raw source text",
         "source-to-metadata or source-to-ComputeGraph shortcuts",
@@ -254,6 +257,8 @@ def test_source_to_intent_readiness_doc_is_report_only() -> None:
         "source_to_intent_parser_gate.blocking.v0",
         "build_source_to_intent_readiness_report(proposal_name, evidence)",
         "SOURCE_TO_INTENT_REQUIRED_EVIDENCE",
+        "Source Intent Frontend Conformance Gate output",
+        "examples/source_to_intent_parser_block_gate.py",
         "tests/golden/frontend/source_to_intent_readiness_report.json",
         "Missing evidence keeps parser implementation blocked",
         "must not include raw source text",
@@ -279,6 +284,7 @@ def test_source_to_intent_readiness_rfc_is_report_only() -> None:
         "source_to_intent_parser_gate.blocking.v0",
         "parser_rfc",
         "source_intent_frontend_conformance_report",
+        "source_intent_frontend_conformance_gate",
         "must not include raw source text",
         "Unknown evidence IDs and duplicate evidence IDs fail closed",
         "Source semantics remain blocked",
@@ -301,6 +307,7 @@ def test_source_to_intent_parser_gate_rfc_blocks_parser_work() -> None:
         "Source Intent Intake",
         "A future parser must not produce metadata",
         "Parser implementation work remains blocked",
+        "Source Intent Frontend Conformance Gate output",
         "must not import user modules",
         "must not evaluate decorators",
         "must not execute `@triton.jit`",

@@ -8,6 +8,7 @@ from examples.source_intent_frontend_conformance import (
     build_source_intent_frontend_conformance_cases,
 )
 from examples.source_intent_intake import build_source_intent_data
+from examples.source_intent_return_semantics import build_source_intent_return_data
 from tuc.frontend import (
     SOURCE_INTENT_SCHEMA_VERSION,
     SourceIntentFrontendConformanceCase,
@@ -27,13 +28,17 @@ def test_source_intent_frontend_conformance_passes_example_cases() -> None:
     )
 
     assert report.passed
-    assert report.accepted_case_count == 1
-    assert report.rejected_case_count == 3
+    assert report.accepted_case_count == 2
+    assert report.rejected_case_count == 6
     assert report.checked_cases == (
         "valid_source_intent_mlp",
+        "valid_source_intent_return_mlp",
         "reject_source_text_escape",
         "reject_backend_hint_escape",
         "reject_unknown_tensor_reference",
+        "reject_return_unknown_tensor",
+        "reject_return_intermediate_tensor",
+        "reject_duplicate_public_returns",
     )
 
 
@@ -70,6 +75,36 @@ def test_source_intent_frontend_conformance_detects_bad_positive_case() -> None:
 
     assert not report.passed
     assert report.issues[0].case_name == "accepted_invalid_tensor_reference"
+    assert report.issues[0].message == "accepted case failed intake with ValueError"
+
+
+def test_source_intent_frontend_conformance_detects_bad_return_positive_case() -> None:
+    payload = build_source_intent_return_data()
+    payload["returns"] = [
+        {
+            "public_name": "api_c",
+            "tensor_name": "c",
+            "required": True,
+        }
+    ]
+    report = run_source_intent_frontend_conformance(
+        "bad-return-positive-frontend",
+        (
+            SourceIntentFrontendConformanceCase(
+                name="accepted_intermediate_return",
+                payload=payload,
+                should_accept=True,
+            ),
+            SourceIntentFrontendConformanceCase(
+                name="rejected_source_text_escape",
+                payload="@triton.jit\ndef kernel(): pass",
+                should_accept=False,
+            ),
+        ),
+    )
+
+    assert not report.passed
+    assert report.issues[0].case_name == "accepted_intermediate_return"
     assert report.issues[0].message == "accepted case failed intake with ValueError"
 
 

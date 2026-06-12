@@ -1,21 +1,38 @@
 """Run the CI-facing Runtime Evidence Gate."""
 
+from examples.runtime_execution_receipt import build_execution_receipt_report
+from examples.runtime_input_manifest import build_input_manifest_report
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
+from examples.source_intent_runtime_returns import run_evidence as run_runtime_returns
 from tuc import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
+    SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT,
+    RuntimeEvidenceGraph,
     RuntimeEvidenceMatrixReport,
+    RuntimeExecutionEvidenceBundleReport,
+    RuntimeExecutionReceiptReport,
     RuntimeExecutorConformanceReport,
+    RuntimeInputManifestReport,
     RuntimeOutputContractReport,
     RuntimeOutputManifestReport,
     RuntimePublicOutputBundle,
     RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceReport,
+    SourceIntentRuntimeReturnsReport,
     build_current_runtime_evidence_matrix_report,
+    build_runtime_execution_evidence_bundle_report,
     run_runtime_executor_conformance,
+)
+
+SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID = "source_intent_return_mlp"
+SOURCE_INTENT_RUNTIME_RETURNS_SOURCE_BOUNDARY = "source_intent_metadata"
+SOURCE_INTENT_RUNTIME_RETURNS_REQUIRED_MATRIX_ARTIFACTS = (
+    "source_intent_return_semantics",
+    "source_intent_runtime_returns",
 )
 
 
@@ -27,10 +44,18 @@ def build_gate_report(
     *,
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
     conformance_report: RuntimeExecutorConformanceReport | None = None,
+    execution_evidence_bundle_report: (
+        RuntimeExecutionEvidenceBundleReport | None
+    ) = None,
+    execution_receipt_report: RuntimeExecutionReceiptReport | None = None,
+    input_manifest_report: RuntimeInputManifestReport | None = None,
     output_contract_report: RuntimeOutputContractReport | None = None,
     output_manifest_report: RuntimeOutputManifestReport | None = None,
     public_output_bundle: RuntimePublicOutputBundle | None = None,
     reference_correctness_report: RuntimeReferenceCorrectnessReport | None = None,
+    source_intent_runtime_returns_report: (
+        SourceIntentRuntimeReturnsReport | None
+    ) = None,
     tensor_store_report: RuntimeTensorStoreEvidenceReport | None = None,
 ) -> str:
     """Return the stable CI-facing runtime evidence gate report."""
@@ -49,6 +74,11 @@ def build_gate_report(
         build_tensor_store_evidence_report()
         if tensor_store_report is None
         else tensor_store_report
+    )
+    input_manifest = (
+        build_input_manifest_report()
+        if input_manifest_report is None
+        else input_manifest_report
     )
     output_manifest = (
         build_output_manifest_report()
@@ -70,21 +100,69 @@ def build_gate_report(
         if reference_correctness_report is None
         else reference_correctness_report
     )
+    execution_receipt = (
+        build_execution_receipt_report()
+        if execution_receipt_report is None
+        else execution_receipt_report
+    )
+    execution_evidence_bundle = (
+        build_runtime_execution_evidence_bundle_report(
+            tensor_store,
+            input_manifest,
+            output_manifest,
+            reference_correctness,
+            execution_receipt,
+        )
+        if execution_evidence_bundle_report is None
+        else execution_evidence_bundle_report
+    )
+    source_intent_runtime_returns = (
+        run_runtime_returns().runtime_returns
+        if source_intent_runtime_returns_report is None
+        else source_intent_runtime_returns_report
+    )
     _assert_matrix_complete(matrix)
     _assert_conformance_passed(conformance)
     _assert_tensor_store_evidence_passed(tensor_store)
+    _assert_input_manifest_passed(input_manifest)
     _assert_output_manifest_passed(output_manifest)
     _assert_output_contract_passed(output_contract)
     _assert_public_output_bundle_passed(public_bundle, output_contract)
     _assert_reference_correctness_passed(reference_correctness)
+    _assert_execution_receipt_passed(execution_receipt)
+    _assert_execution_receipt_matches_gate_reports(
+        execution_receipt,
+        tensor_store,
+        input_manifest,
+        output_manifest,
+        reference_correctness,
+    )
+    _assert_execution_evidence_bundle_passed(execution_evidence_bundle)
+    _assert_execution_evidence_bundle_matches_gate_reports(
+        execution_evidence_bundle,
+        tensor_store,
+        input_manifest,
+        output_manifest,
+        reference_correctness,
+        execution_receipt,
+    )
+    _assert_source_intent_runtime_returns_passed(source_intent_runtime_returns)
+    _assert_source_intent_runtime_returns_matrix_covered(
+        matrix,
+        source_intent_runtime_returns,
+    )
     return _render_gate_report(
         matrix,
         conformance,
         tensor_store,
+        input_manifest,
         output_manifest,
         output_contract,
         public_bundle,
         reference_correctness,
+        execution_receipt,
+        execution_evidence_bundle,
+        source_intent_runtime_returns,
     )
 
 
@@ -115,6 +193,14 @@ def _assert_tensor_store_evidence_passed(
             f"{issue.tensor_name}:{issue.issue_code}" for issue in report.issues
         )
         raise RuntimeEvidenceGateError(f"runtime tensor store evidence failed: {issues}")
+
+
+def _assert_input_manifest_passed(report: RuntimeInputManifestReport) -> None:
+    if report.issues:
+        issues = ",".join(
+            f"{issue.tensor_name}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(f"runtime input manifest failed: {issues}")
 
 
 def _assert_output_manifest_passed(report: RuntimeOutputManifestReport) -> None:
@@ -186,14 +272,284 @@ def _assert_reference_correctness_passed(
         )
 
 
+def _assert_execution_receipt_passed(report: RuntimeExecutionReceiptReport) -> None:
+    if report.issues:
+        issues = ",".join(
+            f"{issue.evidence_kind}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(f"runtime execution receipt failed: {issues}")
+
+
+def _assert_execution_receipt_matches_gate_reports(
+    receipt: RuntimeExecutionReceiptReport,
+    tensor_store: RuntimeTensorStoreEvidenceReport,
+    input_manifest: RuntimeInputManifestReport,
+    output_manifest: RuntimeOutputManifestReport,
+    reference_correctness: RuntimeReferenceCorrectnessReport,
+) -> None:
+    links = {link.evidence_kind: link for link in receipt.evidence_links}
+    expected_links = {
+        "tensor_store_evidence": {
+            "evidence_contract": tensor_store.evidence_contract,
+            "graph_name": tensor_store.graph_name,
+            "item_count": len(tensor_store.records),
+            "metadata_digest": tensor_store.record_metadata_digest,
+            "passed": tensor_store.passed,
+            "raw_value_policy": tensor_store.raw_value_policy,
+        },
+        "input_manifest": {
+            "evidence_contract": input_manifest.manifest_contract,
+            "graph_name": input_manifest.graph_name,
+            "item_count": len(input_manifest.inputs),
+            "metadata_digest": input_manifest.input_metadata_digest,
+            "passed": input_manifest.passed,
+            "raw_value_policy": input_manifest.raw_value_policy,
+        },
+        "output_manifest": {
+            "evidence_contract": output_manifest.manifest_contract,
+            "graph_name": output_manifest.graph_name,
+            "item_count": len(output_manifest.outputs),
+            "metadata_digest": output_manifest.output_metadata_digest,
+            "passed": output_manifest.passed,
+            "raw_value_policy": output_manifest.raw_value_policy,
+        },
+        "reference_correctness": {
+            "evidence_contract": reference_correctness.correctness_contract,
+            "graph_name": reference_correctness.graph_name,
+            "item_count": len(reference_correctness.comparisons),
+            "metadata_digest": reference_correctness.comparison_metadata_digest,
+            "passed": reference_correctness.passed,
+            "raw_value_policy": reference_correctness.raw_value_policy,
+        },
+    }
+
+    for evidence_kind, expected in expected_links.items():
+        link = links.get(evidence_kind)
+        if link is None:
+            raise RuntimeEvidenceGateError(
+                "runtime execution receipt binding failed: "
+                f"{evidence_kind}:missing_link"
+            )
+        actual = {
+            "evidence_contract": link.evidence_contract,
+            "graph_name": link.graph_name,
+            "item_count": link.item_count,
+            "metadata_digest": link.metadata_digest,
+            "passed": link.passed,
+            "raw_value_policy": link.raw_value_policy,
+        }
+        for field_name, expected_value in expected.items():
+            if actual[field_name] != expected_value:
+                raise RuntimeEvidenceGateError(
+                    "runtime execution receipt binding failed: "
+                    f"{evidence_kind}:{field_name}_mismatch"
+                )
+
+
+def _assert_execution_evidence_bundle_passed(
+    report: RuntimeExecutionEvidenceBundleReport,
+) -> None:
+    if not isinstance(report, RuntimeExecutionEvidenceBundleReport):
+        raise RuntimeEvidenceGateError(
+            "runtime execution evidence bundle failed: not a report object"
+        )
+    if report.issues:
+        issues = ",".join(
+            f"{issue.section}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(
+            f"runtime execution evidence bundle failed: {issues}"
+        )
+
+
+def _assert_execution_evidence_bundle_matches_gate_reports(
+    bundle: RuntimeExecutionEvidenceBundleReport,
+    tensor_store: RuntimeTensorStoreEvidenceReport,
+    input_manifest: RuntimeInputManifestReport,
+    output_manifest: RuntimeOutputManifestReport,
+    reference_correctness: RuntimeReferenceCorrectnessReport,
+    execution_receipt: RuntimeExecutionReceiptReport,
+) -> None:
+    expected = {
+        "tensor_store_evidence": {
+            "contract": tensor_store.evidence_contract,
+            "graph_name": tensor_store.graph_name,
+            "item_count": len(tensor_store.records),
+            "metadata_digest": tensor_store.record_metadata_digest,
+            "passed": tensor_store.passed,
+            "raw_value_policy": tensor_store.raw_value_policy,
+        },
+        "input_manifest": {
+            "contract": input_manifest.manifest_contract,
+            "graph_name": input_manifest.graph_name,
+            "item_count": len(input_manifest.inputs),
+            "metadata_digest": input_manifest.input_metadata_digest,
+            "passed": input_manifest.passed,
+            "raw_value_policy": input_manifest.raw_value_policy,
+        },
+        "output_manifest": {
+            "contract": output_manifest.manifest_contract,
+            "graph_name": output_manifest.graph_name,
+            "item_count": len(output_manifest.outputs),
+            "metadata_digest": output_manifest.output_metadata_digest,
+            "passed": output_manifest.passed,
+            "raw_value_policy": output_manifest.raw_value_policy,
+        },
+        "reference_correctness": {
+            "contract": reference_correctness.correctness_contract,
+            "graph_name": reference_correctness.graph_name,
+            "item_count": len(reference_correctness.comparisons),
+            "metadata_digest": reference_correctness.comparison_metadata_digest,
+            "passed": reference_correctness.passed,
+            "raw_value_policy": reference_correctness.raw_value_policy,
+        },
+        "execution_receipt": {
+            "contract": execution_receipt.receipt_contract,
+            "graph_name": execution_receipt.graph_name,
+            "item_count": len(execution_receipt.evidence_links),
+            "metadata_digest": execution_receipt.receipt_metadata_digest,
+            "passed": execution_receipt.passed,
+            "raw_value_policy": execution_receipt.raw_value_policy,
+        },
+    }
+    actual = {
+        "tensor_store_evidence": {
+            "contract": bundle.tensor_store_report.evidence_contract,
+            "graph_name": bundle.tensor_store_report.graph_name,
+            "item_count": len(bundle.tensor_store_report.records),
+            "metadata_digest": bundle.tensor_store_report.record_metadata_digest,
+            "passed": bundle.tensor_store_report.passed,
+            "raw_value_policy": bundle.tensor_store_report.raw_value_policy,
+        },
+        "input_manifest": {
+            "contract": bundle.input_manifest_report.manifest_contract,
+            "graph_name": bundle.input_manifest_report.graph_name,
+            "item_count": len(bundle.input_manifest_report.inputs),
+            "metadata_digest": bundle.input_manifest_report.input_metadata_digest,
+            "passed": bundle.input_manifest_report.passed,
+            "raw_value_policy": bundle.input_manifest_report.raw_value_policy,
+        },
+        "output_manifest": {
+            "contract": bundle.output_manifest_report.manifest_contract,
+            "graph_name": bundle.output_manifest_report.graph_name,
+            "item_count": len(bundle.output_manifest_report.outputs),
+            "metadata_digest": bundle.output_manifest_report.output_metadata_digest,
+            "passed": bundle.output_manifest_report.passed,
+            "raw_value_policy": bundle.output_manifest_report.raw_value_policy,
+        },
+        "reference_correctness": {
+            "contract": bundle.reference_correctness_report.correctness_contract,
+            "graph_name": bundle.reference_correctness_report.graph_name,
+            "item_count": len(bundle.reference_correctness_report.comparisons),
+            "metadata_digest": (
+                bundle.reference_correctness_report.comparison_metadata_digest
+            ),
+            "passed": bundle.reference_correctness_report.passed,
+            "raw_value_policy": bundle.reference_correctness_report.raw_value_policy,
+        },
+        "execution_receipt": {
+            "contract": bundle.execution_receipt_report.receipt_contract,
+            "graph_name": bundle.execution_receipt_report.graph_name,
+            "item_count": len(bundle.execution_receipt_report.evidence_links),
+            "metadata_digest": (
+                bundle.execution_receipt_report.receipt_metadata_digest
+            ),
+            "passed": bundle.execution_receipt_report.passed,
+            "raw_value_policy": bundle.execution_receipt_report.raw_value_policy,
+        },
+    }
+
+    for section, expected_fields in expected.items():
+        actual_fields = actual[section]
+        for field_name, expected_value in expected_fields.items():
+            if actual_fields[field_name] != expected_value:
+                raise RuntimeEvidenceGateError(
+                    "runtime execution evidence bundle binding failed: "
+                    f"{section}:{field_name}_mismatch"
+                )
+
+
+def _assert_source_intent_runtime_returns_passed(
+    report: SourceIntentRuntimeReturnsReport,
+) -> None:
+    if not isinstance(report, SourceIntentRuntimeReturnsReport):
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns failed: not a report object"
+        )
+    if not report.passed:
+        raise RuntimeEvidenceGateError("source intent runtime returns failed")
+    if report.runtime_returns_contract != SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns failed: contract mismatch"
+        )
+    if report.raw_value_policy != "omitted_by_policy":
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns failed: raw value policy mismatch"
+        )
+
+
+def _assert_source_intent_runtime_returns_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+    report: SourceIntentRuntimeReturnsReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(
+        matrix,
+        SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
+    )
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: graph missing"
+        )
+    if graph.source_boundary != SOURCE_INTENT_RUNTIME_RETURNS_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: "
+            "source boundary mismatch"
+        )
+    if report.module_name != graph.graph_id or report.graph_name != graph.graph_id:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: "
+            "report graph mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: "
+            "runtime evidence incomplete"
+        )
+    missing_artifacts = tuple(
+        artifact_kind
+        for artifact_kind in SOURCE_INTENT_RUNTIME_RETURNS_REQUIRED_MATRIX_ARTIFACTS
+        if artifact_kind not in graph.present_artifact_kinds
+    )
+    if missing_artifacts:
+        missing = ",".join(missing_artifacts)
+        raise RuntimeEvidenceGateError(
+            "source intent runtime returns matrix coverage failed: "
+            f"missing {missing}"
+        )
+
+
+def _find_runtime_evidence_graph(
+    matrix: RuntimeEvidenceMatrixReport,
+    graph_id: str,
+) -> RuntimeEvidenceGraph | None:
+    for graph in matrix.graphs:
+        if graph.graph_id == graph_id:
+            return graph
+    return None
+
+
 def _render_gate_report(
     matrix: RuntimeEvidenceMatrixReport,
     conformance: RuntimeExecutorConformanceReport,
     tensor_store: RuntimeTensorStoreEvidenceReport,
+    input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
     output_contract: RuntimeOutputContractReport,
     public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness: RuntimeReferenceCorrectnessReport,
+    execution_receipt: RuntimeExecutionReceiptReport,
+    execution_evidence_bundle: RuntimeExecutionEvidenceBundleReport,
+    source_intent_runtime_returns: SourceIntentRuntimeReturnsReport,
 ) -> str:
     lines = ["runtime.evidence_gate @runtime_evidence_gate_v0 {"]
     lines.append('  runtime_evidence_matrix = "complete"')
@@ -204,6 +560,11 @@ def _render_gate_report(
     lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')
     lines.append(
         f'  runtime_tensor_store_raw_value_policy = "{tensor_store.raw_value_policy}"'
+    )
+    lines.append('  runtime_input_manifest = "passed"')
+    lines.append(f'  runtime_input_count = "{len(input_manifest.inputs)}"')
+    lines.append(
+        f'  runtime_input_raw_value_policy = "{input_manifest.raw_value_policy}"'
     )
     lines.append('  runtime_output_manifest = "passed"')
     lines.append(f'  runtime_output_count = "{len(output_manifest.outputs)}"')
@@ -230,6 +591,42 @@ def _render_gate_report(
     )
     lines.append(
         f'  runtime_reference_raw_value_policy = "{reference_correctness.raw_value_policy}"'
+    )
+    lines.append('  runtime_execution_receipt = "passed"')
+    lines.append('  runtime_execution_receipt_binding = "verified"')
+    lines.append(
+        f'  runtime_execution_receipt_links = "{len(execution_receipt.evidence_links)}"'
+    )
+    lines.append(
+        f'  runtime_execution_receipt_operations = "{len(execution_receipt.operations)}"'
+    )
+    lines.append(
+        "  runtime_execution_receipt_raw_value_policy = "
+        f'"{execution_receipt.raw_value_policy}"'
+    )
+    lines.append('  runtime_execution_evidence_bundle = "passed"')
+    lines.append('  runtime_execution_evidence_bundle_binding = "verified"')
+    lines.append(
+        "  runtime_execution_evidence_bundle_sections = "
+        f'"{len(execution_evidence_bundle.report_sections)}"'
+    )
+    lines.append(
+        "  runtime_execution_evidence_bundle_raw_value_policy = "
+        f'"{execution_evidence_bundle.raw_value_policy}"'
+    )
+    lines.append('  source_intent_runtime_returns_matrix = "covered"')
+    lines.append('  source_intent_runtime_returns = "passed"')
+    lines.append(
+        "  source_intent_runtime_return_count = "
+        f'"{source_intent_runtime_returns.return_count}"'
+    )
+    lines.append(
+        "  source_intent_runtime_public_output_count = "
+        f'"{len(source_intent_runtime_returns.public_output_names)}"'
+    )
+    lines.append(
+        "  source_intent_runtime_returns_raw_value_policy = "
+        f'"{source_intent_runtime_returns.raw_value_policy}"'
     )
     lines.append(
         "  blocked_execution_surfaces = "

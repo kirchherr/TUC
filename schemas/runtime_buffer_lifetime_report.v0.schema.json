@@ -48,6 +48,9 @@
     "lifetime_contract": {
       "const": "runtime_buffer_lifetime.data_only.v0"
     },
+    "lifetime_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
     "lifetimes": {
       "items": {
         "$ref": "#/$defs/lifetime"
@@ -99,6 +102,7 @@
     "graph_name",
     "issues",
     "lifetime_contract",
+    "lifetime_metadata_digest",
     "lifetimes",
     "operation_count",
     "passed",
@@ -316,6 +320,10 @@
       "maxItems": 8,
       "minItems": 1,
       "type": "array"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
     }
   }
 }

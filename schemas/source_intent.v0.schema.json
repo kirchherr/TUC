@@ -20,6 +20,11 @@
       "minItems": 1,
       "maxItems": 4096,
       "items": {"$ref": "#/$defs/operation"}
+    },
+    "returns": {
+      "type": "array",
+      "maxItems": 4096,
+      "items": {"$ref": "#/$defs/return"}
     }
   },
   "$defs": {
@@ -64,6 +69,16 @@
         "inputs": {"$ref": "#/$defs/tensor_name_list"},
         "outputs": {"$ref": "#/$defs/tensor_name_list"},
         "hints": {"$ref": "#/$defs/hints", "default": {}}
+      }
+    },
+    "return": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public_name", "tensor_name"],
+      "properties": {
+        "public_name": {"$ref": "#/$defs/identifier"},
+        "tensor_name": {"$ref": "#/$defs/identifier"},
+        "required": {"type": "boolean", "default": true}
       }
     },
     "tensor_name_list": {

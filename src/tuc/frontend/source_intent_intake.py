@@ -15,14 +15,18 @@ from tuc.frontend.source_intent import (
     SOURCE_INTENT_IR_CONTRACT,
     SourceIntentModule,
     SourceIntentOperation,
+    SourceIntentReturn,
     SourceIntentTensor,
 )
 
 SOURCE_INTENT_SCHEMA_VERSION = "source_intent.v0"
 SOURCE_INTENT_INTAKE_CONTRACT = "source_intent_intake.execution_free.v0"
-_TOP_LEVEL_KEYS = frozenset({"name", "schema_version", "tensors", "operations"})
+_TOP_LEVEL_KEYS = frozenset(
+    {"name", "schema_version", "tensors", "operations", "returns"}
+)
 _TENSOR_KEYS = frozenset({"name", "shape", "dtype"})
 _OPERATION_KEYS = frozenset({"name", "family", "inputs", "outputs", "hints"})
+_RETURN_KEYS = frozenset({"public_name", "tensor_name", "required"})
 _BLOCKED_EXECUTION_SURFACES = (
     "bytecode_inspection",
     "decorator_evaluation",
@@ -107,10 +111,16 @@ def source_intent_from_mapping(data: object) -> SourceIntentModule:
         _operation_from_mapping(item)
         for item in _require_plain_sequence(mapping.get("operations"), "operations")
     )
+    returns_value = mapping.get("returns", ())
+    returns = tuple(
+        _return_from_mapping(item)
+        for item in _optional_plain_sequence(returns_value, "returns")
+    )
     return SourceIntentModule(
         name=_require_string(mapping, "name"),
         tensors=tensors,
         operations=operations,
+        returns=returns,
     )
 
 
@@ -168,6 +178,16 @@ def _operation_from_mapping(data: object) -> SourceIntentOperation:
     )
 
 
+def _return_from_mapping(data: object) -> SourceIntentReturn:
+    mapping = _require_plain_mapping(data, "source-intent return")
+    _reject_unknown_keys(mapping, _RETURN_KEYS, "source-intent return")
+    return SourceIntentReturn(
+        public_name=_require_string(mapping, "public_name"),
+        tensor_name=_require_string(mapping, "tensor_name"),
+        required=_optional_bool(mapping, "required", True),
+    )
+
+
 def _require_plain_mapping(value: object, label: str) -> dict[str, object]:
     if type(value) is not dict:
         raise TypeError(f"{label} must be a plain mapping")
@@ -182,6 +202,12 @@ def _require_plain_sequence(value: object, label: str) -> tuple[object, ...]:
     if type(value) is tuple:
         return cast(tuple[object, ...], value)
     raise TypeError(f"{label} must be a plain sequence")
+
+
+def _optional_plain_sequence(value: object, label: str) -> tuple[object, ...]:
+    if value is None:
+        return ()
+    return _require_plain_sequence(value, label)
 
 
 def _reject_unknown_keys(
@@ -211,6 +237,15 @@ def _optional_string(mapping: dict[str, object], key: str, default: str) -> str:
 def _require_int(value: object, label: str) -> int:
     if not isinstance(value, int) or isinstance(value, bool):
         raise TypeError(f"{label} must be an integer")
+    return value
+
+
+def _optional_bool(mapping: dict[str, object], key: str, default: bool) -> bool:
+    if key not in mapping:
+        return default
+    value = mapping[key]
+    if type(value) is not bool:
+        raise TypeError(f"{key} must be a boolean")
     return value
 
 

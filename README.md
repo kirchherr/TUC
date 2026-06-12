@@ -63,14 +63,22 @@ Current runtime surfaces:
 - Runtime Execution Readiness before kernels run.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects.
 - Runtime Tensor Store Evidence v0 without serialized tensor values.
+- Runtime Input Manifest v0 for graph external inputs without serialized tensor
+  values.
 - Runtime Output Manifest v0 for terminal graph outputs without serialized
   tensor values.
 - Runtime Output Contract v0 for explicit public output aliases without
   serialized tensor values.
 - Runtime Public Output Bundle v0 for resolving public aliases to read-only
   runtime values while keeping review evidence metadata-only.
+- Source Intent Runtime Returns v0 for proving frontend public return intent
+  resolves through Runtime Output Contract and Runtime Public Output Bundle.
 - Runtime Reference Correctness v0 for output/reference comparison without
   serialized tensor values.
+- Runtime Execution Receipt v0 linking runtime evidence reports by metadata
+  digest without serialized tensor values.
+- Runtime Execution Evidence Bundle v0 packaging one coherent metadata-only
+  execution evidence set for review.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, and Memory Planning
   Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
@@ -82,8 +90,12 @@ CI-facing runtime evidence entry points:
 ```text
 examples/runtime_evidence_gate.py
 examples/runtime_tensor_store_evidence.py
+examples/runtime_input_manifest.py
+examples/runtime_execution_receipt.py
+examples/runtime_execution_evidence_bundle.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
+examples/source_intent_runtime_returns.py
 examples/runtime_reference_correctness.py
 examples/runtime_candidate_scoring_gate.py
 examples/runtime_memory_planning_gate.py
@@ -94,7 +106,10 @@ Key docs:
 - [Runtime Executor](docs/RUNTIME_EXECUTOR.md)
 - [Runtime Tensor Store](docs/RUNTIME_TENSOR_STORE.md)
 - [Runtime Tensor Store Evidence](docs/RUNTIME_TENSOR_STORE_EVIDENCE.md)
+- [Runtime Input Manifest](docs/RUNTIME_INPUT_MANIFEST.md)
 - [Runtime Output Manifest](docs/RUNTIME_OUTPUT_MANIFEST.md)
+- [Runtime Execution Receipt](docs/RUNTIME_EXECUTION_RECEIPT.md)
+- [Runtime Execution Evidence Bundle](docs/RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -102,11 +117,15 @@ Key docs:
 - [Runtime Candidate Scoring Gate](docs/RUNTIME_CANDIDATE_SCORING_GATE.md)
 - [Runtime override policy](docs/RUNTIME_OVERRIDE_POLICY.md)
 
-Runtime output schemas:
+Runtime schemas:
 
 ```text
+schemas/runtime_input_manifest_report.v0.schema.json
+schemas/runtime_execution_receipt_report.v0.schema.json
+schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
+schemas/source_intent_runtime_returns_report.v0.schema.json
 ```
 
 ## Frontend Intake
@@ -126,9 +145,25 @@ Current frontend surfaces:
 
 - Triton-like metadata adapter.
 - Execution-free Triton Source Preflight.
-- Source Intent IR, schema, intake, conformance, and metadata conversion.
+- Source Intent IR, schema, intake, return semantics, conformance, and metadata
+  conversion.
+- Source Intent Frontend Conformance Gate for CI-facing external frontend
+  plain-data and public-return evidence.
+- Source Intent Runtime Returns evidence connecting explicit frontend returns
+  to runtime public outputs after trusted execution.
+- Source-To-Intent Parser Block Gate proving the default source parser path
+  remains intentionally closed.
 - Source-to-Intent parser gate remains blocked until dedicated parser evidence
   exists.
+
+CI-facing frontend evidence entry points:
+
+```text
+examples/source_intent_frontend_conformance_gate.py
+examples/source_intent_frontend_conformance.py
+examples/source_intent_runtime_returns.py
+examples/source_to_intent_parser_block_gate.py
+```
 
 Key docs:
 
@@ -136,6 +171,10 @@ Key docs:
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)
+- [Source Intent frontend conformance gate](docs/SOURCE_INTENT_FRONTEND_CONFORMANCE_GATE.md)
+- [Source Intent return semantics](docs/SOURCE_INTENT_RETURN_SEMANTICS.md)
+- [Source Intent runtime returns](docs/SOURCE_INTENT_RUNTIME_RETURNS.md)
+- [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)
 
 ## Backend Authoring

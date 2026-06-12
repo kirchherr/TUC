@@ -81,11 +81,18 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
     )
     assert golden["runtime_evidence_matrix_complete"] is True
-    assert golden["graph_count"] == len(golden["graphs"]) == 6
+    assert golden["graph_count"] == len(golden["graphs"]) == 7
     assert golden["issues"] == []
     assert all(graph["runtime_evidence_complete"] for graph in golden["graphs"])
-    assert golden["graphs"][-1]["graph_id"] == "triton_metadata_mvp_families"
+    assert golden["graphs"][-1]["graph_id"] == "source_intent_return_mlp"
     assert golden["graphs"][-1]["runtime_evidence_complete"] is True
+    assert {
+        artifact["artifact_kind"]
+        for artifact in golden["graphs"][-1]["artifacts"]
+    } >= {
+        "source_intent_return_semantics",
+        "source_intent_runtime_returns",
+    }
 
 
 def test_runtime_evidence_matrix_schema_is_referenced() -> None:

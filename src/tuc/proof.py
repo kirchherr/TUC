@@ -277,14 +277,18 @@ RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES = (
 RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "proof_report_golden",
     "frontend_intake_golden",
+    "source_intent_return_semantics",
+    "source_intent_runtime_returns",
     "hac_ir_golden",
     "runtime_plan_golden",
     "compiler_decision_golden",
     "execution_readiness_golden",
     "execution_trace_golden",
+    "input_manifest",
     "output_contract",
     "public_output_bundle",
     "reference_correctness",
+    "execution_receipt",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "hac_ir_golden",
@@ -292,9 +296,11 @@ RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "compiler_decision_golden",
     "execution_readiness_golden",
     "execution_trace_golden",
+    "input_manifest",
     "output_contract",
     "public_output_bundle",
     "reference_correctness",
+    "execution_receipt",
 )
 MAX_PROOF_METADATA_STRING_BYTES = 128
 MAX_PROOF_BACKENDS = 16
@@ -910,6 +916,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "proof_of_abstraction_trace",
                     ),
                     _runtime_evidence_artifact(
+                        "input_manifest",
+                        "proof_of_abstraction_input_manifest",
+                    ),
+                    _runtime_evidence_artifact(
                         "output_contract",
                         "proof_of_abstraction_output_contract",
                     ),
@@ -920,6 +930,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_abstraction_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_abstraction_execution_receipt",
                     ),
                 ),
             ),
@@ -950,6 +964,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "proof_of_reduction_trace",
                     ),
                     _runtime_evidence_artifact(
+                        "input_manifest",
+                        "proof_of_reduction_input_manifest",
+                    ),
+                    _runtime_evidence_artifact(
                         "output_contract",
                         "proof_of_reduction_output_contract",
                     ),
@@ -960,6 +978,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_reduction_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_reduction_execution_receipt",
                     ),
                 ),
             ),
@@ -984,6 +1006,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     ),
                     _runtime_evidence_artifact("execution_trace_golden", "proof_of_softmax_trace"),
                     _runtime_evidence_artifact(
+                        "input_manifest",
+                        "proof_of_softmax_input_manifest",
+                    ),
+                    _runtime_evidence_artifact(
                         "output_contract",
                         "proof_of_softmax_output_contract",
                     ),
@@ -994,6 +1020,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_softmax_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_softmax_execution_receipt",
                     ),
                 ),
             ),
@@ -1024,6 +1054,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "proof_of_execution_trace",
                     ),
                     _runtime_evidence_artifact(
+                        "input_manifest",
+                        "proof_of_execution_input_manifest",
+                    ),
+                    _runtime_evidence_artifact(
                         "output_contract",
                         "proof_of_execution_output_contract",
                     ),
@@ -1034,6 +1068,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_execution_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_execution_execution_receipt",
                     ),
                 ),
             ),
@@ -1067,6 +1105,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "proof_of_systolic_execution_trace",
                     ),
                     _runtime_evidence_artifact(
+                        "input_manifest",
+                        "proof_of_systolic_execution_input_manifest",
+                    ),
+                    _runtime_evidence_artifact(
                         "output_contract",
                         "proof_of_systolic_execution_output_contract",
                     ),
@@ -1077,6 +1119,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "proof_of_systolic_execution_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "proof_of_systolic_execution_execution_receipt",
                     ),
                 ),
             ),
@@ -1110,6 +1156,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "triton_metadata_mvp_families_trace",
                     ),
                     _runtime_evidence_artifact(
+                        "input_manifest",
+                        "triton_metadata_mvp_families_input_manifest",
+                    ),
+                    _runtime_evidence_artifact(
                         "output_contract",
                         "triton_metadata_mvp_families_output_contract",
                     ),
@@ -1120,6 +1170,69 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "reference_correctness",
                         "triton_metadata_mvp_families_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "triton_metadata_mvp_families_execution_receipt",
+                    ),
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="source_intent_return_mlp",
+                graph_family="source_intent_runtime_returns",
+                source_boundary="source_intent_metadata",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "frontend_intake_golden",
+                        "source_intent_return_mlp_intake",
+                    ),
+                    _runtime_evidence_artifact(
+                        "source_intent_return_semantics",
+                        "source_intent_return_mlp_return_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "source_intent_runtime_returns",
+                        "source_intent_return_mlp_runtime_returns",
+                    ),
+                    _runtime_evidence_artifact(
+                        "hac_ir_golden",
+                        "source_intent_return_mlp_hac_ir",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_plan_golden",
+                        "source_intent_return_mlp_runtime_plan",
+                    ),
+                    _runtime_evidence_artifact(
+                        "compiler_decision_golden",
+                        "source_intent_return_mlp_compiler_decision",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_readiness_golden",
+                        "source_intent_return_mlp_readiness",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_trace_golden",
+                        "source_intent_return_mlp_trace",
+                    ),
+                    _runtime_evidence_artifact(
+                        "input_manifest",
+                        "source_intent_return_mlp_input_manifest",
+                    ),
+                    _runtime_evidence_artifact(
+                        "output_contract",
+                        "source_intent_return_mlp_output_contract",
+                    ),
+                    _runtime_evidence_artifact(
+                        "public_output_bundle",
+                        "source_intent_return_mlp_public_output_bundle",
+                    ),
+                    _runtime_evidence_artifact(
+                        "reference_correctness",
+                        "source_intent_return_mlp_reference_semantics",
+                    ),
+                    _runtime_evidence_artifact(
+                        "execution_receipt",
+                        "source_intent_return_mlp_execution_receipt",
                     ),
                 ),
             ),

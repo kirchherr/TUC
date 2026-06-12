@@ -26,6 +26,10 @@ The schema defines:
 - symbolic input and output tensor references
 - neutral hints: `prefer_linear_accelerator`, `prefer_sparsity`,
   `robust_to_noise`, and `max_error_budget`
+- optional public return bindings through `returns`, documented in
+  [Source Intent Return Semantics](SOURCE_INTENT_RETURN_SEMANTICS.md)
+  and connected to runtime evidence by
+  [Source Intent Runtime Returns](SOURCE_INTENT_RUNTIME_RETURNS.md)
 
 All object shapes use `additionalProperties: false`.
 
@@ -42,6 +46,9 @@ The schema does not add:
 - preflight report ingestion
 - Python object inspection
 - plugin discovery
+- runtime output contract generation
+- runtime public output bundle generation
+- source-intent runtime returns generation
 - metadata output
 - `ComputeGraph` output
 - lowering or runtime planning

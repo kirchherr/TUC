@@ -81,16 +81,22 @@ hardware-independent interface into capability-driven runtime planning.
   in the `python` workflow job.
 - Runtime Buffer Lifetime v0 with schema at
   `schemas/runtime_buffer_lifetime_report.v0.schema.json` and deterministic
-  golden at `tests/golden/runtime_buffer_lifetime/current_report.json`.
+  golden at `tests/golden/runtime_buffer_lifetime/current_report.json`,
+  exposing `lifetime_metadata_digest` for downstream allocation binding.
 - Runtime Allocation Plan v0 with schema at
-  `schemas/runtime_allocation_plan_report.v0.schema.json` and deterministic
-  golden at `tests/golden/runtime_allocation_plan/current_report.json`.
+  `schemas/runtime_allocation_plan_report.v0.schema.json`, deterministic
+  golden at `tests/golden/runtime_allocation_plan/current_report.json`, and a
+  source lifetime metadata digest plus allocation metadata digest for
+  downstream budget binding.
 - Runtime Memory Budget v0 with schema at
-  `schemas/runtime_memory_budget_report.v0.schema.json` and deterministic
-  golden at `tests/golden/runtime_memory_budget/current_report.json`.
+  `schemas/runtime_memory_budget_report.v0.schema.json`, deterministic golden
+  at `tests/golden/runtime_memory_budget/current_report.json`, and source
+  allocation metadata digest binding.
 - Runtime Memory Planning Gate v0 with deterministic golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt` and CI coverage
-  in the `python` workflow job.
+  in the `python` workflow job, now verifying Allocation Plan binding to Buffer
+  Lifetime and Memory Budget binding to Allocation Plan in the same gate
+  invocation.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
   deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
@@ -133,6 +139,11 @@ hardware-independent interface into capability-driven runtime planning.
   golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
   Runtime Evidence Gate coverage with raw tensor values omitted by policy.
+- Runtime Input Manifest v0 with schema at
+  `schemas/runtime_input_manifest_report.v0.schema.json`, deterministic golden
+  evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
+  and Runtime Evidence Gate coverage for accepted graph external inputs without
+  raw tensor values.
 - Runtime Output Manifest v0 with schema at
   `schemas/runtime_output_manifest_report.v0.schema.json`, deterministic golden
   evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
@@ -144,6 +155,30 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_reference_correctness/proof_of_execution.json`, Runtime
   Evidence Gate coverage, and proof-of-execution reporting without raw
   result/reference tensor values.
+- Runtime Execution Receipt v0 with schema at
+  `schemas/runtime_execution_receipt_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
+  tensor-store, input-manifest, output-manifest, and reference-correctness
+  evidence by metadata digest without raw tensor values.
+- Runtime Execution Evidence Bundle v0 with schema at
+  `schemas/runtime_execution_evidence_bundle_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/runtime_execution_evidence_bundle/proof_of_execution.json`,
+  packaging tensor-store, input-manifest, output-manifest,
+  reference-correctness, and execution-receipt reports into one metadata-only
+  review artifact.
+- Runtime Execution Evidence Bundle Binding in Runtime Evidence Gate, rejecting
+  stale or forged bundles whose embedded graph names, contracts, metadata
+  digests, item counts, pass status, or raw-value policy do not match the
+  evidence reports evaluated by the same gate invocation, with the decision
+  captured in
+  `rfcs/0130-runtime-evidence-gate-execution-bundle-binding.md`.
+- Runtime Execution Receipt Binding in Runtime Evidence Gate, rejecting receipts
+  whose graph names, contracts, metadata digests, item counts, pass status, or
+  raw-value policy do not match the evidence reports evaluated by the same gate
+  invocation, with the decision captured in
+  `rfcs/0128-runtime-execution-receipt-gate-binding.md`.
 - Runtime Multi-Output Evidence fixture with deterministic golden evidence at
   `tests/golden/runtime_multi_output_evidence/current_report.json`, proving
   Runtime Output Manifest and Runtime Reference Correctness across two terminal
@@ -159,10 +194,11 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_public_output_bundle/current_report.json`, and
   read-only public-name-to-runtime-value mapping while review evidence remains
   metadata-only.
-- Runtime Evidence Gate now requires Runtime Output Contract and Runtime Public
-  Output Bundle evidence in addition to Runtime Evidence Matrix, Runtime
-  Executor Conformance, Runtime Tensor Store Evidence, Runtime Output Manifest,
-  and Runtime Reference Correctness.
+- Runtime Evidence Gate now requires Runtime Input Manifest, Runtime Execution
+  Receipt, Runtime Execution Evidence Bundle, Runtime Output Contract, and
+  Runtime Public Output Bundle evidence in addition to Runtime Evidence Matrix,
+  Runtime Executor Conformance, Runtime Tensor Store Evidence, Runtime Output
+  Manifest, and Runtime Reference Correctness.
 - Runtime Evidence Matrix now treats `output_contract` as required graph
   evidence, aligning the curated proof inventory with the Runtime Evidence Gate
   contract, with the decision captured in
@@ -171,6 +207,54 @@ hardware-independent interface into capability-driven runtime planning.
   evidence, aligning curated proof inventory with the read-only public runtime
   return boundary, with the decision captured in
   `rfcs/0115-runtime-evidence-public-output-bundle.md`.
+- Runtime Evidence Matrix now treats `input_manifest` as required graph
+  evidence, aligning accepted external runtime inputs with Runtime Evidence
+  Gate coverage and `schemas/runtime_input_manifest_report.v0.schema.json`,
+  with the decision captured in
+  `rfcs/0125-runtime-evidence-matrix-input-manifest.md`.
+- Runtime Evidence Matrix now treats `execution_receipt` as required graph
+  evidence, aligning linked runtime execution evidence with Runtime Evidence
+  Gate coverage and
+  `schemas/runtime_execution_receipt_report.v0.schema.json`, with the decision
+  captured in `rfcs/0127-runtime-evidence-matrix-execution-receipt.md`.
+- Source Intent Return Semantics v0 with optional `returns` in
+  `schemas/source_intent.v0.schema.json`, deterministic golden evidence at
+  `tests/golden/frontend/source_intent_return_semantics_report.txt`, and
+  execution-free public-name-to-terminal-tensor intent before Runtime Output
+  Contract evidence is built, documented in
+  `docs/SOURCE_INTENT_RETURN_SEMANTICS.md`.
+- Source Intent Runtime Returns v0 with schema at
+  `schemas/source_intent_runtime_returns_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/frontend/source_intent_runtime_returns_report.json`, and
+  explicit proof that frontend return intent resolves through Runtime Output
+  Contract and Runtime Public Output Bundle after trusted prototype execution,
+  documented in `docs/SOURCE_INTENT_RUNTIME_RETURNS.md`.
+- Runtime Evidence Matrix now inventories `source_intent_return_mlp` as a
+  complete Source Intent metadata graph with Source Intent return semantics and
+  Source Intent Runtime Returns evidence.
+- Runtime Evidence Gate now requires Source Intent Runtime Returns evidence in
+  addition to matrix, executor conformance, tensor store, input manifest,
+  output manifest, output contract, public output bundle, reference correctness,
+  and execution receipt evidence.
+- Runtime Evidence Gate now binds Source Intent Runtime Returns to the curated
+  `source_intent_return_mlp` Runtime Evidence Matrix graph, failing closed when
+  the matrix graph, source boundary, required Source Intent artifacts, or report
+  graph name drift.
+- Source Intent Frontend Conformance now includes explicit public-return
+  fixtures, return-alias preservation checks, and fail-closed rejected cases for
+  unknown, intermediate, and duplicate public returns.
+- Source Intent Frontend Conformance Gate now enforces the conformance suite and
+  required public-return coverage as CI-facing merge evidence, with deterministic
+  golden output at
+  `tests/golden/frontend/source_intent_frontend_conformance_gate.txt`.
+- Source-To-Intent Readiness now requires
+  `source_intent_frontend_conformance_gate`, keeping future parser proposals
+  blocked unless frontend conformance and public-return coverage pass the
+  merge-facing gate.
+- Source-To-Intent Parser Block Gate now asserts in CI that the default
+  source-to-intent parser path remains blocked, with deterministic golden
+  output at `tests/golden/frontend/source_to_intent_parser_block_gate.txt`.
 
 ## In Progress
 
@@ -224,6 +308,9 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`,
   including producer-kind and producer-id metadata without tensor values.
+- Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
+  evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
+  including accepted external-input metadata without tensor values.
 - Runtime Output Manifest at `examples/runtime_output_manifest.py`, with golden
   evidence at `tests/golden/runtime_output_manifest/proof_of_execution.json`,
   including terminal-output producer metadata without tensor values.
@@ -231,6 +318,15 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_reference_correctness/proof_of_execution.json`,
   including output/reference comparison status without tensor values.
+- Runtime Execution Receipt at `examples/runtime_execution_receipt.py`, with
+  golden evidence at
+  `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
+  runtime evidence digests and operation trace metadata without tensor values.
+- Runtime Execution Evidence Bundle at
+  `examples/runtime_execution_evidence_bundle.py`, with golden evidence at
+  `tests/golden/runtime_execution_evidence_bundle/proof_of_execution.json`,
+  embedding the receipt and evidence reports as one metadata-only review
+  package.
 - Runtime Multi-Output Evidence at `examples/runtime_multi_output_evidence.py`,
   with golden evidence at
   `tests/golden/runtime_multi_output_evidence/current_report.json`, covering
@@ -243,6 +339,16 @@ Current slice:
   `tests/golden/runtime_public_output_bundle/current_report.json`, resolving
   public aliases to read-only runtime values without serializing tensor values
   into review artifacts.
+- Source Intent Return Semantics at
+  `examples/source_intent_return_semantics.py`, with golden evidence at
+  `tests/golden/frontend/source_intent_return_semantics_report.txt`, connecting
+  frontend public output intent to Runtime Output Contract aliases
+  without source parsing or runtime execution.
+- Source Intent Runtime Returns at `examples/source_intent_runtime_returns.py`,
+  with golden evidence at
+  `tests/golden/frontend/source_intent_runtime_returns_report.json`, proving
+  explicit frontend return aliases resolve through Runtime Output Contract and
+  Runtime Public Output Bundle after trusted prototype execution.
 - Proof-of-execution golden at `tests/golden/proofs/proof_of_execution.txt` and
   execution-trace golden at
   `tests/golden/execution_traces/proof_of_execution.txt`.
@@ -264,8 +370,11 @@ Current slice:
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
-  Evidence, Runtime Output Manifest, Runtime Output Contract, Runtime Public
-  Output Bundle, and Runtime Reference Correctness.
+  Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
+  Contract, Runtime Public Output Bundle, Runtime Reference Correctness,
+  Runtime Execution Receipt, Runtime Execution Evidence Bundle, and Source
+  Intent Runtime Returns, with a matrix binding check for the
+  `source_intent_return_mlp` frontend fixture.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
@@ -279,14 +388,21 @@ Current slice:
   with golden evidence at
   `tests/golden/runtime_candidate_scoring_gate/current_gate.txt`.
 - Runtime Buffer Lifetime at `examples/runtime_buffer_lifetime.py`, with golden
-  evidence at `tests/golden/runtime_buffer_lifetime/current_report.json`.
+  evidence at `tests/golden/runtime_buffer_lifetime/current_report.json`,
+  exposing `lifetime_metadata_digest`.
 - Runtime Allocation Plan at `examples/runtime_allocation_plan.py`, with golden
-  evidence at `tests/golden/runtime_allocation_plan/current_report.json`.
+  evidence at `tests/golden/runtime_allocation_plan/current_report.json`,
+  bound to the source Buffer Lifetime metadata digest and exposing
+  `allocation_metadata_digest` for downstream binding.
 - Runtime Memory Budget at `examples/runtime_memory_budget.py`, with golden
-  evidence at `tests/golden/runtime_memory_budget/current_report.json`.
+  evidence at `tests/golden/runtime_memory_budget/current_report.json`, bound
+  to the source Allocation Plan metadata digest.
 - Runtime Memory Planning Gate at `examples/runtime_memory_planning_gate.py`,
   with golden evidence at
-  `tests/golden/runtime_memory_planning_gate/current_gate.txt`.
+  `tests/golden/runtime_memory_planning_gate/current_gate.txt`, rejecting stale
+  Allocation Plan evidence whose source Buffer Lifetime digest does not match
+  and stale Memory Budget evidence whose source Allocation Plan digest does not
+  match.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -333,7 +449,12 @@ Current slice:
   `schemas/source_intent.v0.schema.json` for external frontend authors.
 - Source Intent Frontend Conformance fixtures with deterministic JSON report
   artifacts for external frontend authors that emit `source_intent.v0` plain
-  data.
+  data, including explicit public-return fixtures and rejected malformed return
+  cases.
+- Source Intent Frontend Conformance Gate at
+  `examples/source_intent_frontend_conformance_gate.py`, with golden evidence at
+  `tests/golden/frontend/source_intent_frontend_conformance_gate.txt` and CI
+  coverage in the `python` workflow job.
 - Machine-readable Source Intent Frontend Conformance report JSON Schema at
   `schemas/source_intent_frontend_conformance_report.v0.schema.json`.
 - Source-To-Intent Parser Gate defining the required future parser RFC,
@@ -341,7 +462,12 @@ Current slice:
   HAC-IR neutrality review, and conformance evidence before source text may
   create `source_intent.v0` plain data.
 - Source-To-Intent Readiness report with deterministic blocked golden evidence
-  for future parser proposals.
+  for future parser proposals, now requiring Source Intent Frontend Conformance
+  Gate evidence before source text can influence compiler artifacts.
+- Source-To-Intent Parser Block Gate at
+  `examples/source_to_intent_parser_block_gate.py`, with golden evidence at
+  `tests/golden/frontend/source_to_intent_parser_block_gate.txt` and CI
+  coverage in the `python` workflow job.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -528,6 +654,12 @@ Current focus:
   aliasing, or allocator behavior that can reserve runtime memory.
 - Keep Runtime Memory Planning Gate passing in CI before accepting allocator,
   memory-pool, device-allocation, or aliasing changes.
+- Keep Memory Budget reports bound to the Allocation Plan evaluated by the same
+  gate invocation before accepting allocator, memory-pool, device-allocation, or
+  aliasing changes.
+- Keep Allocation Plan reports bound to the Buffer Lifetime report evaluated by
+  the same gate invocation before accepting allocator, memory-pool,
+  device-allocation, or aliasing changes.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 
@@ -551,8 +683,9 @@ Current focus:
   must add its own corpus, source-intent goldens, deterministic diagnostics,
   and security review before any source connection.
 - External frontend proposals should provide a Source Intent Frontend
-  Conformance report matching the report schema before maintainers consider
-  any source-text parser or frontend package integration.
+  Conformance report matching the report schema and pass Source Intent Frontend
+  Conformance Gate before maintainers consider any source-text parser or
+  frontend package integration.
 - Source-to-intent parser work remains blocked until
   [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is satisfied
   by a dedicated parser implementation RFC and executable evidence.

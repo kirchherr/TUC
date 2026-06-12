@@ -378,6 +378,15 @@ Completed evidence:
 - Runtime Buffer Lifetime reports expose conservative produced tensor
   lifetimes, peak live bytes, and exact-match reuse candidates before adding an
   allocator.
+- Runtime Allocation Plan reports expose deterministic tensor-to-slot bindings,
+  reuse slots, reserved bytes, and allocation metadata digests before adding a
+  real allocator.
+- Runtime Memory Budget reports bind to Allocation Plan metadata digests and
+  check explicit memory-domain budgets before adding memory pools or device
+  allocation.
+- Runtime Memory Planning Gate verifies allocation-plan, memory-budget, and
+  lifetime/allocation/budget digest-binding evidence before allocator behavior
+  can be accepted.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -395,8 +404,8 @@ Next work:
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
-- Add explicit buffer allocation plans only after buffer lifetime evidence stays
-  deterministic and reviewable.
+- Add allocator behavior only after allocation-plan and memory-budget evidence
+  stays deterministic, digest-bound, and reviewable.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 

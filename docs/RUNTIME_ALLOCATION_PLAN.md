@@ -39,12 +39,20 @@ For every planned slot, the report records:
 - whether the slot is exclusive or reused
 - whether assigned live ranges are non-overlapping
 
+The report also records `allocation_metadata_digest`, a deterministic digest
+over allocation metadata used by Runtime Memory Budget and Runtime Memory
+Planning Gate binding checks.
+
 ## Why It Exists
 
 Runtime Buffer Lifetime v0 proves which produced tensors are live when. Runtime
 Allocation Plan v0 turns that evidence into explicit, reviewable slot bindings
 before TUC adds memory pools, device allocation, in-place semantics, or real
 allocator behavior.
+
+The source Buffer Lifetime metadata digest binds an allocation plan to the
+lifetime evidence from which its slots were derived. This prevents stale
+allocation evidence from being accepted for a different lifetime report.
 
 The goal is to make allocation intent inspectable without pretending that TUC
 already owns host or device memory.

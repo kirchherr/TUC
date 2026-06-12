@@ -143,6 +143,8 @@ A parser proposal must include all of these review artifacts:
 - compiler decision-report golden
 - HAC-IR neutrality review checklist result
 - Source Intent Frontend Conformance report for emitted plain data
+- Source Intent Frontend Conformance Gate output proving merge-facing
+  conformance and public-return coverage
 - Source-To-Intent Readiness report with every required evidence ID present
 
 The parser report must not contain raw source text, raw payloads, host paths,
@@ -152,6 +154,10 @@ backend artifacts.
 [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) defines the
 deterministic report that keeps parser proposals blocked until all required
 evidence is present.
+
+[Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
+turns the current blocked parser state into CI-facing merge evidence through
+`examples/source_to_intent_parser_block_gate.py`.
 
 ## Review Checklist
 
@@ -163,16 +169,17 @@ Maintainers must reject parser work unless every answer is yes:
    artifacts until Source Intent Intake succeeds?
 4. Does every emitted payload pass `source_intent_from_mapping(data)`?
 5. Does every emitted payload pass Source Intent Frontend Conformance?
-6. Does the Source-To-Intent Readiness report pass?
-7. Are rejected source cases fail-closed with bounded diagnostics?
-8. Are operation-family mappings deterministic and golden-tested?
-9. Is softmax axis intent explicit?
-10. Are hardware, backend, vendor, device, plugin, memory-domain, placement,
+6. Does Source Intent Frontend Conformance Gate pass?
+7. Does the Source-To-Intent Readiness report pass?
+8. Are rejected source cases fail-closed with bounded diagnostics?
+9. Are operation-family mappings deterministic and golden-tested?
+10. Is softmax axis intent explicit?
+11. Are hardware, backend, vendor, device, plugin, memory-domain, placement,
    path, environment, and artifact details blocked?
-11. Are HAC-IR, runtime-plan, and compiler decision-report goldens present?
-12. Are fuzz or property tests part of CI?
-13. Is any proposed cache covered by a separate cache threat model?
-14. Is any native parser code covered by ASan/UBSan and ownership rules?
+12. Are HAC-IR, runtime-plan, and compiler decision-report goldens present?
+13. Are fuzz or property tests part of CI?
+14. Is any proposed cache covered by a separate cache threat model?
+15. Is any native parser code covered by ASan/UBSan and ownership rules?
 
 ## Still Blocked
 

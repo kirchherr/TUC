@@ -22,6 +22,7 @@ It does not parse source text.
 - Assertion API: `assert_source_intent_frontend_conformance(frontend_name, cases)`
 - Report dump: `dump_source_intent_frontend_conformance_report(report)`
 - Example: `examples/source_intent_frontend_conformance.py`
+- CI gate: `examples/source_intent_frontend_conformance_gate.py`
 - Golden: `tests/golden/frontend/source_intent_frontend_conformance_report.json`
 - Tests: `tests/test_source_intent_conformance.py`
 
@@ -29,13 +30,18 @@ The machine-readable report schema is documented in
 [Source Intent Frontend Conformance Report Schema](SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA.md).
 It is an interoperability artifact for review reports; the trusted conformance
 path remains `run_source_intent_frontend_conformance(frontend_name, cases)`.
+The merge-facing gate is documented in
+[Source Intent Frontend Conformance Gate](SOURCE_INTENT_FRONTEND_CONFORMANCE_GATE.md).
 
 Accepted cases must pass:
 
 - Source Intent Intake through `source_intent_from_mapping(data)`
+- Source Intent return semantics when explicit `returns` are present
 - Source Intent Metadata Conversion through
   `source_intent_to_triton_metadata(module)`
 - Metadata to `ComputeGraph` through the existing metadata adapter
+- Source Intent return policy and return alias metadata preservation when
+  explicit `returns` are present
 - The neutral compiler pipeline with explicit backend capability data and the
   default `reference-cpu` fallback
 
@@ -58,9 +64,13 @@ The conformance suite may produce a deterministic JSON report. It must not becom
 The example suite includes:
 
 - one accepted Source Intent MLP plain-data case
+- one accepted Source Intent MLP plain-data case with explicit public returns
 - a rejected source-text escape case
 - a rejected backend-specific hint escape case
 - a rejected unknown tensor reference case
+- a rejected return to an unknown tensor
+- a rejected return to an intermediate, non-terminal tensor
+- a rejected duplicate public return name case
 
 The deterministic report is golden-tested at:
 
