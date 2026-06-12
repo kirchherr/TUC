@@ -586,8 +586,12 @@ Go/No-Go:
   report before source text can influence compiler artifacts.
 - Source-To-Intent Research Readiness now tracks the first narrow parser
   research proposal as partial evidence, keeping the default parser block
-  intact while making the remaining parser-specific corpus, fuzz, and parser
-  report obligations explicit.
+  intact while making the remaining parser-specific fuzz and parser report
+  obligations explicit.
+- Source-To-Intent Corpus Evidence now defines accepted and rejected
+  source-buffer fixtures for the first parser proof, covers all MVP operation
+  families in accepted cases, and keeps the report data-only with no raw source
+  or compiler artifacts.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

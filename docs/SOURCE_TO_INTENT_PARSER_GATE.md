@@ -107,6 +107,10 @@ Accepted semantic seeds must cover:
 - neutral hints that already exist in Source Intent IR
 - tensor shape and dtype declarations that map to `source_intent.v0`
 
+The current corpus inventory is documented in
+[Source-To-Intent Corpus Evidence](SOURCE_TO_INTENT_CORPUS.md). It provides
+accepted and rejected source-buffer fixtures but does not implement parsing.
+
 Rejected seeds must cover:
 
 - imports and `from ... import ...`

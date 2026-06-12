@@ -21,9 +21,11 @@ The research proposal remains blocked.
 
 Current present evidence:
 
+- accepted source corpus
 - parser RFC
 - parser threat model update
 - parser budget table
+- rejected source corpus
 - Source Intent plain-data golden
 - Source Intent Intake report golden
 - Source Intent Metadata Conversion report golden
@@ -37,8 +39,6 @@ Current present evidence:
 
 Current missing parser-specific evidence:
 
-- accepted source corpus for source-to-intent semantics
-- rejected source corpus for source-to-intent semantics
 - source-to-intent parser fuzz or property corpus
 - deterministic source-to-intent parser report golden
 
@@ -62,6 +62,12 @@ Run:
 
 ```bash
 python examples/source_to_intent_research_readiness.py
+```
+
+Corpus evidence:
+
+```bash
+python examples/source_to_intent_corpus.py
 ```
 
 Expected status:

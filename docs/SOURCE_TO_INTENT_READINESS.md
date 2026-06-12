@@ -19,10 +19,12 @@ IR, plan runtime placement, or execute backend artifacts.
 - Required evidence IDs: `SOURCE_TO_INTENT_REQUIRED_EVIDENCE`
 - Example: `examples/source_to_intent_readiness.py`
 - Research proposal example: `examples/source_to_intent_research_readiness.py`
+- Corpus example: `examples/source_to_intent_corpus.py`
 - Parser block gate: `examples/source_to_intent_parser_block_gate.py`
 - Golden: `tests/golden/frontend/source_to_intent_readiness_report.json`
 - Research golden:
   `tests/golden/frontend/source_to_intent_research_readiness.json`
+- Corpus golden: `tests/golden/frontend/source_to_intent_corpus_report.json`
 - Tests: `tests/test_source_to_intent_readiness.py`
 
 The report is ready only when every required evidence ID is present.
@@ -81,6 +83,13 @@ The research proposal report tracks partial progress toward a future parser:
 
 ```text
 tests/golden/frontend/source_to_intent_research_readiness.json
+```
+
+The source corpus report provides the current accepted/rejected source-buffer
+evidence without unblocking parsing:
+
+```text
+tests/golden/frontend/source_to_intent_corpus_report.json
 ```
 
 The blocked state is also checked by:

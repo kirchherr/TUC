@@ -30,11 +30,11 @@
     },
     {
       "evidence_id": "accepted_source_corpus",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "rejected_source_corpus",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "source_fuzz_or_property_corpus",
@@ -87,14 +87,6 @@
   ],
   "gate_contract": "source_to_intent_parser_gate.blocking.v0",
   "issues": [
-    {
-      "evidence_id": "accepted_source_corpus",
-      "message": "required source-to-intent parser gate evidence is missing"
-    },
-    {
-      "evidence_id": "rejected_source_corpus",
-      "message": "required source-to-intent parser gate evidence is missing"
-    },
     {
       "evidence_id": "source_fuzz_or_property_corpus",
       "message": "required source-to-intent parser gate evidence is missing"
