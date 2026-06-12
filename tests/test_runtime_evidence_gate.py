@@ -20,6 +20,9 @@ from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
+from examples.runtime_vector_backend_equivalence import (
+    build_vector_backend_equivalence_report,
+)
 from examples.source_intent_runtime_returns import (
     run_evidence as run_source_intent_runtime_returns,
 )
@@ -71,6 +74,11 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
     assert 'runtime_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_backend_equivalence_binding = "verified"' in completed.stdout
+    assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
+    assert (
+        'runtime_vector_backend_equivalence_binding = "verified"'
+        in completed.stdout
+    )
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
     assert 'runtime_input_manifest = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
@@ -171,6 +179,54 @@ def test_runtime_evidence_gate_rejects_unbound_backend_equivalence() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="backend equivalence binding"):
         build_gate_report(backend_equivalence_report=mismatched_report)
+
+
+def test_runtime_evidence_gate_rejects_failed_vector_backend_equivalence() -> None:
+    report = build_vector_backend_equivalence_report()
+    candidate = replace(
+        report.runs[1],
+        planned_backend_sequence=report.runs[0].planned_backend_sequence,
+    )
+    failed_equivalence = RuntimeBackendEquivalenceReport(
+        graph_name=report.graph_name,
+        baseline_run_id=report.baseline_run_id,
+        candidate_run_id=report.candidate_run_id,
+        runs=(report.runs[0], candidate),
+        comparisons=report.comparisons,
+        issues=(
+            RuntimeBackendEquivalenceIssue(
+                subject="backend_sequence",
+                issue_code="backend_sequences_not_distinct",
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="vector backend equivalence failed",
+    ):
+        build_gate_report(vector_backend_equivalence_report=failed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_unbound_vector_backend_equivalence() -> None:
+    report = build_vector_backend_equivalence_report()
+    mismatched_report = RuntimeBackendEquivalenceReport(
+        graph_name="other_vector_backend_equivalence",
+        baseline_run_id=report.baseline_run_id,
+        candidate_run_id=report.candidate_run_id,
+        runs=(
+            replace(report.runs[0], graph_name="other_vector_backend_equivalence"),
+            replace(report.runs[1], graph_name="other_vector_backend_equivalence"),
+        ),
+        comparisons=report.comparisons,
+        issues=(),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="vector backend equivalence binding",
+    ):
+        build_gate_report(vector_backend_equivalence_report=mismatched_report)
 
 
 def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:

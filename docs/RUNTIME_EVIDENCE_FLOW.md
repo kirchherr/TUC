@@ -115,9 +115,10 @@ item counts, pass status, and raw-value policy.
 Plan, Memory Budget, and Allocation Request Manifest evidence before allocator
 behavior can be accepted.
 
-`Runtime Backend Equivalence` is required by Runtime Evidence Gate. It
-demonstrates that distinct backend placements can preserve observable output
-semantics before stronger portability or performance claims are made.
+`Runtime Backend Equivalence` is required by Runtime Evidence Gate for both
+the systolic and vector proof slices. It demonstrates that distinct backend
+placements can preserve observable output semantics before stronger
+portability or performance claims are made.
 
 Together, the gates keep the core proof visible:
 

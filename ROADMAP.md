@@ -182,6 +182,9 @@ Completed evidence:
   `softmax -> reduction -> elementwise`, proving a second non-CPU accelerator
   family can preserve terminal output semantics without serializing tensor
   values.
+- Runtime Evidence Gate binds the vector simulator equivalence fixture, so the
+  `reference-cpu` versus `vector-sim` proof slice is merge-relevant rather than
+  standalone demonstration-only evidence.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

@@ -165,6 +165,10 @@ hardware-independent interface into capability-driven runtime planning.
   proving a `reference-cpu` baseline and `vector-sim` candidate preserve
   terminal output semantics for `softmax -> reduction -> elementwise` without
   serialized tensor values.
+- Runtime Evidence Gate now requires and binds Runtime Vector Backend
+  Equivalence evidence, verifying the expected `reference-cpu` versus
+  `vector-sim` placement sequence and raw-value omission policy in CI-facing
+  output.
 - Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
   explaining what runs, what is stored, what is public, what is hashed, what is
   never serialized, and which runtime gates must pass.
@@ -419,8 +423,9 @@ Current slice:
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Backend
-  Equivalence, Runtime Tensor Store Evidence, Runtime Input Manifest, Runtime
-  Output Manifest, Runtime Output Contract, Runtime Public Output Bundle,
+  Equivalence, Runtime Vector Backend Equivalence, Runtime Tensor Store
+  Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
+  Contract, Runtime Public Output Bundle,
   Runtime Reference Correctness, Runtime Execution Receipt, Runtime Execution
   Evidence Bundle, and Source Intent Runtime Returns, with binding checks for
   the backend-equivalence fixture and the `source_intent_return_mlp` frontend

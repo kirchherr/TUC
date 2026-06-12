@@ -80,7 +80,8 @@ Current runtime surfaces:
 - Runtime Execution Evidence Bundle v0 packaging one coherent metadata-only
   execution evidence set for review.
 - Runtime Backend Equivalence v0 comparing `reference-cpu` against
-  `systolic-sim` and `vector-sim` placements without serialized tensor values.
+  `systolic-sim` and `vector-sim` placements without serialized tensor values,
+  with both proof slices bound into the Runtime Evidence Gate.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.

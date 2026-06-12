@@ -8,6 +8,9 @@ from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
+from examples.runtime_vector_backend_equivalence import (
+    build_vector_backend_equivalence_report,
+)
 from examples.source_intent_runtime_returns import run_evidence as run_runtime_returns
 from tuc import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
@@ -41,6 +44,19 @@ RUNTIME_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
 RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "systolic_sim"
 RUNTIME_BACKEND_EQUIVALENCE_BASELINE_BACKENDS = ("reference-cpu", "reference-cpu")
 RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS = ("systolic-sim", "reference-cpu")
+RUNTIME_VECTOR_BACKEND_EQUIVALENCE_GRAPH_ID = "runtime_vector_backend_equivalence"
+RUNTIME_VECTOR_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
+RUNTIME_VECTOR_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "vector_sim"
+RUNTIME_VECTOR_BACKEND_EQUIVALENCE_BASELINE_BACKENDS = (
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu",
+)
+RUNTIME_VECTOR_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS = (
+    "vector-sim",
+    "vector-sim",
+    "vector-sim",
+)
 
 
 class RuntimeEvidenceGateError(AssertionError):
@@ -52,6 +68,9 @@ def build_gate_report(
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
     conformance_report: RuntimeExecutorConformanceReport | None = None,
     backend_equivalence_report: RuntimeBackendEquivalenceReport | None = None,
+    vector_backend_equivalence_report: (
+        RuntimeBackendEquivalenceReport | None
+    ) = None,
     execution_evidence_bundle_report: (
         RuntimeExecutionEvidenceBundleReport | None
     ) = None,
@@ -82,6 +101,11 @@ def build_gate_report(
         build_backend_equivalence_report()
         if backend_equivalence_report is None
         else backend_equivalence_report
+    )
+    vector_backend_equivalence = (
+        build_vector_backend_equivalence_report()
+        if vector_backend_equivalence_report is None
+        else vector_backend_equivalence_report
     )
     tensor_store = (
         build_tensor_store_evidence_report()
@@ -136,7 +160,24 @@ def build_gate_report(
     )
     _assert_matrix_complete(matrix)
     _assert_conformance_passed(conformance)
-    _assert_backend_equivalence_passed(backend_equivalence)
+    _assert_backend_equivalence_passed(
+        backend_equivalence,
+        graph_id=RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID,
+        baseline_run_id=RUNTIME_BACKEND_EQUIVALENCE_BASELINE_RUN_ID,
+        candidate_run_id=RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID,
+        baseline_backends=RUNTIME_BACKEND_EQUIVALENCE_BASELINE_BACKENDS,
+        candidate_backends=RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS,
+        label="runtime backend equivalence",
+    )
+    _assert_backend_equivalence_passed(
+        vector_backend_equivalence,
+        graph_id=RUNTIME_VECTOR_BACKEND_EQUIVALENCE_GRAPH_ID,
+        baseline_run_id=RUNTIME_VECTOR_BACKEND_EQUIVALENCE_BASELINE_RUN_ID,
+        candidate_run_id=RUNTIME_VECTOR_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID,
+        baseline_backends=RUNTIME_VECTOR_BACKEND_EQUIVALENCE_BASELINE_BACKENDS,
+        candidate_backends=RUNTIME_VECTOR_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS,
+        label="runtime vector backend equivalence",
+    )
     _assert_tensor_store_evidence_passed(tensor_store)
     _assert_input_manifest_passed(input_manifest)
     _assert_output_manifest_passed(output_manifest)
@@ -169,6 +210,7 @@ def build_gate_report(
         matrix,
         conformance,
         backend_equivalence,
+        vector_backend_equivalence,
         tensor_store,
         input_manifest,
         output_manifest,
@@ -202,56 +244,60 @@ def _assert_conformance_passed(report: RuntimeExecutorConformanceReport) -> None
 
 def _assert_backend_equivalence_passed(
     report: RuntimeBackendEquivalenceReport,
+    *,
+    graph_id: str,
+    baseline_run_id: str,
+    candidate_run_id: str,
+    baseline_backends: tuple[str, ...],
+    candidate_backends: tuple[str, ...],
+    label: str,
 ) -> None:
     if not isinstance(report, RuntimeBackendEquivalenceReport):
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence failed: not a report object"
+            f"{label} failed: not a report object"
         )
     if report.issues:
         issues = ",".join(
             f"{issue.subject}:{issue.issue_code}" for issue in report.issues
         )
-        raise RuntimeEvidenceGateError(f"runtime backend equivalence failed: {issues}")
-    if report.graph_name != RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID:
+        raise RuntimeEvidenceGateError(f"{label} failed: {issues}")
+    if report.graph_name != graph_id:
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence binding failed: graph_name_mismatch"
+            f"{label} binding failed: graph_name_mismatch"
         )
-    if report.baseline_run_id != RUNTIME_BACKEND_EQUIVALENCE_BASELINE_RUN_ID:
+    if report.baseline_run_id != baseline_run_id:
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence binding failed: baseline_run_id_mismatch"
+            f"{label} binding failed: baseline_run_id_mismatch"
         )
-    if report.candidate_run_id != RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID:
+    if report.candidate_run_id != candidate_run_id:
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence binding failed: candidate_run_id_mismatch"
+            f"{label} binding failed: candidate_run_id_mismatch"
         )
     runs = {run.run_id: run for run in report.runs}
-    baseline = runs.get(RUNTIME_BACKEND_EQUIVALENCE_BASELINE_RUN_ID)
-    candidate = runs.get(RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID)
+    baseline = runs.get(baseline_run_id)
+    candidate = runs.get(candidate_run_id)
     if baseline is None or candidate is None:
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence binding failed: missing_expected_run"
+            f"{label} binding failed: missing_expected_run"
         )
-    if baseline.planned_backend_sequence != RUNTIME_BACKEND_EQUIVALENCE_BASELINE_BACKENDS:
+    if baseline.planned_backend_sequence != baseline_backends:
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence binding failed: baseline_backends_mismatch"
+            f"{label} binding failed: baseline_backends_mismatch"
         )
-    if (
-        candidate.planned_backend_sequence
-        != RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS
-    ):
+    if candidate.planned_backend_sequence != candidate_backends:
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence binding failed: candidate_backends_mismatch"
+            f"{label} binding failed: candidate_backends_mismatch"
         )
     if report.raw_value_policy != "omitted_by_policy":
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence binding failed: raw_value_policy_mismatch"
+            f"{label} binding failed: raw_value_policy_mismatch"
         )
     if any(
         comparison.comparison_status != "matched"
         for comparison in report.comparisons
     ):
         raise RuntimeEvidenceGateError(
-            "runtime backend equivalence binding failed: comparison_not_matched"
+            f"{label} binding failed: comparison_not_matched"
         )
 
 
@@ -612,6 +658,7 @@ def _render_gate_report(
     matrix: RuntimeEvidenceMatrixReport,
     conformance: RuntimeExecutorConformanceReport,
     backend_equivalence: RuntimeBackendEquivalenceReport,
+    vector_backend_equivalence: RuntimeBackendEquivalenceReport,
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
@@ -637,6 +684,20 @@ def _render_gate_report(
     lines.append(
         "  runtime_backend_equivalence_raw_value_policy = "
         f'"{backend_equivalence.raw_value_policy}"'
+    )
+    lines.append('  runtime_vector_backend_equivalence = "passed"')
+    lines.append('  runtime_vector_backend_equivalence_binding = "verified"')
+    lines.append(
+        "  runtime_vector_backend_equivalence_runs = "
+        f'"{len(vector_backend_equivalence.runs)}"'
+    )
+    lines.append(
+        "  runtime_vector_backend_equivalence_comparisons = "
+        f'"{len(vector_backend_equivalence.comparisons)}"'
+    )
+    lines.append(
+        "  runtime_vector_backend_equivalence_raw_value_policy = "
+        f'"{vector_backend_equivalence.raw_value_policy}"'
     )
     lines.append('  runtime_tensor_store_evidence = "passed"')
     lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')

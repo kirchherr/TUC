@@ -48,10 +48,10 @@ tests/golden/runtime_backend_equivalence/current_report.json
 tests/golden/runtime_backend_equivalence/vector_sim_report.json
 ```
 
-The CI-facing Runtime Evidence Gate requires the primary systolic equivalence
-fixture and binds it to the expected `reference_cpu` baseline and
-`systolic_sim` candidate placement. The vector fixture is standalone practical
-evidence for broadening trusted accelerator families.
+The CI-facing Runtime Evidence Gate requires both equivalence fixtures. It
+binds the primary fixture to the expected `reference_cpu` baseline and
+`systolic_sim` candidate placement, and binds the vector fixture to the
+expected `reference_cpu` baseline and `vector_sim` candidate placement.
 
 ## Security Boundary
 
