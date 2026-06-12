@@ -6,6 +6,9 @@
     "allocation_contract": {
       "const": "runtime_allocation_plan.data_only.v0"
     },
+    "allocation_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
     "bindings": {
       "items": {
         "$ref": "#/$defs/binding"
@@ -114,6 +117,7 @@
   },
   "required": [
     "allocation_contract",
+    "allocation_metadata_digest",
     "bindings",
     "blocked_execution_surfaces",
     "committed_reuse_savings_bytes",
@@ -332,6 +336,10 @@
       "maxItems": 8,
       "minItems": 1,
       "type": "array"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
     }
   }
 }

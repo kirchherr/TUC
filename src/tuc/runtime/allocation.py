@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
+from hashlib import sha256
 
 from tuc.ir.memory import LayoutKind, MemoryDomainKind
 from tuc.runtime.buffer_lifetime import (
@@ -254,6 +255,59 @@ class RuntimeAllocationPlanReport:
         return max(0, self.total_tensor_bytes - self.total_reserved_bytes)
 
     @property
+    def allocation_metadata_digest(self) -> str:
+        """Return a digest over allocation-plan metadata only."""
+
+        payload = {
+            "allocation_contract": self.allocation_contract,
+            "bindings": [
+                {
+                    "bytes_required": binding.bytes_required,
+                    "dtype": binding.dtype,
+                    "first_live_index": binding.first_live_index,
+                    "last_use_index": binding.last_use_index,
+                    "layout": binding.layout.value,
+                    "lifetime_kind": binding.lifetime_kind,
+                    "memory_domain": binding.memory_domain.value,
+                    "producer_index": binding.producer_index,
+                    "producer_operation": binding.producer_operation,
+                    "shape": list(binding.shape),
+                    "slot_id": binding.slot_id,
+                    "tensor_name": binding.tensor_name,
+                }
+                for binding in self.bindings
+            ],
+            "graph_name": self.graph_name,
+            "issues": [
+                {
+                    "issue_code": issue.issue_code,
+                    "subject": issue.subject,
+                }
+                for issue in self.issues
+            ],
+            "operation_count": self.operation_count,
+            "source_lifetime_contract": self.source_lifetime_contract,
+            "source_lifetime_issue_count": self.source_lifetime_issue_count,
+            "source_lifetime_schema_version": self.source_lifetime_schema_version,
+            "slots": [
+                {
+                    "allocation_kind": slot.allocation_kind,
+                    "bytes_reserved": slot.bytes_reserved,
+                    "dtype": slot.dtype,
+                    "layout": slot.layout.value,
+                    "live_ranges_non_overlapping": slot.live_ranges_non_overlapping,
+                    "memory_domain": slot.memory_domain.value,
+                    "shape": list(slot.shape),
+                    "slot_id": slot.slot_id,
+                    "source_reuse_group_id": slot.source_reuse_group_id,
+                    "tensor_names": list(slot.tensor_names),
+                }
+                for slot in self.slots
+            ],
+        }
+        return _metadata_digest(payload)
+
+    @property
     def peak_live_bytes(self) -> int:
         """Return conservative peak live bytes across operation boundaries."""
 
@@ -335,6 +389,7 @@ def runtime_allocation_plan_report_to_dict(
         raise TypeError("runtime allocation plan report must be report object")
     return {
         "allocation_contract": report.allocation_contract,
+        "allocation_metadata_digest": report.allocation_metadata_digest,
         "bindings": [
             {
                 "bytes_required": binding.bytes_required,
@@ -595,6 +650,13 @@ def _require_positive_int(value: int, label: str) -> None:
 def _require_non_negative_int(value: int, label: str) -> None:
     if not isinstance(value, int) or isinstance(value, bool) or value < 0:
         raise ValueError(f"{label} must be a non-negative integer")
+
+
+def _metadata_digest(payload: object) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode(
+        "utf-8"
+    )
+    return f"sha256:{sha256(encoded).hexdigest()}"
 
 
 __all__ = [

@@ -50,10 +50,12 @@ def test_runtime_allocation_plan_report_passes() -> None:
     assert report.total_tensor_bytes == 256
     assert report.total_reserved_bytes == 192
     assert report.committed_reuse_savings_bytes == 64
+    assert report.allocation_metadata_digest.startswith("sha256:")
     assert report.peak_live_bytes == 192
     assert assert_runtime_allocation_plan(report) is report
     assert tuple(runtime_allocation_plan_report_to_dict(report)) == (
         "allocation_contract",
+        "allocation_metadata_digest",
         "bindings",
         "blocked_execution_surfaces",
         "committed_reuse_savings_bytes",
@@ -213,6 +215,9 @@ def test_runtime_allocation_plan_schema_matches_contract() -> None:
     assert schema["properties"]["allocation_contract"]["const"] == (
         RUNTIME_ALLOCATION_PLAN_CONTRACT
     )
+    assert schema["properties"]["allocation_metadata_digest"] == {
+        "$ref": "#/$defs/sha256_digest"
+    }
     assert schema["properties"]["source_lifetime_contract"]["const"] == (
         RUNTIME_BUFFER_LIFETIME_CONTRACT
     )
@@ -258,6 +263,7 @@ def test_runtime_allocation_plan_golden_matches_schema_shape() -> None:
     assert sorted(golden) == sorted(schema["required"])
     assert golden["schema_version"] == RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION
     assert golden["allocation_contract"] == RUNTIME_ALLOCATION_PLAN_CONTRACT
+    assert golden["allocation_metadata_digest"].startswith("sha256:")
     assert golden["source_lifetime_contract"] == RUNTIME_BUFFER_LIFETIME_CONTRACT
     assert golden["source_lifetime_schema_version"] == (
         RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION

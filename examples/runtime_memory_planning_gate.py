@@ -14,6 +14,7 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
 
 from tuc import (
+    RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION,
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RuntimeAllocationPlanReport,
     RuntimeMemoryBudgetReport,
@@ -45,7 +46,7 @@ def build_gate_report(
     )
     _assert_allocation_plan_passed(allocation)
     _assert_memory_budget_passed(memory_budget)
-    _assert_same_graph(allocation, memory_budget)
+    _assert_memory_budget_matches_allocation(allocation, memory_budget)
     return _render_gate_report(allocation, memory_budget)
 
 
@@ -71,7 +72,7 @@ def _assert_memory_budget_passed(report: RuntimeMemoryBudgetReport) -> None:
         ) from exc
 
 
-def _assert_same_graph(
+def _assert_memory_budget_matches_allocation(
     allocation: RuntimeAllocationPlanReport,
     memory_budget: RuntimeMemoryBudgetReport,
 ) -> None:
@@ -80,6 +81,28 @@ def _assert_same_graph(
     if allocation.operation_count != memory_budget.operation_count:
         raise RuntimeMemoryPlanningGateError(
             "runtime memory planning operation count mismatch"
+        )
+    if memory_budget.source_allocation_contract != allocation.allocation_contract:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation contract mismatch"
+        )
+    if (
+        memory_budget.source_allocation_schema_version
+        != RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation schema mismatch"
+        )
+    if memory_budget.source_allocation_issue_count != len(allocation.issues):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation issue count mismatch"
+        )
+    if (
+        memory_budget.source_allocation_metadata_digest
+        != allocation.allocation_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation digest mismatch"
         )
 
 
@@ -93,6 +116,7 @@ def _render_gate_report(
     lines.append(f'  allocation_slots = "{allocation.slot_count}"')
     lines.append(f'  allocation_reuse_slots = "{allocation.reuse_slot_count}"')
     lines.append('  memory_budget = "passed"')
+    lines.append('  memory_budget_allocation_binding = "verified"')
     lines.append(f'  memory_budget_count = "{memory_budget.budget_count}"')
     lines.append(f'  memory_usage_count = "{memory_budget.usage_count}"')
     lines.append(f'  total_reserved_bytes = "{memory_budget.total_reserved_bytes}"')

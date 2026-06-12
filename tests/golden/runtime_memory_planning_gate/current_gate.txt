@@ -4,6 +4,7 @@ runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {
   allocation_slots = "3"
   allocation_reuse_slots = "1"
   memory_budget = "passed"
+  memory_budget_allocation_binding = "verified"
   memory_budget_count = "1"
   memory_usage_count = "1"
   total_reserved_bytes = "192"

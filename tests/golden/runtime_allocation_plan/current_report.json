@@ -1,5 +1,6 @@
 {
   "allocation_contract": "runtime_allocation_plan.data_only.v0",
+  "allocation_metadata_digest": "sha256:f9019ac0bb44f9287e0bbb04544d24a5b38c804d7d185618fd35696ad59ef525",
   "bindings": [
     {
       "bytes_required": 64,

@@ -76,6 +76,9 @@
       "minimum": 0,
       "type": "integer"
     },
+    "source_allocation_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
     "source_allocation_schema_version": {
       "const": "tuc.runtime_allocation_plan_report.v0"
     },
@@ -111,6 +114,7 @@
     "schema_version",
     "source_allocation_contract",
     "source_allocation_issue_count",
+    "source_allocation_metadata_digest",
     "source_allocation_schema_version",
     "total_peak_live_bytes",
     "total_reserved_bytes",
@@ -244,6 +248,10 @@
         ]
       },
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
       "type": "string"
     }
   }

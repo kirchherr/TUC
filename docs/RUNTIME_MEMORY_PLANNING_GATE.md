@@ -14,6 +14,8 @@ The gate passes only when:
 - Runtime Allocation Plan passes
 - Runtime Memory Budget passes
 - both reports refer to the same graph and operation count
+- the Memory Budget source allocation metadata digest matches the Allocation
+  Plan evaluated by the same gate invocation
 
 Golden output:
 
@@ -41,3 +43,6 @@ The gate is not a memory allocator and not an execution authorization. It is a
 merge-time confidence check that allocation-slot evidence and explicit
 memory-domain budgets remain internally consistent before TUC accepts future
 memory pools, aliasing, device allocation, or allocator behavior.
+
+The allocation digest binding prevents stale memory-budget evidence from being
+accepted for a different allocation plan.

@@ -97,12 +97,24 @@ def test_runtime_memory_planning_gate_rejects_graph_mismatch() -> None:
         source_allocation_contract=memory_budget.source_allocation_contract,
         source_allocation_schema_version=memory_budget.source_allocation_schema_version,
         source_allocation_issue_count=memory_budget.source_allocation_issue_count,
+        source_allocation_metadata_digest=memory_budget.source_allocation_metadata_digest,
         budgets=memory_budget.budgets,
         usages=memory_budget.usages,
         issues=memory_budget.issues,
     )
 
     with pytest.raises(RuntimeMemoryPlanningGateError, match="graph mismatch"):
+        build_gate_report(memory_budget_report=mismatched)
+
+
+def test_runtime_memory_planning_gate_rejects_allocation_digest_mismatch() -> None:
+    memory_budget = build_current_runtime_memory_budget_report()
+    mismatched = replace(
+        memory_budget,
+        source_allocation_metadata_digest="sha256:" + "1" * 64,
+    )
+
+    with pytest.raises(RuntimeMemoryPlanningGateError, match="allocation digest"):
         build_gate_report(memory_budget_report=mismatched)
 
 

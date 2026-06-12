@@ -43,6 +43,7 @@ def test_runtime_memory_budget_report_passes() -> None:
         RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION
     )
     assert report.source_allocation_issue_count == 0
+    assert report.source_allocation_metadata_digest.startswith("sha256:")
     assert report.budget_count == 1
     assert report.usage_count == 1
     assert report.total_reserved_bytes == 192
@@ -60,6 +61,7 @@ def test_runtime_memory_budget_report_passes() -> None:
         "schema_version",
         "source_allocation_contract",
         "source_allocation_issue_count",
+        "source_allocation_metadata_digest",
         "source_allocation_schema_version",
         "total_peak_live_bytes",
         "total_reserved_bytes",
@@ -145,6 +147,7 @@ def test_runtime_memory_budget_issues_must_be_derived() -> None:
             source_allocation_contract=failed.source_allocation_contract,
             source_allocation_schema_version=failed.source_allocation_schema_version,
             source_allocation_issue_count=failed.source_allocation_issue_count,
+            source_allocation_metadata_digest=failed.source_allocation_metadata_digest,
             budgets=failed.budgets,
             usages=failed.usages,
             issues=(),
@@ -192,6 +195,9 @@ def test_runtime_memory_budget_schema_matches_contract() -> None:
     assert schema["properties"]["source_allocation_schema_version"]["const"] == (
         RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION
     )
+    assert schema["properties"]["source_allocation_metadata_digest"] == {
+        "$ref": "#/$defs/sha256_digest"
+    }
     assert schema["properties"]["budgets"]["maxItems"] == MAX_RUNTIME_MEMORY_BUDGETS
     assert schema["properties"]["usages"]["maxItems"] == (
         MAX_RUNTIME_MEMORY_BUDGET_USAGES
@@ -239,6 +245,7 @@ def test_runtime_memory_budget_golden_matches_schema_shape() -> None:
     assert golden["source_allocation_schema_version"] == (
         RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION
     )
+    assert golden["source_allocation_metadata_digest"].startswith("sha256:")
     assert golden["blocked_execution_surfaces"] == list(
         RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
     )
