@@ -22,6 +22,8 @@ Runtime Tensor Store records for a graph:
 - record shapes match graph tensor shapes
 - record dtype matches the Runtime Executor `float64` value contract
 - record producer kind and producer identifier match graph provenance
+- record planned backend, memory domain, layout, and placement source match the
+  accepted `PartitionPlan`
 - record values are read-only
 - unexpected records fail evidence review
 
@@ -57,7 +59,8 @@ plugin entrypoints, commands, environment variables, benchmark samples, or
 backend artifacts.
 
 The metadata digest covers record metadata only: tensor name, shape, dtype,
-role, producer kind, producer identifier, read-only status, and raw-value
+role, producer kind, producer identifier, planned backend, planned memory
+domain, planned layout, placement source, read-only status, and raw-value
 omission status. It never hashes tensor contents.
 
 ## Current Limitations
@@ -65,6 +68,6 @@ omission status. It never hashes tensor contents.
 - The report tracks Runtime Executor v0 only.
 - The current runtime value dtype is `float64`.
 - The report is not a memory allocator, aliasing model, cache report, device
-  placement report, or native-performance artifact.
+  residency report, runtime-handle report, or native-performance artifact.
 - Future allocator work should keep using Runtime Allocation Plan and Runtime
   Memory Budget as the memory-planning review surfaces.

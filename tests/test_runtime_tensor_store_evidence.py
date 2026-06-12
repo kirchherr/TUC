@@ -16,7 +16,12 @@ from tuc import (
     RUNTIME_TENSOR_STORE_EVIDENCE_CONTRACT,
     RUNTIME_TENSOR_STORE_EVIDENCE_REPORT_SCHEMA_VERSION,
     RUNTIME_TENSOR_STORE_RAW_VALUE_STATUS,
+    RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND,
+    RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
+    RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN,
     RUNTIME_VALUE_RECORD_CONTRACT,
+    LayoutKind,
+    MemoryDomainKind,
     RuntimeTensorStoreEvidenceIssue,
     RuntimeTensorStoreEvidenceReport,
     RuntimeTensorValueEvidence,
@@ -70,6 +75,16 @@ def test_runtime_tensor_store_evidence_passes_for_execution_proof() -> None:
     )
     assert report.records[0].producer_kind == "external_input"
     assert report.records[0].producer_id == "lhs"
+    assert report.records[0].planned_backend == RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND
+    assert report.records[0].planned_memory_domain is MemoryDomainKind.HOST_RAM
+    assert report.records[0].planned_layout is LayoutKind.ROW_MAJOR
+    assert report.records[0].placement_source == (
+        RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT
+    )
+    assert report.records[2].planned_backend == "linear-sim"
+    assert report.records[2].placement_source == (
+        RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN
+    )
     assert report.records[-1].producer_kind == "operation"
     assert report.records[-1].producer_id == "activation"
 
@@ -114,13 +129,18 @@ def test_runtime_tensor_store_evidence_issues_must_be_derived() -> None:
 
 def test_runtime_tensor_store_evidence_records_mutable_values_as_issue() -> None:
     report = build_tensor_store_evidence_report()
+    record = report.records[0]
     mutable_record = RuntimeTensorValueEvidence(
-        tensor_name=report.records[0].tensor_name,
-        shape=report.records[0].shape,
-        dtype=report.records[0].dtype,
-        value_role=report.records[0].value_role,
-        producer_kind=report.records[0].producer_kind,
-        producer_id=report.records[0].producer_id,
+        tensor_name=record.tensor_name,
+        shape=record.shape,
+        dtype=record.dtype,
+        value_role=record.value_role,
+        producer_kind=record.producer_kind,
+        producer_id=record.producer_id,
+        planned_backend=record.planned_backend,
+        planned_memory_domain=record.planned_memory_domain,
+        planned_layout=record.planned_layout,
+        placement_source=record.placement_source,
         readonly=False,
     )
     failing = RuntimeTensorStoreEvidenceReport(
@@ -148,6 +168,10 @@ def test_runtime_tensor_store_evidence_rejects_raw_value_status() -> None:
             value_role="input",
             producer_kind="external_input",
             producer_id="value",
+            planned_backend=RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND,
+            planned_memory_domain=MemoryDomainKind.HOST_RAM,
+            planned_layout=LayoutKind.ROW_MAJOR,
+            placement_source=RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
             readonly=True,
             raw_value_status="included",
         )
@@ -162,19 +186,28 @@ def test_runtime_tensor_store_evidence_rejects_forbidden_surface_names() -> None
             value_role="input",
             producer_kind="external_input",
             producer_id="python_source",
+            planned_backend=RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND,
+            planned_memory_domain=MemoryDomainKind.HOST_RAM,
+            planned_layout=LayoutKind.ROW_MAJOR,
+            placement_source=RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
             readonly=True,
         )
 
 
 def test_runtime_tensor_store_evidence_records_provenance_mismatch_as_issue() -> None:
     report = build_tensor_store_evidence_report()
+    record = report.records[-1]
     bad_record = RuntimeTensorValueEvidence(
-        tensor_name=report.records[-1].tensor_name,
-        shape=report.records[-1].shape,
-        dtype=report.records[-1].dtype,
-        value_role=report.records[-1].value_role,
-        producer_kind=report.records[-1].producer_kind,
+        tensor_name=record.tensor_name,
+        shape=record.shape,
+        dtype=record.dtype,
+        value_role=record.value_role,
+        producer_kind=record.producer_kind,
         producer_id="other_operation",
+        planned_backend=record.planned_backend,
+        planned_memory_domain=record.planned_memory_domain,
+        planned_layout=record.planned_layout,
+        placement_source=record.placement_source,
         readonly=True,
     )
     failing = RuntimeTensorStoreEvidenceReport(
@@ -191,6 +224,38 @@ def test_runtime_tensor_store_evidence_records_provenance_mismatch_as_issue() ->
 
     assert not failing.passed
     assert failing.issues[0].issue_code == "producer_id_mismatch"
+
+
+def test_runtime_tensor_store_evidence_records_placement_mismatch_as_issue() -> None:
+    report = build_tensor_store_evidence_report()
+    record = report.records[2]
+    bad_record = RuntimeTensorValueEvidence(
+        tensor_name=record.tensor_name,
+        shape=record.shape,
+        dtype=record.dtype,
+        value_role=record.value_role,
+        producer_kind=record.producer_kind,
+        producer_id=record.producer_id,
+        planned_backend="reference-cpu",
+        planned_memory_domain=record.planned_memory_domain,
+        planned_layout=record.planned_layout,
+        placement_source=record.placement_source,
+        readonly=True,
+    )
+    failing = RuntimeTensorStoreEvidenceReport(
+        graph_name=report.graph_name,
+        expected_records=report.expected_records[2:3],
+        records=(bad_record,),
+        issues=(
+            RuntimeTensorStoreEvidenceIssue(
+                tensor_name=bad_record.tensor_name,
+                issue_code="planned_backend_mismatch",
+            ),
+        ),
+    )
+
+    assert not failing.passed
+    assert failing.issues[0].issue_code == "planned_backend_mismatch"
 
 
 def test_runtime_tensor_store_evidence_schema_matches_contract() -> None:
@@ -225,6 +290,17 @@ def test_runtime_tensor_store_evidence_schema_matches_contract() -> None:
     assert schema["$defs"]["producer_kind"]["enum"] == [
         "external_input",
         "operation",
+    ]
+    assert schema["$defs"]["placement_source"]["enum"] == [
+        RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
+        RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN,
+    ]
+    assert schema["$defs"]["layout"]["enum"] == ["blocked", "row_major"]
+    assert schema["$defs"]["memory_domain"]["enum"] == [
+        "analog_weight_bank",
+        "device_sram",
+        "gpu_hbm",
+        "host_ram",
     ]
     assert [
         item["const"]
@@ -278,6 +354,16 @@ def test_runtime_tensor_store_evidence_golden_matches_schema_shape() -> None:
     assert all(record["readonly"] is True for record in golden["records"])
     assert golden["records"][0]["producer_kind"] == "external_input"
     assert golden["records"][0]["producer_id"] == "lhs"
+    assert golden["records"][0]["planned_backend"] == RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND
+    assert golden["records"][0]["planned_memory_domain"] == "host_ram"
+    assert golden["records"][0]["planned_layout"] == "row_major"
+    assert golden["records"][0]["placement_source"] == (
+        RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT
+    )
+    assert golden["records"][2]["planned_backend"] == "linear-sim"
+    assert golden["records"][2]["placement_source"] == (
+        RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN
+    )
     assert golden["records"][-1]["producer_kind"] == "operation"
     assert golden["records"][-1]["producer_id"] == "activation"
 
@@ -290,6 +376,7 @@ def test_runtime_tensor_store_evidence_schema_is_referenced() -> None:
         Path("docs/ROADMAP_STATUS.md"),
         Path("rfcs/0106-runtime-tensor-store-evidence.md"),
         Path("rfcs/0108-runtime-value-provenance.md"),
+        Path("rfcs/0134-runtime-value-placement-metadata.md"),
     ):
         assert schema_path in path.read_text(encoding="utf-8")
 

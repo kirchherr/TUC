@@ -17,6 +17,7 @@ from typing import cast
 import numpy as np
 from numpy.typing import NDArray
 
+from tuc.ir.memory import LayoutKind, MemoryDomainKind
 from tuc.ir.model import ComputeGraph, ComputeOperation, OperationKind, TensorRef
 from tuc.reference import (
     ElementwiseKernel,
@@ -38,6 +39,9 @@ TRUSTED_REFERENCE_EXECUTOR_BACKEND = "trusted-reference-kernel"
 TRUSTED_RUNTIME_EXECUTOR_REGISTRY = "trusted_runtime_executor_registry.v0"
 RUNTIME_VALUE_RECORD_CONTRACT = "runtime_value_record.internal.v0"
 RUNTIME_TENSOR_STORE_CONTRACT = "runtime_tensor_store.internal.v0"
+RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND = "external_input"
+RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT = "external_input_boundary"
+RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN = "partition_plan"
 RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES = (
     "backend_plugin_discovery",
     "device_access",
@@ -52,6 +56,12 @@ MAX_RUNTIME_EXECUTION_VALUES = 4096
 MAX_TRUSTED_RUNTIME_BACKEND_CONTRACTS = 64
 _RUNTIME_VALUE_ROLES = frozenset({"input", "computed"})
 _RUNTIME_PRODUCER_KINDS = frozenset({"external_input", "operation"})
+_RUNTIME_VALUE_PLACEMENT_SOURCES = frozenset(
+    {
+        RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
+        RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN,
+    }
+)
 
 FloatArray = NDArray[np.float64]
 
@@ -314,10 +324,15 @@ class RuntimeValueRecord:
     value_role: str
     producer_kind: str
     producer_id: str
+    planned_backend: str = RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND
+    planned_memory_domain: MemoryDomainKind = MemoryDomainKind.HOST_RAM
+    planned_layout: LayoutKind = LayoutKind.ROW_MAJOR
+    placement_source: str = RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT
     record_contract: str = RUNTIME_VALUE_RECORD_CONTRACT
 
     def __post_init__(self) -> None:
         _require_trace_name(self.tensor_name, "runtime value record tensor_name")
+        _require_trace_name(self.planned_backend, "runtime value record planned_backend")
         if self.record_contract != RUNTIME_VALUE_RECORD_CONTRACT:
             raise ValueError("runtime value record contract mismatch")
         _require_shape(self.shape)
@@ -326,13 +341,38 @@ class RuntimeValueRecord:
         if self.producer_kind not in _RUNTIME_PRODUCER_KINDS:
             raise ValueError("runtime value record producer kind is unsupported")
         _require_trace_name(self.producer_id, "runtime value record producer_id")
+        if not isinstance(self.planned_memory_domain, MemoryDomainKind):
+            raise TypeError(
+                "runtime value record planned_memory_domain must be MemoryDomainKind"
+            )
+        if not isinstance(self.planned_layout, LayoutKind):
+            raise TypeError("runtime value record planned_layout must be LayoutKind")
+        if self.placement_source not in _RUNTIME_VALUE_PLACEMENT_SOURCES:
+            raise ValueError("runtime value record placement source is unsupported")
         if self.value_role == "input":
             if self.producer_kind != "external_input":
                 raise ValueError("runtime input record producer must be external_input")
             if self.producer_id != self.tensor_name:
                 raise ValueError("runtime input record producer_id must match tensor name")
+            if self.planned_backend != RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND:
+                raise ValueError("runtime input record backend must be external_input")
+            if self.planned_memory_domain is not MemoryDomainKind.HOST_RAM:
+                raise ValueError("runtime input record memory domain must be host_ram")
+            if self.planned_layout is not LayoutKind.ROW_MAJOR:
+                raise ValueError("runtime input record layout must be row_major")
+            if self.placement_source != RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT:
+                raise ValueError(
+                    "runtime input record placement source must be external input boundary"
+                )
         if self.value_role == "computed" and self.producer_kind != "operation":
             raise ValueError("runtime computed record producer must be operation")
+        if (
+            self.value_role == "computed"
+            and self.placement_source != RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN
+        ):
+            raise ValueError(
+                "runtime computed record placement source must be partition_plan"
+            )
         if not isinstance(self.value, np.ndarray):
             raise TypeError("runtime value record value must be NumPy array")
         if self.dtype != str(self.value.dtype):
@@ -411,10 +451,15 @@ class RuntimeTensorStore:
         value: FloatArray,
         *,
         producer_operation: str,
+        assignment: Assignment,
     ) -> None:
         """Store one computed tensor output value."""
 
         _require_trace_name(producer_operation, "producer_operation")
+        if not isinstance(assignment, Assignment):
+            raise TypeError("runtime computed record assignment must be Assignment")
+        if assignment.operation_name != producer_operation:
+            raise ValueError("runtime computed record assignment operation mismatch")
         self.add(
             RuntimeValueRecord(
                 tensor_name=tensor.name,
@@ -424,6 +469,10 @@ class RuntimeTensorStore:
                 value_role="computed",
                 producer_kind="operation",
                 producer_id=producer_operation,
+                planned_backend=assignment.backend_name,
+                planned_memory_domain=assignment.memory_domain,
+                planned_layout=assignment.produced_layout,
+                placement_source=RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN,
             )
         )
 
@@ -509,6 +558,7 @@ def execute_graph(
             output,
             result,
             producer_operation=operation.name,
+            assignment=assignment,
         )
         steps.append(_build_step(operation, assignment, executor, result))
         if tensor_store.record_count > MAX_RUNTIME_EXECUTION_VALUES:
@@ -1114,6 +1164,9 @@ __all__ = [
     "RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES",
     "RUNTIME_EXECUTOR_CONTRACT",
     "RUNTIME_TENSOR_STORE_CONTRACT",
+    "RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND",
+    "RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT",
+    "RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN",
     "RUNTIME_VALUE_RECORD_CONTRACT",
     "TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE",
     "TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT",

@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "bundle_contract": "runtime_execution_evidence_bundle.data_only.v0",
-  "bundle_metadata_digest": "sha256:0547c7da1ad21304bb9e57ba0aa3a7b3de3bb895fb7d04d58960f625a6208285",
+  "bundle_metadata_digest": "sha256:617cb50e07d7337bc66011a5fb63439c0cf01cb0031d0fcca0b25a4856a8720b",
   "execution_receipt": {
     "artifact_status": "review_evidence",
     "blocked_execution_surfaces": [
@@ -31,7 +31,7 @@
         "evidence_kind": "tensor_store_evidence",
         "graph_name": "proof_of_execution",
         "item_count": 5,
-        "metadata_digest": "sha256:cc8341abcf5a4bc30b809106856629e4c626aa16e22b5d3ea51286835ff4142d",
+        "metadata_digest": "sha256:68e142ae0d8f4149c8d48e1c08b3a17682f0e524a69f73883597f2d2aa3b2734",
         "passed": true,
         "raw_value_policy": "omitted_by_policy"
       },
@@ -130,7 +130,7 @@
     "passed": true,
     "raw_value_policy": "omitted_by_policy",
     "receipt_contract": "runtime_execution_receipt.data_only.v0",
-    "receipt_metadata_digest": "sha256:b936cbaa52263010f30e30b71bb4429686e703b4fe14b814227b283acda4cb2c",
+    "receipt_metadata_digest": "sha256:f871dd6ec2234272380d9551468abf90899d44eb00d47b5f84cc91a4208dde72",
     "required_evidence_kinds": [
       "tensor_store_evidence",
       "input_manifest",
@@ -351,6 +351,10 @@
     "expected_records": [
       {
         "dtype": "float64",
+        "placement_source": "external_input_boundary",
+        "planned_backend": "external_input",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "host_ram",
         "producer_id": "lhs",
         "producer_kind": "external_input",
         "shape": [
@@ -362,6 +366,10 @@
       },
       {
         "dtype": "float64",
+        "placement_source": "external_input_boundary",
+        "planned_backend": "external_input",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "host_ram",
         "producer_id": "rhs",
         "producer_kind": "external_input",
         "shape": [
@@ -373,6 +381,10 @@
       },
       {
         "dtype": "float64",
+        "placement_source": "partition_plan",
+        "planned_backend": "linear-sim",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "analog_weight_bank",
         "producer_id": "linear_projection",
         "producer_kind": "operation",
         "shape": [
@@ -384,6 +396,10 @@
       },
       {
         "dtype": "float64",
+        "placement_source": "partition_plan",
+        "planned_backend": "linear-sim",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "analog_weight_bank",
         "producer_id": "row_reduction",
         "producer_kind": "operation",
         "shape": [
@@ -394,6 +410,10 @@
       },
       {
         "dtype": "float64",
+        "placement_source": "partition_plan",
+        "planned_backend": "reference-cpu",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "host_ram",
         "producer_id": "activation",
         "producer_kind": "operation",
         "shape": [
@@ -408,10 +428,14 @@
     "passed": true,
     "raw_value_policy": "omitted_by_policy",
     "record_count": 5,
-    "record_metadata_digest": "sha256:cc8341abcf5a4bc30b809106856629e4c626aa16e22b5d3ea51286835ff4142d",
+    "record_metadata_digest": "sha256:68e142ae0d8f4149c8d48e1c08b3a17682f0e524a69f73883597f2d2aa3b2734",
     "records": [
       {
         "dtype": "float64",
+        "placement_source": "external_input_boundary",
+        "planned_backend": "external_input",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "host_ram",
         "producer_id": "lhs",
         "producer_kind": "external_input",
         "raw_value_status": "omitted_by_policy",
@@ -426,6 +450,10 @@
       },
       {
         "dtype": "float64",
+        "placement_source": "external_input_boundary",
+        "planned_backend": "external_input",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "host_ram",
         "producer_id": "rhs",
         "producer_kind": "external_input",
         "raw_value_status": "omitted_by_policy",
@@ -440,6 +468,10 @@
       },
       {
         "dtype": "float64",
+        "placement_source": "partition_plan",
+        "planned_backend": "linear-sim",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "analog_weight_bank",
         "producer_id": "linear_projection",
         "producer_kind": "operation",
         "raw_value_status": "omitted_by_policy",
@@ -454,6 +486,10 @@
       },
       {
         "dtype": "float64",
+        "placement_source": "partition_plan",
+        "planned_backend": "linear-sim",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "analog_weight_bank",
         "producer_id": "row_reduction",
         "producer_kind": "operation",
         "raw_value_status": "omitted_by_policy",
@@ -467,6 +503,10 @@
       },
       {
         "dtype": "float64",
+        "placement_source": "partition_plan",
+        "planned_backend": "reference-cpu",
+        "planned_layout": "row_major",
+        "planned_memory_domain": "host_ram",
         "producer_id": "activation",
         "producer_kind": "operation",
         "raw_value_status": "omitted_by_policy",

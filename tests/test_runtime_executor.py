@@ -21,6 +21,9 @@ from tuc.ir import (
 from tuc.runtime import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RUNTIME_EXECUTOR_CONTRACT,
+    RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND,
+    RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
+    RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN,
     TRUSTED_RUNTIME_BACKEND_EXECUTION_MODE,
     TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT,
     TRUSTED_RUNTIME_BACKEND_INPUT_CONTRACT,
@@ -174,6 +177,27 @@ def test_runtime_executor_stores_read_only_value_records() -> None:
     assert execution.output_for("activated").flags.writeable is False
 
 
+def test_runtime_executor_records_planned_value_placement() -> None:
+    graph = build_graph()
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    execution = execute_graph(compiled.hac_ir.graph, compiled.partition_plan, proof_inputs())
+
+    lhs = execution.record_for("lhs")
+    projection = execution.record_for("projection")
+    activated = execution.record_for("activated")
+
+    assert lhs.planned_backend == RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND
+    assert lhs.planned_memory_domain is MemoryDomainKind.HOST_RAM
+    assert lhs.planned_layout is LayoutKind.ROW_MAJOR
+    assert lhs.placement_source == RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT
+    assert projection.planned_backend == "linear-sim"
+    assert projection.planned_memory_domain is MemoryDomainKind.ANALOG_WEIGHT_BANK
+    assert projection.planned_layout is LayoutKind.ROW_MAJOR
+    assert projection.placement_source == RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN
+    assert activated.planned_backend == "reference-cpu"
+    assert activated.planned_memory_domain is MemoryDomainKind.HOST_RAM
+
+
 def test_runtime_value_record_rejects_shape_mismatch() -> None:
     with pytest.raises(ValueError, match="shape mismatch"):
         RuntimeValueRecord(
@@ -248,6 +272,19 @@ def test_runtime_value_record_rejects_invalid_computed_provenance() -> None:
             value_role="computed",
             producer_kind="external_input",
             producer_id="value",
+        )
+
+
+def test_runtime_value_record_rejects_unplanned_computed_placement() -> None:
+    with pytest.raises(ValueError, match="placement source"):
+        RuntimeValueRecord(
+            tensor_name="value",
+            value=np.zeros((2,), dtype=np.float64),
+            shape=(2,),
+            dtype="float64",
+            value_role="computed",
+            producer_kind="operation",
+            producer_id="op",
         )
 
 

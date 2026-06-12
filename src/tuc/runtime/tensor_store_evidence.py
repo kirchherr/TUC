@@ -7,6 +7,7 @@ import re
 from dataclasses import dataclass
 from hashlib import sha256
 
+from tuc.ir.memory import LayoutKind, MemoryDomainKind
 from tuc.ir.model import (
     MAX_TENSOR_DIMENSION,
     MAX_TENSOR_RANK,
@@ -16,10 +17,14 @@ from tuc.ir.model import (
 from tuc.runtime.executor import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RUNTIME_TENSOR_STORE_CONTRACT,
+    RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND,
+    RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
+    RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN,
     RUNTIME_VALUE_RECORD_CONTRACT,
     RuntimeExecutionResult,
     RuntimeValueRecord,
 )
+from tuc.runtime.partitioning import PartitionPlan
 
 RUNTIME_TENSOR_STORE_EVIDENCE_REPORT_SCHEMA_VERSION = (
     "tuc.runtime_tensor_store_evidence_report.v0"
@@ -76,6 +81,10 @@ class RuntimeTensorExpectedRecord:
     value_role: str
     producer_kind: str
     producer_id: str
+    planned_backend: str
+    planned_memory_domain: MemoryDomainKind
+    planned_layout: LayoutKind
+    placement_source: str
 
     def __post_init__(self) -> None:
         _validate_evidence_text(self.tensor_name, "expected tensor_name")
@@ -83,6 +92,13 @@ class RuntimeTensorExpectedRecord:
         _validate_evidence_text(self.dtype, "expected dtype")
         _validate_value_role(self.value_role)
         _validate_producer(self.value_role, self.producer_kind, self.producer_id)
+        _validate_placement(
+            self.value_role,
+            self.planned_backend,
+            self.planned_memory_domain,
+            self.planned_layout,
+            self.placement_source,
+        )
 
 
 @dataclass(frozen=True)
@@ -95,6 +111,10 @@ class RuntimeTensorValueEvidence:
     value_role: str
     producer_kind: str
     producer_id: str
+    planned_backend: str
+    planned_memory_domain: MemoryDomainKind
+    planned_layout: LayoutKind
+    placement_source: str
     readonly: bool
     record_contract: str = RUNTIME_VALUE_RECORD_CONTRACT
     raw_value_status: str = RUNTIME_TENSOR_STORE_RAW_VALUE_STATUS
@@ -105,6 +125,13 @@ class RuntimeTensorValueEvidence:
         _validate_evidence_text(self.dtype, "record dtype")
         _validate_value_role(self.value_role)
         _validate_producer(self.value_role, self.producer_kind, self.producer_id)
+        _validate_placement(
+            self.value_role,
+            self.planned_backend,
+            self.planned_memory_domain,
+            self.planned_layout,
+            self.placement_source,
+        )
         if not isinstance(self.readonly, bool):
             raise TypeError("record readonly must be bool")
         if self.record_contract != RUNTIME_VALUE_RECORD_CONTRACT:
@@ -184,6 +211,10 @@ class RuntimeTensorStoreEvidenceReport:
                 "dtype": record.dtype,
                 "producer_id": record.producer_id,
                 "producer_kind": record.producer_kind,
+                "planned_backend": record.planned_backend,
+                "planned_layout": record.planned_layout.value,
+                "planned_memory_domain": record.planned_memory_domain.value,
+                "placement_source": record.placement_source,
                 "raw_value_status": record.raw_value_status,
                 "readonly": record.readonly,
                 "shape": list(record.shape),
@@ -204,6 +235,7 @@ class RuntimeTensorStoreEvidenceError(AssertionError):
 
 def build_runtime_tensor_store_evidence_report(
     graph: ComputeGraph,
+    partition_plan: PartitionPlan,
     execution: RuntimeExecutionResult,
 ) -> RuntimeTensorStoreEvidenceReport:
     """Build data-only evidence from an executed graph's value records."""
@@ -214,7 +246,12 @@ def build_runtime_tensor_store_evidence_report(
         raise TypeError(
             "runtime tensor store evidence execution must be RuntimeExecutionResult"
         )
-    expected_records = _expected_records_for_graph(graph)
+    if not isinstance(partition_plan, PartitionPlan):
+        raise TypeError(
+            "runtime tensor store evidence partition_plan must be PartitionPlan"
+        )
+    _validate_partition_plan(graph, partition_plan)
+    expected_records = _expected_records_for_graph(graph, partition_plan)
     records = tuple(_record_to_evidence(record) for record in execution.records)
     return RuntimeTensorStoreEvidenceReport(
         graph_name=graph.name,
@@ -255,6 +292,10 @@ def runtime_tensor_store_evidence_report_to_dict(
         "expected_records": [
             {
                 "dtype": record.dtype,
+                "placement_source": record.placement_source,
+                "planned_backend": record.planned_backend,
+                "planned_layout": record.planned_layout.value,
+                "planned_memory_domain": record.planned_memory_domain.value,
                 "producer_id": record.producer_id,
                 "producer_kind": record.producer_kind,
                 "shape": list(record.shape),
@@ -278,6 +319,10 @@ def runtime_tensor_store_evidence_report_to_dict(
         "records": [
             {
                 "dtype": record.dtype,
+                "placement_source": record.placement_source,
+                "planned_backend": record.planned_backend,
+                "planned_layout": record.planned_layout.value,
+                "planned_memory_domain": record.planned_memory_domain.value,
                 "producer_id": record.producer_id,
                 "producer_kind": record.producer_kind,
                 "raw_value_status": record.raw_value_status,
@@ -312,7 +357,11 @@ def dump_runtime_tensor_store_evidence_report(
 
 def _expected_records_for_graph(
     graph: ComputeGraph,
+    partition_plan: PartitionPlan,
 ) -> tuple[RuntimeTensorExpectedRecord, ...]:
+    assignments = {
+        assignment.operation_name: assignment for assignment in partition_plan.assignments
+    }
     produced = {output.name for operation in graph.operations for output in operation.outputs}
     input_tensors: dict[str, TensorRef] = {}
     for operation in graph.operations:
@@ -330,10 +379,15 @@ def _expected_records_for_graph(
             value_role="input",
             producer_kind="external_input",
             producer_id=name,
+            planned_backend=RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND,
+            planned_memory_domain=MemoryDomainKind.HOST_RAM,
+            planned_layout=LayoutKind.ROW_MAJOR,
+            placement_source=RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
         )
         for name in sorted(input_tensors)
     ]
     for operation in graph.operations:
+        assignment = assignments[operation.name]
         for tensor in operation.outputs:
             expected.append(
                 RuntimeTensorExpectedRecord(
@@ -343,6 +397,10 @@ def _expected_records_for_graph(
                     value_role="computed",
                     producer_kind="operation",
                     producer_id=operation.name,
+                    planned_backend=assignment.backend_name,
+                    planned_memory_domain=assignment.memory_domain,
+                    planned_layout=assignment.produced_layout,
+                    placement_source=RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN,
                 )
             )
     return tuple(expected)
@@ -358,6 +416,10 @@ def _record_to_evidence(record: RuntimeValueRecord) -> RuntimeTensorValueEvidenc
         value_role=record.value_role,
         producer_kind=record.producer_kind,
         producer_id=record.producer_id,
+        planned_backend=record.planned_backend,
+        planned_memory_domain=record.planned_memory_domain,
+        planned_layout=record.planned_layout,
+        placement_source=record.placement_source,
         readonly=not record.value.flags.writeable,
     )
 
@@ -414,6 +476,34 @@ def _derive_issues(
                 RuntimeTensorStoreEvidenceIssue(
                     tensor_name=tensor_name,
                     issue_code="producer_id_mismatch",
+                )
+            )
+        if record.planned_backend != expected.planned_backend:
+            issues.append(
+                RuntimeTensorStoreEvidenceIssue(
+                    tensor_name=tensor_name,
+                    issue_code="planned_backend_mismatch",
+                )
+            )
+        if record.planned_memory_domain != expected.planned_memory_domain:
+            issues.append(
+                RuntimeTensorStoreEvidenceIssue(
+                    tensor_name=tensor_name,
+                    issue_code="planned_memory_domain_mismatch",
+                )
+            )
+        if record.planned_layout != expected.planned_layout:
+            issues.append(
+                RuntimeTensorStoreEvidenceIssue(
+                    tensor_name=tensor_name,
+                    issue_code="planned_layout_mismatch",
+                )
+            )
+        if record.placement_source != expected.placement_source:
+            issues.append(
+                RuntimeTensorStoreEvidenceIssue(
+                    tensor_name=tensor_name,
+                    issue_code="placement_source_mismatch",
                 )
             )
         if not record.readonly:
@@ -487,6 +577,54 @@ def _validate_producer(value_role: str, producer_kind: str, producer_id: str) ->
         raise ValueError("runtime tensor store input producer must be external_input")
     if value_role == "computed" and producer_kind != "operation":
         raise ValueError("runtime tensor store computed producer must be operation")
+
+
+def _validate_placement(
+    value_role: str,
+    planned_backend: str,
+    planned_memory_domain: MemoryDomainKind,
+    planned_layout: LayoutKind,
+    placement_source: str,
+) -> None:
+    _validate_evidence_text(planned_backend, "planned_backend")
+    if not isinstance(planned_memory_domain, MemoryDomainKind):
+        raise TypeError("planned_memory_domain must be MemoryDomainKind")
+    if not isinstance(planned_layout, LayoutKind):
+        raise TypeError("planned_layout must be LayoutKind")
+    if placement_source not in {
+        RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT,
+        RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN,
+    }:
+        raise ValueError("runtime tensor store placement source unsupported")
+    if value_role == "input":
+        if planned_backend != RUNTIME_VALUE_EXTERNAL_INPUT_BACKEND:
+            raise ValueError("runtime tensor store input backend must be external_input")
+        if planned_memory_domain is not MemoryDomainKind.HOST_RAM:
+            raise ValueError("runtime tensor store input memory domain must be host_ram")
+        if planned_layout is not LayoutKind.ROW_MAJOR:
+            raise ValueError("runtime tensor store input layout must be row_major")
+        if placement_source != RUNTIME_VALUE_PLACEMENT_SOURCE_EXTERNAL_INPUT:
+            raise ValueError(
+                "runtime tensor store input placement source must be external input boundary"
+            )
+    if (
+        value_role == "computed"
+        and placement_source != RUNTIME_VALUE_PLACEMENT_SOURCE_PARTITION_PLAN
+    ):
+        raise ValueError(
+            "runtime tensor store computed placement source must be partition_plan"
+        )
+
+
+def _validate_partition_plan(graph: ComputeGraph, partition_plan: PartitionPlan) -> None:
+    if graph.name != partition_plan.graph_name:
+        raise ValueError("runtime tensor store evidence graph and plan names must match")
+    operation_names = tuple(operation.name for operation in graph.operations)
+    assignment_names = tuple(
+        assignment.operation_name for assignment in partition_plan.assignments
+    )
+    if operation_names != assignment_names:
+        raise ValueError("runtime tensor store evidence plan must match graph operations")
 
 
 def _validate_shape(value: tuple[int, ...], label: str) -> None:

@@ -16,7 +16,11 @@ def build_execution_receipt_report() -> RuntimeExecutionReceiptReport:
 
     proof = run_proof()
     graph = proof.compiled.hac_ir.graph
-    tensor_store = build_runtime_tensor_store_evidence_report(graph, proof.execution)
+    tensor_store = build_runtime_tensor_store_evidence_report(
+        graph,
+        proof.compiled.partition_plan,
+        proof.execution,
+    )
     input_manifest = build_runtime_input_manifest_report(graph, proof.execution)
     output_manifest = build_runtime_output_manifest_report(graph, proof.execution)
     return build_runtime_execution_receipt_report(

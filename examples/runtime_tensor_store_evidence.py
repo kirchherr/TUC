@@ -14,6 +14,7 @@ def build_tensor_store_evidence_report() -> RuntimeTensorStoreEvidenceReport:
     proof = run_proof()
     return build_runtime_tensor_store_evidence_report(
         proof.compiled.hac_ir.graph,
+        proof.compiled.partition_plan,
         proof.execution,
     )
 

@@ -140,12 +140,17 @@ hardware-independent interface into capability-driven runtime planning.
   and finite values at input and output boundaries.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects
   for accepted input and computed runtime values, including data-only producer
-  provenance for external inputs and operation-produced values.
+  provenance for external inputs and operation-produced values plus planned
+  backend, memory-domain, layout, and placement-source metadata.
 - Runtime Tensor Store Evidence v0 with schema at
   `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, deterministic
   golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
-  Runtime Evidence Gate coverage with raw tensor values omitted by policy.
+  Runtime Evidence Gate coverage with raw tensor values omitted by policy and
+  placement metadata checked against the accepted `PartitionPlan`.
+- Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
+  explaining what runs, what is stored, what is public, what is hashed, what is
+  never serialized, and which runtime gates must pass.
 - Runtime Input Manifest v0 with schema at
   `schemas/runtime_input_manifest_report.v0.schema.json`, deterministic golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,

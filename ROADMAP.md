@@ -181,6 +181,9 @@ Completed evidence:
   supported elementwise kernels before trusted kernels run.
 - Runtime tensor value contracts enforce declared shapes, `float64` dtype, and
   finite values at input and output boundaries for trusted prototype execution.
+- Runtime value records now carry planned backend, memory-domain, layout, and
+  placement-source metadata, with Tensor Store Evidence checking those fields
+  against the accepted Partition Plan.
 - Proof-of-execution compiles, plans, executes, traces, and verifies a graph
   against independent reference semantics without plugin discovery, device
   access, subprocesses, JIT, or generated-artifact execution.

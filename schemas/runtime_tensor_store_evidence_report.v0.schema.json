@@ -119,6 +119,18 @@
         "dtype": {
           "$ref": "#/$defs/report_text"
         },
+        "placement_source": {
+          "$ref": "#/$defs/placement_source"
+        },
+        "planned_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "planned_layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "planned_memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
         "producer_id": {
           "$ref": "#/$defs/report_text"
         },
@@ -137,6 +149,10 @@
       },
       "required": [
         "dtype",
+        "placement_source",
+        "planned_backend",
+        "planned_layout",
+        "planned_memory_domain",
         "producer_id",
         "producer_kind",
         "shape",
@@ -160,6 +176,26 @@
         "tensor_name"
       ],
       "type": "object"
+    },
+    "layout": {
+      "enum": [
+        "blocked",
+        "row_major"
+      ]
+    },
+    "memory_domain": {
+      "enum": [
+        "analog_weight_bank",
+        "device_sram",
+        "gpu_hbm",
+        "host_ram"
+      ]
+    },
+    "placement_source": {
+      "enum": [
+        "external_input_boundary",
+        "partition_plan"
+      ]
     },
     "report_text": {
       "maxLength": 512,
@@ -226,6 +262,18 @@
         "producer_kind": {
           "$ref": "#/$defs/producer_kind"
         },
+        "placement_source": {
+          "$ref": "#/$defs/placement_source"
+        },
+        "planned_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "planned_layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "planned_memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
         "raw_value_status": {
           "const": "omitted_by_policy"
         },
@@ -247,6 +295,10 @@
       },
       "required": [
         "dtype",
+        "placement_source",
+        "planned_backend",
+        "planned_layout",
+        "planned_memory_domain",
         "producer_id",
         "producer_kind",
         "raw_value_status",
