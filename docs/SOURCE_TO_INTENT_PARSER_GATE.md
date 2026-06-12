@@ -111,6 +111,11 @@ The current corpus inventory is documented in
 [Source-To-Intent Corpus Evidence](SOURCE_TO_INTENT_CORPUS.md). It provides
 accepted and rejected source-buffer fixtures but does not implement parsing.
 
+The current fuzz/property obligation inventory is documented in
+[Source-To-Intent Property Corpus](SOURCE_TO_INTENT_PROPERTY_CORPUS.md). It
+defines parser properties but does not run parser logic or emit Source Intent
+IR.
+
 Rejected seeds must cover:
 
 - imports and `from ... import ...`

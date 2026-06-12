@@ -373,12 +373,14 @@ hardware-independent interface into capability-driven runtime planning.
   output at `tests/golden/frontend/source_to_intent_parser_block_gate.txt`.
 - Source-To-Intent Research Readiness now tracks the first narrow parser
   research proposal separately from the default block gate, showing current
-  evidence progress while keeping parser-specific source corpus, parser fuzz,
-  and parser report evidence blocked.
+  evidence progress while keeping parser report evidence blocked.
 - Source-To-Intent Corpus Evidence now adds accepted and rejected source-buffer
   fixtures plus a data-only corpus report, covering all MVP operation families
   in accepted cases while keeping source text disconnected from Source Intent
   IR and compiler artifacts.
+- Source-To-Intent Property Corpus now binds fuzz/property obligations to the
+  source corpus report digest, marking `source_fuzz_or_property_corpus` present
+  while the parser and parser report golden remain blocked.
 
 ## In Progress
 
@@ -623,6 +625,9 @@ Current slice:
 - Source-To-Intent Corpus Evidence at `examples/source_to_intent_corpus.py`,
   with fixtures under `tests/corpus/source_to_intent_parser/` and golden
   evidence at `tests/golden/frontend/source_to_intent_corpus_report.json`.
+- Source-To-Intent Property Corpus at
+  `examples/source_to_intent_property_corpus.py`, with golden evidence at
+  `tests/golden/frontend/source_to_intent_property_corpus_report.json`.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.

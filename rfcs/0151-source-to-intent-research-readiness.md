@@ -36,6 +36,10 @@ the current research proposal as still blocked. Existing evidence is recorded as
 present, while parser-specific source corpus, parser fuzz/property corpus, and
 parser report golden evidence remain missing.
 
+Later RFCs add the source corpus and property corpus evidence. After RFC 0153,
+the remaining missing research-readiness item is deterministic parser-report
+golden evidence.
+
 The default Source-To-Intent Parser Block Gate remains unchanged. It continues
 to prove that the ordinary parser path is closed.
 

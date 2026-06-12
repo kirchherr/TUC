@@ -592,6 +592,9 @@ Go/No-Go:
   source-buffer fixtures for the first parser proof, covers all MVP operation
   families in accepted cases, and keeps the report data-only with no raw source
   or compiler artifacts.
+- Source-To-Intent Property Corpus now defines the fuzz/property obligations
+  for the first parser proof and binds them to the source corpus report digest,
+  leaving only parser report evidence before parser-readiness can become true.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

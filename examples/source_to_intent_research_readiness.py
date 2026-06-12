@@ -21,6 +21,7 @@ _PRESENT_RESEARCH_EVIDENCE = frozenset(
         "source_intent_plain_data_golden",
         "source_intent_intake_report_golden",
         "source_intent_metadata_report_golden",
+        "source_fuzz_or_property_corpus",
         "metadata_intake_report_golden",
         "hac_ir_golden",
         "runtime_plan_golden",

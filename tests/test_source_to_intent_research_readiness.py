@@ -16,7 +16,6 @@ from tuc.frontend import (
 
 GOLDEN_PATH = Path("tests/golden/frontend/source_to_intent_research_readiness.json")
 MISSING_RESEARCH_EVIDENCE = (
-    "source_fuzz_or_property_corpus",
     "parser_report_golden",
 )
 

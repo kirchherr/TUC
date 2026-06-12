@@ -26,6 +26,7 @@ Current present evidence:
 - parser threat model update
 - parser budget table
 - rejected source corpus
+- source-to-intent parser fuzz or property corpus
 - Source Intent plain-data golden
 - Source Intent Intake report golden
 - Source Intent Metadata Conversion report golden
@@ -39,7 +40,6 @@ Current present evidence:
 
 Current missing parser-specific evidence:
 
-- source-to-intent parser fuzz or property corpus
 - deterministic source-to-intent parser report golden
 
 ## Research Boundary
@@ -68,6 +68,12 @@ Corpus evidence:
 
 ```bash
 python examples/source_to_intent_corpus.py
+```
+
+Property corpus evidence:
+
+```bash
+python examples/source_to_intent_property_corpus.py
 ```
 
 Expected status:
