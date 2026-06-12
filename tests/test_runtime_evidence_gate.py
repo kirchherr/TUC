@@ -25,6 +25,8 @@ from examples.source_intent_runtime_returns import (
 from tuc import (
     RuntimeEvidenceArtifact,
     RuntimeEvidenceGraph,
+    RuntimeExecutionEvidenceBundleIssue,
+    RuntimeExecutionEvidenceBundleReport,
     RuntimeExecutionReceiptIssue,
     RuntimeExecutionReceiptReport,
     RuntimeExecutorConformanceCase,
@@ -42,6 +44,7 @@ from tuc import (
     RuntimeTensorStoreEvidenceReport,
     build_current_runtime_evidence_matrix_report,
     build_runtime_evidence_matrix_report,
+    build_runtime_execution_evidence_bundle_report,
 )
 from tuc.ir import OperationKind
 
@@ -71,6 +74,8 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_reference_correctness = "passed"' in completed.stdout
     assert 'runtime_execution_receipt = "passed"' in completed.stdout
     assert 'runtime_execution_receipt_binding = "verified"' in completed.stdout
+    assert 'runtime_execution_evidence_bundle = "passed"' in completed.stdout
+    assert 'runtime_execution_evidence_bundle_binding = "verified"' in completed.stdout
     assert 'source_intent_runtime_returns = "passed"' in completed.stdout
 
 
@@ -265,6 +270,69 @@ def test_runtime_evidence_gate_rejects_unbound_execution_receipt_digest() -> Non
 
     with pytest.raises(RuntimeEvidenceGateError, match="receipt binding failed"):
         build_gate_report(execution_receipt_report=forged_receipt)
+
+
+def test_runtime_evidence_gate_rejects_failed_execution_evidence_bundle() -> None:
+    receipt = build_execution_receipt_report()
+    tensor_store = build_tensor_store_evidence_report()
+    input_manifest = build_input_manifest_report()
+    output_manifest = build_output_manifest_report()
+    reference_correctness = build_reference_correctness_report()
+    forged_input_link = replace(
+        receipt.evidence_links[1],
+        metadata_digest="sha256:" + "1" * 64,
+    )
+    forged_receipt = RuntimeExecutionReceiptReport(
+        graph_name=receipt.graph_name,
+        evidence_links=(
+            receipt.evidence_links[0],
+            forged_input_link,
+            *receipt.evidence_links[2:],
+        ),
+        operations=receipt.operations,
+        issues=(),
+    )
+    failed_bundle = RuntimeExecutionEvidenceBundleReport(
+        graph_name=receipt.graph_name,
+        tensor_store_report=tensor_store,
+        input_manifest_report=input_manifest,
+        output_manifest_report=output_manifest,
+        reference_correctness_report=reference_correctness,
+        execution_receipt_report=forged_receipt,
+        issues=(
+            RuntimeExecutionEvidenceBundleIssue(
+                section="input_manifest",
+                issue_code="metadata_digest_mismatch",
+            ),
+        ),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="evidence bundle failed"):
+        build_gate_report(execution_evidence_bundle_report=failed_bundle)
+
+
+def test_runtime_evidence_gate_rejects_unbound_execution_evidence_bundle() -> None:
+    receipt = build_execution_receipt_report()
+    tensor_store = build_tensor_store_evidence_report()
+    input_manifest = build_input_manifest_report()
+    output_manifest = build_output_manifest_report()
+    reference_correctness = build_reference_correctness_report()
+    truncated_receipt = RuntimeExecutionReceiptReport(
+        graph_name=receipt.graph_name,
+        evidence_links=receipt.evidence_links,
+        operations=receipt.operations[:-1],
+        issues=(),
+    )
+    stale_bundle = build_runtime_execution_evidence_bundle_report(
+        tensor_store,
+        input_manifest,
+        output_manifest,
+        reference_correctness,
+        truncated_receipt,
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="evidence bundle binding failed"):
+        build_gate_report(execution_evidence_bundle_report=stale_bundle)
 
 
 def test_runtime_evidence_gate_rejects_invalid_source_intent_runtime_returns() -> None:

@@ -34,6 +34,10 @@ passing status. It also verifies that receipt links match the embedded evidence
 reports by graph name, evidence contract, metadata digest, item count, pass
 status, and raw-value policy.
 
+Runtime Evidence Gate additionally binds the bundle to the specific evidence
+reports evaluated by the same gate invocation. The bundle remains a derived
+review artifact and is not required for Runtime Evidence Matrix completeness.
+
 ## Evidence
 
 Run:

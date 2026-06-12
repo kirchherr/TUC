@@ -162,6 +162,12 @@ hardware-independent interface into capability-driven runtime planning.
   packaging tensor-store, input-manifest, output-manifest,
   reference-correctness, and execution-receipt reports into one metadata-only
   review artifact.
+- Runtime Execution Evidence Bundle Binding in Runtime Evidence Gate, rejecting
+  stale or forged bundles whose embedded graph names, contracts, metadata
+  digests, item counts, pass status, or raw-value policy do not match the
+  evidence reports evaluated by the same gate invocation, with the decision
+  captured in
+  `rfcs/0130-runtime-evidence-gate-execution-bundle-binding.md`.
 - Runtime Execution Receipt Binding in Runtime Evidence Gate, rejecting receipts
   whose graph names, contracts, metadata digests, item counts, pass status, or
   raw-value policy do not match the evidence reports evaluated by the same gate
@@ -183,10 +189,10 @@ hardware-independent interface into capability-driven runtime planning.
   read-only public-name-to-runtime-value mapping while review evidence remains
   metadata-only.
 - Runtime Evidence Gate now requires Runtime Input Manifest, Runtime Execution
-  Receipt, Runtime Output Contract, and Runtime Public Output Bundle evidence
-  in addition to Runtime Evidence Matrix, Runtime Executor Conformance, Runtime
-  Tensor Store Evidence, Runtime Output Manifest, and Runtime Reference
-  Correctness.
+  Receipt, Runtime Execution Evidence Bundle, Runtime Output Contract, and
+  Runtime Public Output Bundle evidence in addition to Runtime Evidence Matrix,
+  Runtime Executor Conformance, Runtime Tensor Store Evidence, Runtime Output
+  Manifest, and Runtime Reference Correctness.
 - Runtime Evidence Matrix now treats `output_contract` as required graph
   evidence, aligning the curated proof inventory with the Runtime Evidence Gate
   contract, with the decision captured in
@@ -360,8 +366,9 @@ Current slice:
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Tensor Store
   Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
   Contract, Runtime Public Output Bundle, Runtime Reference Correctness,
-  Runtime Execution Receipt, and Source Intent Runtime Returns, with a matrix
-  binding check for the `source_intent_return_mlp` frontend fixture.
+  Runtime Execution Receipt, Runtime Execution Evidence Bundle, and Source
+  Intent Runtime Returns, with a matrix binding check for the
+  `source_intent_return_mlp` frontend fixture.
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.

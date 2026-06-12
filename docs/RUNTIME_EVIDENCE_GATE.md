@@ -5,7 +5,8 @@ runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
 Evidence, Runtime Input Manifest evidence, Runtime Output Manifest evidence,
 Runtime Output Contract evidence, Runtime Public Output Bundle evidence, and
 Runtime Reference Correctness evidence, Runtime Execution Receipt evidence,
-plus Source Intent Runtime Returns evidence for the frontend return boundary.
+Runtime Execution Evidence Bundle evidence, plus Source Intent Runtime Returns
+evidence for the frontend return boundary.
 Source Intent Runtime Returns must also be bound to the curated
 Runtime Evidence Matrix graph that inventories the same frontend-originated
 fixture.
@@ -21,6 +22,7 @@ It runs:
 - `build_public_output_bundle()`
 - `build_reference_correctness_report()`
 - `build_execution_receipt_report()`
+- `build_runtime_execution_evidence_bundle_report()`
 - `examples/source_intent_runtime_returns.py`
 - `examples/runtime_evidence_gate.py`
 
@@ -42,6 +44,11 @@ The gate passes only when:
   the same trusted runtime execution by metadata digest and graph name
 - Runtime Execution Receipt binding passes, proving receipt links match the
   specific evidence reports evaluated by this gate invocation
+- Runtime Execution Evidence Bundle passes, proving the receipt and evidence
+  reports form one coherent metadata-only review package
+- Runtime Execution Evidence Bundle binding passes, proving embedded report
+  metadata matches the specific evidence reports evaluated by this gate
+  invocation
 - Source Intent Runtime Returns passes, proving explicit frontend return aliases
   resolve through Runtime Output Contract and Runtime Public Output Bundle
 - the Source Intent Runtime Returns report is bound to the
@@ -84,6 +91,12 @@ Runtime Execution Receipt schema:
 
 ```text
 schemas/runtime_execution_receipt_report.v0.schema.json
+```
+
+Runtime Execution Evidence Bundle schema:
+
+```text
+schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 ```
 
 Source Intent Runtime Returns schema:
@@ -132,6 +145,11 @@ It composes bounded in-repository checks:
 - a bounded Runtime Execution Receipt binding check that compares receipt graph
   names, contracts, metadata digests, item counts, pass status, and raw-value
   policy against the reports already checked by the gate
+- data-only Runtime Execution Evidence Bundle metadata embedding the runtime
+  evidence reports and receipt with raw tensor values omitted by policy
+- a bounded Runtime Execution Evidence Bundle binding check that compares
+  embedded graph names, contracts, metadata digests, item counts, pass status,
+  and raw-value policy against the reports already checked by the gate
 - data-only Source Intent Runtime Returns metadata proving frontend public
   returns resolve to runtime public outputs with raw tensor values omitted by
   policy
