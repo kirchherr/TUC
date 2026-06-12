@@ -36,6 +36,8 @@ The gate passes only when:
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
   entries with scoped `backend_equivalence` requirements
+- the Runtime Evidence Matrix includes the backend-equivalence portfolio graph
+  entry with scoped `backend_equivalence_portfolio` requirements
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
@@ -68,6 +70,9 @@ The gate passes only when:
 - Runtime Backend Equivalence Portfolio binding passes, proving the aggregate
   portfolio is built from the exact Backend Equivalence reports evaluated by
   this gate invocation
+- Runtime Backend Equivalence Portfolio matrix coverage passes, proving the
+  portfolio is inventoried by the Runtime Evidence Matrix as scoped
+  `backend_equivalence_portfolio` evidence
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
 - Runtime Input Manifest passes for accepted graph external inputs
@@ -212,6 +217,9 @@ It composes bounded in-repository checks:
   slice IDs, graph names, run IDs, backend sequences, comparison counts,
   comparison metadata digests, pass status, candidate backend families, and
   raw-value policy against the reports already checked by the gate
+- a bounded Runtime Backend Equivalence Portfolio matrix lookup that verifies
+  graph family, source boundary, required artifact kinds, completeness, and
+  `backend_equivalence_portfolio` artifact coverage
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
 - data-only Runtime Input Manifest metadata for accepted graph external inputs

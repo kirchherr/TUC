@@ -85,7 +85,8 @@ Current runtime surfaces:
   the Runtime Evidence Gate.
 - Runtime Backend Equivalence Portfolio v0 aggregating the systolic, vector,
   and mixed accelerator equivalence slices into one backend-diversity evidence
-  artifact bound by the Runtime Evidence Gate.
+  artifact inventoried by Runtime Evidence Matrix and bound by the Runtime
+  Evidence Gate.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.

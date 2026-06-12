@@ -85,7 +85,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
     )
     assert golden["runtime_evidence_matrix_complete"] is True
-    assert golden["graph_count"] == len(golden["graphs"]) == 10
+    assert golden["graph_count"] == len(golden["graphs"]) == 11
     assert golden["issues"] == []
     assert all(graph["runtime_evidence_complete"] for graph in golden["graphs"])
     graphs = {graph["graph_id"]: graph for graph in golden["graphs"]}
@@ -106,6 +106,13 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
     assert graphs["runtime_mixed_backend_equivalence"]["required_artifact_kinds"] == [
         "backend_equivalence"
     ]
+    assert graphs["runtime_backend_equivalence_portfolio"][
+        "required_artifact_kinds"
+    ] == ["backend_equivalence_portfolio"]
+    assert {
+        artifact["artifact_kind"]
+        for artifact in graphs["runtime_backend_equivalence_portfolio"]["artifacts"]
+    } == {"backend_equivalence_portfolio"}
 
 
 def test_runtime_evidence_matrix_schema_is_referenced() -> None:

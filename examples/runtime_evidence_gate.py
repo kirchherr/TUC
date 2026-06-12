@@ -86,6 +86,12 @@ RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_BACKEND_FAMILIES = (
     "systolic-sim",
     "vector-sim",
 )
+RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_GRAPH_FAMILY = (
+    "backend_equivalence_portfolio"
+)
+RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_REQUIRED_ARTIFACTS = (
+    "backend_equivalence_portfolio",
+)
 
 
 class RuntimeEvidenceGateError(AssertionError):
@@ -259,6 +265,10 @@ def build_gate_report(
             vector_backend_equivalence,
             mixed_backend_equivalence,
         ),
+    )
+    _assert_backend_equivalence_portfolio_matrix_covered(
+        matrix,
+        backend_equivalence_portfolio,
     )
     _assert_tensor_store_evidence_passed(tensor_store)
     _assert_input_manifest_passed(input_manifest)
@@ -477,6 +487,52 @@ def _assert_backend_equivalence_portfolio_passed(
         strict=True,
     ):
         _assert_backend_equivalence_portfolio_slice_bound(slice_, expected_report)
+
+
+def _assert_backend_equivalence_portfolio_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+    report: RuntimeBackendEquivalencePortfolioReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(matrix, report.portfolio_id)
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio matrix coverage failed: "
+            "graph missing"
+        )
+    if graph.graph_family != RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_GRAPH_FAMILY:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio matrix coverage failed: "
+            "graph_family_mismatch"
+        )
+    if graph.source_boundary != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio matrix coverage failed: "
+            "source_boundary_mismatch"
+        )
+    if (
+        graph.required_artifact_kinds
+        != RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_REQUIRED_ARTIFACTS
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio matrix coverage failed: "
+            "required_artifacts_mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio matrix coverage failed: "
+            "runtime evidence incomplete"
+        )
+    missing_artifacts = tuple(
+        artifact_kind
+        for artifact_kind in RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_REQUIRED_ARTIFACTS
+        if artifact_kind not in graph.present_artifact_kinds
+    )
+    if missing_artifacts:
+        missing = ",".join(missing_artifacts)
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio matrix coverage failed: "
+            f"missing {missing}"
+        )
 
 
 def _assert_backend_equivalence_portfolio_slice_bound(
@@ -954,6 +1010,7 @@ def _render_gate_report(
         "  runtime_backend_equivalence_portfolio_raw_value_policy = "
         f'"{backend_equivalence_portfolio.raw_value_policy}"'
     )
+    lines.append('  runtime_backend_equivalence_portfolio_matrix = "covered"')
     lines.append('  runtime_tensor_store_evidence = "passed"')
     lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')
     lines.append(

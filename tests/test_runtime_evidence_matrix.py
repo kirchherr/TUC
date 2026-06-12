@@ -26,7 +26,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     graphs = {graph.graph_id: graph for graph in report.graphs}
 
     assert report.evidence_contract == RUNTIME_EVIDENCE_MATRIX_CONTRACT
-    assert len(report.graphs) == 10
+    assert len(report.graphs) == 11
     assert report.runtime_evidence_matrix_complete
     assert graphs["proof_of_abstraction"].runtime_evidence_complete
     assert graphs["proof_of_reduction"].runtime_evidence_complete
@@ -38,6 +38,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     assert graphs["runtime_backend_equivalence"].runtime_evidence_complete
     assert graphs["runtime_vector_backend_equivalence"].runtime_evidence_complete
     assert graphs["runtime_mixed_backend_equivalence"].runtime_evidence_complete
+    assert graphs["runtime_backend_equivalence_portfolio"].runtime_evidence_complete
     assert graphs["source_intent_return_mlp"].source_boundary == (
         "source_intent_metadata"
     )
@@ -57,6 +58,11 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     assert graphs["runtime_mixed_backend_equivalence"].required_artifact_kinds == (
         "backend_equivalence",
     )
+    assert graphs[
+        "runtime_backend_equivalence_portfolio"
+    ].required_artifact_kinds == (
+        "backend_equivalence_portfolio",
+    )
     assert all(
         "backend_equivalence" in graphs[graph_id].present_artifact_kinds
         for graph_id in (
@@ -64,6 +70,10 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
             "runtime_vector_backend_equivalence",
             "runtime_mixed_backend_equivalence",
         )
+    )
+    assert (
+        "backend_equivalence_portfolio"
+        in graphs["runtime_backend_equivalence_portfolio"].present_artifact_kinds
     )
     full_runtime_graphs = tuple(
         graph
@@ -129,6 +139,8 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert '"source_intent_runtime_returns"' in completed.stdout
     assert "runtime_mixed_backend_equivalence" in completed.stdout
     assert '"backend_equivalence"' in completed.stdout
+    assert "runtime_backend_equivalence_portfolio" in completed.stdout
+    assert '"backend_equivalence_portfolio"' in completed.stdout
 
 
 def test_runtime_evidence_matrix_rejects_unknown_artifact_kind() -> None:

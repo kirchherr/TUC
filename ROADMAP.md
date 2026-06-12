@@ -205,6 +205,9 @@ Completed evidence:
   mixed accelerator equivalence reports into one backend-diversity artifact and
   Runtime Evidence Gate binds that aggregate back to the exact reports checked
   in the same invocation.
+- Runtime Evidence Matrix inventories the Backend Equivalence Portfolio under
+  the scoped `backend_equivalence_portfolio` requirement, and Runtime Evidence
+  Gate verifies that matrix coverage before accepting portfolio evidence.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

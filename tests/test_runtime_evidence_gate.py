@@ -9,6 +9,7 @@ import pytest
 
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
 from examples.runtime_evidence_gate import (
+    RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
     SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
     RuntimeEvidenceGateError,
@@ -105,6 +106,10 @@ def test_runtime_evidence_gate_example_runs() -> None:
         'runtime_backend_equivalence_portfolio_backend_families = '
         '"systolic-sim,vector-sim"'
     ) in completed.stdout
+    assert (
+        'runtime_backend_equivalence_portfolio_matrix = "covered"'
+        in completed.stdout
+    )
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
     assert 'runtime_input_manifest = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
@@ -448,6 +453,78 @@ def test_runtime_evidence_gate_rejects_forged_backend_equivalence_portfolio_slic
         match="backend equivalence portfolio binding",
     ):
         build_gate_report(backend_equivalence_portfolio_report=forged)
+
+
+def test_runtime_evidence_gate_rejects_missing_backend_equivalence_portfolio_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    without_portfolio = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_missing_backend_equivalence_portfolio_graph",
+        tuple(
+            graph
+            for graph in report.graphs
+            if graph.graph_id != RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID
+        ),
+    )
+
+    assert without_portfolio.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio matrix coverage",
+    ):
+        build_gate_report(matrix_report=without_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_malformed_backend_portfolio_matrix() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    malformed_portfolio = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_malformed_backend_equivalence_portfolio_graph",
+        tuple(
+            replace(graph, source_boundary="typed_compute_graph")
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert malformed_portfolio.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio matrix coverage",
+    ):
+        build_gate_report(matrix_report=malformed_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_broadened_backend_portfolio_matrix_scope() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    broadened_portfolio = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_broadened_backend_equivalence_portfolio_graph",
+        tuple(
+            replace(
+                graph,
+                artifacts=(
+                    *graph.artifacts,
+                    RuntimeEvidenceArtifact(
+                        artifact_kind="input_manifest",
+                        artifact_id="runtime_backend_equivalence_portfolio_input_manifest",
+                    ),
+                ),
+                required_artifact_kinds=(
+                    "backend_equivalence_portfolio",
+                    "input_manifest",
+                ),
+            )
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert broadened_portfolio.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio matrix coverage",
+    ):
+        build_gate_report(matrix_report=broadened_portfolio)
 
 
 def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:

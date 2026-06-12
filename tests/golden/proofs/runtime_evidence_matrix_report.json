@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "evidence_contract": "runtime_evidence_matrix.data_only.v0",
-  "graph_count": 10,
+  "graph_count": 11,
   "graphs": [
     {
       "artifacts": [
@@ -644,6 +644,23 @@
       "missing_required_artifact_kinds": [],
       "required_artifact_kinds": [
         "backend_equivalence"
+      ],
+      "runtime_evidence_complete": true,
+      "source_boundary": "runtime_backend_equivalence"
+    },
+    {
+      "artifacts": [
+        {
+          "artifact_id": "runtime_backend_equivalence_portfolio",
+          "artifact_kind": "backend_equivalence_portfolio",
+          "artifact_status": "present"
+        }
+      ],
+      "graph_family": "backend_equivalence_portfolio",
+      "graph_id": "runtime_backend_equivalence_portfolio",
+      "missing_required_artifact_kinds": [],
+      "required_artifact_kinds": [
+        "backend_equivalence_portfolio"
       ],
       "runtime_evidence_complete": true,
       "source_boundary": "runtime_backend_equivalence"

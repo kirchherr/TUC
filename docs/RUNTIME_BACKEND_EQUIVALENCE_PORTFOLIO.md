@@ -52,6 +52,8 @@ tests/golden/runtime_backend_equivalence/portfolio_report.json
 Runtime Evidence Gate builds the portfolio from the same three Backend
 Equivalence reports it checks individually. The gate then verifies:
 
+- Runtime Evidence Matrix contains `runtime_backend_equivalence_portfolio`
+  with scoped `backend_equivalence_portfolio` coverage
 - portfolio ID is `runtime_backend_equivalence_portfolio`
 - slice count matches the expected three reports
 - slice IDs and graph names match the checked reports

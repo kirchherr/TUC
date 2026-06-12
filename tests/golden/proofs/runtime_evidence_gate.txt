@@ -1,6 +1,6 @@
 runtime.evidence_gate @runtime_evidence_gate_v0 {
   runtime_evidence_matrix = "complete"
-  runtime_evidence_graphs = "10"
+  runtime_evidence_graphs = "11"
   runtime_executor_conformance = "passed"
   runtime_executor_conformance_cases = "16"
   runtime_backend_equivalence = "passed"
@@ -26,6 +26,7 @@ runtime.evidence_gate @runtime_evidence_gate_v0 {
   runtime_backend_equivalence_portfolio_slices = "3"
   runtime_backend_equivalence_portfolio_backend_families = "systolic-sim,vector-sim"
   runtime_backend_equivalence_portfolio_raw_value_policy = "omitted_by_policy"
+  runtime_backend_equivalence_portfolio_matrix = "covered"
   runtime_tensor_store_evidence = "passed"
   runtime_tensor_store_records = "5"
   runtime_tensor_store_raw_value_policy = "omitted_by_policy"
