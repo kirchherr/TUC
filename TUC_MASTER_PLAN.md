@@ -79,6 +79,29 @@ TUC is:
 - an execution orchestration layer
 - an experiment in hardware independence
 
+## Research Claim Boundary
+
+TUC's near-term objective is not to replace CUDA, ROCm, XLA, TVM, IREE, MLIR,
+or production vendor compiler stacks.
+
+The research objective is narrower and falsifiable: prove that a
+hardware-independent compute interface can preserve source intent, expose
+capability-driven planning decisions, and attach enough evidence that frontend
+intake, runtime execution, and performance-boundary claims can be reviewed
+without trusting opaque backend behavior.
+
+Open proof obligations include:
+
+- a narrow Source-to-Intent parser that turns caller-provided source buffers
+  into `source_intent.v0` plain data without importing, evaluating decorators,
+  executing `@triton.jit`, or producing `ComputeGraph` directly
+- leaky-abstraction evidence showing which performance facts stay outside
+  HAC-IR and which backend decisions are allowed in HS-IR/runtime planning
+- planner-overhead and performance-boundary evidence before any native
+  performance claim is accepted
+- external review and conformance evidence before claiming ecosystem
+  compatibility
+
 ## Non-Negotiable Principles
 
 ### Principle 1
@@ -290,12 +313,17 @@ Transition:
 ```text
 Real Triton Kernel
         ->
+bounded Source-to-Intent parser
+        ->
+Source Intent IR
+        ->
 Frontend Adapter
         ->
 HAC-IR
 ```
 
-After this milestone, TUC becomes significantly more credible.
+After this milestone, TUC becomes significantly more credible as a research
+proof. It still does not become a CUDA replacement.
 
 ### Milestone 3: Backend Author Test
 

@@ -9,6 +9,11 @@ may create `source_intent.v0` plain data or a `SourceIntentModule`.
 
 Source-to-intent parsing is blocked.
 
+TUC treats the first parser as a research proof obligation, not a claim that the
+project replaces CUDA, ROCm, XLA, TVM, or production vendor compilers. The
+parser may become acceptable only when it proves a narrow, bounded path from a
+caller-provided source buffer to `source_intent.v0` plain data.
+
 The only implemented frontend paths remain:
 
 - Triton source preflight as diagnostic syntax review only
@@ -154,6 +159,10 @@ backend artifacts.
 [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) defines the
 deterministic report that keeps parser proposals blocked until all required
 evidence is present.
+
+[Source-To-Intent Research Readiness](SOURCE_TO_INTENT_RESEARCH_READINESS.md)
+records the current partial research proposal and the parser-specific evidence
+still missing.
 
 [Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 turns the current blocked parser state into CI-facing merge evidence through

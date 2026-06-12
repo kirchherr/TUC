@@ -21,6 +21,10 @@ The gate passes only when the default Source-To-Intent Readiness report remains
 blocked and every required evidence ID is missing, including
 `source_intent_frontend_conformance_gate`.
 
+Separate research readiness reports may show partial progress toward a future
+parser proposal. They do not change this default block gate and must not let
+source text influence compiler artifacts.
+
 ## Security Boundary
 
 The gate consumes bounded in-memory readiness metadata. It checks evidence IDs,

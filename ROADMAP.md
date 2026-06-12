@@ -584,6 +584,10 @@ Go/No-Go:
   Gate before source text can create `source_intent.v0` plain data.
 - Source-to-intent parser proposals must pass the Source-To-Intent Readiness
   report before source text can influence compiler artifacts.
+- Source-To-Intent Research Readiness now tracks the first narrow parser
+  research proposal as partial evidence, keeping the default parser block
+  intact while making the remaining parser-specific corpus, fuzz, and parser
+  report obligations explicit.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

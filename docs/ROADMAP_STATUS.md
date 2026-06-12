@@ -371,6 +371,10 @@ hardware-independent interface into capability-driven runtime planning.
 - Source-To-Intent Parser Block Gate now asserts in CI that the default
   source-to-intent parser path remains blocked, with deterministic golden
   output at `tests/golden/frontend/source_to_intent_parser_block_gate.txt`.
+- Source-To-Intent Research Readiness now tracks the first narrow parser
+  research proposal separately from the default block gate, showing current
+  evidence progress while keeping parser-specific source corpus, parser fuzz,
+  and parser report evidence blocked.
 
 ## In Progress
 
@@ -608,6 +612,10 @@ Current slice:
   `examples/source_to_intent_parser_block_gate.py`, with golden evidence at
   `tests/golden/frontend/source_to_intent_parser_block_gate.txt` and CI
   coverage in the `python` workflow job.
+- Source-To-Intent Research Readiness at
+  `examples/source_to_intent_research_readiness.py`, with golden evidence at
+  `tests/golden/frontend/source_to_intent_research_readiness.json`, tracking
+  partial parser-readiness evidence while the parser remains blocked.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
