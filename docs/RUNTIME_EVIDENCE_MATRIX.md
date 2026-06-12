@@ -28,6 +28,7 @@ A graph is runtime-evidence complete only when it has:
 - `compiler_decision_golden`
 - `execution_readiness_golden`
 - `execution_trace_golden`
+- `tensor_store_evidence`
 - `input_manifest`
 - `output_contract`
 - `public_output_bundle`
@@ -44,6 +45,13 @@ report at `schemas/runtime_reference_correctness_report.v0.schema.json`.
 `input_manifest` is backed by the schema-versioned
 [Runtime Input Manifest](RUNTIME_INPUT_MANIFEST.md) report at
 `schemas/runtime_input_manifest_report.v0.schema.json`.
+`tensor_store_evidence` is backed by the schema-versioned
+[Runtime Tensor Store Evidence](RUNTIME_TENSOR_STORE_EVIDENCE.md) report at
+`schemas/runtime_tensor_store_evidence_report.v0.schema.json`.
+The matrix records this as an evidence kind and artifact identifier; it does
+not claim that every identifier maps to a standalone checked-in JSON file.
+Standalone tensor-store goldens currently cover the executable runtime slices
+that produce Runtime Tensor Store reports.
 `output_contract` is backed by the schema-versioned
 [Runtime Output Contract](RUNTIME_OUTPUT_CONTRACT.md) report at
 `schemas/runtime_output_contract_report.v0.schema.json`.
@@ -71,11 +79,13 @@ The current matrix is complete across every accepted graph fixture:
   `triton_metadata_mvp_families` are complete across the required runtime
   evidence kinds.
 - `proof_of_execution` is complete across HAC-IR, runtime-plan,
-  compiler-decision, readiness, trace, input-manifest, output-contract,
-  public-output-bundle, reference-correctness, and execution-receipt evidence.
+  compiler-decision, readiness, trace, tensor-store-evidence, input-manifest,
+  output-contract, public-output-bundle, reference-correctness, and
+  execution-receipt evidence.
 - `proof_of_systolic_execution` is complete across HAC-IR, runtime-plan,
-  compiler-decision, readiness, trace, input-manifest, output-contract,
-  public-output-bundle, reference-correctness, and execution-receipt evidence.
+  compiler-decision, readiness, trace, tensor-store-evidence, input-manifest,
+  output-contract, public-output-bundle, reference-correctness, and
+  execution-receipt evidence.
 - `source_intent_return_mlp` is complete across required runtime evidence and
   also records Source Intent return semantics plus Source Intent Runtime
   Returns evidence.

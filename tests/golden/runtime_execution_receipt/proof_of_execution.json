@@ -17,7 +17,7 @@
       "evidence_kind": "tensor_store_evidence",
       "graph_name": "proof_of_execution",
       "item_count": 5,
-      "metadata_digest": "sha256:cc8341abcf5a4bc30b809106856629e4c626aa16e22b5d3ea51286835ff4142d",
+      "metadata_digest": "sha256:68e142ae0d8f4149c8d48e1c08b3a17682f0e524a69f73883597f2d2aa3b2734",
       "passed": true,
       "raw_value_policy": "omitted_by_policy"
     },
@@ -116,7 +116,7 @@
   "passed": true,
   "raw_value_policy": "omitted_by_policy",
   "receipt_contract": "runtime_execution_receipt.data_only.v0",
-  "receipt_metadata_digest": "sha256:b936cbaa52263010f30e30b71bb4429686e703b4fe14b814227b283acda4cb2c",
+  "receipt_metadata_digest": "sha256:f871dd6ec2234272380d9551468abf90899d44eb00d47b5f84cc91a4208dde72",
   "required_evidence_kinds": [
     "tensor_store_evidence",
     "input_manifest",

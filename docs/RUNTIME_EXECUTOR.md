@@ -183,6 +183,10 @@ accepted runtime tensor value as a `RuntimeValueRecord` with:
 - dtype
 - value role, either `input` or `computed`
 - producer kind and producer identifier
+- planned backend
+- planned memory domain
+- planned layout
+- placement source
 
 External inputs are copied into read-only records before execution starts, and
 computed outputs are copied into read-only records before they become visible to
@@ -191,10 +195,15 @@ mutation and accidental output mutation from changing already accepted runtime
 evidence. Input records point to their external tensor name; computed records
 point to their producer operation name.
 
+Input records use the external input boundary as logical placement. Computed
+records copy planned backend, memory domain, and layout from the accepted
+`PartitionPlan`. This is planned placement evidence only; it is not device
+access, physical residency proof, or allocator behavior.
+
 The tensor store is not a memory allocator, not a cache, not a device buffer
-manager, and not an aliasing model. It is the minimum internal value-record
-surface needed before future runtime memory work can reason about value
-identity without passing raw mutable mappings around.
+manager, not a runtime-handle registry, and not an aliasing model. It is the
+minimum internal value-record surface needed before future runtime memory work
+can reason about value identity without passing raw mutable mappings around.
 
 The review artifact for this boundary is
 [`RUNTIME_TENSOR_STORE_EVIDENCE.md`](RUNTIME_TENSOR_STORE_EVIDENCE.md). It

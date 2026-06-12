@@ -8,6 +8,9 @@ from pathlib import Path
 import pytest
 
 from examples.runtime_allocation_plan import build_current_runtime_allocation_plan_report
+from examples.runtime_allocation_request_manifest import (
+    build_current_runtime_allocation_request_manifest_report,
+)
 from examples.runtime_buffer_lifetime import build_current_runtime_buffer_lifetime_report
 from examples.runtime_memory_budget import build_current_runtime_memory_budget_report
 from examples.runtime_memory_planning_gate import (
@@ -22,6 +25,7 @@ from tuc import (
     RuntimeBufferLifetimeReport,
     RuntimeMemoryBudgetReport,
     RuntimeMemoryDomainBudget,
+    build_runtime_allocation_request_manifest_report,
     build_runtime_memory_budget_report,
 )
 
@@ -37,6 +41,9 @@ def test_runtime_memory_planning_gate_matches_golden() -> None:
     assert 'allocation_lifetime_binding = "verified"' in report
     assert 'memory_budget = "passed"' in report
     assert 'memory_budget_allocation_binding = "verified"' in report
+    assert 'allocation_request_manifest = "passed"' in report
+    assert 'allocation_request_manifest_binding = "verified"' in report
+    assert 'allocation_request_handle_policy = "no_runtime_handles"' in report
     assert report.rstrip().endswith('status = "PASS"\n}')
 
 
@@ -116,6 +123,25 @@ def test_runtime_memory_planning_gate_rejects_failed_memory_budget() -> None:
         build_gate_report(memory_budget_report=failed)
 
 
+def test_runtime_memory_planning_gate_rejects_failed_request_manifest() -> None:
+    allocation = build_current_runtime_allocation_plan_report()
+    memory_budget = build_current_runtime_memory_budget_report()
+    stale_budget = replace(
+        memory_budget,
+        source_allocation_metadata_digest="sha256:" + "1" * 64,
+    )
+    failed = build_runtime_allocation_request_manifest_report(
+        allocation,
+        stale_budget,
+    )
+
+    with pytest.raises(
+        RuntimeMemoryPlanningGateError,
+        match="allocation request manifest failed",
+    ):
+        build_gate_report(request_manifest_report=failed)
+
+
 def test_runtime_memory_planning_gate_rejects_graph_mismatch() -> None:
     memory_budget = build_current_runtime_memory_budget_report()
     mismatched = RuntimeMemoryBudgetReport(
@@ -154,6 +180,39 @@ def test_runtime_memory_planning_gate_rejects_allocation_digest_mismatch() -> No
 
     with pytest.raises(RuntimeMemoryPlanningGateError, match="allocation digest"):
         build_gate_report(memory_budget_report=mismatched)
+
+
+def test_runtime_memory_planning_gate_rejects_request_manifest_digest_mismatch() -> None:
+    request_manifest = build_current_runtime_allocation_request_manifest_report()
+    mismatched = replace(
+        request_manifest,
+        source_allocation_metadata_digest="sha256:" + "1" * 64,
+        source_memory_budget_allocation_digest="sha256:" + "1" * 64,
+    )
+
+    with pytest.raises(
+        RuntimeMemoryPlanningGateError,
+        match="request manifest allocation digest",
+    ):
+        build_gate_report(request_manifest_report=mismatched)
+
+
+def test_runtime_memory_planning_gate_rejects_request_manifest_payload_mismatch() -> None:
+    request_manifest = build_current_runtime_allocation_request_manifest_report()
+    bad_request = replace(
+        request_manifest.requests[0],
+        dtype="float64",
+    )
+    mismatched = replace(
+        request_manifest,
+        requests=(bad_request, *request_manifest.requests[1:]),
+    )
+
+    with pytest.raises(
+        RuntimeMemoryPlanningGateError,
+        match="request manifest slot payload",
+    ):
+        build_gate_report(request_manifest_report=mismatched)
 
 
 def test_runtime_memory_planning_gate_is_documented_and_in_ci() -> None:

@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "evidence_contract": "runtime_tensor_store_evidence.data_only.v0",
-  "expected_record_count": 5,
+  "expected_record_count": 4,
   "expected_records": [
     {
       "dtype": "float64",
@@ -46,10 +46,10 @@
     {
       "dtype": "float64",
       "placement_source": "partition_plan",
-      "planned_backend": "linear-sim",
-      "planned_layout": "row_major",
-      "planned_memory_domain": "analog_weight_bank",
-      "producer_id": "linear_projection",
+      "planned_backend": "systolic-sim",
+      "planned_layout": "blocked",
+      "planned_memory_domain": "device_sram",
+      "producer_id": "systolic_projection",
       "producer_kind": "operation",
       "shape": [
         2,
@@ -61,38 +61,25 @@
     {
       "dtype": "float64",
       "placement_source": "partition_plan",
-      "planned_backend": "linear-sim",
-      "planned_layout": "row_major",
-      "planned_memory_domain": "analog_weight_bank",
-      "producer_id": "row_reduction",
-      "producer_kind": "operation",
-      "shape": [
-        2
-      ],
-      "tensor_name": "row_sum",
-      "value_role": "computed"
-    },
-    {
-      "dtype": "float64",
-      "placement_source": "partition_plan",
       "planned_backend": "reference-cpu",
       "planned_layout": "row_major",
       "planned_memory_domain": "host_ram",
-      "producer_id": "activation",
+      "producer_id": "host_activation",
       "producer_kind": "operation",
       "shape": [
+        2,
         2
       ],
       "tensor_name": "activated",
       "value_role": "computed"
     }
   ],
-  "graph_name": "proof_of_execution",
+  "graph_name": "proof_of_systolic_execution",
   "issues": [],
   "passed": true,
   "raw_value_policy": "omitted_by_policy",
-  "record_count": 5,
-  "record_metadata_digest": "sha256:68e142ae0d8f4149c8d48e1c08b3a17682f0e524a69f73883597f2d2aa3b2734",
+  "record_count": 4,
+  "record_metadata_digest": "sha256:3b2f22ea31b688ad0bae737514c9a882cd439a5fbfcc3b6164b4f32cd39e131a",
   "records": [
     {
       "dtype": "float64",
@@ -133,10 +120,10 @@
     {
       "dtype": "float64",
       "placement_source": "partition_plan",
-      "planned_backend": "linear-sim",
-      "planned_layout": "row_major",
-      "planned_memory_domain": "analog_weight_bank",
-      "producer_id": "linear_projection",
+      "planned_backend": "systolic-sim",
+      "planned_layout": "blocked",
+      "planned_memory_domain": "device_sram",
+      "producer_id": "systolic_projection",
       "producer_kind": "operation",
       "raw_value_status": "omitted_by_policy",
       "readonly": true,
@@ -151,32 +138,16 @@
     {
       "dtype": "float64",
       "placement_source": "partition_plan",
-      "planned_backend": "linear-sim",
-      "planned_layout": "row_major",
-      "planned_memory_domain": "analog_weight_bank",
-      "producer_id": "row_reduction",
-      "producer_kind": "operation",
-      "raw_value_status": "omitted_by_policy",
-      "readonly": true,
-      "record_contract": "runtime_value_record.internal.v0",
-      "shape": [
-        2
-      ],
-      "tensor_name": "row_sum",
-      "value_role": "computed"
-    },
-    {
-      "dtype": "float64",
-      "placement_source": "partition_plan",
       "planned_backend": "reference-cpu",
       "planned_layout": "row_major",
       "planned_memory_domain": "host_ram",
-      "producer_id": "activation",
+      "producer_id": "host_activation",
       "producer_kind": "operation",
       "raw_value_status": "omitted_by_policy",
       "readonly": true,
       "record_contract": "runtime_value_record.internal.v0",
       "shape": [
+        2,
         2
       ],
       "tensor_name": "activated",

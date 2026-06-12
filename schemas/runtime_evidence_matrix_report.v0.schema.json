@@ -74,6 +74,7 @@
         "compiler_decision_golden",
         "execution_readiness_golden",
         "execution_trace_golden",
+        "tensor_store_evidence",
         "input_manifest",
         "output_contract",
         "public_output_bundle",

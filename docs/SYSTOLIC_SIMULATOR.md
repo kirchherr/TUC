@@ -31,6 +31,12 @@ Manifest-loaded author path:
 python examples/systolic_manifest_path.py
 ```
 
+Tensor-store placement evidence:
+
+```bash
+python examples/runtime_systolic_tensor_store_evidence.py
+```
+
 The proof graph is:
 
 ```text
@@ -58,6 +64,8 @@ the layout conversion from `blocked` to `row_major`.
   `tests/golden/execution_readiness/proof_of_systolic_execution.txt`
 - Execution-trace golden:
   `tests/golden/execution_traces/proof_of_systolic_execution.txt`
+- Tensor-store evidence golden:
+  `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`
 - Runtime evidence matrix entry:
   `proof_of_systolic_execution`
 

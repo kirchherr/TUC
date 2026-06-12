@@ -27,6 +27,10 @@ Each `RuntimeValueRecord` records:
 - value role
 - producer kind, either `external_input` or `operation`
 - producer identifier, either the external tensor name or producer operation name
+- planned backend
+- planned memory domain
+- planned layout
+- placement source
 
 External inputs are copied into read-only records before execution starts.
 Their producer is recorded as `external_input/<tensor_name>`.
@@ -34,10 +38,16 @@ Computed outputs are copied into read-only records before later operations or
 `RuntimeExecutionResult` can observe them. Their producer is recorded as
 `operation/<operation_name>`.
 
+Input records use `external_input_boundary` placement with `external_input`,
+`host_ram`, and `row_major`.
+
+Computed records use `partition_plan` placement with planned backend, memory
+domain, and layout copied from the accepted runtime assignment.
+
 ## Security Boundary
 
 Runtime Tensor Store v0 is not a memory allocator, cache, device buffer manager,
-aliasing model, or persistence layer.
+aliasing model, device-residency proof, or persistence layer.
 
 It does not allocate device memory, discover plugins, import backend modules,
 load dynamic libraries, spawn subprocesses, access devices, touch the network,
@@ -62,6 +72,9 @@ The accepted producer-provenance design note is
 
 - It stores NumPy `float64` values only, matching Runtime Executor v0.
 - It is internal to trusted in-process prototype execution.
-- It does not model buffer reuse, aliasing, streams, pools, or device placement.
+- It records planned logical placement from runtime planning, not physical device
+  residency.
+- It does not model buffer reuse, aliasing, streams, pools, runtime handles, or
+  physical device allocation.
 - Runtime Allocation Plan and Runtime Memory Budget remain the review surfaces
   for future allocator work.

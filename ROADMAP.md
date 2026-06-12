@@ -168,6 +168,9 @@ Completed evidence:
   placement and `blocked -> row_major` layout conversion, executes through the
   trusted runtime executor, and validates against independent reference
   semantics.
+- Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
+  value-record metadata for the `systolic-sim` output while keeping raw values
+  omitted by policy.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.
@@ -181,6 +184,9 @@ Completed evidence:
   supported elementwise kernels before trusted kernels run.
 - Runtime tensor value contracts enforce declared shapes, `float64` dtype, and
   finite values at input and output boundaries for trusted prototype execution.
+- Runtime value records now carry planned backend, memory-domain, layout, and
+  placement-source metadata, with Tensor Store Evidence checking those fields
+  against the accepted Partition Plan.
 - Proof-of-execution compiles, plans, executes, traces, and verifies a graph
   against independent reference semantics without plugin discovery, device
   access, subprocesses, JIT, or generated-artifact execution.
@@ -384,9 +390,11 @@ Completed evidence:
 - Runtime Memory Budget reports bind to Allocation Plan metadata digests and
   check explicit memory-domain budgets before adding memory pools or device
   allocation.
-- Runtime Memory Planning Gate verifies allocation-plan, memory-budget, and
-  lifetime/allocation/budget digest-binding evidence before allocator behavior
-  can be accepted.
+- Runtime Allocation Request Manifest reports expose bounded, data-only future
+  allocator admission requests without runtime handles.
+- Runtime Memory Planning Gate verifies allocation-plan, memory-budget,
+  allocation-request-manifest, and lifetime/allocation/budget/request digest
+  binding evidence before allocator behavior can be accepted.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -404,8 +412,9 @@ Next work:
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
-- Add allocator behavior only after allocation-plan and memory-budget evidence
-  stays deterministic, digest-bound, and reviewable.
+- Add allocator behavior only after allocation-plan, memory-budget, and
+  allocation-request-manifest evidence stays deterministic, digest-bound, and
+  reviewable.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 

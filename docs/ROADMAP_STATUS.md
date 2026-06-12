@@ -92,15 +92,22 @@ hardware-independent interface into capability-driven runtime planning.
   `schemas/runtime_memory_budget_report.v0.schema.json`, deterministic golden
   at `tests/golden/runtime_memory_budget/current_report.json`, and source
   allocation metadata digest binding.
+- Runtime Allocation Request Manifest v0 with schema at
+  `schemas/runtime_allocation_request_manifest_report.v0.schema.json`,
+  deterministic golden at
+  `tests/golden/runtime_allocation_request_manifest/current_report.json`, and
+  no-runtime-handles future allocator admission requests bound to Allocation
+  Plan and Memory Budget metadata.
 - Runtime Memory Planning Gate v0 with deterministic golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt` and CI coverage
   in the `python` workflow job, now verifying Allocation Plan binding to Buffer
-  Lifetime and Memory Budget binding to Allocation Plan in the same gate
+  Lifetime, Memory Budget binding to Allocation Plan, and Allocation Request
+  Manifest binding to Allocation Plan and Memory Budget in the same gate
   invocation.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
-  deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
-  goldens, and Runtime Evidence Matrix coverage.
+  deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace/
+  tensor-store-evidence goldens, and Runtime Evidence Matrix coverage.
 - Systolic capability manifest path proving that `systolic-sim` can enter TUC
   as explicit JSON capability data for planning while execution remains gated
   by the trusted Runtime Executor registry.
@@ -133,12 +140,21 @@ hardware-independent interface into capability-driven runtime planning.
   and finite values at input and output boundaries.
 - Runtime Tensor Store v0 with internal read-only `RuntimeValueRecord` objects
   for accepted input and computed runtime values, including data-only producer
-  provenance for external inputs and operation-produced values.
+  provenance for external inputs and operation-produced values plus planned
+  backend, memory-domain, layout, and placement-source metadata.
 - Runtime Tensor Store Evidence v0 with schema at
   `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, deterministic
   golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
-  Runtime Evidence Gate coverage with raw tensor values omitted by policy.
+  Runtime Evidence Gate coverage with raw tensor values omitted by policy and
+  placement metadata checked against the accepted `PartitionPlan`.
+- Systolic Runtime Tensor Store Evidence with deterministic golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`,
+  showing planned `systolic-sim`, `device_sram`, and `blocked` value-record
+  metadata without raw tensor values.
+- Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
+  explaining what runs, what is stored, what is public, what is hashed, what is
+  never serialized, and which runtime gates must pass.
 - Runtime Input Manifest v0 with schema at
   `schemas/runtime_input_manifest_report.v0.schema.json`, deterministic golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
@@ -212,6 +228,12 @@ hardware-independent interface into capability-driven runtime planning.
   Gate coverage and `schemas/runtime_input_manifest_report.v0.schema.json`,
   with the decision captured in
   `rfcs/0125-runtime-evidence-matrix-input-manifest.md`.
+- Runtime Evidence Matrix now treats `tensor_store_evidence` as required graph
+  evidence, aligning planned runtime value-record placement metadata with graph
+  evidence completeness and
+  `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, with the
+  decision captured in
+  `rfcs/0135-runtime-evidence-matrix-tensor-store-evidence.md`.
 - Runtime Evidence Matrix now treats `execution_receipt` as required graph
   evidence, aligning linked runtime execution evidence with Runtime Evidence
   Gate coverage and
@@ -307,7 +329,11 @@ Current slice:
 - Runtime Tensor Store Evidence at `examples/runtime_tensor_store_evidence.py`,
   with golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`,
-  including producer-kind and producer-id metadata without tensor values.
+  including producer-kind, producer-id, and planned placement metadata without
+  tensor values.
+- Systolic Runtime Tensor Store Evidence at
+  `examples/runtime_systolic_tensor_store_evidence.py`, with golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`.
 - Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
   including accepted external-input metadata without tensor values.
@@ -397,12 +423,17 @@ Current slice:
 - Runtime Memory Budget at `examples/runtime_memory_budget.py`, with golden
   evidence at `tests/golden/runtime_memory_budget/current_report.json`, bound
   to the source Allocation Plan metadata digest.
+- Runtime Allocation Request Manifest at
+  `examples/runtime_allocation_request_manifest.py`, with golden evidence at
+  `tests/golden/runtime_allocation_request_manifest/current_report.json`,
+  exposing bounded future allocator requests without runtime handles.
 - Runtime Memory Planning Gate at `examples/runtime_memory_planning_gate.py`,
   with golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt`, rejecting stale
   Allocation Plan evidence whose source Buffer Lifetime digest does not match
-  and stale Memory Budget evidence whose source Allocation Plan digest does not
-  match.
+  stale Memory Budget evidence whose source Allocation Plan digest does not
+  match, and stale Allocation Request Manifest evidence whose source Allocation
+  Plan or Memory Budget binding does not match.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -652,11 +683,18 @@ Current focus:
   aliasing, or real allocator behavior.
 - Use Runtime Memory Budget before accepting memory pools, device allocation,
   aliasing, or allocator behavior that can reserve runtime memory.
+- Use Runtime Allocation Request Manifest before accepting memory pools, device
+  allocation, aliasing, runtime handles, or allocator behavior that can reserve
+  runtime memory.
 - Keep Runtime Memory Planning Gate passing in CI before accepting allocator,
   memory-pool, device-allocation, or aliasing changes.
 - Keep Memory Budget reports bound to the Allocation Plan evaluated by the same
   gate invocation before accepting allocator, memory-pool, device-allocation, or
   aliasing changes.
+- Keep Allocation Request Manifest reports bound to the Allocation Plan and
+  Memory Budget evaluated by the same gate invocation before accepting
+  allocator, memory-pool, device-allocation, runtime-handle, or aliasing
+  changes.
 - Keep Allocation Plan reports bound to the Buffer Lifetime report evaluated by
   the same gate invocation before accepting allocator, memory-pool,
   device-allocation, or aliasing changes.
