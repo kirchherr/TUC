@@ -120,13 +120,15 @@ The report requires:
 - `vector-sim` to reject `matmul`
 
 `Runtime Backend Equivalence` provides practical comparison slices: one graph
-as a `reference-cpu` baseline versus a `systolic-sim` candidate placement, and
-one vector-oriented graph as a `reference-cpu` baseline versus a `vector-sim`
-candidate placement:
+as a `reference-cpu` baseline versus a `systolic-sim` candidate placement, one
+vector-oriented graph as a `reference-cpu` baseline versus a `vector-sim`
+candidate placement, and one mixed graph as a `reference-cpu` baseline versus a
+`systolic-sim` plus `vector-sim` candidate placement:
 
 ```bash
 python examples/runtime_backend_equivalence.py
 python examples/runtime_vector_backend_equivalence.py
+python examples/runtime_mixed_backend_equivalence.py
 ```
 
 The schema-versioned report is documented in

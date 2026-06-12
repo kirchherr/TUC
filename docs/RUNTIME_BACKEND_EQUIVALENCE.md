@@ -25,6 +25,9 @@ The current evidence fixtures execute:
 - candidate run: `systolic-sim`, `reference-cpu`
 - baseline run: `reference-cpu`, `reference-cpu`, `reference-cpu`
 - candidate run: `vector-sim`, `vector-sim`, `vector-sim`
+- baseline run: `reference-cpu`, `reference-cpu`, `reference-cpu`,
+  `reference-cpu`
+- candidate run: `systolic-sim`, `vector-sim`, `vector-sim`, `vector-sim`
 
 Each pair uses the same graph and deterministic inputs. The report checks that:
 
@@ -39,6 +42,7 @@ The deterministic example is:
 ```bash
 python examples/runtime_backend_equivalence.py
 python examples/runtime_vector_backend_equivalence.py
+python examples/runtime_mixed_backend_equivalence.py
 ```
 
 Their golden evidence is:
@@ -46,12 +50,15 @@ Their golden evidence is:
 ```text
 tests/golden/runtime_backend_equivalence/current_report.json
 tests/golden/runtime_backend_equivalence/vector_sim_report.json
+tests/golden/runtime_backend_equivalence/mixed_accelerators.json
 ```
 
-The CI-facing Runtime Evidence Gate requires both equivalence fixtures. It
+The CI-facing Runtime Evidence Gate requires all equivalence fixtures. It
 binds the primary fixture to the expected `reference_cpu` baseline and
-`systolic_sim` candidate placement, and binds the vector fixture to the
-expected `reference_cpu` baseline and `vector_sim` candidate placement.
+`systolic_sim` candidate placement, binds the vector fixture to the expected
+`reference_cpu` baseline and `vector_sim` candidate placement, and binds the
+mixed fixture to the expected `reference_cpu` baseline and `mixed_accelerators`
+candidate placement.
 
 ## Security Boundary
 
@@ -70,6 +77,7 @@ and metadata digests are serialized.
 - The report is correctness/equivalence evidence, not a native performance
   claim.
 - The current fixtures compare `reference-cpu` with `systolic-sim` placement
-  and `reference-cpu` with `vector-sim` placement.
+  `reference-cpu` with `vector-sim` placement, and `reference-cpu` with mixed
+  `systolic-sim` plus `vector-sim` placement.
 - Future backend classes should add similar equivalence fixtures before any
   stronger performance or portability claims are made.

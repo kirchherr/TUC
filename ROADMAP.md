@@ -95,6 +95,7 @@ Required artifacts:
 - `examples/systolic_manifest_path.py`
 - `examples/runtime_backend_equivalence.py`
 - `examples/runtime_vector_backend_equivalence.py`
+- `examples/runtime_mixed_backend_equivalence.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
@@ -103,6 +104,7 @@ Required artifacts:
 - `tests/golden/proofs/systolic_manifest_path.txt`
 - `tests/golden/runtime_backend_equivalence/current_report.json`
 - `tests/golden/runtime_backend_equivalence/vector_sim_report.json`
+- `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -185,6 +187,10 @@ Completed evidence:
 - Runtime Evidence Gate binds the vector simulator equivalence fixture, so the
   `reference-cpu` versus `vector-sim` proof slice is merge-relevant rather than
   standalone demonstration-only evidence.
+- Mixed backend equivalence executes one graph as `reference-cpu` baseline and
+  as a `systolic-sim -> vector-sim -> vector-sim -> vector-sim` candidate,
+  proving two non-CPU trusted accelerator families can compose in one plan
+  while preserving terminal output semantics.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

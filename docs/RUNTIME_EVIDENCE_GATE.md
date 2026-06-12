@@ -17,6 +17,7 @@ It runs:
 - `run_runtime_executor_conformance()`
 - `build_backend_equivalence_report()`
 - `build_vector_backend_equivalence_report()`
+- `build_mixed_backend_equivalence_report()`
 - `build_tensor_store_evidence_report()`
 - `build_input_manifest_report()`
 - `build_output_manifest_report()`
@@ -43,6 +44,12 @@ The gate passes only when:
   is the expected `reference-cpu,reference-cpu,reference-cpu` versus
   `vector-sim,vector-sim,vector-sim` placement comparison with raw values
   omitted
+- Runtime Mixed Backend Equivalence passes for the `reference_cpu` baseline run
+  and the `mixed_accelerators` candidate run
+- Runtime Mixed Backend Equivalence binding passes, proving the checked report
+  is the expected `reference-cpu,reference-cpu,reference-cpu,reference-cpu`
+  versus `systolic-sim,vector-sim,vector-sim,vector-sim` placement comparison
+  with raw values omitted
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
 - Runtime Input Manifest passes for accepted graph external inputs
@@ -157,6 +164,12 @@ It composes bounded in-repository checks:
   `reference_cpu` and `vector_sim` trusted execution placements with raw tensor
   values omitted by policy
 - a bounded Runtime Vector Backend Equivalence binding check that verifies graph
+  ID, run IDs, planned backend sequences, matched comparison status, and
+  raw-value policy
+- data-only Runtime Mixed Backend Equivalence metadata comparing the expected
+  `reference_cpu` and `mixed_accelerators` trusted execution placements with
+  raw tensor values omitted by policy
+- a bounded Runtime Mixed Backend Equivalence binding check that verifies graph
   ID, run IDs, planned backend sequences, matched comparison status, and
   raw-value policy
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted

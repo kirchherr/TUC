@@ -3,6 +3,9 @@
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
 from examples.runtime_execution_receipt import build_execution_receipt_report
 from examples.runtime_input_manifest import build_input_manifest_report
+from examples.runtime_mixed_backend_equivalence import (
+    build_mixed_backend_equivalence_report,
+)
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_public_output_bundle import build_public_output_bundle
@@ -57,6 +60,21 @@ RUNTIME_VECTOR_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS = (
     "vector-sim",
     "vector-sim",
 )
+RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID = "runtime_mixed_backend_equivalence"
+RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
+RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "mixed_accelerators"
+RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_BACKENDS = (
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu",
+)
+RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS = (
+    "systolic-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim",
+)
 
 
 class RuntimeEvidenceGateError(AssertionError):
@@ -71,6 +89,7 @@ def build_gate_report(
     vector_backend_equivalence_report: (
         RuntimeBackendEquivalenceReport | None
     ) = None,
+    mixed_backend_equivalence_report: RuntimeBackendEquivalenceReport | None = None,
     execution_evidence_bundle_report: (
         RuntimeExecutionEvidenceBundleReport | None
     ) = None,
@@ -106,6 +125,11 @@ def build_gate_report(
         build_vector_backend_equivalence_report()
         if vector_backend_equivalence_report is None
         else vector_backend_equivalence_report
+    )
+    mixed_backend_equivalence = (
+        build_mixed_backend_equivalence_report()
+        if mixed_backend_equivalence_report is None
+        else mixed_backend_equivalence_report
     )
     tensor_store = (
         build_tensor_store_evidence_report()
@@ -178,6 +202,15 @@ def build_gate_report(
         candidate_backends=RUNTIME_VECTOR_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS,
         label="runtime vector backend equivalence",
     )
+    _assert_backend_equivalence_passed(
+        mixed_backend_equivalence,
+        graph_id=RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
+        baseline_run_id=RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_RUN_ID,
+        candidate_run_id=RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID,
+        baseline_backends=RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_BACKENDS,
+        candidate_backends=RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS,
+        label="runtime mixed backend equivalence",
+    )
     _assert_tensor_store_evidence_passed(tensor_store)
     _assert_input_manifest_passed(input_manifest)
     _assert_output_manifest_passed(output_manifest)
@@ -211,6 +244,7 @@ def build_gate_report(
         conformance,
         backend_equivalence,
         vector_backend_equivalence,
+        mixed_backend_equivalence,
         tensor_store,
         input_manifest,
         output_manifest,
@@ -659,6 +693,7 @@ def _render_gate_report(
     conformance: RuntimeExecutorConformanceReport,
     backend_equivalence: RuntimeBackendEquivalenceReport,
     vector_backend_equivalence: RuntimeBackendEquivalenceReport,
+    mixed_backend_equivalence: RuntimeBackendEquivalenceReport,
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
@@ -698,6 +733,20 @@ def _render_gate_report(
     lines.append(
         "  runtime_vector_backend_equivalence_raw_value_policy = "
         f'"{vector_backend_equivalence.raw_value_policy}"'
+    )
+    lines.append('  runtime_mixed_backend_equivalence = "passed"')
+    lines.append('  runtime_mixed_backend_equivalence_binding = "verified"')
+    lines.append(
+        "  runtime_mixed_backend_equivalence_runs = "
+        f'"{len(mixed_backend_equivalence.runs)}"'
+    )
+    lines.append(
+        "  runtime_mixed_backend_equivalence_comparisons = "
+        f'"{len(mixed_backend_equivalence.comparisons)}"'
+    )
+    lines.append(
+        "  runtime_mixed_backend_equivalence_raw_value_policy = "
+        f'"{mixed_backend_equivalence.raw_value_policy}"'
     )
     lines.append('  runtime_tensor_store_evidence = "passed"')
     lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')

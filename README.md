@@ -80,8 +80,9 @@ Current runtime surfaces:
 - Runtime Execution Evidence Bundle v0 packaging one coherent metadata-only
   execution evidence set for review.
 - Runtime Backend Equivalence v0 comparing `reference-cpu` against
-  `systolic-sim` and `vector-sim` placements without serialized tensor values,
-  with both proof slices bound into the Runtime Evidence Gate.
+  `systolic-sim`, `vector-sim`, and mixed `systolic-sim` plus `vector-sim`
+  placements without serialized tensor values, with all proof slices bound into
+  the Runtime Evidence Gate.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
@@ -99,6 +100,7 @@ examples/runtime_execution_receipt.py
 examples/runtime_execution_evidence_bundle.py
 examples/runtime_backend_equivalence.py
 examples/runtime_vector_backend_equivalence.py
+examples/runtime_mixed_backend_equivalence.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
 examples/source_intent_runtime_returns.py

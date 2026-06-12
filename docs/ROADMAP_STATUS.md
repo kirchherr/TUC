@@ -169,6 +169,16 @@ hardware-independent interface into capability-driven runtime planning.
   Equivalence evidence, verifying the expected `reference-cpu` versus
   `vector-sim` placement sequence and raw-value omission policy in CI-facing
   output.
+- Runtime Mixed Backend Equivalence evidence at
+  `examples/runtime_mixed_backend_equivalence.py` with deterministic golden
+  evidence at
+  `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`, proving a
+  `reference-cpu` baseline and a `systolic-sim` plus `vector-sim` candidate
+  compose in one graph while preserving terminal output semantics without
+  serialized tensor values.
+- Runtime Evidence Gate now requires and binds Runtime Mixed Backend
+  Equivalence evidence, verifying the expected heterogeneous accelerator
+  sequence and raw-value omission policy in CI-facing output.
 - Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
   explaining what runs, what is stored, what is public, what is hashed, what is
   never serialized, and which runtime gates must pass.
@@ -361,6 +371,9 @@ Current slice:
 - Runtime Vector Backend Equivalence at
   `examples/runtime_vector_backend_equivalence.py`, with golden evidence at
   `tests/golden/runtime_backend_equivalence/vector_sim_report.json`.
+- Runtime Mixed Backend Equivalence at
+  `examples/runtime_mixed_backend_equivalence.py`, with golden evidence at
+  `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`.
 - Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
   including accepted external-input metadata without tensor values.
@@ -423,9 +436,9 @@ Current slice:
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Backend
-  Equivalence, Runtime Vector Backend Equivalence, Runtime Tensor Store
-  Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
-  Contract, Runtime Public Output Bundle,
+  Equivalence, Runtime Vector Backend Equivalence, Runtime Mixed Backend
+  Equivalence, Runtime Tensor Store Evidence, Runtime Input Manifest, Runtime
+  Output Manifest, Runtime Output Contract, Runtime Public Output Bundle,
   Runtime Reference Correctness, Runtime Execution Receipt, Runtime Execution
   Evidence Bundle, and Source Intent Runtime Returns, with binding checks for
   the backend-equivalence fixture and the `source_intent_return_mlp` frontend
