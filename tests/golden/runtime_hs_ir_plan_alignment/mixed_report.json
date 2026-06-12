@@ -1,0 +1,107 @@
+{
+  "alignment_contract": "runtime_hs_ir_plan_alignment.data_only.v0",
+  "alignment_metadata_digest": "sha256:2971b39cd8ce3aca17b7ddfbde50ce81eeb1c3facd3626612faeea25ce6b46b2",
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "execution_trace_backend_sequence": [
+    "systolic-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim"
+  ],
+  "execution_trace_graph_name": "runtime_mixed_backend_equivalence",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "runtime_mixed_backend_equivalence",
+  "hs_ir_backend_sequence": [
+    "systolic-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim"
+  ],
+  "hs_ir_layout_conversion_count": 1,
+  "hs_ir_total_data_movement_bytes": 24,
+  "hs_ir_total_layout_conversion_bytes": 24,
+  "hs_ir_total_transfer_bytes": 0,
+  "hs_ir_transfer_edge_count": 0,
+  "issues": [],
+  "partition_backend_sequence": [
+    "systolic-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim"
+  ],
+  "partition_layout_conversion_count": 1,
+  "partition_plan_graph_name": "runtime_mixed_backend_equivalence",
+  "partition_total_data_movement_bytes": 24,
+  "partition_total_layout_conversion_bytes": 24,
+  "partition_total_transfer_bytes": 0,
+  "partition_transfer_edge_count": 0,
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.runtime_hs_ir_plan_alignment_report.v0",
+  "step_count": 4,
+  "steps": [
+    {
+      "alignment_status": "aligned",
+      "execution_trace_backend": "systolic-sim",
+      "hs_ir_backend": "systolic-sim",
+      "hs_ir_produced_layout": "blocked",
+      "layout_conversion_bytes": 0,
+      "operation_kind": "matmul",
+      "operation_name": "projection",
+      "partition_backend": "systolic-sim",
+      "partition_produced_layout": "blocked",
+      "transfer_bytes": 0,
+      "trusted_executor_status": "trusted"
+    },
+    {
+      "alignment_status": "aligned",
+      "execution_trace_backend": "vector-sim",
+      "hs_ir_backend": "vector-sim",
+      "hs_ir_produced_layout": "row_major",
+      "layout_conversion_bytes": 24,
+      "operation_kind": "softmax",
+      "operation_name": "normalize",
+      "partition_backend": "vector-sim",
+      "partition_produced_layout": "row_major",
+      "transfer_bytes": 0,
+      "trusted_executor_status": "trusted"
+    },
+    {
+      "alignment_status": "aligned",
+      "execution_trace_backend": "vector-sim",
+      "hs_ir_backend": "vector-sim",
+      "hs_ir_produced_layout": "row_major",
+      "layout_conversion_bytes": 0,
+      "operation_kind": "reduction",
+      "operation_name": "sum_rows",
+      "partition_backend": "vector-sim",
+      "partition_produced_layout": "row_major",
+      "transfer_bytes": 0,
+      "trusted_executor_status": "trusted"
+    },
+    {
+      "alignment_status": "aligned",
+      "execution_trace_backend": "vector-sim",
+      "hs_ir_backend": "vector-sim",
+      "hs_ir_produced_layout": "row_major",
+      "layout_conversion_bytes": 0,
+      "operation_kind": "elementwise",
+      "operation_name": "activation",
+      "partition_backend": "vector-sim",
+      "partition_produced_layout": "row_major",
+      "transfer_bytes": 0,
+      "trusted_executor_status": "trusted"
+    }
+  ],
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

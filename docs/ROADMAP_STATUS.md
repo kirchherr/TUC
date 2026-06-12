@@ -95,6 +95,12 @@ hardware-independent interface into capability-driven runtime planning.
   with deterministic golden evidence at
   `tests/golden/proofs/runtime_evidence_gate_matrix_coverage_report.json`, and
   Runtime Evidence Gate requires that audit to pass.
+- Runtime HS-IR Plan Alignment v0 binds HS-IR backend/layout decisions to the
+  accepted `PartitionPlan` and observed `RuntimeExecutionTrace` for the mixed
+  accelerator proof slice, with schema at
+  `schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json` and
+  deterministic golden evidence at
+  `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
@@ -789,6 +795,8 @@ Current focus:
 - Keep Allocation Plan reports bound to the Buffer Lifetime report evaluated by
   the same gate invocation before accepting allocator, memory-pool,
   device-allocation, or aliasing changes.
+- Use Runtime HS-IR Plan Alignment before treating backend-specific HS-IR facts
+  as practical execution evidence.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 

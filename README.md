@@ -89,6 +89,8 @@ Current runtime surfaces:
   Evidence Gate.
 - Runtime Backend Equivalence Portfolio Policy v0 declaring the accepted
   portfolio slice membership and backend-family coverage as data-only evidence.
+- Runtime HS-IR Plan Alignment v0 binding HS-IR backend/layout decisions to
+  the accepted `PartitionPlan` and observed `RuntimeExecutionTrace`.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
@@ -109,6 +111,7 @@ examples/runtime_backend_equivalence_portfolio.py
 examples/runtime_backend_equivalence_portfolio_policy.py
 examples/runtime_vector_backend_equivalence.py
 examples/runtime_mixed_backend_equivalence.py
+examples/runtime_hs_ir_plan_alignment.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
 examples/source_intent_runtime_returns.py
@@ -131,6 +134,7 @@ Key docs:
 - [Runtime Backend Equivalence](docs/RUNTIME_BACKEND_EQUIVALENCE.md)
 - [Runtime Backend Equivalence Portfolio](docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md)
 - [Runtime Evidence Gate Matrix Coverage](docs/RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
+- [Runtime HS-IR Plan Alignment](docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -149,6 +153,7 @@ schemas/runtime_backend_equivalence_report.v0.schema.json
 schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
 schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
 schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json
+schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json

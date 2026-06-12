@@ -98,6 +98,7 @@ Required artifacts:
 - `examples/runtime_backend_equivalence_portfolio_policy.py`
 - `examples/runtime_vector_backend_equivalence.py`
 - `examples/runtime_mixed_backend_equivalence.py`
+- `examples/runtime_hs_ir_plan_alignment.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
@@ -109,6 +110,7 @@ Required artifacts:
 - `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`
 - `tests/golden/runtime_backend_equivalence/portfolio_report.json`
 - `tests/golden/runtime_backend_equivalence/portfolio_policy_report.json`
+- `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -117,6 +119,7 @@ Required artifacts:
 - `docs/SYSTOLIC_SIMULATOR.md`
 - `docs/RUNTIME_EXECUTOR.md`
 - `docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md`
+- `docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md`
 
 Completed evidence:
 
@@ -221,6 +224,10 @@ Completed evidence:
 - Runtime Evidence Gate Matrix Coverage emits those exact Matrix graph/artifact
   bindings as a schema-versioned JSON audit and the Runtime Evidence Gate
   requires that audit to pass.
+- Runtime HS-IR Plan Alignment binds HS-IR backend/layout decisions to the
+  accepted `PartitionPlan` and observed `RuntimeExecutionTrace` for the mixed
+  accelerator proof slice without serializing tensor values or adding
+  execution surfaces.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.
@@ -449,6 +456,9 @@ Completed evidence:
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
   cross-domain transfer bytes.
+- Runtime HS-IR Plan Alignment proves the current mixed accelerator HS-IR,
+  runtime plan, and trusted execution trace agree on backend sequence,
+  produced layouts, and layout-conversion accounting.
 
 Next work:
 
