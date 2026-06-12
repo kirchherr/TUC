@@ -8,6 +8,9 @@ try:
     from examples.source_to_intent_research_diagnostics import (
         build_source_to_intent_research_diagnostic_cases,
     )
+    from examples.source_to_intent_research_execution_bridge import (
+        build_report as build_execution_bridge_report,
+    )
     from examples.source_to_intent_research_parser_conformance_gate import (
         REQUIRED_PARSER_SOURCE_NAMES,
     )
@@ -20,6 +23,9 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_diagnostics import (  # type: ignore[no-redef]
         build_source_to_intent_research_diagnostic_cases,
+    )
+    from source_to_intent_research_execution_bridge import (  # type: ignore[no-redef]
+        build_report as build_execution_bridge_report,
     )
     from source_to_intent_research_parser_conformance_gate import (  # type: ignore[no-redef]
         REQUIRED_PARSER_SOURCE_NAMES,
@@ -72,6 +78,7 @@ def build_gate_report(
     readiness_report: SourceToIntentReadinessReport | None = None,
     conformance_gate_text: str | None = None,
     diagnostics_report: SourceToIntentResearchDiagnosticsReport | None = None,
+    execution_bridge_text: str | None = None,
 ) -> str:
     """Return stable CI-facing parser research evidence binding."""
 
@@ -92,10 +99,21 @@ def build_gate_report(
         if diagnostics_report is None
         else diagnostics_report
     )
+    execution_bridge = (
+        build_execution_bridge_report()
+        if execution_bridge_text is None
+        else execution_bridge_text
+    )
     _assert_readiness_bound(readiness)
     _assert_conformance_gate_bound(conformance_text)
     _assert_diagnostics_bound(diagnostics)
-    return _render_gate_report(readiness, conformance_text, diagnostics)
+    _assert_execution_bridge_bound(execution_bridge)
+    return _render_gate_report(
+        readiness,
+        conformance_text,
+        diagnostics,
+        execution_bridge,
+    )
 
 
 def main() -> None:
@@ -204,10 +222,33 @@ def _assert_diagnostics_bound(report: SourceToIntentResearchDiagnosticsReport) -
         )
 
 
+def _assert_execution_bridge_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: execution bridge not text"
+        )
+    required_fragments = (
+        '"bridge_contract": "source_to_intent_research_execution_bridge.explicit.v0"',
+        '"source_boundary": "source_intent.v0_plain_data_reintake"',
+        '"status": "PASS"',
+        '"research_matmul_elementwise"',
+        '"research_softmax_reduction"',
+        '"raw_value_policy": "omitted_by_policy"',
+    )
+    for fragment in required_fragments:
+        if fragment not in text:
+            raise SourceToIntentResearchEvidenceGateError(
+                "source-to-intent research evidence gate failed: "
+                "execution bridge binding missing"
+            )
+    _assert_gate_text_is_source_free(text)
+
+
 def _render_gate_report(
     readiness: SourceToIntentReadinessReport,
     conformance_text: str,
     diagnostics: SourceToIntentResearchDiagnosticsReport,
+    execution_bridge_text: str,
 ) -> str:
     readiness_text = dump_source_to_intent_readiness_report(readiness)
     diagnostics_text = dump_source_to_intent_research_diagnostics_report(diagnostics)
@@ -224,6 +265,8 @@ def _render_gate_report(
     lines.append(f'  conformance_gate_digest = "{_digest(conformance_text)}"')
     lines.append('  diagnostics = "passed"')
     lines.append(f'  diagnostics_digest = "{_digest(diagnostics_text)}"')
+    lines.append('  execution_bridge = "passed"')
+    lines.append(f'  execution_bridge_digest = "{_digest(execution_bridge_text)}"')
     lines.append(f'  diagnostics_evidence = "{RESEARCH_DIAGNOSTICS_EVIDENCE_ID}"')
     lines.append(
         f'  parser_sources = "{",".join(REQUIRED_PARSER_SOURCE_NAMES)}"'

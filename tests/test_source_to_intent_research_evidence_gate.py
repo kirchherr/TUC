@@ -40,6 +40,7 @@ def test_source_to_intent_research_evidence_gate_matches_golden() -> None:
     assert 'readiness = "ready"' in report
     assert 'conformance_gate = "passed"' in report
     assert 'diagnostics = "passed"' in report
+    assert 'execution_bridge = "passed"' in report
     assert 'status = "PASS"' in report
 
 
@@ -54,6 +55,7 @@ def test_source_to_intent_research_evidence_gate_example_runs() -> None:
     assert completed.stdout == _GOLDEN.read_text(encoding="utf-8")
     assert "sha256:" in completed.stdout
     assert RESEARCH_DIAGNOSTICS_EVIDENCE_ID in completed.stdout
+    assert "execution_bridge_digest" in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "python_source" not in completed.stdout
     assert "source_intent_payload" not in completed.stdout
@@ -109,6 +111,14 @@ def test_source_to_intent_research_evidence_gate_rejects_tampered_conformance() 
         match="conformance gate binding missing",
     ):
         build_gate_report(conformance_gate_text='status = "PASS"\n')
+
+
+def test_source_to_intent_research_evidence_gate_rejects_tampered_execution_bridge() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="execution bridge binding missing",
+    ):
+        build_gate_report(execution_bridge_text='{"status": "PASS"}\n')
 
 
 def test_source_to_intent_research_evidence_gate_rejects_source_leakage() -> None:

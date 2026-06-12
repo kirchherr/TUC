@@ -407,6 +407,10 @@ hardware-independent interface into capability-driven runtime planning.
 - Source-To-Intent Research Evidence Gate now binds Research Readiness,
   Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest,
   making the accepted parser proof scope CI-facing and drift-resistant.
+- Source-To-Intent Research Execution Bridge now proves accepted parser output
+  can re-enter Source Intent Intake and reach controlled Runtime Executor plus
+  Runtime Reference Correctness evidence without parser compiler shortcuts or
+  raw tensor values.
 
 ## In Progress
 
@@ -680,6 +684,12 @@ Current slice:
   golden evidence at
   `tests/golden/frontend/source_to_intent_research_evidence_gate.txt`, binding
   readiness, conformance, and diagnostics by SHA-256 digest.
+- Source-To-Intent Research Execution Bridge at
+  `examples/source_to_intent_research_execution_bridge.py`, with schema at
+  `schemas/source_to_intent_research_execution_bridge_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_execution_bridge.json`, and
+  digest binding through Source-To-Intent Research Evidence Gate.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.

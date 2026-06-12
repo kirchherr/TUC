@@ -521,6 +521,9 @@ Deliverables:
   parser diagnostic evidence.
 - Source-To-Intent Research Evidence Gate binding readiness, conformance, and
   diagnostics by digest.
+- Source-To-Intent Research Execution Bridge proving accepted parser output can
+  reach controlled runtime execution only after Source Intent plain-data
+  re-intake.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -627,6 +630,11 @@ Go/No-Go:
 - Source-To-Intent Research Evidence Gate now binds Research Readiness,
   Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest
   before the current research parser scope counts as CI-facing proof evidence.
+- Source-To-Intent Research Execution Bridge now executes the accepted
+  `matmul -> elementwise` and `softmax -> reduction` parser slices through
+  Source Intent re-intake, metadata conversion, runtime planning, Runtime
+  Executor, and Runtime Reference Correctness without exposing raw values or
+  parser compiler shortcuts.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

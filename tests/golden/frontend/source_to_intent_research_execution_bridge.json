@@ -1,0 +1,94 @@
+{
+  "artifact_policy": "metadata_only_values_omitted",
+  "blocked_compiler_shortcuts": [
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "bridge_contract": "source_to_intent_research_execution_bridge.explicit.v0",
+  "case_count": 2,
+  "cases": [
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_matmul_elementwise",
+      "comparison_metadata_digest": "sha256:1efee0259f6565e2d2794cb4c271813621c75450423f994b6945935ed3e867e2",
+      "compiler_decision_digest": "sha256:0ef406110c3c2230f86e75d77e2baa5fcea1de1b24d3eab78686524c5ee026a8",
+      "execution_trace_digest": "sha256:d9ee6ed8ea961a6018b3171a73c46dd091d1e02b9796c728b79d78a36fe081ee",
+      "hac_ir_digest": "sha256:8ab8b459f7218ccee36a2bcee517b0fb4d5e4ad6f5da9ef605c2c9928f0b70c1",
+      "metadata_intake_digest": "sha256:b3ecbab4325452b9b338f5784e996583a0246e6a324ce59d59d61de8720b0204",
+      "metadata_report_digest": "sha256:f5afc0dfdde3084c1784220c6caa86c31a49b10b7ff755af37157aa4d8f02be9",
+      "operation_count": 2,
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "parser_report_digest": "sha256:d30b27123ce5e10b658841ed7d65a5f8ba9243d4f5c9f80751b857daf54dffbb",
+      "plain_data_digest": "sha256:20b83d9aebaf4b231ccb37c55171faef3ce258efb6fb0d8df422108fe1a7bb4f",
+      "raw_value_policy": "omitted_by_policy",
+      "readiness_digest": "sha256:29cd62aff9ed16f01eaddb8aeabc0875b977c521050e458faa7fd4dcf6f563db",
+      "reference_correctness_digest": "sha256:a8f0678065842d149f2c819e36d92b4b7baa9064b2c76faefe489f75c96dfec6",
+      "runtime_plan_digest": "sha256:5dd180f8fc6ca7256f42c8c0a2fb6ba08f3af65e000e70e7c97ace5cb5496c19",
+      "terminal_outputs": [
+        "activated"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_softmax_reduction",
+      "comparison_metadata_digest": "sha256:6a0a1b92ff8cecac5f7a701c327e7c53bf9fcba36b193587fd09a4948f35a90b",
+      "compiler_decision_digest": "sha256:fbd84b1ae72f9c6dc6ef03ec18c457800f4d929daecf51d0e62e40395907a51e",
+      "execution_trace_digest": "sha256:ed6ed4d8c27ba0fbc78917ee067c9091d7af52239bf58ebb47f61cecc40efc19",
+      "hac_ir_digest": "sha256:1cd6278a2fda577427be333eba6c9b095acf28ae9b3e06ea85b3bfba4f945207",
+      "metadata_intake_digest": "sha256:9772e36ac0dbbc4807d53d46d9d22e0feb625db096adf8b450a59aae901fa9bd",
+      "metadata_report_digest": "sha256:4a3c923b2edc37cf611467542d6438d0dfe9730d0ea583c3407d8ead546f6ecb",
+      "operation_count": 2,
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "parser_report_digest": "sha256:cb1a1907c67ed744a11a10d3f832766de69439474e4976e5eb9f4b4989f69d60",
+      "plain_data_digest": "sha256:564d02eea5ca680d08794fa746320371f8b189cc63047832b9360330af9aa457",
+      "raw_value_policy": "omitted_by_policy",
+      "readiness_digest": "sha256:d57573205564243d5572aade6fd27f7c33fdb547fe17980a71fd06fc91dfffce",
+      "reference_correctness_digest": "sha256:b7822b1cff26e2926b9b4f726f7c734ac468325557a3067e5d8112dc530a2f51",
+      "runtime_plan_digest": "sha256:739c830c015a9c6200e42c13a3987314f386b0db13001d55344b078aff3cf1f9",
+      "terminal_outputs": [
+        "row_sum"
+      ],
+      "trace_step_count": 2
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "input_policy": "accepted_research_parser_results_only",
+  "parser_output_policy": "source_intent.v0_plain_data_only",
+  "parser_sources": [
+    "research_matmul_elementwise",
+    "research_softmax_reduction"
+  ],
+  "parser_status": "research_explicit_only",
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.source_to_intent_research_execution_bridge_report.v0",
+  "source_boundary": "source_intent.v0_plain_data_reintake",
+  "status": "PASS"
+}

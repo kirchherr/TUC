@@ -28,6 +28,8 @@ passes the emitted plain data through the existing Source Intent Intake path.
   `examples/source_to_intent_research_diagnostics.py`
 - Evidence gate:
   [Source-To-Intent Research Evidence Gate](SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
+- Execution bridge:
+  [Source-To-Intent Research Execution Bridge](SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE.md)
 
 ## Supported Slice
 
@@ -71,6 +73,10 @@ diagnostic metadata. Rejection reasons are stable IDs, not raw exception text.
 Source-To-Intent Research Evidence Gate binds Research Readiness, Research
 Parser Conformance Gate, and Research Diagnostics by SHA-256 digest.
 
+Source-To-Intent Research Execution Bridge separately proves that accepted
+parser output can re-enter Source Intent Intake as plain data and reach
+controlled Runtime Executor evidence.
+
 ## Still Blocked
 
 The default source parser path remains closed by
@@ -95,6 +101,7 @@ Run:
 ```bash
 python examples/source_to_intent_research_parser.py
 python examples/source_to_intent_research_diagnostics.py
+python examples/source_to_intent_research_execution_bridge.py
 python examples/source_to_intent_research_evidence_gate.py
 ```
 
