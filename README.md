@@ -83,6 +83,9 @@ Current runtime surfaces:
   `systolic-sim`, `vector-sim`, and mixed `systolic-sim` plus `vector-sim`
   placements without serialized tensor values, with all proof slices bound into
   the Runtime Evidence Gate.
+- Mixed Runtime Tensor Store Evidence v0 proving the accepted
+  `systolic-sim -> vector-sim` plan produces read-only Runtime Value Records
+  with placement metadata and without serialized tensor values.
 - Runtime Backend Equivalence Portfolio v0 aggregating the systolic, vector,
   and mixed accelerator equivalence slices into one backend-diversity evidence
   artifact inventoried by Runtime Evidence Matrix and bound by the Runtime
@@ -105,6 +108,7 @@ CI-facing runtime evidence entry points:
 examples/runtime_evidence_gate.py
 examples/runtime_tensor_store_evidence.py
 examples/runtime_systolic_tensor_store_evidence.py
+examples/runtime_mixed_tensor_store_evidence.py
 examples/runtime_input_manifest.py
 examples/runtime_execution_receipt.py
 examples/runtime_execution_evidence_bundle.py

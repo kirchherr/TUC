@@ -206,6 +206,10 @@ Completed evidence:
 - Runtime Evidence Gate binds backend-equivalence reports back to their Matrix
   graph entries, so report-level pass status and proof-inventory coverage
   cannot drift apart.
+- Mixed Runtime Tensor Store Evidence now records the accepted
+  `systolic-sim -> vector-sim -> vector-sim -> vector-sim` plan as read-only
+  Runtime Value Record placement metadata, giving the mixed accelerator slice
+  an inspectable tensor-store proof without serialized tensor values.
 - Runtime Backend Equivalence Portfolio aggregates the systolic, vector, and
   mixed accelerator equivalence reports into one backend-diversity artifact and
   Runtime Evidence Gate binds that aggregate back to the exact reports checked

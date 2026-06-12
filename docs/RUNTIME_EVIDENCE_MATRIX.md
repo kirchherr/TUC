@@ -68,7 +68,8 @@ report at `schemas/runtime_reference_correctness_report.v0.schema.json`.
 The matrix records this as an evidence kind and artifact identifier; it does
 not claim that every identifier maps to a standalone checked-in JSON file.
 Standalone tensor-store goldens currently cover the executable runtime slices
-that produce Runtime Tensor Store reports.
+that produce Runtime Tensor Store reports, including the mixed accelerator
+slice.
 `output_contract` is backed by the schema-versioned
 [Runtime Output Contract](RUNTIME_OUTPUT_CONTRACT.md) report at
 `schemas/runtime_output_contract_report.v0.schema.json`.

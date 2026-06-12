@@ -203,6 +203,10 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`,
   showing planned `systolic-sim`, `device_sram`, and `blocked` value-record
   metadata without raw tensor values.
+- Mixed Runtime Tensor Store Evidence with deterministic golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/runtime_mixed_backend_equivalence.json`,
+  showing the accepted `systolic-sim -> vector-sim -> vector-sim -> vector-sim`
+  plan as read-only value-record placement metadata without raw tensor values.
 - Runtime Backend Equivalence v0 with schema at
   `schemas/runtime_backend_equivalence_report.v0.schema.json`, deterministic
   golden evidence at
@@ -433,6 +437,9 @@ Current slice:
 - Runtime Mixed Backend Equivalence at
   `examples/runtime_mixed_backend_equivalence.py`, with golden evidence at
   `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`.
+- Mixed Runtime Tensor Store Evidence at
+  `examples/runtime_mixed_tensor_store_evidence.py`, with golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/runtime_mixed_backend_equivalence.json`.
 - Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
   including accepted external-input metadata without tensor values.
