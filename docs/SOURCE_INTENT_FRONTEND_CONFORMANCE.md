@@ -78,12 +78,13 @@ The deterministic report is golden-tested at:
 tests/golden/frontend/source_intent_frontend_conformance_report.json
 ```
 
-This gives external frontend authors a repeatable review artifact before any
-future source-text parser targets Source Intent data.
+This gives external frontend authors a repeatable review artifact. Explicit
+source-text parser slices must still feed their output through this same
+conformance path before they can count as accepted frontend evidence.
 
 ## Still Blocked
 
-These remain future work:
+These remain blocked inside this conformance suite:
 
 - source text to Source Intent data
 - preflight report to Source Intent data

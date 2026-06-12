@@ -1,0 +1,61 @@
+# Source-To-Intent Research Parser Conformance Gate
+
+Source-To-Intent Research Parser Conformance Gate v0 proves that the explicit
+research parser output is accepted by the reusable Source Intent Frontend
+Conformance suite.
+
+It does not open the default source parser path.
+
+## Contract
+
+- Gate contract:
+  `source_to_intent_research_parser_conformance_gate.ci.v0`
+- Example:
+  `examples/source_to_intent_research_parser_conformance_gate.py`
+- Golden:
+  `tests/golden/frontend/source_to_intent_research_parser_conformance_gate.txt`
+- Tests:
+  `tests/test_source_to_intent_research_parser_conformance_gate.py`
+- CI entry: `.github/workflows/ci.yml`
+
+The gate passes only when:
+
+- the explicit research parser report status remains `research_explicit_only`
+- the default parser status remains `default_parser_blocked`
+- parser output policy remains `source_intent.v0_plain_data_only`
+- the parser-emitted `source_intent.v0` payload passes Source Intent Frontend
+  Conformance
+- required rejected payload cases fail closed at Source Intent Intake
+- metadata, `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime-plan, and
+  backend-decision outputs remain blocked at the parser report boundary
+
+## Current Coverage
+
+The first gate binds the `matmul -> elementwise` parser slice to Source Intent
+Frontend Conformance.
+
+`softmax -> reduction` parsing is covered by parser tests and corpus evidence,
+but is not yet included in this conformance gate because Source Intent Metadata
+Conversion does not yet carry operation axis attributes through Source Intent
+plain data. That axis-carrying contract should be added as a separate reviewed
+step.
+
+## Security Boundary
+
+The gate consumes in-memory parser results and conformance reports. It does not
+serialize raw source text, raw parser payloads, Python objects, file paths,
+environment variables, generated code, plugin entrypoints, runtime tensors,
+device handles, backend artifacts, or subprocess output.
+
+The output is deterministic text ending in `PASS`.
+
+## Review Meaning
+
+This gate is merge-time evidence that the explicit research parser is not a
+parallel frontend shortcut. Its output must survive Source Intent Intake,
+Source Intent Metadata Conversion, graph construction, return/payload
+validation, and neutral compiler planning through the reusable conformance
+suite.
+
+It is not a production parser approval, native performance claim, plugin
+certification runtime, or source-code execution path.

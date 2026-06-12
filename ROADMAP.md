@@ -515,6 +515,8 @@ Deliverables:
 - Source-To-Intent Readiness report for parser proposal evidence.
 - Explicit Source-To-Intent Research Parser for the first tiny source-buffer to
   `source_intent.v0` proof slice.
+- Source-To-Intent Research Parser Conformance Gate binding parser output to
+  the reusable Source Intent Frontend Conformance path.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -605,6 +607,10 @@ Go/No-Go:
   Triton-like source subset into validated `source_intent.v0` plain data while
   keeping the default parser path blocked and avoiding metadata, graph,
   runtime-plan, or backend-decision output.
+- Source-To-Intent Research Parser Conformance Gate now proves the
+  `matmul -> elementwise` parser output slice passes Source Intent Frontend
+  Conformance; `softmax -> reduction` awaits a separate Source Intent axis
+  metadata contract before entering that gate.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

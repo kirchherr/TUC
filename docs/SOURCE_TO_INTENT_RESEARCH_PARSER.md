@@ -18,6 +18,10 @@ passes the emitted plain data through the existing Source Intent Intake path.
 - Example: `examples/source_to_intent_research_parser.py`
 - Golden: `tests/golden/frontend/source_to_intent_research_parser.json`
 - Tests: `tests/test_source_to_intent_research_parser.py`
+- Conformance gate:
+  [Source-To-Intent Research Parser Conformance Gate](SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md)
+- Conformance gate example:
+  `examples/source_to_intent_research_parser_conformance_gate.py`
 
 ## Supported Slice
 
@@ -47,6 +51,11 @@ write generated artifacts, or emit compiler artifacts.
 The report serializes only metadata, source digest, counts, operation families,
 blocked surfaces, and the validated Source Intent plain-data payload. It does
 not serialize raw source text.
+
+The first conformance gate binds the `matmul -> elementwise` parser output to
+Source Intent Frontend Conformance. `softmax -> reduction` parser output remains
+unit-tested and corpus-backed, but needs a Source Intent axis attribute contract
+before it can pass the metadata/conformance path.
 
 ## Still Blocked
 

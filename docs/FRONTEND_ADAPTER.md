@@ -75,6 +75,10 @@ documents the first explicit source-buffer to `source_intent.v0` research
 parser slice. It emits only validated plain data and remains disconnected from
 metadata, `ComputeGraph`, IR, runtime-plan, and backend-decision output.
 
+[`SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md`](SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md)
+binds the first parser output slice to Source Intent Frontend Conformance and
+keeps the default parser path closed.
+
 [`SOURCE_TO_INTENT_READINESS.md`](SOURCE_TO_INTENT_READINESS.md) defines a
 deterministic report for reviewing whether a parser proposal has every required
 gate artifact. The default golden report intentionally remains blocked.

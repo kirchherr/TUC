@@ -12,6 +12,13 @@ def matmul_elementwise(a, b, y):
     tl.store(y, activated)
 """
 
+SOFTMAX_REDUCTION_SOURCE = """@triton.jit
+def softmax_reduction(x, y):
+    normalized = tl.softmax(x, axis=1)
+    row_sum = tl.sum(normalized, axis=1)
+    tl.store(y, row_sum)
+"""
+
 
 def main() -> None:
     result = parse_triton_source_to_source_intent(

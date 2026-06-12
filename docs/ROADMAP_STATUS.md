@@ -389,6 +389,11 @@ hardware-independent interface into capability-driven runtime planning.
   schema-versioned metadata-only report and deterministic golden evidence while
   keeping metadata, `ComputeGraph`, IR, runtime-plan, and backend-decision
   outputs blocked.
+- Source-To-Intent Research Parser Conformance Gate now binds the
+  `matmul -> elementwise` parser output slice to Source Intent Frontend
+  Conformance, with deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_parser_conformance_gate.txt`
+  and CI coverage in the `python` workflow job.
 
 ## In Progress
 
@@ -647,6 +652,10 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_parser.json`, and
   fail-closed tests for imports, decorator calls, ambiguous softmax axes,
   unsupported assignments, shape mismatches, and unknown shape manifest entries.
+- Source-To-Intent Research Parser Conformance Gate at
+  `examples/source_to_intent_research_parser_conformance_gate.py`, with golden
+  evidence at
+  `tests/golden/frontend/source_to_intent_research_parser_conformance_gate.txt`.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -878,6 +887,8 @@ Current focus:
 - Default source-to-intent parser intake remains blocked by
   [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md); the accepted
   research parser is explicit-only and must not become a compiler shortcut.
+- Add a Source Intent axis attribute contract before binding
+  `softmax -> reduction` parser output to Source Intent Frontend Conformance.
 - Future parser proposals must pass
   [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) before
   source text can influence compiler artifacts.

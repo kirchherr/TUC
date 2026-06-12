@@ -191,6 +191,8 @@ Current frontend surfaces:
 - Explicit Source-To-Intent Research Parser v0 for a tiny caller-provided
   Triton-like source subset that emits only validated `source_intent.v0` plain
   data.
+- Source-To-Intent Research Parser Conformance Gate proving the first parser
+  output slice passes the reusable Source Intent Frontend Conformance path.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
 - Source Intent Frontend Conformance Gate for CI-facing external frontend
@@ -221,6 +223,7 @@ examples/source_to_intent_corpus.py
 examples/source_to_intent_property_corpus.py
 examples/source_to_intent_parser_report.py
 examples/source_to_intent_research_parser.py
+examples/source_to_intent_research_parser_conformance_gate.py
 examples/source_to_intent_research_readiness.py
 examples/source_to_intent_parser_block_gate.py
 ```
@@ -238,6 +241,7 @@ Key docs:
 - [Source-to-Intent property corpus](docs/SOURCE_TO_INTENT_PROPERTY_CORPUS.md)
 - [Source-to-Intent parser report](docs/SOURCE_TO_INTENT_PARSER_REPORT.md)
 - [Source-to-Intent research parser](docs/SOURCE_TO_INTENT_RESEARCH_PARSER.md)
+- [Source-to-Intent research parser conformance gate](docs/SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)

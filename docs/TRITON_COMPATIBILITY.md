@@ -27,6 +27,7 @@ compatibility on day one.
 | Source-To-Intent Parser Gate | L0 | Default parser intake remains blocked, while the required RFC, budgets, corpus, diagnostics, goldens, neutrality review, and conformance evidence are defined for broader parser work. |
 | Source-To-Intent Readiness Report | L0 | Default parser intake remains blocked, while deterministic research readiness evidence now shows the proposal evidence set is complete. |
 | Source-To-Intent Research Parser | L1 | Explicit-only parser slice converts a tiny caller-provided Triton-like source subset into validated `source_intent.v0` plain data with metadata-only report evidence and no compiler artifacts. |
+| Source-To-Intent Research Parser Conformance Gate | L2 | Binds the `matmul -> elementwise` parser output slice to Source Intent Frontend Conformance while keeping default parser intake blocked. |
 | Source-To-Intent Parser Block Gate | L0 | CI-facing gate asserts the default source-to-intent parser path remains blocked and all required parser-readiness evidence is missing. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
@@ -87,6 +88,10 @@ compatibility on day one.
   emits only `source_intent.v0` plain data for a tiny explicit subset and does
   not produce metadata, `ComputeGraph`, IR, runtime plans, or backend
   decisions.
+- Source-To-Intent Research Parser Conformance Gate is documented in
+  [Source-To-Intent Research Parser Conformance Gate](SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md).
+  It proves the first parser output slice passes the reusable Source Intent
+  Frontend Conformance path.
 
 ## Next Step
 
