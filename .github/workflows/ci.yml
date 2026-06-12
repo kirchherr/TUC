@@ -53,6 +53,8 @@ jobs:
         run: python examples/source_intent_frontend_conformance_gate.py
       - name: Source-To-Intent research parser conformance gate
         run: python examples/source_to_intent_research_parser_conformance_gate.py
+      - name: Source-To-Intent research diagnostics
+        run: python examples/source_to_intent_research_diagnostics.py
       - name: Source-To-Intent parser block gate
         run: python examples/source_to_intent_parser_block_gate.py
       - name: Baseline benchmark smoke test

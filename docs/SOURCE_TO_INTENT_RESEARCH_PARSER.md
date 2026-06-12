@@ -22,6 +22,10 @@ passes the emitted plain data through the existing Source Intent Intake path.
   [Source-To-Intent Research Parser Conformance Gate](SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md)
 - Conformance gate example:
   `examples/source_to_intent_research_parser_conformance_gate.py`
+- Diagnostics:
+  [Source-To-Intent Research Diagnostics](SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md)
+- Diagnostics example:
+  `examples/source_to_intent_research_diagnostics.py`
 
 ## Supported Slice
 
@@ -58,6 +62,10 @@ The conformance gate binds both `matmul -> elementwise` and
 second slice uses neutral Source Intent `attributes.axis` metadata; no backend,
 device, memory-domain, or placement fact is introduced.
 
+Source-To-Intent Research Diagnostics separately executes the same accepted
+parser slices plus whitelisted rejected cases and emits only source-free
+diagnostic metadata. Rejection reasons are stable IDs, not raw exception text.
+
 ## Still Blocked
 
 The default source parser path remains closed by
@@ -73,6 +81,7 @@ This parser does not change the blocked status of:
 - source-to-`ComputeGraph` shortcuts
 - source-to-HAC-IR shortcuts
 - backend or device selection from source text
+- raw parser diagnostics or exception text in review artifacts
 
 ## Evidence
 
@@ -80,6 +89,7 @@ Run:
 
 ```bash
 python examples/source_to_intent_research_parser.py
+python examples/source_to_intent_research_diagnostics.py
 ```
 
 Expected report fields:

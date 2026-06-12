@@ -401,6 +401,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Source Intent Axis Attributes are documented at
   `docs/SOURCE_INTENT_AXIS_ATTRIBUTES.md` and accepted by
   `rfcs/0157-source-intent-axis-attributes.md`.
+- Source-To-Intent Research Diagnostics now checks the accepted research parser
+  slices and whitelisted rejected source cases with source-free diagnostic
+  reason IDs, deterministic golden evidence, and CI coverage.
 
 ## In Progress
 
@@ -663,6 +666,12 @@ Current slice:
   `examples/source_to_intent_research_parser_conformance_gate.py`, with golden
   evidence at
   `tests/golden/frontend/source_to_intent_research_parser_conformance_gate.txt`.
+- Source-To-Intent Research Diagnostics at
+  `examples/source_to_intent_research_diagnostics.py`, with schema at
+  `schemas/source_to_intent_research_diagnostics_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_diagnostics_report.json`,
+  and source-free rejection reason IDs for accepted/rejected parser cases.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -896,6 +905,9 @@ Current focus:
   research parser is explicit-only and must not become a compiler shortcut.
 - Add future parser syntax only after each new Source Intent semantic attribute
   has its own intake, metadata-conversion, conformance, and golden evidence.
+- Extend Source-To-Intent Research Diagnostics with source-free accepted and
+  rejected cases before any parser syntax expands beyond the current research
+  subset.
 - Future parser proposals must pass
   [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) before
   source text can influence compiler artifacts.

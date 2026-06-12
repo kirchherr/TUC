@@ -517,6 +517,8 @@ Deliverables:
   `source_intent.v0` proof slice.
 - Source-To-Intent Research Parser Conformance Gate binding parser output to
   the reusable Source Intent Frontend Conformance path.
+- Source-To-Intent Research Diagnostics for source-free accepted/rejected
+  parser diagnostic evidence.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -591,6 +593,9 @@ Go/No-Go:
   parser intake still blocked.
 - Source-to-intent parser proposals must pass the Source-To-Intent Readiness
   report before source text can influence compiler artifacts.
+- Parser expansions must extend Source-To-Intent Research Diagnostics with
+  source-free accepted and rejected evidence before the expanded syntax counts
+  as accepted research parser scope.
 - Source-To-Intent Research Readiness now tracks the first narrow parser
   research proposal as complete proposal evidence while keeping the default
   parser block intact.
@@ -614,6 +619,9 @@ Go/No-Go:
 - Source Intent Axis Attributes now define neutral `attributes.axis` semantics
   for `softmax` and `reduction`, including intake validation, metadata
   conversion, schema documentation, and parser-conformance evidence.
+- Source-To-Intent Research Diagnostics now binds the accepted parser slices
+  and whitelisted rejected source cases to deterministic source-free diagnostic
+  evidence with stable rejection reason IDs.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

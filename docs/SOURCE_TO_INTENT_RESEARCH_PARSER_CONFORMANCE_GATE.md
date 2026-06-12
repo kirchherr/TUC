@@ -17,6 +17,8 @@ It does not open the default source parser path.
 - Tests:
   `tests/test_source_to_intent_research_parser_conformance_gate.py`
 - CI entry: `.github/workflows/ci.yml`
+- Related diagnostics:
+  [Source-To-Intent Research Diagnostics](SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md)
 
 The gate passes only when:
 
@@ -57,6 +59,10 @@ parallel frontend shortcut. Its output must survive Source Intent Intake,
 Source Intent Metadata Conversion, graph construction, return/payload
 validation, and neutral compiler planning through the reusable conformance
 suite.
+
+Source-To-Intent Research Diagnostics complements this gate by checking that
+the same accepted parser scope and its rejected source cases produce stable,
+source-free diagnostic evidence with whitelisted rejection reasons.
 
 It is not a production parser approval, native performance claim, plugin
 certification runtime, or source-code execution path.
