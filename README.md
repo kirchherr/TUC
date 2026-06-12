@@ -83,6 +83,9 @@ Current runtime surfaces:
   `systolic-sim`, `vector-sim`, and mixed `systolic-sim` plus `vector-sim`
   placements without serialized tensor values, with all proof slices bound into
   the Runtime Evidence Gate.
+- Runtime Backend Equivalence Portfolio v0 aggregating the systolic, vector,
+  and mixed accelerator equivalence slices into one backend-diversity evidence
+  artifact bound by the Runtime Evidence Gate.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
@@ -99,6 +102,7 @@ examples/runtime_input_manifest.py
 examples/runtime_execution_receipt.py
 examples/runtime_execution_evidence_bundle.py
 examples/runtime_backend_equivalence.py
+examples/runtime_backend_equivalence_portfolio.py
 examples/runtime_vector_backend_equivalence.py
 examples/runtime_mixed_backend_equivalence.py
 examples/runtime_output_contract.py
@@ -121,6 +125,7 @@ Key docs:
 - [Runtime Execution Receipt](docs/RUNTIME_EXECUTION_RECEIPT.md)
 - [Runtime Execution Evidence Bundle](docs/RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md)
 - [Runtime Backend Equivalence](docs/RUNTIME_BACKEND_EQUIVALENCE.md)
+- [Runtime Backend Equivalence Portfolio](docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -136,6 +141,7 @@ schemas/runtime_input_manifest_report.v0.schema.json
 schemas/runtime_execution_receipt_report.v0.schema.json
 schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 schemas/runtime_backend_equivalence_report.v0.schema.json
+schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json

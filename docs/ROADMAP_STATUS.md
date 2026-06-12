@@ -62,6 +62,16 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Gate now binds each backend-equivalence report to its Runtime
   Evidence Matrix graph entry, verifying scoped `backend_equivalence` inventory
   coverage before the report can count as passing gate evidence.
+- Runtime Backend Equivalence Portfolio v0 aggregates the systolic, vector, and
+  mixed accelerator equivalence slices into one schema-versioned
+  backend-diversity artifact at
+  `schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json`, with
+  deterministic golden evidence at
+  `tests/golden/runtime_backend_equivalence/portfolio_report.json`.
+- Runtime Evidence Gate now binds the Backend Equivalence Portfolio back to the
+  exact three equivalence reports checked during the same gate invocation,
+  verifying slice IDs, run IDs, backend sequences, comparison metadata digests,
+  backend families, pass status, and raw-value omission policy.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
@@ -185,6 +195,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Gate now requires and binds Runtime Mixed Backend
   Equivalence evidence, verifying the expected heterogeneous accelerator
   sequence and raw-value omission policy in CI-facing output.
+- Runtime Backend Equivalence Portfolio aggregates the systolic, vector, and
+  mixed equivalence reports into one backend-diversity evidence artifact and is
+  itself bound by Runtime Evidence Gate.
 - Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
   explaining what runs, what is stored, what is public, what is hashed, what is
   never serialized, and which runtime gates must pass.

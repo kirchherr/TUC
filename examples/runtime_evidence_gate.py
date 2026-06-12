@@ -18,6 +18,8 @@ from examples.source_intent_runtime_returns import run_evidence as run_runtime_r
 from tuc import (
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     SOURCE_INTENT_RUNTIME_RETURNS_CONTRACT,
+    RuntimeBackendEquivalencePortfolioReport,
+    RuntimeBackendEquivalencePortfolioSlice,
     RuntimeBackendEquivalenceReport,
     RuntimeEvidenceGraph,
     RuntimeEvidenceMatrixReport,
@@ -32,6 +34,7 @@ from tuc import (
     RuntimeTensorStoreEvidenceReport,
     SourceIntentRuntimeReturnsReport,
     build_current_runtime_evidence_matrix_report,
+    build_runtime_backend_equivalence_portfolio_report,
     build_runtime_execution_evidence_bundle_report,
     run_runtime_executor_conformance,
 )
@@ -78,6 +81,11 @@ RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS = (
     "vector-sim",
     "vector-sim",
 )
+RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID = "runtime_backend_equivalence_portfolio"
+RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_BACKEND_FAMILIES = (
+    "systolic-sim",
+    "vector-sim",
+)
 
 
 class RuntimeEvidenceGateError(AssertionError):
@@ -93,6 +101,9 @@ def build_gate_report(
         RuntimeBackendEquivalenceReport | None
     ) = None,
     mixed_backend_equivalence_report: RuntimeBackendEquivalenceReport | None = None,
+    backend_equivalence_portfolio_report: (
+        RuntimeBackendEquivalencePortfolioReport | None
+    ) = None,
     execution_evidence_bundle_report: (
         RuntimeExecutionEvidenceBundleReport | None
     ) = None,
@@ -133,6 +144,18 @@ def build_gate_report(
         build_mixed_backend_equivalence_report()
         if mixed_backend_equivalence_report is None
         else mixed_backend_equivalence_report
+    )
+    backend_equivalence_portfolio = (
+        build_runtime_backend_equivalence_portfolio_report(
+            RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
+            (
+                backend_equivalence,
+                vector_backend_equivalence,
+                mixed_backend_equivalence,
+            ),
+        )
+        if backend_equivalence_portfolio_report is None
+        else backend_equivalence_portfolio_report
     )
     tensor_store = (
         build_tensor_store_evidence_report()
@@ -229,6 +252,14 @@ def build_gate_report(
         mixed_backend_equivalence,
         label="runtime mixed backend equivalence",
     )
+    _assert_backend_equivalence_portfolio_passed(
+        backend_equivalence_portfolio,
+        (
+            backend_equivalence,
+            vector_backend_equivalence,
+            mixed_backend_equivalence,
+        ),
+    )
     _assert_tensor_store_evidence_passed(tensor_store)
     _assert_input_manifest_passed(input_manifest)
     _assert_output_manifest_passed(output_manifest)
@@ -263,6 +294,7 @@ def build_gate_report(
         backend_equivalence,
         vector_backend_equivalence,
         mixed_backend_equivalence,
+        backend_equivalence_portfolio,
         tensor_store,
         input_manifest,
         output_manifest,
@@ -391,6 +423,104 @@ def _assert_backend_equivalence_matrix_covered(
         raise RuntimeEvidenceGateError(
             f"{label} matrix coverage failed: missing {missing}"
         )
+
+
+def _assert_backend_equivalence_portfolio_passed(
+    report: RuntimeBackendEquivalencePortfolioReport,
+    expected_reports: tuple[RuntimeBackendEquivalenceReport, ...],
+) -> None:
+    if not isinstance(report, RuntimeBackendEquivalencePortfolioReport):
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio failed: not a report object"
+        )
+    if report.issues:
+        issues = ",".join(
+            f"{issue.slice_id}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(
+            f"runtime backend equivalence portfolio failed: {issues}"
+        )
+    if report.portfolio_id != RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio binding failed: "
+            "portfolio_id_mismatch"
+        )
+    if report.slice_count != len(expected_reports):
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio binding failed: "
+            "slice_count_mismatch"
+        )
+    if report.candidate_backend_families != (
+        RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_BACKEND_FAMILIES
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio binding failed: "
+            "backend_family_mismatch"
+        )
+    if report.raw_value_policy != "omitted_by_policy":
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio binding failed: "
+            "raw_value_policy_mismatch"
+        )
+    expected_slice_ids = tuple(
+        expected_report.graph_name for expected_report in expected_reports
+    )
+    actual_slice_ids = tuple(slice_.slice_id for slice_ in report.slices)
+    if actual_slice_ids != expected_slice_ids:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio binding failed: "
+            "slice_id_mismatch"
+        )
+    for slice_, expected_report in zip(
+        report.slices,
+        expected_reports,
+        strict=True,
+    ):
+        _assert_backend_equivalence_portfolio_slice_bound(slice_, expected_report)
+
+
+def _assert_backend_equivalence_portfolio_slice_bound(
+    slice_: RuntimeBackendEquivalencePortfolioSlice,
+    expected_report: RuntimeBackendEquivalenceReport,
+) -> None:
+    runs = {run.run_id: run for run in expected_report.runs}
+    baseline = runs.get(expected_report.baseline_run_id)
+    candidate = runs.get(expected_report.candidate_run_id)
+    if baseline is None or candidate is None:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio binding failed: "
+            "missing_expected_run"
+        )
+    expected = {
+        "slice_id": expected_report.graph_name,
+        "graph_name": expected_report.graph_name,
+        "baseline_run_id": expected_report.baseline_run_id,
+        "candidate_run_id": expected_report.candidate_run_id,
+        "baseline_backend_sequence": baseline.planned_backend_sequence,
+        "candidate_backend_sequence": candidate.planned_backend_sequence,
+        "comparison_count": len(expected_report.comparisons),
+        "comparison_metadata_digest": expected_report.comparison_metadata_digest,
+        "passed": expected_report.passed,
+        "raw_value_policy": expected_report.raw_value_policy,
+    }
+    actual = {
+        "slice_id": slice_.slice_id,
+        "graph_name": slice_.graph_name,
+        "baseline_run_id": slice_.baseline_run_id,
+        "candidate_run_id": slice_.candidate_run_id,
+        "baseline_backend_sequence": slice_.baseline_backend_sequence,
+        "candidate_backend_sequence": slice_.candidate_backend_sequence,
+        "comparison_count": slice_.comparison_count,
+        "comparison_metadata_digest": slice_.comparison_metadata_digest,
+        "passed": slice_.passed,
+        "raw_value_policy": slice_.raw_value_policy,
+    }
+    for field_name, expected_value in expected.items():
+        if actual[field_name] != expected_value:
+            raise RuntimeEvidenceGateError(
+                "runtime backend equivalence portfolio binding failed: "
+                f"{expected_report.graph_name}:{field_name}_mismatch"
+            )
 
 
 def _assert_tensor_store_evidence_passed(
@@ -752,6 +882,7 @@ def _render_gate_report(
     backend_equivalence: RuntimeBackendEquivalenceReport,
     vector_backend_equivalence: RuntimeBackendEquivalenceReport,
     mixed_backend_equivalence: RuntimeBackendEquivalenceReport,
+    backend_equivalence_portfolio: RuntimeBackendEquivalencePortfolioReport,
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
@@ -808,6 +939,20 @@ def _render_gate_report(
     lines.append(
         "  runtime_mixed_backend_equivalence_raw_value_policy = "
         f'"{mixed_backend_equivalence.raw_value_policy}"'
+    )
+    lines.append('  runtime_backend_equivalence_portfolio = "passed"')
+    lines.append('  runtime_backend_equivalence_portfolio_binding = "verified"')
+    lines.append(
+        "  runtime_backend_equivalence_portfolio_slices = "
+        f'"{backend_equivalence_portfolio.slice_count}"'
+    )
+    lines.append(
+        "  runtime_backend_equivalence_portfolio_backend_families = "
+        f'"{",".join(backend_equivalence_portfolio.candidate_backend_families)}"'
+    )
+    lines.append(
+        "  runtime_backend_equivalence_portfolio_raw_value_policy = "
+        f'"{backend_equivalence_portfolio.raw_value_policy}"'
     )
     lines.append('  runtime_tensor_store_evidence = "passed"')
     lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')

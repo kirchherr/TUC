@@ -32,6 +32,7 @@ from examples.source_intent_runtime_returns import (
 )
 from tuc import (
     RuntimeBackendEquivalenceIssue,
+    RuntimeBackendEquivalencePortfolioReport,
     RuntimeBackendEquivalenceReport,
     RuntimeEvidenceArtifact,
     RuntimeEvidenceGraph,
@@ -53,6 +54,7 @@ from tuc import (
     RuntimeTensorStoreEvidenceIssue,
     RuntimeTensorStoreEvidenceReport,
     build_current_runtime_evidence_matrix_report,
+    build_runtime_backend_equivalence_portfolio_report,
     build_runtime_evidence_matrix_report,
     build_runtime_execution_evidence_bundle_report,
 )
@@ -94,6 +96,15 @@ def test_runtime_evidence_gate_example_runs() -> None:
         'runtime_mixed_backend_equivalence_matrix = "covered"'
         in completed.stdout
     )
+    assert 'runtime_backend_equivalence_portfolio = "passed"' in completed.stdout
+    assert (
+        'runtime_backend_equivalence_portfolio_binding = "verified"'
+        in completed.stdout
+    )
+    assert (
+        'runtime_backend_equivalence_portfolio_backend_families = '
+        '"systolic-sim,vector-sim"'
+    ) in completed.stdout
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
     assert 'runtime_input_manifest = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
@@ -359,6 +370,84 @@ def test_runtime_evidence_gate_rejects_broadened_backend_equivalence_matrix_scop
         match="mixed backend equivalence matrix coverage",
     ):
         build_gate_report(matrix_report=broadened_mixed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_failed_backend_equivalence_portfolio() -> None:
+    vector_report = build_vector_backend_equivalence_report()
+    candidate = replace(
+        vector_report.runs[1],
+        planned_backend_sequence=vector_report.runs[0].planned_backend_sequence,
+    )
+    failed_vector = RuntimeBackendEquivalenceReport(
+        graph_name=vector_report.graph_name,
+        baseline_run_id=vector_report.baseline_run_id,
+        candidate_run_id=vector_report.candidate_run_id,
+        runs=(vector_report.runs[0], candidate),
+        comparisons=vector_report.comparisons,
+        issues=(
+            RuntimeBackendEquivalenceIssue(
+                subject="backend_sequence",
+                issue_code="backend_sequences_not_distinct",
+            ),
+        ),
+    )
+    failed_portfolio = build_runtime_backend_equivalence_portfolio_report(
+        "runtime_backend_equivalence_portfolio",
+        (
+            build_backend_equivalence_report(),
+            failed_vector,
+            build_mixed_backend_equivalence_report(),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio failed",
+    ):
+        build_gate_report(backend_equivalence_portfolio_report=failed_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_unbound_backend_equivalence_portfolio() -> None:
+    subportfolio = build_runtime_backend_equivalence_portfolio_report(
+        "runtime_backend_equivalence_portfolio",
+        (
+            build_backend_equivalence_report(),
+            build_mixed_backend_equivalence_report(),
+        ),
+    )
+
+    assert subportfolio.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio binding",
+    ):
+        build_gate_report(backend_equivalence_portfolio_report=subportfolio)
+
+
+def test_runtime_evidence_gate_rejects_forged_backend_equivalence_portfolio_slice() -> None:
+    report = build_runtime_backend_equivalence_portfolio_report(
+        "runtime_backend_equivalence_portfolio",
+        (
+            build_backend_equivalence_report(),
+            build_vector_backend_equivalence_report(),
+            build_mixed_backend_equivalence_report(),
+        ),
+    )
+    forged = RuntimeBackendEquivalencePortfolioReport(
+        portfolio_id=report.portfolio_id,
+        slices=(
+            replace(report.slices[0], graph_name="other_backend_equivalence"),
+            *report.slices[1:],
+        ),
+        issues=(),
+    )
+
+    assert forged.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio binding",
+    ):
+        build_gate_report(backend_equivalence_portfolio_report=forged)
 
 
 def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:

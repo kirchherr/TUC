@@ -94,6 +94,7 @@ Required artifacts:
 - `examples/proof_of_systolic_execution.py`
 - `examples/systolic_manifest_path.py`
 - `examples/runtime_backend_equivalence.py`
+- `examples/runtime_backend_equivalence_portfolio.py`
 - `examples/runtime_vector_backend_equivalence.py`
 - `examples/runtime_mixed_backend_equivalence.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
@@ -105,6 +106,7 @@ Required artifacts:
 - `tests/golden/runtime_backend_equivalence/current_report.json`
 - `tests/golden/runtime_backend_equivalence/vector_sim_report.json`
 - `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`
+- `tests/golden/runtime_backend_equivalence/portfolio_report.json`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -112,6 +114,7 @@ Required artifacts:
 - `docs/PROOF_OF_EXECUTION.md`
 - `docs/SYSTOLIC_SIMULATOR.md`
 - `docs/RUNTIME_EXECUTOR.md`
+- `docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md`
 
 Completed evidence:
 
@@ -198,6 +201,10 @@ Completed evidence:
 - Runtime Evidence Gate binds backend-equivalence reports back to their Matrix
   graph entries, so report-level pass status and proof-inventory coverage
   cannot drift apart.
+- Runtime Backend Equivalence Portfolio aggregates the systolic, vector, and
+  mixed accelerator equivalence reports into one backend-diversity artifact and
+  Runtime Evidence Gate binds that aggregate back to the exact reports checked
+  in the same invocation.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

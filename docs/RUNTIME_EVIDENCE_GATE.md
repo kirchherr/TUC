@@ -2,7 +2,8 @@
 
 Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
-Evidence, Runtime Backend Equivalence evidence, Runtime Input Manifest
+Evidence, Runtime Backend Equivalence and Backend Equivalence Portfolio
+evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
@@ -18,6 +19,7 @@ It runs:
 - `build_backend_equivalence_report()`
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
+- `build_runtime_backend_equivalence_portfolio_report()`
 - `build_tensor_store_evidence_report()`
 - `build_input_manifest_report()`
 - `build_output_manifest_report()`
@@ -61,6 +63,11 @@ The gate passes only when:
 - Runtime Mixed Backend Equivalence matrix coverage passes, proving the checked
   report is inventoried by the Runtime Evidence Matrix as scoped
   `backend_equivalence` evidence
+- Runtime Backend Equivalence Portfolio passes across the systolic, vector, and
+  mixed accelerator proof slices
+- Runtime Backend Equivalence Portfolio binding passes, proving the aggregate
+  portfolio is built from the exact Backend Equivalence reports evaluated by
+  this gate invocation
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
 - Runtime Input Manifest passes for accepted graph external inputs
@@ -136,6 +143,12 @@ Runtime Backend Equivalence schema:
 schemas/runtime_backend_equivalence_report.v0.schema.json
 ```
 
+Runtime Backend Equivalence Portfolio schema:
+
+```text
+schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
+```
+
 Source Intent Runtime Returns schema:
 
 ```text
@@ -192,6 +205,13 @@ It composes bounded in-repository checks:
 - a bounded Runtime Mixed Backend Equivalence matrix lookup that verifies graph
   family, source boundary, required artifact kinds, completeness, and
   `backend_equivalence` artifact coverage
+- data-only Runtime Backend Equivalence Portfolio metadata aggregating the
+  systolic, vector, and mixed accelerator equivalence slices with raw tensor
+  values omitted by policy
+- a bounded Runtime Backend Equivalence Portfolio binding check that compares
+  slice IDs, graph names, run IDs, backend sequences, comparison counts,
+  comparison metadata digests, pass status, candidate backend families, and
+  raw-value policy against the reports already checked by the gate
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
 - data-only Runtime Input Manifest metadata for accepted graph external inputs
