@@ -90,6 +90,7 @@ CI-facing runtime evidence entry points:
 ```text
 examples/runtime_evidence_gate.py
 examples/runtime_tensor_store_evidence.py
+examples/runtime_systolic_tensor_store_evidence.py
 examples/runtime_input_manifest.py
 examples/runtime_execution_receipt.py
 examples/runtime_execution_evidence_bundle.py

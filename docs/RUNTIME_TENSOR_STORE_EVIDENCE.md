@@ -33,6 +33,12 @@ The deterministic example is:
 python examples/runtime_tensor_store_evidence.py
 ```
 
+The systolic placement example is:
+
+```bash
+python examples/runtime_systolic_tensor_store_evidence.py
+```
+
 The CI-facing composition point is:
 
 ```bash
@@ -44,6 +50,16 @@ Its golden evidence is:
 ```text
 tests/golden/runtime_tensor_store_evidence/proof_of_execution.json
 ```
+
+The systolic placement golden is:
+
+```text
+tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json
+```
+
+The Runtime Evidence Matrix inventories `tensor_store_evidence` for every
+accepted graph as a review evidence kind. Standalone JSON goldens are added for
+runtime slices once that graph has an executable Runtime Tensor Store report.
 
 The gate golden is:
 

@@ -46,6 +46,10 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "input_manifest" in graph.present_artifact_kinds for graph in report.graphs
     )
     assert all(
+        "tensor_store_evidence" in graph.present_artifact_kinds
+        for graph in report.graphs
+    )
+    assert all(
         "output_contract" in graph.present_artifact_kinds for graph in report.graphs
     )
     assert all(
@@ -88,6 +92,7 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert "runtime_evidence_matrix.data_only.v0" in completed.stdout
     assert '"runtime_evidence_matrix_complete": true' in completed.stdout
     assert '"input_manifest"' in completed.stdout
+    assert '"tensor_store_evidence"' in completed.stdout
     assert '"output_contract"' in completed.stdout
     assert '"public_output_bundle"' in completed.stdout
     assert '"execution_receipt"' in completed.stdout
@@ -224,6 +229,7 @@ def test_runtime_evidence_required_artifact_order_is_stable() -> None:
         "compiler_decision_golden",
         "execution_readiness_golden",
         "execution_trace_golden",
+        "tensor_store_evidence",
         "input_manifest",
         "output_contract",
         "public_output_bundle",

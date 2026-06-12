@@ -106,8 +106,8 @@ hardware-independent interface into capability-driven runtime planning.
   invocation.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
-  deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace
-  goldens, and Runtime Evidence Matrix coverage.
+  deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace/
+  tensor-store-evidence goldens, and Runtime Evidence Matrix coverage.
 - Systolic capability manifest path proving that `systolic-sim` can enter TUC
   as explicit JSON capability data for planning while execution remains gated
   by the trusted Runtime Executor registry.
@@ -148,6 +148,10 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`, and
   Runtime Evidence Gate coverage with raw tensor values omitted by policy and
   placement metadata checked against the accepted `PartitionPlan`.
+- Systolic Runtime Tensor Store Evidence with deterministic golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`,
+  showing planned `systolic-sim`, `device_sram`, and `blocked` value-record
+  metadata without raw tensor values.
 - Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
   explaining what runs, what is stored, what is public, what is hashed, what is
   never serialized, and which runtime gates must pass.
@@ -224,6 +228,12 @@ hardware-independent interface into capability-driven runtime planning.
   Gate coverage and `schemas/runtime_input_manifest_report.v0.schema.json`,
   with the decision captured in
   `rfcs/0125-runtime-evidence-matrix-input-manifest.md`.
+- Runtime Evidence Matrix now treats `tensor_store_evidence` as required graph
+  evidence, aligning planned runtime value-record placement metadata with graph
+  evidence completeness and
+  `schemas/runtime_tensor_store_evidence_report.v0.schema.json`, with the
+  decision captured in
+  `rfcs/0135-runtime-evidence-matrix-tensor-store-evidence.md`.
 - Runtime Evidence Matrix now treats `execution_receipt` as required graph
   evidence, aligning linked runtime execution evidence with Runtime Evidence
   Gate coverage and
@@ -319,7 +329,11 @@ Current slice:
 - Runtime Tensor Store Evidence at `examples/runtime_tensor_store_evidence.py`,
   with golden evidence at
   `tests/golden/runtime_tensor_store_evidence/proof_of_execution.json`,
-  including producer-kind and producer-id metadata without tensor values.
+  including producer-kind, producer-id, and planned placement metadata without
+  tensor values.
+- Systolic Runtime Tensor Store Evidence at
+  `examples/runtime_systolic_tensor_store_evidence.py`, with golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`.
 - Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
   including accepted external-input metadata without tensor values.

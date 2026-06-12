@@ -168,6 +168,9 @@ Completed evidence:
   placement and `blocked -> row_major` layout conversion, executes through the
   trusted runtime executor, and validates against independent reference
   semantics.
+- Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
+  value-record metadata for the `systolic-sim` output while keeping raw values
+  omitted by policy.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

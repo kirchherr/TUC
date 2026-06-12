@@ -46,6 +46,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_abstraction_tensor_store_evidence",
+          "artifact_kind": "tensor_store_evidence",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_abstraction_input_manifest",
           "artifact_kind": "input_manifest",
           "artifact_status": "present"
@@ -107,6 +112,11 @@
         {
           "artifact_id": "proof_of_reduction_trace",
           "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_reduction_tensor_store_evidence",
+          "artifact_kind": "tensor_store_evidence",
           "artifact_status": "present"
         },
         {
@@ -174,6 +184,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_softmax_tensor_store_evidence",
+          "artifact_kind": "tensor_store_evidence",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_softmax_input_manifest",
           "artifact_kind": "input_manifest",
           "artifact_status": "present"
@@ -235,6 +250,11 @@
         {
           "artifact_id": "proof_of_execution_trace",
           "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "proof_of_execution_tensor_store_evidence",
+          "artifact_kind": "tensor_store_evidence",
           "artifact_status": "present"
         },
         {
@@ -302,6 +322,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "proof_of_systolic_execution_tensor_store_evidence",
+          "artifact_kind": "tensor_store_evidence",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "proof_of_systolic_execution_input_manifest",
           "artifact_kind": "input_manifest",
           "artifact_status": "present"
@@ -363,6 +388,11 @@
         {
           "artifact_id": "triton_metadata_mvp_families_trace",
           "artifact_kind": "execution_trace_golden",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "triton_metadata_mvp_families_tensor_store_evidence",
+          "artifact_kind": "tensor_store_evidence",
           "artifact_status": "present"
         },
         {
@@ -440,6 +470,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "source_intent_return_mlp_tensor_store_evidence",
+          "artifact_kind": "tensor_store_evidence",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "source_intent_return_mlp_input_manifest",
           "artifact_kind": "input_manifest",
           "artifact_status": "present"
@@ -480,6 +515,7 @@
     "compiler_decision_golden",
     "execution_readiness_golden",
     "execution_trace_golden",
+    "tensor_store_evidence",
     "input_manifest",
     "output_contract",
     "public_output_bundle",

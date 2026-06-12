@@ -1,0 +1,160 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "evidence_contract": "runtime_tensor_store_evidence.data_only.v0",
+  "expected_record_count": 4,
+  "expected_records": [
+    {
+      "dtype": "float64",
+      "placement_source": "external_input_boundary",
+      "planned_backend": "external_input",
+      "planned_layout": "row_major",
+      "planned_memory_domain": "host_ram",
+      "producer_id": "lhs",
+      "producer_kind": "external_input",
+      "shape": [
+        2,
+        3
+      ],
+      "tensor_name": "lhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "placement_source": "external_input_boundary",
+      "planned_backend": "external_input",
+      "planned_layout": "row_major",
+      "planned_memory_domain": "host_ram",
+      "producer_id": "rhs",
+      "producer_kind": "external_input",
+      "shape": [
+        3,
+        2
+      ],
+      "tensor_name": "rhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "placement_source": "partition_plan",
+      "planned_backend": "systolic-sim",
+      "planned_layout": "blocked",
+      "planned_memory_domain": "device_sram",
+      "producer_id": "systolic_projection",
+      "producer_kind": "operation",
+      "shape": [
+        2,
+        2
+      ],
+      "tensor_name": "projection",
+      "value_role": "computed"
+    },
+    {
+      "dtype": "float64",
+      "placement_source": "partition_plan",
+      "planned_backend": "reference-cpu",
+      "planned_layout": "row_major",
+      "planned_memory_domain": "host_ram",
+      "producer_id": "host_activation",
+      "producer_kind": "operation",
+      "shape": [
+        2,
+        2
+      ],
+      "tensor_name": "activated",
+      "value_role": "computed"
+    }
+  ],
+  "graph_name": "proof_of_systolic_execution",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "record_count": 4,
+  "record_metadata_digest": "sha256:3b2f22ea31b688ad0bae737514c9a882cd439a5fbfcc3b6164b4f32cd39e131a",
+  "records": [
+    {
+      "dtype": "float64",
+      "placement_source": "external_input_boundary",
+      "planned_backend": "external_input",
+      "planned_layout": "row_major",
+      "planned_memory_domain": "host_ram",
+      "producer_id": "lhs",
+      "producer_kind": "external_input",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2,
+        3
+      ],
+      "tensor_name": "lhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "placement_source": "external_input_boundary",
+      "planned_backend": "external_input",
+      "planned_layout": "row_major",
+      "planned_memory_domain": "host_ram",
+      "producer_id": "rhs",
+      "producer_kind": "external_input",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        3,
+        2
+      ],
+      "tensor_name": "rhs",
+      "value_role": "input"
+    },
+    {
+      "dtype": "float64",
+      "placement_source": "partition_plan",
+      "planned_backend": "systolic-sim",
+      "planned_layout": "blocked",
+      "planned_memory_domain": "device_sram",
+      "producer_id": "systolic_projection",
+      "producer_kind": "operation",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2,
+        2
+      ],
+      "tensor_name": "projection",
+      "value_role": "computed"
+    },
+    {
+      "dtype": "float64",
+      "placement_source": "partition_plan",
+      "planned_backend": "reference-cpu",
+      "planned_layout": "row_major",
+      "planned_memory_domain": "host_ram",
+      "producer_id": "host_activation",
+      "producer_kind": "operation",
+      "raw_value_status": "omitted_by_policy",
+      "readonly": true,
+      "record_contract": "runtime_value_record.internal.v0",
+      "shape": [
+        2,
+        2
+      ],
+      "tensor_name": "activated",
+      "value_role": "computed"
+    }
+  ],
+  "schema_version": "tuc.runtime_tensor_store_evidence_report.v0",
+  "store_contract": "runtime_tensor_store.internal.v0",
+  "value_record_contract": "runtime_value_record.internal.v0"
+}
