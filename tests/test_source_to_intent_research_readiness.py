@@ -15,9 +15,7 @@ from tuc.frontend import (
 )
 
 GOLDEN_PATH = Path("tests/golden/frontend/source_to_intent_research_readiness.json")
-MISSING_RESEARCH_EVIDENCE = (
-    "parser_report_golden",
-)
+MISSING_RESEARCH_EVIDENCE: tuple[str, ...] = ()
 
 
 def test_source_to_intent_research_readiness_is_partial_and_blocked() -> None:
@@ -31,7 +29,7 @@ def test_source_to_intent_research_readiness_is_partial_and_blocked() -> None:
     assert tuple(item.evidence_id for item in report.checked_evidence) == (
         SOURCE_TO_INTENT_REQUIRED_EVIDENCE
     )
-    assert not report.ready
+    assert report.ready
     assert tuple(issue.evidence_id for issue in report.issues) == (
         MISSING_RESEARCH_EVIDENCE
     )
@@ -57,8 +55,9 @@ def test_source_to_intent_research_readiness_example_runs() -> None:
     )
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
-    assert '"ready": false' in completed.stdout
+    assert '"ready": true' in completed.stdout
     assert "accepted_source_corpus" in completed.stdout
+    assert "parser_report_golden" in completed.stdout
     assert "triton_jit_execution" in completed.stdout
     assert "raw_source" not in completed.stdout
     assert "python_source" not in completed.stdout

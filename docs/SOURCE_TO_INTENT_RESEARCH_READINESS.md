@@ -3,9 +3,8 @@
 Source-To-Intent Research Readiness is a bounded evidence report for the first
 real source parser research proposal.
 
-It does not unblock source parsing. It records which evidence for the future
-Source-to-Intent path already exists and which parser-specific artifacts remain
-missing.
+It does not unblock source parsing. It records whether the proposal evidence
+for the future Source-to-Intent path exists.
 
 ## Contract
 
@@ -17,7 +16,10 @@ missing.
 
 ## Current Status
 
-The research proposal remains blocked.
+The research proposal evidence is complete.
+
+This means the proposal has all required review artifacts. It does not mean the
+parser is implemented, enabled, or accepted as a compiler input path.
 
 Current present evidence:
 
@@ -25,6 +27,7 @@ Current present evidence:
 - parser RFC
 - parser threat model update
 - parser budget table
+- deterministic source-to-intent parser report golden
 - rejected source corpus
 - source-to-intent parser fuzz or property corpus
 - Source Intent plain-data golden
@@ -37,10 +40,6 @@ Current present evidence:
 - HAC-IR neutrality review
 - Source Intent Frontend Conformance report
 - Source Intent Frontend Conformance Gate output
-
-Current missing parser-specific evidence:
-
-- deterministic source-to-intent parser report golden
 
 ## Research Boundary
 
@@ -76,11 +75,18 @@ Property corpus evidence:
 python examples/source_to_intent_property_corpus.py
 ```
 
+Parser report evidence:
+
+```bash
+python examples/source_to_intent_parser_report.py
+```
+
 Expected status:
 
 ```text
-ready = false
+ready = true
 ```
 
-That blocked status is intentional until the missing parser-specific evidence
-exists.
+That ready status means proposal evidence is complete. The default parser path
+remains closed by the Source-To-Intent Parser Block Gate, and the proposal
+parser report still says `parser_enabled = false`.

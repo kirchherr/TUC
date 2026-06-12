@@ -170,8 +170,12 @@ deterministic report that keeps parser proposals blocked until all required
 evidence is present.
 
 [Source-To-Intent Research Readiness](SOURCE_TO_INTENT_RESEARCH_READINESS.md)
-records the current partial research proposal and the parser-specific evidence
-still missing.
+records the current complete proposal-evidence set while parser implementation
+remains blocked.
+
+[Source-To-Intent Parser Report](SOURCE_TO_INTENT_PARSER_REPORT.md) defines the
+proposal-only parser report golden. It keeps `parser_enabled = false` and does
+not implement source parsing.
 
 [Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 turns the current blocked parser state into CI-facing merge evidence through

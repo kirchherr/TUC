@@ -17,6 +17,7 @@ _PRESENT_RESEARCH_EVIDENCE = frozenset(
         "parser_rfc",
         "parser_threat_model_update",
         "parser_budget_table",
+        "parser_report_golden",
         "rejected_source_corpus",
         "source_intent_plain_data_golden",
         "source_intent_intake_report_golden",

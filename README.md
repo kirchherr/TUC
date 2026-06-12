@@ -199,10 +199,12 @@ Current frontend surfaces:
   fixtures for the first narrow parser proof without emitting Source Intent IR.
 - Source-To-Intent Property Corpus evidence defining fuzz/property obligations
   for the first narrow parser proof without running parser logic.
+- Source-To-Intent Parser Report v0 defining a proposal-only parser report
+  golden with `parser_enabled = false`.
 - Source-To-Intent Research Readiness evidence showing current progress toward
-  the first narrow parser proof while keeping parser report evidence blocked.
-- Source-to-Intent parser gate remains blocked until dedicated parser evidence
-  exists.
+  the first narrow parser proof while the default parser path remains closed.
+- Source-to-Intent parser implementation remains blocked until a dedicated
+  implementation RFC accepts a minimal parser against these evidence contracts.
 
 CI-facing frontend evidence entry points:
 
@@ -212,6 +214,7 @@ examples/source_intent_frontend_conformance.py
 examples/source_intent_runtime_returns.py
 examples/source_to_intent_corpus.py
 examples/source_to_intent_property_corpus.py
+examples/source_to_intent_parser_report.py
 examples/source_to_intent_research_readiness.py
 examples/source_to_intent_parser_block_gate.py
 ```
@@ -227,6 +230,7 @@ Key docs:
 - [Source Intent runtime returns](docs/SOURCE_INTENT_RUNTIME_RETURNS.md)
 - [Source-to-Intent corpus evidence](docs/SOURCE_TO_INTENT_CORPUS.md)
 - [Source-to-Intent property corpus](docs/SOURCE_TO_INTENT_PROPERTY_CORPUS.md)
+- [Source-to-Intent parser report](docs/SOURCE_TO_INTENT_PARSER_REPORT.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)

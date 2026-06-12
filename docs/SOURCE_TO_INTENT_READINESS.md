@@ -21,6 +21,7 @@ IR, plan runtime placement, or execute backend artifacts.
 - Research proposal example: `examples/source_to_intent_research_readiness.py`
 - Corpus example: `examples/source_to_intent_corpus.py`
 - Property corpus example: `examples/source_to_intent_property_corpus.py`
+- Parser report example: `examples/source_to_intent_parser_report.py`
 - Parser block gate: `examples/source_to_intent_parser_block_gate.py`
 - Golden: `tests/golden/frontend/source_to_intent_readiness_report.json`
 - Research golden:
@@ -28,9 +29,13 @@ IR, plan runtime placement, or execute backend artifacts.
 - Corpus golden: `tests/golden/frontend/source_to_intent_corpus_report.json`
 - Property corpus golden:
   `tests/golden/frontend/source_to_intent_property_corpus_report.json`
+- Parser report golden: `tests/golden/frontend/source_to_intent_parser_report.json`
 - Tests: `tests/test_source_to_intent_readiness.py`
 
 The report is ready only when every required evidence ID is present.
+
+Readiness means proposal evidence completeness. It does not enable source
+parsing by itself.
 
 ## Required Evidence
 
@@ -76,13 +81,14 @@ A future parser must not execute `@triton.jit`.
 
 ## Evidence
 
-The current golden report intentionally remains blocked:
+The default golden report intentionally remains blocked:
 
 ```text
 tests/golden/frontend/source_to_intent_readiness_report.json
 ```
 
-The research proposal report tracks partial progress toward a future parser:
+The research proposal report tracks complete proposal evidence for a future
+parser:
 
 ```text
 tests/golden/frontend/source_to_intent_research_readiness.json
@@ -100,6 +106,12 @@ the future parser without unblocking parsing:
 
 ```text
 tests/golden/frontend/source_to_intent_property_corpus_report.json
+```
+
+The parser report golden defines the proposal-only parser report shape:
+
+```text
+tests/golden/frontend/source_to_intent_parser_report.json
 ```
 
 The blocked state is also checked by:

@@ -42,7 +42,7 @@
     },
     {
       "evidence_id": "parser_report_golden",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "source_intent_plain_data_golden",
@@ -86,13 +86,8 @@
     }
   ],
   "gate_contract": "source_to_intent_parser_gate.blocking.v0",
-  "issues": [
-    {
-      "evidence_id": "parser_report_golden",
-      "message": "required source-to-intent parser gate evidence is missing"
-    }
-  ],
+  "issues": [],
   "proposal_name": "research-source-to-intent-parser-proposal",
-  "ready": false,
+  "ready": true,
   "schema_version": "tuc.source_to_intent_readiness_report.v0"
 }
