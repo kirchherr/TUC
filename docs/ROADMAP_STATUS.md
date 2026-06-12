@@ -59,7 +59,8 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
-  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`.
+  `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`,
+  now including `vector-sim` support/rejection behavior.
 - Runtime Evidence Gate v0 with deterministic golden at
   `tests/golden/proofs/runtime_evidence_gate.txt` and CI coverage in the
   `python` workflow job.
@@ -158,6 +159,12 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_backend_equivalence/current_report.json`, and a
   practical `reference-cpu` versus `systolic-sim` placement comparison for the
   same neutral graph without serialized tensor values.
+- Runtime Vector Backend Equivalence evidence at
+  `examples/runtime_vector_backend_equivalence.py` with deterministic golden
+  evidence at `tests/golden/runtime_backend_equivalence/vector_sim_report.json`,
+  proving a `reference-cpu` baseline and `vector-sim` candidate preserve
+  terminal output semantics for `softmax -> reduction -> elementwise` without
+  serialized tensor values.
 - Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
   explaining what runs, what is stored, what is public, what is hashed, what is
   never serialized, and which runtime gates must pass.
@@ -347,6 +354,9 @@ Current slice:
 - Runtime Backend Equivalence at `examples/runtime_backend_equivalence.py`,
   with golden evidence at
   `tests/golden/runtime_backend_equivalence/current_report.json`.
+- Runtime Vector Backend Equivalence at
+  `examples/runtime_vector_backend_equivalence.py`, with golden evidence at
+  `tests/golden/runtime_backend_equivalence/vector_sim_report.json`.
 - Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
   including accepted external-input metadata without tensor values.

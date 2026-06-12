@@ -19,12 +19,14 @@ keeping tensor values out of serialized evidence.
 
 ## What It Proves
 
-The current evidence fixture executes:
+The current evidence fixtures execute:
 
 - baseline run: `reference-cpu`, `reference-cpu`
 - candidate run: `systolic-sim`, `reference-cpu`
+- baseline run: `reference-cpu`, `reference-cpu`, `reference-cpu`
+- candidate run: `vector-sim`, `vector-sim`, `vector-sim`
 
-Both runs use the same graph and deterministic inputs. The report checks that:
+Each pair uses the same graph and deterministic inputs. The report checks that:
 
 - the planned backend sequences are distinct
 - both runs produce the same terminal output inventory
@@ -36,16 +38,20 @@ The deterministic example is:
 
 ```bash
 python examples/runtime_backend_equivalence.py
+python examples/runtime_vector_backend_equivalence.py
 ```
 
-Its golden evidence is:
+Their golden evidence is:
 
 ```text
 tests/golden/runtime_backend_equivalence/current_report.json
+tests/golden/runtime_backend_equivalence/vector_sim_report.json
 ```
 
-The CI-facing Runtime Evidence Gate requires this evidence and binds it to the
-expected `reference_cpu` baseline and `systolic_sim` candidate placement.
+The CI-facing Runtime Evidence Gate requires the primary systolic equivalence
+fixture and binds it to the expected `reference_cpu` baseline and
+`systolic_sim` candidate placement. The vector fixture is standalone practical
+evidence for broadening trusted accelerator families.
 
 ## Security Boundary
 
@@ -63,6 +69,7 @@ and metadata digests are serialized.
 - The report compares trusted in-process prototype executor runs only.
 - The report is correctness/equivalence evidence, not a native performance
   claim.
-- The current fixture compares `reference-cpu` with `systolic-sim` placement.
+- The current fixtures compare `reference-cpu` with `systolic-sim` placement
+  and `reference-cpu` with `vector-sim` placement.
 - Future backend classes should add similar equivalence fixtures before any
   stronger performance or portability claims are made.

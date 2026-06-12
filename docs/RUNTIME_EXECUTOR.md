@@ -27,7 +27,8 @@ It is not a backend plugin system.
   `schemas/runtime_executor_conformance_report.v0.schema.json`
 - Conformance golden:
   `tests/golden/runtime_executor_conformance/trusted_runtime_executor_registry.json`
-- Trusted prototype executors: `linear-sim`, `reference-cpu`, `systolic-sim`
+- Trusted prototype executors: `linear-sim`, `reference-cpu`, `systolic-sim`,
+  `vector-sim`
 - Readiness golden:
   `tests/golden/execution_readiness/proof_of_execution.txt`
 - Objective Alpha readiness goldens:
@@ -115,13 +116,17 @@ The report requires:
 - `reference-cpu` to execute all MVP operation families
 - `systolic-sim` to execute `matmul`
 - `systolic-sim` to reject `elementwise`, `reduction`, and `softmax`
+- `vector-sim` to execute `elementwise`, `reduction`, and `softmax`
+- `vector-sim` to reject `matmul`
 
-`Runtime Backend Equivalence` provides a practical comparison slice across the
-same graph executed as a `reference-cpu` baseline and as a `systolic-sim`
+`Runtime Backend Equivalence` provides practical comparison slices: one graph
+as a `reference-cpu` baseline versus a `systolic-sim` candidate placement, and
+one vector-oriented graph as a `reference-cpu` baseline versus a `vector-sim`
 candidate placement:
 
 ```bash
 python examples/runtime_backend_equivalence.py
+python examples/runtime_vector_backend_equivalence.py
 ```
 
 The schema-versioned report is documented in

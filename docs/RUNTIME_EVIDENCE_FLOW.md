@@ -84,8 +84,10 @@ Runtime evidence digests cover metadata only:
 Tensor contents are not serialized and are not hashed in review artifacts.
 
 `Runtime Backend Equivalence` compares terminal outputs across two trusted
-runtime executions, but serializes only comparison metadata and output omission
-status. It does not hash tensor contents.
+runtime executions, including current `reference-cpu` versus `systolic-sim` and
+`reference-cpu` versus `vector-sim` proof slices, but serializes only
+comparison metadata and output omission status. It does not hash tensor
+contents.
 
 ## What Is Never Serialized
 

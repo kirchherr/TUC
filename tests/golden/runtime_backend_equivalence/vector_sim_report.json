@@ -1,0 +1,86 @@
+{
+  "artifact_status": "review_evidence",
+  "baseline_run_id": "reference_cpu",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_run_id": "vector_sim",
+  "comparison_count": 1,
+  "comparison_metadata_digest": "sha256:a8dfb3d7807af13c6b686265a7afd81ce7068d03fa4e8c898b538f2b20dd6ce1",
+  "comparisons": [
+    {
+      "atol": 1e-12,
+      "baseline_dtype": "float64",
+      "baseline_output_value_status": "omitted_by_policy",
+      "baseline_run_id": "reference_cpu",
+      "baseline_shape": [
+        2
+      ],
+      "candidate_dtype": "float64",
+      "candidate_output_value_status": "omitted_by_policy",
+      "candidate_run_id": "vector_sim",
+      "candidate_shape": [
+        2
+      ],
+      "comparison_status": "matched",
+      "expected_dtype": "float64",
+      "expected_shape": [
+        2
+      ],
+      "rtol": 1e-12,
+      "tensor_name": "activated"
+    }
+  ],
+  "equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "runtime_vector_backend_equivalence",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "run_count": 2,
+  "runs": [
+    {
+      "execution_status": "executed",
+      "graph_name": "runtime_vector_backend_equivalence",
+      "output_metadata_digest": "sha256:39d09e42752ab1232ee50253b9cfc3f1f83a3f5f417c754f30af090c0291ad11",
+      "output_tensor_names": [
+        "activated"
+      ],
+      "output_value_status": "omitted_by_policy",
+      "planned_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "run_id": "reference_cpu",
+      "tensor_record_count": 4,
+      "trace_step_count": 3
+    },
+    {
+      "execution_status": "executed",
+      "graph_name": "runtime_vector_backend_equivalence",
+      "output_metadata_digest": "sha256:39d09e42752ab1232ee50253b9cfc3f1f83a3f5f417c754f30af090c0291ad11",
+      "output_tensor_names": [
+        "activated"
+      ],
+      "output_value_status": "omitted_by_policy",
+      "planned_backend_sequence": [
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "run_id": "vector_sim",
+      "tensor_record_count": 4,
+      "trace_step_count": 3
+    }
+  ],
+  "schema_version": "tuc.runtime_backend_equivalence_report.v0",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

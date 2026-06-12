@@ -93,12 +93,12 @@ def test_runtime_executor_conformance_golden_matches_schema_shape() -> None:
     assert golden["blocked_execution_surfaces"] == list(
         RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
     )
-    assert golden["case_count"] == len(golden["checked_cases"]) == 12
+    assert golden["case_count"] == len(golden["checked_cases"]) == 16
     assert golden["passed"] is True
     assert golden["issues"] == []
     assert golden["checked_cases"][0]["case_name"] == "linear-sim_matmul_supported"
     assert golden["checked_cases"][1]["observed_status"] == "rejected"
-    assert golden["checked_cases"][-1]["case_name"] == "systolic-sim_softmax_unsupported"
+    assert golden["checked_cases"][-1]["case_name"] == "vector-sim_softmax_supported"
 
 
 def test_runtime_executor_conformance_schema_is_referenced() -> None:
