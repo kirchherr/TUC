@@ -231,6 +231,10 @@ terminal graph outputs against independent reference tensors. It performs the
 comparison in memory, but serializes only shapes, dtypes, tolerances, comparison
 status, and omitted-value policies.
 
+The schema-versioned report is documented in
+[`RUNTIME_REFERENCE_CORRECTNESS.md`](RUNTIME_REFERENCE_CORRECTNESS.md), with
+schema at `schemas/runtime_reference_correctness_report.v0.schema.json`.
+
 ## Runtime Execution Receipt
 
 Runtime Execution Receipt v0 links one trusted runtime execution to its
@@ -243,9 +247,19 @@ The schema-versioned report is documented in
 names, evidence contracts, metadata digests, item counts, operation trace
 metadata, and omitted-value policy, but never tensor values.
 
+## Runtime Execution Evidence Bundle
+
+Runtime Execution Evidence Bundle v0 packages Runtime Tensor Store Evidence,
+Runtime Input Manifest, Runtime Output Manifest, Runtime Reference Correctness,
+and Runtime Execution Receipt into one metadata-only review report.
+
 The schema-versioned report is documented in
-[`RUNTIME_REFERENCE_CORRECTNESS.md`](RUNTIME_REFERENCE_CORRECTNESS.md), with
-schema at `schemas/runtime_reference_correctness_report.v0.schema.json`.
+[`RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md`](RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md),
+with schema at
+`schemas/runtime_execution_evidence_bundle_report.v0.schema.json`. It rechecks
+that the embedded receipt links match the embedded evidence reports by graph
+name, contract, metadata digest, item count, pass status, and omitted-value
+policy.
 
 ## Trusted Backend Contract
 

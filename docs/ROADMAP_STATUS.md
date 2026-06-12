@@ -155,6 +155,13 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
   tensor-store, input-manifest, output-manifest, and reference-correctness
   evidence by metadata digest without raw tensor values.
+- Runtime Execution Evidence Bundle v0 with schema at
+  `schemas/runtime_execution_evidence_bundle_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/runtime_execution_evidence_bundle/proof_of_execution.json`,
+  packaging tensor-store, input-manifest, output-manifest,
+  reference-correctness, and execution-receipt reports into one metadata-only
+  review artifact.
 - Runtime Execution Receipt Binding in Runtime Evidence Gate, rejecting receipts
   whose graph names, contracts, metadata digests, item counts, pass status, or
   raw-value policy do not match the evidence reports evaluated by the same gate
@@ -303,6 +310,11 @@ Current slice:
   golden evidence at
   `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
   runtime evidence digests and operation trace metadata without tensor values.
+- Runtime Execution Evidence Bundle at
+  `examples/runtime_execution_evidence_bundle.py`, with golden evidence at
+  `tests/golden/runtime_execution_evidence_bundle/proof_of_execution.json`,
+  embedding the receipt and evidence reports as one metadata-only review
+  package.
 - Runtime Multi-Output Evidence at `examples/runtime_multi_output_evidence.py`,
   with golden evidence at
   `tests/golden/runtime_multi_output_evidence/current_report.json`, covering

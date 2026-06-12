@@ -77,6 +77,8 @@ Current runtime surfaces:
   serialized tensor values.
 - Runtime Execution Receipt v0 linking runtime evidence reports by metadata
   digest without serialized tensor values.
+- Runtime Execution Evidence Bundle v0 packaging one coherent metadata-only
+  execution evidence set for review.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, and Memory Planning
   Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
@@ -90,6 +92,7 @@ examples/runtime_evidence_gate.py
 examples/runtime_tensor_store_evidence.py
 examples/runtime_input_manifest.py
 examples/runtime_execution_receipt.py
+examples/runtime_execution_evidence_bundle.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
 examples/source_intent_runtime_returns.py
@@ -106,6 +109,7 @@ Key docs:
 - [Runtime Input Manifest](docs/RUNTIME_INPUT_MANIFEST.md)
 - [Runtime Output Manifest](docs/RUNTIME_OUTPUT_MANIFEST.md)
 - [Runtime Execution Receipt](docs/RUNTIME_EXECUTION_RECEIPT.md)
+- [Runtime Execution Evidence Bundle](docs/RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -118,6 +122,7 @@ Runtime schemas:
 ```text
 schemas/runtime_input_manifest_report.v0.schema.json
 schemas/runtime_execution_receipt_report.v0.schema.json
+schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json

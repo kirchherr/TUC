@@ -1,0 +1,186 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_execution_evidence_bundle_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "bundle_contract": {
+      "const": "runtime_execution_evidence_bundle.data_only.v0"
+    },
+    "bundle_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "execution_receipt": {
+      "$ref": "runtime_execution_receipt_report.v0.schema.json"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "input_manifest": {
+      "$ref": "runtime_input_manifest_report.v0.schema.json"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "linkage_policy": {
+      "const": "embedded_metadata_reports"
+    },
+    "output_manifest": {
+      "$ref": "runtime_output_manifest_report.v0.schema.json"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "reference_correctness": {
+      "$ref": "runtime_reference_correctness_report.v0.schema.json"
+    },
+    "report_sections": {
+      "const": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "reference_correctness",
+        "execution_receipt"
+      ]
+    },
+    "schema_version": {
+      "const": "tuc.runtime_execution_evidence_bundle_report.v0"
+    },
+    "tensor_store_evidence": {
+      "$ref": "runtime_tensor_store_evidence_report.v0.schema.json"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "bundle_contract",
+    "bundle_metadata_digest",
+    "execution_receipt",
+    "graph_name",
+    "input_manifest",
+    "issues",
+    "linkage_policy",
+    "output_manifest",
+    "passed",
+    "raw_value_policy",
+    "reference_correctness",
+    "report_sections",
+    "schema_version",
+    "tensor_store_evidence"
+  ],
+  "type": "object",
+  "$defs": {
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "section": {
+          "$ref": "#/$defs/section"
+        }
+      },
+      "required": [
+        "issue_code",
+        "section"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "input_value",
+          "jit_function",
+          "module",
+          "network",
+          "output_value",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_output_value",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "reference_value",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "tensor_values",
+          "url",
+          "value",
+          "values"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "section": {
+      "enum": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "reference_correctness",
+        "execution_receipt"
+      ]
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  }
+}

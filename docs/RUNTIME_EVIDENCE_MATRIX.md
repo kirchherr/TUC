@@ -57,6 +57,12 @@ report at `schemas/runtime_reference_correctness_report.v0.schema.json`.
 [Runtime Execution Receipt](RUNTIME_EXECUTION_RECEIPT.md) report at
 `schemas/runtime_execution_receipt_report.v0.schema.json`.
 
+The optional derived
+[Runtime Execution Evidence Bundle](RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md) report
+at `schemas/runtime_execution_evidence_bundle_report.v0.schema.json` can package
+one execution's metadata-only evidence reports for review. It is not required
+for Runtime Evidence Matrix completeness.
+
 ## Current Meaning
 
 The current matrix is complete across every accepted graph fixture:
