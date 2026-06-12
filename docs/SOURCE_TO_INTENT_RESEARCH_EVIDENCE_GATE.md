@@ -41,6 +41,8 @@ The gate passes only when:
 - Research Parser Conformance Gate passes for the accepted parser sources.
 - Research Diagnostics passes for the same accepted parser sources.
 - Research Execution Bridge passes for the same accepted parser sources.
+- Research Execution Bridge validates as a structured v0 contract before its
+  digest is accepted.
 - Diagnostics covers the whitelisted rejected source cases.
 - Parser status remains `research_explicit_only`.
 - Default parser status remains `default_parser_blocked`.
@@ -78,5 +80,5 @@ Digest-bound source-free parser research evidence
 ```
 
 Future parser syntax must update the diagnostics evidence, readiness evidence,
-and this gate before the expanded syntax can count as accepted research parser
-scope.
+the execution bridge contract, and this gate before the expanded syntax can
+count as accepted research parser scope.

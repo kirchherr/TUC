@@ -20,6 +20,12 @@ produce compiler artifacts directly.
 - Tests: `tests/test_source_to_intent_research_execution_bridge.py`
 - CI entry: `.github/workflows/ci.yml`
 
+The example also exposes
+`assert_execution_bridge_report_contract(...)`. The Research Evidence Gate uses
+that structured validator before digest-binding the bridge, so a report cannot
+pass by containing a few matching strings while drifting on boundary, policy,
+case ordering, digest shape, or metadata-only constraints.
+
 ## What It Proves
 
 For each accepted research parser slice, the bridge runs:
@@ -90,3 +96,4 @@ reach controlled execution through the same audited runtime path used by the
 rest of TUC.
 
 The Source-To-Intent Research Evidence Gate binds this bridge by digest.
+Before binding, it validates the bridge report as a structured v0 contract.

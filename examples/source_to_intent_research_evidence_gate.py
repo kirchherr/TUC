@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+import json
 from hashlib import sha256
 
 try:
     from examples.source_to_intent_research_diagnostics import (
         build_source_to_intent_research_diagnostic_cases,
+    )
+    from examples.source_to_intent_research_execution_bridge import (
+        assert_execution_bridge_report_contract,
     )
     from examples.source_to_intent_research_execution_bridge import (
         build_report as build_execution_bridge_report,
@@ -25,6 +29,9 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
         build_source_to_intent_research_diagnostic_cases,
     )
     from source_to_intent_research_execution_bridge import (  # type: ignore[no-redef]
+        assert_execution_bridge_report_contract,
+    )
+    from source_to_intent_research_execution_bridge import (
         build_report as build_execution_bridge_report,
     )
     from source_to_intent_research_parser_conformance_gate import (  # type: ignore[no-redef]
@@ -227,20 +234,14 @@ def _assert_execution_bridge_bound(text: str) -> None:
         raise SourceToIntentResearchEvidenceGateError(
             "source-to-intent research evidence gate failed: execution bridge not text"
         )
-    required_fragments = (
-        '"bridge_contract": "source_to_intent_research_execution_bridge.explicit.v0"',
-        '"source_boundary": "source_intent.v0_plain_data_reintake"',
-        '"status": "PASS"',
-        '"research_matmul_elementwise"',
-        '"research_softmax_reduction"',
-        '"raw_value_policy": "omitted_by_policy"',
-    )
-    for fragment in required_fragments:
-        if fragment not in text:
-            raise SourceToIntentResearchEvidenceGateError(
-                "source-to-intent research evidence gate failed: "
-                "execution bridge binding missing"
-            )
+    try:
+        report = json.loads(text)
+        assert_execution_bridge_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "execution bridge binding missing"
+        ) from exc
     _assert_gate_text_is_source_free(text)
 
 

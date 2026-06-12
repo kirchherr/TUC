@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import re
+from collections.abc import Mapping
 from hashlib import sha256
 
 import numpy as np
@@ -60,6 +62,85 @@ SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_SOURCE_BOUNDARY = (
     "source_intent.v0_plain_data_reintake"
 )
 SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_RAW_VALUE_POLICY = "omitted_by_policy"
+SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_ARTIFACT_POLICY = (
+    "metadata_only_values_omitted"
+)
+SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_FORBIDDEN_FRAGMENTS = (
+    "@triton.jit",
+    "python_source",
+    "raw_source",
+    "raw_tensor_value",
+    "source_intent_payload",
+    "tl.dot",
+    "tl.store",
+)
+
+_SHA256_DIGEST_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
+_TOP_LEVEL_KEYS = frozenset(
+    {
+        "artifact_policy",
+        "blocked_compiler_shortcuts",
+        "blocked_execution_surfaces",
+        "bridge_contract",
+        "case_count",
+        "cases",
+        "default_parser_status",
+        "input_policy",
+        "parser_output_policy",
+        "parser_sources",
+        "parser_status",
+        "raw_value_policy",
+        "schema_version",
+        "source_boundary",
+        "status",
+    }
+)
+_CASE_KEYS = frozenset(
+    {
+        "backend_sequence",
+        "case_id",
+        "comparison_metadata_digest",
+        "compiler_decision_digest",
+        "execution_trace_digest",
+        "hac_ir_digest",
+        "metadata_intake_digest",
+        "metadata_report_digest",
+        "operation_count",
+        "operation_families",
+        "parser_report_digest",
+        "plain_data_digest",
+        "raw_value_policy",
+        "readiness_digest",
+        "reference_correctness_digest",
+        "runtime_plan_digest",
+        "terminal_outputs",
+        "trace_step_count",
+    }
+)
+_DIGEST_KEYS = (
+    "comparison_metadata_digest",
+    "compiler_decision_digest",
+    "execution_trace_digest",
+    "hac_ir_digest",
+    "metadata_intake_digest",
+    "metadata_report_digest",
+    "parser_report_digest",
+    "plain_data_digest",
+    "readiness_digest",
+    "reference_correctness_digest",
+    "runtime_plan_digest",
+)
+_EXPECTED_CASE_SUMMARIES = {
+    "research_matmul_elementwise": {
+        "operation_families": ["elementwise", "matmul"],
+        "terminal_outputs": ["activated"],
+    },
+    "research_softmax_reduction": {
+        "operation_families": ["reduction", "softmax"],
+        "terminal_outputs": ["row_sum"],
+    },
+}
+_ALLOWED_BRIDGE_BACKENDS = frozenset({"linear-sim", "reference-cpu", "vector-sim"})
 
 FloatArray = NDArray[np.float64]
 
@@ -70,8 +151,8 @@ def build_execution_bridge_report() -> dict[str, object]:
     results = build_source_to_intent_research_parser_results()
     _assert_parser_results(results)
     cases = tuple(_build_case(result) for result in results)
-    return {
-        "artifact_policy": "metadata_only_values_omitted",
+    report: dict[str, object] = {
+        "artifact_policy": SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_ARTIFACT_POLICY,
         "blocked_compiler_shortcuts": list(
             SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_COMPILER_OUTPUTS
         ),
@@ -89,6 +170,8 @@ def build_execution_bridge_report() -> dict[str, object]:
         "source_boundary": SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_SOURCE_BOUNDARY,
         "status": "PASS",
     }
+    assert_execution_bridge_report_contract(report)
+    return report
 
 
 def build_report() -> str:
@@ -99,6 +182,57 @@ def build_report() -> str:
 
 def main() -> None:
     print(build_report(), end="")
+
+
+def assert_execution_bridge_report_contract(report: object) -> None:
+    """Fail closed unless the execution bridge report matches the v0 proof contract."""
+
+    if not isinstance(report, Mapping):
+        raise ValueError("source-to-intent research execution bridge report must be object")
+    _assert_exact_keys("top-level report", report, _TOP_LEVEL_KEYS)
+    expected_values = {
+        "artifact_policy": SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_ARTIFACT_POLICY,
+        "bridge_contract": SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_CONTRACT,
+        "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
+        "input_policy": SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_INPUT_POLICY,
+        "parser_output_policy": SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY,
+        "parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
+        "raw_value_policy": SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_RAW_VALUE_POLICY,
+        "schema_version": SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_REPORT_SCHEMA_VERSION,
+        "source_boundary": SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_SOURCE_BOUNDARY,
+        "status": "PASS",
+    }
+    for key, expected in expected_values.items():
+        if report[key] != expected:
+            raise ValueError(
+                "source-to-intent research execution bridge "
+                f"{key} contract drift"
+            )
+    if report["blocked_compiler_shortcuts"] != list(
+        SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_COMPILER_OUTPUTS
+    ):
+        raise ValueError(
+            "source-to-intent research execution bridge compiler shortcut drift"
+        )
+    if report["blocked_execution_surfaces"] != list(
+        RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+    ):
+        raise ValueError(
+            "source-to-intent research execution bridge execution surface drift"
+        )
+    if report["parser_sources"] != list(REQUIRED_PARSER_SOURCE_NAMES):
+        raise ValueError("source-to-intent research execution bridge source drift")
+    cases = report["cases"]
+    if not isinstance(cases, list):
+        raise ValueError("source-to-intent research execution bridge cases drift")
+    if report["case_count"] != len(cases) or len(cases) != len(REQUIRED_PARSER_SOURCE_NAMES):
+        raise ValueError("source-to-intent research execution bridge case count drift")
+    case_ids = []
+    for case in cases:
+        case_ids.append(_assert_execution_bridge_case_contract(case))
+    if tuple(case_ids) != REQUIRED_PARSER_SOURCE_NAMES:
+        raise ValueError("source-to-intent research execution bridge case order drift")
+    _assert_report_is_metadata_only(report)
 
 
 def _build_case(result: SourceToIntentResearchParseResult) -> dict[str, object]:
@@ -175,6 +309,64 @@ def _assert_parser_results(
             raise ValueError("source-to-intent research execution default status drift")
         if result.report.output_policy != SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY:
             raise ValueError("source-to-intent research execution output policy drift")
+
+
+def _assert_execution_bridge_case_contract(case: object) -> str:
+    if not isinstance(case, Mapping):
+        raise ValueError("source-to-intent research execution bridge case must be object")
+    _assert_exact_keys("execution bridge case", case, _CASE_KEYS)
+    case_id = case["case_id"]
+    if not isinstance(case_id, str) or case_id not in _EXPECTED_CASE_SUMMARIES:
+        raise ValueError("source-to-intent research execution bridge case id drift")
+    expected = _EXPECTED_CASE_SUMMARIES[case_id]
+    if case["operation_count"] != 2:
+        raise ValueError("source-to-intent research execution bridge operation drift")
+    if case["trace_step_count"] != 2:
+        raise ValueError("source-to-intent research execution bridge trace drift")
+    if case["raw_value_policy"] != SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_RAW_VALUE_POLICY:
+        raise ValueError("source-to-intent research execution bridge raw value drift")
+    if case["operation_families"] != expected["operation_families"]:
+        raise ValueError("source-to-intent research execution bridge family drift")
+    if case["terminal_outputs"] != expected["terminal_outputs"]:
+        raise ValueError("source-to-intent research execution bridge output drift")
+    backend_sequence = case["backend_sequence"]
+    if (
+        not isinstance(backend_sequence, list)
+        or len(backend_sequence) < 2
+        or any(backend not in _ALLOWED_BRIDGE_BACKENDS for backend in backend_sequence)
+    ):
+        raise ValueError("source-to-intent research execution bridge backend drift")
+    for key in _DIGEST_KEYS:
+        value = case[key]
+        if not isinstance(value, str) or not _SHA256_DIGEST_PATTERN.fullmatch(value):
+            raise ValueError(
+                "source-to-intent research execution bridge digest drift"
+            )
+    return case_id
+
+
+def _assert_exact_keys(
+    context: str,
+    payload: Mapping[object, object],
+    expected: frozenset[str],
+) -> None:
+    if set(payload) != expected:
+        raise ValueError(f"source-to-intent research execution bridge {context} drift")
+
+
+def _assert_report_is_metadata_only(report: object) -> None:
+    try:
+        text = _canonical_json(report)
+    except TypeError as exc:
+        raise ValueError(
+            "source-to-intent research execution bridge report is not JSON data"
+        ) from exc
+    for fragment in SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_FORBIDDEN_FRAGMENTS:
+        if fragment in text:
+            raise ValueError(
+                "source-to-intent research execution bridge report contains "
+                "forbidden source or value material"
+            )
 
 
 def _inputs_for(source_name: str) -> dict[str, FloatArray]:

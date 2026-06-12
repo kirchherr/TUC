@@ -5,9 +5,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from examples.source_to_intent_research_execution_bridge import (
     SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_CONTRACT,
     SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_REPORT_SCHEMA_VERSION,
+    assert_execution_bridge_report_contract,
     build_execution_bridge_report,
     build_report,
 )
@@ -22,6 +25,7 @@ SCHEMA_PATH = Path(
 
 def test_source_to_intent_research_execution_bridge_report_shape() -> None:
     report = build_execution_bridge_report()
+    assert_execution_bridge_report_contract(report)
 
     assert report["schema_version"] == (
         SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE_REPORT_SCHEMA_VERSION
@@ -42,6 +46,37 @@ def test_source_to_intent_research_execution_bridge_report_shape() -> None:
     assert report["cases"][0]["backend_sequence"] == ["linear-sim", "vector-sim"]
     assert report["cases"][1]["backend_sequence"] == ["vector-sim", "vector-sim"]
     assert all(case["trace_step_count"] == 2 for case in report["cases"])
+
+
+@pytest.mark.parametrize(
+    ("tamper_key", "tamper_value", "error"),
+    [
+        ("source_boundary", "triton_source_shortcut", "source_boundary"),
+        ("case_count", 1, "case count"),
+        ("raw_source", "def kernel(): pass", "top-level report"),
+    ],
+)
+def test_source_to_intent_research_execution_bridge_contract_rejects_drift(
+    tamper_key: str,
+    tamper_value: object,
+    error: str,
+) -> None:
+    report = build_execution_bridge_report()
+    report[tamper_key] = tamper_value
+
+    with pytest.raises(ValueError, match=error):
+        assert_execution_bridge_report_contract(report)
+
+
+def test_source_to_intent_research_execution_bridge_contract_rejects_value_material() -> None:
+    report = build_execution_bridge_report()
+    cases = report["cases"]
+    assert isinstance(cases, list)
+    assert isinstance(cases[0], dict)
+    cases[0]["source_intent_payload"] = {"raw_tensor_value": [1.0, 2.0]}
+
+    with pytest.raises(ValueError, match="execution bridge case"):
+        assert_execution_bridge_report_contract(report)
 
 
 def test_source_to_intent_research_execution_bridge_matches_golden() -> None:
