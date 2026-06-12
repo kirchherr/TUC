@@ -40,6 +40,9 @@ The parser supports only:
 Tensor shapes come from a caller-provided plain-data shape manifest. The parser
 does not infer shape facts from execution or host objects.
 
+The `axis` argument is emitted only as neutral Source Intent
+`attributes.axis`, never as backend, device, memory-domain, or placement data.
+
 ## Security Constraints
 
 The parser must not:

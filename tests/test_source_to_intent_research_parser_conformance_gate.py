@@ -59,10 +59,11 @@ def test_research_parser_conformance_cases_pass_reusable_conformance() -> None:
     )
 
     assert report.passed
-    assert report.accepted_case_count == 1
+    assert report.accepted_case_count == 2
     assert report.rejected_case_count == 2
     assert report.checked_cases == (
         "research_parser_matmul_elementwise",
+        "research_parser_softmax_reduction",
         "reject_parser_backend_hint_escape",
         "reject_parser_source_text_escape",
     )
@@ -120,7 +121,7 @@ def test_research_parser_conformance_gate_rejects_tampered_parser_source_name() 
         SourceToIntentResearchParserConformanceGateError,
         match="parser source names changed",
     ):
-        build_gate_report(parser_results=(tampered_result,))
+        build_gate_report(parser_results=(tampered_result, results[1]))
 
 
 def test_research_parser_conformance_gate_rejects_non_report() -> None:

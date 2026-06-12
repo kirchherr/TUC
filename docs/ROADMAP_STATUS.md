@@ -394,6 +394,13 @@ hardware-independent interface into capability-driven runtime planning.
   Conformance, with deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_parser_conformance_gate.txt`
   and CI coverage in the `python` workflow job.
+- Source Intent axis attributes now carry neutral `axis` semantics for
+  `softmax` and `reduction` through Source Intent Intake, Metadata Conversion,
+  and Research Parser Conformance Gate evidence without introducing backend,
+  device, or placement facts.
+- Source Intent Axis Attributes are documented at
+  `docs/SOURCE_INTENT_AXIS_ATTRIBUTES.md` and accepted by
+  `rfcs/0157-source-intent-axis-attributes.md`.
 
 ## In Progress
 
@@ -887,8 +894,8 @@ Current focus:
 - Default source-to-intent parser intake remains blocked by
   [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md); the accepted
   research parser is explicit-only and must not become a compiler shortcut.
-- Add a Source Intent axis attribute contract before binding
-  `softmax -> reduction` parser output to Source Intent Frontend Conformance.
+- Add future parser syntax only after each new Source Intent semantic attribute
+  has its own intake, metadata-conversion, conformance, and golden evidence.
 - Future parser proposals must pass
   [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) before
   source text can influence compiler artifacts.

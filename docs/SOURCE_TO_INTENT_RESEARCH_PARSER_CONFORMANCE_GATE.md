@@ -31,14 +31,15 @@ The gate passes only when:
 
 ## Current Coverage
 
-The first gate binds the `matmul -> elementwise` parser slice to Source Intent
-Frontend Conformance.
+The gate binds both accepted parser slices to Source Intent Frontend
+Conformance:
 
-`softmax -> reduction` parsing is covered by parser tests and corpus evidence,
-but is not yet included in this conformance gate because Source Intent Metadata
-Conversion does not yet carry operation axis attributes through Source Intent
-plain data. That axis-carrying contract should be added as a separate reviewed
-step.
+- `matmul -> elementwise`
+- `softmax -> reduction`
+
+The `softmax -> reduction` slice depends on the Source Intent `attributes.axis`
+contract, which carries neutral axis semantics through Source Intent Intake and
+Source Intent Metadata Conversion without introducing backend or device facts.
 
 ## Security Boundary
 

@@ -378,13 +378,13 @@ def _parse_assignment(statement: ast.Assign, state: _ParseState) -> None:
     if call_name not in _SUPPORTED_CALLS:
         raise SourceToIntentResearchParserError("assignment call target unsupported")
     if call_name == "tl.dot":
-        family, inputs, shape = _parse_dot(statement.value, state)
+        family, inputs, shape, attributes = _parse_dot(statement.value, state)
     elif call_name == "tl.where":
-        family, inputs, shape = _parse_where(statement.value, state)
+        family, inputs, shape, attributes = _parse_where(statement.value, state)
     elif call_name == "tl.softmax":
-        family, inputs, shape = _parse_softmax(statement.value, state)
+        family, inputs, shape, attributes = _parse_softmax(statement.value, state)
     elif call_name == "tl.sum":
-        family, inputs, shape = _parse_sum(statement.value, state)
+        family, inputs, shape, attributes = _parse_sum(statement.value, state)
     else:
         raise SourceToIntentResearchParserError("assignment call target unsupported")
 
@@ -393,21 +393,22 @@ def _parse_assignment(statement: ast.Assign, state: _ParseState) -> None:
     for input_name in inputs:
         _add_tensor_if_absent(input_name, state.value_shapes[input_name], state)
     _add_tensor_if_absent(target, shape, state)
-    state.operations.append(
-        {
-            "family": family,
-            "hints": {},
-            "inputs": list(inputs),
-            "name": target,
-            "outputs": [target],
-        }
-    )
+    operation: dict[str, object] = {
+        "family": family,
+        "hints": {},
+        "inputs": list(inputs),
+        "name": target,
+        "outputs": [target],
+    }
+    if attributes:
+        operation["attributes"] = attributes
+    state.operations.append(operation)
 
 
 def _parse_dot(
     call: ast.Call,
     state: _ParseState,
-) -> tuple[str, tuple[str, ...], tuple[int, ...]]:
+) -> tuple[str, tuple[str, ...], tuple[int, ...], dict[str, object]]:
     if len(call.args) != 2 or call.keywords:
         raise SourceToIntentResearchParserError("tl.dot requires two positional tensors")
     lhs = _name_argument(call.args[0], "tl.dot lhs")
@@ -418,13 +419,13 @@ def _parse_dot(
         raise SourceToIntentResearchParserError("tl.dot requires rank-2 tensors")
     if lhs_shape[1] != rhs_shape[0]:
         raise SourceToIntentResearchParserError("tl.dot inner dimensions must match")
-    return "matmul", (lhs, rhs), (lhs_shape[0], rhs_shape[1])
+    return "matmul", (lhs, rhs), (lhs_shape[0], rhs_shape[1]), {}
 
 
 def _parse_where(
     call: ast.Call,
     state: _ParseState,
-) -> tuple[str, tuple[str, ...], tuple[int, ...]]:
+) -> tuple[str, tuple[str, ...], tuple[int, ...], dict[str, object]]:
     if len(call.args) != 3 or call.keywords:
         raise SourceToIntentResearchParserError("tl.where requires three positional inputs")
     inputs = _unique_names(
@@ -437,25 +438,25 @@ def _parse_where(
     shapes = tuple(_known_shape(name, state) for name in inputs)
     if len(set(shapes)) != 1:
         raise SourceToIntentResearchParserError("tl.where tensor input shapes must match")
-    return "elementwise", inputs, shapes[0]
+    return "elementwise", inputs, shapes[0], {}
 
 
 def _parse_softmax(
     call: ast.Call,
     state: _ParseState,
-) -> tuple[str, tuple[str, ...], tuple[int, ...]]:
+) -> tuple[str, tuple[str, ...], tuple[int, ...], dict[str, object]]:
     if len(call.args) != 1:
         raise SourceToIntentResearchParserError("tl.softmax requires one tensor input")
     input_name = _name_argument(call.args[0], "tl.softmax input")
     shape = _known_shape(input_name, state)
-    _require_axis(call, shape, "tl.softmax")
-    return "softmax", (input_name,), shape
+    axis = _require_axis(call, shape, "tl.softmax")
+    return "softmax", (input_name,), shape, {"axis": axis}
 
 
 def _parse_sum(
     call: ast.Call,
     state: _ParseState,
-) -> tuple[str, tuple[str, ...], tuple[int, ...]]:
+) -> tuple[str, tuple[str, ...], tuple[int, ...], dict[str, object]]:
     if len(call.args) != 1:
         raise SourceToIntentResearchParserError("tl.sum requires one tensor input")
     input_name = _name_argument(call.args[0], "tl.sum input")
@@ -464,7 +465,7 @@ def _parse_sum(
     output_shape = input_shape[:axis] + input_shape[axis + 1 :]
     if not output_shape:
         raise SourceToIntentResearchParserError("tl.sum scalar output unsupported")
-    return "reduction", (input_name,), output_shape
+    return "reduction", (input_name,), output_shape, {"axis": axis}
 
 
 def _parse_store(call: ast.Call, state: _ParseState) -> None:

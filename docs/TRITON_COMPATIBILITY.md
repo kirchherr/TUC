@@ -21,6 +21,7 @@ compatibility on day one.
 | Triton source preflight | L0 | Bounded source syntax report rejects imports, decorator calls, dangerous builtins, host/device/network surfaces, unsupported calls, and HAC-IR leakage without producing a `ComputeGraph`; fuzz/property tests cover arbitrary decoded bytes and malicious seed cases. |
 | Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
 | Source Intent JSON Schema | L1 | Machine-readable `source_intent.v0` schema documents the plain-data contract for external frontend authors while runtime validation remains in Source Intent Intake. |
+| Source Intent Axis Attributes | L2 | Neutral `attributes.axis` semantics for `softmax` and `reduction` pass through Source Intent Intake, Metadata Conversion, and parser conformance evidence without backend/device facts. |
 | Canonical Source Intent IR | L1 | Data-only frontend contract exists with deterministic dump and negative hardware-leakage tests; conversion is exposed only through a separate Source Intent Metadata adapter. |
 | Source Intent Metadata Conversion | L2 | Execution-free adapter converts already constructed Source Intent IR to schema-versioned metadata, with source-intake, HAC-IR, runtime-plan, and compiler decision-report goldens. |
 | Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, optional public return semantics, metadata conversion, graph construction, return-alias preservation, and neutral planning while rejected cases fail closed at intake; report artifacts have a JSON Schema. |
@@ -62,6 +63,8 @@ compatibility on day one.
   source text or preflight reports.
 - Source Intent JSON Schema is documented in
   [Source Intent JSON Schema](SOURCE_INTENT_SCHEMA.md).
+- Source Intent Axis Attributes are documented in
+  [Source Intent Axis Attributes](SOURCE_INTENT_AXIS_ATTRIBUTES.md).
 - Source Intent Metadata Conversion is documented in
   [Source Intent Metadata Conversion](SOURCE_INTENT_METADATA.md). It starts
   from an already constructed `SourceIntentModule`, not source text.

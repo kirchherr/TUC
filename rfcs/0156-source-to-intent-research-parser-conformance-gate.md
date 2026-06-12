@@ -30,17 +30,17 @@ Source Intent Frontend Conformance
 PASS/FAIL gate report
 ```
 
-The gate currently covers the `matmul -> elementwise` research parser slice and
-requires rejected parser-shaped payloads for backend-hint and raw-source escape
-attempts.
+The gate currently covers the `matmul -> elementwise` and
+`softmax -> reduction` research parser slices and requires rejected
+parser-shaped payloads for backend-hint and raw-source escape attempts.
 
-## Scope Boundary
+## Axis Attribute Amendment
 
-The gate intentionally does not yet include the `softmax -> reduction` parser
-slice. That parser path exists and is unit-tested, but Source Intent Metadata
-Conversion does not yet carry axis attributes through Source Intent plain data.
-Axis-carrying Source Intent metadata should be added through a separate RFC and
-golden evidence before softmax/reduction enters this conformance gate.
+The initial gate excluded `softmax -> reduction` because Source Intent Metadata
+Conversion did not yet carry operation axis attributes. The accepted follow-up
+adds a neutral `attributes.axis` Source Intent contract for `softmax` and
+`reduction`, allowing that parser slice to pass the same conformance gate
+without introducing backend, device, memory-domain, or placement facts.
 
 ## Security Constraints
 

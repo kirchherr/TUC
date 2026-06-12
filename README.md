@@ -195,6 +195,8 @@ Current frontend surfaces:
   output slice passes the reusable Source Intent Frontend Conformance path.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
+- Source Intent Axis Attributes for neutral `softmax` and `reduction` axis
+  semantics.
 - Source Intent Frontend Conformance Gate for CI-facing external frontend
   plain-data and public-return evidence.
 - Source Intent Runtime Returns evidence connecting explicit frontend returns
@@ -234,6 +236,7 @@ Key docs:
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)
+- [Source Intent axis attributes](docs/SOURCE_INTENT_AXIS_ATTRIBUTES.md)
 - [Source Intent frontend conformance gate](docs/SOURCE_INTENT_FRONTEND_CONFORMANCE_GATE.md)
 - [Source Intent return semantics](docs/SOURCE_INTENT_RETURN_SEMANTICS.md)
 - [Source Intent runtime returns](docs/SOURCE_INTENT_RUNTIME_RETURNS.md)

@@ -3,10 +3,12 @@
 try:
     from examples.source_to_intent_research_parser import (
         MATMUL_ELEMENTWISE_SOURCE,
+        SOFTMAX_REDUCTION_SOURCE,
     )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_parser import (  # type: ignore[no-redef]
         MATMUL_ELEMENTWISE_SOURCE,
+        SOFTMAX_REDUCTION_SOURCE,
     )
 
 from tuc.frontend import (
@@ -29,6 +31,7 @@ SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE_CONTRACT = (
 DEFAULT_FRONTEND_NAME = "source-to-intent-research-parser"
 REQUIRED_ACCEPTED_CASES = (
     "research_parser_matmul_elementwise",
+    "research_parser_softmax_reduction",
 )
 REQUIRED_REJECTED_CASES = (
     "reject_parser_backend_hint_escape",
@@ -36,6 +39,7 @@ REQUIRED_REJECTED_CASES = (
 )
 REQUIRED_PARSER_SOURCE_NAMES = (
     "research_matmul_elementwise",
+    "research_softmax_reduction",
 )
 
 
@@ -58,6 +62,14 @@ def build_source_to_intent_research_parser_results() -> (
                 "y": (4, 2),
             },
         ),
+        parse_triton_source_to_source_intent(
+            SOFTMAX_REDUCTION_SOURCE,
+            source_name="research_softmax_reduction",
+            tensor_shapes={
+                "x": (4, 8),
+                "y": (4,),
+            },
+        ),
     )
 
 
@@ -76,6 +88,11 @@ def build_source_to_intent_research_parser_conformance_cases(
         SourceIntentFrontendConformanceCase(
             name="research_parser_matmul_elementwise",
             payload=results[0].source_intent_payload,
+            should_accept=True,
+        ),
+        SourceIntentFrontendConformanceCase(
+            name="research_parser_softmax_reduction",
+            payload=results[1].source_intent_payload,
             should_accept=True,
         ),
         SourceIntentFrontendConformanceCase(

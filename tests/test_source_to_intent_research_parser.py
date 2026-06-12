@@ -84,6 +84,8 @@ def test_research_parser_handles_softmax_reduction_subset() -> None:
         "softmax",
         "reduction",
     )
+    assert result.source_intent_payload["operations"][0]["attributes"] == {"axis": 1}
+    assert result.source_intent_payload["operations"][1]["attributes"] == {"axis": 1}
     assert result.module.returns[0].public_name == "y"
     assert result.module.returns[0].tensor_name == "row_sum"
     assert result.report.operation_families == ("reduction", "softmax")

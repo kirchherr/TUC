@@ -68,7 +68,8 @@
         },
         "inputs": {"$ref": "#/$defs/tensor_name_list"},
         "outputs": {"$ref": "#/$defs/tensor_name_list"},
-        "hints": {"$ref": "#/$defs/hints", "default": {}}
+        "hints": {"$ref": "#/$defs/hints", "default": {}},
+        "attributes": {"$ref": "#/$defs/attributes", "default": {}}
       }
     },
     "return": {
@@ -97,6 +98,17 @@
         "max_error_budget": {
           "type": "number",
           "minimum": 0
+        }
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "axis": {
+          "type": "integer",
+          "minimum": -8,
+          "maximum": 7
         }
       }
     }

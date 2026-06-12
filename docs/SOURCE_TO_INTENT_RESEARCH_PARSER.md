@@ -37,6 +37,7 @@ The current parser accepts only a tiny subset:
 - `tl.sum(x, axis=N)` as `reduction`
 - `tl.store(output_arg, produced_tensor)` as an explicit Source Intent public
   return alias
+- explicit axis syntax as neutral Source Intent `attributes.axis`
 
 Everything else fails closed.
 
@@ -52,10 +53,10 @@ The report serializes only metadata, source digest, counts, operation families,
 blocked surfaces, and the validated Source Intent plain-data payload. It does
 not serialize raw source text.
 
-The first conformance gate binds the `matmul -> elementwise` parser output to
-Source Intent Frontend Conformance. `softmax -> reduction` parser output remains
-unit-tested and corpus-backed, but needs a Source Intent axis attribute contract
-before it can pass the metadata/conformance path.
+The conformance gate binds both `matmul -> elementwise` and
+`softmax -> reduction` parser output to Source Intent Frontend Conformance. The
+second slice uses neutral Source Intent `attributes.axis` metadata; no backend,
+device, memory-domain, or placement fact is introduced.
 
 ## Still Blocked
 

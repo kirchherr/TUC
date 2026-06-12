@@ -609,8 +609,11 @@ Go/No-Go:
   runtime-plan, or backend-decision output.
 - Source-To-Intent Research Parser Conformance Gate now proves the
   `matmul -> elementwise` parser output slice passes Source Intent Frontend
-  Conformance; `softmax -> reduction` awaits a separate Source Intent axis
-  metadata contract before entering that gate.
+  Conformance, and Source Intent axis attributes now allow the
+  `softmax -> reduction` parser output slice to pass the same gate.
+- Source Intent Axis Attributes now define neutral `attributes.axis` semantics
+  for `softmax` and `reduction`, including intake validation, metadata
+  conversion, schema documentation, and parser-conformance evidence.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
