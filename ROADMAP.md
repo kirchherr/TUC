@@ -93,12 +93,14 @@ Required artifacts:
 - `examples/proof_of_execution.py`
 - `examples/proof_of_systolic_execution.py`
 - `examples/systolic_manifest_path.py`
+- `examples/runtime_backend_equivalence.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
 - `tests/golden/proofs/proof_of_execution.txt`
 - `tests/golden/proofs/proof_of_systolic_execution.txt`
 - `tests/golden/proofs/systolic_manifest_path.txt`
+- `tests/golden/runtime_backend_equivalence/current_report.json`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -171,6 +173,9 @@ Completed evidence:
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
+- Runtime Backend Equivalence executes the same neutral graph as a
+  `reference-cpu` baseline and as a `systolic-sim` candidate placement, proving
+  matched terminal output metadata without serializing tensor values.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

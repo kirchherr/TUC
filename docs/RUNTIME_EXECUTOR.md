@@ -116,6 +116,14 @@ The report requires:
 - `systolic-sim` to execute `matmul`
 - `systolic-sim` to reject `elementwise`, `reduction`, and `softmax`
 
+`Runtime Backend Equivalence` provides a practical comparison slice across the
+same graph executed as a `reference-cpu` baseline and as a `systolic-sim`
+candidate placement:
+
+```bash
+python examples/runtime_backend_equivalence.py
+```
+
 The schema-versioned report is documented in
 [Runtime Executor Conformance](RUNTIME_EXECUTOR_CONFORMANCE.md). It keeps
 unsupported execution visible as a clean rejection and does not authorize
