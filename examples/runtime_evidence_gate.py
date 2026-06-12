@@ -53,11 +53,17 @@ RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY = "runtime_backend_equivalenc
 RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY = "backend_equivalence"
 RUNTIME_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS = ("backend_equivalence",)
 RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID = "runtime_backend_equivalence"
+RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID = (
+    "runtime_backend_equivalence_systolic"
+)
 RUNTIME_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
 RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "systolic_sim"
 RUNTIME_BACKEND_EQUIVALENCE_BASELINE_BACKENDS = ("reference-cpu", "reference-cpu")
 RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS = ("systolic-sim", "reference-cpu")
 RUNTIME_VECTOR_BACKEND_EQUIVALENCE_GRAPH_ID = "runtime_vector_backend_equivalence"
+RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID = (
+    "runtime_backend_equivalence_vector"
+)
 RUNTIME_VECTOR_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
 RUNTIME_VECTOR_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "vector_sim"
 RUNTIME_VECTOR_BACKEND_EQUIVALENCE_BASELINE_BACKENDS = (
@@ -71,6 +77,9 @@ RUNTIME_VECTOR_BACKEND_EQUIVALENCE_CANDIDATE_BACKENDS = (
     "vector-sim",
 )
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID = "runtime_mixed_backend_equivalence"
+RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID = (
+    "runtime_backend_equivalence_mixed"
+)
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "mixed_accelerators"
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_BACKENDS = (
@@ -96,6 +105,10 @@ RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_GRAPH_FAMILY = (
 RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_REQUIRED_ARTIFACTS = (
     "backend_equivalence_portfolio",
     "backend_equivalence_portfolio_policy",
+)
+RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS = (
+    "runtime_backend_equivalence_portfolio",
+    "runtime_backend_equivalence_portfolio_policy",
 )
 
 
@@ -241,6 +254,7 @@ def build_gate_report(
     _assert_backend_equivalence_matrix_covered(
         matrix,
         backend_equivalence,
+        artifact_id=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
         label="runtime backend equivalence",
     )
     _assert_backend_equivalence_passed(
@@ -255,6 +269,7 @@ def build_gate_report(
     _assert_backend_equivalence_matrix_covered(
         matrix,
         vector_backend_equivalence,
+        artifact_id=RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
         label="runtime vector backend equivalence",
     )
     _assert_backend_equivalence_passed(
@@ -269,6 +284,7 @@ def build_gate_report(
     _assert_backend_equivalence_matrix_covered(
         matrix,
         mixed_backend_equivalence,
+        artifact_id=RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
         label="runtime mixed backend equivalence",
     )
     _assert_backend_equivalence_portfolio_passed(
@@ -417,6 +433,7 @@ def _assert_backend_equivalence_matrix_covered(
     matrix: RuntimeEvidenceMatrixReport,
     report: RuntimeBackendEquivalenceReport,
     *,
+    artifact_id: str,
     label: str,
 ) -> None:
     graph = _find_runtime_evidence_graph(matrix, report.graph_name)
@@ -450,6 +467,15 @@ def _assert_backend_equivalence_matrix_covered(
         missing = ",".join(missing_artifacts)
         raise RuntimeEvidenceGateError(
             f"{label} matrix coverage failed: missing {missing}"
+        )
+    artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind == "backend_equivalence"
+    )
+    if artifact_ids != (artifact_id,):
+        raise RuntimeEvidenceGateError(
+            f"{label} matrix coverage failed: artifact_id_mismatch"
         )
 
 
@@ -550,6 +576,17 @@ def _assert_backend_equivalence_portfolio_matrix_covered(
         raise RuntimeEvidenceGateError(
             "runtime backend equivalence portfolio matrix coverage failed: "
             f"missing {missing}"
+        )
+    artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind
+        in RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_REQUIRED_ARTIFACTS
+    )
+    if artifact_ids != RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS:
+        raise RuntimeEvidenceGateError(
+            "runtime backend equivalence portfolio matrix coverage failed: "
+            "artifact_id_mismatch"
         )
 
 
@@ -994,6 +1031,10 @@ def _render_gate_report(
     lines.append('  runtime_backend_equivalence = "passed"')
     lines.append('  runtime_backend_equivalence_binding = "verified"')
     lines.append('  runtime_backend_equivalence_matrix = "covered"')
+    lines.append(
+        "  runtime_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    )
     lines.append(f'  runtime_backend_equivalence_runs = "{len(backend_equivalence.runs)}"')
     lines.append(
         "  runtime_backend_equivalence_comparisons = "
@@ -1006,6 +1047,10 @@ def _render_gate_report(
     lines.append('  runtime_vector_backend_equivalence = "passed"')
     lines.append('  runtime_vector_backend_equivalence_binding = "verified"')
     lines.append('  runtime_vector_backend_equivalence_matrix = "covered"')
+    lines.append(
+        "  runtime_vector_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    )
     lines.append(
         "  runtime_vector_backend_equivalence_runs = "
         f'"{len(vector_backend_equivalence.runs)}"'
@@ -1021,6 +1066,10 @@ def _render_gate_report(
     lines.append('  runtime_mixed_backend_equivalence = "passed"')
     lines.append('  runtime_mixed_backend_equivalence_binding = "verified"')
     lines.append('  runtime_mixed_backend_equivalence_matrix = "covered"')
+    lines.append(
+        "  runtime_mixed_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    )
     lines.append(
         "  runtime_mixed_backend_equivalence_runs = "
         f'"{len(mixed_backend_equivalence.runs)}"'
@@ -1048,6 +1097,10 @@ def _render_gate_report(
         f'"{backend_equivalence_portfolio.raw_value_policy}"'
     )
     lines.append('  runtime_backend_equivalence_portfolio_matrix = "covered"')
+    lines.append(
+        "  runtime_backend_equivalence_portfolio_matrix_artifacts = "
+        f'"{",".join(RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS)}"'
+    )
     lines.append('  runtime_backend_equivalence_portfolio_policy = "accepted"')
     lines.append('  runtime_backend_equivalence_portfolio_policy_binding = "verified"')
     lines.append(

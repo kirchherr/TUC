@@ -36,9 +36,12 @@ The gate passes only when:
 
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
-  entries with scoped `backend_equivalence` requirements
+  entries with scoped `backend_equivalence` requirements and exact
+  artifact-ID bindings
 - the Runtime Evidence Matrix includes the backend-equivalence portfolio graph
-  entry with scoped `backend_equivalence_portfolio` requirements
+  entry with scoped `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` requirements and exact artifact-ID
+  bindings
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
@@ -47,7 +50,8 @@ The gate passes only when:
   placement comparison with raw values omitted
 - Runtime Backend Equivalence matrix coverage passes, proving the checked
   report is inventoried by the Runtime Evidence Matrix as scoped
-  `backend_equivalence` evidence
+  `backend_equivalence` evidence with the exact
+  `runtime_backend_equivalence_systolic` artifact ID
 - Runtime Vector Backend Equivalence passes for the `reference_cpu` baseline
   run and the `vector_sim` candidate run
 - Runtime Vector Backend Equivalence binding passes, proving the checked report
@@ -56,7 +60,8 @@ The gate passes only when:
   omitted
 - Runtime Vector Backend Equivalence matrix coverage passes, proving the
   checked report is inventoried by the Runtime Evidence Matrix as scoped
-  `backend_equivalence` evidence
+  `backend_equivalence` evidence with the exact
+  `runtime_backend_equivalence_vector` artifact ID
 - Runtime Mixed Backend Equivalence passes for the `reference_cpu` baseline run
   and the `mixed_accelerators` candidate run
 - Runtime Mixed Backend Equivalence binding passes, proving the checked report
@@ -65,7 +70,8 @@ The gate passes only when:
   with raw values omitted
 - Runtime Mixed Backend Equivalence matrix coverage passes, proving the checked
   report is inventoried by the Runtime Evidence Matrix as scoped
-  `backend_equivalence` evidence
+  `backend_equivalence` evidence with the exact
+  `runtime_backend_equivalence_mixed` artifact ID
 - Runtime Backend Equivalence Portfolio passes across the systolic, vector, and
   mixed accelerator proof slices
 - Runtime Backend Equivalence Portfolio binding passes, proving the aggregate
@@ -74,7 +80,8 @@ The gate passes only when:
 - Runtime Backend Equivalence Portfolio matrix coverage passes, proving the
   portfolio is inventoried by the Runtime Evidence Matrix as scoped
   `backend_equivalence_portfolio` and
-  `backend_equivalence_portfolio_policy` evidence
+  `backend_equivalence_portfolio_policy` evidence with exact portfolio and
+  policy artifact IDs
 - Runtime Backend Equivalence Portfolio Policy binding passes, proving the
   accepted slice membership and backend sequences match the portfolio report
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
@@ -201,7 +208,7 @@ It composes bounded in-repository checks:
   policy
 - a bounded Runtime Backend Equivalence matrix lookup that verifies graph
   family, source boundary, required artifact kinds, completeness, and
-  `backend_equivalence` artifact coverage
+  exact `backend_equivalence` artifact coverage
 - data-only Runtime Vector Backend Equivalence metadata comparing the expected
   `reference_cpu` and `vector_sim` trusted execution placements with raw tensor
   values omitted by policy
@@ -210,7 +217,7 @@ It composes bounded in-repository checks:
   raw-value policy
 - a bounded Runtime Vector Backend Equivalence matrix lookup that verifies graph
   family, source boundary, required artifact kinds, completeness, and
-  `backend_equivalence` artifact coverage
+  exact `backend_equivalence` artifact coverage
 - data-only Runtime Mixed Backend Equivalence metadata comparing the expected
   `reference_cpu` and `mixed_accelerators` trusted execution placements with
   raw tensor values omitted by policy
@@ -219,7 +226,7 @@ It composes bounded in-repository checks:
   raw-value policy
 - a bounded Runtime Mixed Backend Equivalence matrix lookup that verifies graph
   family, source boundary, required artifact kinds, completeness, and
-  `backend_equivalence` artifact coverage
+  exact `backend_equivalence` artifact coverage
 - data-only Runtime Backend Equivalence Portfolio metadata aggregating the
   systolic, vector, and mixed accelerator equivalence slices with raw tensor
   values omitted by policy
@@ -229,7 +236,7 @@ It composes bounded in-repository checks:
   raw-value policy against the reports already checked by the gate
 - a bounded Runtime Backend Equivalence Portfolio matrix lookup that verifies
   graph family, source boundary, required artifact kinds, completeness, and
-  `backend_equivalence_portfolio` plus
+  exact `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` artifact coverage
 - data-only Runtime Backend Equivalence Portfolio Policy metadata declaring the
   accepted slice IDs, graph names, run IDs, backend sequences, minimum

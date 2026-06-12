@@ -215,6 +215,9 @@ Completed evidence:
   slice membership, backend sequences, minimum comparison counts, and required
   backend families as data-only evidence, with Runtime Evidence Gate binding
   the policy to the portfolio before accepting backend-diversity evidence.
+- Runtime Evidence Gate now binds backend-equivalence and portfolio Matrix
+  coverage to exact artifact IDs, so a complete Matrix with the right
+  artifact kinds cannot silently point at a different evidence artifact.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.

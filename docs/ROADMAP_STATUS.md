@@ -86,6 +86,9 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Gate now binds the Backend Equivalence Portfolio Policy to
   the checked portfolio before portfolio evidence can count as passing merge
   evidence.
+- Runtime Evidence Gate now binds backend-equivalence and portfolio Matrix
+  coverage to exact artifact IDs, preventing kind-only Matrix coverage from
+  accepting the wrong concrete evidence artifact.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at

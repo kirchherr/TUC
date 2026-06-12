@@ -9,8 +9,12 @@ import pytest
 
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
 from examples.runtime_evidence_gate import (
+    RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
     RuntimeEvidenceGateError,
     build_gate_report,
@@ -85,6 +89,10 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_backend_equivalence_binding = "verified"' in completed.stdout
     assert 'runtime_backend_equivalence_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
     assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
     assert (
         'runtime_vector_backend_equivalence_binding = "verified"'
@@ -94,12 +102,20 @@ def test_runtime_evidence_gate_example_runs() -> None:
         'runtime_vector_backend_equivalence_matrix = "covered"'
         in completed.stdout
     )
+    assert (
+        "runtime_vector_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
     assert 'runtime_mixed_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_mixed_backend_equivalence_binding = "verified"' in completed.stdout
     assert (
         'runtime_mixed_backend_equivalence_matrix = "covered"'
         in completed.stdout
     )
+    assert (
+        "runtime_mixed_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
     assert 'runtime_backend_equivalence_portfolio = "passed"' in completed.stdout
     assert (
         'runtime_backend_equivalence_portfolio_binding = "verified"'
@@ -113,6 +129,10 @@ def test_runtime_evidence_gate_example_runs() -> None:
         'runtime_backend_equivalence_portfolio_matrix = "covered"'
         in completed.stdout
     )
+    assert (
+        "runtime_backend_equivalence_portfolio_matrix_artifacts = "
+        f'"{",".join(RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS)}"'
+    ) in completed.stdout
     assert (
         'runtime_backend_equivalence_portfolio_policy = "accepted"'
         in completed.stdout
@@ -388,6 +408,34 @@ def test_runtime_evidence_gate_rejects_broadened_backend_equivalence_matrix_scop
         build_gate_report(matrix_report=broadened_mixed_equivalence)
 
 
+def test_runtime_evidence_gate_rejects_wrong_backend_equivalence_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_mixed_equivalence = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_mixed_backend_equivalence_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=(
+                    RuntimeEvidenceArtifact(
+                        artifact_kind="backend_equivalence",
+                        artifact_id="runtime_backend_equivalence_other",
+                    ),
+                ),
+            )
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_mixed_equivalence.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed backend equivalence matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_mixed_equivalence)
+
+
 def test_runtime_evidence_gate_rejects_failed_backend_equivalence_portfolio() -> None:
     vector_report = build_vector_backend_equivalence_report()
     candidate = replace(
@@ -536,6 +584,37 @@ def test_runtime_evidence_gate_rejects_broadened_backend_portfolio_matrix_scope(
         match="backend equivalence portfolio matrix coverage",
     ):
         build_gate_report(matrix_report=broadened_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_wrong_backend_portfolio_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_portfolio = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_backend_equivalence_portfolio_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_backend_equivalence_other_policy",
+                    )
+                    if artifact.artifact_kind == "backend_equivalence_portfolio_policy"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_portfolio.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_portfolio)
 
 
 def test_runtime_evidence_gate_rejects_unbound_backend_equivalence_portfolio_policy() -> None:

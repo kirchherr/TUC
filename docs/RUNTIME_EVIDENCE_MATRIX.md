@@ -120,12 +120,14 @@ merge evidence. It also requires the three backend-equivalence graph entries
 to remain present with the `runtime_backend_equivalence` source boundary and
 `backend_equivalence` artifact kind before backend-equivalence reports can
 count as passing gate evidence; the gate binds each checked equivalence report
-to its matrix graph by graph ID. It also requires the
+to its matrix graph by graph ID and exact artifact ID. It also requires the
 `runtime_backend_equivalence_portfolio` graph to remain present with the
 `runtime_backend_equivalence` source boundary and
 `backend_equivalence_portfolio` plus
 `backend_equivalence_portfolio_policy` artifact kinds before portfolio evidence
-can count as passing gate evidence. It also requires `source_intent_return_mlp` to
+can count as passing gate evidence; the gate binds the portfolio matrix coverage
+to the exact portfolio and policy artifact IDs. It also requires
+`source_intent_return_mlp` to
 remain present with the `source_intent_metadata` source boundary and the
 `source_intent_return_semantics` plus `source_intent_runtime_returns` artifact
 kinds before Source Intent Runtime Returns can count as passing gate evidence.
