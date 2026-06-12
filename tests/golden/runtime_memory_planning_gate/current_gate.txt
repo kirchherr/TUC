@@ -13,6 +13,10 @@ runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {
   memory_usage_count = "1"
   total_reserved_bytes = "192"
   total_peak_live_bytes = "192"
+  allocation_request_manifest = "passed"
+  allocation_request_manifest_binding = "verified"
+  allocation_requests = "3"
+  allocation_request_handle_policy = "no_runtime_handles"
   blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
   status = "PASS"
 }

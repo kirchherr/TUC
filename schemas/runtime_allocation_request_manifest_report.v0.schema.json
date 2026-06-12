@@ -1,0 +1,269 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_allocation_request_manifest_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "handle_policy": {
+      "const": "no_runtime_handles"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "manifest_contract": {
+      "const": "runtime_allocation_request_manifest.data_only.v0"
+    },
+    "manifest_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "operation_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "request_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "requests": {
+      "items": {
+        "$ref": "#/$defs/request"
+      },
+      "maxItems": 8192,
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_allocation_request_manifest_report.v0"
+    },
+    "source_allocation_contract": {
+      "const": "runtime_allocation_plan.data_only.v0"
+    },
+    "source_allocation_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_allocation_schema_version": {
+      "const": "tuc.runtime_allocation_plan_report.v0"
+    },
+    "source_memory_budget_allocation_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_memory_budget_contract": {
+      "const": "runtime_memory_budget.data_only.v0"
+    },
+    "source_memory_budget_schema_version": {
+      "const": "tuc.runtime_memory_budget_report.v0"
+    },
+    "total_reserved_bytes": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "graph_name",
+    "handle_policy",
+    "issues",
+    "manifest_contract",
+    "manifest_metadata_digest",
+    "operation_count",
+    "passed",
+    "request_count",
+    "requests",
+    "schema_version",
+    "source_allocation_contract",
+    "source_allocation_metadata_digest",
+    "source_allocation_schema_version",
+    "source_memory_budget_allocation_digest",
+    "source_memory_budget_contract",
+    "source_memory_budget_schema_version",
+    "total_reserved_bytes"
+  ],
+  "type": "object",
+  "$defs": {
+    "dtype": {
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+      "type": "string"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "layout": {
+      "enum": [
+        "blocked",
+        "row_major"
+      ]
+    },
+    "memory_domain": {
+      "enum": [
+        "analog_weight_bank",
+        "device_sram",
+        "gpu_hbm",
+        "host_ram"
+      ]
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "runtime_handle",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "request": {
+      "additionalProperties": false,
+      "properties": {
+        "allocation_kind": {
+          "enum": [
+            "exclusive",
+            "reused"
+          ]
+        },
+        "bytes_reserved": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "dtype": {
+          "$ref": "#/$defs/dtype"
+        },
+        "handle_policy": {
+          "const": "no_runtime_handles"
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "request_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "request_status": {
+          "const": "admitted"
+        },
+        "shape": {
+          "$ref": "#/$defs/shape"
+        },
+        "slot_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_count": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "tensor_names": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "allocation_kind",
+        "bytes_reserved",
+        "dtype",
+        "handle_policy",
+        "layout",
+        "memory_domain",
+        "request_id",
+        "request_status",
+        "shape",
+        "slot_id",
+        "tensor_count",
+        "tensor_names"
+      ],
+      "type": "object"
+    },
+    "shape": {
+      "items": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "type": "array"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "graph_name": "runtime_buffer_lifetime",
+  "handle_policy": "no_runtime_handles",
+  "issues": [],
+  "manifest_contract": "runtime_allocation_request_manifest.data_only.v0",
+  "manifest_metadata_digest": "sha256:e4ece2b0e7a9811062744f2d924a1a68c12844df779410dbe84399dd48e6e636",
+  "operation_count": 4,
+  "passed": true,
+  "request_count": 3,
+  "requests": [
+    {
+      "allocation_kind": "reused",
+      "bytes_reserved": 64,
+      "dtype": "float32",
+      "handle_policy": "no_runtime_handles",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "request_id": "alloc_request_001",
+      "request_status": "admitted",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_001",
+      "tensor_count": 2,
+      "tensor_names": [
+        "left_tmp",
+        "right_tmp"
+      ]
+    },
+    {
+      "allocation_kind": "exclusive",
+      "bytes_reserved": 64,
+      "dtype": "float32",
+      "handle_policy": "no_runtime_handles",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "request_id": "alloc_request_002",
+      "request_status": "admitted",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_002",
+      "tensor_count": 1,
+      "tensor_names": [
+        "left_out"
+      ]
+    },
+    {
+      "allocation_kind": "exclusive",
+      "bytes_reserved": 64,
+      "dtype": "float32",
+      "handle_policy": "no_runtime_handles",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "request_id": "alloc_request_003",
+      "request_status": "admitted",
+      "shape": [
+        4,
+        4
+      ],
+      "slot_id": "slot_003",
+      "tensor_count": 1,
+      "tensor_names": [
+        "right_out"
+      ]
+    }
+  ],
+  "schema_version": "tuc.runtime_allocation_request_manifest_report.v0",
+  "source_allocation_contract": "runtime_allocation_plan.data_only.v0",
+  "source_allocation_metadata_digest": "sha256:45f693be572dd776078e7fb0211b1562a48c4d50ad62b55e7f680975b36f2ede",
+  "source_allocation_schema_version": "tuc.runtime_allocation_plan_report.v0",
+  "source_memory_budget_allocation_digest": "sha256:45f693be572dd776078e7fb0211b1562a48c4d50ad62b55e7f680975b36f2ede",
+  "source_memory_budget_contract": "runtime_memory_budget.data_only.v0",
+  "source_memory_budget_schema_version": "tuc.runtime_memory_budget_report.v0",
+  "total_reserved_bytes": 192
+}

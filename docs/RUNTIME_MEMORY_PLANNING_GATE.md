@@ -8,6 +8,7 @@ It runs:
 - `build_current_runtime_buffer_lifetime_report()`
 - `build_current_runtime_allocation_plan_report()`
 - `build_current_runtime_memory_budget_report()`
+- `build_runtime_allocation_request_manifest_report()`
 - `examples/runtime_memory_planning_gate.py`
 
 The gate passes only when:
@@ -20,6 +21,14 @@ The gate passes only when:
   checks
 - the Memory Budget source allocation metadata digest matches the Allocation
   Plan evaluated by the same gate invocation
+- the Runtime Allocation Request Manifest passes and is bound to the Allocation
+  Plan and Memory Budget evaluated by the same gate invocation
+
+Schema coverage:
+
+```text
+schemas/runtime_allocation_request_manifest_report.v0.schema.json
+```
 
 Golden output:
 
@@ -36,10 +45,11 @@ CI entry:
 ## Security Boundary
 
 The gate composes bounded data-only reports. It does not allocate memory,
-discover plugins, import backend modules, load dynamic libraries, spawn
-subprocesses outside the example process, access devices, touch the network,
-execute generated artifacts, run JIT code, read host paths, read environment
-variables, load raw benchmark output, or authorize executable backend surfaces.
+expose runtime handles, discover plugins, import backend modules, load dynamic
+libraries, spawn subprocesses outside the example process, access devices,
+touch the network, execute generated artifacts, run JIT code, read host paths,
+read environment variables, load raw benchmark output, or authorize executable
+backend surfaces.
 
 ## Review Meaning
 
@@ -53,3 +63,6 @@ accepted for a different allocation plan.
 
 The lifetime digest binding prevents stale allocation-plan evidence from being
 accepted for a different buffer-lifetime report.
+
+The allocation-request manifest binding prevents stale future allocator request
+evidence from being accepted for a different Allocation Plan or Memory Budget.

@@ -92,10 +92,17 @@ hardware-independent interface into capability-driven runtime planning.
   `schemas/runtime_memory_budget_report.v0.schema.json`, deterministic golden
   at `tests/golden/runtime_memory_budget/current_report.json`, and source
   allocation metadata digest binding.
+- Runtime Allocation Request Manifest v0 with schema at
+  `schemas/runtime_allocation_request_manifest_report.v0.schema.json`,
+  deterministic golden at
+  `tests/golden/runtime_allocation_request_manifest/current_report.json`, and
+  no-runtime-handles future allocator admission requests bound to Allocation
+  Plan and Memory Budget metadata.
 - Runtime Memory Planning Gate v0 with deterministic golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt` and CI coverage
   in the `python` workflow job, now verifying Allocation Plan binding to Buffer
-  Lifetime and Memory Budget binding to Allocation Plan in the same gate
+  Lifetime, Memory Budget binding to Allocation Plan, and Allocation Request
+  Manifest binding to Allocation Plan and Memory Budget in the same gate
   invocation.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
@@ -397,12 +404,17 @@ Current slice:
 - Runtime Memory Budget at `examples/runtime_memory_budget.py`, with golden
   evidence at `tests/golden/runtime_memory_budget/current_report.json`, bound
   to the source Allocation Plan metadata digest.
+- Runtime Allocation Request Manifest at
+  `examples/runtime_allocation_request_manifest.py`, with golden evidence at
+  `tests/golden/runtime_allocation_request_manifest/current_report.json`,
+  exposing bounded future allocator requests without runtime handles.
 - Runtime Memory Planning Gate at `examples/runtime_memory_planning_gate.py`,
   with golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt`, rejecting stale
   Allocation Plan evidence whose source Buffer Lifetime digest does not match
-  and stale Memory Budget evidence whose source Allocation Plan digest does not
-  match.
+  stale Memory Budget evidence whose source Allocation Plan digest does not
+  match, and stale Allocation Request Manifest evidence whose source Allocation
+  Plan or Memory Budget binding does not match.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -652,11 +664,18 @@ Current focus:
   aliasing, or real allocator behavior.
 - Use Runtime Memory Budget before accepting memory pools, device allocation,
   aliasing, or allocator behavior that can reserve runtime memory.
+- Use Runtime Allocation Request Manifest before accepting memory pools, device
+  allocation, aliasing, runtime handles, or allocator behavior that can reserve
+  runtime memory.
 - Keep Runtime Memory Planning Gate passing in CI before accepting allocator,
   memory-pool, device-allocation, or aliasing changes.
 - Keep Memory Budget reports bound to the Allocation Plan evaluated by the same
   gate invocation before accepting allocator, memory-pool, device-allocation, or
   aliasing changes.
+- Keep Allocation Request Manifest reports bound to the Allocation Plan and
+  Memory Budget evaluated by the same gate invocation before accepting
+  allocator, memory-pool, device-allocation, runtime-handle, or aliasing
+  changes.
 - Keep Allocation Plan reports bound to the Buffer Lifetime report evaluated by
   the same gate invocation before accepting allocator, memory-pool,
   device-allocation, or aliasing changes.

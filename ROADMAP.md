@@ -384,9 +384,11 @@ Completed evidence:
 - Runtime Memory Budget reports bind to Allocation Plan metadata digests and
   check explicit memory-domain budgets before adding memory pools or device
   allocation.
-- Runtime Memory Planning Gate verifies allocation-plan, memory-budget, and
-  lifetime/allocation/budget digest-binding evidence before allocator behavior
-  can be accepted.
+- Runtime Allocation Request Manifest reports expose bounded, data-only future
+  allocator admission requests without runtime handles.
+- Runtime Memory Planning Gate verifies allocation-plan, memory-budget,
+  allocation-request-manifest, and lifetime/allocation/budget/request digest
+  binding evidence before allocator behavior can be accepted.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
@@ -404,8 +406,9 @@ Next work:
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
-- Add allocator behavior only after allocation-plan and memory-budget evidence
-  stays deterministic, digest-bound, and reviewable.
+- Add allocator behavior only after allocation-plan, memory-budget, and
+  allocation-request-manifest evidence stays deterministic, digest-bound, and
+  reviewable.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 

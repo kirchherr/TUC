@@ -23,12 +23,16 @@ from tuc import (
     RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION,
     RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION,
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
+    RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION,
     RuntimeAllocationPlanReport,
+    RuntimeAllocationRequestManifestReport,
     RuntimeBufferLifetimeReport,
     RuntimeMemoryBudgetReport,
     assert_runtime_allocation_plan,
+    assert_runtime_allocation_request_manifest,
     assert_runtime_buffer_lifetime,
     assert_runtime_memory_budget,
+    build_runtime_allocation_request_manifest_report,
 )
 
 
@@ -41,6 +45,7 @@ def build_gate_report(
     allocation_report: RuntimeAllocationPlanReport | None = None,
     lifetime_report: RuntimeBufferLifetimeReport | None = None,
     memory_budget_report: RuntimeMemoryBudgetReport | None = None,
+    request_manifest_report: RuntimeAllocationRequestManifestReport | None = None,
 ) -> str:
     """Return the stable CI-facing runtime memory planning gate report."""
 
@@ -64,7 +69,18 @@ def build_gate_report(
     _assert_memory_budget_passed(memory_budget)
     _assert_allocation_matches_lifetime(lifetime, allocation)
     _assert_memory_budget_matches_allocation(allocation, memory_budget)
-    return _render_gate_report(lifetime, allocation, memory_budget)
+    request_manifest = (
+        build_runtime_allocation_request_manifest_report(allocation, memory_budget)
+        if request_manifest_report is None
+        else request_manifest_report
+    )
+    _assert_allocation_request_manifest_passed(request_manifest)
+    _assert_request_manifest_matches_sources(
+        allocation,
+        memory_budget,
+        request_manifest,
+    )
+    return _render_gate_report(lifetime, allocation, memory_budget, request_manifest)
 
 
 def main() -> None:
@@ -95,6 +111,17 @@ def _assert_memory_budget_passed(report: RuntimeMemoryBudgetReport) -> None:
     except AssertionError as exc:
         raise RuntimeMemoryPlanningGateError(
             f"runtime memory budget failed: {exc}"
+        ) from exc
+
+
+def _assert_allocation_request_manifest_passed(
+    report: RuntimeAllocationRequestManifestReport,
+) -> None:
+    try:
+        assert_runtime_allocation_request_manifest(report)
+    except AssertionError as exc:
+        raise RuntimeMemoryPlanningGateError(
+            f"runtime allocation request manifest failed: {exc}"
         ) from exc
 
 
@@ -165,10 +192,116 @@ def _assert_memory_budget_matches_allocation(
         )
 
 
+def _assert_request_manifest_matches_sources(
+    allocation: RuntimeAllocationPlanReport,
+    memory_budget: RuntimeMemoryBudgetReport,
+    request_manifest: RuntimeAllocationRequestManifestReport,
+) -> None:
+    if allocation.graph_name != request_manifest.graph_name:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest graph mismatch"
+        )
+    if allocation.operation_count != request_manifest.operation_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest operation count mismatch"
+        )
+    if request_manifest.source_allocation_contract != allocation.allocation_contract:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest allocation contract mismatch"
+        )
+    if (
+        request_manifest.source_allocation_schema_version
+        != RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest allocation schema mismatch"
+        )
+    if (
+        request_manifest.source_allocation_metadata_digest
+        != allocation.allocation_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest allocation digest mismatch"
+        )
+    if request_manifest.source_memory_budget_contract != memory_budget.budget_contract:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest budget contract mismatch"
+        )
+    if (
+        request_manifest.source_memory_budget_schema_version
+        != RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest budget schema mismatch"
+        )
+    if (
+        request_manifest.source_memory_budget_allocation_digest
+        != memory_budget.source_allocation_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest budget binding mismatch"
+        )
+    if request_manifest.request_count != allocation.slot_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest slot count mismatch"
+        )
+    if request_manifest.total_reserved_bytes != allocation.total_reserved_bytes:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest reserved bytes mismatch"
+        )
+    if tuple(request.slot_id for request in request_manifest.requests) != tuple(
+        slot.slot_id for slot in allocation.slots
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest slot binding mismatch"
+        )
+    if _request_slot_payloads(request_manifest) != _allocation_slot_payloads(allocation):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning request manifest slot payload mismatch"
+        )
+
+
+def _request_slot_payloads(
+    request_manifest: RuntimeAllocationRequestManifestReport,
+) -> tuple[tuple[object, ...], ...]:
+    return tuple(
+        (
+            request.slot_id,
+            request.memory_domain,
+            request.layout,
+            request.dtype,
+            request.shape,
+            request.bytes_reserved,
+            request.tensor_names,
+            request.allocation_kind,
+        )
+        for request in request_manifest.requests
+    )
+
+
+def _allocation_slot_payloads(
+    allocation: RuntimeAllocationPlanReport,
+) -> tuple[tuple[object, ...], ...]:
+    return tuple(
+        (
+            slot.slot_id,
+            slot.memory_domain,
+            slot.layout,
+            slot.dtype,
+            slot.shape,
+            slot.bytes_reserved,
+            slot.tensor_names,
+            slot.allocation_kind,
+        )
+        for slot in allocation.slots
+    )
+
+
 def _render_gate_report(
     lifetime: RuntimeBufferLifetimeReport,
     allocation: RuntimeAllocationPlanReport,
     memory_budget: RuntimeMemoryBudgetReport,
+    request_manifest: RuntimeAllocationRequestManifestReport,
 ) -> str:
     lines = ["runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {"]
     lines.append('  buffer_lifetime = "passed"')
@@ -185,6 +318,12 @@ def _render_gate_report(
     lines.append(f'  memory_usage_count = "{memory_budget.usage_count}"')
     lines.append(f'  total_reserved_bytes = "{memory_budget.total_reserved_bytes}"')
     lines.append(f'  total_peak_live_bytes = "{memory_budget.total_peak_live_bytes}"')
+    lines.append('  allocation_request_manifest = "passed"')
+    lines.append('  allocation_request_manifest_binding = "verified"')
+    lines.append(f'  allocation_requests = "{request_manifest.request_count}"')
+    lines.append(
+        f'  allocation_request_handle_policy = "{request_manifest.handle_policy}"'
+    )
     lines.append(
         "  blocked_execution_surfaces = "
         f'"{",".join(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)}"'
