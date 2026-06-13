@@ -1,0 +1,117 @@
+{
+  "accepted_case_count": 2,
+  "blocked_compiler_outputs": [
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "environment_dependent_behavior",
+    "file_system_access",
+    "frontend_module_import",
+    "generated_artifact_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_inspection",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "cases": [
+    {
+      "case_id": "accepted_matmul_elementwise",
+      "expectation": "accepted",
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "outcome": "accepted",
+      "parser_report_digest": "sha256:d30b27123ce5e10b658841ed7d65a5f8ba9243d4f5c9f80751b857daf54dffbb",
+      "rejection_reason": "",
+      "source_bytes": 162,
+      "source_digest": "sha256:ad113b078fe24fcd871fbfb3f95b03e6192dbad3e607bbb737a9e09aa92f9bad",
+      "source_name": "research_matmul_elementwise"
+    },
+    {
+      "case_id": "accepted_softmax_reduction",
+      "expectation": "accepted",
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "outcome": "accepted",
+      "parser_report_digest": "sha256:cb1a1907c67ed744a11a10d3f832766de69439474e4976e5eb9f4b4989f69d60",
+      "rejection_reason": "",
+      "source_bytes": 146,
+      "source_digest": "sha256:4256aa2ead107dfd1fe3b5cad55224c19c52aaad4aa23fc3590bdc5cc641d230",
+      "source_name": "research_softmax_reduction"
+    },
+    {
+      "case_id": "reject_ambiguous_softmax_axis",
+      "expectation": "rejected",
+      "operation_families": [],
+      "outcome": "rejected",
+      "parser_report_digest": "",
+      "rejection_reason": "missing_axis_keyword",
+      "source_bytes": 105,
+      "source_digest": "sha256:d18b671c9e2d4924d7df7af20aa575c40773d839d4ce708d7d7c5b9e95100803",
+      "source_name": "reject_ambiguous_softmax_axis"
+    },
+    {
+      "case_id": "reject_decorator_call",
+      "expectation": "rejected",
+      "operation_families": [],
+      "outcome": "rejected",
+      "parser_report_digest": "",
+      "rejection_reason": "preflight_decorator_call",
+      "source_bytes": 70,
+      "source_digest": "sha256:3163e3195ebe39e4b6d2e3919772b538f767b6aa3a0ac5effbad3e185b94be33",
+      "source_name": "reject_decorator_call"
+    },
+    {
+      "case_id": "reject_hardware_hint",
+      "expectation": "rejected",
+      "operation_families": [],
+      "outcome": "rejected",
+      "parser_report_digest": "",
+      "rejection_reason": "unsupported_assignment_value",
+      "source_bytes": 76,
+      "source_digest": "sha256:41e026079ce8ccc08c2b7ad7f2151808bd0309c2a0ea4a226f8dfa94cec85759",
+      "source_name": "reject_hardware_hint"
+    },
+    {
+      "case_id": "reject_import_escape",
+      "expectation": "rejected",
+      "operation_families": [],
+      "outcome": "rejected",
+      "parser_report_digest": "",
+      "rejection_reason": "preflight_import_statement",
+      "source_bytes": 67,
+      "source_digest": "sha256:398e59a873b62440e63c169d5504e5a17b4dc94d46285eb653c3c01d03c67647",
+      "source_name": "reject_import_escape"
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "diagnostics_contract": "source_to_intent_research_diagnostics.execution_free.v0",
+  "output_policy": "source_intent.v0_plain_data_only",
+  "parser_contract": "source_to_intent_research_parser.execution_free.v0",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "rejected_case_count": 4,
+  "rejection_reasons": [
+    "missing_axis_keyword",
+    "preflight_decorator_call",
+    "preflight_import_statement",
+    "unsupported_assignment_value"
+  ],
+  "schema_version": "tuc.source_to_intent_research_diagnostics_report.v0",
+  "source_intent_schema_version": "source_intent.v0"
+}

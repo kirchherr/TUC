@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_parser_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Parser Report v0",
+  "description": "Metadata-only report schema for the explicit execution-free Source-to-Intent research parser slice.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "blocked_compiler_outputs",
+    "blocked_execution_surfaces",
+    "default_parser_status",
+    "line_count",
+    "operation_count",
+    "operation_families",
+    "output_policy",
+    "parser_contract",
+    "parser_status",
+    "preflight_ast_depth",
+    "preflight_ast_node_count",
+    "preflight_contract",
+    "return_count",
+    "schema_version",
+    "source_bytes",
+    "source_digest",
+    "source_intent_contract",
+    "source_intent_schema_version",
+    "source_name",
+    "tensor_count"
+  ],
+  "properties": {
+    "blocked_compiler_outputs": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "line_count": {"$ref": "#/$defs/non_negative_int"},
+    "operation_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 32
+    },
+    "operation_families": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "enum": ["elementwise", "matmul", "reduction", "softmax"]
+      },
+      "uniqueItems": true
+    },
+    "output_policy": {"const": "source_intent.v0_plain_data_only"},
+    "parser_contract": {
+      "const": "source_to_intent_research_parser.execution_free.v0"
+    },
+    "parser_status": {"const": "research_explicit_only"},
+    "preflight_ast_depth": {"$ref": "#/$defs/non_negative_int"},
+    "preflight_ast_node_count": {"$ref": "#/$defs/non_negative_int"},
+    "preflight_contract": {"const": "triton_source_preflight.execution_free.v0"},
+    "return_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16
+    },
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_parser_report.v0"
+    },
+    "source_bytes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65536
+    },
+    "source_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "source_intent_contract": {"const": "source_intent_ir.canonical.v0"},
+    "source_intent_schema_version": {"const": "source_intent.v0"},
+    "source_name": {"$ref": "#/$defs/identifier"},
+    "tensor_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+      "maxLength": 128
+    },
+    "non_negative_int": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    }
+  }
+}

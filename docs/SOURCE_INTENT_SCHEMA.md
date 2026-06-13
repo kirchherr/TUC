@@ -24,6 +24,7 @@ The schema defines:
 - tensor names, shapes, and dtypes
 - operation families: `matmul`, `elementwise`, `reduction`, `softmax`
 - symbolic input and output tensor references
+- neutral operation attributes: `axis` for `reduction` and `softmax`
 - neutral hints: `prefer_linear_accelerator`, `prefer_sparsity`,
   `robust_to_noise`, and `max_error_budget`
 - optional public return bindings through `returns`, documented in

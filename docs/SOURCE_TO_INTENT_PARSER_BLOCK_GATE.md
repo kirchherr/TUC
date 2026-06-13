@@ -19,7 +19,12 @@ artifacts.
 
 The gate passes only when the default Source-To-Intent Readiness report remains
 blocked and every required evidence ID is missing, including
-`source_intent_frontend_conformance_gate`.
+`source_intent_frontend_conformance_gate` and
+`source_to_intent_research_diagnostics`.
+
+Separate research readiness reports and explicit research parser slices may
+exist. They do not change this default block gate and must not let source text
+become a default compiler input or bypass Source Intent Intake.
 
 ## Security Boundary
 
@@ -32,6 +37,7 @@ backend artifacts, or cache locations.
 ## Review Meaning
 
 This gate is a merge-time assertion that TUC has not accidentally opened a
-source-to-intent parser path. If parser work intentionally begins, this gate
-must be revised through a dedicated RFC and new evidence rather than silently
-allowing source text to influence compiler artifacts.
+default source-to-intent parser path. If source text intentionally becomes a
+compiler input path, this gate must be revised through a dedicated RFC and new
+evidence rather than silently allowing source text to influence compiler
+artifacts.

@@ -17,15 +17,18 @@ compatibility on day one.
 
 | Feature | Level | Notes |
 | --- | --- | --- |
-| `@triton.jit` syntax | L0 | Preserved as a design goal; source text can pass execution-free preflight only, with no source-to-IR ingestion yet. |
+| `@triton.jit` syntax | L1 | Preserved as a design goal; source text can pass execution-free preflight, and one explicit research parser slice accepts a tiny subset without executing decorators or JIT. General syntax support remains blocked. |
 | Triton source preflight | L0 | Bounded source syntax report rejects imports, decorator calls, dangerous builtins, host/device/network surfaces, unsupported calls, and HAC-IR leakage without producing a `ComputeGraph`; fuzz/property tests cover arbitrary decoded bytes and malicious seed cases. |
 | Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
 | Source Intent JSON Schema | L1 | Machine-readable `source_intent.v0` schema documents the plain-data contract for external frontend authors while runtime validation remains in Source Intent Intake. |
+| Source Intent Axis Attributes | L2 | Neutral `attributes.axis` semantics for `softmax` and `reduction` pass through Source Intent Intake, Metadata Conversion, and parser conformance evidence without backend/device facts. |
 | Canonical Source Intent IR | L1 | Data-only frontend contract exists with deterministic dump and negative hardware-leakage tests; conversion is exposed only through a separate Source Intent Metadata adapter. |
 | Source Intent Metadata Conversion | L2 | Execution-free adapter converts already constructed Source Intent IR to schema-versioned metadata, with source-intake, HAC-IR, runtime-plan, and compiler decision-report goldens. |
 | Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, optional public return semantics, metadata conversion, graph construction, return-alias preservation, and neutral planning while rejected cases fail closed at intake; report artifacts have a JSON Schema. |
-| Source-To-Intent Parser Gate | L0 | Parser implementation remains blocked, but the required future RFC, budgets, corpus, diagnostics, goldens, neutrality review, and conformance evidence are defined. |
-| Source-To-Intent Readiness Report | L0 | Parser implementation remains blocked, with deterministic readiness evidence showing which required gate artifacts are still missing. |
+| Source-To-Intent Parser Gate | L0 | Default parser intake remains blocked, while the required RFC, budgets, corpus, diagnostics, goldens, neutrality review, and conformance evidence are defined for broader parser work. |
+| Source-To-Intent Readiness Report | L0 | Default parser intake remains blocked, while deterministic research readiness evidence now shows the proposal evidence set is complete. |
+| Source-To-Intent Research Parser | L1 | Explicit-only parser slice converts a tiny caller-provided Triton-like source subset into validated `source_intent.v0` plain data with metadata-only report evidence and no compiler artifacts. |
+| Source-To-Intent Research Parser Conformance Gate | L2 | Binds the `matmul -> elementwise` parser output slice to Source Intent Frontend Conformance while keeping default parser intake blocked. |
 | Source-To-Intent Parser Block Gate | L0 | CI-facing gate asserts the default source-to-intent parser path remains blocked and all required parser-readiness evidence is missing. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
@@ -45,11 +48,11 @@ compatibility on day one.
 - Unsupported operations must remain visible and explainable.
 - Fallback backend assignment must be explicit in HS-IR.
 - Compatibility claims must be backed by tests or examples.
-- Real Triton-facing intake must remain execution-free until a separate parser
-  and sandbox RFC exists.
-- Direct source parsing must satisfy
+- Real Triton-facing intake must remain execution-free; broader parser work
+  requires separate review and sandbox evidence.
+- General source parsing must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before moving
-  beyond L0.
+  beyond the explicit research slice.
 - Source-text preflight is documented in
   [Triton Source Preflight](TRITON_SOURCE_PREFLIGHT.md), but it is not source
   ingestion.
@@ -60,6 +63,8 @@ compatibility on day one.
   source text or preflight reports.
 - Source Intent JSON Schema is documented in
   [Source Intent JSON Schema](SOURCE_INTENT_SCHEMA.md).
+- Source Intent Axis Attributes are documented in
+  [Source Intent Axis Attributes](SOURCE_INTENT_AXIS_ATTRIBUTES.md).
 - Source Intent Metadata Conversion is documented in
   [Source Intent Metadata Conversion](SOURCE_INTENT_METADATA.md). It starts
   from an already constructed `SourceIntentModule`, not source text.
@@ -72,20 +77,29 @@ compatibility on day one.
   The schema covers report artifacts, not frontend payload semantics.
 - Source-To-Intent Parser Gate is documented in
   [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md). It keeps
-  parser implementation blocked until source text can produce Source Intent
-  plain data without bypassing intake, conformance, metadata conversion, HAC-IR
-  neutrality review, runtime-plan goldens, or decision-report goldens.
+  default parser intake blocked and governs broader parser work so source text
+  cannot bypass intake, conformance, metadata conversion, HAC-IR neutrality
+  review, runtime-plan goldens, or decision-report goldens.
 - Source-To-Intent Readiness Report is documented in
   [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md). It is a
   review artifact for parser proposals, not a source parser or ingestion path.
 - Source-To-Intent Parser Block Gate is documented in
   [Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md).
   It keeps the default source-to-intent parser path closed in CI.
+- Source-To-Intent Research Parser is documented in
+  [Source-To-Intent Research Parser](SOURCE_TO_INTENT_RESEARCH_PARSER.md). It
+  emits only `source_intent.v0` plain data for a tiny explicit subset and does
+  not produce metadata, `ComputeGraph`, IR, runtime plans, or backend
+  decisions.
+- Source-To-Intent Research Parser Conformance Gate is documented in
+  [Source-To-Intent Research Parser Conformance Gate](SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md).
+  It proves the first parser output slice passes the reusable Source Intent
+  Frontend Conformance path.
 
 ## Next Step
 
-Design source-text to Source Intent IR only after parser budgets, a semantic
-mapping corpus, source-intent goldens, deterministic diagnostics, HAC-IR review
-evidence, runtime-plan goldens, compiler decision-report goldens, and a
-security review are accepted. External frontend proposals should first publish
-a Source Intent Frontend Conformance report.
+Expand source-text to Source Intent IR only by adding parser budgets, semantic
+mapping corpus cases, source-intent goldens, deterministic diagnostics, HAC-IR
+review evidence, runtime-plan goldens, compiler decision-report goldens, and
+security review evidence for the new syntax. External frontend proposals should
+first publish a Source Intent Frontend Conformance report.

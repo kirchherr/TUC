@@ -27,7 +27,10 @@ Accepted plain data:
 - top-level `name`, `schema_version`, `tensors`, `operations`, and optional
   `returns`
 - tensor `name`, `shape`, and optional `dtype`
-- operation `name`, `family`, `inputs`, `outputs`, and optional `hints`
+- operation `name`, `family`, `inputs`, `outputs`, optional `hints`, and
+  optional neutral `attributes`
+- `attributes.axis` for `reduction` and `softmax`, validated against tensor
+  rank and output shape
 - return `public_name`, `tensor_name`, and optional `required`, as specified by
   [Source Intent Return Semantics](SOURCE_INTENT_RETURN_SEMANTICS.md)
 - neutral source-intent hints already accepted by Source Intent IR
@@ -82,6 +85,7 @@ The intake also has property-test and seed-corpus coverage for:
 - unsupported schema versions
 - unknown source-text fields
 - backend-specific hint escape attempts
+- invalid or misplaced operation attributes
 - unknown tensor references
 
 This gives future source parsers a stable target data shape without granting
@@ -89,16 +93,16 @@ source text any compiler influence today.
 
 ## Still Blocked
 
-These remain future work:
+These remain blocked as default intake behavior:
 
 - source text to Source Intent data
 - preflight report to Source Intent data
 - filesystem or path-based loading helpers
 - direct Source Intent Intake to metadata or compiler artifacts
 
-Any source-text-to-intent path still requires parser budgets, source corpus,
-negative tests, deterministic diagnostics, security review, and source-intent
-goldens.
+Any source-text-to-intent expansion still requires parser budgets, source
+corpus, negative tests, deterministic diagnostics, security review, and
+source-intent goldens.
 
 [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is the required
 future gate before source text or preflight reports may create

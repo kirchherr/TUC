@@ -18,11 +18,31 @@ IR, plan runtime placement, or execute backend artifacts.
 - Dump API: `dump_source_to_intent_readiness_report(report)`
 - Required evidence IDs: `SOURCE_TO_INTENT_REQUIRED_EVIDENCE`
 - Example: `examples/source_to_intent_readiness.py`
+- Research proposal example: `examples/source_to_intent_research_readiness.py`
+- Corpus example: `examples/source_to_intent_corpus.py`
+- Property corpus example: `examples/source_to_intent_property_corpus.py`
+- Parser report example: `examples/source_to_intent_parser_report.py`
+- Research parser example: `examples/source_to_intent_research_parser.py`
+- Research diagnostics example:
+  `examples/source_to_intent_research_diagnostics.py`
+- Research evidence gate:
+  `examples/source_to_intent_research_evidence_gate.py`
+- Research evidence gate docs:
+  [Source-To-Intent Research Evidence Gate](SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
 - Parser block gate: `examples/source_to_intent_parser_block_gate.py`
 - Golden: `tests/golden/frontend/source_to_intent_readiness_report.json`
+- Research golden:
+  `tests/golden/frontend/source_to_intent_research_readiness.json`
+- Corpus golden: `tests/golden/frontend/source_to_intent_corpus_report.json`
+- Property corpus golden:
+  `tests/golden/frontend/source_to_intent_property_corpus_report.json`
+- Parser report golden: `tests/golden/frontend/source_to_intent_parser_report.json`
 - Tests: `tests/test_source_to_intent_readiness.py`
 
 The report is ready only when every required evidence ID is present.
+
+Readiness means proposal evidence completeness. It does not enable source
+parsing by itself.
 
 ## Required Evidence
 
@@ -38,6 +58,7 @@ The readiness report tracks:
 - emitted `source_intent.v0` plain-data golden
 - Source Intent Intake report golden
 - Source Intent Metadata Conversion report golden
+- Source-To-Intent Research Diagnostics
 - metadata intake report golden
 - HAC-IR golden
 - runtime-plan golden
@@ -46,7 +67,8 @@ The readiness report tracks:
 - Source Intent Frontend Conformance report
 - Source Intent Frontend Conformance Gate output
 
-Missing evidence keeps parser implementation blocked.
+Missing evidence keeps default parser intake and broader parser expansion
+blocked.
 
 ## Security Boundary
 
@@ -68,10 +90,59 @@ A future parser must not execute `@triton.jit`.
 
 ## Evidence
 
-The current golden report intentionally remains blocked:
+The default golden report intentionally remains blocked:
 
 ```text
 tests/golden/frontend/source_to_intent_readiness_report.json
+```
+
+The research proposal report tracks complete proposal evidence for the first
+parser proof:
+
+```text
+tests/golden/frontend/source_to_intent_research_readiness.json
+```
+
+The source corpus report provides the current accepted/rejected source-buffer
+evidence without unblocking parsing:
+
+```text
+tests/golden/frontend/source_to_intent_corpus_report.json
+```
+
+The property corpus report provides the current fuzz/property obligations for
+the future parser without unblocking parsing:
+
+```text
+tests/golden/frontend/source_to_intent_property_corpus_report.json
+```
+
+The parser report golden defines the proposal-only parser report shape:
+
+```text
+tests/golden/frontend/source_to_intent_parser_report.json
+```
+
+The explicit research parser golden proves the first tiny source-buffer to
+`source_intent.v0` slice:
+
+```text
+tests/golden/frontend/source_to_intent_research_parser.json
+```
+
+The research diagnostics report proves accepted and rejected parser cases with
+source-free reason IDs:
+
+```text
+tests/golden/frontend/source_to_intent_research_diagnostics_report.json
+```
+
+The research evidence gate binds readiness, conformance, and diagnostics by
+digest:
+
+```text
+examples/source_to_intent_research_evidence_gate.py
+tests/golden/frontend/source_to_intent_research_evidence_gate.txt
 ```
 
 The blocked state is also checked by:
@@ -80,14 +151,14 @@ The blocked state is also checked by:
 examples/source_to_intent_parser_block_gate.py
 ```
 
-This makes the current roadmap state explicit: TUC has a parser gate and a
-readiness report, but no source-to-intent parser implementation.
+This makes the current roadmap state explicit: TUC has a parser gate, a
+readiness report, and one explicit research parser slice, while the default
+source parser path remains blocked.
 
 ## Still Blocked
 
 These remain blocked after this report exists:
 
-- implementing a source parser
 - accepting source text as compiler input
 - converting preflight reports into Source Intent IR
 - loading source files by path

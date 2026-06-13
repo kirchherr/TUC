@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_preflight_bridge_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Preflight Bridge Report v0",
+  "description": "Metadata-only report proving explicit Source-to-Intent research parser diagnostics are gated by Triton source preflight.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_case_count",
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "bridge_contract",
+    "case_count",
+    "cases",
+    "default_parser_status",
+    "diagnostics_contract",
+    "diagnostics_digest",
+    "parser_output_policy",
+    "parser_semantic_reject_count",
+    "parser_status",
+    "preflight_accepted_count",
+    "preflight_contract",
+    "preflight_reject_count",
+    "raw_source_policy",
+    "rejected_case_count",
+    "schema_version",
+    "source_boundary",
+    "status"
+  ],
+  "properties": {
+    "accepted_case_count": {"const": 2},
+    "artifact_policy": {"const": "metadata_only_source_omitted"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "bridge_contract": {
+      "const": "source_to_intent_research_preflight_bridge.execution_free.v0"
+    },
+    "case_count": {"const": 6},
+    "cases": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/case"}
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "diagnostics_contract": {
+      "const": "source_to_intent_research_diagnostics.execution_free.v0"
+    },
+    "diagnostics_digest": {"$ref": "#/$defs/sha256_digest"},
+    "parser_output_policy": {"const": "source_intent.v0_plain_data_only"},
+    "parser_semantic_reject_count": {"const": 2},
+    "parser_status": {"const": "research_explicit_only"},
+    "preflight_accepted_count": {"const": 4},
+    "preflight_contract": {"const": "triton_source_preflight.execution_free.v0"},
+    "preflight_reject_count": {"const": 2},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "rejected_case_count": {"const": 4},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_preflight_bridge_report.v0"
+    },
+    "source_boundary": {
+      "const": "triton_source_preflight_before_research_parser"
+    },
+    "status": {"const": "PASS"}
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bridge_stage",
+        "case_id",
+        "expectation",
+        "operation_families",
+        "parser_diagnostic_outcome",
+        "parser_rejection_reason",
+        "preflight_rejected_features",
+        "preflight_status",
+        "source_digest",
+        "source_name"
+      ],
+      "properties": {
+        "bridge_stage": {
+          "enum": [
+            "accepted_pipeline",
+            "parser_semantic_reject",
+            "preflight_reject"
+          ]
+        },
+        "case_id": {
+          "enum": [
+            "accepted_matmul_elementwise",
+            "accepted_softmax_reduction",
+            "reject_ambiguous_softmax_axis",
+            "reject_decorator_call",
+            "reject_hardware_hint",
+            "reject_import_escape"
+          ]
+        },
+        "expectation": {"enum": ["accepted", "rejected"]},
+        "operation_families": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "enum": ["elementwise", "matmul", "reduction", "softmax"]
+          },
+          "uniqueItems": true
+        },
+        "parser_diagnostic_outcome": {"enum": ["accepted", "rejected"]},
+        "parser_rejection_reason": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "preflight_rejected_features": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "enum": [
+              "decorator_call",
+              "import_statement",
+              "unsupported_call_target"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "preflight_status": {"enum": ["accepted", "rejected"]},
+        "source_digest": {"$ref": "#/$defs/sha256_digest"},
+        "source_name": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

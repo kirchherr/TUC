@@ -2,7 +2,8 @@
 
 Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
-Evidence, Runtime Backend Equivalence evidence, Runtime Input Manifest
+Evidence, Runtime Backend Equivalence and Backend Equivalence Portfolio
+evidence, Runtime HS-IR Plan Alignment evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
@@ -18,6 +19,10 @@ It runs:
 - `build_backend_equivalence_report()`
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
+- `examples/runtime_hs_ir_plan_alignment.py`
+- `build_runtime_backend_equivalence_portfolio_report()`
+- `build_default_runtime_backend_equivalence_portfolio_policy_report()`
+- `build_runtime_evidence_gate_matrix_coverage_report()`
 - `build_tensor_store_evidence_report()`
 - `build_input_manifest_report()`
 - `build_output_manifest_report()`
@@ -32,24 +37,67 @@ It runs:
 The gate passes only when:
 
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
+- the Runtime Evidence Matrix includes the three backend-equivalence graph
+  entries with scoped `backend_equivalence` requirements and exact
+  artifact-ID bindings
+- the Runtime Evidence Matrix includes the backend-equivalence portfolio graph
+  entry with scoped `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` requirements and exact artifact-ID
+  bindings
+- the Runtime Evidence Matrix includes `runtime_hs_ir_plan_alignment` evidence
+  on the mixed backend-equivalence graph with exact artifact-ID binding
+- Runtime Evidence Gate Matrix Coverage passes, proving the exact
+  backend-equivalence, HS-IR alignment, and portfolio Matrix graph/artifact
+  bindings are present in one deterministic audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
 - Runtime Backend Equivalence binding passes, proving the checked report is the
   expected `reference-cpu,reference-cpu` versus `systolic-sim,reference-cpu`
   placement comparison with raw values omitted
+- Runtime Backend Equivalence matrix coverage passes, proving the checked
+  report is inventoried by the Runtime Evidence Matrix as scoped
+  `backend_equivalence` evidence with the exact
+  `runtime_backend_equivalence_systolic` artifact ID
 - Runtime Vector Backend Equivalence passes for the `reference_cpu` baseline
   run and the `vector_sim` candidate run
 - Runtime Vector Backend Equivalence binding passes, proving the checked report
   is the expected `reference-cpu,reference-cpu,reference-cpu` versus
   `vector-sim,vector-sim,vector-sim` placement comparison with raw values
   omitted
+- Runtime Vector Backend Equivalence matrix coverage passes, proving the
+  checked report is inventoried by the Runtime Evidence Matrix as scoped
+  `backend_equivalence` evidence with the exact
+  `runtime_backend_equivalence_vector` artifact ID
 - Runtime Mixed Backend Equivalence passes for the `reference_cpu` baseline run
   and the `mixed_accelerators` candidate run
 - Runtime Mixed Backend Equivalence binding passes, proving the checked report
   is the expected `reference-cpu,reference-cpu,reference-cpu,reference-cpu`
   versus `systolic-sim,vector-sim,vector-sim,vector-sim` placement comparison
   with raw values omitted
+- Runtime Mixed Backend Equivalence matrix coverage passes, proving the checked
+  report is inventoried by the Runtime Evidence Matrix as scoped
+  `backend_equivalence` evidence with the exact
+  `runtime_backend_equivalence_mixed` artifact ID
+- Runtime HS-IR Plan Alignment passes for the mixed accelerator proof slice
+- Runtime HS-IR Plan Alignment binding passes, proving the checked report is
+  the expected `systolic-sim,vector-sim,vector-sim,vector-sim` HS-IR,
+  PartitionPlan, and RuntimeExecutionTrace alignment with raw values omitted
+- Runtime HS-IR Plan Alignment matrix coverage passes, proving the checked
+  report is inventoried by the Runtime Evidence Matrix with the exact
+  `runtime_hs_ir_plan_alignment_mixed` artifact ID
+- Runtime Backend Equivalence Portfolio passes across the systolic, vector, and
+  mixed accelerator proof slices
+- Runtime Backend Equivalence Portfolio binding passes, proving the aggregate
+  portfolio is built from the exact Backend Equivalence reports evaluated by
+  this gate invocation
+- Runtime Backend Equivalence Portfolio matrix coverage passes, proving the
+  portfolio is inventoried by the Runtime Evidence Matrix as scoped
+  `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` evidence with exact portfolio and
+  policy artifact IDs
+- Runtime Backend Equivalence Portfolio Policy binding passes, proving the
+  accepted slice membership and backend sequences match the portfolio report
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
 - Runtime Input Manifest passes for accepted graph external inputs
@@ -125,6 +173,30 @@ Runtime Backend Equivalence schema:
 schemas/runtime_backend_equivalence_report.v0.schema.json
 ```
 
+Runtime Backend Equivalence Portfolio schema:
+
+```text
+schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
+```
+
+Runtime Backend Equivalence Portfolio Policy schema:
+
+```text
+schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
+```
+
+Runtime HS-IR Plan Alignment schema:
+
+```text
+schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json
+```
+
+Runtime Evidence Gate Matrix Coverage schema:
+
+```text
+schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json
+```
+
 Source Intent Runtime Returns schema:
 
 ```text
@@ -160,18 +232,57 @@ It composes bounded in-repository checks:
 - a bounded Runtime Backend Equivalence binding check that verifies graph ID,
   run IDs, planned backend sequences, matched comparison status, and raw-value
   policy
+- a bounded Runtime Backend Equivalence matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and
+  exact `backend_equivalence` artifact coverage
 - data-only Runtime Vector Backend Equivalence metadata comparing the expected
   `reference_cpu` and `vector_sim` trusted execution placements with raw tensor
   values omitted by policy
 - a bounded Runtime Vector Backend Equivalence binding check that verifies graph
   ID, run IDs, planned backend sequences, matched comparison status, and
   raw-value policy
+- a bounded Runtime Vector Backend Equivalence matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and
+  exact `backend_equivalence` artifact coverage
 - data-only Runtime Mixed Backend Equivalence metadata comparing the expected
   `reference_cpu` and `mixed_accelerators` trusted execution placements with
   raw tensor values omitted by policy
 - a bounded Runtime Mixed Backend Equivalence binding check that verifies graph
   ID, run IDs, planned backend sequences, matched comparison status, and
   raw-value policy
+- a bounded Runtime Mixed Backend Equivalence matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and
+  exact `backend_equivalence` artifact coverage
+- data-only Runtime HS-IR Plan Alignment metadata binding HS-IR backend/layout
+  facts to the accepted mixed `PartitionPlan` and observed trusted runtime
+  trace with raw tensor values omitted by policy
+- a bounded Runtime HS-IR Plan Alignment binding check that compares graph
+  names, backend sequences, step count, pass status, and raw-value policy
+  against the mixed Backend Equivalence report already checked by the gate
+- a bounded Runtime HS-IR Plan Alignment matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and exact
+  `runtime_hs_ir_plan_alignment` artifact coverage
+- data-only Runtime Backend Equivalence Portfolio metadata aggregating the
+  systolic, vector, and mixed accelerator equivalence slices with raw tensor
+  values omitted by policy
+- a bounded Runtime Backend Equivalence Portfolio binding check that compares
+  slice IDs, graph names, run IDs, backend sequences, comparison counts,
+  comparison metadata digests, pass status, candidate backend families, and
+  raw-value policy against the reports already checked by the gate
+- a bounded Runtime Backend Equivalence Portfolio matrix lookup that verifies
+  graph family, source boundary, required artifact kinds, completeness, and
+  exact `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` artifact coverage
+- data-only Runtime Backend Equivalence Portfolio Policy metadata declaring the
+  accepted slice IDs, graph names, run IDs, backend sequences, minimum
+  comparison counts, and covered candidate backend families
+- a bounded Runtime Backend Equivalence Portfolio Policy binding check that
+  verifies the portfolio report matches that accepted membership policy
+- data-only Runtime Evidence Gate Matrix Coverage metadata auditing the exact
+  Matrix graph/artifact bindings accepted by the gate
+- a bounded Runtime Evidence Gate Matrix Coverage check that fails closed if a
+  gate-required graph, source boundary, required artifact kind, or concrete
+  artifact ID drifts
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
 - data-only Runtime Input Manifest metadata for accepted graph external inputs

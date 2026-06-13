@@ -1,0 +1,90 @@
+{
+  "accepted_source_case_count": 2,
+  "blocked_compiler_outputs": [
+    "source_intent_payload",
+    "source_intent_module",
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "environment_dependent_behavior",
+    "frontend_module_import",
+    "generated_artifact_execution",
+    "host_file_read_after_source_buffer",
+    "network_access",
+    "plugin_discovery",
+    "python_function_inspection",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "categories": [
+    "artifact_boundary",
+    "budget_invariant",
+    "diagnostic_boundary",
+    "fuzz_input",
+    "security_surface",
+    "seed_mutation"
+  ],
+  "properties": [
+    {
+      "category": "artifact_boundary",
+      "expectation": "accepted_source_may_emit_only_source_intent_plain_data",
+      "property_id": "accepted_corpus_emits_only_source_intent_plain_data"
+    },
+    {
+      "category": "fuzz_input",
+      "expectation": "arbitrary_decoded_bytes_return_bounded_rejection_or_valid_intent",
+      "property_id": "arbitrary_decoded_bytes_fail_closed"
+    },
+    {
+      "category": "diagnostic_boundary",
+      "expectation": "diagnostics_omit_raw_source_and_stay_within_budget",
+      "property_id": "diagnostics_are_bounded_and_source_free"
+    },
+    {
+      "category": "security_surface",
+      "expectation": "imports_decorators_jit_devices_plugins_and_subprocesses_reject",
+      "property_id": "forbidden_execution_surfaces_rejected"
+    },
+    {
+      "category": "fuzz_input",
+      "expectation": "invalid_unicode_returns_bounded_rejection",
+      "property_id": "invalid_unicode_fail_closed"
+    },
+    {
+      "category": "budget_invariant",
+      "expectation": "source_byte_line_ast_and_diagnostic_budgets_fail_closed",
+      "property_id": "oversized_source_budget_fail_closed"
+    },
+    {
+      "category": "artifact_boundary",
+      "expectation": "rejected_source_never_emits_metadata_graph_ir_or_plan",
+      "property_id": "rejected_corpus_never_emits_compiler_artifacts"
+    },
+    {
+      "category": "seed_mutation",
+      "expectation": "seed_combinations_return_bounded_rejection_or_valid_intent",
+      "property_id": "seed_combinations_fail_closed"
+    }
+  ],
+  "property_contract": "source_to_intent_property_corpus.data_only.v0",
+  "property_count": 8,
+  "proposal_name": "research-source-to-intent-parser-proposal",
+  "raw_source_policy": "omitted_by_policy",
+  "rejected_source_case_count": 4,
+  "required_property_coverage_complete": true,
+  "schema_version": "tuc.source_to_intent_property_corpus_report.v0",
+  "source_corpus_case_count": 6,
+  "source_corpus_contract": "source_to_intent_corpus.data_only.v0",
+  "source_corpus_digest": "sha256:33d024ddb74a8e50a900c024e7fca572f16e099362bea9c42139c2288ea8a6d9"
+}

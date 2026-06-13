@@ -94,8 +94,11 @@ Required artifacts:
 - `examples/proof_of_systolic_execution.py`
 - `examples/systolic_manifest_path.py`
 - `examples/runtime_backend_equivalence.py`
+- `examples/runtime_backend_equivalence_portfolio.py`
+- `examples/runtime_backend_equivalence_portfolio_policy.py`
 - `examples/runtime_vector_backend_equivalence.py`
 - `examples/runtime_mixed_backend_equivalence.py`
+- `examples/runtime_hs_ir_plan_alignment.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
@@ -105,6 +108,9 @@ Required artifacts:
 - `tests/golden/runtime_backend_equivalence/current_report.json`
 - `tests/golden/runtime_backend_equivalence/vector_sim_report.json`
 - `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`
+- `tests/golden/runtime_backend_equivalence/portfolio_report.json`
+- `tests/golden/runtime_backend_equivalence/portfolio_policy_report.json`
+- `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -112,6 +118,8 @@ Required artifacts:
 - `docs/PROOF_OF_EXECUTION.md`
 - `docs/SYSTOLIC_SIMULATOR.md`
 - `docs/RUNTIME_EXECUTOR.md`
+- `docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md`
+- `docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md`
 
 Completed evidence:
 
@@ -191,6 +199,43 @@ Completed evidence:
   as a `systolic-sim -> vector-sim -> vector-sim -> vector-sim` candidate,
   proving two non-CPU trusted accelerator families can compose in one plan
   while preserving terminal output semantics.
+- Runtime Evidence Matrix now supports graph-scoped required evidence kinds,
+  so backend-equivalence fixtures are inventoried honestly under the
+  `backend_equivalence` requirement instead of pretending to own full
+  proof/readiness/trace evidence.
+- Runtime Evidence Gate binds backend-equivalence reports back to their Matrix
+  graph entries, so report-level pass status and proof-inventory coverage
+  cannot drift apart.
+- Mixed Runtime Tensor Store Evidence now records the accepted
+  `systolic-sim -> vector-sim -> vector-sim -> vector-sim` plan as read-only
+  Runtime Value Record placement metadata, giving the mixed accelerator slice
+  an inspectable tensor-store proof without serialized tensor values.
+- Runtime Backend Equivalence Portfolio aggregates the systolic, vector, and
+  mixed accelerator equivalence reports into one backend-diversity artifact and
+  Runtime Evidence Gate binds that aggregate back to the exact reports checked
+  in the same invocation.
+- Runtime Evidence Matrix inventories the Backend Equivalence Portfolio under
+  scoped `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` requirements, and Runtime Evidence
+  Gate verifies that matrix coverage before accepting portfolio evidence.
+- Runtime Backend Equivalence Portfolio Policy declares the accepted portfolio
+  slice membership, backend sequences, minimum comparison counts, and required
+  backend families as data-only evidence, with Runtime Evidence Gate binding
+  the policy to the portfolio before accepting backend-diversity evidence.
+- Runtime Evidence Gate now binds backend-equivalence and portfolio Matrix
+  coverage to exact artifact IDs, so a complete Matrix with the right
+  artifact kinds cannot silently point at a different evidence artifact.
+- Runtime Evidence Gate Matrix Coverage emits those exact Matrix graph/artifact
+  bindings as a schema-versioned JSON audit and the Runtime Evidence Gate
+  requires that audit to pass.
+- Runtime HS-IR Plan Alignment binds HS-IR backend/layout decisions to the
+  accepted `PartitionPlan` and observed `RuntimeExecutionTrace` for the mixed
+  accelerator proof slice without serializing tensor values or adding
+  execution surfaces.
+- Runtime Evidence Matrix and Runtime Evidence Gate now require Runtime HS-IR
+  Plan Alignment for the mixed accelerator proof slice, binding the exact
+  `runtime_hs_ir_plan_alignment_mixed` artifact ID before the slice can count
+  as merge evidence.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.
@@ -419,6 +464,11 @@ Completed evidence:
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
   cross-domain transfer bytes.
+- Runtime HS-IR Plan Alignment proves the current mixed accelerator HS-IR,
+  runtime plan, and trusted execution trace agree on backend sequence,
+  produced layouts, and layout-conversion accounting.
+- Runtime Evidence Gate checks the Runtime HS-IR Plan Alignment report and
+  Matrix artifact binding before accepting the mixed accelerator slice.
 
 Next work:
 
@@ -463,6 +513,22 @@ Deliverables:
 - Source Intent Frontend Conformance report JSON Schema.
 - Source-To-Intent Parser Gate for future source parser proposals.
 - Source-To-Intent Readiness report for parser proposal evidence.
+- Explicit Source-To-Intent Research Parser for the first tiny source-buffer to
+  `source_intent.v0` proof slice.
+- Source-To-Intent Research Parser Conformance Gate binding parser output to
+  the reusable Source Intent Frontend Conformance path.
+- Source-To-Intent Research Diagnostics for source-free accepted/rejected
+  parser diagnostic evidence.
+- Source-To-Intent Research Preflight Bridge proving accepted/rejected parser
+  diagnostics remain layered behind execution-free Triton Source Preflight.
+- Source-To-Intent Research Evidence Gate binding readiness, conformance, and
+  diagnostics by digest.
+- Source-To-Intent Research Execution Bridge proving accepted parser output can
+  reach controlled runtime execution only after Source Intent plain-data
+  re-intake.
+- Source-To-Intent Research Idiom Alignment proving accepted parser slices stay
+  inside already covered Triton-like MVP idioms before broader source syntax
+  work can claim coverage.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -503,9 +569,9 @@ Go/No-Go:
   source parser, Python import, or `@triton.jit` handling is accepted.
 - MVP operation-family coverage is demonstrated through frontend-originated
   metadata goldens before direct Triton syntax support is attempted.
-- Direct Triton source parsing is blocked until a threat model, parser budgets,
-  negative tests, fuzzing or property-test corpus, deterministic diagnostics,
-  and sandboxing gates are in place.
+- General Triton source parsing is blocked until a threat model, parser
+  budgets, negative tests, fuzzing or property-test corpus, deterministic
+  diagnostics, and sandboxing gates are in place.
 - Source preflight may inspect syntax as data, but it must not produce
   `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans, or backend decisions.
 - Preflight fuzz/property tests must keep arbitrary decoded source, invalid
@@ -526,14 +592,60 @@ Go/No-Go:
   `source_intent_to_metadata.execution_free.v0` adapter and its goldens.
 - Source Intent IR to metadata conversion may start only from an already
   constructed `SourceIntentModule`; source text and preflight reports remain
-  disconnected until a separate source-to-intent security gate is accepted.
+  disconnected except for explicitly accepted research parser slices whose
+  output is still only `source_intent.v0` plain data.
 - External frontend authors must first provide Source Intent Frontend
   Conformance evidence for accepted plain data and rejected hostile cases,
   using the versioned conformance report schema.
 - Source-to-intent parser proposals must satisfy the Source-To-Intent Parser
-  Gate before source text can create `source_intent.v0` plain data.
+  Gate before source text can create `source_intent.v0` plain data, except for
+  explicitly scoped research parser slices accepted as evidence with default
+  parser intake still blocked.
 - Source-to-intent parser proposals must pass the Source-To-Intent Readiness
   report before source text can influence compiler artifacts.
+- Parser expansions must extend Source-To-Intent Research Diagnostics with
+  source-free accepted and rejected evidence before the expanded syntax counts
+  as accepted research parser scope.
+- Source-To-Intent Research Readiness now tracks the first narrow parser
+  research proposal as complete proposal evidence while keeping the default
+  parser block intact.
+- Source-To-Intent Corpus Evidence now defines accepted and rejected
+  source-buffer fixtures for the first parser proof, covers all MVP operation
+  families in accepted cases, and keeps the report data-only with no raw source
+  or compiler artifacts.
+- Source-To-Intent Property Corpus now defines the fuzz/property obligations
+  for the first parser proof and binds them to the source corpus report digest.
+- Source-To-Intent Parser Report now provides that final proposal-only golden,
+  making the research proposal evidence complete while keeping
+  `parser_enabled = false` and source parsing outside the compiler input path.
+- Source-To-Intent Research Parser v0 now parses a tiny caller-provided
+  Triton-like source subset into validated `source_intent.v0` plain data while
+  keeping the default parser path blocked and avoiding metadata, graph,
+  runtime-plan, or backend-decision output.
+- Source-To-Intent Research Parser Conformance Gate now proves the
+  `matmul -> elementwise` parser output slice passes Source Intent Frontend
+  Conformance, and Source Intent axis attributes now allow the
+  `softmax -> reduction` parser output slice to pass the same gate.
+- Source Intent Axis Attributes now define neutral `attributes.axis` semantics
+  for `softmax` and `reduction`, including intake validation, metadata
+  conversion, schema documentation, and parser-conformance evidence.
+- Source-To-Intent Research Diagnostics now binds the accepted parser slices
+  and whitelisted rejected source cases to deterministic source-free diagnostic
+  evidence with stable rejection reason IDs.
+- Source-To-Intent Research Preflight Bridge now separates accepted pipeline,
+  preflight rejection, and parser semantic rejection evidence for the same
+  diagnostic cases before the parser proof can count as CI-facing evidence.
+- Source-To-Intent Research Evidence Gate now binds Research Readiness,
+  Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest
+  before the current research parser scope counts as CI-facing proof evidence.
+- Source-To-Intent Research Execution Bridge now executes the accepted
+  `matmul -> elementwise` and `softmax -> reduction` parser slices through
+  Source Intent re-intake, metadata conversion, runtime planning, Runtime
+  Executor, and Runtime Reference Correctness without exposing raw values or
+  parser compiler shortcuts.
+- Source-To-Intent Research Idiom Alignment now binds those accepted parser
+  slices to existing Triton Idiom Coverage and the Execution Bridge by digest,
+  so parser scope cannot silently expand beyond proven MVP operation families.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

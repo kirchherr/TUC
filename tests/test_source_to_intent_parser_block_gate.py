@@ -8,6 +8,7 @@ import pytest
 
 from examples.source_to_intent_parser_block_gate import (
     FRONTEND_CONFORMANCE_GATE_EVIDENCE_ID,
+    RESEARCH_DIAGNOSTICS_EVIDENCE_ID,
     SourceToIntentParserBlockGateError,
     build_gate_report,
 )
@@ -27,6 +28,7 @@ def test_source_to_intent_parser_block_gate_matches_golden() -> None:
     assert 'parser_status = "blocked"' in report
     assert 'readiness_status = "blocked"' in report
     assert 'frontend_conformance_gate_evidence = "missing"' in report
+    assert 'research_diagnostics_evidence = "missing"' in report
     assert report.rstrip().endswith('status = "PASS"\n}')
 
 
@@ -63,6 +65,24 @@ def test_source_to_intent_parser_block_gate_rejects_partial_default_evidence() -
         (
             SourceToIntentReadinessEvidence(
                 evidence_id=FRONTEND_CONFORMANCE_GATE_EVIDENCE_ID,
+                present=True,
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        SourceToIntentParserBlockGateError,
+        match="default blocked evidence changed",
+    ):
+        build_gate_report(readiness_report=partial)
+
+
+def test_source_to_intent_parser_block_gate_requires_missing_research_diagnostics() -> None:
+    partial = build_source_to_intent_readiness_report(
+        "blocked-source-to-intent-parser-proposal",
+        (
+            SourceToIntentReadinessEvidence(
+                evidence_id=RESEARCH_DIAGNOSTICS_EVIDENCE_ID,
                 present=True,
             ),
         ),

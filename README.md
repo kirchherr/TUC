@@ -83,6 +83,19 @@ Current runtime surfaces:
   `systolic-sim`, `vector-sim`, and mixed `systolic-sim` plus `vector-sim`
   placements without serialized tensor values, with all proof slices bound into
   the Runtime Evidence Gate.
+- Mixed Runtime Tensor Store Evidence v0 proving the accepted
+  `systolic-sim -> vector-sim` plan produces read-only Runtime Value Records
+  with placement metadata and without serialized tensor values.
+- Runtime Backend Equivalence Portfolio v0 aggregating the systolic, vector,
+  and mixed accelerator equivalence slices into one backend-diversity evidence
+  artifact inventoried by Runtime Evidence Matrix and bound by the Runtime
+  Evidence Gate.
+- Runtime Backend Equivalence Portfolio Policy v0 declaring the accepted
+  portfolio slice membership and backend-family coverage as data-only evidence.
+- Runtime HS-IR Plan Alignment v0 binding HS-IR backend/layout decisions to
+  the accepted `PartitionPlan` and observed `RuntimeExecutionTrace`, now
+  inventoried by Runtime Evidence Matrix and required by Runtime Evidence Gate
+  for the mixed accelerator proof slice.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
@@ -95,12 +108,16 @@ CI-facing runtime evidence entry points:
 examples/runtime_evidence_gate.py
 examples/runtime_tensor_store_evidence.py
 examples/runtime_systolic_tensor_store_evidence.py
+examples/runtime_mixed_tensor_store_evidence.py
 examples/runtime_input_manifest.py
 examples/runtime_execution_receipt.py
 examples/runtime_execution_evidence_bundle.py
 examples/runtime_backend_equivalence.py
+examples/runtime_backend_equivalence_portfolio.py
+examples/runtime_backend_equivalence_portfolio_policy.py
 examples/runtime_vector_backend_equivalence.py
 examples/runtime_mixed_backend_equivalence.py
+examples/runtime_hs_ir_plan_alignment.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
 examples/source_intent_runtime_returns.py
@@ -121,6 +138,9 @@ Key docs:
 - [Runtime Execution Receipt](docs/RUNTIME_EXECUTION_RECEIPT.md)
 - [Runtime Execution Evidence Bundle](docs/RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md)
 - [Runtime Backend Equivalence](docs/RUNTIME_BACKEND_EQUIVALENCE.md)
+- [Runtime Backend Equivalence Portfolio](docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md)
+- [Runtime Evidence Gate Matrix Coverage](docs/RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
+- [Runtime HS-IR Plan Alignment](docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -136,6 +156,10 @@ schemas/runtime_input_manifest_report.v0.schema.json
 schemas/runtime_execution_receipt_report.v0.schema.json
 schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 schemas/runtime_backend_equivalence_report.v0.schema.json
+schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
+schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
+schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json
+schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json
@@ -144,7 +168,12 @@ schemas/runtime_allocation_request_manifest_report.v0.schema.json
 
 ## Frontend Intake
 
-TUC does not directly ingest or execute Triton/Python source today.
+TUC does not accept Triton/Python source as a default compiler input path and
+does not execute source code.
+
+TUC's frontend goal is a research proof of a safe source-intent boundary, not a
+claim that this project replaces CUDA, ROCm, XLA, TVM, or production vendor
+compiler stacks.
 
 Accepted intake path:
 
@@ -159,16 +188,42 @@ Current frontend surfaces:
 
 - Triton-like metadata adapter.
 - Execution-free Triton Source Preflight.
+- Explicit Source-To-Intent Research Parser v0 for a tiny caller-provided
+  Triton-like source subset that emits only validated `source_intent.v0` plain
+  data.
+- Source-To-Intent Research Parser Conformance Gate proving the first parser
+  output slice passes the reusable Source Intent Frontend Conformance path.
+- Source-To-Intent Research Diagnostics proving accepted parser cases and
+  whitelisted rejected cases remain deterministic, source-free, and bounded.
+- Source-To-Intent Research Preflight Bridge proving accepted and rejected
+  parser diagnostics remain gated by execution-free Triton Source Preflight.
+- Source-To-Intent Research Evidence Gate binding research readiness,
+  conformance, and diagnostics by digest.
+- Source-To-Intent Research Execution Bridge proving accepted parser output can
+  re-enter Source Intent Intake and reach controlled Runtime Executor evidence.
+- Source-To-Intent Research Idiom Alignment proving accepted parser slices stay
+  within the already covered Triton-like MVP idiom scope.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
+- Source Intent Axis Attributes for neutral `softmax` and `reduction` axis
+  semantics.
 - Source Intent Frontend Conformance Gate for CI-facing external frontend
   plain-data and public-return evidence.
 - Source Intent Runtime Returns evidence connecting explicit frontend returns
   to runtime public outputs after trusted execution.
 - Source-To-Intent Parser Block Gate proving the default source parser path
   remains intentionally closed.
-- Source-to-Intent parser gate remains blocked until dedicated parser evidence
-  exists.
+- Source-To-Intent Corpus Evidence defining accepted and rejected source-buffer
+  fixtures for the first narrow parser proof without emitting Source Intent IR.
+- Source-To-Intent Property Corpus evidence defining fuzz/property obligations
+  for the first narrow parser proof without running parser logic.
+- Source-To-Intent Parser Report v0 defining a proposal-only parser report
+  golden with `parser_enabled = false`.
+- Source-To-Intent Research Readiness evidence showing current progress toward
+  the first narrow parser proof while the default parser path remains closed.
+- The default Source-to-Intent parser path remains blocked; the explicit
+  research parser is not wired into compiler intake and does not bypass Source
+  Intent Intake.
 
 CI-facing frontend evidence entry points:
 
@@ -176,6 +231,17 @@ CI-facing frontend evidence entry points:
 examples/source_intent_frontend_conformance_gate.py
 examples/source_intent_frontend_conformance.py
 examples/source_intent_runtime_returns.py
+examples/source_to_intent_corpus.py
+examples/source_to_intent_property_corpus.py
+examples/source_to_intent_parser_report.py
+examples/source_to_intent_research_parser.py
+examples/source_to_intent_research_parser_conformance_gate.py
+examples/source_to_intent_research_diagnostics.py
+examples/source_to_intent_research_preflight_bridge.py
+examples/source_to_intent_research_execution_bridge.py
+examples/source_to_intent_research_idiom_alignment.py
+examples/source_to_intent_research_evidence_gate.py
+examples/source_to_intent_research_readiness.py
 examples/source_to_intent_parser_block_gate.py
 ```
 
@@ -185,10 +251,22 @@ Key docs:
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)
+- [Source Intent axis attributes](docs/SOURCE_INTENT_AXIS_ATTRIBUTES.md)
 - [Source Intent frontend conformance gate](docs/SOURCE_INTENT_FRONTEND_CONFORMANCE_GATE.md)
 - [Source Intent return semantics](docs/SOURCE_INTENT_RETURN_SEMANTICS.md)
 - [Source Intent runtime returns](docs/SOURCE_INTENT_RUNTIME_RETURNS.md)
+- [Source-to-Intent corpus evidence](docs/SOURCE_TO_INTENT_CORPUS.md)
+- [Source-to-Intent property corpus](docs/SOURCE_TO_INTENT_PROPERTY_CORPUS.md)
+- [Source-to-Intent parser report](docs/SOURCE_TO_INTENT_PARSER_REPORT.md)
+- [Source-to-Intent research parser](docs/SOURCE_TO_INTENT_RESEARCH_PARSER.md)
+- [Source-to-Intent research parser conformance gate](docs/SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md)
+- [Source-to-Intent research diagnostics](docs/SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md)
+- [Source-to-Intent research preflight bridge](docs/SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE.md)
+- [Source-to-Intent research execution bridge](docs/SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE.md)
+- [Source-to-Intent research idiom alignment](docs/SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md)
+- [Source-to-Intent research evidence gate](docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
+- [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)
 
 ## Backend Authoring

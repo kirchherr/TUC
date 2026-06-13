@@ -26,6 +26,8 @@ The adapter maps:
 
 - `SourceIntentTensor` to `TritonTensorMetadata`
 - source-intent operation families to metadata `OperationKind`
+- neutral source-intent operation attributes such as `axis` to metadata
+  operation attributes
 - neutral source-intent hints to `CompilationHints`
 - source-intent contract metadata to frontend graph metadata
 
@@ -61,7 +63,7 @@ without weakening the direct source-ingestion gate.
 
 ## Still Blocked
 
-These remain future work:
+These remain blocked as default behavior:
 
 - source text to Source Intent IR
 - preflight report to Source Intent IR

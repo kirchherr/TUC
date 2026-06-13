@@ -1,0 +1,5 @@
+@triton.jit
+def matmul_elementwise(a, b, y):
+    projection = tl.dot(a, b)
+    activated = tl.where(projection > 0.0, projection, 0.0)
+    tl.store(y, activated)

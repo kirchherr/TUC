@@ -26,6 +26,7 @@ SOURCE_TO_INTENT_REQUIRED_EVIDENCE = (
     "source_intent_plain_data_golden",
     "source_intent_intake_report_golden",
     "source_intent_metadata_report_golden",
+    "source_to_intent_research_diagnostics",
     "metadata_intake_report_golden",
     "hac_ir_golden",
     "runtime_plan_golden",

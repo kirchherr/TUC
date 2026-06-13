@@ -10,7 +10,9 @@ from tuc.backends import LinearAlgebraSimulatorBackend
 from tuc.compiler import compile_graph
 from tuc.frontend import (
     SOURCE_INTENT_METADATA_CONTRACT,
+    SOURCE_INTENT_SCHEMA_VERSION,
     build_source_intent_metadata_report,
+    source_intent_from_mapping,
     source_intent_to_triton_metadata,
 )
 from tuc.ir import IRStage, OperationKind
@@ -31,6 +33,45 @@ def test_source_intent_metadata_conversion_preserves_intent() -> None:
     assert metadata.operations[0].hints.prefer_linear_accelerator is True
     assert metadata.operations[0].hints.max_error_budget == 0.02
     assert metadata.operations[1].kind is OperationKind.ELEMENTWISE
+
+
+def test_source_intent_metadata_conversion_preserves_axis_attributes() -> None:
+    module = source_intent_from_mapping(
+        {
+            "name": "source_intent_axis_ops",
+            "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+            "tensors": [
+                {"name": "x", "shape": [4, 8]},
+                {"name": "normalized", "shape": [4, 8]},
+                {"name": "row_sum", "shape": [4]},
+            ],
+            "operations": [
+                {
+                    "name": "normalized",
+                    "family": "softmax",
+                    "inputs": ["x"],
+                    "outputs": ["normalized"],
+                    "attributes": {"axis": 1},
+                },
+                {
+                    "name": "row_sum",
+                    "family": "reduction",
+                    "inputs": ["normalized"],
+                    "outputs": ["row_sum"],
+                    "attributes": {"axis": 1},
+                },
+            ],
+        }
+    )
+    metadata = source_intent_to_triton_metadata(module)
+    graph = metadata.to_compute_graph()
+
+    assert metadata.operations[0].attributes["axis"] == 1
+    assert metadata.operations[1].attributes["axis"] == 1
+    assert graph.operations[0].attributes["axis"] == 1
+    assert graph.operations[1].attributes["axis"] == 1
+    compiled = compile_graph(graph, [LinearAlgebraSimulatorBackend().capability])
+    assert compiled.partition_plan.assignments
 
 
 def test_source_intent_metadata_conversion_rejects_non_module() -> None:

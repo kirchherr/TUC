@@ -56,6 +56,56 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Matrix v0 with schema-versioned proof inventory and
   deterministic golden at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
 - Runtime Evidence Matrix v0 is complete across current graph fixtures.
+- Runtime Evidence Matrix now records graph-scoped required evidence kinds and
+  inventories the systolic, vector, and mixed backend-equivalence fixtures under
+  the scoped `backend_equivalence` requirement.
+- Runtime Evidence Gate now binds each backend-equivalence report to its Runtime
+  Evidence Matrix graph entry, verifying scoped `backend_equivalence` inventory
+  coverage before the report can count as passing gate evidence.
+- Runtime Backend Equivalence Portfolio v0 aggregates the systolic, vector, and
+  mixed accelerator equivalence slices into one schema-versioned
+  backend-diversity artifact at
+  `schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json`, with
+  deterministic golden evidence at
+  `tests/golden/runtime_backend_equivalence/portfolio_report.json`.
+- Runtime Evidence Gate now binds the Backend Equivalence Portfolio back to the
+  exact three equivalence reports checked during the same gate invocation,
+  verifying slice IDs, run IDs, backend sequences, comparison metadata digests,
+  backend families, pass status, and raw-value omission policy.
+- Runtime Evidence Matrix now inventories the Backend Equivalence Portfolio as
+  its own scoped graph with `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` requirements, and Runtime Evidence
+  Gate verifies that Matrix coverage before portfolio evidence can count as
+  passing merge evidence.
+- Runtime Backend Equivalence Portfolio Policy v0 declares the accepted
+  backend-diversity slice membership, backend sequences, minimum comparison
+  counts, and backend-family coverage at
+  `schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json`,
+  with deterministic golden evidence at
+  `tests/golden/runtime_backend_equivalence/portfolio_policy_report.json`.
+- Runtime Evidence Gate now binds the Backend Equivalence Portfolio Policy to
+  the checked portfolio before portfolio evidence can count as passing merge
+  evidence.
+- Runtime Evidence Gate now binds backend-equivalence and portfolio Matrix
+  coverage to exact artifact IDs, preventing kind-only Matrix coverage from
+  accepting the wrong concrete evidence artifact.
+- Runtime Evidence Gate Matrix Coverage v0 emits the exact gate-required
+  backend-equivalence and portfolio Matrix bindings as schema-versioned JSON
+  at `schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json`,
+  with deterministic golden evidence at
+  `tests/golden/proofs/runtime_evidence_gate_matrix_coverage_report.json`, and
+  Runtime Evidence Gate requires that audit to pass.
+- Runtime HS-IR Plan Alignment v0 binds HS-IR backend/layout decisions to the
+  accepted `PartitionPlan` and observed `RuntimeExecutionTrace` for the mixed
+  accelerator proof slice, with schema at
+  `schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json` and
+  deterministic golden evidence at
+  `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`.
+- Runtime Evidence Matrix now inventories Runtime HS-IR Plan Alignment as
+  required scoped evidence for `runtime_mixed_backend_equivalence`, and Runtime
+  Evidence Gate verifies the report, backend-sequence binding, and exact
+  `runtime_hs_ir_plan_alignment_mixed` artifact ID before the mixed
+  accelerator slice can count as passing gate evidence.
 - Runtime Executor Conformance v0 with schema-versioned trusted registry
   conformance at `schemas/runtime_executor_conformance_report.v0.schema.json`
   and deterministic golden at
@@ -153,6 +203,10 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json`,
   showing planned `systolic-sim`, `device_sram`, and `blocked` value-record
   metadata without raw tensor values.
+- Mixed Runtime Tensor Store Evidence with deterministic golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/runtime_mixed_backend_equivalence.json`,
+  showing the accepted `systolic-sim -> vector-sim -> vector-sim -> vector-sim`
+  plan as read-only value-record placement metadata without raw tensor values.
 - Runtime Backend Equivalence v0 with schema at
   `schemas/runtime_backend_equivalence_report.v0.schema.json`, deterministic
   golden evidence at
@@ -179,6 +233,15 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Evidence Gate now requires and binds Runtime Mixed Backend
   Equivalence evidence, verifying the expected heterogeneous accelerator
   sequence and raw-value omission policy in CI-facing output.
+- Runtime Backend Equivalence Portfolio aggregates the systolic, vector, and
+  mixed equivalence reports into one backend-diversity evidence artifact and is
+  itself bound by Runtime Evidence Gate.
+- Runtime Evidence Matrix now includes the Backend Equivalence Portfolio as
+  scoped proof-inventory evidence, so backend diversity is visible in the
+  matrix rather than only in gate-local checks.
+- Runtime Backend Equivalence Portfolio Policy makes the current accepted
+  portfolio membership explicit and schema-versioned, preventing silent changes
+  to the backend-diversity proof set.
 - Runtime Evidence Flow documentation at `docs/RUNTIME_EVIDENCE_FLOW.md`,
   explaining what runs, what is stored, what is public, what is hashed, what is
   never serialized, and which runtime gates must pass.
@@ -308,6 +371,46 @@ hardware-independent interface into capability-driven runtime planning.
 - Source-To-Intent Parser Block Gate now asserts in CI that the default
   source-to-intent parser path remains blocked, with deterministic golden
   output at `tests/golden/frontend/source_to_intent_parser_block_gate.txt`.
+- Source-To-Intent Research Readiness now tracks the first narrow parser
+  research proposal separately from the default block gate, showing current
+  proposal evidence complete while keeping the default parser path blocked.
+- Source-To-Intent Corpus Evidence now adds accepted and rejected source-buffer
+  fixtures plus a data-only corpus report, covering all MVP operation families
+  in accepted cases while keeping source text disconnected from Source Intent
+  IR and compiler artifacts.
+- Source-To-Intent Property Corpus now binds fuzz/property obligations to the
+  source corpus report digest, marking `source_fuzz_or_property_corpus` present
+  while default parser intake remains blocked.
+- Source-To-Intent Parser Report now adds the proposal-only parser report
+  golden, completing research-readiness evidence while explicitly keeping
+  `parser_enabled = false` and implementation status `not_implemented`.
+- Source-To-Intent Research Parser now adds the first explicit source-buffer to
+  `source_intent.v0` implementation slice for a tiny Triton-like subset, with a
+  schema-versioned metadata-only report and deterministic golden evidence while
+  keeping metadata, `ComputeGraph`, IR, runtime-plan, and backend-decision
+  outputs blocked.
+- Source-To-Intent Research Parser Conformance Gate now binds the
+  `matmul -> elementwise` parser output slice to Source Intent Frontend
+  Conformance, with deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_parser_conformance_gate.txt`
+  and CI coverage in the `python` workflow job.
+- Source Intent axis attributes now carry neutral `axis` semantics for
+  `softmax` and `reduction` through Source Intent Intake, Metadata Conversion,
+  and Research Parser Conformance Gate evidence without introducing backend,
+  device, or placement facts.
+- Source Intent Axis Attributes are documented at
+  `docs/SOURCE_INTENT_AXIS_ATTRIBUTES.md` and accepted by
+  `rfcs/0157-source-intent-axis-attributes.md`.
+- Source-To-Intent Research Diagnostics now checks the accepted research parser
+  slices and whitelisted rejected source cases with source-free diagnostic
+  reason IDs, deterministic golden evidence, and CI coverage.
+- Source-To-Intent Research Evidence Gate now binds Research Readiness,
+  Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest,
+  making the accepted parser proof scope CI-facing and drift-resistant.
+- Source-To-Intent Research Execution Bridge now proves accepted parser output
+  can re-enter Source Intent Intake and reach controlled Runtime Executor plus
+  Runtime Reference Correctness evidence without parser compiler shortcuts or
+  raw tensor values.
 
 ## In Progress
 
@@ -374,6 +477,9 @@ Current slice:
 - Runtime Mixed Backend Equivalence at
   `examples/runtime_mixed_backend_equivalence.py`, with golden evidence at
   `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`.
+- Mixed Runtime Tensor Store Evidence at
+  `examples/runtime_mixed_tensor_store_evidence.py`, with golden evidence at
+  `tests/golden/runtime_tensor_store_evidence/runtime_mixed_backend_equivalence.json`.
 - Runtime Input Manifest at `examples/runtime_input_manifest.py`, with golden
   evidence at `tests/golden/runtime_input_manifest/proof_of_execution.json`,
   including accepted external-input metadata without tensor values.
@@ -428,7 +534,8 @@ Current slice:
   `tests/golden/execution_readiness/triton_metadata_mvp_families.txt`.
 - Runtime Evidence Matrix report at
   `schemas/runtime_evidence_matrix_report.v0.schema.json`, with golden evidence
-  at `tests/golden/proofs/runtime_evidence_matrix_report.json`.
+  at `tests/golden/proofs/runtime_evidence_matrix_report.json`, now including
+  scoped backend-equivalence graph entries.
 - Runtime Executor Conformance report at
   `schemas/runtime_executor_conformance_report.v0.schema.json`, with golden
   evidence at
@@ -541,6 +648,60 @@ Current slice:
   `examples/source_to_intent_parser_block_gate.py`, with golden evidence at
   `tests/golden/frontend/source_to_intent_parser_block_gate.txt` and CI
   coverage in the `python` workflow job.
+- Source-To-Intent Research Readiness at
+  `examples/source_to_intent_research_readiness.py`, with golden evidence at
+  `tests/golden/frontend/source_to_intent_research_readiness.json`, tracking
+  complete proposal-readiness evidence while the default parser path remains
+  blocked.
+- Source-To-Intent Corpus Evidence at `examples/source_to_intent_corpus.py`,
+  with fixtures under `tests/corpus/source_to_intent_parser/` and golden
+  evidence at `tests/golden/frontend/source_to_intent_corpus_report.json`.
+- Source-To-Intent Property Corpus at
+  `examples/source_to_intent_property_corpus.py`, with golden evidence at
+  `tests/golden/frontend/source_to_intent_property_corpus_report.json`.
+- Source-To-Intent Parser Report at `examples/source_to_intent_parser_report.py`,
+  with golden evidence at
+  `tests/golden/frontend/source_to_intent_parser_report.json`.
+- Source-To-Intent Research Parser at
+  `examples/source_to_intent_research_parser.py`, with schema at
+  `schemas/source_to_intent_research_parser_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_parser.json`, and
+  fail-closed tests for imports, decorator calls, ambiguous softmax axes,
+  unsupported assignments, shape mismatches, and unknown shape manifest entries.
+- Source-To-Intent Research Parser Conformance Gate at
+  `examples/source_to_intent_research_parser_conformance_gate.py`, with golden
+  evidence at
+  `tests/golden/frontend/source_to_intent_research_parser_conformance_gate.txt`.
+- Source-To-Intent Research Diagnostics at
+  `examples/source_to_intent_research_diagnostics.py`, with schema at
+  `schemas/source_to_intent_research_diagnostics_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_diagnostics_report.json`,
+  and source-free rejection reason IDs for accepted/rejected parser cases.
+- Source-To-Intent Research Preflight Bridge at
+  `examples/source_to_intent_research_preflight_bridge.py`, with schema at
+  `schemas/source_to_intent_research_preflight_bridge_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_preflight_bridge.json`, and
+  digest binding through Source-To-Intent Research Evidence Gate.
+- Source-To-Intent Research Evidence Gate at
+  `examples/source_to_intent_research_evidence_gate.py`, with deterministic
+  golden evidence at
+  `tests/golden/frontend/source_to_intent_research_evidence_gate.txt`, binding
+  readiness, conformance, and diagnostics by SHA-256 digest.
+- Source-To-Intent Research Execution Bridge at
+  `examples/source_to_intent_research_execution_bridge.py`, with schema at
+  `schemas/source_to_intent_research_execution_bridge_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_execution_bridge.json`, and
+  digest binding through Source-To-Intent Research Evidence Gate.
+- Source-To-Intent Research Idiom Alignment at
+  `examples/source_to_intent_research_idiom_alignment.py`, with schema at
+  `schemas/source_to_intent_research_idiom_alignment_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_idiom_alignment.json`, and
+  digest binding through Source-To-Intent Research Evidence Gate.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
@@ -740,6 +901,8 @@ Current focus:
 - Keep Allocation Plan reports bound to the Buffer Lifetime report evaluated by
   the same gate invocation before accepting allocator, memory-pool,
   device-allocation, or aliasing changes.
+- Use Runtime HS-IR Plan Alignment before treating backend-specific HS-IR facts
+  as practical execution evidence.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
 
@@ -751,7 +914,7 @@ Current focus:
   metadata intake contract and
   [Triton Idiom Coverage Report](TRITON_IDIOM_COVERAGE_REPORT.md) before any
   source parser or `@triton.jit` handling is accepted.
-- Source parser work must satisfy
+- General source parser work must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before it can
   produce metadata, HAC-IR, runtime-plan, or decision-report artifacts.
 - Source preflight is allowed only as a diagnostic boundary; future canonical
@@ -759,16 +922,22 @@ Current focus:
   golden review evidence exist.
 - Source preflight fuzzing is now the baseline seed set; Source Intent IR v0
   can be built from schema-versioned plain data and can convert to metadata
-  only through separate reviewed adapters. Future source-text-to-intent work
-  must add its own corpus, source-intent goldens, deterministic diagnostics,
-  and security review before any source connection.
+  only through separate reviewed adapters. The explicit research parser may
+  emit `source_intent.v0` plain data for its narrow accepted subset, but any
+  broader source-text-to-intent work must add its own corpus, source-intent
+  goldens, deterministic diagnostics, and security review before expansion.
 - External frontend proposals should provide a Source Intent Frontend
   Conformance report matching the report schema and pass Source Intent Frontend
   Conformance Gate before maintainers consider any source-text parser or
   frontend package integration.
-- Source-to-intent parser work remains blocked until
-  [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) is satisfied
-  by a dedicated parser implementation RFC and executable evidence.
+- Default source-to-intent parser intake remains blocked by
+  [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md); the accepted
+  research parser is explicit-only and must not become a compiler shortcut.
+- Add future parser syntax only after each new Source Intent semantic attribute
+  has its own intake, metadata-conversion, conformance, and golden evidence.
+- Extend Source-To-Intent Research Diagnostics with source-free accepted and
+  rejected cases before any parser syntax expands beyond the current research
+  subset.
 - Future parser proposals must pass
   [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md) before
   source text can influence compiler artifacts.

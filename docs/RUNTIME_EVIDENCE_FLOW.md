@@ -9,6 +9,7 @@ The current flow is:
 ```text
 execute_graph
   -> RuntimeTensorStore
+  -> Runtime HS-IR Plan Alignment
   -> Runtime Tensor Store Evidence
   -> Runtime Input Manifest
   -> Runtime Output Manifest
@@ -89,6 +90,11 @@ runtime executions, including current `reference-cpu` versus `systolic-sim`,
 `systolic-sim` plus `vector-sim` proof slices, but serializes only comparison
 metadata and output omission status. It does not hash tensor contents.
 
+`Runtime HS-IR Plan Alignment` compares HS-IR backend/layout metadata,
+`PartitionPlan` assignments, and runtime trace steps for the mixed accelerator
+slice. It serializes only bounded identifiers, counts, layout names, backend
+names, trusted-executor statuses, and metadata digests.
+
 ## What Is Never Serialized
 
 Runtime evidence does not serialize:
@@ -119,6 +125,10 @@ behavior can be accepted.
 systolic, vector, and mixed accelerator proof slices. It demonstrates that
 distinct backend placements can preserve observable output semantics before
 stronger portability or performance claims are made.
+
+`Runtime HS-IR Plan Alignment` is the current bridge between backend-specific
+IR facts and practical runtime execution evidence. It makes HS-IR drift from
+the accepted plan or trace visible as deterministic JSON.
 
 Together, the gates keep the core proof visible:
 

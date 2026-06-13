@@ -36,8 +36,25 @@ A graph is runtime-evidence complete only when it has:
 - `execution_receipt`
 
 Additional evidence, such as `proof_report_golden`, `frontend_intake_golden`,
-`source_intent_return_semantics`, and `source_intent_runtime_returns`, can be
-listed without changing completeness.
+`source_intent_return_semantics`, `source_intent_runtime_returns`,
+`backend_equivalence`, `backend_equivalence_portfolio`, and
+`backend_equivalence_portfolio_policy`, and
+`runtime_hs_ir_plan_alignment`, can be listed without changing default
+full-runtime completeness.
+
+Each graph records its own `required_artifact_kinds`. Standard runtime proof
+graphs use the full required list above. Backend-equivalence fixtures use the
+scoped requirement `backend_equivalence`, because their review artifact is a
+data-only equivalence report rather than a full proof-report/readiness/trace
+bundle. The mixed backend-equivalence fixture additionally requires
+`runtime_hs_ir_plan_alignment`, because its HS-IR backend/layout decisions must
+be bound to the accepted plan and observed trace before the mixed accelerator
+slice counts as gate evidence.
+The backend-equivalence portfolio uses the scoped requirement
+`backend_equivalence_portfolio` plus
+`backend_equivalence_portfolio_policy`, because it is an aggregate data-only
+review artifact over equivalence reports and an accepted membership policy
+rather than a full runtime execution bundle.
 
 For Runtime Executor v0, `reference_correctness` is backed by the
 schema-versioned [Runtime Reference Correctness](RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -51,7 +68,8 @@ report at `schemas/runtime_reference_correctness_report.v0.schema.json`.
 The matrix records this as an evidence kind and artifact identifier; it does
 not claim that every identifier maps to a standalone checked-in JSON file.
 Standalone tensor-store goldens currently cover the executable runtime slices
-that produce Runtime Tensor Store reports.
+that produce Runtime Tensor Store reports, including the mixed accelerator
+slice.
 `output_contract` is backed by the schema-versioned
 [Runtime Output Contract](RUNTIME_OUTPUT_CONTRACT.md) report at
 `schemas/runtime_output_contract_report.v0.schema.json`.
@@ -89,16 +107,45 @@ The current matrix is complete across every accepted graph fixture:
 - `source_intent_return_mlp` is complete across required runtime evidence and
   also records Source Intent return semantics plus Source Intent Runtime
   Returns evidence.
+- `runtime_backend_equivalence`, `runtime_vector_backend_equivalence`, and
+  `runtime_mixed_backend_equivalence` are complete under their scoped
+  backend-equivalence evidence requirements. The mixed fixture also inventories
+  `runtime_hs_ir_plan_alignment` evidence.
+- `runtime_backend_equivalence_portfolio` is complete under its scoped
+  `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` evidence requirements, inventorying
+  both the aggregate backend-diversity artifact and its accepted membership
+  policy.
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.
 
 The CI-facing [Runtime Evidence Gate](RUNTIME_EVIDENCE_GATE.md) requires this
 matrix to be complete before runtime executor conformance can count as passing
-merge evidence. It also requires `source_intent_return_mlp` to remain present
-with the `source_intent_metadata` source boundary and the
+merge evidence. It also requires the three backend-equivalence graph entries
+to remain present with the `runtime_backend_equivalence` source boundary and
+`backend_equivalence` artifact kind before backend-equivalence reports can
+count as passing gate evidence; the gate binds each checked equivalence report
+to its matrix graph by graph ID and exact artifact ID. The mixed
+backend-equivalence graph must additionally keep the
+`runtime_hs_ir_plan_alignment` artifact kind and exact
+`runtime_hs_ir_plan_alignment_mixed` artifact ID before its HS-IR alignment
+report can count as passing gate evidence. It also requires the
+`runtime_backend_equivalence_portfolio` graph to remain present with the
+`runtime_backend_equivalence` source boundary and
+`backend_equivalence_portfolio` plus
+`backend_equivalence_portfolio_policy` artifact kinds before portfolio evidence
+can count as passing gate evidence; the gate binds the portfolio matrix coverage
+to the exact portfolio and policy artifact IDs. It also requires
+`source_intent_return_mlp` to
+remain present with the `source_intent_metadata` source boundary and the
 `source_intent_return_semantics` plus `source_intent_runtime_returns` artifact
 kinds before Source Intent Runtime Returns can count as passing gate evidence.
+
+[Runtime Evidence Gate Matrix Coverage](RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
+serializes the gate-required backend-equivalence, HS-IR alignment, and
+portfolio Matrix bindings as a deterministic JSON audit, so reviewers can
+inspect the exact graph and artifact IDs that the gate accepts.
 
 ## Security Boundary
 

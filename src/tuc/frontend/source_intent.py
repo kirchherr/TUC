@@ -35,6 +35,8 @@ _ALLOWED_HINTS = frozenset(
         "robust_to_noise",
     }
 )
+_ALLOWED_ATTRIBUTES = frozenset({"axis"})
+_AXIS_OPERATION_FAMILIES = frozenset({"reduction", "softmax"})
 _BOOLEAN_HINTS = frozenset(
     {"prefer_linear_accelerator", "prefer_sparsity", "robust_to_noise"}
 )
@@ -127,6 +129,7 @@ class SourceIntentOperation:
     inputs: tuple[str, ...]
     outputs: tuple[str, ...]
     hints: Mapping[str, object] = field(default_factory=dict)
+    attributes: Mapping[str, object] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         _validate_identifier(self.name, "source-intent operation name")
@@ -143,15 +146,23 @@ class SourceIntentOperation:
         object.__setattr__(self, "inputs", inputs)
         object.__setattr__(self, "outputs", outputs)
         object.__setattr__(self, "hints", _freeze_hints(self.hints))
+        object.__setattr__(
+            self,
+            "attributes",
+            _freeze_attributes(self.attributes, self.family),
+        )
 
     def dump(self) -> str:
         inputs = ",".join(f"%{name}" for name in self.inputs)
         outputs = ",".join(f"%{name}" for name in self.outputs)
         hints = _format_hints(self.hints)
-        return (
+        line = (
             f"op @{self.name} family={self.family} "
             f"inputs={inputs} outputs={outputs} hints={hints}"
         )
+        if self.attributes:
+            line = f"{line} attributes={_format_hints(self.attributes)}"
+        return line
 
 
 @dataclass(frozen=True)
@@ -214,6 +225,7 @@ class SourceIntentModule:
                         f"source-intent operation {operation.name!r} "
                         f"references unknown tensor: {name}"
                     )
+        _validate_operation_attributes(operations, tensors)
         _validate_returns(returns, tensors, operations)
         object.__setattr__(self, "tensors", tensors)
         object.__setattr__(self, "operations", operations)
@@ -322,6 +334,66 @@ def _freeze_hints(hints: Mapping[str, object]) -> Mapping[str, object]:
                 raise ValueError("max_error_budget must be finite and non-negative")
             frozen[key] = number
     return MappingProxyType(frozen)
+
+
+def _freeze_attributes(
+    attributes: Mapping[str, object],
+    family: str,
+) -> Mapping[str, object]:
+    if not isinstance(attributes, Mapping):
+        raise TypeError("source-intent attributes must be a mapping")
+    frozen: dict[str, object] = {}
+    for key in sorted(attributes):
+        if not isinstance(key, str):
+            raise TypeError("source-intent attribute keys must be strings")
+        _reject_forbidden_key(key, "source-intent attribute")
+        if key not in _ALLOWED_ATTRIBUTES:
+            raise ValueError(f"source-intent attribute contains unsupported key: {key}")
+        value = attributes[key]
+        if key == "axis":
+            if not isinstance(value, int) or isinstance(value, bool):
+                raise TypeError("source-intent axis attribute must be an integer")
+            if family not in _AXIS_OPERATION_FAMILIES:
+                raise ValueError(
+                    "source-intent axis attribute is allowed only for "
+                    "reduction and softmax"
+                )
+            frozen[key] = value
+    if family in _AXIS_OPERATION_FAMILIES and "axis" not in frozen:
+        raise ValueError("source-intent reduction and softmax require axis attribute")
+    if family not in _AXIS_OPERATION_FAMILIES and frozen:
+        raise ValueError("source-intent operation family does not accept attributes")
+    return MappingProxyType(frozen)
+
+
+def _validate_operation_attributes(
+    operations: tuple[SourceIntentOperation, ...],
+    tensors: tuple[SourceIntentTensor, ...],
+) -> None:
+    tensors_by_name = {tensor.name: tensor for tensor in tensors}
+    for operation in operations:
+        if operation.family not in _AXIS_OPERATION_FAMILIES:
+            continue
+        if len(operation.inputs) != 1 or len(operation.outputs) != 1:
+            raise ValueError(
+                "source-intent reduction and softmax require one input and one output"
+            )
+        axis = operation.attributes.get("axis")
+        if not isinstance(axis, int) or isinstance(axis, bool):
+            raise TypeError("source-intent axis attribute must be an integer")
+        input_shape = tensors_by_name[operation.inputs[0]].shape
+        output_shape = tensors_by_name[operation.outputs[0]].shape
+        normalized_axis = axis + len(input_shape) if axis < 0 else axis
+        if normalized_axis < 0 or normalized_axis >= len(input_shape):
+            raise ValueError("source-intent axis attribute is out of bounds")
+        if operation.family == "softmax" and output_shape != input_shape:
+            raise ValueError("source-intent softmax output shape must match input shape")
+        if operation.family == "reduction":
+            expected = input_shape[:normalized_axis] + input_shape[normalized_axis + 1 :]
+            if not expected:
+                raise ValueError("source-intent reduction scalar output unsupported")
+            if output_shape != expected:
+                raise ValueError("source-intent reduction output shape mismatch")
 
 
 def _reject_forbidden_key(key: str, label: str) -> None:

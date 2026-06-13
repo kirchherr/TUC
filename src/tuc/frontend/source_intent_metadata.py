@@ -148,6 +148,7 @@ def _operation_to_metadata(operation: SourceIntentOperation) -> TritonOperationM
         inputs=operation.inputs,
         outputs=operation.outputs,
         hints=_hints_to_compilation_hints(operation),
+        attributes=operation.attributes,
     )
 
 

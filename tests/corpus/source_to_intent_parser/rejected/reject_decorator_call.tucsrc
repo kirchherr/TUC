@@ -1,0 +1,3 @@
+@triton.jit(num_warps=4)
+def decorator_call(x, y):
+    tl.store(y, x)

@@ -1,0 +1,97 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "environment_dependent_behavior",
+    "frontend_module_import",
+    "generated_artifact_execution",
+    "host_file_read_after_source_buffer",
+    "network_access",
+    "plugin_discovery",
+    "python_function_inspection",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "checked_evidence": [
+    {
+      "evidence_id": "parser_rfc",
+      "present": true
+    },
+    {
+      "evidence_id": "parser_threat_model_update",
+      "present": true
+    },
+    {
+      "evidence_id": "parser_budget_table",
+      "present": true
+    },
+    {
+      "evidence_id": "accepted_source_corpus",
+      "present": true
+    },
+    {
+      "evidence_id": "rejected_source_corpus",
+      "present": true
+    },
+    {
+      "evidence_id": "source_fuzz_or_property_corpus",
+      "present": true
+    },
+    {
+      "evidence_id": "parser_report_golden",
+      "present": true
+    },
+    {
+      "evidence_id": "source_intent_plain_data_golden",
+      "present": true
+    },
+    {
+      "evidence_id": "source_intent_intake_report_golden",
+      "present": true
+    },
+    {
+      "evidence_id": "source_intent_metadata_report_golden",
+      "present": true
+    },
+    {
+      "evidence_id": "source_to_intent_research_diagnostics",
+      "present": true
+    },
+    {
+      "evidence_id": "metadata_intake_report_golden",
+      "present": true
+    },
+    {
+      "evidence_id": "hac_ir_golden",
+      "present": true
+    },
+    {
+      "evidence_id": "runtime_plan_golden",
+      "present": true
+    },
+    {
+      "evidence_id": "compiler_decision_report_golden",
+      "present": true
+    },
+    {
+      "evidence_id": "hac_ir_neutrality_review",
+      "present": true
+    },
+    {
+      "evidence_id": "source_intent_frontend_conformance_report",
+      "present": true
+    },
+    {
+      "evidence_id": "source_intent_frontend_conformance_gate",
+      "present": true
+    }
+  ],
+  "gate_contract": "source_to_intent_parser_gate.blocking.v0",
+  "issues": [],
+  "proposal_name": "research-source-to-intent-parser-proposal",
+  "ready": true,
+  "schema_version": "tuc.source_to_intent_readiness_report.v0"
+}

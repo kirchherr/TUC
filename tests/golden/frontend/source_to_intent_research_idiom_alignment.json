@@ -1,0 +1,67 @@
+{
+  "accepted_source_count": 2,
+  "alignment_contract": "source_to_intent_research_idiom_alignment.scope.v0",
+  "artifact_policy": "metadata_only_values_omitted",
+  "blocked_execution_surfaces": [
+    "bytecode_inspection",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_import",
+    "source_parsing",
+    "subprocess_execution"
+  ],
+  "cases": [
+    {
+      "case_id": "research_matmul_elementwise",
+      "matched_idioms": [
+        "metadata_elementwise_activation",
+        "metadata_matmul_projection"
+      ],
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "status": "covered"
+    },
+    {
+      "case_id": "research_softmax_reduction",
+      "matched_idioms": [
+        "metadata_reduction_axis",
+        "metadata_softmax_axis"
+      ],
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "status": "covered"
+    }
+  ],
+  "coverage_contract": "triton_idiom_coverage.execution_free.v0",
+  "coverage_policy": "parser_operation_families_must_match_covered_idioms",
+  "coverage_report_digest": "sha256:6c0040f3d8f8a2464d57cce7573f9616cbea892d0c88cd4882769f0d63dea237",
+  "covered_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "direct_triton_source_ingestion": false,
+  "execution_bridge_contract": "source_to_intent_research_execution_bridge.explicit.v0",
+  "execution_bridge_digest": "sha256:ec03eec65c3e1334066e213ff07c6038c897bb6c161fcc4e7c35ad0038f3f4cd",
+  "input_policy": "accepted_research_parser_results_only",
+  "parser_sources": [
+    "research_matmul_elementwise",
+    "research_softmax_reduction"
+  ],
+  "parser_status": "research_explicit_only",
+  "schema_version": "tuc.source_to_intent_research_idiom_alignment_report.v0",
+  "source_boundary": "source_intent.v0_plain_data_reintake",
+  "status": "PASS",
+  "unsupported_operation_families": []
+}
