@@ -14,6 +14,10 @@ text as compiler input.
   `examples/source_to_intent_research_execution_bridge.py`
 - Execution bridge docs:
   [Source-To-Intent Research Execution Bridge](SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE.md)
+- Idiom alignment example:
+  `examples/source_to_intent_research_idiom_alignment.py`
+- Idiom alignment docs:
+  [Source-To-Intent Research Idiom Alignment](SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md)
 - Golden: `tests/golden/frontend/source_to_intent_research_evidence_gate.txt`
 - Tests: `tests/test_source_to_intent_research_evidence_gate.py`
 - CI entry: `.github/workflows/ci.yml`
@@ -24,6 +28,7 @@ The gate binds:
 - Source-To-Intent Research Parser Conformance Gate
 - Source-To-Intent Research Diagnostics
 - Source-To-Intent Research Execution Bridge
+- Source-To-Intent Research Idiom Alignment
 
 Each input artifact is hashed with SHA-256 and the digest is emitted in the
 gate output.
@@ -43,6 +48,9 @@ The gate passes only when:
 - Research Execution Bridge passes for the same accepted parser sources.
 - Research Execution Bridge validates as a structured v0 contract before its
   digest is accepted.
+- Research Idiom Alignment passes for the same accepted parser sources.
+- Research Idiom Alignment validates accepted parser operation families
+  against Triton Idiom Coverage before its digest is accepted.
 - Diagnostics covers the whitelisted rejected source cases.
 - Parser status remains `research_explicit_only`.
 - Default parser status remains `default_parser_blocked`.
@@ -75,6 +83,8 @@ Research Parser Conformance Gate
 Research Diagnostics
     ->
 Research Execution Bridge
+    +
+Research Idiom Alignment
     ->
 Digest-bound source-free parser research evidence
 ```

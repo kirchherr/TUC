@@ -8,6 +8,8 @@ source_to_intent.research_evidence_gate @source_to_intent_research_evidence_gate
   diagnostics_digest = "sha256:60eb5965e0e97d424b2f2f0e88dbe02e656ee63b2d783f27c5ab7d7361cd2968"
   execution_bridge = "passed"
   execution_bridge_digest = "sha256:ec03eec65c3e1334066e213ff07c6038c897bb6c161fcc4e7c35ad0038f3f4cd"
+  idiom_alignment = "passed"
+  idiom_alignment_digest = "sha256:2d8798bf9b2179069c8a4c45f10a10a0f481c7c5e3097757cc1ac09d7d4bc6d5"
   diagnostics_evidence = "source_to_intent_research_diagnostics"
   parser_sources = "research_matmul_elementwise,research_softmax_reduction"
   accepted_diagnostic_cases = "2"

@@ -524,6 +524,9 @@ Deliverables:
 - Source-To-Intent Research Execution Bridge proving accepted parser output can
   reach controlled runtime execution only after Source Intent plain-data
   re-intake.
+- Source-To-Intent Research Idiom Alignment proving accepted parser slices stay
+  inside already covered Triton-like MVP idioms before broader source syntax
+  work can claim coverage.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -635,6 +638,9 @@ Go/No-Go:
   Source Intent re-intake, metadata conversion, runtime planning, Runtime
   Executor, and Runtime Reference Correctness without exposing raw values or
   parser compiler shortcuts.
+- Source-To-Intent Research Idiom Alignment now binds those accepted parser
+  slices to existing Triton Idiom Coverage and the Execution Bridge by digest,
+  so parser scope cannot silently expand beyond proven MVP operation families.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

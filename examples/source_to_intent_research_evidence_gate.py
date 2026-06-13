@@ -15,6 +15,12 @@ try:
     from examples.source_to_intent_research_execution_bridge import (
         build_report as build_execution_bridge_report,
     )
+    from examples.source_to_intent_research_idiom_alignment import (
+        assert_research_idiom_alignment_report_contract,
+    )
+    from examples.source_to_intent_research_idiom_alignment import (
+        build_report as build_idiom_alignment_report,
+    )
     from examples.source_to_intent_research_parser_conformance_gate import (
         REQUIRED_PARSER_SOURCE_NAMES,
     )
@@ -33,6 +39,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_execution_bridge import (
         build_report as build_execution_bridge_report,
+    )
+    from source_to_intent_research_idiom_alignment import (  # type: ignore[no-redef]
+        assert_research_idiom_alignment_report_contract,
+    )
+    from source_to_intent_research_idiom_alignment import (
+        build_report as build_idiom_alignment_report,
     )
     from source_to_intent_research_parser_conformance_gate import (  # type: ignore[no-redef]
         REQUIRED_PARSER_SOURCE_NAMES,
@@ -86,6 +98,7 @@ def build_gate_report(
     conformance_gate_text: str | None = None,
     diagnostics_report: SourceToIntentResearchDiagnosticsReport | None = None,
     execution_bridge_text: str | None = None,
+    idiom_alignment_text: str | None = None,
 ) -> str:
     """Return stable CI-facing parser research evidence binding."""
 
@@ -111,15 +124,22 @@ def build_gate_report(
         if execution_bridge_text is None
         else execution_bridge_text
     )
+    idiom_alignment = (
+        build_idiom_alignment_report()
+        if idiom_alignment_text is None
+        else idiom_alignment_text
+    )
     _assert_readiness_bound(readiness)
     _assert_conformance_gate_bound(conformance_text)
     _assert_diagnostics_bound(diagnostics)
     _assert_execution_bridge_bound(execution_bridge)
+    _assert_idiom_alignment_bound(idiom_alignment)
     return _render_gate_report(
         readiness,
         conformance_text,
         diagnostics,
         execution_bridge,
+        idiom_alignment,
     )
 
 
@@ -245,11 +265,28 @@ def _assert_execution_bridge_bound(text: str) -> None:
     _assert_gate_text_is_source_free(text)
 
 
+def _assert_idiom_alignment_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: idiom alignment not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_research_idiom_alignment_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "idiom alignment binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
 def _render_gate_report(
     readiness: SourceToIntentReadinessReport,
     conformance_text: str,
     diagnostics: SourceToIntentResearchDiagnosticsReport,
     execution_bridge_text: str,
+    idiom_alignment_text: str,
 ) -> str:
     readiness_text = dump_source_to_intent_readiness_report(readiness)
     diagnostics_text = dump_source_to_intent_research_diagnostics_report(diagnostics)
@@ -268,6 +305,8 @@ def _render_gate_report(
     lines.append(f'  diagnostics_digest = "{_digest(diagnostics_text)}"')
     lines.append('  execution_bridge = "passed"')
     lines.append(f'  execution_bridge_digest = "{_digest(execution_bridge_text)}"')
+    lines.append('  idiom_alignment = "passed"')
+    lines.append(f'  idiom_alignment_digest = "{_digest(idiom_alignment_text)}"')
     lines.append(f'  diagnostics_evidence = "{RESEARCH_DIAGNOSTICS_EVIDENCE_ID}"')
     lines.append(
         f'  parser_sources = "{",".join(REQUIRED_PARSER_SOURCE_NAMES)}"'
