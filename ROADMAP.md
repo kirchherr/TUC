@@ -519,6 +519,8 @@ Deliverables:
   the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Diagnostics for source-free accepted/rejected
   parser diagnostic evidence.
+- Source-To-Intent Research Preflight Bridge proving accepted/rejected parser
+  diagnostics remain layered behind execution-free Triton Source Preflight.
 - Source-To-Intent Research Evidence Gate binding readiness, conformance, and
   diagnostics by digest.
 - Source-To-Intent Research Execution Bridge proving accepted parser output can
@@ -630,6 +632,9 @@ Go/No-Go:
 - Source-To-Intent Research Diagnostics now binds the accepted parser slices
   and whitelisted rejected source cases to deterministic source-free diagnostic
   evidence with stable rejection reason IDs.
+- Source-To-Intent Research Preflight Bridge now separates accepted pipeline,
+  preflight rejection, and parser semantic rejection evidence for the same
+  diagnostic cases before the parser proof can count as CI-facing evidence.
 - Source-To-Intent Research Evidence Gate now binds Research Readiness,
   Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest
   before the current research parser scope counts as CI-facing proof evidence.

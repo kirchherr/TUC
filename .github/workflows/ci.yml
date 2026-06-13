@@ -55,6 +55,8 @@ jobs:
         run: python examples/source_to_intent_research_parser_conformance_gate.py
       - name: Source-To-Intent research diagnostics
         run: python examples/source_to_intent_research_diagnostics.py
+      - name: Source-To-Intent research preflight bridge
+        run: python examples/source_to_intent_research_preflight_bridge.py
       - name: Source-To-Intent research execution bridge
         run: python examples/source_to_intent_research_execution_bridge.py
       - name: Source-To-Intent research idiom alignment

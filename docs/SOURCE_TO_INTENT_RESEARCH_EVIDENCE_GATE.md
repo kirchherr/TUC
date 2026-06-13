@@ -14,6 +14,10 @@ text as compiler input.
   `examples/source_to_intent_research_execution_bridge.py`
 - Execution bridge docs:
   [Source-To-Intent Research Execution Bridge](SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE.md)
+- Preflight bridge example:
+  `examples/source_to_intent_research_preflight_bridge.py`
+- Preflight bridge docs:
+  [Source-To-Intent Research Preflight Bridge](SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE.md)
 - Idiom alignment example:
   `examples/source_to_intent_research_idiom_alignment.py`
 - Idiom alignment docs:
@@ -27,6 +31,7 @@ The gate binds:
 - Source-To-Intent Research Readiness
 - Source-To-Intent Research Parser Conformance Gate
 - Source-To-Intent Research Diagnostics
+- Source-To-Intent Research Preflight Bridge
 - Source-To-Intent Research Execution Bridge
 - Source-To-Intent Research Idiom Alignment
 
@@ -45,6 +50,10 @@ The gate passes only when:
   `source_to_intent_research_diagnostics` present.
 - Research Parser Conformance Gate passes for the accepted parser sources.
 - Research Diagnostics passes for the same accepted parser sources.
+- Research Preflight Bridge passes for the accepted and rejected parser
+  diagnostic cases.
+- Research Preflight Bridge validates Preflight rejection and parser semantic
+  rejection as distinct stages before its digest is accepted.
 - Research Execution Bridge passes for the same accepted parser sources.
 - Research Execution Bridge validates as a structured v0 contract before its
   digest is accepted.
@@ -81,6 +90,8 @@ Research Readiness
 Research Parser Conformance Gate
     +
 Research Diagnostics
+    ->
+Research Preflight Bridge
     ->
 Research Execution Bridge
     +

@@ -195,6 +195,8 @@ Current frontend surfaces:
   output slice passes the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Diagnostics proving accepted parser cases and
   whitelisted rejected cases remain deterministic, source-free, and bounded.
+- Source-To-Intent Research Preflight Bridge proving accepted and rejected
+  parser diagnostics remain gated by execution-free Triton Source Preflight.
 - Source-To-Intent Research Evidence Gate binding research readiness,
   conformance, and diagnostics by digest.
 - Source-To-Intent Research Execution Bridge proving accepted parser output can
@@ -235,6 +237,7 @@ examples/source_to_intent_parser_report.py
 examples/source_to_intent_research_parser.py
 examples/source_to_intent_research_parser_conformance_gate.py
 examples/source_to_intent_research_diagnostics.py
+examples/source_to_intent_research_preflight_bridge.py
 examples/source_to_intent_research_execution_bridge.py
 examples/source_to_intent_research_idiom_alignment.py
 examples/source_to_intent_research_evidence_gate.py
@@ -258,6 +261,7 @@ Key docs:
 - [Source-to-Intent research parser](docs/SOURCE_TO_INTENT_RESEARCH_PARSER.md)
 - [Source-to-Intent research parser conformance gate](docs/SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md)
 - [Source-to-Intent research diagnostics](docs/SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md)
+- [Source-to-Intent research preflight bridge](docs/SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE.md)
 - [Source-to-Intent research execution bridge](docs/SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE.md)
 - [Source-to-Intent research idiom alignment](docs/SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md)
 - [Source-to-Intent research evidence gate](docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)

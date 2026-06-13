@@ -679,6 +679,12 @@ Current slice:
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_diagnostics_report.json`,
   and source-free rejection reason IDs for accepted/rejected parser cases.
+- Source-To-Intent Research Preflight Bridge at
+  `examples/source_to_intent_research_preflight_bridge.py`, with schema at
+  `schemas/source_to_intent_research_preflight_bridge_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_preflight_bridge.json`, and
+  digest binding through Source-To-Intent Research Evidence Gate.
 - Source-To-Intent Research Evidence Gate at
   `examples/source_to_intent_research_evidence_gate.py`, with deterministic
   golden evidence at
