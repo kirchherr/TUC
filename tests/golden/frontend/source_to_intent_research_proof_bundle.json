@@ -1,0 +1,88 @@
+{
+  "accepted_parser_sources": [
+    "research_matmul_elementwise",
+    "research_softmax_reduction"
+  ],
+  "artifact_count": 7,
+  "artifact_policy": "digest_only_source_free",
+  "artifacts": [
+    {
+      "artifact_id": "source_to_intent_research_readiness",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_parser_gate.blocking.v0",
+      "digest": "sha256:4acf2b1529094cc58e51179b7b0cd82a2fb3b881d8e445fb55820895605122f9",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_parser_conformance_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_parser_conformance_gate.ci.v0",
+      "digest": "sha256:09c269362a22294a5b8b48ea9dde4e28c0b033c0708261bf17b41fb1cc5b1190",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_diagnostics",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_diagnostics.execution_free.v0",
+      "digest": "sha256:60eb5965e0e97d424b2f2f0e88dbe02e656ee63b2d783f27c5ab7d7361cd2968",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_preflight_bridge",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_preflight_bridge.execution_free.v0",
+      "digest": "sha256:b9928d806558110d5a3991167960d034d350172176a5fc8a41b91a608569bb69",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_execution_bridge",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_execution_bridge.explicit.v0",
+      "digest": "sha256:ec03eec65c3e1334066e213ff07c6038c897bb6c161fcc4e7c35ad0038f3f4cd",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_idiom_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_idiom_alignment.scope.v0",
+      "digest": "sha256:2d8798bf9b2179069c8a4c45f10a10a0f481c7c5e3097757cc1ac09d7d4bc6d5",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_evidence_gate.ci.v0",
+      "digest": "sha256:424d39c1fcc856a960d68106098e536829c843906193a1296e7d78ac2c5406db",
+      "status": "accepted"
+    }
+  ],
+  "blocked_claims": [
+    "general_triton_source_ingestion",
+    "native_performance_claim",
+    "production_parser"
+  ],
+  "bundle_contract": "source_to_intent_research_proof_bundle.review.v0",
+  "claim": "safe_source_to_runtime_research_slice",
+  "default_parser_status": "default_parser_blocked",
+  "parser_output_policy": "source_intent.v0_plain_data_only",
+  "parser_status": "research_explicit_only",
+  "required_artifacts": [
+    "source_to_intent_research_readiness",
+    "source_to_intent_research_parser_conformance_gate",
+    "source_to_intent_research_diagnostics",
+    "source_to_intent_research_preflight_bridge",
+    "source_to_intent_research_execution_bridge",
+    "source_to_intent_research_idiom_alignment",
+    "source_to_intent_research_evidence_gate"
+  ],
+  "review_claims": [
+    "default_parser_blocked",
+    "idiom_scope_bound",
+    "preflight_gated",
+    "runtime_execution_controlled",
+    "source_intent_plain_data_only"
+  ],
+  "schema_version": "tuc.source_to_intent_research_proof_bundle_report.v0",
+  "source_boundary": "preflight_to_source_intent_plain_data_to_runtime",
+  "status": "PASS"
+}

@@ -529,6 +529,8 @@ Deliverables:
 - Source-To-Intent Research Idiom Alignment proving accepted parser slices stay
   inside already covered Triton-like MVP idioms before broader source syntax
   work can claim coverage.
+- Source-To-Intent Research Proof Bundle giving reviewers one digest-only
+  source-free artifact for the current safe source-to-runtime research slice.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -646,6 +648,9 @@ Go/No-Go:
 - Source-To-Intent Research Idiom Alignment now binds those accepted parser
   slices to existing Triton Idiom Coverage and the Execution Bridge by digest,
   so parser scope cannot silently expand beyond proven MVP operation families.
+- Source-To-Intent Research Proof Bundle now indexes the current readiness,
+  conformance, diagnostics, Preflight Bridge, Execution Bridge, Idiom
+  Alignment, and Evidence Gate artifacts by digest for review.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

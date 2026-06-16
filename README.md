@@ -203,6 +203,8 @@ Current frontend surfaces:
   re-enter Source Intent Intake and reach controlled Runtime Executor evidence.
 - Source-To-Intent Research Idiom Alignment proving accepted parser slices stay
   within the already covered Triton-like MVP idiom scope.
+- Source-To-Intent Research Proof Bundle providing one digest-only review entry
+  for the current safe source-to-runtime research slice.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
 - Source Intent Axis Attributes for neutral `softmax` and `reduction` axis
@@ -241,6 +243,7 @@ examples/source_to_intent_research_preflight_bridge.py
 examples/source_to_intent_research_execution_bridge.py
 examples/source_to_intent_research_idiom_alignment.py
 examples/source_to_intent_research_evidence_gate.py
+examples/source_to_intent_research_proof_bundle.py
 examples/source_to_intent_research_readiness.py
 examples/source_to_intent_parser_block_gate.py
 ```
@@ -265,6 +268,7 @@ Key docs:
 - [Source-to-Intent research execution bridge](docs/SOURCE_TO_INTENT_RESEARCH_EXECUTION_BRIDGE.md)
 - [Source-to-Intent research idiom alignment](docs/SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md)
 - [Source-to-Intent research evidence gate](docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
+- [Source-to-Intent research proof bundle](docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)

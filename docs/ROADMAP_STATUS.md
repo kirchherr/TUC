@@ -702,6 +702,12 @@ Current slice:
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_idiom_alignment.json`, and
   digest binding through Source-To-Intent Research Evidence Gate.
+- Source-To-Intent Research Proof Bundle at
+  `examples/source_to_intent_research_proof_bundle.py`, with schema at
+  `schemas/source_to_intent_research_proof_bundle_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_proof_bundle.json`, and
+  digest-only review binding for the current source-to-runtime research proof.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
