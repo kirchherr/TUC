@@ -534,6 +534,10 @@ Deliverables:
 - Source-To-Intent Research Source Runtime Smoke proving accepted source buffers
   can run end-to-end through Preflight, parser, Source Intent, runtime, and
   reference correctness.
+- Source-To-Intent Research Kernel Ingress proving realistic Triton
+  module-shaped source buffers can be validated as data, reduced to one
+  explicitly selected kernel function, and executed through the controlled
+  source-to-runtime research path.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -653,11 +657,17 @@ Go/No-Go:
   so parser scope cannot silently expand beyond proven MVP operation families.
 - Source-To-Intent Research Proof Bundle now indexes the current readiness,
   conformance, diagnostics, Preflight Bridge, Execution Bridge, Idiom
-  Alignment, and Evidence Gate artifacts by digest for review.
+  Alignment, Source Runtime Smoke, Kernel Ingress, and Evidence Gate artifacts
+  by digest for review.
 - Source-To-Intent Research Source Runtime Smoke now proves the accepted
   `matmul -> elementwise` and `softmax -> reduction` source buffers can execute
   end-to-end through the controlled research parser path without opening
   general Triton source ingestion.
+- Source-To-Intent Research Kernel Ingress now proves realistic Triton
+  module-shaped source buffers with the accepted Triton import prelude and one
+  explicitly selected `@triton.jit` kernel can execute end-to-end through the
+  controlled research path without evaluating imports, decorators, JIT, files,
+  devices, plugins, or general module execution.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

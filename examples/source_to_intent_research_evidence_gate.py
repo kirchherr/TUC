@@ -21,6 +21,12 @@ try:
     from examples.source_to_intent_research_idiom_alignment import (
         build_report as build_idiom_alignment_report,
     )
+    from examples.source_to_intent_research_kernel_ingress import (
+        assert_kernel_ingress_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress import (
+        build_report as build_kernel_ingress_report,
+    )
     from examples.source_to_intent_research_parser_conformance_gate import (
         REQUIRED_PARSER_SOURCE_NAMES,
     )
@@ -57,6 +63,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_idiom_alignment import (
         build_report as build_idiom_alignment_report,
+    )
+    from source_to_intent_research_kernel_ingress import (  # type: ignore[no-redef]
+        assert_kernel_ingress_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress import (
+        build_report as build_kernel_ingress_report,
     )
     from source_to_intent_research_parser_conformance_gate import (  # type: ignore[no-redef]
         REQUIRED_PARSER_SOURCE_NAMES,
@@ -104,6 +116,7 @@ RESEARCH_DIAGNOSTICS_EVIDENCE_ID = "source_to_intent_research_diagnostics"
 FRONTEND_CONFORMANCE_GATE_EVIDENCE_ID = "source_intent_frontend_conformance_gate"
 FORBIDDEN_GATE_OUTPUT_FRAGMENTS = (
     "@triton.jit",
+    "import triton",
     "python_source",
     "raw_source_text",
     "source_intent_payload",
@@ -123,6 +136,7 @@ def build_gate_report(
     diagnostics_report: SourceToIntentResearchDiagnosticsReport | None = None,
     execution_bridge_text: str | None = None,
     idiom_alignment_text: str | None = None,
+    kernel_ingress_text: str | None = None,
     preflight_bridge_text: str | None = None,
     source_runtime_smoke_text: str | None = None,
 ) -> str:
@@ -155,6 +169,11 @@ def build_gate_report(
         if idiom_alignment_text is None
         else idiom_alignment_text
     )
+    kernel_ingress = (
+        build_kernel_ingress_report()
+        if kernel_ingress_text is None
+        else kernel_ingress_text
+    )
     preflight_bridge = (
         build_preflight_bridge_report()
         if preflight_bridge_text is None
@@ -171,6 +190,7 @@ def build_gate_report(
     _assert_preflight_bridge_bound(preflight_bridge)
     _assert_execution_bridge_bound(execution_bridge)
     _assert_idiom_alignment_bound(idiom_alignment)
+    _assert_kernel_ingress_bound(kernel_ingress)
     _assert_source_runtime_smoke_bound(source_runtime_smoke)
     return _render_gate_report(
         readiness,
@@ -179,6 +199,7 @@ def build_gate_report(
         preflight_bridge,
         execution_bridge,
         idiom_alignment,
+        kernel_ingress,
         source_runtime_smoke,
     )
 
@@ -337,6 +358,22 @@ def _assert_idiom_alignment_bound(text: str) -> None:
     _assert_gate_text_is_source_free(text)
 
 
+def _assert_kernel_ingress_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: kernel ingress not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_kernel_ingress_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
 def _assert_source_runtime_smoke_bound(text: str) -> None:
     if not isinstance(text, str):
         raise SourceToIntentResearchEvidenceGateError(
@@ -360,6 +397,7 @@ def _render_gate_report(
     preflight_bridge_text: str,
     execution_bridge_text: str,
     idiom_alignment_text: str,
+    kernel_ingress_text: str,
     source_runtime_smoke_text: str,
 ) -> str:
     readiness_text = dump_source_to_intent_readiness_report(readiness)
@@ -383,6 +421,8 @@ def _render_gate_report(
     lines.append(f'  execution_bridge_digest = "{_digest(execution_bridge_text)}"')
     lines.append('  idiom_alignment = "passed"')
     lines.append(f'  idiom_alignment_digest = "{_digest(idiom_alignment_text)}"')
+    lines.append('  kernel_ingress = "passed"')
+    lines.append(f'  kernel_ingress_digest = "{_digest(kernel_ingress_text)}"')
     lines.append('  source_runtime_smoke = "passed"')
     lines.append(f'  source_runtime_smoke_digest = "{_digest(source_runtime_smoke_text)}"')
     lines.append(f'  diagnostics_evidence = "{RESEARCH_DIAGNOSTICS_EVIDENCE_ID}"')

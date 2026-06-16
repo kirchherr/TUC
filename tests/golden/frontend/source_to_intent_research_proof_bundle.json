@@ -3,7 +3,7 @@
     "research_matmul_elementwise",
     "research_softmax_reduction"
   ],
-  "artifact_count": 8,
+  "artifact_count": 9,
   "artifact_policy": "digest_only_source_free",
   "artifacts": [
     {
@@ -56,10 +56,17 @@
       "status": "accepted"
     },
     {
+      "artifact_id": "source_to_intent_research_kernel_ingress",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress.e2e.v0",
+      "digest": "sha256:b0b7add6a8874e11eb3aeb2d159b8090fc54c6ced96e54b53e07f55ae5b15d59",
+      "status": "accepted"
+    },
+    {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:8e6e143b3865481f0fa80ccfa2cfcf37b298f8a04e77af1c9c810ad97b7854a6",
+      "digest": "sha256:c2c46342db78fddd6bfe45d4037d7bd6a58e80ff56cccc9ad6d30c99edf71f68",
       "status": "accepted"
     }
   ],
@@ -81,6 +88,7 @@
     "source_to_intent_research_execution_bridge",
     "source_to_intent_research_idiom_alignment",
     "source_to_intent_research_source_runtime_smoke",
+    "source_to_intent_research_kernel_ingress",
     "source_to_intent_research_evidence_gate"
   ],
   "review_claims": [

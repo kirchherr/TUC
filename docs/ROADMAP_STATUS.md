@@ -715,6 +715,14 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_source_runtime_smoke.json`,
   and digest binding through Source-To-Intent Research Evidence Gate and Proof
   Bundle.
+- Source-To-Intent Research Kernel Ingress at
+  `examples/source_to_intent_research_kernel_ingress.py`, with frontend API at
+  `src/tuc/frontend/source_to_intent_research_kernel_ingress.py`, schema at
+  `schemas/source_to_intent_research_kernel_ingress_e2e_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress.json`, and
+  digest binding through Source-To-Intent Research Evidence Gate and Proof
+  Bundle for realistic Triton module-shaped source buffers.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.

@@ -30,7 +30,11 @@ The bundle records SHA-256 digests for:
 - Source-To-Intent Research Execution Bridge
 - Source-To-Intent Research Idiom Alignment
 - Source-To-Intent Research Source Runtime Smoke
+- Source-To-Intent Research Kernel Ingress
 - Source-To-Intent Research Evidence Gate
+
+Kernel Ingress artifact path:
+`examples/source_to_intent_research_kernel_ingress.py`
 
 The bundle claim is:
 
@@ -68,6 +72,7 @@ preflight bridge
 execution bridge
 idiom alignment
 source runtime smoke
+kernel ingress
 evidence gate
     ->
 digest-only proof bundle

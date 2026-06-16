@@ -26,6 +26,12 @@ try:
     from examples.source_to_intent_research_idiom_alignment import (
         build_report as build_idiom_alignment_report,
     )
+    from examples.source_to_intent_research_kernel_ingress import (
+        assert_kernel_ingress_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress import (
+        build_report as build_kernel_ingress_report,
+    )
     from examples.source_to_intent_research_parser_conformance_gate import (
         REQUIRED_PARSER_SOURCE_NAMES,
     )
@@ -65,6 +71,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_idiom_alignment import (
         build_report as build_idiom_alignment_report,
+    )
+    from source_to_intent_research_kernel_ingress import (  # type: ignore[no-redef]
+        assert_kernel_ingress_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress import (
+        build_report as build_kernel_ingress_report,
     )
     from source_to_intent_research_parser_conformance_gate import (  # type: ignore[no-redef]
         REQUIRED_PARSER_SOURCE_NAMES,
@@ -124,6 +136,7 @@ SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE_REVIEW_CLAIMS = (
 )
 SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE_FORBIDDEN_FRAGMENTS = (
     "@triton.jit",
+    "import triton",
     "python_source",
     "raw_source_text",
     "raw_tensor_value",
@@ -192,6 +205,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_source_runtime_smoke.e2e.v0",
     ),
     (
+        "source_to_intent_research_kernel_ingress",
+        "json_report",
+        "source_to_intent_research_kernel_ingress.e2e.v0",
+    ),
+    (
         "source_to_intent_research_evidence_gate",
         "text_gate",
         "source_to_intent_research_evidence_gate.ci.v0",
@@ -214,6 +232,7 @@ def build_proof_bundle_report() -> dict[str, object]:
         "source_to_intent_research_source_runtime_smoke": (
             build_source_runtime_smoke_report()
         ),
+        "source_to_intent_research_kernel_ingress": build_kernel_ingress_report(),
         "source_to_intent_research_evidence_gate": build_evidence_gate_report(),
     }
     _assert_artifact_payloads(artifact_texts)
@@ -309,6 +328,8 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
     assert_research_idiom_alignment_report_contract(alignment)
     smoke = json.loads(artifact_texts["source_to_intent_research_source_runtime_smoke"])
     assert_source_runtime_smoke_report_contract(smoke)
+    ingress = json.loads(artifact_texts["source_to_intent_research_kernel_ingress"])
+    assert_kernel_ingress_report_contract(ingress)
     evidence_gate = artifact_texts["source_to_intent_research_evidence_gate"]
     for artifact_id in (
         "source_to_intent_research_readiness",
@@ -318,6 +339,7 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
         "source_to_intent_research_execution_bridge",
         "source_to_intent_research_idiom_alignment",
         "source_to_intent_research_source_runtime_smoke",
+        "source_to_intent_research_kernel_ingress",
     ):
         if _digest(artifact_texts[artifact_id]) not in evidence_gate:
             raise ValueError(
