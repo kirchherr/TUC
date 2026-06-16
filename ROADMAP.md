@@ -542,6 +542,9 @@ Deliverables:
   realistic module-shaped source buffers stay inside byte, line, AST-node, and
   AST-depth budgets, and that budget overflow rejects before extraction or
   lowering.
+- Source-To-Intent Research Kernel Ingress Rejection Coverage proving current
+  diagnostics and boundary-budget rejection surfaces are source-free,
+  deterministic, and covered before future ingress syntax can expand.
 - Source-To-Intent Research Kernel Ingress Conformance Gate proving accepted
   module-shaped source outputs pass the reusable Source Intent Frontend
   Conformance path before future ingress syntax can expand.
@@ -689,6 +692,9 @@ Go/No-Go:
   byte, line, AST-node, AST-depth, and diagnostics budgets; accepted module
   observations stay within budget and byte/line budget overflows reject before
   extraction or lowering.
+- Source-To-Intent Research Kernel Ingress Rejection Coverage now binds
+  diagnostics rejection IDs and boundary-budget rejection IDs into one
+  source-free coverage matrix before the Kernel Ingress Proof Bundle can pass.
 - Source-To-Intent Research Kernel Ingress Conformance Gate now proves accepted
   module-shaped source outputs are ordinary Source Intent frontend payloads that
   pass accepted-case conformance and rejected backend-hint/source-text escape
@@ -703,8 +709,9 @@ Go/No-Go:
   not silently expand beyond proven MVP operation families.
 - Source-To-Intent Research Kernel Ingress Proof Bundle now gives reviewers one
   digest-only source-free index for Kernel Ingress E2E, boundary-budget,
-  diagnostics, conformance, and idiom-alignment evidence before the global
-  proof bundle accepts the realistic module-shaped ingress claim.
+  rejection-coverage, diagnostics, conformance, and idiom-alignment evidence
+  before the global proof bundle accepts the realistic module-shaped ingress
+  claim.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

@@ -7,6 +7,7 @@
   - `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md`
   - `examples/source_to_intent_research_kernel_ingress.py`
   - `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
+  - `examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
   - `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
   - `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
   - `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
@@ -73,6 +74,7 @@ not a production parser.
 Future expansion must add:
 
 - source-free accepted/rejected diagnostics
+- rejection coverage across diagnostics and boundary budgets
 - conformance evidence
 - idiom alignment
 - runtime correctness evidence

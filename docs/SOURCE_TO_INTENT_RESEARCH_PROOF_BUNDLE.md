@@ -44,6 +44,10 @@ Kernel Ingress Boundary Budget companion path, included through the Kernel
 Ingress Proof Bundle:
 `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
 
+Kernel Ingress Rejection Coverage companion path, included through the Kernel
+Ingress Proof Bundle:
+`examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
+
 Kernel Ingress Conformance Gate artifact path:
 `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
 
@@ -98,6 +102,7 @@ kernel ingress diagnostics
 kernel ingress idiom alignment
 kernel ingress proof bundle
   includes kernel ingress boundary budget
+  includes kernel ingress rejection coverage
 evidence gate
     ->
 digest-only proof bundle

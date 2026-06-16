@@ -32,6 +32,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_idiom_alignment import (
         build_report as build_kernel_ingress_idiom_alignment_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_rejection_coverage import (
+        assert_kernel_ingress_rejection_coverage_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_rejection_coverage import (
+        build_report as build_kernel_ingress_rejection_coverage_report,
+    )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress import (  # type: ignore[no-redef]
         assert_kernel_ingress_report_contract,
@@ -56,6 +62,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_idiom_alignment import (
         build_report as build_kernel_ingress_idiom_alignment_report,
+    )
+    from source_to_intent_research_kernel_ingress_rejection_coverage import (  # type: ignore[no-redef]
+        assert_kernel_ingress_rejection_coverage_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_rejection_coverage import (
+        build_report as build_kernel_ingress_rejection_coverage_report,
     )
 
 from tuc.frontend import (
@@ -92,6 +104,7 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_BLOCKED_CLAIMS = (
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_REVIEW_CLAIMS = (
     "conformance_bound",
     "boundary_budget_bound",
+    "rejection_coverage_bound",
     "diagnostics_bound",
     "idiom_scope_bound",
     "kernel_ingress_runtime_e2e",
@@ -146,6 +159,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
     ),
     (
+        "source_to_intent_research_kernel_ingress_rejection_coverage",
+        "json_report",
+        "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0",
+    ),
+    (
         "source_to_intent_research_kernel_ingress_diagnostics",
         "json_report",
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT,
@@ -184,6 +202,9 @@ def build_kernel_ingress_proof_bundle_report() -> dict[str, object]:
         "source_to_intent_research_kernel_ingress": build_kernel_ingress_report(),
         "source_to_intent_research_kernel_ingress_boundary_budget": (
             build_kernel_ingress_boundary_budget_report()
+        ),
+        "source_to_intent_research_kernel_ingress_rejection_coverage": (
+            build_kernel_ingress_rejection_coverage_report()
         ),
         "source_to_intent_research_kernel_ingress_diagnostics": (
             build_kernel_ingress_diagnostics_report()
@@ -310,6 +331,10 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
         artifact_texts["source_to_intent_research_kernel_ingress_boundary_budget"]
     )
     assert_kernel_ingress_boundary_budget_report_contract(boundary_budget)
+    rejection_coverage = json.loads(
+        artifact_texts["source_to_intent_research_kernel_ingress_rejection_coverage"]
+    )
+    assert_kernel_ingress_rejection_coverage_report_contract(rejection_coverage)
     diagnostics = json.loads(
         artifact_texts["source_to_intent_research_kernel_ingress_diagnostics"]
     )

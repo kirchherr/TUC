@@ -34,6 +34,10 @@ text as compiler input.
   `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
 - Kernel ingress boundary budget docs:
   [Source-To-Intent Research Kernel Ingress Boundary Budget](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md)
+- Kernel ingress rejection coverage example:
+  `examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
+- Kernel ingress rejection coverage docs:
+  [Source-To-Intent Research Kernel Ingress Rejection Coverage](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_REJECTION_COVERAGE.md)
 - Kernel ingress conformance gate example:
   `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
 - Kernel ingress conformance gate docs:
@@ -69,8 +73,8 @@ The gate binds:
 - Source-To-Intent Research Kernel Ingress Idiom Alignment
 - Source-To-Intent Research Kernel Ingress Proof Bundle
 
-Kernel Ingress Boundary Budget is bound through the Kernel Ingress Proof
-Bundle.
+Kernel Ingress Boundary Budget and Kernel Ingress Rejection Coverage are bound
+through the Kernel Ingress Proof Bundle.
 
 Each input artifact is hashed with SHA-256 and the digest is emitted in the
 gate output.
@@ -118,8 +122,8 @@ The gate passes only when:
   operation families against Triton Idiom Coverage before its digest is
   accepted.
 - Research Kernel Ingress Proof Bundle validates the Kernel Ingress E2E,
-  boundary-budget, diagnostics, conformance, and idiom-alignment artifacts
-  before its digest is accepted.
+  boundary-budget, rejection-coverage, diagnostics, conformance, and
+  idiom-alignment artifacts before its digest is accepted.
 - Diagnostics covers the whitelisted rejected source cases.
 - Parser status remains `research_explicit_only`.
 - Default parser status remains `default_parser_blocked`.
@@ -169,6 +173,7 @@ Research Kernel Ingress Idiom Alignment
     +
 Research Kernel Ingress Proof Bundle
     includes Research Kernel Ingress Boundary Budget
+    includes Research Kernel Ingress Rejection Coverage
     ->
 Digest-bound source-free parser research evidence
 ```
@@ -176,5 +181,5 @@ Digest-bound source-free parser research evidence
 Future parser syntax must update the diagnostics evidence, readiness evidence,
 the execution bridge contract, Kernel Ingress evidence, Kernel Ingress Idiom
 Alignment evidence, Kernel Ingress Boundary Budget evidence, Kernel Ingress
-Proof Bundle evidence, and this gate before the expanded syntax can count as
-accepted research parser scope.
+Rejection Coverage evidence, Kernel Ingress Proof Bundle evidence, and this gate
+before the expanded syntax can count as accepted research parser scope.

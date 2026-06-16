@@ -21,6 +21,8 @@ general Triton ingestion.
   `tests/test_source_to_intent_research_kernel_ingress_boundary_budget.py`
 - Kernel Ingress Proof Bundle binding:
   `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
+- Rejection coverage companion:
+  `examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
 - CI entry: `.github/workflows/ci.yml`
 
 ## What It Proves
@@ -50,3 +52,7 @@ status as `default_parser_blocked`.
 This artifact is the resource-exhaustion guard for the Kernel Ingress research
 slice. Future ingress syntax must keep accepted observations under budget and
 add fail-closed budget evidence before it can count as accepted research scope.
+
+The companion Kernel Ingress Rejection Coverage report binds these budget
+rejections together with Diagnostics rejection IDs before the Kernel Ingress
+Proof Bundle can pass.

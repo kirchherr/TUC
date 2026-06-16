@@ -1,0 +1,105 @@
+{
+  "artifact_policy": "metadata_only_source_free",
+  "blocked_compiler_outputs": [
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "environment_dependent_behavior",
+    "file_system_access",
+    "frontend_module_import",
+    "generated_artifact_execution",
+    "module_import_execution",
+    "module_top_level_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_inspection",
+    "python_function_object_ingestion",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "boundary_budget_contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
+  "boundary_budget_digest": "sha256:75c3112147d55211a855041365ac3802f8ff9c875e14c0bdd23f651241a92ebd",
+  "budget_rejection_reasons": [
+    "module_byte_budget",
+    "module_line_budget"
+  ],
+  "coverage_contract": "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0",
+  "coverage_matrix": [
+    {
+      "case_id": "reject_unsupported_import",
+      "coverage_source": "diagnostics",
+      "reason_id": "unsupported_import",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_import_from_statement",
+      "coverage_source": "diagnostics",
+      "reason_id": "import_from_statement",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_multiple_kernel_functions",
+      "coverage_source": "diagnostics",
+      "reason_id": "multiple_kernel_functions",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_top_level_side_effect",
+      "coverage_source": "diagnostics",
+      "reason_id": "top_level_side_effect",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_kernel_name_mismatch",
+      "coverage_source": "diagnostics",
+      "reason_id": "kernel_name_mismatch",
+      "status": "covered"
+    },
+    {
+      "case_id": "module_byte_budget",
+      "coverage_source": "boundary_budget",
+      "reason_id": "module_byte_budget",
+      "status": "covered"
+    },
+    {
+      "case_id": "module_line_budget",
+      "coverage_source": "boundary_budget",
+      "reason_id": "module_line_budget",
+      "status": "covered"
+    }
+  ],
+  "coverage_policy": "all_current_rejections_are_source_free_and_fail_closed",
+  "covered_rejection_count": 7,
+  "default_parser_status": "default_parser_blocked",
+  "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
+  "diagnostics_digest": "sha256:590f488b7e4bfd36b882b0c1c21c3a9288cbfbb0f72cda11bd0dda6410dcb504",
+  "diagnostics_rejection_reasons": [
+    "import_from_statement",
+    "kernel_name_mismatch",
+    "multiple_kernel_functions",
+    "top_level_side_effect",
+    "unsupported_import"
+  ],
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "required_coverage_sources": [
+    "diagnostics",
+    "boundary_budget"
+  ],
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_rejection_coverage_report.v0",
+  "source_boundary": "triton_module_source_buffer_as_untrusted_data",
+  "status": "PASS"
+}

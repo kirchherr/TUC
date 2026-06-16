@@ -35,6 +35,10 @@ files, access devices, or discover plugins.
   `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
 - Boundary budget docs:
   [Source-To-Intent Research Kernel Ingress Boundary Budget](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md)
+- Rejection coverage companion:
+  `examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
+- Rejection coverage docs:
+  [Source-To-Intent Research Kernel Ingress Rejection Coverage](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_REJECTION_COVERAGE.md)
 - Conformance gate companion:
   `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
 - Conformance gate docs:
@@ -112,9 +116,13 @@ The companion Kernel Ingress Boundary Budget report proves accepted
 module-shaped inputs stay within byte, line, AST-node, and AST-depth budgets,
 and that byte/line budget overflows reject before extraction or lowering.
 
+The companion Kernel Ingress Rejection Coverage report proves the current
+diagnostics and budget rejection surfaces are represented in one deterministic,
+source-free coverage matrix.
+
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
-for the Kernel Ingress E2E, boundary-budget, diagnostics, conformance, and
-idiom-alignment artifacts.
+for the Kernel Ingress E2E, boundary-budget, rejection-coverage, diagnostics,
+conformance, and idiom-alignment artifacts.
 
 ## Review Meaning
 

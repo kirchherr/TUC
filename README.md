@@ -213,6 +213,8 @@ Current frontend surfaces:
 - Source-To-Intent Research Kernel Ingress Boundary Budget proving accepted
   module-shaped inputs stay within resource limits and budget overflow rejects
   before extraction or lowering.
+- Source-To-Intent Research Kernel Ingress Rejection Coverage proving current
+  diagnostics and budget rejection surfaces are source-free and complete.
 - Source-To-Intent Research Kernel Ingress Conformance Gate proving Kernel
   Ingress outputs pass the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Kernel Ingress Diagnostics proving accepted and
@@ -263,6 +265,7 @@ examples/source_to_intent_research_evidence_gate.py
 examples/source_to_intent_research_proof_bundle.py
 examples/source_to_intent_research_kernel_ingress.py
 examples/source_to_intent_research_kernel_ingress_boundary_budget.py
+examples/source_to_intent_research_kernel_ingress_rejection_coverage.py
 examples/source_to_intent_research_kernel_ingress_conformance_gate.py
 examples/source_to_intent_research_kernel_ingress_diagnostics.py
 examples/source_to_intent_research_kernel_ingress_idiom_alignment.py
@@ -296,6 +299,7 @@ Key docs:
 - [Source-to-Intent research source runtime smoke](docs/SOURCE_TO_INTENT_RESEARCH_SOURCE_RUNTIME_SMOKE.md)
 - [Source-to-Intent research kernel ingress](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md)
 - [Source-to-Intent research kernel ingress boundary budget](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md)
+- [Source-to-Intent research kernel ingress rejection coverage](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_REJECTION_COVERAGE.md)
 - [Source-to-Intent research kernel ingress conformance gate](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_CONFORMANCE_GATE.md)
 - [Source-to-Intent research kernel ingress diagnostics](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS.md)
 - [Source-to-Intent research kernel ingress idiom alignment](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_IDIOM_ALIGNMENT.md)

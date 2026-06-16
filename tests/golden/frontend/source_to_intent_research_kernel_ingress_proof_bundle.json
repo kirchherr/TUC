@@ -7,7 +7,7 @@
     "research_matmul_elementwise",
     "research_softmax_reduction"
   ],
-  "artifact_count": 5,
+  "artifact_count": 6,
   "artifact_policy": "digest_only_source_free",
   "artifacts": [
     {
@@ -22,6 +22,13 @@
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
       "digest": "sha256:75c3112147d55211a855041365ac3802f8ff9c875e14c0bdd23f651241a92ebd",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_rejection_coverage",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0",
+      "digest": "sha256:1f3292d12645bfceb067c17b4f37b69f93d7bc466601a3d3af234f2ec7e189cb",
       "status": "accepted"
     },
     {
@@ -64,6 +71,7 @@
   "required_artifacts": [
     "source_to_intent_research_kernel_ingress",
     "source_to_intent_research_kernel_ingress_boundary_budget",
+    "source_to_intent_research_kernel_ingress_rejection_coverage",
     "source_to_intent_research_kernel_ingress_diagnostics",
     "source_to_intent_research_kernel_ingress_conformance_gate",
     "source_to_intent_research_kernel_ingress_idiom_alignment"
@@ -71,6 +79,7 @@
   "review_claims": [
     "conformance_bound",
     "boundary_budget_bound",
+    "rejection_coverage_bound",
     "diagnostics_bound",
     "idiom_scope_bound",
     "kernel_ingress_runtime_e2e",

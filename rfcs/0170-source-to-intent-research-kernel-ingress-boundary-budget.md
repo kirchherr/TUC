@@ -6,11 +6,13 @@
 - Related:
   - `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md`
   - `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
+  - `examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
   - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
   - `schemas/source_to_intent_research_kernel_ingress_boundary_budget_report.v0.schema.json`
   - `tests/test_source_to_intent_research_kernel_ingress_boundary_budget.py`
   - `rfcs/0165-source-to-intent-research-kernel-ingress.md`
   - `rfcs/0169-source-to-intent-research-kernel-ingress-proof-bundle.md`
+  - `rfcs/0171-source-to-intent-research-kernel-ingress-rejection-coverage.md`
 
 ## Context
 
@@ -30,6 +32,8 @@ The report:
 - records accepted module observations without raw source;
 - proves byte-budget and line-budget overflow reject before extraction or
   lowering;
+- feeds those budget rejection IDs into the Kernel Ingress Rejection Coverage
+  matrix;
 - binds into the Kernel Ingress Proof Bundle.
 
 The contract is:
