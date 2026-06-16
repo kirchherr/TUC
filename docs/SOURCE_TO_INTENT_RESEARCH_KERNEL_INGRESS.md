@@ -31,6 +31,10 @@ files, access devices, or discover plugins.
 - Tests: `tests/test_source_to_intent_research_kernel_ingress.py`
 - Digest binding: `examples/source_to_intent_research_evidence_gate.py`
 - Proof bundle binding: `examples/source_to_intent_research_proof_bundle.py`
+- Boundary budget companion:
+  `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
+- Boundary budget docs:
+  [Source-To-Intent Research Kernel Ingress Boundary Budget](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md)
 - Conformance gate companion:
   `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
 - Conformance gate docs:
@@ -104,9 +108,13 @@ The companion Kernel Ingress Idiom Alignment report proves that accepted
 module-shaped outputs still map only to the covered Triton MVP idioms:
 matmul, elementwise, reduction, and softmax.
 
+The companion Kernel Ingress Boundary Budget report proves accepted
+module-shaped inputs stay within byte, line, AST-node, and AST-depth budgets,
+and that byte/line budget overflows reject before extraction or lowering.
+
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
-for the Kernel Ingress E2E, diagnostics, conformance, and idiom-alignment
-artifacts.
+for the Kernel Ingress E2E, boundary-budget, diagnostics, conformance, and
+idiom-alignment artifacts.
 
 ## Review Meaning
 

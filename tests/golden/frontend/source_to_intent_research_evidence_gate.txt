@@ -19,7 +19,7 @@ source_to_intent.research_evidence_gate @source_to_intent_research_evidence_gate
   kernel_ingress_idiom_alignment = "passed"
   kernel_ingress_idiom_alignment_digest = "sha256:2a7c9e81692a90d3564cfc0fe6dd9d06c517d4ded81e601c8b223ca331a17e95"
   kernel_ingress_proof_bundle = "passed"
-  kernel_ingress_proof_bundle_digest = "sha256:12f3772c4f592c6b007a28c10fb52a8fc7fff08b9823b226c8e1369cbac380e8"
+  kernel_ingress_proof_bundle_digest = "sha256:ec5ac97d4de2f72abc77e91f7d8a4949464ad46a152356cbd050984ad9e93b8c"
   kernel_ingress = "passed"
   kernel_ingress_digest = "sha256:b0b7add6a8874e11eb3aeb2d159b8090fc54c6ced96e54b53e07f55ae5b15d59"
   source_runtime_smoke = "passed"

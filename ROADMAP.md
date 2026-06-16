@@ -538,6 +538,10 @@ Deliverables:
   module-shaped source buffers can be validated as data, reduced to one
   explicitly selected kernel function, and executed through the controlled
   source-to-runtime research path.
+- Source-To-Intent Research Kernel Ingress Boundary Budget proving accepted
+  realistic module-shaped source buffers stay inside byte, line, AST-node, and
+  AST-depth budgets, and that budget overflow rejects before extraction or
+  lowering.
 - Source-To-Intent Research Kernel Ingress Conformance Gate proving accepted
   module-shaped source outputs pass the reusable Source Intent Frontend
   Conformance path before future ingress syntax can expand.
@@ -681,6 +685,10 @@ Go/No-Go:
   explicitly selected `@triton.jit` kernel can execute end-to-end through the
   controlled research path without evaluating imports, decorators, JIT, files,
   devices, plugins, or general module execution.
+- Source-To-Intent Research Kernel Ingress Boundary Budget now records ingress
+  byte, line, AST-node, AST-depth, and diagnostics budgets; accepted module
+  observations stay within budget and byte/line budget overflows reject before
+  extraction or lowering.
 - Source-To-Intent Research Kernel Ingress Conformance Gate now proves accepted
   module-shaped source outputs are ordinary Source Intent frontend payloads that
   pass accepted-case conformance and rejected backend-hint/source-text escape
@@ -694,9 +702,9 @@ Go/No-Go:
   the Kernel Ingress Conformance Gate by digest, so realistic input shape does
   not silently expand beyond proven MVP operation families.
 - Source-To-Intent Research Kernel Ingress Proof Bundle now gives reviewers one
-  digest-only source-free index for Kernel Ingress E2E, diagnostics,
-  conformance, and idiom-alignment evidence before the global proof bundle
-  accepts the realistic module-shaped ingress claim.
+  digest-only source-free index for Kernel Ingress E2E, boundary-budget,
+  diagnostics, conformance, and idiom-alignment evidence before the global
+  proof bundle accepts the realistic module-shaped ingress claim.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

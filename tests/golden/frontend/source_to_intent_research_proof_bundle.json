@@ -87,14 +87,14 @@
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:12f3772c4f592c6b007a28c10fb52a8fc7fff08b9823b226c8e1369cbac380e8",
+      "digest": "sha256:ec5ac97d4de2f72abc77e91f7d8a4949464ad46a152356cbd050984ad9e93b8c",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:eee2a831f7af216e270eef30aa7c929663ae970ebf365b6fc26e8cd273860912",
+      "digest": "sha256:577eec407ff9a4144e0086d0d99879534567f775109f0c4f3de46e18c5836333",
       "status": "accepted"
     }
   ],

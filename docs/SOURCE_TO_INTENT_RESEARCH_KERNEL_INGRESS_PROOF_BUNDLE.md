@@ -28,12 +28,16 @@ native performance claims.
 The bundle records SHA-256 digests for:
 
 - Source-To-Intent Research Kernel Ingress
+- Source-To-Intent Research Kernel Ingress Boundary Budget
 - Source-To-Intent Research Kernel Ingress Diagnostics
 - Source-To-Intent Research Kernel Ingress Conformance Gate
 - Source-To-Intent Research Kernel Ingress Idiom Alignment
 
 It validates the structured JSON reports and source-free text gate before
 emitting the bundle.
+
+Kernel Ingress Boundary Budget artifact path:
+`examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
 
 ## Blocked Claims
 
@@ -61,6 +65,7 @@ This bundle gives reviewers one small artifact for the Kernel Ingress claim:
 
 ```text
 kernel ingress
+kernel ingress boundary budget
 kernel ingress diagnostics
 kernel ingress conformance gate
 kernel ingress idiom alignment

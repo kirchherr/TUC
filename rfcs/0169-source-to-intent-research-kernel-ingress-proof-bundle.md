@@ -5,6 +5,7 @@
 - Area: Frontend, Source-To-Intent, Review Evidence
 - Related:
   - `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md`
+  - `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
   - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
   - `examples/source_to_intent_research_evidence_gate.py`
   - `examples/source_to_intent_research_proof_bundle.py`
@@ -14,11 +15,13 @@
   - `rfcs/0166-source-to-intent-research-kernel-ingress-diagnostics.md`
   - `rfcs/0167-source-to-intent-research-kernel-ingress-conformance-gate.md`
   - `rfcs/0168-source-to-intent-research-kernel-ingress-idiom-alignment.md`
+  - `rfcs/0170-source-to-intent-research-kernel-ingress-boundary-budget.md`
 
 ## Context
 
-Kernel Ingress now has four focused proof artifacts: runtime E2E evidence,
-source-free diagnostics, frontend conformance, and idiom alignment.
+Kernel Ingress now has focused proof artifacts: runtime E2E evidence,
+boundary-budget evidence, source-free diagnostics, frontend conformance, and
+idiom alignment.
 
 Each artifact is useful alone, but reviewers need one small digest-only index
 for the Kernel Ingress claim without reading the entire Source-To-Intent

@@ -7,7 +7,7 @@
     "research_matmul_elementwise",
     "research_softmax_reduction"
   ],
-  "artifact_count": 4,
+  "artifact_count": 5,
   "artifact_policy": "digest_only_source_free",
   "artifacts": [
     {
@@ -15,6 +15,13 @@
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress.e2e.v0",
       "digest": "sha256:b0b7add6a8874e11eb3aeb2d159b8090fc54c6ced96e54b53e07f55ae5b15d59",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_boundary_budget",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
+      "digest": "sha256:75c3112147d55211a855041365ac3802f8ff9c875e14c0bdd23f651241a92ebd",
       "status": "accepted"
     },
     {
@@ -56,12 +63,14 @@
   "parser_status": "research_explicit_only",
   "required_artifacts": [
     "source_to_intent_research_kernel_ingress",
+    "source_to_intent_research_kernel_ingress_boundary_budget",
     "source_to_intent_research_kernel_ingress_diagnostics",
     "source_to_intent_research_kernel_ingress_conformance_gate",
     "source_to_intent_research_kernel_ingress_idiom_alignment"
   ],
   "review_claims": [
     "conformance_bound",
+    "boundary_budget_bound",
     "diagnostics_bound",
     "idiom_scope_bound",
     "kernel_ingress_runtime_e2e",

@@ -42,12 +42,12 @@
       "minItems": 2,
       "maxItems": 2
     },
-    "artifact_count": {"const": 4},
+    "artifact_count": {"const": 5},
     "artifact_policy": {"const": "digest_only_source_free"},
     "artifacts": {
       "type": "array",
-      "minItems": 4,
-      "maxItems": 4,
+      "minItems": 5,
+      "maxItems": 5,
       "items": {"$ref": "#/$defs/artifact"}
     },
     "blocked_claims": {
@@ -81,24 +81,26 @@
       "type": "array",
       "prefixItems": [
         {"const": "source_to_intent_research_kernel_ingress"},
+        {"const": "source_to_intent_research_kernel_ingress_boundary_budget"},
         {"const": "source_to_intent_research_kernel_ingress_diagnostics"},
         {"const": "source_to_intent_research_kernel_ingress_conformance_gate"},
         {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"}
       ],
-      "minItems": 4,
-      "maxItems": 4
+      "minItems": 5,
+      "maxItems": 5
     },
     "review_claims": {
       "type": "array",
       "prefixItems": [
         {"const": "conformance_bound"},
+        {"const": "boundary_budget_bound"},
         {"const": "diagnostics_bound"},
         {"const": "idiom_scope_bound"},
         {"const": "kernel_ingress_runtime_e2e"},
         {"const": "source_free_metadata_only"}
       ],
-      "minItems": 5,
-      "maxItems": 5
+      "minItems": 6,
+      "maxItems": 6
     },
     "schema_version": {
       "const": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0"
@@ -123,6 +125,7 @@
         "artifact_id": {
           "enum": [
             "source_to_intent_research_kernel_ingress",
+            "source_to_intent_research_kernel_ingress_boundary_budget",
             "source_to_intent_research_kernel_ingress_diagnostics",
             "source_to_intent_research_kernel_ingress_conformance_gate",
             "source_to_intent_research_kernel_ingress_idiom_alignment"

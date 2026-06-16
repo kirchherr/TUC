@@ -63,6 +63,8 @@ jobs:
         run: python examples/source_to_intent_research_idiom_alignment.py
       - name: Source-To-Intent research kernel ingress
         run: python examples/source_to_intent_research_kernel_ingress.py
+      - name: Source-To-Intent research kernel ingress boundary budget
+        run: python examples/source_to_intent_research_kernel_ingress_boundary_budget.py
       - name: Source-To-Intent research kernel ingress conformance gate
         run: python examples/source_to_intent_research_kernel_ingress_conformance_gate.py
       - name: Source-To-Intent research kernel ingress diagnostics

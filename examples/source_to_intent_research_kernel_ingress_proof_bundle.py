@@ -14,6 +14,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_boundary_budget import (
+        assert_kernel_ingress_boundary_budget_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_boundary_budget import (
+        build_report as build_kernel_ingress_boundary_budget_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_conformance_gate import (
         build_gate_report as build_kernel_ingress_conformance_gate_report,
     )
@@ -32,6 +38,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
+    )
+    from source_to_intent_research_kernel_ingress_boundary_budget import (  # type: ignore[no-redef]
+        assert_kernel_ingress_boundary_budget_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_boundary_budget import (
+        build_report as build_kernel_ingress_boundary_budget_report,
     )
     from source_to_intent_research_kernel_ingress_conformance_gate import (
         build_gate_report as build_kernel_ingress_conformance_gate_report,
@@ -79,6 +91,7 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_BLOCKED_CLAIMS = (
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_REVIEW_CLAIMS = (
     "conformance_bound",
+    "boundary_budget_bound",
     "diagnostics_bound",
     "idiom_scope_bound",
     "kernel_ingress_runtime_e2e",
@@ -128,6 +141,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_kernel_ingress.e2e.v0",
     ),
     (
+        "source_to_intent_research_kernel_ingress_boundary_budget",
+        "json_report",
+        "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
+    ),
+    (
         "source_to_intent_research_kernel_ingress_diagnostics",
         "json_report",
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT,
@@ -164,6 +182,9 @@ def build_kernel_ingress_proof_bundle_report() -> dict[str, object]:
 
     artifact_texts = {
         "source_to_intent_research_kernel_ingress": build_kernel_ingress_report(),
+        "source_to_intent_research_kernel_ingress_boundary_budget": (
+            build_kernel_ingress_boundary_budget_report()
+        ),
         "source_to_intent_research_kernel_ingress_diagnostics": (
             build_kernel_ingress_diagnostics_report()
         ),
@@ -285,6 +306,10 @@ def assert_kernel_ingress_proof_bundle_report_contract(report: object) -> None:
 def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
     ingress = json.loads(artifact_texts["source_to_intent_research_kernel_ingress"])
     assert_kernel_ingress_report_contract(ingress)
+    boundary_budget = json.loads(
+        artifact_texts["source_to_intent_research_kernel_ingress_boundary_budget"]
+    )
+    assert_kernel_ingress_boundary_budget_report_contract(boundary_budget)
     diagnostics = json.loads(
         artifact_texts["source_to_intent_research_kernel_ingress_diagnostics"]
     )

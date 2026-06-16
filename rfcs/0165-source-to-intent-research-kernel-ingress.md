@@ -6,6 +6,7 @@
 - Related:
   - `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md`
   - `examples/source_to_intent_research_kernel_ingress.py`
+  - `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
   - `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
   - `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
   - `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
