@@ -67,6 +67,8 @@ jobs:
         run: python examples/source_to_intent_research_kernel_ingress_conformance_gate.py
       - name: Source-To-Intent research kernel ingress diagnostics
         run: python examples/source_to_intent_research_kernel_ingress_diagnostics.py
+      - name: Source-To-Intent research kernel ingress idiom alignment
+        run: python examples/source_to_intent_research_kernel_ingress_idiom_alignment.py
       - name: Source-To-Intent research source runtime smoke
         run: python examples/source_to_intent_research_source_runtime_smoke.py
       - name: Source-To-Intent research evidence gate

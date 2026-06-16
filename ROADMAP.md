@@ -544,6 +544,9 @@ Deliverables:
 - Source-To-Intent Research Kernel Ingress Diagnostics proving accepted and
   rejected realistic module-shaped source cases remain source-free, bounded,
   and fail-closed before future ingress syntax can expand.
+- Source-To-Intent Research Kernel Ingress Idiom Alignment proving accepted
+  module-shaped source outputs remain inside already covered Triton MVP idioms
+  before future ingress syntax can expand.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -664,7 +667,8 @@ Go/No-Go:
 - Source-To-Intent Research Proof Bundle now indexes the current readiness,
   conformance, diagnostics, Preflight Bridge, Execution Bridge, Idiom
   Alignment, Source Runtime Smoke, Kernel Ingress, Kernel Ingress Conformance,
-  Kernel Ingress Diagnostics, and Evidence Gate artifacts by digest for review.
+  Kernel Ingress Diagnostics, Kernel Ingress Idiom Alignment, and Evidence
+  Gate artifacts by digest for review.
 - Source-To-Intent Research Source Runtime Smoke now proves the accepted
   `matmul -> elementwise` and `softmax -> reduction` source buffers can execute
   end-to-end through the controlled research parser path without opening
@@ -682,6 +686,10 @@ Go/No-Go:
   module-shaped source cases and rejected module surfaces to stable source-free
   reason IDs for unsupported imports, import-from statements, multiple kernel
   functions, top-level side effects, and kernel-name mismatches.
+- Source-To-Intent Research Kernel Ingress Idiom Alignment now binds accepted
+  module-shaped Kernel Ingress outputs to existing Triton Idiom Coverage and
+  the Kernel Ingress Conformance Gate by digest, so realistic input shape does
+  not silently expand beyond proven MVP operation families.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

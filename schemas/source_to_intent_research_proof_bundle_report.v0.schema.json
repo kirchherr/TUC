@@ -32,12 +32,12 @@
       "minItems": 2,
       "maxItems": 2
     },
-    "artifact_count": {"const": 11},
+    "artifact_count": {"const": 12},
     "artifact_policy": {"const": "digest_only_source_free"},
     "artifacts": {
       "type": "array",
-      "minItems": 11,
-      "maxItems": 11,
+      "minItems": 12,
+      "maxItems": 12,
       "items": {"$ref": "#/$defs/artifact"}
     },
     "blocked_claims": {
@@ -70,10 +70,11 @@
         {"const": "source_to_intent_research_kernel_ingress"},
         {"const": "source_to_intent_research_kernel_ingress_diagnostics"},
         {"const": "source_to_intent_research_kernel_ingress_conformance_gate"},
+        {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"},
         {"const": "source_to_intent_research_evidence_gate"}
       ],
-      "minItems": 11,
-      "maxItems": 11
+      "minItems": 12,
+      "maxItems": 12
     },
     "review_claims": {
       "type": "array",
@@ -119,6 +120,7 @@
             "source_to_intent_research_kernel_ingress",
             "source_to_intent_research_kernel_ingress_diagnostics",
             "source_to_intent_research_kernel_ingress_conformance_gate",
+            "source_to_intent_research_kernel_ingress_idiom_alignment",
             "source_to_intent_research_evidence_gate"
           ]
         },

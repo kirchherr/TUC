@@ -8,6 +8,7 @@
   - `examples/source_to_intent_research_kernel_ingress.py`
   - `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
   - `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
+  - `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
   - `examples/source_to_intent_research_evidence_gate.py`
   - `examples/source_to_intent_research_proof_bundle.py`
   - `schemas/source_to_intent_research_kernel_ingress_e2e_report.v0.schema.json`

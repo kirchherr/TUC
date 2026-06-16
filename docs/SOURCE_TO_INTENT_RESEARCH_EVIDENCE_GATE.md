@@ -38,6 +38,10 @@ text as compiler input.
   `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
 - Kernel ingress diagnostics docs:
   [Source-To-Intent Research Kernel Ingress Diagnostics](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS.md)
+- Kernel ingress idiom alignment example:
+  `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
+- Kernel ingress idiom alignment docs:
+  [Source-To-Intent Research Kernel Ingress Idiom Alignment](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_IDIOM_ALIGNMENT.md)
 - Golden: `tests/golden/frontend/source_to_intent_research_evidence_gate.txt`
 - Tests: `tests/test_source_to_intent_research_evidence_gate.py`
 - CI entry: `.github/workflows/ci.yml`
@@ -54,6 +58,7 @@ The gate binds:
 - Source-To-Intent Research Kernel Ingress
 - Source-To-Intent Research Kernel Ingress Conformance Gate
 - Source-To-Intent Research Kernel Ingress Diagnostics
+- Source-To-Intent Research Kernel Ingress Idiom Alignment
 
 Each input artifact is hashed with SHA-256 and the digest is emitted in the
 gate output.
@@ -95,6 +100,11 @@ The gate passes only when:
   module-shaped source cases.
 - Research Kernel Ingress Diagnostics validates stable rejection reason IDs
   before its digest is accepted.
+- Research Kernel Ingress Idiom Alignment passes for the accepted
+  module-shaped source cases.
+- Research Kernel Ingress Idiom Alignment validates accepted Kernel Ingress
+  operation families against Triton Idiom Coverage before its digest is
+  accepted.
 - Diagnostics covers the whitelisted rejected source cases.
 - Parser status remains `research_explicit_only`.
 - Default parser status remains `default_parser_blocked`.
@@ -139,10 +149,13 @@ Research Kernel Ingress
 Research Kernel Ingress Conformance Gate
     +
 Research Kernel Ingress Diagnostics
+    +
+Research Kernel Ingress Idiom Alignment
     ->
 Digest-bound source-free parser research evidence
 ```
 
 Future parser syntax must update the diagnostics evidence, readiness evidence,
-the execution bridge contract, Kernel Ingress evidence, and this gate before the
-expanded syntax can count as accepted research parser scope.
+the execution bridge contract, Kernel Ingress evidence, Kernel Ingress Idiom
+Alignment evidence, and this gate before the expanded syntax can count as
+accepted research parser scope.

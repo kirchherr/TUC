@@ -49,6 +49,7 @@ def test_source_to_intent_research_evidence_gate_matches_golden() -> None:
     assert 'idiom_alignment = "passed"' in report
     assert 'kernel_ingress_diagnostics = "passed"' in report
     assert 'kernel_ingress_conformance_gate = "passed"' in report
+    assert 'kernel_ingress_idiom_alignment = "passed"' in report
     assert 'kernel_ingress = "passed"' in report
     assert 'source_runtime_smoke = "passed"' in report
     assert 'status = "PASS"' in report
@@ -70,6 +71,7 @@ def test_source_to_intent_research_evidence_gate_example_runs() -> None:
     assert "idiom_alignment_digest" in completed.stdout
     assert "kernel_ingress_diagnostics_digest" in completed.stdout
     assert "kernel_ingress_conformance_gate_digest" in completed.stdout
+    assert "kernel_ingress_idiom_alignment_digest" in completed.stdout
     assert "kernel_ingress_digest" in completed.stdout
     assert "source_runtime_smoke_digest" in completed.stdout
     assert "@triton.jit" not in completed.stdout
@@ -170,6 +172,14 @@ def test_research_evidence_gate_rejects_tampered_kernel_ingress_conformance() ->
         build_gate_report(kernel_ingress_conformance_gate_text='status = "PASS"\n')
 
 
+def test_research_evidence_gate_rejects_tampered_kernel_ingress_idiom_alignment() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="kernel ingress idiom alignment binding missing",
+    ):
+        build_gate_report(kernel_ingress_idiom_alignment_text='{"status": "PASS"}\n')
+
+
 def test_source_to_intent_research_evidence_gate_rejects_kernel_ingress_diagnostic_drift() -> None:
     diagnostics = build_source_to_intent_research_kernel_ingress_diagnostics_report(
         build_source_to_intent_research_kernel_ingress_diagnostic_cases()
@@ -242,6 +252,7 @@ def test_source_to_intent_research_evidence_gate_is_documented_and_in_ci() -> No
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_CONFORMANCE_GATE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_IDIOM_ALIGNMENT.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_SOURCE_RUNTIME_SMOKE.md"),
         Path("rfcs/0159-source-to-intent-research-evidence-gate.md"),
@@ -251,6 +262,7 @@ def test_source_to_intent_research_evidence_gate_is_documented_and_in_ci() -> No
         Path("rfcs/0165-source-to-intent-research-kernel-ingress.md"),
         Path("rfcs/0166-source-to-intent-research-kernel-ingress-diagnostics.md"),
         Path("rfcs/0167-source-to-intent-research-kernel-ingress-conformance-gate.md"),
+        Path("rfcs/0168-source-to-intent-research-kernel-ingress-idiom-alignment.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert gate_path in text

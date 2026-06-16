@@ -3,7 +3,7 @@
     "research_matmul_elementwise",
     "research_softmax_reduction"
   ],
-  "artifact_count": 11,
+  "artifact_count": 12,
   "artifact_policy": "digest_only_source_free",
   "artifacts": [
     {
@@ -77,10 +77,17 @@
       "status": "accepted"
     },
     {
+      "artifact_id": "source_to_intent_research_kernel_ingress_idiom_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
+      "digest": "sha256:2a7c9e81692a90d3564cfc0fe6dd9d06c517d4ded81e601c8b223ca331a17e95",
+      "status": "accepted"
+    },
+    {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:eacb6d3c9fc4f4baf60f19a59d2d98b9ae0fb208aa4755dfa4c607abd67e6dbb",
+      "digest": "sha256:f6e3a1bbb088c775e60c754742a358e7b5542c26f6a755ab193ccf9ede177ca6",
       "status": "accepted"
     }
   ],
@@ -105,6 +112,7 @@
     "source_to_intent_research_kernel_ingress",
     "source_to_intent_research_kernel_ingress_diagnostics",
     "source_to_intent_research_kernel_ingress_conformance_gate",
+    "source_to_intent_research_kernel_ingress_idiom_alignment",
     "source_to_intent_research_evidence_gate"
   ],
   "review_claims": [

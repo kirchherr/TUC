@@ -740,6 +740,15 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_kernel_ingress_diagnostics_report.json`,
   and digest binding through Source-To-Intent Research Evidence Gate and Proof
   Bundle for accepted/rejected module-shaped source diagnostics.
+- Source-To-Intent Research Kernel Ingress Idiom Alignment at
+  `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`,
+  with schema at
+  `schemas/source_to_intent_research_kernel_ingress_idiom_alignment_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress_idiom_alignment.json`,
+  digest binding through Source-To-Intent Research Evidence Gate and Proof
+  Bundle, and scope binding from accepted Kernel Ingress outputs to covered
+  Triton MVP idioms.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
