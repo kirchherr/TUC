@@ -210,6 +210,9 @@ Current frontend surfaces:
 - Source-To-Intent Research Kernel Ingress proving realistic Triton
   module-shaped source buffers can be validated, extracted, and executed
   through the same controlled research path.
+- Source-To-Intent Research Kernel Ingress Diagnostics proving accepted and
+  rejected module-shaped source cases stay source-free, bounded, and
+  fail-closed.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
 - Source Intent Axis Attributes for neutral `softmax` and `reduction` axis
@@ -250,6 +253,7 @@ examples/source_to_intent_research_idiom_alignment.py
 examples/source_to_intent_research_evidence_gate.py
 examples/source_to_intent_research_proof_bundle.py
 examples/source_to_intent_research_kernel_ingress.py
+examples/source_to_intent_research_kernel_ingress_diagnostics.py
 examples/source_to_intent_research_source_runtime_smoke.py
 examples/source_to_intent_research_readiness.py
 examples/source_to_intent_parser_block_gate.py
@@ -278,6 +282,7 @@ Key docs:
 - [Source-to-Intent research proof bundle](docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md)
 - [Source-to-Intent research source runtime smoke](docs/SOURCE_TO_INTENT_RESEARCH_SOURCE_RUNTIME_SMOKE.md)
 - [Source-to-Intent research kernel ingress](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md)
+- [Source-to-Intent research kernel ingress diagnostics](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)

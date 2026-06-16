@@ -30,6 +30,10 @@ text as compiler input.
   `examples/source_to_intent_research_kernel_ingress.py`
 - Kernel ingress docs:
   [Source-To-Intent Research Kernel Ingress](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md)
+- Kernel ingress diagnostics example:
+  `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
+- Kernel ingress diagnostics docs:
+  [Source-To-Intent Research Kernel Ingress Diagnostics](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS.md)
 - Golden: `tests/golden/frontend/source_to_intent_research_evidence_gate.txt`
 - Tests: `tests/test_source_to_intent_research_evidence_gate.py`
 - CI entry: `.github/workflows/ci.yml`
@@ -44,6 +48,7 @@ The gate binds:
 - Source-To-Intent Research Idiom Alignment
 - Source-To-Intent Research Source Runtime Smoke
 - Source-To-Intent Research Kernel Ingress
+- Source-To-Intent Research Kernel Ingress Diagnostics
 
 Each input artifact is hashed with SHA-256 and the digest is emitted in the
 gate output.
@@ -77,6 +82,10 @@ The gate passes only when:
   realistic Triton module-shaped source buffer.
 - Research Kernel Ingress validates module import prelude and kernel extraction
   as data before its digest is accepted.
+- Research Kernel Ingress Diagnostics passes for the accepted and rejected
+  module-shaped source cases.
+- Research Kernel Ingress Diagnostics validates stable rejection reason IDs
+  before its digest is accepted.
 - Diagnostics covers the whitelisted rejected source cases.
 - Parser status remains `research_explicit_only`.
 - Default parser status remains `default_parser_blocked`.
@@ -117,6 +126,8 @@ Research Idiom Alignment
 Research Source Runtime Smoke
     +
 Research Kernel Ingress
+    +
+Research Kernel Ingress Diagnostics
     ->
 Digest-bound source-free parser research evidence
 ```

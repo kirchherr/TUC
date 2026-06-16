@@ -32,6 +32,9 @@ try:
     from examples.source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_diagnostics import (
+        build_report as build_kernel_ingress_diagnostics_report,
+    )
     from examples.source_to_intent_research_parser_conformance_gate import (
         REQUIRED_PARSER_SOURCE_NAMES,
     )
@@ -77,6 +80,9 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
+    )
+    from source_to_intent_research_kernel_ingress_diagnostics import (
+        build_report as build_kernel_ingress_diagnostics_report,
     )
     from source_to_intent_research_parser_conformance_gate import (  # type: ignore[no-redef]
         REQUIRED_PARSER_SOURCE_NAMES,
@@ -210,6 +216,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_kernel_ingress.e2e.v0",
     ),
     (
+        "source_to_intent_research_kernel_ingress_diagnostics",
+        "json_report",
+        "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
+    ),
+    (
         "source_to_intent_research_evidence_gate",
         "text_gate",
         "source_to_intent_research_evidence_gate.ci.v0",
@@ -233,6 +244,9 @@ def build_proof_bundle_report() -> dict[str, object]:
             build_source_runtime_smoke_report()
         ),
         "source_to_intent_research_kernel_ingress": build_kernel_ingress_report(),
+        "source_to_intent_research_kernel_ingress_diagnostics": (
+            build_kernel_ingress_diagnostics_report()
+        ),
         "source_to_intent_research_evidence_gate": build_evidence_gate_report(),
     }
     _assert_artifact_payloads(artifact_texts)
@@ -340,6 +354,7 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
         "source_to_intent_research_idiom_alignment",
         "source_to_intent_research_source_runtime_smoke",
         "source_to_intent_research_kernel_ingress",
+        "source_to_intent_research_kernel_ingress_diagnostics",
     ):
         if _digest(artifact_texts[artifact_id]) not in evidence_gate:
             raise ValueError(

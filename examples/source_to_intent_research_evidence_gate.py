@@ -27,6 +27,9 @@ try:
     from examples.source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_diagnostics import (
+        build_source_to_intent_research_kernel_ingress_diagnostic_cases,
+    )
     from examples.source_to_intent_research_parser_conformance_gate import (
         REQUIRED_PARSER_SOURCE_NAMES,
     )
@@ -70,6 +73,9 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
     )
+    from source_to_intent_research_kernel_ingress_diagnostics import (  # type: ignore[no-redef]
+        build_source_to_intent_research_kernel_ingress_diagnostic_cases,
+    )
     from source_to_intent_research_parser_conformance_gate import (  # type: ignore[no-redef]
         REQUIRED_PARSER_SOURCE_NAMES,
     )
@@ -97,6 +103,8 @@ from tuc.frontend import (
     SOURCE_TO_INTENT_REQUIRED_EVIDENCE,
     SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_RAW_SOURCE_POLICY,
     SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_REJECTION_REASONS,
+    SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT,
+    SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS,
     SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_COMPILER_OUTPUTS,
     SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_EXECUTION_SURFACES,
     SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
@@ -104,9 +112,12 @@ from tuc.frontend import (
     SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
     SourceToIntentReadinessReport,
     SourceToIntentResearchDiagnosticsReport,
+    SourceToIntentResearchKernelIngressDiagnosticsReport,
     build_source_to_intent_research_diagnostics_report,
+    build_source_to_intent_research_kernel_ingress_diagnostics_report,
     dump_source_to_intent_readiness_report,
     dump_source_to_intent_research_diagnostics_report,
+    dump_source_to_intent_research_kernel_ingress_diagnostics_report,
 )
 
 SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE_CONTRACT = (
@@ -136,6 +147,9 @@ def build_gate_report(
     diagnostics_report: SourceToIntentResearchDiagnosticsReport | None = None,
     execution_bridge_text: str | None = None,
     idiom_alignment_text: str | None = None,
+    kernel_ingress_diagnostics_report: (
+        SourceToIntentResearchKernelIngressDiagnosticsReport | None
+    ) = None,
     kernel_ingress_text: str | None = None,
     preflight_bridge_text: str | None = None,
     source_runtime_smoke_text: str | None = None,
@@ -174,6 +188,13 @@ def build_gate_report(
         if kernel_ingress_text is None
         else kernel_ingress_text
     )
+    kernel_ingress_diagnostics = (
+        build_source_to_intent_research_kernel_ingress_diagnostics_report(
+            build_source_to_intent_research_kernel_ingress_diagnostic_cases()
+        )
+        if kernel_ingress_diagnostics_report is None
+        else kernel_ingress_diagnostics_report
+    )
     preflight_bridge = (
         build_preflight_bridge_report()
         if preflight_bridge_text is None
@@ -190,6 +211,7 @@ def build_gate_report(
     _assert_preflight_bridge_bound(preflight_bridge)
     _assert_execution_bridge_bound(execution_bridge)
     _assert_idiom_alignment_bound(idiom_alignment)
+    _assert_kernel_ingress_diagnostics_bound(kernel_ingress_diagnostics)
     _assert_kernel_ingress_bound(kernel_ingress)
     _assert_source_runtime_smoke_bound(source_runtime_smoke)
     return _render_gate_report(
@@ -199,6 +221,7 @@ def build_gate_report(
         preflight_bridge,
         execution_bridge,
         idiom_alignment,
+        kernel_ingress_diagnostics,
         kernel_ingress,
         source_runtime_smoke,
     )
@@ -374,6 +397,38 @@ def _assert_kernel_ingress_bound(text: str) -> None:
     _assert_gate_text_is_source_free(text)
 
 
+def _assert_kernel_ingress_diagnostics_bound(
+    report: SourceToIntentResearchKernelIngressDiagnosticsReport,
+) -> None:
+    if not isinstance(report, SourceToIntentResearchKernelIngressDiagnosticsReport):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "not a kernel ingress diagnostics report"
+        )
+    if report.diagnostics_contract != (
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT
+    ):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress diagnostics contract changed"
+        )
+    accepted_sources = tuple(
+        case.source_name for case in report.cases if case.outcome == "accepted"
+    )
+    if accepted_sources != REQUIRED_PARSER_SOURCE_NAMES:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress source binding changed"
+        )
+    if report.rejection_reasons != tuple(
+        sorted(SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS)
+    ):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress rejection coverage changed"
+        )
+
+
 def _assert_source_runtime_smoke_bound(text: str) -> None:
     if not isinstance(text, str):
         raise SourceToIntentResearchEvidenceGateError(
@@ -397,11 +452,17 @@ def _render_gate_report(
     preflight_bridge_text: str,
     execution_bridge_text: str,
     idiom_alignment_text: str,
+    kernel_ingress_diagnostics: SourceToIntentResearchKernelIngressDiagnosticsReport,
     kernel_ingress_text: str,
     source_runtime_smoke_text: str,
 ) -> str:
     readiness_text = dump_source_to_intent_readiness_report(readiness)
     diagnostics_text = dump_source_to_intent_research_diagnostics_report(diagnostics)
+    kernel_ingress_diagnostics_text = (
+        dump_source_to_intent_research_kernel_ingress_diagnostics_report(
+            kernel_ingress_diagnostics
+        )
+    )
     lines = [
         "source_to_intent.research_evidence_gate "
         "@source_to_intent_research_evidence_gate_v0 {"
@@ -421,6 +482,11 @@ def _render_gate_report(
     lines.append(f'  execution_bridge_digest = "{_digest(execution_bridge_text)}"')
     lines.append('  idiom_alignment = "passed"')
     lines.append(f'  idiom_alignment_digest = "{_digest(idiom_alignment_text)}"')
+    lines.append('  kernel_ingress_diagnostics = "passed"')
+    lines.append(
+        "  kernel_ingress_diagnostics_digest = "
+        f'"{_digest(kernel_ingress_diagnostics_text)}"'
+    )
     lines.append('  kernel_ingress = "passed"')
     lines.append(f'  kernel_ingress_digest = "{_digest(kernel_ingress_text)}"')
     lines.append('  source_runtime_smoke = "passed"')

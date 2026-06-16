@@ -17,6 +17,9 @@ from examples.source_to_intent_research_evidence_gate import (
     SourceToIntentResearchEvidenceGateError,
     build_gate_report,
 )
+from examples.source_to_intent_research_kernel_ingress_diagnostics import (
+    build_source_to_intent_research_kernel_ingress_diagnostic_cases,
+)
 from tuc.frontend import (
     SOURCE_TO_INTENT_BLOCKED_EXECUTION_SURFACES,
     SOURCE_TO_INTENT_PARSER_GATE_CONTRACT,
@@ -24,6 +27,7 @@ from tuc.frontend import (
     SourceToIntentReadinessEvidence,
     SourceToIntentReadinessReport,
     build_source_to_intent_research_diagnostics_report,
+    build_source_to_intent_research_kernel_ingress_diagnostics_report,
 )
 
 _GOLDEN = Path("tests/golden/frontend/source_to_intent_research_evidence_gate.txt")
@@ -43,6 +47,7 @@ def test_source_to_intent_research_evidence_gate_matches_golden() -> None:
     assert 'preflight_bridge = "passed"' in report
     assert 'execution_bridge = "passed"' in report
     assert 'idiom_alignment = "passed"' in report
+    assert 'kernel_ingress_diagnostics = "passed"' in report
     assert 'kernel_ingress = "passed"' in report
     assert 'source_runtime_smoke = "passed"' in report
     assert 'status = "PASS"' in report
@@ -62,6 +67,7 @@ def test_source_to_intent_research_evidence_gate_example_runs() -> None:
     assert "preflight_bridge_digest" in completed.stdout
     assert "execution_bridge_digest" in completed.stdout
     assert "idiom_alignment_digest" in completed.stdout
+    assert "kernel_ingress_diagnostics_digest" in completed.stdout
     assert "kernel_ingress_digest" in completed.stdout
     assert "source_runtime_smoke_digest" in completed.stdout
     assert "@triton.jit" not in completed.stdout
@@ -154,6 +160,23 @@ def test_source_to_intent_research_evidence_gate_rejects_tampered_kernel_ingress
         build_gate_report(kernel_ingress_text='{"status": "PASS"}\n')
 
 
+def test_source_to_intent_research_evidence_gate_rejects_kernel_ingress_diagnostic_drift() -> None:
+    diagnostics = build_source_to_intent_research_kernel_ingress_diagnostics_report(
+        build_source_to_intent_research_kernel_ingress_diagnostic_cases()
+    )
+    tampered_case = replace(diagnostics.cases[0], source_name="wrong_source")
+    tampered_report = replace(
+        diagnostics,
+        cases=(tampered_case, *diagnostics.cases[1:]),
+    )
+
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="kernel ingress source binding changed",
+    ):
+        build_gate_report(kernel_ingress_diagnostics_report=tampered_report)
+
+
 def test_source_to_intent_research_evidence_gate_rejects_tampered_source_runtime_smoke() -> None:
     with pytest.raises(
         SourceToIntentResearchEvidenceGateError,
@@ -207,6 +230,7 @@ def test_source_to_intent_research_evidence_gate_is_documented_and_in_ci() -> No
         Path("docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_SOURCE_RUNTIME_SMOKE.md"),
         Path("rfcs/0159-source-to-intent-research-evidence-gate.md"),
@@ -214,6 +238,7 @@ def test_source_to_intent_research_evidence_gate_is_documented_and_in_ci() -> No
         Path("rfcs/0162-source-to-intent-research-preflight-bridge.md"),
         Path("rfcs/0164-source-to-intent-research-source-runtime-smoke.md"),
         Path("rfcs/0165-source-to-intent-research-kernel-ingress.md"),
+        Path("rfcs/0166-source-to-intent-research-kernel-ingress-diagnostics.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert gate_path in text

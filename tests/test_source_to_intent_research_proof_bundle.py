@@ -32,7 +32,7 @@ def test_source_to_intent_research_proof_bundle_report_shape() -> None:
     )
     assert report["bundle_contract"] == SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE_CONTRACT
     assert report["status"] == "PASS"
-    assert report["artifact_count"] == 9
+    assert report["artifact_count"] == 10
     assert report["claim"] == "safe_source_to_runtime_research_slice"
     assert report["blocked_claims"] == [
         "general_triton_source_ingestion",
@@ -55,7 +55,7 @@ def test_source_to_intent_research_proof_bundle_report_shape() -> None:
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("artifact_count", 8, "artifact_count"),
+        ("artifact_count", 9, "artifact_count"),
         ("blocked_claims", [], "blocked_claims"),
         ("raw_source", "def kernel(): pass", "top-level report"),
     ],
@@ -97,7 +97,7 @@ def test_source_to_intent_research_proof_bundle_example_runs() -> None:
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"status": "PASS"' in completed.stdout
-    assert '"artifact_count": 9' in completed.stdout
+    assert '"artifact_count": 10' in completed.stdout
     assert "safe_source_to_runtime_research_slice" in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "import triton" not in completed.stdout
@@ -132,8 +132,10 @@ def test_source_to_intent_research_proof_bundle_is_documented_and_in_ci() -> Non
         Path("docs/ROADMAP_STATUS.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS.md"),
         Path("rfcs/0163-source-to-intent-research-proof-bundle.md"),
         Path("rfcs/0165-source-to-intent-research-kernel-ingress.md"),
+        Path("rfcs/0166-source-to-intent-research-kernel-ingress-diagnostics.md"),
     ):
         assert example_path in path.read_text(encoding="utf-8")
 
