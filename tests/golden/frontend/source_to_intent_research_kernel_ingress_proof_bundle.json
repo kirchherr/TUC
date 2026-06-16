@@ -1,0 +1,73 @@
+{
+  "accepted_kernel_names": [
+    "matmul_elementwise",
+    "softmax_reduction"
+  ],
+  "accepted_source_names": [
+    "research_matmul_elementwise",
+    "research_softmax_reduction"
+  ],
+  "artifact_count": 4,
+  "artifact_policy": "digest_only_source_free",
+  "artifacts": [
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress.e2e.v0",
+      "digest": "sha256:b0b7add6a8874e11eb3aeb2d159b8090fc54c6ced96e54b53e07f55ae5b15d59",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_diagnostics",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
+      "digest": "sha256:590f488b7e4bfd36b882b0c1c21c3a9288cbfbb0f72cda11bd0dda6410dcb504",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_conformance_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
+      "digest": "sha256:0b28b90704418ab811699cc0de0dfb35d8beee93a33d6b5832e4b3d09d3e5c96",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_idiom_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
+      "digest": "sha256:2a7c9e81692a90d3564cfc0fe6dd9d06c517d4ded81e601c8b223ca331a17e95",
+      "status": "accepted"
+    }
+  ],
+  "blocked_claims": [
+    "general_triton_source_ingestion",
+    "native_performance_claim",
+    "production_parser"
+  ],
+  "bundle_contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
+  "claim": "realistic_triton_module_ingress_research_slice",
+  "covered_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "parser_status": "research_explicit_only",
+  "required_artifacts": [
+    "source_to_intent_research_kernel_ingress",
+    "source_to_intent_research_kernel_ingress_diagnostics",
+    "source_to_intent_research_kernel_ingress_conformance_gate",
+    "source_to_intent_research_kernel_ingress_idiom_alignment"
+  ],
+  "review_claims": [
+    "conformance_bound",
+    "diagnostics_bound",
+    "idiom_scope_bound",
+    "kernel_ingress_runtime_e2e",
+    "source_free_metadata_only"
+  ],
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0",
+  "source_boundary": "triton_module_source_buffer_to_source_intent_to_runtime_metadata_only",
+  "status": "PASS"
+}

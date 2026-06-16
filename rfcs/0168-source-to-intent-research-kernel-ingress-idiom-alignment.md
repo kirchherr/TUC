@@ -5,6 +5,7 @@
 - Area: Frontend, Source-To-Intent, Triton Compatibility Evidence
 - Related:
   - `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
+  - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
   - `examples/source_to_intent_research_evidence_gate.py`
   - `examples/source_to_intent_research_proof_bundle.py`
   - `schemas/source_to_intent_research_kernel_ingress_idiom_alignment_report.v0.schema.json`

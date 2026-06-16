@@ -1,20 +1,21 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_proof_bundle_report.v0.schema.json",
-  "title": "TUC Source-To-Intent Research Proof Bundle Report v0",
-  "description": "Digest-only review bundle for the current Source-to-Intent research proof chain.",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_proof_bundle_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Proof Bundle Report v0",
+  "description": "Digest-only review bundle for Kernel Ingress research evidence.",
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "accepted_parser_sources",
+    "accepted_kernel_names",
+    "accepted_source_names",
     "artifact_count",
     "artifact_policy",
     "artifacts",
     "blocked_claims",
     "bundle_contract",
     "claim",
+    "covered_operation_families",
     "default_parser_status",
-    "parser_output_policy",
     "parser_status",
     "required_artifacts",
     "review_claims",
@@ -23,7 +24,16 @@
     "status"
   ],
   "properties": {
-    "accepted_parser_sources": {
+    "accepted_kernel_names": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "matmul_elementwise"},
+        {"const": "softmax_reduction"}
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "accepted_source_names": {
       "type": "array",
       "prefixItems": [
         {"const": "research_matmul_elementwise"},
@@ -32,12 +42,12 @@
       "minItems": 2,
       "maxItems": 2
     },
-    "artifact_count": {"const": 13},
+    "artifact_count": {"const": 4},
     "artifact_policy": {"const": "digest_only_source_free"},
     "artifacts": {
       "type": "array",
-      "minItems": 13,
-      "maxItems": 13,
+      "minItems": 4,
+      "maxItems": 4,
       "items": {"$ref": "#/$defs/artifact"}
     },
     "blocked_claims": {
@@ -51,49 +61,50 @@
       "maxItems": 3
     },
     "bundle_contract": {
-      "const": "source_to_intent_research_proof_bundle.review.v0"
+      "const": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0"
     },
-    "claim": {"const": "safe_source_to_runtime_research_slice"},
+    "claim": {"const": "realistic_triton_module_ingress_research_slice"},
+    "covered_operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "elementwise"},
+        {"const": "matmul"},
+        {"const": "reduction"},
+        {"const": "softmax"}
+      ],
+      "minItems": 4,
+      "maxItems": 4
+    },
     "default_parser_status": {"const": "default_parser_blocked"},
-    "parser_output_policy": {"const": "source_intent.v0_plain_data_only"},
     "parser_status": {"const": "research_explicit_only"},
     "required_artifacts": {
       "type": "array",
       "prefixItems": [
-        {"const": "source_to_intent_research_readiness"},
-        {"const": "source_to_intent_research_parser_conformance_gate"},
-        {"const": "source_to_intent_research_diagnostics"},
-        {"const": "source_to_intent_research_preflight_bridge"},
-        {"const": "source_to_intent_research_execution_bridge"},
-        {"const": "source_to_intent_research_idiom_alignment"},
-        {"const": "source_to_intent_research_source_runtime_smoke"},
         {"const": "source_to_intent_research_kernel_ingress"},
         {"const": "source_to_intent_research_kernel_ingress_diagnostics"},
         {"const": "source_to_intent_research_kernel_ingress_conformance_gate"},
-        {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"},
-        {"const": "source_to_intent_research_kernel_ingress_proof_bundle"},
-        {"const": "source_to_intent_research_evidence_gate"}
+        {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"}
       ],
-      "minItems": 13,
-      "maxItems": 13
+      "minItems": 4,
+      "maxItems": 4
     },
     "review_claims": {
       "type": "array",
       "prefixItems": [
-        {"const": "default_parser_blocked"},
+        {"const": "conformance_bound"},
+        {"const": "diagnostics_bound"},
         {"const": "idiom_scope_bound"},
-        {"const": "preflight_gated"},
-        {"const": "runtime_execution_controlled"},
-        {"const": "source_intent_plain_data_only"}
+        {"const": "kernel_ingress_runtime_e2e"},
+        {"const": "source_free_metadata_only"}
       ],
       "minItems": 5,
       "maxItems": 5
     },
     "schema_version": {
-      "const": "tuc.source_to_intent_research_proof_bundle_report.v0"
+      "const": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0"
     },
     "source_boundary": {
-      "const": "preflight_to_source_intent_plain_data_to_runtime"
+      "const": "triton_module_source_buffer_to_source_intent_to_runtime_metadata_only"
     },
     "status": {"const": "PASS"}
   },
@@ -111,19 +122,10 @@
       "properties": {
         "artifact_id": {
           "enum": [
-            "source_to_intent_research_readiness",
-            "source_to_intent_research_parser_conformance_gate",
-            "source_to_intent_research_diagnostics",
-            "source_to_intent_research_preflight_bridge",
-            "source_to_intent_research_execution_bridge",
-            "source_to_intent_research_idiom_alignment",
-            "source_to_intent_research_source_runtime_smoke",
             "source_to_intent_research_kernel_ingress",
             "source_to_intent_research_kernel_ingress_diagnostics",
             "source_to_intent_research_kernel_ingress_conformance_gate",
-            "source_to_intent_research_kernel_ingress_idiom_alignment",
-            "source_to_intent_research_kernel_ingress_proof_bundle",
-            "source_to_intent_research_evidence_gate"
+            "source_to_intent_research_kernel_ingress_idiom_alignment"
           ]
         },
         "artifact_kind": {"enum": ["json_report", "text_gate"]},

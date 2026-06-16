@@ -21,6 +21,8 @@ ingestion, and does not weaken the default parser block.
   `tests/test_source_to_intent_research_kernel_ingress_idiom_alignment.py`
 - Evidence Gate binding: `examples/source_to_intent_research_evidence_gate.py`
 - Proof Bundle binding: `examples/source_to_intent_research_proof_bundle.py`
+- Kernel Ingress Proof Bundle binding:
+  `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
 - CI entry: `.github/workflows/ci.yml`
 
 ## What It Binds

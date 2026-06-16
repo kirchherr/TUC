@@ -43,6 +43,10 @@ files, access devices, or discover plugins.
   `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
 - Idiom alignment docs:
   [Source-To-Intent Research Kernel Ingress Idiom Alignment](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_IDIOM_ALIGNMENT.md)
+- Proof bundle companion:
+  `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
+- Proof bundle docs:
+  [Source-To-Intent Research Kernel Ingress Proof Bundle](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md)
 - CI entry: `.github/workflows/ci.yml`
 
 ## Accepted Module Shape
@@ -99,6 +103,10 @@ The ingress keeps these claims blocked:
 The companion Kernel Ingress Idiom Alignment report proves that accepted
 module-shaped outputs still map only to the covered Triton MVP idioms:
 matmul, elementwise, reduction, and softmax.
+
+The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
+for the Kernel Ingress E2E, diagnostics, conformance, and idiom-alignment
+artifacts.
 
 ## Review Meaning
 
