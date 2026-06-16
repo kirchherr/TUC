@@ -32,7 +32,7 @@ def test_source_to_intent_research_proof_bundle_report_shape() -> None:
     )
     assert report["bundle_contract"] == SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE_CONTRACT
     assert report["status"] == "PASS"
-    assert report["artifact_count"] == 7
+    assert report["artifact_count"] == 8
     assert report["claim"] == "safe_source_to_runtime_research_slice"
     assert report["blocked_claims"] == [
         "general_triton_source_ingestion",
@@ -55,7 +55,7 @@ def test_source_to_intent_research_proof_bundle_report_shape() -> None:
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("artifact_count", 6, "artifact_count"),
+        ("artifact_count", 7, "artifact_count"),
         ("blocked_claims", [], "blocked_claims"),
         ("raw_source", "def kernel(): pass", "top-level report"),
     ],
@@ -97,7 +97,7 @@ def test_source_to_intent_research_proof_bundle_example_runs() -> None:
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"status": "PASS"' in completed.stdout
-    assert '"artifact_count": 7' in completed.stdout
+    assert '"artifact_count": 8' in completed.stdout
     assert "safe_source_to_runtime_research_slice" in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "tl.dot" not in completed.stdout

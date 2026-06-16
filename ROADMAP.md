@@ -531,6 +531,9 @@ Deliverables:
   work can claim coverage.
 - Source-To-Intent Research Proof Bundle giving reviewers one digest-only
   source-free artifact for the current safe source-to-runtime research slice.
+- Source-To-Intent Research Source Runtime Smoke proving accepted source buffers
+  can run end-to-end through Preflight, parser, Source Intent, runtime, and
+  reference correctness.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -651,6 +654,10 @@ Go/No-Go:
 - Source-To-Intent Research Proof Bundle now indexes the current readiness,
   conformance, diagnostics, Preflight Bridge, Execution Bridge, Idiom
   Alignment, and Evidence Gate artifacts by digest for review.
+- Source-To-Intent Research Source Runtime Smoke now proves the accepted
+  `matmul -> elementwise` and `softmax -> reduction` source buffers can execute
+  end-to-end through the controlled research parser path without opening
+  general Triton source ingestion.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

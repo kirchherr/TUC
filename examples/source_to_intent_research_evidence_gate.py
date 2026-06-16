@@ -36,6 +36,12 @@ try:
     from examples.source_to_intent_research_readiness import (
         build_research_source_to_intent_readiness_report,
     )
+    from examples.source_to_intent_research_source_runtime_smoke import (
+        assert_source_runtime_smoke_report_contract,
+    )
+    from examples.source_to_intent_research_source_runtime_smoke import (
+        build_report as build_source_runtime_smoke_report,
+    )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_diagnostics import (  # type: ignore[no-redef]
         build_source_to_intent_research_diagnostic_cases,
@@ -66,6 +72,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_readiness import (  # type: ignore[no-redef]
         build_research_source_to_intent_readiness_report,
+    )
+    from source_to_intent_research_source_runtime_smoke import (  # type: ignore[no-redef]
+        assert_source_runtime_smoke_report_contract,
+    )
+    from source_to_intent_research_source_runtime_smoke import (
+        build_report as build_source_runtime_smoke_report,
     )
 
 from tuc.frontend import (
@@ -112,6 +124,7 @@ def build_gate_report(
     execution_bridge_text: str | None = None,
     idiom_alignment_text: str | None = None,
     preflight_bridge_text: str | None = None,
+    source_runtime_smoke_text: str | None = None,
 ) -> str:
     """Return stable CI-facing parser research evidence binding."""
 
@@ -147,12 +160,18 @@ def build_gate_report(
         if preflight_bridge_text is None
         else preflight_bridge_text
     )
+    source_runtime_smoke = (
+        build_source_runtime_smoke_report()
+        if source_runtime_smoke_text is None
+        else source_runtime_smoke_text
+    )
     _assert_readiness_bound(readiness)
     _assert_conformance_gate_bound(conformance_text)
     _assert_diagnostics_bound(diagnostics)
     _assert_preflight_bridge_bound(preflight_bridge)
     _assert_execution_bridge_bound(execution_bridge)
     _assert_idiom_alignment_bound(idiom_alignment)
+    _assert_source_runtime_smoke_bound(source_runtime_smoke)
     return _render_gate_report(
         readiness,
         conformance_text,
@@ -160,6 +179,7 @@ def build_gate_report(
         preflight_bridge,
         execution_bridge,
         idiom_alignment,
+        source_runtime_smoke,
     )
 
 
@@ -317,6 +337,22 @@ def _assert_idiom_alignment_bound(text: str) -> None:
     _assert_gate_text_is_source_free(text)
 
 
+def _assert_source_runtime_smoke_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: source runtime smoke not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_source_runtime_smoke_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "source runtime smoke binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
 def _render_gate_report(
     readiness: SourceToIntentReadinessReport,
     conformance_text: str,
@@ -324,6 +360,7 @@ def _render_gate_report(
     preflight_bridge_text: str,
     execution_bridge_text: str,
     idiom_alignment_text: str,
+    source_runtime_smoke_text: str,
 ) -> str:
     readiness_text = dump_source_to_intent_readiness_report(readiness)
     diagnostics_text = dump_source_to_intent_research_diagnostics_report(diagnostics)
@@ -346,6 +383,8 @@ def _render_gate_report(
     lines.append(f'  execution_bridge_digest = "{_digest(execution_bridge_text)}"')
     lines.append('  idiom_alignment = "passed"')
     lines.append(f'  idiom_alignment_digest = "{_digest(idiom_alignment_text)}"')
+    lines.append('  source_runtime_smoke = "passed"')
+    lines.append(f'  source_runtime_smoke_digest = "{_digest(source_runtime_smoke_text)}"')
     lines.append(f'  diagnostics_evidence = "{RESEARCH_DIAGNOSTICS_EVIDENCE_ID}"')
     lines.append(
         f'  parser_sources = "{",".join(REQUIRED_PARSER_SOURCE_NAMES)}"'

@@ -43,6 +43,7 @@ def test_source_to_intent_research_evidence_gate_matches_golden() -> None:
     assert 'preflight_bridge = "passed"' in report
     assert 'execution_bridge = "passed"' in report
     assert 'idiom_alignment = "passed"' in report
+    assert 'source_runtime_smoke = "passed"' in report
     assert 'status = "PASS"' in report
 
 
@@ -60,6 +61,7 @@ def test_source_to_intent_research_evidence_gate_example_runs() -> None:
     assert "preflight_bridge_digest" in completed.stdout
     assert "execution_bridge_digest" in completed.stdout
     assert "idiom_alignment_digest" in completed.stdout
+    assert "source_runtime_smoke_digest" in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "python_source" not in completed.stdout
     assert "source_intent_payload" not in completed.stdout
@@ -141,6 +143,14 @@ def test_source_to_intent_research_evidence_gate_rejects_tampered_idiom_alignmen
         build_gate_report(idiom_alignment_text='{"status": "PASS"}\n')
 
 
+def test_source_to_intent_research_evidence_gate_rejects_tampered_source_runtime_smoke() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="source runtime smoke binding missing",
+    ):
+        build_gate_report(source_runtime_smoke_text='{"status": "PASS"}\n')
+
+
 def test_source_to_intent_research_evidence_gate_rejects_source_leakage() -> None:
     leaky_conformance = (
         'source_intent_frontend_conformance = "passed"\n'
@@ -186,9 +196,11 @@ def test_source_to_intent_research_evidence_gate_is_documented_and_in_ci() -> No
         Path("docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_SOURCE_RUNTIME_SMOKE.md"),
         Path("rfcs/0159-source-to-intent-research-evidence-gate.md"),
         Path("rfcs/0161-source-to-intent-research-idiom-alignment.md"),
         Path("rfcs/0162-source-to-intent-research-preflight-bridge.md"),
+        Path("rfcs/0164-source-to-intent-research-source-runtime-smoke.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert gate_path in text

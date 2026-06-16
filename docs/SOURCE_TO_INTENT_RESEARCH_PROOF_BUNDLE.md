@@ -29,6 +29,7 @@ The bundle records SHA-256 digests for:
 - Source-To-Intent Research Preflight Bridge
 - Source-To-Intent Research Execution Bridge
 - Source-To-Intent Research Idiom Alignment
+- Source-To-Intent Research Source Runtime Smoke
 - Source-To-Intent Research Evidence Gate
 
 The bundle claim is:
@@ -66,6 +67,7 @@ diagnostics
 preflight bridge
 execution bridge
 idiom alignment
+source runtime smoke
 evidence gate
     ->
 digest-only proof bundle

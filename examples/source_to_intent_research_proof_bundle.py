@@ -41,6 +41,12 @@ try:
     from examples.source_to_intent_research_readiness import (
         build_report as build_readiness_report,
     )
+    from examples.source_to_intent_research_source_runtime_smoke import (
+        assert_source_runtime_smoke_report_contract,
+    )
+    from examples.source_to_intent_research_source_runtime_smoke import (
+        build_report as build_source_runtime_smoke_report,
+    )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_diagnostics import (  # type: ignore[no-redef]
         build_report as build_diagnostics_report,
@@ -74,6 +80,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_readiness import (  # type: ignore[no-redef]
         build_report as build_readiness_report,
+    )
+    from source_to_intent_research_source_runtime_smoke import (  # type: ignore[no-redef]
+        assert_source_runtime_smoke_report_contract,
+    )
+    from source_to_intent_research_source_runtime_smoke import (
+        build_report as build_source_runtime_smoke_report,
     )
 
 from tuc.frontend import (
@@ -175,6 +187,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_idiom_alignment.scope.v0",
     ),
     (
+        "source_to_intent_research_source_runtime_smoke",
+        "json_report",
+        "source_to_intent_research_source_runtime_smoke.e2e.v0",
+    ),
+    (
         "source_to_intent_research_evidence_gate",
         "text_gate",
         "source_to_intent_research_evidence_gate.ci.v0",
@@ -194,6 +211,9 @@ def build_proof_bundle_report() -> dict[str, object]:
         "source_to_intent_research_preflight_bridge": build_preflight_bridge_report(),
         "source_to_intent_research_execution_bridge": build_execution_bridge_report(),
         "source_to_intent_research_idiom_alignment": build_idiom_alignment_report(),
+        "source_to_intent_research_source_runtime_smoke": (
+            build_source_runtime_smoke_report()
+        ),
         "source_to_intent_research_evidence_gate": build_evidence_gate_report(),
     }
     _assert_artifact_payloads(artifact_texts)
@@ -287,6 +307,8 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
     assert_execution_bridge_report_contract(execution)
     alignment = json.loads(artifact_texts["source_to_intent_research_idiom_alignment"])
     assert_research_idiom_alignment_report_contract(alignment)
+    smoke = json.loads(artifact_texts["source_to_intent_research_source_runtime_smoke"])
+    assert_source_runtime_smoke_report_contract(smoke)
     evidence_gate = artifact_texts["source_to_intent_research_evidence_gate"]
     for artifact_id in (
         "source_to_intent_research_readiness",
@@ -295,6 +317,7 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
         "source_to_intent_research_preflight_bridge",
         "source_to_intent_research_execution_bridge",
         "source_to_intent_research_idiom_alignment",
+        "source_to_intent_research_source_runtime_smoke",
     ):
         if _digest(artifact_texts[artifact_id]) not in evidence_gate:
             raise ValueError(

@@ -708,6 +708,13 @@ Current slice:
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_proof_bundle.json`, and
   digest-only review binding for the current source-to-runtime research proof.
+- Source-To-Intent Research Source Runtime Smoke at
+  `examples/source_to_intent_research_source_runtime_smoke.py`, with schema at
+  `schemas/source_to_intent_research_source_runtime_smoke_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_source_runtime_smoke.json`,
+  and digest binding through Source-To-Intent Research Evidence Gate and Proof
+  Bundle.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.
