@@ -31,6 +31,10 @@ files, access devices, or discover plugins.
 - Tests: `tests/test_source_to_intent_research_kernel_ingress.py`
 - Digest binding: `examples/source_to_intent_research_evidence_gate.py`
 - Proof bundle binding: `examples/source_to_intent_research_proof_bundle.py`
+- Conformance gate companion:
+  `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
+- Conformance gate docs:
+  [Source-To-Intent Research Kernel Ingress Conformance Gate](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_CONFORMANCE_GATE.md)
 - Diagnostics companion:
   `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
 - Diagnostics docs:

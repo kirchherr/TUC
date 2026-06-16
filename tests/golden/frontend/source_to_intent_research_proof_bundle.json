@@ -3,7 +3,7 @@
     "research_matmul_elementwise",
     "research_softmax_reduction"
   ],
-  "artifact_count": 10,
+  "artifact_count": 11,
   "artifact_policy": "digest_only_source_free",
   "artifacts": [
     {
@@ -70,10 +70,17 @@
       "status": "accepted"
     },
     {
+      "artifact_id": "source_to_intent_research_kernel_ingress_conformance_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
+      "digest": "sha256:0b28b90704418ab811699cc0de0dfb35d8beee93a33d6b5832e4b3d09d3e5c96",
+      "status": "accepted"
+    },
+    {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:ce84fa8a4f61b1a117c77ba3e09e85a5091c05355847cbf5171e72eb5718650a",
+      "digest": "sha256:eacb6d3c9fc4f4baf60f19a59d2d98b9ae0fb208aa4755dfa4c607abd67e6dbb",
       "status": "accepted"
     }
   ],
@@ -97,6 +104,7 @@
     "source_to_intent_research_source_runtime_smoke",
     "source_to_intent_research_kernel_ingress",
     "source_to_intent_research_kernel_ingress_diagnostics",
+    "source_to_intent_research_kernel_ingress_conformance_gate",
     "source_to_intent_research_evidence_gate"
   ],
   "review_claims": [

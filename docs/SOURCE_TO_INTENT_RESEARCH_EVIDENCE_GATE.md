@@ -30,6 +30,10 @@ text as compiler input.
   `examples/source_to_intent_research_kernel_ingress.py`
 - Kernel ingress docs:
   [Source-To-Intent Research Kernel Ingress](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md)
+- Kernel ingress conformance gate example:
+  `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
+- Kernel ingress conformance gate docs:
+  [Source-To-Intent Research Kernel Ingress Conformance Gate](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_CONFORMANCE_GATE.md)
 - Kernel ingress diagnostics example:
   `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
 - Kernel ingress diagnostics docs:
@@ -48,6 +52,7 @@ The gate binds:
 - Source-To-Intent Research Idiom Alignment
 - Source-To-Intent Research Source Runtime Smoke
 - Source-To-Intent Research Kernel Ingress
+- Source-To-Intent Research Kernel Ingress Conformance Gate
 - Source-To-Intent Research Kernel Ingress Diagnostics
 
 Each input artifact is hashed with SHA-256 and the digest is emitted in the
@@ -82,6 +87,10 @@ The gate passes only when:
   realistic Triton module-shaped source buffer.
 - Research Kernel Ingress validates module import prelude and kernel extraction
   as data before its digest is accepted.
+- Research Kernel Ingress Conformance Gate passes for accepted module-source
+  outputs and rejected Source Intent escape cases.
+- Research Kernel Ingress Conformance Gate validates that Kernel Ingress has no
+  privileged bypass around Source Intent Frontend Conformance.
 - Research Kernel Ingress Diagnostics passes for the accepted and rejected
   module-shaped source cases.
 - Research Kernel Ingress Diagnostics validates stable rejection reason IDs
@@ -126,6 +135,8 @@ Research Idiom Alignment
 Research Source Runtime Smoke
     +
 Research Kernel Ingress
+    +
+Research Kernel Ingress Conformance Gate
     +
 Research Kernel Ingress Diagnostics
     ->

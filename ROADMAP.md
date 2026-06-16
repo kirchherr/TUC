@@ -538,6 +538,9 @@ Deliverables:
   module-shaped source buffers can be validated as data, reduced to one
   explicitly selected kernel function, and executed through the controlled
   source-to-runtime research path.
+- Source-To-Intent Research Kernel Ingress Conformance Gate proving accepted
+  module-shaped source outputs pass the reusable Source Intent Frontend
+  Conformance path before future ingress syntax can expand.
 - Source-To-Intent Research Kernel Ingress Diagnostics proving accepted and
   rejected realistic module-shaped source cases remain source-free, bounded,
   and fail-closed before future ingress syntax can expand.
@@ -660,8 +663,8 @@ Go/No-Go:
   so parser scope cannot silently expand beyond proven MVP operation families.
 - Source-To-Intent Research Proof Bundle now indexes the current readiness,
   conformance, diagnostics, Preflight Bridge, Execution Bridge, Idiom
-  Alignment, Source Runtime Smoke, Kernel Ingress, Kernel Ingress Diagnostics,
-  and Evidence Gate artifacts by digest for review.
+  Alignment, Source Runtime Smoke, Kernel Ingress, Kernel Ingress Conformance,
+  Kernel Ingress Diagnostics, and Evidence Gate artifacts by digest for review.
 - Source-To-Intent Research Source Runtime Smoke now proves the accepted
   `matmul -> elementwise` and `softmax -> reduction` source buffers can execute
   end-to-end through the controlled research parser path without opening
@@ -671,6 +674,10 @@ Go/No-Go:
   explicitly selected `@triton.jit` kernel can execute end-to-end through the
   controlled research path without evaluating imports, decorators, JIT, files,
   devices, plugins, or general module execution.
+- Source-To-Intent Research Kernel Ingress Conformance Gate now proves accepted
+  module-shaped source outputs are ordinary Source Intent frontend payloads that
+  pass accepted-case conformance and rejected backend-hint/source-text escape
+  checks.
 - Source-To-Intent Research Kernel Ingress Diagnostics now binds accepted
   module-shaped source cases and rejected module surfaces to stable source-free
   reason IDs for unsupported imports, import-from statements, multiple kernel

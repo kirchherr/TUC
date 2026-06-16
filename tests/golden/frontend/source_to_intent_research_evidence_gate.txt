@@ -14,6 +14,8 @@ source_to_intent.research_evidence_gate @source_to_intent_research_evidence_gate
   idiom_alignment_digest = "sha256:2d8798bf9b2179069c8a4c45f10a10a0f481c7c5e3097757cc1ac09d7d4bc6d5"
   kernel_ingress_diagnostics = "passed"
   kernel_ingress_diagnostics_digest = "sha256:590f488b7e4bfd36b882b0c1c21c3a9288cbfbb0f72cda11bd0dda6410dcb504"
+  kernel_ingress_conformance_gate = "passed"
+  kernel_ingress_conformance_gate_digest = "sha256:0b28b90704418ab811699cc0de0dfb35d8beee93a33d6b5832e4b3d09d3e5c96"
   kernel_ingress = "passed"
   kernel_ingress_digest = "sha256:b0b7add6a8874e11eb3aeb2d159b8090fc54c6ced96e54b53e07f55ae5b15d59"
   source_runtime_smoke = "passed"

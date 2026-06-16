@@ -723,6 +723,13 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_kernel_ingress.json`, and
   digest binding through Source-To-Intent Research Evidence Gate and Proof
   Bundle for realistic Triton module-shaped source buffers.
+- Source-To-Intent Research Kernel Ingress Conformance Gate at
+  `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`,
+  with deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress_conformance_gate.txt`,
+  reusable Source Intent Frontend Conformance coverage for accepted Kernel
+  Ingress outputs and rejected Source Intent escape cases, and digest binding
+  through Source-To-Intent Research Evidence Gate and Proof Bundle.
 - Source-To-Intent Research Kernel Ingress Diagnostics at
   `examples/source_to_intent_research_kernel_ingress_diagnostics.py`, with
   frontend API at

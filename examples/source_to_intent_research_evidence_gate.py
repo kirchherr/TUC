@@ -27,6 +27,9 @@ try:
     from examples.source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_conformance_gate import (
+        build_gate_report as build_kernel_ingress_conformance_gate_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_diagnostics import (
         build_source_to_intent_research_kernel_ingress_diagnostic_cases,
     )
@@ -72,6 +75,9 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
+    )
+    from source_to_intent_research_kernel_ingress_conformance_gate import (
+        build_gate_report as build_kernel_ingress_conformance_gate_report,
     )
     from source_to_intent_research_kernel_ingress_diagnostics import (  # type: ignore[no-redef]
         build_source_to_intent_research_kernel_ingress_diagnostic_cases,
@@ -150,6 +156,7 @@ def build_gate_report(
     kernel_ingress_diagnostics_report: (
         SourceToIntentResearchKernelIngressDiagnosticsReport | None
     ) = None,
+    kernel_ingress_conformance_gate_text: str | None = None,
     kernel_ingress_text: str | None = None,
     preflight_bridge_text: str | None = None,
     source_runtime_smoke_text: str | None = None,
@@ -195,6 +202,11 @@ def build_gate_report(
         if kernel_ingress_diagnostics_report is None
         else kernel_ingress_diagnostics_report
     )
+    kernel_ingress_conformance = (
+        build_kernel_ingress_conformance_gate_report()
+        if kernel_ingress_conformance_gate_text is None
+        else kernel_ingress_conformance_gate_text
+    )
     preflight_bridge = (
         build_preflight_bridge_report()
         if preflight_bridge_text is None
@@ -212,6 +224,7 @@ def build_gate_report(
     _assert_execution_bridge_bound(execution_bridge)
     _assert_idiom_alignment_bound(idiom_alignment)
     _assert_kernel_ingress_diagnostics_bound(kernel_ingress_diagnostics)
+    _assert_kernel_ingress_conformance_bound(kernel_ingress_conformance)
     _assert_kernel_ingress_bound(kernel_ingress)
     _assert_source_runtime_smoke_bound(source_runtime_smoke)
     return _render_gate_report(
@@ -222,6 +235,7 @@ def build_gate_report(
         execution_bridge,
         idiom_alignment,
         kernel_ingress_diagnostics,
+        kernel_ingress_conformance,
         kernel_ingress,
         source_runtime_smoke,
     )
@@ -429,6 +443,27 @@ def _assert_kernel_ingress_diagnostics_bound(
         )
 
 
+def _assert_kernel_ingress_conformance_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress conformance not text"
+        )
+    required_fragments = (
+        'source_intent_frontend_conformance = "passed"',
+        'ingress_sources = "research_matmul_elementwise,research_softmax_reduction"',
+        'kernel_names = "matmul_elementwise,softmax_reduction"',
+        'status = "PASS"',
+    )
+    for fragment in required_fragments:
+        if fragment not in text:
+            raise SourceToIntentResearchEvidenceGateError(
+                "source-to-intent research evidence gate failed: "
+                "kernel ingress conformance binding missing"
+            )
+    _assert_gate_text_is_source_free(text)
+
+
 def _assert_source_runtime_smoke_bound(text: str) -> None:
     if not isinstance(text, str):
         raise SourceToIntentResearchEvidenceGateError(
@@ -453,6 +488,7 @@ def _render_gate_report(
     execution_bridge_text: str,
     idiom_alignment_text: str,
     kernel_ingress_diagnostics: SourceToIntentResearchKernelIngressDiagnosticsReport,
+    kernel_ingress_conformance_text: str,
     kernel_ingress_text: str,
     source_runtime_smoke_text: str,
 ) -> str:
@@ -486,6 +522,11 @@ def _render_gate_report(
     lines.append(
         "  kernel_ingress_diagnostics_digest = "
         f'"{_digest(kernel_ingress_diagnostics_text)}"'
+    )
+    lines.append('  kernel_ingress_conformance_gate = "passed"')
+    lines.append(
+        "  kernel_ingress_conformance_gate_digest = "
+        f'"{_digest(kernel_ingress_conformance_text)}"'
     )
     lines.append('  kernel_ingress = "passed"')
     lines.append(f'  kernel_ingress_digest = "{_digest(kernel_ingress_text)}"')

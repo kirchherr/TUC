@@ -31,11 +31,15 @@ The bundle records SHA-256 digests for:
 - Source-To-Intent Research Idiom Alignment
 - Source-To-Intent Research Source Runtime Smoke
 - Source-To-Intent Research Kernel Ingress
+- Source-To-Intent Research Kernel Ingress Conformance Gate
 - Source-To-Intent Research Kernel Ingress Diagnostics
 - Source-To-Intent Research Evidence Gate
 
 Kernel Ingress artifact path:
 `examples/source_to_intent_research_kernel_ingress.py`
+
+Kernel Ingress Conformance Gate artifact path:
+`examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
 
 Kernel Ingress Diagnostics artifact path:
 `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
@@ -77,6 +81,7 @@ execution bridge
 idiom alignment
 source runtime smoke
 kernel ingress
+kernel ingress conformance gate
 kernel ingress diagnostics
 evidence gate
     ->

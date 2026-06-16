@@ -32,6 +32,9 @@ try:
     from examples.source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_conformance_gate import (
+        build_gate_report as build_kernel_ingress_conformance_gate_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_diagnostics import (
         build_report as build_kernel_ingress_diagnostics_report,
     )
@@ -80,6 +83,9 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
+    )
+    from source_to_intent_research_kernel_ingress_conformance_gate import (
+        build_gate_report as build_kernel_ingress_conformance_gate_report,
     )
     from source_to_intent_research_kernel_ingress_diagnostics import (
         build_report as build_kernel_ingress_diagnostics_report,
@@ -221,6 +227,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
     ),
     (
+        "source_to_intent_research_kernel_ingress_conformance_gate",
+        "text_gate",
+        "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
+    ),
+    (
         "source_to_intent_research_evidence_gate",
         "text_gate",
         "source_to_intent_research_evidence_gate.ci.v0",
@@ -246,6 +257,9 @@ def build_proof_bundle_report() -> dict[str, object]:
         "source_to_intent_research_kernel_ingress": build_kernel_ingress_report(),
         "source_to_intent_research_kernel_ingress_diagnostics": (
             build_kernel_ingress_diagnostics_report()
+        ),
+        "source_to_intent_research_kernel_ingress_conformance_gate": (
+            build_kernel_ingress_conformance_gate_report()
         ),
         "source_to_intent_research_evidence_gate": build_evidence_gate_report(),
     }
@@ -344,6 +358,13 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
     assert_source_runtime_smoke_report_contract(smoke)
     ingress = json.loads(artifact_texts["source_to_intent_research_kernel_ingress"])
     assert_kernel_ingress_report_contract(ingress)
+    if (
+        'source_intent_frontend_conformance = "passed"'
+        not in artifact_texts["source_to_intent_research_kernel_ingress_conformance_gate"]
+    ):
+        raise ValueError(
+            "source-to-intent research proof bundle kernel ingress conformance drift"
+        )
     evidence_gate = artifact_texts["source_to_intent_research_evidence_gate"]
     for artifact_id in (
         "source_to_intent_research_readiness",
@@ -355,6 +376,7 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
         "source_to_intent_research_source_runtime_smoke",
         "source_to_intent_research_kernel_ingress",
         "source_to_intent_research_kernel_ingress_diagnostics",
+        "source_to_intent_research_kernel_ingress_conformance_gate",
     ):
         if _digest(artifact_texts[artifact_id]) not in evidence_gate:
             raise ValueError(
