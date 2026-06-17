@@ -209,7 +209,8 @@ Current frontend surfaces:
   buffers can run end-to-end through the controlled research path.
 - Source-To-Intent Research Kernel Ingress proving realistic Triton
   module-shaped source buffers can be validated, extracted, and executed
-  through the same controlled research path.
+  through the same controlled research path, currently across
+  `matmul_elementwise`, `softmax_reduction`, and `matmul_reduction`.
 - Source-To-Intent Research Kernel Ingress Runtime Matrix making accepted
   module-shaped runtime coverage explicit by backend sequence, terminal output,
   trace-step count, and runtime evidence digest.

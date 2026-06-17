@@ -51,6 +51,12 @@ The matrix binds accepted Kernel Ingress cases to:
 - runtime plan, execution trace, and reference correctness digests;
 - the exact Kernel Ingress E2E report digest.
 
+Current accepted cases:
+
+- `research_module_matmul_elementwise`
+- `research_module_softmax_reduction`
+- `research_module_matmul_reduction`
+
 Current accepted sequences:
 
 - `linear-sim->vector-sim`

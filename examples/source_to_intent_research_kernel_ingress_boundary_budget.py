@@ -110,10 +110,12 @@ _REJECTION_KEYS = frozenset(
 _EXPECTED_SOURCE_NAMES = (
     "research_matmul_elementwise",
     "research_softmax_reduction",
+    "research_matmul_reduction",
 )
 _EXPECTED_KERNEL_NAMES = (
     "matmul_elementwise",
     "softmax_reduction",
+    "matmul_reduction",
 )
 _EXPECTED_REJECTION_CASES = {
     "module_byte_budget": {

@@ -40,7 +40,7 @@ def test_kernel_ingress_runtime_matrix_report_shape() -> None:
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_CONTRACT
     )
     assert report["status"] == "PASS"
-    assert report["case_count"] == 2
+    assert report["case_count"] == 3
     assert report["covered_operation_families"] == [
         "elementwise",
         "matmul",
@@ -52,6 +52,7 @@ def test_kernel_ingress_runtime_matrix_report_shape() -> None:
         "vector-sim->vector-sim",
     ]
     assert [case["status"] for case in report["cases"]] == [
+        "runtime_bound",
         "runtime_bound",
         "runtime_bound",
     ]

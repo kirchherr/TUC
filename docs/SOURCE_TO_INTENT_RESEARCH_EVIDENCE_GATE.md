@@ -123,8 +123,8 @@ The gate passes only when:
 - Research Source Runtime Smoke passes for the same accepted parser sources.
 - Research Source Runtime Smoke validates the full source-buffer to runtime
   smoke path before its digest is accepted.
-- Research Kernel Ingress passes for the same accepted parser sources from a
-  realistic Triton module-shaped source buffer.
+- Research Kernel Ingress passes for the accepted module-shaped source cases,
+  including the Kernel-Ingress-specific `matmul_reduction` fixture.
 - Research Kernel Ingress validates module import prelude and kernel extraction
   as data before its digest is accepted.
 - Research Kernel Ingress Conformance Gate passes for accepted module-source

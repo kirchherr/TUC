@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from examples.source_to_intent_research_kernel_ingress import (
     REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE,
+    REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
     REALISTIC_SOFTMAX_REDUCTION_MODULE_SOURCE,
 )
 from tuc.frontend import (
@@ -40,6 +41,7 @@ def build_source_to_intent_research_kernel_ingress_diagnostic_cases() -> (
     """Return accepted and rejected kernel ingress diagnostic cases."""
 
     matmul_shapes = {"a": (4, 8), "b": (8, 2), "y": (4, 2)}
+    matmul_reduction_shapes = {"a": (4, 8), "b": (8, 2), "y": (4,)}
     softmax_shapes = {"x": (4, 8), "y": (4,)}
     return (
         SourceToIntentResearchKernelIngressDiagnosticCase(
@@ -57,6 +59,14 @@ def build_source_to_intent_research_kernel_ingress_diagnostic_cases() -> (
             source_name="research_softmax_reduction",
             kernel_name="softmax_reduction",
             tensor_shapes=softmax_shapes,
+        ),
+        SourceToIntentResearchKernelIngressDiagnosticCase(
+            case_id="accepted_module_matmul_reduction",
+            expectation="accepted",
+            module_source=REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
+            source_name="research_matmul_reduction",
+            kernel_name="matmul_reduction",
+            tensor_shapes=matmul_reduction_shapes,
         ),
         SourceToIntentResearchKernelIngressDiagnosticCase(
             case_id="reject_unsupported_import",

@@ -35,7 +35,7 @@ def test_kernel_ingress_boundary_budget_report_shape() -> None:
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET_CONTRACT
     )
     assert report["status"] == "PASS"
-    assert report["accepted_case_count"] == 2
+    assert report["accepted_case_count"] == 3
     assert report["budget_rejection_case_count"] == 2
     assert report["ingress_budget_limits"]["module_bytes"] == MAX_TRITON_SOURCE_BYTES
     assert report["ingress_budget_limits"]["module_lines"] == MAX_TRITON_SOURCE_LINES

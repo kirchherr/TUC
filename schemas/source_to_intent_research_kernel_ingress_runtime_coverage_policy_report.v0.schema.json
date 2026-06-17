@@ -37,15 +37,15 @@
     "case_requirements": {
       "type": "array",
       "items": {"$ref": "#/$defs/case_requirement"},
-      "minItems": 2,
-      "maxItems": 2
+      "minItems": 3,
+      "maxItems": 3
     },
     "default_parser_status": {"const": "default_parser_blocked"},
     "frontend_ingress_contract": {
       "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
     },
     "observed_backend_sequences": {"$ref": "#/$defs/backend_sequences"},
-    "observed_case_count": {"const": 2},
+    "observed_case_count": {"const": 3},
     "observed_operation_families": {"$ref": "#/$defs/operation_families"},
     "observed_terminal_outputs": {"$ref": "#/$defs/terminal_outputs"},
     "parser_status": {"const": "research_explicit_only"},
@@ -58,7 +58,7 @@
     "raw_source_policy": {"const": "omitted_by_policy"},
     "raw_value_policy": {"const": "omitted_by_policy"},
     "required_backend_sequences": {"$ref": "#/$defs/backend_sequences"},
-    "required_case_count": {"const": 2},
+    "required_case_count": {"const": 3},
     "required_digest_fields": {
       "type": "array",
       "prefixItems": [
@@ -121,13 +121,15 @@
         "case_id": {
           "enum": [
             "research_module_matmul_elementwise",
-            "research_module_softmax_reduction"
+            "research_module_softmax_reduction",
+            "research_module_matmul_reduction"
           ]
         },
         "kernel_name": {
           "enum": [
             "matmul_elementwise",
-            "softmax_reduction"
+            "softmax_reduction",
+            "matmul_reduction"
           ]
         },
         "operation_families": {
@@ -169,11 +171,12 @@
       "type": "array",
       "prefixItems": [
         {"const": "activated"},
-        {"const": "row_sum"}
+        {"const": "row_sum"},
+        {"const": "column_sum"}
       ],
       "items": false,
-      "minItems": 2,
-      "maxItems": 2
+      "minItems": 3,
+      "maxItems": 3
     },
     "sha256_digest": {
       "type": "string",

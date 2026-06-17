@@ -28,6 +28,9 @@ try:
         build_report as build_kernel_ingress_report,
     )
     from examples.source_to_intent_research_kernel_ingress_conformance_gate import (
+        REQUIRED_KERNEL_INGRESS_SOURCE_NAMES,
+    )
+    from examples.source_to_intent_research_kernel_ingress_conformance_gate import (
         build_gate_report as build_kernel_ingress_conformance_gate_report,
     )
     from examples.source_to_intent_research_kernel_ingress_diagnostics import (
@@ -94,6 +97,9 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
+    )
+    from source_to_intent_research_kernel_ingress_conformance_gate import (
+        REQUIRED_KERNEL_INGRESS_SOURCE_NAMES,
     )
     from source_to_intent_research_kernel_ingress_conformance_gate import (
         build_gate_report as build_kernel_ingress_conformance_gate_report,
@@ -491,7 +497,7 @@ def _assert_kernel_ingress_diagnostics_bound(
     accepted_sources = tuple(
         case.source_name for case in report.cases if case.outcome == "accepted"
     )
-    if accepted_sources != REQUIRED_PARSER_SOURCE_NAMES:
+    if accepted_sources != REQUIRED_KERNEL_INGRESS_SOURCE_NAMES:
         raise SourceToIntentResearchEvidenceGateError(
             "source-to-intent research evidence gate failed: "
             "kernel ingress source binding changed"
@@ -513,8 +519,11 @@ def _assert_kernel_ingress_conformance_bound(text: str) -> None:
         )
     required_fragments = (
         'source_intent_frontend_conformance = "passed"',
-        'ingress_sources = "research_matmul_elementwise,research_softmax_reduction"',
-        'kernel_names = "matmul_elementwise,softmax_reduction"',
+        (
+            'ingress_sources = "research_matmul_elementwise,'
+            'research_softmax_reduction,research_matmul_reduction"'
+        ),
+        'kernel_names = "matmul_elementwise,softmax_reduction,matmul_reduction"',
         'status = "PASS"',
     )
     for fragment in required_fragments:

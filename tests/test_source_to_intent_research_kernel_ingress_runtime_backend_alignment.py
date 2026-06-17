@@ -75,6 +75,7 @@ def test_kernel_ingress_runtime_backend_alignment_report_shape() -> None:
     assert [case["status"] for case in report["case_alignments"]] == [
         "aligned",
         "aligned",
+        "aligned",
     ]
 
 

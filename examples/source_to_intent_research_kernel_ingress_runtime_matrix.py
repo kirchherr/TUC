@@ -110,6 +110,12 @@ _EXPECTED_CASES = {
         "operation_families": ["reduction", "softmax"],
         "terminal_outputs": ["row_sum"],
     },
+    "research_module_matmul_reduction": {
+        "backend_sequence": ["linear-sim", "vector-sim"],
+        "kernel_name": "matmul_reduction",
+        "operation_families": ["matmul", "reduction"],
+        "terminal_outputs": ["column_sum"],
+    },
 }
 
 

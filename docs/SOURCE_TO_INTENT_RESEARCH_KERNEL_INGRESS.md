@@ -72,6 +72,8 @@ files, access devices, or discover plugins.
 - Evidence gate docs:
   [Source-To-Intent Research Kernel Ingress Evidence Gate](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md)
 - CI entry: `.github/workflows/ci.yml`
+- Fixture expansion RFC:
+  `rfcs/0176-source-to-intent-research-kernel-ingress-fixture-expansion.md`
 
 ## Accepted Module Shape
 
@@ -84,9 +86,15 @@ The v0 ingress accepts exactly:
 The extracted function source then re-enters the existing execution-free
 Triton Source Preflight and explicit Source-To-Intent Research Parser path.
 
+Current accepted kernels are:
+
+- `matmul_elementwise`
+- `softmax_reduction`
+- `matmul_reduction`
+
 ## Proof Path
 
-The example proves both accepted module-source fixtures through:
+The example proves all accepted module-source fixtures through:
 
 ```text
 Triton module source buffer
@@ -137,9 +145,9 @@ diagnostics and budget rejection surfaces are represented in one deterministic,
 source-free coverage matrix.
 
 The companion Kernel Ingress Runtime Matrix report makes the runtime side of
-the accepted cases explicit: backend sequences, terminal public outputs, trace
-step counts, and runtime evidence digests are bound back to the Kernel Ingress
-E2E report.
+the three accepted cases explicit: backend sequences, terminal public outputs,
+trace step counts, and runtime evidence digests are bound back to the Kernel
+Ingress E2E report.
 
 The companion Kernel Ingress Runtime Coverage Policy turns that matrix into a
 minimum accepted-coverage requirement for current runtime cases, backend

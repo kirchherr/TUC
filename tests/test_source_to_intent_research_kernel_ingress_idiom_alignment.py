@@ -35,7 +35,7 @@ def test_source_to_intent_research_kernel_ingress_idiom_alignment_report_shape()
     )
     assert report["status"] == "PASS"
     assert report["direct_general_triton_source_ingestion"] is False
-    assert report["accepted_source_count"] == 2
+    assert report["accepted_source_count"] == 3
     assert report["covered_operation_families"] == [
         "elementwise",
         "matmul",
@@ -46,8 +46,13 @@ def test_source_to_intent_research_kernel_ingress_idiom_alignment_report_shape()
     assert [case["case_id"] for case in report["cases"]] == [
         "research_matmul_elementwise",
         "research_softmax_reduction",
+        "research_matmul_reduction",
     ]
-    assert report["kernel_names"] == ["matmul_elementwise", "softmax_reduction"]
+    assert report["kernel_names"] == [
+        "matmul_elementwise",
+        "softmax_reduction",
+        "matmul_reduction",
+    ]
 
 
 @pytest.mark.parametrize(

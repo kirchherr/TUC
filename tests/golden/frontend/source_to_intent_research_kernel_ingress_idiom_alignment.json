@@ -1,5 +1,5 @@
 {
-  "accepted_source_count": 2,
+  "accepted_source_count": 3,
   "alignment_contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
   "artifact_policy": "metadata_only_values_omitted",
   "blocked_execution_surfaces": [
@@ -41,6 +41,19 @@
         "softmax"
       ],
       "status": "covered"
+    },
+    {
+      "case_id": "research_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "matched_idioms": [
+        "metadata_matmul_projection",
+        "metadata_reduction_axis"
+      ],
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "status": "covered"
     }
   ],
   "coverage_contract": "triton_idiom_coverage.execution_free.v0",
@@ -57,19 +70,21 @@
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
   "input_policy": "accepted_kernel_ingress_results_only",
   "kernel_ingress_conformance_gate_contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
-  "kernel_ingress_conformance_gate_digest": "sha256:0b28b90704418ab811699cc0de0dfb35d8beee93a33d6b5832e4b3d09d3e5c96",
+  "kernel_ingress_conformance_gate_digest": "sha256:c063ad75e61b46e091baf9a983bd909fbc438a27cde69ce4d46dc3685826b25e",
   "kernel_ingress_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
-  "kernel_ingress_digest": "sha256:b0b7add6a8874e11eb3aeb2d159b8090fc54c6ced96e54b53e07f55ae5b15d59",
+  "kernel_ingress_digest": "sha256:8d1741fc8313397fe2d4995941cd98e4427a918f019b574575073c186b4d755e",
   "kernel_names": [
     "matmul_elementwise",
-    "softmax_reduction"
+    "softmax_reduction",
+    "matmul_reduction"
   ],
   "parser_status": "research_explicit_only",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_idiom_alignment_report.v0",
   "source_boundary": "kernel_ingress_to_source_intent.v0_plain_data",
   "source_names": [
     "research_matmul_elementwise",
-    "research_softmax_reduction"
+    "research_softmax_reduction",
+    "research_matmul_reduction"
   ],
   "status": "PASS",
   "unsupported_operation_families": []

@@ -35,12 +35,12 @@
       "minItems": 2,
       "maxItems": 2
     },
-    "case_count": {"const": 2},
+    "case_count": {"const": 3},
     "cases": {
       "type": "array",
       "items": {"$ref": "#/$defs/case"},
-      "minItems": 2,
-      "maxItems": 2
+      "minItems": 3,
+      "maxItems": 3
     },
     "covered_operation_families": {
       "type": "array",
@@ -100,14 +100,16 @@
         "case_id": {
           "enum": [
             "research_module_matmul_elementwise",
-            "research_module_softmax_reduction"
+            "research_module_softmax_reduction",
+            "research_module_matmul_reduction"
           ]
         },
         "execution_trace_digest": {"$ref": "#/$defs/sha256_digest"},
         "kernel_name": {
           "enum": [
             "matmul_elementwise",
-            "softmax_reduction"
+            "softmax_reduction",
+            "matmul_reduction"
           ]
         },
         "operation_families": {

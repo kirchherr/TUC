@@ -4,7 +4,7 @@
     "linear-sim->vector-sim",
     "vector-sim->vector-sim"
   ],
-  "case_count": 2,
+  "case_count": 3,
   "cases": [
     {
       "backend_sequence": [
@@ -45,6 +45,26 @@
         "row_sum"
       ],
       "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_reduction",
+      "execution_trace_digest": "sha256:55d8e3c3618d217bd05f37806cbbbeb71217bc7e3e339b78302d2b340177a12a",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "reference_correctness_digest": "sha256:9514eab74294966fa28f71a4b38fe054454676208a92961518272a34b21ab9ef",
+      "runtime_plan_digest": "sha256:a4db63eef2a05b7c9ca29314d5b24dcdf064f38987bda5bb7fb93824db0bf185",
+      "status": "runtime_bound",
+      "terminal_outputs": [
+        "column_sum"
+      ],
+      "trace_step_count": 2
     }
   ],
   "covered_operation_families": [
@@ -56,7 +76,7 @@
   "default_parser_status": "default_parser_blocked",
   "e2e_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
-  "kernel_ingress_digest": "sha256:b0b7add6a8874e11eb3aeb2d159b8090fc54c6ced96e54b53e07f55ae5b15d59",
+  "kernel_ingress_digest": "sha256:8d1741fc8313397fe2d4995941cd98e4427a918f019b574575073c186b4d755e",
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",

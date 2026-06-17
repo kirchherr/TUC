@@ -34,6 +34,23 @@
         "row_sum"
       ],
       "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "status": "covered",
+      "terminal_outputs": [
+        "column_sum"
+      ],
+      "trace_step_count": 2
     }
   ],
   "default_parser_status": "default_parser_blocked",
@@ -42,7 +59,7 @@
     "linear-sim->vector-sim",
     "vector-sim->vector-sim"
   ],
-  "observed_case_count": 2,
+  "observed_case_count": 3,
   "observed_operation_families": [
     "elementwise",
     "matmul",
@@ -51,7 +68,8 @@
   ],
   "observed_terminal_outputs": [
     "activated",
-    "row_sum"
+    "row_sum",
+    "column_sum"
   ],
   "parser_status": "research_explicit_only",
   "policy_contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
@@ -62,7 +80,7 @@
     "linear-sim->vector-sim",
     "vector-sim->vector-sim"
   ],
-  "required_case_count": 2,
+  "required_case_count": 3,
   "required_digest_fields": [
     "runtime_plan_digest",
     "execution_trace_digest",
@@ -76,11 +94,12 @@
   ],
   "required_terminal_outputs": [
     "activated",
-    "row_sum"
+    "row_sum",
+    "column_sum"
   ],
   "required_trace_step_count_per_case": 2,
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:38049b7a1393caf4f46325c0e0d692ed622da8bfbe614095dc1d13d19d22fe39",
+  "runtime_matrix_digest": "sha256:30f26588217f8ed0d1bf021fd43f91adc04ca80e359ac9c870bfd581382cde66",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_coverage_policy_report.v0",
   "source_boundary": "triton_module_source_buffer_to_runtime_via_research_kernel_ingress",
   "status": "PASS",

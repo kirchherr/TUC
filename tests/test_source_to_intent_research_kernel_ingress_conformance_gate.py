@@ -62,11 +62,12 @@ def test_kernel_ingress_conformance_cases_pass_reusable_conformance() -> None:
     )
 
     assert report.passed
-    assert report.accepted_case_count == 2
+    assert report.accepted_case_count == 3
     assert report.rejected_case_count == 2
     assert report.checked_cases == (
         "research_kernel_ingress_matmul_elementwise",
         "research_kernel_ingress_softmax_reduction",
+        "research_kernel_ingress_matmul_reduction",
         "reject_kernel_ingress_backend_hint_escape",
         "reject_kernel_ingress_source_text_escape",
     )
@@ -124,7 +125,7 @@ def test_kernel_ingress_conformance_gate_rejects_tampered_source_name() -> None:
         SourceToIntentResearchKernelIngressConformanceGateError,
         match="ingress source names changed",
     ):
-        build_gate_report(ingress_results=(tampered_result, results[1]))
+        build_gate_report(ingress_results=(tampered_result, *results[1:]))
 
 
 def test_kernel_ingress_conformance_gate_rejects_tampered_kernel_name() -> None:
@@ -136,7 +137,7 @@ def test_kernel_ingress_conformance_gate_rejects_tampered_kernel_name() -> None:
         SourceToIntentResearchKernelIngressConformanceGateError,
         match="kernel names changed",
     ):
-        build_gate_report(ingress_results=(tampered_result, results[1]))
+        build_gate_report(ingress_results=(tampered_result, *results[1:]))
 
 
 def test_kernel_ingress_conformance_gate_rejects_non_report() -> None:

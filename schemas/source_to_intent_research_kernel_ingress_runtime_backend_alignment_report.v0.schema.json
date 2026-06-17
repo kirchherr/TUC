@@ -201,11 +201,60 @@
               "maxItems": 3
             }
           }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_sequence",
+            "case_id",
+            "kernel_name",
+            "operation_families",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_sequence": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "linear-sim"},
+                {"const": "vector-sim"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "case_id": {"const": "research_module_matmul_reduction"},
+            "kernel_name": {"const": "matmul_reduction"},
+            "operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "matmul"},
+                {"const": "reduction"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "status": {"const": "aligned"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "matmul"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 4,
+              "maxItems": 4
+            }
+          }
         }
       ],
       "items": false,
-      "minItems": 2,
-      "maxItems": 2
+      "minItems": 3,
+      "maxItems": 3
     },
     "observed_backend_names": {"$ref": "#/$defs/backend_names"},
     "required_backend_names": {"$ref": "#/$defs/backend_names"},

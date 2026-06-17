@@ -9,6 +9,7 @@ import pytest
 
 from examples.source_to_intent_research_kernel_ingress import (
     REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE,
+    REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
     SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_E2E_CONTRACT,
     SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_E2E_REPORT_SCHEMA_VERSION,
     assert_kernel_ingress_report_contract,
@@ -58,6 +59,28 @@ def test_kernel_ingress_frontend_extracts_realistic_module_source() -> None:
     assert "@triton.jit" not in dumped
     assert "import triton" not in dumped
     assert "tl.dot" not in dumped
+    assert "source_intent_payload" not in dumped
+
+
+def test_kernel_ingress_frontend_extracts_matmul_reduction_module_source() -> None:
+    result = ingest_triton_module_source_to_source_intent(
+        REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
+        source_name="research_matmul_reduction",
+        kernel_name="matmul_reduction",
+        tensor_shapes={"a": (4, 8), "b": (8, 2), "y": (4,)},
+    )
+
+    report = source_to_intent_research_kernel_ingress_report_to_dict(result.report)
+    assert report["operation_families"] == ["matmul", "reduction"]
+    assert result.parser_result.source_intent_payload["name"] == (
+        "research_matmul_reduction"
+    )
+
+    dumped = dump_source_to_intent_research_kernel_ingress_report(result.report)
+    assert "@triton.jit" not in dumped
+    assert "import triton" not in dumped
+    assert "tl.dot" not in dumped
+    assert "tl.store" not in dumped
     assert "source_intent_payload" not in dumped
 
 
@@ -120,16 +143,18 @@ def test_kernel_ingress_e2e_report_shape() -> None:
     )
     assert report["e2e_contract"] == SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_E2E_CONTRACT
     assert report["status"] == "PASS"
-    assert report["case_count"] == 2
+    assert report["case_count"] == 3
     assert report["source_boundary"] == (
         "triton_module_source_buffer_to_runtime_via_research_kernel_ingress"
     )
     assert [case["case_id"] for case in report["cases"]] == [
         "research_module_matmul_elementwise",
         "research_module_softmax_reduction",
+        "research_module_matmul_reduction",
     ]
     assert report["cases"][0]["backend_sequence"] == ["linear-sim", "vector-sim"]
     assert report["cases"][1]["backend_sequence"] == ["vector-sim", "vector-sim"]
+    assert report["cases"][2]["backend_sequence"] == ["linear-sim", "vector-sim"]
 
 
 @pytest.mark.parametrize(

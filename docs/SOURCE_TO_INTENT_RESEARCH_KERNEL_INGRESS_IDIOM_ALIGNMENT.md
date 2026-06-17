@@ -61,9 +61,9 @@ The report keeps these claims blocked:
 
 ## Review Meaning
 
-This is a targeted answer to parser-scope drift. It proves that the two
-accepted module-shaped ingress cases are not arbitrary new frontend power:
-their operation families are still the same covered MVP idioms that the earlier
+This is a targeted answer to parser-scope drift. It proves that the accepted
+module-shaped ingress cases are not arbitrary new frontend power: their
+operation families are still the same covered MVP idioms that the earlier
 research parser slice already bound.
 
 Future Kernel Ingress syntax can only count as accepted research scope after

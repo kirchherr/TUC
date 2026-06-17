@@ -38,11 +38,11 @@ performance claims.
 
 The policy currently requires:
 
-- two accepted Kernel Ingress runtime cases;
+- three accepted Kernel Ingress runtime cases;
 - operation-family coverage for `elementwise`, `matmul`, `reduction`, and
   `softmax`;
 - backend sequences `linear-sim->vector-sim` and `vector-sim->vector-sim`;
-- terminal outputs `activated` and `row_sum`;
+- terminal outputs `activated`, `row_sum`, and `column_sum`;
 - trace step count `2` for each accepted case;
 - `runtime_plan_digest`, `execution_trace_digest`, and
   `reference_correctness_digest` for each case.

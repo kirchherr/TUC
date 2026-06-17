@@ -723,6 +723,10 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_kernel_ingress.json`, and
   digest binding through Source-To-Intent Research Evidence Gate and Proof
   Bundle for realistic Triton module-shaped source buffers.
+- Source-To-Intent Research Kernel Ingress Fixture Expansion adds
+  `matmul_reduction` as a third accepted module-shaped case, with coverage in
+  runtime matrix, runtime coverage policy, backend alignment, diagnostics,
+  conformance, proof bundle, and evidence gates.
 - Source-To-Intent Research Kernel Ingress Runtime Matrix at
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`, with
   schema at

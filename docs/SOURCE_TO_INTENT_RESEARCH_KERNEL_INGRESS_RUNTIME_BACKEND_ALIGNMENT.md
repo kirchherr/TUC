@@ -48,6 +48,8 @@ The report verifies that:
   `softmax`;
 - every accepted Kernel Ingress case is covered by the union of its planned
   backend sequence capabilities;
+- the accepted `matmul_reduction` case is bound as a real
+  `linear-sim->vector-sim` mixed-backend plan, not as a new backend claim;
 - runtime matrix, runtime coverage policy, and runtime executor conformance
   digests are recorded together.
 

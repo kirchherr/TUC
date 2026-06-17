@@ -29,11 +29,11 @@
     "status"
   ],
   "properties": {
-    "accepted_case_count": {"const": 2},
+    "accepted_case_count": {"const": 3},
     "accepted_observations": {
       "type": "array",
-      "minItems": 2,
-      "maxItems": 2,
+      "minItems": 3,
+      "maxItems": 3,
       "items": {"$ref": "#/$defs/observation"}
     },
     "artifact_policy": {"const": "metadata_only_values_omitted"},
@@ -149,12 +149,13 @@
         "case_id": {
           "enum": [
             "accepted_research_matmul_elementwise",
-            "accepted_research_softmax_reduction"
+            "accepted_research_softmax_reduction",
+            "accepted_research_matmul_reduction"
           ]
         },
         "import_count": {"const": 2},
         "kernel_name": {
-          "enum": ["matmul_elementwise", "softmax_reduction"]
+          "enum": ["matmul_elementwise", "softmax_reduction", "matmul_reduction"]
         },
         "module_ast_depth": {
           "type": "integer",
@@ -188,7 +189,8 @@
         "source_name": {
           "enum": [
             "research_matmul_elementwise",
-            "research_softmax_reduction"
+            "research_softmax_reduction",
+            "research_matmul_reduction"
           ]
         },
         "status": {"const": "within_budget"},

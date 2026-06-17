@@ -123,13 +123,22 @@ _REQUIRED_CASES = (
         "terminal_outputs": ["row_sum"],
         "trace_step_count": 2,
     },
+    {
+        "backend_sequence": ["linear-sim", "vector-sim"],
+        "case_id": "research_module_matmul_reduction",
+        "kernel_name": "matmul_reduction",
+        "operation_families": ["matmul", "reduction"],
+        "status": "covered",
+        "terminal_outputs": ["column_sum"],
+        "trace_step_count": 2,
+    },
 )
 _REQUIRED_BACKEND_SEQUENCES = (
     "linear-sim->vector-sim",
     "vector-sim->vector-sim",
 )
 _REQUIRED_OPERATION_FAMILIES = ("elementwise", "matmul", "reduction", "softmax")
-_REQUIRED_TERMINAL_OUTPUTS = ("activated", "row_sum")
+_REQUIRED_TERMINAL_OUTPUTS = ("activated", "row_sum", "column_sum")
 _REQUIRED_DIGEST_FIELDS = (
     "runtime_plan_digest",
     "execution_trace_digest",

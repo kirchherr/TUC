@@ -1,5 +1,5 @@
 {
-  "accepted_case_count": 2,
+  "accepted_case_count": 3,
   "blocked_claims": [
     "general_triton_source_ingestion",
     "native_performance_claim",
@@ -63,6 +63,21 @@
       "outcome": "accepted",
       "rejection_reason": "",
       "source_name": "research_softmax_reduction"
+    },
+    {
+      "case_id": "accepted_module_matmul_reduction",
+      "expectation": "accepted",
+      "ingress_report_digest": "sha256:26336180ff64a5f3d46ea4eb548bbf6c07082a6ad1d72dfb9ef279f727824d63",
+      "kernel_name": "matmul_reduction",
+      "module_bytes": 189,
+      "module_digest": "sha256:a89fa59436fec099776603ffead3fda935dff77a05308572bcd049fd1cda338f",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "outcome": "accepted",
+      "rejection_reason": "",
+      "source_name": "research_matmul_reduction"
     },
     {
       "case_id": "reject_unsupported_import",

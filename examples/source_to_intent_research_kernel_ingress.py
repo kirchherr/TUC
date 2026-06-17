@@ -87,6 +87,16 @@ def softmax_reduction(x, y):
     tl.store(y, row_sum)
 """
 
+REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE = """import triton
+import triton.language as tl
+
+@triton.jit
+def matmul_reduction(a, b, y):
+    projection = tl.dot(a, b)
+    column_sum = tl.sum(projection, axis=1)
+    tl.store(y, column_sum)
+"""
+
 _SHA256_DIGEST_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 _TOP_LEVEL_KEYS = frozenset(
     {
@@ -161,6 +171,12 @@ _MODULE_CASES = (
         "softmax_reduction",
         REALISTIC_SOFTMAX_REDUCTION_MODULE_SOURCE,
     ),
+    (
+        "research_module_matmul_reduction",
+        "research_matmul_reduction",
+        "matmul_reduction",
+        REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
+    ),
 )
 _EXPECTED_CASE_SUMMARIES = {
     "research_module_matmul_elementwise": {
@@ -172,6 +188,11 @@ _EXPECTED_CASE_SUMMARIES = {
         "backend_sequence": ["vector-sim", "vector-sim"],
         "operation_families": ["reduction", "softmax"],
         "terminal_outputs": ["row_sum"],
+    },
+    "research_module_matmul_reduction": {
+        "backend_sequence": ["linear-sim", "vector-sim"],
+        "operation_families": ["matmul", "reduction"],
+        "terminal_outputs": ["column_sum"],
     },
 }
 
@@ -327,6 +348,8 @@ def _tensor_shapes_for(source_name: str) -> dict[str, tuple[int, ...]]:
         return {"a": (4, 8), "b": (8, 2), "y": (4, 2)}
     if source_name == "research_softmax_reduction":
         return {"x": (4, 8), "y": (4,)}
+    if source_name == "research_matmul_reduction":
+        return {"a": (4, 8), "b": (8, 2), "y": (4,)}
     raise ValueError("unsupported source-to-intent research kernel ingress source")
 
 

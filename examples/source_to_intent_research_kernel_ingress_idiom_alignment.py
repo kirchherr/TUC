@@ -133,6 +133,11 @@ _EXPECTED_CASE_SUMMARIES = {
         "matched_idioms": ["metadata_reduction_axis", "metadata_softmax_axis"],
         "operation_families": ["reduction", "softmax"],
     },
+    "research_matmul_reduction": {
+        "kernel_name": "matmul_reduction",
+        "matched_idioms": ["metadata_matmul_projection", "metadata_reduction_axis"],
+        "operation_families": ["matmul", "reduction"],
+    },
 }
 
 

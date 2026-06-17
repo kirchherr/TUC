@@ -67,6 +67,25 @@
         "reduction",
         "softmax"
       ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "status": "aligned",
+      "supported_operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ]
     }
   ],
   "observed_backend_names": [
@@ -78,13 +97,13 @@
     "vector-sim"
   ],
   "runtime_coverage_policy_contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
-  "runtime_coverage_policy_digest": "sha256:9c5f559958fb617e5f30a44944099d43eab8bffd668f2258c3d7685a5ff9f937",
+  "runtime_coverage_policy_digest": "sha256:e010ed55a11bb7c71bf757cf5c17cf16d4243ae41e8be09048408a7743246d00",
   "runtime_executor_conformance_contract": "runtime_executor_conformance.trusted.v0",
   "runtime_executor_conformance_digest": "sha256:7b4a2c74ccc805fbca6e5452ae7da27b907ac9e40a606f30501aabef981b88ae",
   "runtime_executor_conformance_schema_version": "tuc.runtime_executor_conformance_report.v0",
   "runtime_executor_contract": "runtime_executor.trusted_backend.v0",
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:38049b7a1393caf4f46325c0e0d692ed622da8bfbe614095dc1d13d19d22fe39",
+  "runtime_matrix_digest": "sha256:30f26588217f8ed0d1bf021fd43f91adc04ca80e359ac9c870bfd581382cde66",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_backend_alignment_report.v0",
   "source_boundary": "kernel_ingress_runtime_matrix_to_trusted_executor_conformance",
   "status": "PASS",

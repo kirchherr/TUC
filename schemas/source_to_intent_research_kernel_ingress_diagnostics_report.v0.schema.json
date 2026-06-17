@@ -25,7 +25,7 @@
     "schema_version"
   ],
   "properties": {
-    "accepted_case_count": {"const": 2},
+    "accepted_case_count": {"const": 3},
     "blocked_claims": {
       "type": "array",
       "prefixItems": [
@@ -38,8 +38,8 @@
     },
     "blocked_compiler_outputs": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 8,
+      "maxItems": 8,
       "items": {"$ref": "#/$defs/report_text"}
     },
     "blocked_execution_surfaces": {

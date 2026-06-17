@@ -34,6 +34,7 @@ accepted research scope.
 
 - `accepted_module_matmul_elementwise`
 - `accepted_module_softmax_reduction`
+- `accepted_module_matmul_reduction`
 
 Accepted cases record module digest, operation families, and Kernel Ingress
 report digest. They do not serialize module source, extracted kernel source, or

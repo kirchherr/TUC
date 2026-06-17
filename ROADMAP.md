@@ -538,6 +538,9 @@ Deliverables:
   module-shaped source buffers can be validated as data, reduced to one
   explicitly selected kernel function, and executed through the controlled
   source-to-runtime research path.
+- Source-To-Intent Research Kernel Ingress Fixture Expansion proving a third
+  accepted module-shaped kernel, `matmul_reduction`, through the same
+  source-free runtime, conformance, diagnostics, and evidence gates.
 - Source-To-Intent Research Kernel Ingress Runtime Matrix
   (`examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`)
   proving accepted realistic module-shaped inputs have explicit runtime

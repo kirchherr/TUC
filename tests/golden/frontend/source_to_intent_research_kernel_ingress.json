@@ -5,7 +5,7 @@
     "native_performance_claim",
     "production_parser"
   ],
-  "case_count": 2,
+  "case_count": 3,
   "cases": [
     {
       "backend_sequence": [
@@ -64,6 +64,36 @@
       "source_intent_digest": "sha256:564d02eea5ca680d08794fa746320371f8b189cc63047832b9360330af9aa457",
       "terminal_outputs": [
         "row_sum"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_reduction",
+      "compiler_decision_digest": "sha256:411817ef78043517e217f067bdf862fd11b3c30708aaf323e896eb95f0d5ca88",
+      "execution_trace_digest": "sha256:55d8e3c3618d217bd05f37806cbbbeb71217bc7e3e339b78302d2b340177a12a",
+      "extracted_kernel_digest": "sha256:5326aa954e70390b83c91adfb5f5dc5c3391e9bf66fb1f2586a4b1f783196125",
+      "hac_ir_digest": "sha256:fbce22ea471a093e84f69a75d6c027331b4a98504c294cb69de9c18635511472",
+      "ingress_report_digest": "sha256:ecb86e62bf770473b719569f3d4e663af3543592f039422213e5f4eaf3f0ab0a",
+      "kernel_name": "matmul_reduction",
+      "metadata_intake_digest": "sha256:5ff6e2b04ce05ce712d5692f5c674d0eaf3674eb5c17120f1af9dc3c84e35d45",
+      "metadata_report_digest": "sha256:b618986e3c9ef43aae8cb5926c0805c33af63c4e5a290456a8c9e0c92769ffb5",
+      "module_digest": "sha256:a89fa59436fec099776603ffead3fda935dff77a05308572bcd049fd1cda338f",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "parser_report_digest": "sha256:cc8a114b36667010fc5e482a1838f065515b0c055733e7d5caefc31ad8552626",
+      "plain_data_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614",
+      "readiness_digest": "sha256:e42855a6e1570851472492f50345db461797b8a56746f0ca4aab4042a5fe895c",
+      "reference_correctness_digest": "sha256:9514eab74294966fa28f71a4b38fe054454676208a92961518272a34b21ab9ef",
+      "runtime_plan_digest": "sha256:a4db63eef2a05b7c9ca29314d5b24dcdf064f38987bda5bb7fb93824db0bf185",
+      "source_intent_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614",
+      "terminal_outputs": [
+        "column_sum"
       ],
       "trace_step_count": 2
     }

@@ -28,19 +28,21 @@
       "type": "array",
       "prefixItems": [
         {"const": "matmul_elementwise"},
-        {"const": "softmax_reduction"}
+        {"const": "softmax_reduction"},
+        {"const": "matmul_reduction"}
       ],
-      "minItems": 2,
-      "maxItems": 2
+      "minItems": 3,
+      "maxItems": 3
     },
     "accepted_source_names": {
       "type": "array",
       "prefixItems": [
         {"const": "research_matmul_elementwise"},
-        {"const": "research_softmax_reduction"}
+        {"const": "research_softmax_reduction"},
+        {"const": "research_matmul_reduction"}
       ],
-      "minItems": 2,
-      "maxItems": 2
+      "minItems": 3,
+      "maxItems": 3
     },
     "artifact_count": {"const": 9},
     "artifact_policy": {"const": "digest_only_source_free"},

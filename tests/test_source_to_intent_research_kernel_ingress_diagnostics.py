@@ -50,7 +50,7 @@ def test_kernel_ingress_diagnostics_tracks_accepted_and_rejected_cases() -> None
     assert report.raw_value_policy == (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RAW_VALUE_POLICY
     )
-    assert report.accepted_case_count == 2
+    assert report.accepted_case_count == 3
     assert report.rejected_case_count == 5
     assert report.rejection_reasons == tuple(
         sorted(SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS)
@@ -58,6 +58,7 @@ def test_kernel_ingress_diagnostics_tracks_accepted_and_rejected_cases() -> None
     assert tuple(case.case_id for case in report.cases) == (
         "accepted_module_matmul_elementwise",
         "accepted_module_softmax_reduction",
+        "accepted_module_matmul_reduction",
         "reject_unsupported_import",
         "reject_import_from_statement",
         "reject_multiple_kernel_functions",
@@ -179,7 +180,7 @@ def test_kernel_ingress_diagnostics_rejects_unexpected_acceptance() -> None:
 
 
 def test_kernel_ingress_diagnostics_rejects_reason_mismatch() -> None:
-    rejected = build_source_to_intent_research_kernel_ingress_diagnostic_cases()[2]
+    rejected = build_source_to_intent_research_kernel_ingress_diagnostic_cases()[3]
     tampered = replace(
         rejected,
         expected_rejection_reason="kernel_name_mismatch",

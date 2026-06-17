@@ -133,10 +133,12 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_CONTRACT = (
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_ACCEPTED_SOURCES = (
     "research_matmul_elementwise",
     "research_softmax_reduction",
+    "research_matmul_reduction",
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_ACCEPTED_KERNELS = (
     "matmul_elementwise",
     "softmax_reduction",
+    "matmul_reduction",
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_OPERATION_FAMILIES = (
     "elementwise",
@@ -312,13 +314,16 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  conformance_gate = "passed"',
         '  idiom_alignment = "passed"',
         '  proof_bundle = "passed"',
-        '  accepted_sources = "research_matmul_elementwise,research_softmax_reduction"',
-        '  accepted_kernels = "matmul_elementwise,softmax_reduction"',
+        (
+            '  accepted_sources = "research_matmul_elementwise,'
+            'research_softmax_reduction,research_matmul_reduction"'
+        ),
+        '  accepted_kernels = "matmul_elementwise,softmax_reduction,matmul_reduction"',
         '  covered_operation_families = "elementwise,matmul,reduction,softmax"',
         '  backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim"',
         '  trusted_executor_registry = "trusted_runtime_executor_registry.v0"',
         '  trusted_runtime_backends = "linear-sim,vector-sim"',
-        '  runtime_case_count = "2"',
+        '  runtime_case_count = "3"',
         (
             '  required_runtime_digest_fields = "runtime_plan_digest,'
             'execution_trace_digest,reference_correctness_digest"'
@@ -443,7 +448,7 @@ def _assert_rejection_coverage_bound(text: str) -> Mapping[str, object]:
 def _assert_diagnostics_bound(text: str) -> Mapping[str, object]:
     report = _load_json_report(text, "diagnostics")
     expected_values = {
-        "accepted_case_count": 2,
+        "accepted_case_count": 3,
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "diagnostics_contract": (
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT
@@ -473,8 +478,11 @@ def _assert_conformance_gate_bound(text: str) -> None:
         )
     required_fragments = (
         'source_intent_frontend_conformance = "passed"',
-        'ingress_sources = "research_matmul_elementwise,research_softmax_reduction"',
-        'kernel_names = "matmul_elementwise,softmax_reduction"',
+        (
+            'ingress_sources = "research_matmul_elementwise,'
+            'research_softmax_reduction,research_matmul_reduction"'
+        ),
+        'kernel_names = "matmul_elementwise,softmax_reduction,matmul_reduction"',
         'status = "PASS"',
     )
     for fragment in required_fragments:

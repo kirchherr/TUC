@@ -136,6 +136,14 @@ _EXPECTED_CASE_ALIGNMENTS = (
         "status": "aligned",
         "supported_operation_families": ["elementwise", "reduction", "softmax"],
     },
+    {
+        "backend_sequence": ["linear-sim", "vector-sim"],
+        "case_id": "research_module_matmul_reduction",
+        "kernel_name": "matmul_reduction",
+        "operation_families": ["matmul", "reduction"],
+        "status": "aligned",
+        "supported_operation_families": ["elementwise", "matmul", "reduction", "softmax"],
+    },
 )
 
 
