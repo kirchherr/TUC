@@ -56,11 +56,13 @@ Current accepted cases:
 - `research_module_matmul_elementwise`
 - `research_module_softmax_reduction`
 - `research_module_matmul_reduction`
+- `research_module_mvp_pipeline`
 
 Current accepted sequences:
 
 - `linear-sim->vector-sim`
 - `vector-sim->vector-sim`
+- `linear-sim->vector-sim->vector-sim->vector-sim`
 
 ## Security Boundary
 

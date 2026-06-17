@@ -521,9 +521,13 @@ def _assert_kernel_ingress_conformance_bound(text: str) -> None:
         'source_intent_frontend_conformance = "passed"',
         (
             'ingress_sources = "research_matmul_elementwise,'
-            'research_softmax_reduction,research_matmul_reduction"'
+            'research_softmax_reduction,research_matmul_reduction,'
+            'research_mvp_pipeline"'
         ),
-        'kernel_names = "matmul_elementwise,softmax_reduction,matmul_reduction"',
+        (
+            'kernel_names = "matmul_elementwise,softmax_reduction,'
+            'matmul_reduction,mvp_pipeline"'
+        ),
         'status = "PASS"',
     )
     for fragment in required_fragments:

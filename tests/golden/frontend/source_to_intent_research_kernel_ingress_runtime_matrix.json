@@ -2,9 +2,10 @@
   "artifact_policy": "metadata_only_values_omitted",
   "backend_sequences": [
     "linear-sim->vector-sim",
-    "vector-sim->vector-sim"
+    "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim"
   ],
-  "case_count": 3,
+  "case_count": 4,
   "cases": [
     {
       "backend_sequence": [
@@ -65,6 +66,30 @@
         "column_sum"
       ],
       "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_mvp_pipeline",
+      "execution_trace_digest": "sha256:0da05472c0cf5ef06362f6c9b1cf2a4f726566cc72c41ac8c48723e978d696cd",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "reference_correctness_digest": "sha256:f08da54e302db8e65b8bcd147ad42e722a7a848619d32792100a05067f7481b9",
+      "runtime_plan_digest": "sha256:59dbf49fb8a9f65895c38b74c214752efc9b5d5cf9390533602040a11c8bf56d",
+      "status": "runtime_bound",
+      "terminal_outputs": [
+        "stable"
+      ],
+      "trace_step_count": 4
     }
   ],
   "covered_operation_families": [
@@ -76,7 +101,7 @@
   "default_parser_status": "default_parser_blocked",
   "e2e_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
-  "kernel_ingress_digest": "sha256:8d1741fc8313397fe2d4995941cd98e4427a918f019b574575073c186b4d755e",
+  "kernel_ingress_digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",

@@ -44,15 +44,15 @@
       "maxItems": 3
     },
     "case_count": {
-      "const": 3
+      "const": 4
     },
     "cases": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/case"
       },
-      "minItems": 3,
-      "maxItems": 3
+      "minItems": 4,
+      "maxItems": 4
     },
     "default_parser_status": {
       "const": "default_parser_blocked"
@@ -128,13 +128,14 @@
             "type": "string"
           },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 4
         },
         "case_id": {
           "enum": [
             "research_module_matmul_elementwise",
             "research_module_softmax_reduction",
-            "research_module_matmul_reduction"
+            "research_module_matmul_reduction",
+            "research_module_mvp_pipeline"
           ]
         },
         "compiler_decision_digest": {
@@ -156,7 +157,8 @@
           "enum": [
             "matmul_elementwise",
             "softmax_reduction",
-            "matmul_reduction"
+            "matmul_reduction",
+            "mvp_pipeline"
           ]
         },
         "metadata_intake_digest": {
@@ -179,7 +181,7 @@
             ]
           },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 4
         },
         "parser_report_digest": {
           "$ref": "#/$defs/sha256_digest"
@@ -208,7 +210,7 @@
           "maxItems": 1
         },
         "trace_step_count": {
-          "const": 2
+          "enum": [2, 4]
         }
       }
     }

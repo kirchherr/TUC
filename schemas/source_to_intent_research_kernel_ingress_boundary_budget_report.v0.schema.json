@@ -29,11 +29,11 @@
     "status"
   ],
   "properties": {
-    "accepted_case_count": {"const": 3},
+    "accepted_case_count": {"const": 4},
     "accepted_observations": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 4,
+      "maxItems": 4,
       "items": {"$ref": "#/$defs/observation"}
     },
     "artifact_policy": {"const": "metadata_only_values_omitted"},
@@ -150,12 +150,18 @@
           "enum": [
             "accepted_research_matmul_elementwise",
             "accepted_research_softmax_reduction",
-            "accepted_research_matmul_reduction"
+            "accepted_research_matmul_reduction",
+            "accepted_research_mvp_pipeline"
           ]
         },
         "import_count": {"const": 2},
         "kernel_name": {
-          "enum": ["matmul_elementwise", "softmax_reduction", "matmul_reduction"]
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction",
+            "matmul_reduction",
+            "mvp_pipeline"
+          ]
         },
         "module_ast_depth": {
           "type": "integer",
@@ -183,14 +189,15 @@
             "enum": ["elementwise", "matmul", "reduction", "softmax"]
           },
           "minItems": 2,
-          "maxItems": 2,
+          "maxItems": 4,
           "uniqueItems": true
         },
         "source_name": {
           "enum": [
             "research_matmul_elementwise",
             "research_softmax_reduction",
-            "research_matmul_reduction"
+            "research_matmul_reduction",
+            "research_mvp_pipeline"
           ]
         },
         "status": {"const": "within_budget"},

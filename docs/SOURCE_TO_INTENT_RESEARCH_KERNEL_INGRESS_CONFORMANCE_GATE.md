@@ -33,6 +33,7 @@ Accepted cases:
 - `research_kernel_ingress_matmul_elementwise`
 - `research_kernel_ingress_softmax_reduction`
 - `research_kernel_ingress_matmul_reduction`
+- `research_kernel_ingress_mvp_pipeline`
 
 Rejected conformance cases:
 

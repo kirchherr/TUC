@@ -5,7 +5,7 @@
     "native_performance_claim",
     "production_parser"
   ],
-  "case_count": 3,
+  "case_count": 4,
   "cases": [
     {
       "backend_sequence": [
@@ -96,6 +96,40 @@
         "column_sum"
       ],
       "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_mvp_pipeline",
+      "compiler_decision_digest": "sha256:006b086faa5c5e93836e5393a74bd4ef2111626ac142b0b1f4b4d1790056fcde",
+      "execution_trace_digest": "sha256:0da05472c0cf5ef06362f6c9b1cf2a4f726566cc72c41ac8c48723e978d696cd",
+      "extracted_kernel_digest": "sha256:826553f10916da5069bfacc536f1b4d353d323d8da116b77b59d05d8a8d803f2",
+      "hac_ir_digest": "sha256:219690f780e822e7e3fde75ff798f67edf45f6b9e1d1115096523f054e900057",
+      "ingress_report_digest": "sha256:8e1471a5f2531c5e6533504c41f04308393a4d815e519d3117feba4d1a8bc28a",
+      "kernel_name": "mvp_pipeline",
+      "metadata_intake_digest": "sha256:ad2dacfcf09834e8212cb130fed079206d2512fd7c7e449980ffe1fc93e03947",
+      "metadata_report_digest": "sha256:bcbcdfe9284211fe9f7089903b29bb0a850000db987e02da4ec363b2ba22f17a",
+      "module_digest": "sha256:47f230b1ac25994fb6a2a63ac703c2f78451b1d37349fb113b6e2081b0f43f78",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "parser_report_digest": "sha256:328b6d87b277b904b8fc39ecd549a078c027edda2fa631494b449a008ad1f75f",
+      "plain_data_digest": "sha256:64ef291147b87c07ebed1e6d5a8e44ee2c6cf795402c9e88dd59ab00f185f795",
+      "readiness_digest": "sha256:4296ab3c21a8609258426bfd10c0e0a2e1e9e949401b197d6edc9c195dc1a15d",
+      "reference_correctness_digest": "sha256:f08da54e302db8e65b8bcd147ad42e722a7a848619d32792100a05067f7481b9",
+      "runtime_plan_digest": "sha256:59dbf49fb8a9f65895c38b74c214752efc9b5d5cf9390533602040a11c8bf56d",
+      "source_intent_digest": "sha256:64ef291147b87c07ebed1e6d5a8e44ee2c6cf795402c9e88dd59ab00f185f795",
+      "terminal_outputs": [
+        "stable"
+      ],
+      "trace_step_count": 4
     }
   ],
   "default_parser_status": "default_parser_blocked",

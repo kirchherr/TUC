@@ -40,11 +40,13 @@ def test_kernel_ingress_proof_bundle_report_shape() -> None:
         "research_matmul_elementwise",
         "research_softmax_reduction",
         "research_matmul_reduction",
+        "research_mvp_pipeline",
     ]
     assert report["accepted_kernel_names"] == [
         "matmul_elementwise",
         "softmax_reduction",
         "matmul_reduction",
+        "mvp_pipeline",
     ]
     assert [artifact["artifact_id"] for artifact in report["artifacts"]] == (
         report["required_artifacts"]

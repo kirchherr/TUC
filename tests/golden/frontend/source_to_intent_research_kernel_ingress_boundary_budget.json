@@ -1,5 +1,5 @@
 {
-  "accepted_case_count": 3,
+  "accepted_case_count": 4,
   "accepted_observations": [
     {
       "case_id": "accepted_research_matmul_elementwise",
@@ -46,6 +46,24 @@
         "reduction"
       ],
       "source_name": "research_matmul_reduction",
+      "status": "within_budget",
+      "top_level_function_count": 1
+    },
+    {
+      "case_id": "accepted_research_mvp_pipeline",
+      "import_count": 2,
+      "kernel_name": "mvp_pipeline",
+      "module_ast_depth": 7,
+      "module_ast_node_count": 77,
+      "module_bytes": 281,
+      "module_line_count": 10,
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "source_name": "research_mvp_pipeline",
       "status": "within_budget",
       "top_level_function_count": 1
     }

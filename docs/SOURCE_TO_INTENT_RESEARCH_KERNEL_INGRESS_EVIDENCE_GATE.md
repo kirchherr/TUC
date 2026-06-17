@@ -56,9 +56,10 @@ text to compiler artifacts.
 The gate output is source-free and contains only digests, stable identifiers,
 coverage counts, parser status, and pass/fail status.
 
-The current gate binds three accepted Kernel Ingress runtime cases and two
-unique backend sequences: `linear-sim->vector-sim` and
-`vector-sim->vector-sim`.
+The current gate binds four accepted Kernel Ingress runtime cases and three
+unique backend sequences: `linear-sim->vector-sim`,
+`vector-sim->vector-sim`, and
+`linear-sim->vector-sim->vector-sim->vector-sim`.
 
 ## Review Meaning
 

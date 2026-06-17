@@ -59,49 +59,49 @@
       "artifact_id": "source_to_intent_research_kernel_ingress",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress.e2e.v0",
-      "digest": "sha256:8d1741fc8313397fe2d4995941cd98e4427a918f019b574575073c186b4d755e",
+      "digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_diagnostics",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
-      "digest": "sha256:76e6994b8ed6615e9484a650b54a6e3e3943fa9bd5ef2cdb6efb697bfb7a2a8b",
+      "digest": "sha256:45297fac6a4556047438935eeb5efa5f2a7091af18788190cf1729014f4b01e7",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_conformance_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
-      "digest": "sha256:c063ad75e61b46e091baf9a983bd909fbc438a27cde69ce4d46dc3685826b25e",
+      "digest": "sha256:beab626459c90e6776fb58bf21428694f26a90bdb656343a1ad81f436d724142",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_idiom_alignment",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
-      "digest": "sha256:d47c5b74a1ba8d18c2c4fd603ce2bac091c7a6d5d98dbc70bdd42c13b9a2dcc7",
+      "digest": "sha256:dbc49456079c2ca87cd1fa6cd416a6b4367a1f296fd7859a427f4f953555df77",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:ff5e5ac12b6d3ca673d8d9fca25c4a01db65ceb51d35f5e695fbb2a52a5bea98",
+      "digest": "sha256:f3f05150f3b65b345a2b512bb6281b004a592a1ae9eafb11eb9e028e2be62339",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:8fdd4dd79e75fbd28b0849a4493656ba12f16746b42541b174dcb4def73b7b49",
+      "digest": "sha256:e831f562aad343542298438d992f74fb8dd5c35dff484c521fb68dd715a3f87d",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:c7e198246449c4c12b9f4580aaefb6f04c6d1046bc1cd60b532d9b20f34ff3cd",
+      "digest": "sha256:18f081adfbefbd40266bb0f2619c1580f38e42218063693bfdb18cd98be73fa4",
       "status": "accepted"
     }
   ],

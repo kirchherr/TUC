@@ -144,6 +144,14 @@ _EXPECTED_CASE_ALIGNMENTS = (
         "status": "aligned",
         "supported_operation_families": ["elementwise", "matmul", "reduction", "softmax"],
     },
+    {
+        "backend_sequence": ["linear-sim", "vector-sim", "vector-sim", "vector-sim"],
+        "case_id": "research_module_mvp_pipeline",
+        "kernel_name": "mvp_pipeline",
+        "operation_families": ["elementwise", "matmul", "reduction", "softmax"],
+        "status": "aligned",
+        "supported_operation_families": ["elementwise", "matmul", "reduction", "softmax"],
+    },
 )
 
 

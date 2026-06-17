@@ -50,6 +50,9 @@ The report verifies that:
   backend sequence capabilities;
 - the accepted `matmul_reduction` case is bound as a real
   `linear-sim->vector-sim` mixed-backend plan, not as a new backend claim;
+- the accepted `mvp_pipeline` case is bound as a four-step
+  `linear-sim->vector-sim->vector-sim->vector-sim` mixed-backend plan over all
+  MVP operation families;
 - runtime matrix, runtime coverage policy, and runtime executor conformance
   digests are recorded together.
 

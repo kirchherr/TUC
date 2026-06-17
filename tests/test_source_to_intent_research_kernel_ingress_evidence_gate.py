@@ -38,12 +38,13 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'proof_bundle = "passed"' in report
     assert 'covered_rejections = "7"' in report
     assert (
-        'backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim"'
+        'backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim,'
+        'linear-sim->vector-sim->vector-sim->vector-sim"'
         in report
     )
     assert 'trusted_executor_registry = "trusted_runtime_executor_registry.v0"' in report
     assert 'trusted_runtime_backends = "linear-sim,vector-sim"' in report
-    assert 'runtime_case_count = "3"' in report
+    assert 'runtime_case_count = "4"' in report
     assert 'status = "PASS"' in report
 
 
@@ -124,8 +125,10 @@ def test_kernel_ingress_evidence_gate_rejects_source_leakage() -> None:
     leaky_conformance = (
         'source_intent_frontend_conformance = "passed"\n'
         'ingress_sources = "research_matmul_elementwise,'
-        'research_softmax_reduction,research_matmul_reduction"\n'
-        'kernel_names = "matmul_elementwise,softmax_reduction,matmul_reduction"\n'
+        'research_softmax_reduction,research_matmul_reduction,'
+        'research_mvp_pipeline"\n'
+        'kernel_names = "matmul_elementwise,softmax_reduction,'
+        'matmul_reduction,mvp_pipeline"\n'
         'status = "PASS"\n'
         "@triton.jit\n"
     )

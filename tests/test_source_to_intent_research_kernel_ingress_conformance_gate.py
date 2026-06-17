@@ -62,12 +62,13 @@ def test_kernel_ingress_conformance_cases_pass_reusable_conformance() -> None:
     )
 
     assert report.passed
-    assert report.accepted_case_count == 3
+    assert report.accepted_case_count == 4
     assert report.rejected_case_count == 2
     assert report.checked_cases == (
         "research_kernel_ingress_matmul_elementwise",
         "research_kernel_ingress_softmax_reduction",
         "research_kernel_ingress_matmul_reduction",
+        "research_kernel_ingress_mvp_pipeline",
         "reject_kernel_ingress_backend_hint_escape",
         "reject_kernel_ingress_source_text_escape",
     )

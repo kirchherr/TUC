@@ -97,6 +97,18 @@ def matmul_reduction(a, b, y):
     tl.store(y, column_sum)
 """
 
+REALISTIC_MVP_PIPELINE_MODULE_SOURCE = """import triton
+import triton.language as tl
+
+@triton.jit
+def mvp_pipeline(a, b, y):
+    projection = tl.dot(a, b)
+    normalized = tl.softmax(projection, axis=1)
+    row_sum = tl.sum(normalized, axis=1)
+    stable = tl.where(row_sum > 0.0, row_sum, row_sum)
+    tl.store(y, stable)
+"""
+
 _SHA256_DIGEST_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 _TOP_LEVEL_KEYS = frozenset(
     {
@@ -177,22 +189,37 @@ _MODULE_CASES = (
         "matmul_reduction",
         REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
     ),
+    (
+        "research_module_mvp_pipeline",
+        "research_mvp_pipeline",
+        "mvp_pipeline",
+        REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
+    ),
 )
 _EXPECTED_CASE_SUMMARIES = {
     "research_module_matmul_elementwise": {
         "backend_sequence": ["linear-sim", "vector-sim"],
         "operation_families": ["elementwise", "matmul"],
         "terminal_outputs": ["activated"],
+        "trace_step_count": 2,
     },
     "research_module_softmax_reduction": {
         "backend_sequence": ["vector-sim", "vector-sim"],
         "operation_families": ["reduction", "softmax"],
         "terminal_outputs": ["row_sum"],
+        "trace_step_count": 2,
     },
     "research_module_matmul_reduction": {
         "backend_sequence": ["linear-sim", "vector-sim"],
         "operation_families": ["matmul", "reduction"],
         "terminal_outputs": ["column_sum"],
+        "trace_step_count": 2,
+    },
+    "research_module_mvp_pipeline": {
+        "backend_sequence": ["linear-sim", "vector-sim", "vector-sim", "vector-sim"],
+        "operation_families": ["elementwise", "matmul", "reduction", "softmax"],
+        "terminal_outputs": ["stable"],
+        "trace_step_count": 4,
     },
 }
 
@@ -350,6 +377,8 @@ def _tensor_shapes_for(source_name: str) -> dict[str, tuple[int, ...]]:
         return {"x": (4, 8), "y": (4,)}
     if source_name == "research_matmul_reduction":
         return {"a": (4, 8), "b": (8, 2), "y": (4,)}
+    if source_name == "research_mvp_pipeline":
+        return {"a": (4, 8), "b": (8, 4), "y": (4,)}
     raise ValueError("unsupported source-to-intent research kernel ingress source")
 
 
@@ -367,7 +396,7 @@ def _assert_case_contract(case: object) -> str:
         raise ValueError("source-to-intent research kernel ingress family drift")
     if case["terminal_outputs"] != expected["terminal_outputs"]:
         raise ValueError("source-to-intent research kernel ingress output drift")
-    if case["trace_step_count"] != 2:
+    if case["trace_step_count"] != expected["trace_step_count"]:
         raise ValueError("source-to-intent research kernel ingress trace drift")
     if not isinstance(case["kernel_name"], str):
         raise ValueError("source-to-intent research kernel ingress kernel drift")

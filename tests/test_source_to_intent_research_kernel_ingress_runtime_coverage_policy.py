@@ -46,17 +46,25 @@ def test_kernel_ingress_runtime_coverage_policy_report_shape() -> None:
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX_CONTRACT
     )
     assert report["status"] == "PASS"
-    assert report["required_case_count"] == 3
-    assert report["observed_case_count"] == 3
+    assert report["required_case_count"] == 4
+    assert report["observed_case_count"] == 4
     assert report["required_backend_sequences"] == [
         "linear-sim->vector-sim",
         "vector-sim->vector-sim",
+        "linear-sim->vector-sim->vector-sim->vector-sim",
     ]
     assert report["required_terminal_outputs"] == [
         "activated",
         "row_sum",
         "column_sum",
+        "stable",
     ]
+    assert report["required_trace_step_count_per_case"] == {
+        "research_module_matmul_elementwise": 2,
+        "research_module_softmax_reduction": 2,
+        "research_module_matmul_reduction": 2,
+        "research_module_mvp_pipeline": 4,
+    }
     assert report["required_digest_fields"] == [
         "runtime_plan_digest",
         "execution_trace_digest",

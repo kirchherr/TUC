@@ -42,8 +42,8 @@ The bundle records SHA-256 digests for:
 It validates the structured JSON reports and source-free text gate before
 emitting the bundle.
 
-The current accepted Kernel Ingress fixture set is
-`matmul_elementwise`, `softmax_reduction`, and `matmul_reduction`.
+The current accepted Kernel Ingress fixture set is `matmul_elementwise`,
+`softmax_reduction`, `matmul_reduction`, and `mvp_pipeline`.
 
 Kernel Ingress Runtime Matrix artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`

@@ -32,7 +32,7 @@
     "unsupported_operation_families"
   ],
   "properties": {
-    "accepted_source_count": {"const": 3},
+    "accepted_source_count": {"const": 4},
     "alignment_contract": {
       "const": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0"
     },
@@ -45,8 +45,8 @@
     },
     "cases": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 4,
+      "maxItems": 4,
       "items": {"$ref": "#/$defs/case"}
     },
     "coverage_contract": {"const": "triton_idiom_coverage.execution_free.v0"},
@@ -86,10 +86,11 @@
       "prefixItems": [
         {"const": "matmul_elementwise"},
         {"const": "softmax_reduction"},
-        {"const": "matmul_reduction"}
+        {"const": "matmul_reduction"},
+        {"const": "mvp_pipeline"}
       ],
-      "minItems": 3,
-      "maxItems": 3
+      "minItems": 4,
+      "maxItems": 4
     },
     "parser_status": {"const": "research_explicit_only"},
     "schema_version": {
@@ -103,10 +104,11 @@
       "prefixItems": [
         {"const": "research_matmul_elementwise"},
         {"const": "research_softmax_reduction"},
-        {"const": "research_matmul_reduction"}
+        {"const": "research_matmul_reduction"},
+        {"const": "research_mvp_pipeline"}
       ],
-      "minItems": 3,
-      "maxItems": 3
+      "minItems": 4,
+      "maxItems": 4
     },
     "status": {"const": "PASS"},
     "unsupported_operation_families": {
@@ -130,21 +132,23 @@
           "enum": [
             "research_matmul_elementwise",
             "research_softmax_reduction",
-            "research_matmul_reduction"
+            "research_matmul_reduction",
+            "research_mvp_pipeline"
           ]
         },
         "kernel_name": {
           "enum": [
             "matmul_elementwise",
             "softmax_reduction",
-            "matmul_reduction"
+            "matmul_reduction",
+            "mvp_pipeline"
           ]
         },
         "matched_idioms": {
           "type": "array",
           "items": {"$ref": "#/$defs/report_text"},
           "minItems": 2,
-          "maxItems": 2,
+          "maxItems": 4,
           "uniqueItems": true
         },
         "operation_families": {
@@ -153,7 +157,7 @@
             "enum": ["elementwise", "matmul", "reduction", "softmax"]
           },
           "minItems": 2,
-          "maxItems": 2,
+          "maxItems": 4,
           "uniqueItems": true
         },
         "status": {"const": "covered"}

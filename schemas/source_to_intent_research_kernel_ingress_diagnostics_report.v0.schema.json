@@ -25,7 +25,7 @@
     "schema_version"
   ],
   "properties": {
-    "accepted_case_count": {"const": 3},
+    "accepted_case_count": {"const": 4},
     "blocked_claims": {
       "type": "array",
       "prefixItems": [
@@ -50,8 +50,8 @@
     },
     "cases": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "items": {"$ref": "#/$defs/case"}
     },
     "default_parser_status": {"const": "default_parser_blocked"},

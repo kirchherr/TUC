@@ -541,6 +541,11 @@ Deliverables:
 - Source-To-Intent Research Kernel Ingress Fixture Expansion proving a third
   accepted module-shaped kernel, `matmul_reduction`, through the same
   source-free runtime, conformance, diagnostics, and evidence gates.
+- Source-To-Intent Research Kernel Ingress Combined MVP Pipeline proving one
+  accepted module-shaped kernel can carry `matmul -> softmax -> reduction ->
+  elementwise` through Kernel Ingress, Source Intent, runtime planning,
+  trusted execution, reference correctness, and evidence gates without
+  widening the default parser path.
 - Source-To-Intent Research Kernel Ingress Runtime Matrix
   (`examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`)
   proving accepted realistic module-shaped inputs have explicit runtime

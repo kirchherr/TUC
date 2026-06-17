@@ -727,6 +727,12 @@ Current slice:
   `matmul_reduction` as a third accepted module-shaped case, with coverage in
   runtime matrix, runtime coverage policy, backend alignment, diagnostics,
   conformance, proof bundle, and evidence gates.
+- Source-To-Intent Research Kernel Ingress Combined MVP Pipeline adds
+  `mvp_pipeline` as a fourth accepted module-shaped case covering
+  `matmul -> softmax -> reduction -> elementwise`, with a four-step trusted
+  runtime sequence and coverage in runtime matrix, runtime coverage policy,
+  backend alignment, diagnostics, conformance, proof bundle, and evidence
+  gates.
 - Source-To-Intent Research Kernel Ingress Runtime Matrix at
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`, with
   schema at

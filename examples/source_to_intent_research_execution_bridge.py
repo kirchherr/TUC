@@ -432,6 +432,31 @@ def _inputs_for(source_name: str) -> dict[str, FloatArray]:
                 dtype=np.float64,
             ),
         }
+    if source_name == "research_mvp_pipeline":
+        return {
+            "a": np.array(
+                [
+                    [1.0, -2.0, 0.5, 3.0, 0.0, 1.5, -1.0, 2.0],
+                    [0.0, 1.0, -1.0, 2.0, 3.0, -0.5, 1.5, -2.0],
+                    [2.0, 0.5, 1.0, -1.5, 0.5, 2.5, -3.0, 1.0],
+                    [-1.0, 2.0, 0.0, 1.0, -2.0, 1.0, 0.5, 3.0],
+                ],
+                dtype=np.float64,
+            ),
+            "b": np.array(
+                [
+                    [1.0, -1.0, 0.5, 2.0],
+                    [2.0, 0.5, -0.5, 1.0],
+                    [-1.0, 3.0, 1.5, -2.0],
+                    [0.5, -2.0, 2.0, 0.25],
+                    [1.5, 1.0, -1.0, -0.5],
+                    [-0.5, 0.25, 0.75, 1.25],
+                    [2.5, -1.5, -2.5, 0.5],
+                    [0.0, 2.0, 1.0, -1.0],
+                ],
+                dtype=np.float64,
+            ),
+        }
     raise ValueError("unsupported source-to-intent research execution source")
 
 
@@ -448,6 +473,11 @@ def _references_for(
     if source_name == "research_matmul_reduction":
         projection = reference_matmul(inputs["a"], inputs["b"])
         return {"column_sum": reference_reduction_sum(projection, axis=1)}
+    if source_name == "research_mvp_pipeline":
+        projection = reference_matmul(inputs["a"], inputs["b"])
+        normalized = reference_softmax(projection, axis=1)
+        row_sum = reference_reduction_sum(normalized, axis=1)
+        return {"stable": reference_elementwise(row_sum)}
     raise ValueError("unsupported source-to-intent research execution source")
 
 

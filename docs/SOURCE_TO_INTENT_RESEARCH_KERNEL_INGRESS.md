@@ -74,6 +74,8 @@ files, access devices, or discover plugins.
 - CI entry: `.github/workflows/ci.yml`
 - Fixture expansion RFC:
   `rfcs/0176-source-to-intent-research-kernel-ingress-fixture-expansion.md`
+- Combined MVP pipeline RFC:
+  `rfcs/0177-source-to-intent-research-kernel-ingress-combined-mvp-pipeline.md`
 
 ## Accepted Module Shape
 
@@ -91,6 +93,7 @@ Current accepted kernels are:
 - `matmul_elementwise`
 - `softmax_reduction`
 - `matmul_reduction`
+- `mvp_pipeline`
 
 ## Proof Path
 
@@ -145,7 +148,7 @@ diagnostics and budget rejection surfaces are represented in one deterministic,
 source-free coverage matrix.
 
 The companion Kernel Ingress Runtime Matrix report makes the runtime side of
-the three accepted cases explicit: backend sequences, terminal public outputs,
+the four accepted cases explicit: backend sequences, terminal public outputs,
 trace step counts, and runtime evidence digests are bound back to the Kernel
 Ingress E2E report.
 

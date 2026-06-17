@@ -124,7 +124,8 @@ The gate passes only when:
 - Research Source Runtime Smoke validates the full source-buffer to runtime
   smoke path before its digest is accepted.
 - Research Kernel Ingress passes for the accepted module-shaped source cases,
-  including the Kernel-Ingress-specific `matmul_reduction` fixture.
+  including the Kernel-Ingress-specific `matmul_reduction` fixture and the
+  combined `mvp_pipeline` MVP-family fixture.
 - Research Kernel Ingress validates module import prelude and kernel extraction
   as data before its digest is accepted.
 - Research Kernel Ingress Conformance Gate passes for accepted module-source

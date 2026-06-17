@@ -51,15 +51,37 @@
         "column_sum"
       ],
       "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "status": "covered",
+      "terminal_outputs": [
+        "stable"
+      ],
+      "trace_step_count": 4
     }
   ],
   "default_parser_status": "default_parser_blocked",
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
   "observed_backend_sequences": [
     "linear-sim->vector-sim",
-    "vector-sim->vector-sim"
+    "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim"
   ],
-  "observed_case_count": 3,
+  "observed_case_count": 4,
   "observed_operation_families": [
     "elementwise",
     "matmul",
@@ -69,7 +91,8 @@
   "observed_terminal_outputs": [
     "activated",
     "row_sum",
-    "column_sum"
+    "column_sum",
+    "stable"
   ],
   "parser_status": "research_explicit_only",
   "policy_contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
@@ -78,9 +101,10 @@
   "raw_value_policy": "omitted_by_policy",
   "required_backend_sequences": [
     "linear-sim->vector-sim",
-    "vector-sim->vector-sim"
+    "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim"
   ],
-  "required_case_count": 3,
+  "required_case_count": 4,
   "required_digest_fields": [
     "runtime_plan_digest",
     "execution_trace_digest",
@@ -95,11 +119,17 @@
   "required_terminal_outputs": [
     "activated",
     "row_sum",
-    "column_sum"
+    "column_sum",
+    "stable"
   ],
-  "required_trace_step_count_per_case": 2,
+  "required_trace_step_count_per_case": {
+    "research_module_matmul_elementwise": 2,
+    "research_module_matmul_reduction": 2,
+    "research_module_mvp_pipeline": 4,
+    "research_module_softmax_reduction": 2
+  },
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:30f26588217f8ed0d1bf021fd43f91adc04ca80e359ac9c870bfd581382cde66",
+  "runtime_matrix_digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_coverage_policy_report.v0",
   "source_boundary": "triton_module_source_buffer_to_runtime_via_research_kernel_ingress",
   "status": "PASS",

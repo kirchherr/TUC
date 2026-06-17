@@ -210,7 +210,8 @@ Current frontend surfaces:
 - Source-To-Intent Research Kernel Ingress proving realistic Triton
   module-shaped source buffers can be validated, extracted, and executed
   through the same controlled research path, currently across
-  `matmul_elementwise`, `softmax_reduction`, and `matmul_reduction`.
+  `matmul_elementwise`, `softmax_reduction`, `matmul_reduction`, and the
+  combined `mvp_pipeline` slice.
 - Source-To-Intent Research Kernel Ingress Runtime Matrix making accepted
   module-shaped runtime coverage explicit by backend sequence, terminal output,
   trace-step count, and runtime evidence digest.

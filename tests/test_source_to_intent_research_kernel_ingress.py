@@ -10,6 +10,7 @@ import pytest
 from examples.source_to_intent_research_kernel_ingress import (
     REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE,
     REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
+    REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
     SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_E2E_CONTRACT,
     SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_E2E_REPORT_SCHEMA_VERSION,
     assert_kernel_ingress_report_contract,
@@ -84,6 +85,33 @@ def test_kernel_ingress_frontend_extracts_matmul_reduction_module_source() -> No
     assert "source_intent_payload" not in dumped
 
 
+def test_kernel_ingress_frontend_extracts_mvp_pipeline_module_source() -> None:
+    result = ingest_triton_module_source_to_source_intent(
+        REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
+        source_name="research_mvp_pipeline",
+        kernel_name="mvp_pipeline",
+        tensor_shapes={"a": (4, 8), "b": (8, 4), "y": (4,)},
+    )
+
+    report = source_to_intent_research_kernel_ingress_report_to_dict(result.report)
+    assert report["operation_families"] == [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax",
+    ]
+    assert result.parser_result.source_intent_payload["name"] == (
+        "research_mvp_pipeline"
+    )
+
+    dumped = dump_source_to_intent_research_kernel_ingress_report(result.report)
+    assert "@triton.jit" not in dumped
+    assert "import triton" not in dumped
+    assert "tl.dot" not in dumped
+    assert "tl.store" not in dumped
+    assert "source_intent_payload" not in dumped
+
+
 @pytest.mark.parametrize(
     ("source", "error"),
     [
@@ -143,7 +171,7 @@ def test_kernel_ingress_e2e_report_shape() -> None:
     )
     assert report["e2e_contract"] == SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_E2E_CONTRACT
     assert report["status"] == "PASS"
-    assert report["case_count"] == 3
+    assert report["case_count"] == 4
     assert report["source_boundary"] == (
         "triton_module_source_buffer_to_runtime_via_research_kernel_ingress"
     )
@@ -151,10 +179,18 @@ def test_kernel_ingress_e2e_report_shape() -> None:
         "research_module_matmul_elementwise",
         "research_module_softmax_reduction",
         "research_module_matmul_reduction",
+        "research_module_mvp_pipeline",
     ]
     assert report["cases"][0]["backend_sequence"] == ["linear-sim", "vector-sim"]
     assert report["cases"][1]["backend_sequence"] == ["vector-sim", "vector-sim"]
     assert report["cases"][2]["backend_sequence"] == ["linear-sim", "vector-sim"]
+    assert report["cases"][3]["backend_sequence"] == [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim",
+    ]
+    assert report["cases"][3]["trace_step_count"] == 4
 
 
 @pytest.mark.parametrize(

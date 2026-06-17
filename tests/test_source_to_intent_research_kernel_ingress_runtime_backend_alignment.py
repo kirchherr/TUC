@@ -76,6 +76,13 @@ def test_kernel_ingress_runtime_backend_alignment_report_shape() -> None:
         "aligned",
         "aligned",
         "aligned",
+        "aligned",
+    ]
+    assert report["case_alignments"][3]["backend_sequence"] == [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim",
     ]
 
 

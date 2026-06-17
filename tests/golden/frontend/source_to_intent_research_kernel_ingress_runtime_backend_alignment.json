@@ -86,6 +86,29 @@
         "reduction",
         "softmax"
       ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "status": "aligned",
+      "supported_operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ]
     }
   ],
   "observed_backend_names": [
@@ -97,13 +120,13 @@
     "vector-sim"
   ],
   "runtime_coverage_policy_contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
-  "runtime_coverage_policy_digest": "sha256:e010ed55a11bb7c71bf757cf5c17cf16d4243ae41e8be09048408a7743246d00",
+  "runtime_coverage_policy_digest": "sha256:77bcedac7278e1c668d4ebe569e63f83e490af90d40bbafe4df3fd2b954013e6",
   "runtime_executor_conformance_contract": "runtime_executor_conformance.trusted.v0",
   "runtime_executor_conformance_digest": "sha256:7b4a2c74ccc805fbca6e5452ae7da27b907ac9e40a606f30501aabef981b88ae",
   "runtime_executor_conformance_schema_version": "tuc.runtime_executor_conformance_report.v0",
   "runtime_executor_contract": "runtime_executor.trusted_backend.v0",
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:30f26588217f8ed0d1bf021fd43f91adc04ca80e359ac9c870bfd581382cde66",
+  "runtime_matrix_digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_backend_alignment_report.v0",
   "source_boundary": "kernel_ingress_runtime_matrix_to_trusted_executor_conformance",
   "status": "PASS",

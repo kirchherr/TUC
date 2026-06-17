@@ -103,18 +103,28 @@ _EXPECTED_CASES = {
         "kernel_name": "matmul_elementwise",
         "operation_families": ["elementwise", "matmul"],
         "terminal_outputs": ["activated"],
+        "trace_step_count": 2,
     },
     "research_module_softmax_reduction": {
         "backend_sequence": ["vector-sim", "vector-sim"],
         "kernel_name": "softmax_reduction",
         "operation_families": ["reduction", "softmax"],
         "terminal_outputs": ["row_sum"],
+        "trace_step_count": 2,
     },
     "research_module_matmul_reduction": {
         "backend_sequence": ["linear-sim", "vector-sim"],
         "kernel_name": "matmul_reduction",
         "operation_families": ["matmul", "reduction"],
         "terminal_outputs": ["column_sum"],
+        "trace_step_count": 2,
+    },
+    "research_module_mvp_pipeline": {
+        "backend_sequence": ["linear-sim", "vector-sim", "vector-sim", "vector-sim"],
+        "kernel_name": "mvp_pipeline",
+        "operation_families": ["elementwise", "matmul", "reduction", "softmax"],
+        "terminal_outputs": ["stable"],
+        "trace_step_count": 4,
     },
 }
 
@@ -181,7 +191,11 @@ def assert_kernel_ingress_runtime_matrix_report_contract(report: object) -> None
         "artifact_policy": (
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX_ARTIFACT_POLICY
         ),
-        "backend_sequences": ["linear-sim->vector-sim", "vector-sim->vector-sim"],
+        "backend_sequences": [
+            "linear-sim->vector-sim",
+            "vector-sim->vector-sim",
+            "linear-sim->vector-sim->vector-sim->vector-sim",
+        ],
         "case_count": len(_EXPECTED_CASES),
         "covered_operation_families": [
             "elementwise",
@@ -249,7 +263,7 @@ def _assert_case_contract(case: object) -> str:
     for key, expected_value in expected.items():
         if case[key] != expected_value:
             raise ValueError(f"kernel ingress runtime matrix {key} drift")
-    if case["trace_step_count"] != 2:
+    if case["trace_step_count"] != expected["trace_step_count"]:
         raise ValueError("kernel ingress runtime matrix trace step drift")
     if case["status"] != "runtime_bound":
         raise ValueError("kernel ingress runtime matrix case status drift")

@@ -6,12 +6,14 @@ try:
     from examples.source_to_intent_research_kernel_ingress import (
         REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE,
         REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
+        REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
         REALISTIC_SOFTMAX_REDUCTION_MODULE_SOURCE,
     )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress import (  # type: ignore[no-redef]
         REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE,
         REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
+        REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
         REALISTIC_SOFTMAX_REDUCTION_MODULE_SOURCE,
     )
 
@@ -43,6 +45,7 @@ REQUIRED_ACCEPTED_CASES = (
     "research_kernel_ingress_matmul_elementwise",
     "research_kernel_ingress_softmax_reduction",
     "research_kernel_ingress_matmul_reduction",
+    "research_kernel_ingress_mvp_pipeline",
 )
 REQUIRED_REJECTED_CASES = (
     "reject_kernel_ingress_backend_hint_escape",
@@ -52,11 +55,13 @@ REQUIRED_KERNEL_INGRESS_SOURCE_NAMES = (
     "research_matmul_elementwise",
     "research_softmax_reduction",
     "research_matmul_reduction",
+    "research_mvp_pipeline",
 )
 REQUIRED_KERNEL_NAMES = (
     "matmul_elementwise",
     "softmax_reduction",
     "matmul_reduction",
+    "mvp_pipeline",
 )
 
 
@@ -99,6 +104,16 @@ def build_source_to_intent_research_kernel_ingress_results() -> (
                 "y": (4,),
             },
         ),
+        ingest_triton_module_source_to_source_intent(
+            REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
+            source_name="research_mvp_pipeline",
+            kernel_name="mvp_pipeline",
+            tensor_shapes={
+                "a": (4, 8),
+                "b": (8, 4),
+                "y": (4,),
+            },
+        ),
     )
 
 
@@ -127,6 +142,11 @@ def build_source_to_intent_research_kernel_ingress_conformance_cases(
         SourceIntentFrontendConformanceCase(
             name="research_kernel_ingress_matmul_reduction",
             payload=results[2].parser_result.source_intent_payload,
+            should_accept=True,
+        ),
+        SourceIntentFrontendConformanceCase(
+            name="research_kernel_ingress_mvp_pipeline",
+            payload=results[3].parser_result.source_intent_payload,
             should_accept=True,
         ),
         SourceIntentFrontendConformanceCase(

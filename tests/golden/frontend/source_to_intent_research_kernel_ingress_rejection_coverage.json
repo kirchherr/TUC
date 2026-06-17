@@ -29,7 +29,7 @@
     "triton_jit_execution"
   ],
   "boundary_budget_contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
-  "boundary_budget_digest": "sha256:0e4ccd1a417a9fdeacca326ba6d462103812b5b4ce07337975bc0c8404f13269",
+  "boundary_budget_digest": "sha256:de91aed4d9eec1402e93a874c7f47bc29880f490fa5fb785ac8de15ff9a02a81",
   "budget_rejection_reasons": [
     "module_byte_budget",
     "module_line_budget"
@@ -83,7 +83,7 @@
   "covered_rejection_count": 7,
   "default_parser_status": "default_parser_blocked",
   "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
-  "diagnostics_digest": "sha256:76e6994b8ed6615e9484a650b54a6e3e3943fa9bd5ef2cdb6efb697bfb7a2a8b",
+  "diagnostics_digest": "sha256:45297fac6a4556047438935eeb5efa5f2a7091af18788190cf1729014f4b01e7",
   "diagnostics_rejection_reasons": [
     "import_from_statement",
     "kernel_name_mismatch",

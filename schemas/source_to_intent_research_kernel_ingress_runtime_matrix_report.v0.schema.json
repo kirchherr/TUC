@@ -29,18 +29,19 @@
       "type": "array",
       "prefixItems": [
         {"const": "linear-sim->vector-sim"},
-        {"const": "vector-sim->vector-sim"}
+        {"const": "vector-sim->vector-sim"},
+        {"const": "linear-sim->vector-sim->vector-sim->vector-sim"}
       ],
       "items": false,
-      "minItems": 2,
-      "maxItems": 2
+      "minItems": 3,
+      "maxItems": 3
     },
-    "case_count": {"const": 3},
+    "case_count": {"const": 4},
     "cases": {
       "type": "array",
       "items": {"$ref": "#/$defs/case"},
-      "minItems": 3,
-      "maxItems": 3
+      "minItems": 4,
+      "maxItems": 4
     },
     "covered_operation_families": {
       "type": "array",
@@ -95,13 +96,14 @@
           "type": "array",
           "items": {"type": "string"},
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 4
         },
         "case_id": {
           "enum": [
             "research_module_matmul_elementwise",
             "research_module_softmax_reduction",
-            "research_module_matmul_reduction"
+            "research_module_matmul_reduction",
+            "research_module_mvp_pipeline"
           ]
         },
         "execution_trace_digest": {"$ref": "#/$defs/sha256_digest"},
@@ -109,7 +111,8 @@
           "enum": [
             "matmul_elementwise",
             "softmax_reduction",
-            "matmul_reduction"
+            "matmul_reduction",
+            "mvp_pipeline"
           ]
         },
         "operation_families": {
@@ -123,7 +126,7 @@
             ]
           },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 4
         },
         "reference_correctness_digest": {"$ref": "#/$defs/sha256_digest"},
         "runtime_plan_digest": {"$ref": "#/$defs/sha256_digest"},
@@ -134,7 +137,7 @@
           "minItems": 1,
           "maxItems": 1
         },
-        "trace_step_count": {"const": 2}
+        "trace_step_count": {"enum": [2, 4]}
       }
     },
     "sha256_digest": {

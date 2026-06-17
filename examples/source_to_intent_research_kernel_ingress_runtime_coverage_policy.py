@@ -132,18 +132,31 @@ _REQUIRED_CASES = (
         "terminal_outputs": ["column_sum"],
         "trace_step_count": 2,
     },
+    {
+        "backend_sequence": ["linear-sim", "vector-sim", "vector-sim", "vector-sim"],
+        "case_id": "research_module_mvp_pipeline",
+        "kernel_name": "mvp_pipeline",
+        "operation_families": ["elementwise", "matmul", "reduction", "softmax"],
+        "status": "covered",
+        "terminal_outputs": ["stable"],
+        "trace_step_count": 4,
+    },
 )
 _REQUIRED_BACKEND_SEQUENCES = (
     "linear-sim->vector-sim",
     "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim",
 )
 _REQUIRED_OPERATION_FAMILIES = ("elementwise", "matmul", "reduction", "softmax")
-_REQUIRED_TERMINAL_OUTPUTS = ("activated", "row_sum", "column_sum")
+_REQUIRED_TERMINAL_OUTPUTS = ("activated", "row_sum", "column_sum", "stable")
 _REQUIRED_DIGEST_FIELDS = (
     "runtime_plan_digest",
     "execution_trace_digest",
     "reference_correctness_digest",
 )
+_REQUIRED_TRACE_STEP_COUNTS = {
+    case["case_id"]: case["trace_step_count"] for case in _REQUIRED_CASES
+}
 
 
 def build_kernel_ingress_runtime_coverage_policy_report() -> dict[str, object]:
@@ -176,7 +189,7 @@ def build_kernel_ingress_runtime_coverage_policy_report() -> dict[str, object]:
         "required_digest_fields": list(_REQUIRED_DIGEST_FIELDS),
         "required_operation_families": list(_REQUIRED_OPERATION_FAMILIES),
         "required_terminal_outputs": list(_REQUIRED_TERMINAL_OUTPUTS),
-        "required_trace_step_count_per_case": 2,
+        "required_trace_step_count_per_case": dict(_REQUIRED_TRACE_STEP_COUNTS),
         "runtime_matrix_contract": (
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX_CONTRACT
         ),
@@ -241,7 +254,7 @@ def assert_kernel_ingress_runtime_coverage_policy_report_contract(
         "required_digest_fields": list(_REQUIRED_DIGEST_FIELDS),
         "required_operation_families": list(_REQUIRED_OPERATION_FAMILIES),
         "required_terminal_outputs": list(_REQUIRED_TERMINAL_OUTPUTS),
-        "required_trace_step_count_per_case": 2,
+        "required_trace_step_count_per_case": dict(_REQUIRED_TRACE_STEP_COUNTS),
         "runtime_matrix_contract": (
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX_CONTRACT
         ),

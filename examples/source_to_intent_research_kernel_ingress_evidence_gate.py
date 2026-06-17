@@ -134,11 +134,13 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_ACCEPTED_SOURCES = (
     "research_matmul_elementwise",
     "research_softmax_reduction",
     "research_matmul_reduction",
+    "research_mvp_pipeline",
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_ACCEPTED_KERNELS = (
     "matmul_elementwise",
     "softmax_reduction",
     "matmul_reduction",
+    "mvp_pipeline",
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_OPERATION_FAMILIES = (
     "elementwise",
@@ -316,14 +318,22 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  proof_bundle = "passed"',
         (
             '  accepted_sources = "research_matmul_elementwise,'
-            'research_softmax_reduction,research_matmul_reduction"'
+            'research_softmax_reduction,research_matmul_reduction,'
+            'research_mvp_pipeline"'
         ),
-        '  accepted_kernels = "matmul_elementwise,softmax_reduction,matmul_reduction"',
+        (
+            '  accepted_kernels = "matmul_elementwise,softmax_reduction,'
+            'matmul_reduction,mvp_pipeline"'
+        ),
         '  covered_operation_families = "elementwise,matmul,reduction,softmax"',
-        '  backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim"',
+        (
+            '  backend_sequences = "linear-sim->vector-sim,'
+            'vector-sim->vector-sim,'
+            'linear-sim->vector-sim->vector-sim->vector-sim"'
+        ),
         '  trusted_executor_registry = "trusted_runtime_executor_registry.v0"',
         '  trusted_runtime_backends = "linear-sim,vector-sim"',
-        '  runtime_case_count = "3"',
+        '  runtime_case_count = "4"',
         (
             '  required_runtime_digest_fields = "runtime_plan_digest,'
             'execution_trace_digest,reference_correctness_digest"'
@@ -448,7 +458,7 @@ def _assert_rejection_coverage_bound(text: str) -> Mapping[str, object]:
 def _assert_diagnostics_bound(text: str) -> Mapping[str, object]:
     report = _load_json_report(text, "diagnostics")
     expected_values = {
-        "accepted_case_count": 3,
+        "accepted_case_count": 4,
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "diagnostics_contract": (
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT
@@ -480,9 +490,13 @@ def _assert_conformance_gate_bound(text: str) -> None:
         'source_intent_frontend_conformance = "passed"',
         (
             'ingress_sources = "research_matmul_elementwise,'
-            'research_softmax_reduction,research_matmul_reduction"'
+            'research_softmax_reduction,research_matmul_reduction,'
+            'research_mvp_pipeline"'
         ),
-        'kernel_names = "matmul_elementwise,softmax_reduction,matmul_reduction"',
+        (
+            'kernel_names = "matmul_elementwise,softmax_reduction,'
+            'matmul_reduction,mvp_pipeline"'
+        ),
         'status = "PASS"',
     )
     for fragment in required_fragments:
