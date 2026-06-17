@@ -52,6 +52,10 @@ Kernel Ingress Runtime Step Trace companion path, included through the Kernel
 Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
 `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
 
+Kernel Ingress Runtime Evidence Bundle Index companion path, included through
+the Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
+`examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
+
 Kernel Ingress Runtime Coverage Policy companion path, included through the
 Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
 `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
@@ -126,6 +130,7 @@ kernel ingress idiom alignment
 kernel ingress proof bundle
   includes kernel ingress runtime matrix
   includes kernel ingress runtime step trace
+  includes kernel ingress runtime evidence bundle index
   includes kernel ingress runtime coverage policy
   includes kernel ingress runtime backend alignment
   includes kernel ingress boundary budget

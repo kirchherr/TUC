@@ -763,6 +763,15 @@ Current slice:
   operation-level planned/executed backend trace metadata for accepted Kernel
   Ingress cases, and binding through the Kernel Ingress Proof Bundle, focused
   Evidence Gate, and Capability Claim.
+- Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index at
+  `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`,
+  with schema at
+  `schemas/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.json`,
+  digest-only bindings from accepted Kernel Ingress cases to standard Runtime
+  Execution Evidence Bundle sections, and binding through the Kernel Ingress
+  Proof Bundle, focused Evidence Gate, and Capability Claim.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at

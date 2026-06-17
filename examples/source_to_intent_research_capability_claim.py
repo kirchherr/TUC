@@ -42,6 +42,13 @@ try:
     from examples.source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
         build_report as build_kernel_ingress_runtime_coverage_policy_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index import (
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX_CONTRACT,
+        assert_kernel_ingress_runtime_evidence_bundle_index_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index import (
+        build_report as build_kernel_ingress_runtime_evidence_bundle_index_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX_CONTRACT,
         assert_kernel_ingress_runtime_matrix_report_contract,
@@ -97,6 +104,13 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
         build_report as build_kernel_ingress_runtime_coverage_policy_report,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index import (  # type: ignore[no-redef]
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX_CONTRACT,
+        assert_kernel_ingress_runtime_evidence_bundle_index_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index import (
+        build_report as build_kernel_ingress_runtime_evidence_bundle_index_report,
     )
     from source_to_intent_research_kernel_ingress_runtime_matrix import (  # type: ignore[no-redef]
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX_CONTRACT,
@@ -168,6 +182,7 @@ SOURCE_TO_INTENT_RESEARCH_CAPABILITY_ACCEPTANCE_CHECKS = (
     "kernel_ingress_evidence_gate_passes",
     "runtime_matrix_has_combined_mvp_pipeline",
     "runtime_step_trace_binds_mvp_operation_path",
+    "runtime_evidence_bundle_index_binds_standard_execution_evidence",
     "runtime_coverage_policy_requires_exact_trace_counts",
     "runtime_backend_alignment_uses_trusted_executors",
 )
@@ -252,6 +267,11 @@ _REQUIRED_EVIDENCE = (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE_CONTRACT,
     ),
     (
+        "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+        "json_report",
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX_CONTRACT,
+    ),
+    (
         "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
         "json_report",
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY_CONTRACT,
@@ -285,6 +305,9 @@ def build_research_capability_claim_report() -> dict[str, object]:
         ),
         "source_to_intent_research_kernel_ingress_runtime_step_trace": (
             build_kernel_ingress_runtime_step_trace_report()
+        ),
+        "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index": (
+            build_kernel_ingress_runtime_evidence_bundle_index_report()
         ),
         "source_to_intent_research_kernel_ingress_runtime_coverage_policy": (
             build_kernel_ingress_runtime_coverage_policy_report()
@@ -431,6 +454,14 @@ def _assert_evidence_payloads(
         ]
     )
     assert_kernel_ingress_runtime_step_trace_report_contract(runtime_step_trace)
+    runtime_evidence_bundle_index = json.loads(
+        artifact_texts[
+            "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index"
+        ]
+    )
+    assert_kernel_ingress_runtime_evidence_bundle_index_report_contract(
+        runtime_evidence_bundle_index
+    )
     runtime_coverage_policy = json.loads(
         artifact_texts[
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy"
@@ -450,6 +481,7 @@ def _assert_evidence_payloads(
     _assert_mvp_pipeline_bound(
         runtime_matrix,
         runtime_step_trace,
+        runtime_evidence_bundle_index,
         runtime_coverage_policy,
     )
     for text in artifact_texts.values():
@@ -460,6 +492,7 @@ def _assert_evidence_payloads(
 def _assert_mvp_pipeline_bound(
     runtime_matrix: Mapping[str, object],
     runtime_step_trace: Mapping[str, object],
+    runtime_evidence_bundle_index: Mapping[str, object],
     runtime_coverage_policy: Mapping[str, object],
 ) -> None:
     cases = runtime_matrix["cases"]
@@ -509,6 +542,37 @@ def _assert_mvp_pipeline_bound(
         if step_trace_mvp.get(key) != expected:
             raise ValueError(
                 f"source-to-intent research capability step trace {key} drift"
+            )
+    bundle_cases = runtime_evidence_bundle_index["cases"]
+    if not isinstance(bundle_cases, list):
+        raise ValueError("source-to-intent research capability bundle index drift")
+    bundle_mvp_cases = [
+        case
+        for case in bundle_cases
+        if isinstance(case, Mapping)
+        and case.get("case_id") == "research_module_mvp_pipeline"
+    ]
+    if len(bundle_mvp_cases) != 1:
+        raise ValueError("source-to-intent research capability bundle mvp drift")
+    bundle_mvp = bundle_mvp_cases[0]
+    expected_bundle_values = {
+        "graph_name": "research_mvp_pipeline",
+        "operation_path": list(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_OPERATION_PATH),
+        "passed": True,
+        "standard_bundle_sections": [
+            "tensor_store_evidence",
+            "input_manifest",
+            "output_manifest",
+            "reference_correctness",
+            "execution_receipt",
+        ],
+        "status": "standard_runtime_evidence_bound",
+        "step_count": 4,
+    }
+    for key, expected in expected_bundle_values.items():
+        if bundle_mvp.get(key) != expected:
+            raise ValueError(
+                f"source-to-intent research capability bundle {key} drift"
             )
     trace_counts = runtime_coverage_policy["required_trace_step_count_per_case"]
     if not isinstance(trace_counts, Mapping):

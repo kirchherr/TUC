@@ -1,0 +1,207 @@
+{
+  "artifact_policy": "digest_only_values_omitted",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_count": 4,
+  "cases": [
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:955b90fafa94795789f0e3ad621de1dd103fb0bac3e54f64dd47b0c140b90635",
+      "bundle_report_digest": "sha256:f17bf60b8fab82d29a68d6f93010df3e05f8ad69c49cf10e99138c91b2f79046",
+      "case_id": "research_module_matmul_elementwise",
+      "execution_receipt_digest": "sha256:ff98c3ebba3110375a276111c92445a1b94b7751a4abb66739ff9ec7025008d2",
+      "execution_receipt_link_count": 4,
+      "execution_trace_digest": "sha256:d9ee6ed8ea961a6018b3171a73c46dd091d1e02b9796c728b79d78a36fe081ee",
+      "graph_name": "research_matmul_elementwise",
+      "input_count": 2,
+      "input_manifest_digest": "sha256:900e8f5ec8fcc6cf9f785811d599bae147935d431dd43839654e9a263cd5a36a",
+      "kernel_name": "matmul_elementwise",
+      "operation_path": [
+        "matmul",
+        "elementwise"
+      ],
+      "output_count": 1,
+      "output_manifest_digest": "sha256:d22bdb24fc0c1fd7f4976a2508794a37efd6eda78b1187d97ad547f230b42b40",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "reference_comparison_count": 1,
+      "reference_correctness_digest": "sha256:a8f0678065842d149f2c819e36d92b4b7baa9064b2c76faefe489f75c96dfec6",
+      "runtime_plan_digest": "sha256:5dd180f8fc6ca7256f42c8c0a2fb6ba08f3af65e000e70e7c97ace5cb5496c19",
+      "standard_bundle_sections": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "reference_correctness",
+        "execution_receipt"
+      ],
+      "status": "standard_runtime_evidence_bound",
+      "step_count": 2,
+      "tensor_store_digest": "sha256:6f5cd8765565ffd1730effbd1b2f7d32cb8060322d4d083bbcec4cb1a419c7c2",
+      "tensor_store_record_count": 4,
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:effa5183581144bf72739a7af6a5cf6be6921c677d3813466e6e52933ce422a0",
+      "bundle_report_digest": "sha256:a589a7d85ffb7db53967b21b54549090f440e9435a643795bb20bc2277fe4429",
+      "case_id": "research_module_softmax_reduction",
+      "execution_receipt_digest": "sha256:a36c26a0a72d3424e6847a9d7d313818034b2abdbc53a440c0d842a6b45aaa2b",
+      "execution_receipt_link_count": 4,
+      "execution_trace_digest": "sha256:ed6ed4d8c27ba0fbc78917ee067c9091d7af52239bf58ebb47f61cecc40efc19",
+      "graph_name": "research_softmax_reduction",
+      "input_count": 1,
+      "input_manifest_digest": "sha256:ded732fdbc284c4f1b75bbc23469645500b2027a7df247883875dda53e788ec2",
+      "kernel_name": "softmax_reduction",
+      "operation_path": [
+        "softmax",
+        "reduction"
+      ],
+      "output_count": 1,
+      "output_manifest_digest": "sha256:5c039cf7ff7bbda0f4dd0b4ac60955d858b29d2e3627f12a8dc2480067168dfa",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "reference_comparison_count": 1,
+      "reference_correctness_digest": "sha256:b7822b1cff26e2926b9b4f726f7c734ac468325557a3067e5d8112dc530a2f51",
+      "runtime_plan_digest": "sha256:739c830c015a9c6200e42c13a3987314f386b0db13001d55344b078aff3cf1f9",
+      "standard_bundle_sections": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "reference_correctness",
+        "execution_receipt"
+      ],
+      "status": "standard_runtime_evidence_bound",
+      "step_count": 2,
+      "tensor_store_digest": "sha256:37ccecd58367d7d463fd381838d0d58efccf8a82a83f638743f25b0881ae8441",
+      "tensor_store_record_count": 3,
+      "terminal_outputs": [
+        "row_sum"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:737adad2bfba4443fdc9e63aad75904f4b4713be142b39fbf081c7db42d1b019",
+      "bundle_report_digest": "sha256:a3e2f198c9d3723dcf487d8a98ce4b13e536096fdf35a8d3a6ed2a3d84b38ef1",
+      "case_id": "research_module_matmul_reduction",
+      "execution_receipt_digest": "sha256:b4592b0b19ebf23090230fd81cde9115e4cc2e86f94a2c9056b8d1514c052aae",
+      "execution_receipt_link_count": 4,
+      "execution_trace_digest": "sha256:55d8e3c3618d217bd05f37806cbbbeb71217bc7e3e339b78302d2b340177a12a",
+      "graph_name": "research_matmul_reduction",
+      "input_count": 2,
+      "input_manifest_digest": "sha256:900e8f5ec8fcc6cf9f785811d599bae147935d431dd43839654e9a263cd5a36a",
+      "kernel_name": "matmul_reduction",
+      "operation_path": [
+        "matmul",
+        "reduction"
+      ],
+      "output_count": 1,
+      "output_manifest_digest": "sha256:6109c920c42d4f7b68b132308d272f2e910e4f3c45f28cd3ff8cce8076e355d2",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "reference_comparison_count": 1,
+      "reference_correctness_digest": "sha256:9514eab74294966fa28f71a4b38fe054454676208a92961518272a34b21ab9ef",
+      "runtime_plan_digest": "sha256:a4db63eef2a05b7c9ca29314d5b24dcdf064f38987bda5bb7fb93824db0bf185",
+      "standard_bundle_sections": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "reference_correctness",
+        "execution_receipt"
+      ],
+      "status": "standard_runtime_evidence_bound",
+      "step_count": 2,
+      "tensor_store_digest": "sha256:ee7f7278916a74fde1c472287fd375723657ee5bb6e55fa3cd1152eae11a71f5",
+      "tensor_store_record_count": 4,
+      "terminal_outputs": [
+        "column_sum"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:e1e8f5f4a33f0b8bedc73a42a8ab2c1caaa82db0d9787a3ad771eff7eba7b110",
+      "bundle_report_digest": "sha256:2283f1c0bd9503407d60d7e762672106119e83d8861ef7c02d081324f144ca20",
+      "case_id": "research_module_mvp_pipeline",
+      "execution_receipt_digest": "sha256:d7526d44a9e01e6f85575f2bc91d50b6a8188049ff7443c96202396ef67777cd",
+      "execution_receipt_link_count": 4,
+      "execution_trace_digest": "sha256:0da05472c0cf5ef06362f6c9b1cf2a4f726566cc72c41ac8c48723e978d696cd",
+      "graph_name": "research_mvp_pipeline",
+      "input_count": 2,
+      "input_manifest_digest": "sha256:2f212969db6e71100cd57553df3548baca61b4b0396347c4a590718c2c29be63",
+      "kernel_name": "mvp_pipeline",
+      "operation_path": [
+        "matmul",
+        "softmax",
+        "reduction",
+        "elementwise"
+      ],
+      "output_count": 1,
+      "output_manifest_digest": "sha256:72e5687d33ae90e55f3022ad077b0f7214c7a20a4002401d626db5b8118c5de9",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "reference_comparison_count": 1,
+      "reference_correctness_digest": "sha256:f08da54e302db8e65b8bcd147ad42e722a7a848619d32792100a05067f7481b9",
+      "runtime_plan_digest": "sha256:59dbf49fb8a9f65895c38b74c214752efc9b5d5cf9390533602040a11c8bf56d",
+      "standard_bundle_sections": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "reference_correctness",
+        "execution_receipt"
+      ],
+      "status": "standard_runtime_evidence_bound",
+      "step_count": 4,
+      "tensor_store_digest": "sha256:022e620c41c5b4d45a9a3a0a49c8cc46509462d9cba6dd097489c6878ec270ef",
+      "tensor_store_record_count": 6,
+      "terminal_outputs": [
+        "stable"
+      ]
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "runtime_evidence_bundle_contract": "runtime_execution_evidence_bundle.data_only.v0",
+  "runtime_evidence_bundle_index_contract": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0",
+  "runtime_evidence_sections": [
+    "tensor_store_evidence",
+    "input_manifest",
+    "output_manifest",
+    "reference_correctness",
+    "execution_receipt"
+  ],
+  "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+  "runtime_matrix_digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+  "runtime_step_trace_contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
+  "runtime_step_trace_digest": "sha256:683ddbc7ad82543ca2537ffbf6cc03874a497a6a2712e4c9b2d8c537705ed4ff",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index_report.v0",
+  "source_boundary": "kernel_ingress_runtime_to_standard_execution_evidence_bundle_index",
+  "status": "PASS",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

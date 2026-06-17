@@ -57,6 +57,7 @@ The claim report records SHA-256 digests for:
 - Source-To-Intent Research Kernel Ingress Evidence Gate
 - Source-To-Intent Research Kernel Ingress Runtime Matrix
 - Source-To-Intent Research Kernel Ingress Runtime Step Trace
+- Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
 - Source-To-Intent Research Kernel Ingress Runtime Backend Alignment
 
@@ -65,6 +66,9 @@ the text gates for required pass/fail bindings.
 
 Kernel Ingress Runtime Step Trace artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
+
+Kernel Ingress Runtime Evidence Bundle Index artifact path:
+`examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 
 ## Acceptance Checks
 
@@ -76,6 +80,8 @@ The report passes only when:
 - the Kernel Ingress evidence gate passes;
 - the runtime matrix contains the combined `mvp_pipeline` case;
 - the runtime step trace binds the combined `mvp_pipeline` operation path;
+- the runtime evidence bundle index binds standard execution evidence sections
+  for the combined `mvp_pipeline` case;
 - the runtime coverage policy requires exact trace counts, including four
   steps for `mvp_pipeline`;
 - runtime backend alignment uses only trusted executor backends.
@@ -127,6 +133,7 @@ kernel ingress proof bundle
 kernel ingress evidence gate
 runtime matrix
 runtime step trace
+runtime evidence bundle index
 runtime coverage policy
 runtime backend alignment
     ->

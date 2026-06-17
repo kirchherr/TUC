@@ -17,6 +17,7 @@ Triton, or inspecting tensor values.
 Add Source-To-Intent Research Kernel Ingress Runtime Step Trace v0:
 
 - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
+- `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 - `schemas/source_to_intent_research_kernel_ingress_runtime_step_trace_report.v0.schema.json`
 - `tests/test_source_to_intent_research_kernel_ingress_runtime_step_trace.py`
 - `tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_step_trace.json`

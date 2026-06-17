@@ -24,6 +24,10 @@ It does not add syntax, approve general Triton source ingestion, execute
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
 - Kernel Ingress Proof Bundle binding:
   `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
+- Runtime Evidence Bundle Index binding:
+  `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
+- Runtime Evidence Bundle Index docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX.md)
 - Kernel Ingress Evidence Gate binding:
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 - Capability Claim binding:
@@ -72,6 +76,10 @@ kernel ingress E2E report
 runtime matrix
     ->
 runtime step trace
+    ->
+standard Runtime Execution Evidence Bundles
+    ->
+runtime evidence bundle index
     ->
 runtime coverage policy
     ->

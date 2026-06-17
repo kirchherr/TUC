@@ -11,6 +11,7 @@
   - `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
   - `schemas/source_to_intent_research_capability_claim_report.v0.schema.json`

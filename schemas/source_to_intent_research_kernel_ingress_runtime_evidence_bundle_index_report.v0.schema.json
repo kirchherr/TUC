@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index Report v0",
+  "description": "Digest-only index over standard Runtime Execution Evidence Bundles for Kernel Ingress research cases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "default_parser_status",
+    "executor_contract",
+    "frontend_ingress_contract",
+    "parser_status",
+    "raw_source_policy",
+    "raw_value_policy",
+    "runtime_evidence_bundle_contract",
+    "runtime_evidence_bundle_index_contract",
+    "runtime_evidence_sections",
+    "runtime_matrix_contract",
+    "runtime_matrix_digest",
+    "runtime_step_trace_contract",
+    "runtime_step_trace_digest",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "trusted_executor_registry"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "digest_only_values_omitted"},
+    "blocked_execution_surfaces": {"$ref": "#/$defs/blocked_execution_surfaces"},
+    "case_count": {"const": 4},
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case"},
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "executor_contract": {"const": "runtime_executor.trusted_backend.v0"},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "runtime_evidence_bundle_contract": {
+      "const": "runtime_execution_evidence_bundle.data_only.v0"
+    },
+    "runtime_evidence_bundle_index_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0"
+    },
+    "runtime_evidence_sections": {"$ref": "#/$defs/standard_bundle_sections"},
+    "runtime_matrix_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0"
+    },
+    "runtime_matrix_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_step_trace_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0"
+    },
+    "runtime_step_trace_digest": {"$ref": "#/$defs/sha256_digest"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index_report.v0"
+    },
+    "source_boundary": {
+      "const": "kernel_ingress_runtime_to_standard_execution_evidence_bundle_index"
+    },
+    "status": {"const": "PASS"},
+    "trusted_executor_registry": {"const": "trusted_runtime_executor_registry.v0"}
+  },
+  "$defs": {
+    "backend": {"enum": ["linear-sim", "vector-sim"]},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_sequence",
+        "bundle_metadata_digest",
+        "bundle_report_digest",
+        "case_id",
+        "execution_receipt_digest",
+        "execution_receipt_link_count",
+        "execution_trace_digest",
+        "graph_name",
+        "input_count",
+        "input_manifest_digest",
+        "kernel_name",
+        "operation_path",
+        "output_count",
+        "output_manifest_digest",
+        "passed",
+        "raw_value_policy",
+        "reference_comparison_count",
+        "reference_correctness_digest",
+        "runtime_plan_digest",
+        "standard_bundle_sections",
+        "status",
+        "step_count",
+        "tensor_store_digest",
+        "tensor_store_record_count",
+        "terminal_outputs"
+      ],
+      "properties": {
+        "backend_sequence": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/backend"},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "bundle_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "bundle_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "case_id": {
+          "enum": [
+            "research_module_matmul_elementwise",
+            "research_module_softmax_reduction",
+            "research_module_matmul_reduction",
+            "research_module_mvp_pipeline"
+          ]
+        },
+        "execution_receipt_digest": {"$ref": "#/$defs/sha256_digest"},
+        "execution_receipt_link_count": {"const": 4},
+        "execution_trace_digest": {"$ref": "#/$defs/sha256_digest"},
+        "graph_name": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction",
+            "research_matmul_reduction",
+            "research_mvp_pipeline"
+          ]
+        },
+        "input_count": {"enum": [1, 2]},
+        "input_manifest_digest": {"$ref": "#/$defs/sha256_digest"},
+        "kernel_name": {
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction",
+            "matmul_reduction",
+            "mvp_pipeline"
+          ]
+        },
+        "operation_path": {
+          "type": "array",
+          "items": {"enum": ["elementwise", "matmul", "reduction", "softmax"]},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "output_count": {"const": 1},
+        "output_manifest_digest": {"$ref": "#/$defs/sha256_digest"},
+        "passed": {"const": true},
+        "raw_value_policy": {"const": "omitted_by_policy"},
+        "reference_comparison_count": {"const": 1},
+        "reference_correctness_digest": {"$ref": "#/$defs/sha256_digest"},
+        "runtime_plan_digest": {"$ref": "#/$defs/sha256_digest"},
+        "standard_bundle_sections": {"$ref": "#/$defs/standard_bundle_sections"},
+        "status": {"const": "standard_runtime_evidence_bound"},
+        "step_count": {"enum": [2, 4]},
+        "tensor_store_digest": {"$ref": "#/$defs/sha256_digest"},
+        "tensor_store_record_count": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 8
+        },
+        "terminal_outputs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "maxItems": 1
+        }
+      }
+    },
+    "standard_bundle_sections": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "tensor_store_evidence"},
+        {"const": "input_manifest"},
+        {"const": "output_manifest"},
+        {"const": "reference_correctness"},
+        {"const": "execution_receipt"}
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

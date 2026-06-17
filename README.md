@@ -294,6 +294,7 @@ examples/source_to_intent_research_capability_claim_gate.py
 examples/source_to_intent_research_kernel_ingress.py
 examples/source_to_intent_research_kernel_ingress_runtime_matrix.py
 examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py
+examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py
 examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py
 examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py
 examples/source_to_intent_research_kernel_ingress_boundary_budget.py
@@ -335,6 +336,7 @@ Key docs:
 - [Source-to-Intent research kernel ingress](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md)
 - [Source-to-Intent research kernel ingress runtime matrix](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md)
 - [Source-to-Intent research kernel ingress runtime step trace](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE.md)
+- [Source-to-Intent research kernel ingress runtime evidence bundle index](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX.md)
 - [Source-to-Intent research kernel ingress runtime coverage policy](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY.md)
 - [Source-to-Intent research kernel ingress runtime backend alignment](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_BACKEND_ALIGNMENT.md)
 - [Source-to-Intent research kernel ingress boundary budget](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md)

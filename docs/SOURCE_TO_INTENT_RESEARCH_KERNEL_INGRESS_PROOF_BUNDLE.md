@@ -34,6 +34,7 @@ The bundle records SHA-256 digests for:
 - Source-To-Intent Research Kernel Ingress
 - Source-To-Intent Research Kernel Ingress Runtime Matrix
 - Source-To-Intent Research Kernel Ingress Runtime Step Trace
+- Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
 - Source-To-Intent Research Kernel Ingress Runtime Backend Alignment
 - Source-To-Intent Research Kernel Ingress Boundary Budget
@@ -53,6 +54,9 @@ Kernel Ingress Runtime Matrix artifact path:
 
 Kernel Ingress Runtime Step Trace artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
+
+Kernel Ingress Runtime Evidence Bundle Index artifact path:
+`examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 
 Kernel Ingress Runtime Coverage Policy artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
@@ -94,6 +98,7 @@ This bundle gives reviewers one small artifact for the Kernel Ingress claim:
 kernel ingress
 kernel ingress runtime matrix
 kernel ingress runtime step trace
+kernel ingress runtime evidence bundle index
 kernel ingress runtime coverage policy
 kernel ingress runtime backend alignment
 kernel ingress boundary budget

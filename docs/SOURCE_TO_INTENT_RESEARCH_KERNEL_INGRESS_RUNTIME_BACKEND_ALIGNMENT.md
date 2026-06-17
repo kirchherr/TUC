@@ -23,6 +23,8 @@ backend plugins, access devices, or make native performance claims.
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
 - Runtime Step Trace companion:
   `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
+- Runtime Evidence Bundle Index companion:
+  `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 - Runtime Coverage Policy input:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime Executor Conformance input:
@@ -84,6 +86,8 @@ kernel ingress runtime matrix
 runtime coverage policy
     +
 runtime step trace
+    +
+runtime evidence bundle index
     +
 runtime executor conformance
     ->
