@@ -32,12 +32,12 @@
       "minItems": 2,
       "maxItems": 2
     },
-    "artifact_count": {"const": 13},
+    "artifact_count": {"const": 14},
     "artifact_policy": {"const": "digest_only_source_free"},
     "artifacts": {
       "type": "array",
-      "minItems": 13,
-      "maxItems": 13,
+      "minItems": 14,
+      "maxItems": 14,
       "items": {"$ref": "#/$defs/artifact"}
     },
     "blocked_claims": {
@@ -72,10 +72,11 @@
         {"const": "source_to_intent_research_kernel_ingress_conformance_gate"},
         {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"},
         {"const": "source_to_intent_research_kernel_ingress_proof_bundle"},
+        {"const": "source_to_intent_research_kernel_ingress_evidence_gate"},
         {"const": "source_to_intent_research_evidence_gate"}
       ],
-      "minItems": 13,
-      "maxItems": 13
+      "minItems": 14,
+      "maxItems": 14
     },
     "review_claims": {
       "type": "array",
@@ -123,6 +124,7 @@
             "source_to_intent_research_kernel_ingress_conformance_gate",
             "source_to_intent_research_kernel_ingress_idiom_alignment",
             "source_to_intent_research_kernel_ingress_proof_bundle",
+            "source_to_intent_research_kernel_ingress_evidence_gate",
             "source_to_intent_research_evidence_gate"
           ]
         },

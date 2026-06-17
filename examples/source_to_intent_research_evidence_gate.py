@@ -33,6 +33,13 @@ try:
     from examples.source_to_intent_research_kernel_ingress_diagnostics import (
         build_source_to_intent_research_kernel_ingress_diagnostic_cases,
     )
+    from examples.source_to_intent_research_kernel_ingress_evidence_gate import (
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        assert_kernel_ingress_evidence_gate_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_evidence_gate import (
+        build_gate_report as build_kernel_ingress_evidence_gate_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_idiom_alignment import (
         assert_kernel_ingress_idiom_alignment_report_contract,
     )
@@ -93,6 +100,13 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_diagnostics import (  # type: ignore[no-redef]
         build_source_to_intent_research_kernel_ingress_diagnostic_cases,
+    )
+    from source_to_intent_research_kernel_ingress_evidence_gate import (  # type: ignore[no-redef]
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        assert_kernel_ingress_evidence_gate_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_evidence_gate import (
+        build_gate_report as build_kernel_ingress_evidence_gate_report,
     )
     from source_to_intent_research_kernel_ingress_idiom_alignment import (  # type: ignore[no-redef]
         assert_kernel_ingress_idiom_alignment_report_contract,
@@ -181,6 +195,7 @@ def build_gate_report(
         SourceToIntentResearchKernelIngressDiagnosticsReport | None
     ) = None,
     kernel_ingress_conformance_gate_text: str | None = None,
+    kernel_ingress_evidence_gate_text: str | None = None,
     kernel_ingress_idiom_alignment_text: str | None = None,
     kernel_ingress_proof_bundle_text: str | None = None,
     kernel_ingress_text: str | None = None,
@@ -243,6 +258,11 @@ def build_gate_report(
         if kernel_ingress_proof_bundle_text is None
         else kernel_ingress_proof_bundle_text
     )
+    kernel_ingress_evidence_gate = (
+        build_kernel_ingress_evidence_gate_report()
+        if kernel_ingress_evidence_gate_text is None
+        else kernel_ingress_evidence_gate_text
+    )
     preflight_bridge = (
         build_preflight_bridge_report()
         if preflight_bridge_text is None
@@ -263,6 +283,7 @@ def build_gate_report(
     _assert_kernel_ingress_conformance_bound(kernel_ingress_conformance)
     _assert_kernel_ingress_idiom_alignment_bound(kernel_ingress_idiom_alignment)
     _assert_kernel_ingress_proof_bundle_bound(kernel_ingress_proof_bundle)
+    _assert_kernel_ingress_evidence_gate_bound(kernel_ingress_evidence_gate)
     _assert_kernel_ingress_bound(kernel_ingress)
     _assert_source_runtime_smoke_bound(source_runtime_smoke)
     return _render_gate_report(
@@ -276,6 +297,7 @@ def build_gate_report(
         kernel_ingress_conformance,
         kernel_ingress_idiom_alignment,
         kernel_ingress_proof_bundle,
+        kernel_ingress_evidence_gate,
         kernel_ingress,
         source_runtime_smoke,
     )
@@ -538,6 +560,22 @@ def _assert_kernel_ingress_proof_bundle_bound(text: str) -> None:
     _assert_gate_text_is_source_free(text)
 
 
+def _assert_kernel_ingress_evidence_gate_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress evidence gate not text"
+        )
+    try:
+        assert_kernel_ingress_evidence_gate_report_contract(text)
+    except SourceToIntentResearchKernelIngressEvidenceGateError as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress evidence gate binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
 def _assert_source_runtime_smoke_bound(text: str) -> None:
     if not isinstance(text, str):
         raise SourceToIntentResearchEvidenceGateError(
@@ -565,6 +603,7 @@ def _render_gate_report(
     kernel_ingress_conformance_text: str,
     kernel_ingress_idiom_alignment_text: str,
     kernel_ingress_proof_bundle_text: str,
+    kernel_ingress_evidence_gate_text: str,
     kernel_ingress_text: str,
     source_runtime_smoke_text: str,
 ) -> str:
@@ -613,6 +652,11 @@ def _render_gate_report(
     lines.append(
         "  kernel_ingress_proof_bundle_digest = "
         f'"{_digest(kernel_ingress_proof_bundle_text)}"'
+    )
+    lines.append('  kernel_ingress_evidence_gate = "passed"')
+    lines.append(
+        "  kernel_ingress_evidence_gate_digest = "
+        f'"{_digest(kernel_ingress_evidence_gate_text)}"'
     )
     lines.append('  kernel_ingress = "passed"')
     lines.append(f'  kernel_ingress_digest = "{_digest(kernel_ingress_text)}"')

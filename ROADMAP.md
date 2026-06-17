@@ -557,6 +557,9 @@ Deliverables:
 - Source-To-Intent Research Kernel Ingress Proof Bundle giving reviewers one
   digest-only source-free artifact for the realistic Kernel Ingress research
   slice before future ingress syntax can expand.
+- Source-To-Intent Research Kernel Ingress Evidence Gate proving the focused
+  Kernel Ingress proof slice is CI-bound before the global Source-To-Intent
+  Research Evidence Gate accepts it.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -712,6 +715,9 @@ Go/No-Go:
   rejection-coverage, diagnostics, conformance, and idiom-alignment evidence
   before the global proof bundle accepts the realistic module-shaped ingress
   claim.
+- Source-To-Intent Research Kernel Ingress Evidence Gate now validates Kernel
+  Ingress E2E, boundary-budget, rejection-coverage, diagnostics, conformance,
+  idiom-alignment, and proof-bundle digest bindings as CI-facing evidence.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

@@ -35,6 +35,7 @@ The bundle records SHA-256 digests for:
 - Source-To-Intent Research Kernel Ingress Diagnostics
 - Source-To-Intent Research Kernel Ingress Idiom Alignment
 - Source-To-Intent Research Kernel Ingress Proof Bundle
+- Source-To-Intent Research Kernel Ingress Evidence Gate
 - Source-To-Intent Research Evidence Gate
 
 Kernel Ingress artifact path:
@@ -59,6 +60,9 @@ Kernel Ingress Idiom Alignment artifact path:
 
 Kernel Ingress Proof Bundle artifact path:
 `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
+
+Kernel Ingress Evidence Gate artifact path:
+`examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 
 The bundle claim is:
 
@@ -103,6 +107,7 @@ kernel ingress idiom alignment
 kernel ingress proof bundle
   includes kernel ingress boundary budget
   includes kernel ingress rejection coverage
+kernel ingress evidence gate
 evidence gate
     ->
 digest-only proof bundle

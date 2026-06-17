@@ -55,6 +55,10 @@ files, access devices, or discover plugins.
   `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
 - Proof bundle docs:
   [Source-To-Intent Research Kernel Ingress Proof Bundle](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md)
+- Evidence gate companion:
+  `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
+- Evidence gate docs:
+  [Source-To-Intent Research Kernel Ingress Evidence Gate](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md)
 - CI entry: `.github/workflows/ci.yml`
 
 ## Accepted Module Shape
@@ -123,6 +127,9 @@ source-free coverage matrix.
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
 for the Kernel Ingress E2E, boundary-budget, rejection-coverage, diagnostics,
 conformance, and idiom-alignment artifacts.
+
+The companion Kernel Ingress Evidence Gate validates the same artifacts and
+their Proof Bundle digest bindings as CI-facing evidence.
 
 ## Review Meaning
 

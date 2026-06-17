@@ -38,6 +38,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_diagnostics import (
         build_report as build_kernel_ingress_diagnostics_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_evidence_gate import (
+        assert_kernel_ingress_evidence_gate_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_evidence_gate import (
+        build_gate_report as build_kernel_ingress_evidence_gate_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_idiom_alignment import (
         assert_kernel_ingress_idiom_alignment_report_contract,
     )
@@ -101,6 +107,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_diagnostics import (
         build_report as build_kernel_ingress_diagnostics_report,
+    )
+    from source_to_intent_research_kernel_ingress_evidence_gate import (  # type: ignore[no-redef]
+        assert_kernel_ingress_evidence_gate_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_evidence_gate import (
+        build_gate_report as build_kernel_ingress_evidence_gate_report,
     )
     from source_to_intent_research_kernel_ingress_idiom_alignment import (  # type: ignore[no-redef]
         assert_kernel_ingress_idiom_alignment_report_contract,
@@ -266,6 +278,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
     ),
     (
+        "source_to_intent_research_kernel_ingress_evidence_gate",
+        "text_gate",
+        "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
+    ),
+    (
         "source_to_intent_research_evidence_gate",
         "text_gate",
         "source_to_intent_research_evidence_gate.ci.v0",
@@ -300,6 +317,9 @@ def build_proof_bundle_report() -> dict[str, object]:
         ),
         "source_to_intent_research_kernel_ingress_proof_bundle": (
             build_kernel_ingress_proof_bundle_report()
+        ),
+        "source_to_intent_research_kernel_ingress_evidence_gate": (
+            build_kernel_ingress_evidence_gate_report()
         ),
         "source_to_intent_research_evidence_gate": build_evidence_gate_report(),
     }
@@ -413,6 +433,10 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
         artifact_texts["source_to_intent_research_kernel_ingress_proof_bundle"]
     )
     assert_kernel_ingress_proof_bundle_report_contract(kernel_ingress_bundle)
+    kernel_ingress_gate = artifact_texts[
+        "source_to_intent_research_kernel_ingress_evidence_gate"
+    ]
+    assert_kernel_ingress_evidence_gate_report_contract(kernel_ingress_gate)
     evidence_gate = artifact_texts["source_to_intent_research_evidence_gate"]
     for artifact_id in (
         "source_to_intent_research_readiness",
@@ -427,6 +451,7 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
         "source_to_intent_research_kernel_ingress_conformance_gate",
         "source_to_intent_research_kernel_ingress_idiom_alignment",
         "source_to_intent_research_kernel_ingress_proof_bundle",
+        "source_to_intent_research_kernel_ingress_evidence_gate",
     ):
         if _digest(artifact_texts[artifact_id]) not in evidence_gate:
             raise ValueError(

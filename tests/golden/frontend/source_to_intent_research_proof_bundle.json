@@ -3,7 +3,7 @@
     "research_matmul_elementwise",
     "research_softmax_reduction"
   ],
-  "artifact_count": 13,
+  "artifact_count": 14,
   "artifact_policy": "digest_only_source_free",
   "artifacts": [
     {
@@ -91,10 +91,17 @@
       "status": "accepted"
     },
     {
+      "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
+      "digest": "sha256:b682a67d4e0a2a1c8b025751871458ee592b8bad32cd9fabc48595ef8a9ba663",
+      "status": "accepted"
+    },
+    {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:3edf529ab99caac64cc0b6f7509282949d2ed9965a1339cb2996d4f17a8a13db",
+      "digest": "sha256:ee49c86e25bf659144d26a6fd20d2afb03a3233d9bdcc94f75006c9e964f52cb",
       "status": "accepted"
     }
   ],
@@ -121,6 +128,7 @@
     "source_to_intent_research_kernel_ingress_conformance_gate",
     "source_to_intent_research_kernel_ingress_idiom_alignment",
     "source_to_intent_research_kernel_ingress_proof_bundle",
+    "source_to_intent_research_kernel_ingress_evidence_gate",
     "source_to_intent_research_evidence_gate"
   ],
   "review_claims": [

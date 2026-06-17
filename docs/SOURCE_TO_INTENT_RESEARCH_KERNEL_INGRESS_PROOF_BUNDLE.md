@@ -20,6 +20,8 @@ native performance claims.
 - Tests:
   `tests/test_source_to_intent_research_kernel_ingress_proof_bundle.py`
 - Evidence Gate binding: `examples/source_to_intent_research_evidence_gate.py`
+- Focused Kernel Ingress Evidence Gate binding:
+  `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 - Global Proof Bundle binding: `examples/source_to_intent_research_proof_bundle.py`
 - CI entry: `.github/workflows/ci.yml`
 
@@ -80,3 +82,6 @@ digest-only kernel ingress proof bundle
 
 Future Kernel Ingress syntax must update the underlying evidence before this
 bundle can remain valid.
+
+The focused Kernel Ingress Evidence Gate validates this bundle against the
+artifact digests evaluated in the same invocation.

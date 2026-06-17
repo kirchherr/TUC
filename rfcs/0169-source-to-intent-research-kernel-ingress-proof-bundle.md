@@ -8,6 +8,7 @@
   - `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
   - `examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
   - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
+  - `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
   - `examples/source_to_intent_research_evidence_gate.py`
   - `examples/source_to_intent_research_proof_bundle.py`
   - `schemas/source_to_intent_research_kernel_ingress_proof_bundle_report.v0.schema.json`
@@ -18,6 +19,7 @@
   - `rfcs/0168-source-to-intent-research-kernel-ingress-idiom-alignment.md`
   - `rfcs/0170-source-to-intent-research-kernel-ingress-boundary-budget.md`
   - `rfcs/0171-source-to-intent-research-kernel-ingress-rejection-coverage.md`
+  - `rfcs/0172-source-to-intent-research-kernel-ingress-evidence-gate.md`
 
 ## Context
 
@@ -38,6 +40,7 @@ The bundle:
 - records digests for the Kernel Ingress proof artifacts;
 - validates each artifact before emitting its own report;
 - binds into the Source-To-Intent Research Evidence Gate;
+- binds into the focused Kernel Ingress Evidence Gate;
 - binds into the global Source-To-Intent Research Proof Bundle;
 - remains digest-only and source-free.
 
@@ -63,7 +66,8 @@ compiler artifacts.
 The Kernel Ingress research claim becomes easier to audit without weakening any
 boundary. Future Kernel Ingress syntax changes must update E2E,
 boundary-budget, rejection-coverage, diagnostics, conformance, idiom-alignment,
-this bundle, the Evidence Gate, and the global Proof Bundle together.
+this bundle, the focused Kernel Ingress Evidence Gate, the global Evidence Gate,
+and the global Proof Bundle together.
 
 This still does not prove general Triton source ingestion, production parsing,
 or native performance. Those claims remain blocked.
