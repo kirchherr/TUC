@@ -43,6 +43,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_rejection_coverage import (
         build_report as build_kernel_ingress_rejection_coverage_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
+        assert_kernel_ingress_runtime_matrix_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
+        build_report as build_kernel_ingress_runtime_matrix_report,
+    )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress import (  # type: ignore[no-redef]
         assert_kernel_ingress_report_contract,
@@ -79,6 +85,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_rejection_coverage import (
         build_report as build_kernel_ingress_rejection_coverage_report,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_matrix import (  # type: ignore[no-redef]
+        assert_kernel_ingress_runtime_matrix_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_matrix import (
+        build_report as build_kernel_ingress_runtime_matrix_report,
     )
 
 from tuc.frontend import (
@@ -135,6 +147,7 @@ def build_gate_report(
     kernel_ingress_text: str | None = None,
     proof_bundle_text: str | None = None,
     rejection_coverage_text: str | None = None,
+    runtime_matrix_text: str | None = None,
 ) -> str:
     """Return stable CI-facing Kernel Ingress evidence binding."""
 
@@ -147,6 +160,11 @@ def build_gate_report(
         build_kernel_ingress_boundary_budget_report()
         if boundary_budget_text is None
         else boundary_budget_text
+    )
+    runtime_matrix = (
+        build_kernel_ingress_runtime_matrix_report()
+        if runtime_matrix_text is None
+        else runtime_matrix_text
     )
     rejection_coverage = (
         build_kernel_ingress_rejection_coverage_report()
@@ -174,6 +192,7 @@ def build_gate_report(
         else proof_bundle_text
     )
     _assert_kernel_ingress_bound(kernel_ingress)
+    runtime_matrix_report = _assert_runtime_matrix_bound(runtime_matrix)
     _assert_boundary_budget_bound(boundary_budget)
     _assert_rejection_coverage_bound(rejection_coverage)
     _assert_diagnostics_bound(diagnostics)
@@ -183,6 +202,9 @@ def build_gate_report(
         proof_bundle,
         {
             "source_to_intent_research_kernel_ingress": kernel_ingress,
+            "source_to_intent_research_kernel_ingress_runtime_matrix": (
+                runtime_matrix
+            ),
             "source_to_intent_research_kernel_ingress_boundary_budget": (
                 boundary_budget
             ),
@@ -200,6 +222,8 @@ def build_gate_report(
     )
     report = _render_gate_report(
         kernel_ingress,
+        runtime_matrix,
+        runtime_matrix_report,
         boundary_budget,
         rejection_coverage,
         diagnostics,
@@ -230,6 +254,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
             f'{SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_CONTRACT}"'
         ),
         '  kernel_ingress = "passed"',
+        '  runtime_matrix = "passed"',
         '  boundary_budget = "passed"',
         '  rejection_coverage = "passed"',
         '  diagnostics = "passed"',
@@ -239,6 +264,8 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  accepted_sources = "research_matmul_elementwise,research_softmax_reduction"',
         '  accepted_kernels = "matmul_elementwise,softmax_reduction"',
         '  covered_operation_families = "elementwise,matmul,reduction,softmax"',
+        '  backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim"',
+        '  runtime_case_count = "2"',
         '  covered_rejections = "7"',
         (
             '  diagnostics_rejection_reasons = "import_from_statement,'
@@ -263,6 +290,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
             )
     for digest_field in (
         "kernel_ingress_digest",
+        "runtime_matrix_digest",
         "boundary_budget_digest",
         "rejection_coverage_digest",
         "diagnostics_digest",
@@ -300,6 +328,18 @@ def _assert_boundary_budget_bound(text: str) -> Mapping[str, object]:
     except (TypeError, ValueError) as exc:
         raise SourceToIntentResearchKernelIngressEvidenceGateError(
             "kernel ingress evidence gate failed: boundary budget binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+    return report
+
+
+def _assert_runtime_matrix_bound(text: str) -> Mapping[str, object]:
+    report = _load_json_report(text, "runtime matrix")
+    try:
+        assert_kernel_ingress_runtime_matrix_report_contract(report)
+    except (TypeError, ValueError) as exc:
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: runtime matrix binding missing"
         ) from exc
     _assert_gate_text_is_source_free(text)
     return report
@@ -406,6 +446,8 @@ def _assert_proof_bundle_bound(
 
 def _render_gate_report(
     kernel_ingress_text: str,
+    runtime_matrix_text: str,
+    runtime_matrix_report: Mapping[str, object],
     boundary_budget_text: str,
     rejection_coverage_text: str,
     diagnostics_text: str,
@@ -424,6 +466,8 @@ def _render_gate_report(
     )
     lines.append('  kernel_ingress = "passed"')
     lines.append(f'  kernel_ingress_digest = "{_digest(kernel_ingress_text)}"')
+    lines.append('  runtime_matrix = "passed"')
+    lines.append(f'  runtime_matrix_digest = "{_digest(runtime_matrix_text)}"')
     lines.append('  boundary_budget = "passed"')
     lines.append(f'  boundary_budget_digest = "{_digest(boundary_budget_text)}"')
     lines.append('  rejection_coverage = "passed"')
@@ -459,6 +503,12 @@ def _render_gate_report(
         )
         + '"'
     )
+    lines.append(
+        '  backend_sequences = "'
+        + ",".join(_string_list(runtime_matrix_report["backend_sequences"]))
+        + '"'
+    )
+    lines.append(f'  runtime_case_count = "{runtime_matrix_report["case_count"]}"')
     lines.append(
         f'  covered_rejections = "{rejection_coverage["covered_rejection_count"]}"'
     )
@@ -504,6 +554,14 @@ def _load_json_report(text: str, label: str) -> Mapping[str, object]:
             f"kernel ingress evidence gate failed: {label} report must be object"
         )
     return report
+
+
+def _string_list(value: object) -> list[str]:
+    if not isinstance(value, list):
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: runtime matrix binding missing"
+        )
+    return [str(item) for item in value]
 
 
 def _assert_gate_text_is_source_free(text: str) -> None:

@@ -11,6 +11,7 @@
   - `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
   - `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
   - `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
   - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
   - `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
   - `examples/source_to_intent_research_evidence_gate.py`
@@ -79,6 +80,7 @@ Future expansion must add:
 - conformance evidence
 - idiom alignment
 - runtime correctness evidence
+- runtime matrix evidence over accepted cases
 - digest binding in the Research Evidence Gate and Proof Bundle
 - focused Kernel Ingress Evidence Gate binding
 - security review for every new module syntax surface

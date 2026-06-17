@@ -87,21 +87,21 @@
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:6a0aaf586821e1a5a6cc0cf3573fa18841dc21e643c555a0e20f404591d72322",
+      "digest": "sha256:7e2021650d56513f884eb8cb4e4632dd631317eea083b731a45a23afc9fbffd3",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:b682a67d4e0a2a1c8b025751871458ee592b8bad32cd9fabc48595ef8a9ba663",
+      "digest": "sha256:df3aebf5c06cbdcf1dc8aa5da67d69c5ae057f2e066a68f17f1e679597d5c545",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:ee49c86e25bf659144d26a6fd20d2afb03a3233d9bdcc94f75006c9e964f52cb",
+      "digest": "sha256:8b3209b2f52cb847c0ec0046846b6a794ea6d2d1f05c89c9eca62a41866aaf50",
       "status": "accepted"
     }
   ],

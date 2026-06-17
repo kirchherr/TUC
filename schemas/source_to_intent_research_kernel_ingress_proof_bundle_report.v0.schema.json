@@ -42,12 +42,12 @@
       "minItems": 2,
       "maxItems": 2
     },
-    "artifact_count": {"const": 6},
+    "artifact_count": {"const": 7},
     "artifact_policy": {"const": "digest_only_source_free"},
     "artifacts": {
       "type": "array",
-      "minItems": 6,
-      "maxItems": 6,
+      "minItems": 7,
+      "maxItems": 7,
       "items": {"$ref": "#/$defs/artifact"}
     },
     "blocked_claims": {
@@ -81,14 +81,15 @@
       "type": "array",
       "prefixItems": [
         {"const": "source_to_intent_research_kernel_ingress"},
+        {"const": "source_to_intent_research_kernel_ingress_runtime_matrix"},
         {"const": "source_to_intent_research_kernel_ingress_boundary_budget"},
         {"const": "source_to_intent_research_kernel_ingress_rejection_coverage"},
         {"const": "source_to_intent_research_kernel_ingress_diagnostics"},
         {"const": "source_to_intent_research_kernel_ingress_conformance_gate"},
         {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"}
       ],
-      "minItems": 6,
-      "maxItems": 6
+      "minItems": 7,
+      "maxItems": 7
     },
     "review_claims": {
       "type": "array",
@@ -99,10 +100,11 @@
         {"const": "diagnostics_bound"},
         {"const": "idiom_scope_bound"},
         {"const": "kernel_ingress_runtime_e2e"},
+        {"const": "runtime_matrix_bound"},
         {"const": "source_free_metadata_only"}
       ],
-      "minItems": 7,
-      "maxItems": 7
+      "minItems": 8,
+      "maxItems": 8
     },
     "schema_version": {
       "const": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0"
@@ -127,6 +129,7 @@
         "artifact_id": {
           "enum": [
             "source_to_intent_research_kernel_ingress",
+            "source_to_intent_research_kernel_ingress_runtime_matrix",
             "source_to_intent_research_kernel_ingress_boundary_budget",
             "source_to_intent_research_kernel_ingress_rejection_coverage",
             "source_to_intent_research_kernel_ingress_diagnostics",

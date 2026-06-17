@@ -538,6 +538,11 @@ Deliverables:
   module-shaped source buffers can be validated as data, reduced to one
   explicitly selected kernel function, and executed through the controlled
   source-to-runtime research path.
+- Source-To-Intent Research Kernel Ingress Runtime Matrix
+  (`examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`)
+  proving accepted realistic module-shaped inputs have explicit runtime
+  evidence inventory by backend sequence, terminal output, trace-step count,
+  and digest.
 - Source-To-Intent Research Kernel Ingress Boundary Budget proving accepted
   realistic module-shaped source buffers stay inside byte, line, AST-node, and
   AST-depth budgets, and that budget overflow rejects before extraction or
@@ -679,9 +684,10 @@ Go/No-Go:
   so parser scope cannot silently expand beyond proven MVP operation families.
 - Source-To-Intent Research Proof Bundle now indexes the current readiness,
   conformance, diagnostics, Preflight Bridge, Execution Bridge, Idiom
-  Alignment, Source Runtime Smoke, Kernel Ingress, Kernel Ingress Conformance,
-  Kernel Ingress Diagnostics, Kernel Ingress Idiom Alignment, Kernel Ingress
-  Proof Bundle, and Evidence Gate artifacts by digest for review.
+  Alignment, Source Runtime Smoke, Kernel Ingress, Kernel Ingress Runtime
+  Matrix, Kernel Ingress Conformance, Kernel Ingress Diagnostics, Kernel
+  Ingress Idiom Alignment, Kernel Ingress Proof Bundle, and Evidence Gate
+  artifacts by digest for review.
 - Source-To-Intent Research Source Runtime Smoke now proves the accepted
   `matmul -> elementwise` and `softmax -> reduction` source buffers can execute
   end-to-end through the controlled research parser path without opening
@@ -698,6 +704,10 @@ Go/No-Go:
 - Source-To-Intent Research Kernel Ingress Rejection Coverage now binds
   diagnostics rejection IDs and boundary-budget rejection IDs into one
   source-free coverage matrix before the Kernel Ingress Proof Bundle can pass.
+- Source-To-Intent Research Kernel Ingress Runtime Matrix now binds accepted
+  module-shaped source cases to backend sequences, terminal output names,
+  trace-step counts, runtime plan digests, execution trace digests, reference
+  correctness digests, and the Kernel Ingress E2E digest.
 - Source-To-Intent Research Kernel Ingress Conformance Gate now proves accepted
   module-shaped source outputs are ordinary Source Intent frontend payloads that
   pass accepted-case conformance and rejected backend-hint/source-text escape
@@ -711,13 +721,14 @@ Go/No-Go:
   the Kernel Ingress Conformance Gate by digest, so realistic input shape does
   not silently expand beyond proven MVP operation families.
 - Source-To-Intent Research Kernel Ingress Proof Bundle now gives reviewers one
-  digest-only source-free index for Kernel Ingress E2E, boundary-budget,
-  rejection-coverage, diagnostics, conformance, and idiom-alignment evidence
-  before the global proof bundle accepts the realistic module-shaped ingress
-  claim.
+  digest-only source-free index for Kernel Ingress E2E, runtime-matrix,
+  boundary-budget, rejection-coverage, diagnostics, conformance, and
+  idiom-alignment evidence before the global proof bundle accepts the realistic
+  module-shaped ingress claim.
 - Source-To-Intent Research Kernel Ingress Evidence Gate now validates Kernel
-  Ingress E2E, boundary-budget, rejection-coverage, diagnostics, conformance,
-  idiom-alignment, and proof-bundle digest bindings as CI-facing evidence.
+  Ingress E2E, runtime-matrix, boundary-budget, rejection-coverage,
+  diagnostics, conformance, idiom-alignment, and proof-bundle digest bindings
+  as CI-facing evidence.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

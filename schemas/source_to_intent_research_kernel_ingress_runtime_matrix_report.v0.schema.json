@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_runtime_matrix_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Runtime Matrix Report v0",
+  "description": "Source-free runtime evidence matrix for Kernel Ingress research cases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "backend_sequences",
+    "case_count",
+    "cases",
+    "covered_operation_families",
+    "default_parser_status",
+    "e2e_contract",
+    "frontend_ingress_contract",
+    "kernel_ingress_digest",
+    "parser_status",
+    "raw_source_policy",
+    "raw_value_policy",
+    "runtime_matrix_contract",
+    "schema_version",
+    "source_boundary",
+    "status"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "metadata_only_values_omitted"},
+    "backend_sequences": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "linear-sim->vector-sim"},
+        {"const": "vector-sim->vector-sim"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "case_count": {"const": 2},
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case"},
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "covered_operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "elementwise"},
+        {"const": "matmul"},
+        {"const": "reduction"},
+        {"const": "softmax"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "e2e_contract": {"const": "source_to_intent_research_kernel_ingress.e2e.v0"},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "kernel_ingress_digest": {"$ref": "#/$defs/sha256_digest"},
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "runtime_matrix_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0"
+    },
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_runtime_matrix_report.v0"
+    },
+    "source_boundary": {
+      "const": "triton_module_source_buffer_to_runtime_via_research_kernel_ingress"
+    },
+    "status": {"const": "PASS"}
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_sequence",
+        "case_id",
+        "execution_trace_digest",
+        "kernel_name",
+        "operation_families",
+        "reference_correctness_digest",
+        "runtime_plan_digest",
+        "status",
+        "terminal_outputs",
+        "trace_step_count"
+      ],
+      "properties": {
+        "backend_sequence": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "case_id": {
+          "enum": [
+            "research_module_matmul_elementwise",
+            "research_module_softmax_reduction"
+          ]
+        },
+        "execution_trace_digest": {"$ref": "#/$defs/sha256_digest"},
+        "kernel_name": {
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction"
+          ]
+        },
+        "operation_families": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "elementwise",
+              "matmul",
+              "reduction",
+              "softmax"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "reference_correctness_digest": {"$ref": "#/$defs/sha256_digest"},
+        "runtime_plan_digest": {"$ref": "#/$defs/sha256_digest"},
+        "status": {"const": "runtime_bound"},
+        "terminal_outputs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "trace_step_count": {"const": 2}
+      }
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

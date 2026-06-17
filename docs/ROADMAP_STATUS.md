@@ -723,6 +723,15 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_kernel_ingress.json`, and
   digest binding through Source-To-Intent Research Evidence Gate and Proof
   Bundle for realistic Triton module-shaped source buffers.
+- Source-To-Intent Research Kernel Ingress Runtime Matrix at
+  `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`, with
+  schema at
+  `schemas/source_to_intent_research_kernel_ingress_runtime_matrix_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_matrix.json`,
+  backend-sequence and trace-step inventory for accepted Kernel Ingress cases,
+  and binding through the Kernel Ingress Proof Bundle and focused Evidence
+  Gate.
 - Source-To-Intent Research Kernel Ingress Boundary Budget at
   `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`, with
   schema at
@@ -773,14 +782,15 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_kernel_ingress_proof_bundle.json`,
   digest binding through Source-To-Intent Research Evidence Gate and global
   Proof Bundle, and one source-free review index for Kernel Ingress E2E,
-  boundary-budget, rejection-coverage, diagnostics, conformance, and
-  idiom-alignment evidence.
+  runtime-matrix, boundary-budget, rejection-coverage, diagnostics,
+  conformance, and idiom-alignment evidence.
 - Source-To-Intent Research Kernel Ingress Evidence Gate at
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`, with
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_kernel_ingress_evidence_gate.txt`,
-  exact Kernel Ingress Proof Bundle digest binding, and digest binding through
-  Source-To-Intent Research Evidence Gate and global Proof Bundle.
+  exact Kernel Ingress Proof Bundle digest binding, runtime-matrix binding, and
+  digest binding through Source-To-Intent Research Evidence Gate and global
+  Proof Bundle.
 - Source Intent Intake fuzz/property corpus for arbitrary JSON-like values,
   unsupported schema versions, source-text escape attempts, backend hint
   escapes, and unknown tensor references.

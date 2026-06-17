@@ -27,6 +27,7 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
         in report
     )
     assert 'kernel_ingress = "passed"' in report
+    assert 'runtime_matrix = "passed"' in report
     assert 'boundary_budget = "passed"' in report
     assert 'rejection_coverage = "passed"' in report
     assert 'diagnostics = "passed"' in report
@@ -34,6 +35,11 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'idiom_alignment = "passed"' in report
     assert 'proof_bundle = "passed"' in report
     assert 'covered_rejections = "7"' in report
+    assert (
+        'backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim"'
+        in report
+    )
+    assert 'runtime_case_count = "2"' in report
     assert 'status = "PASS"' in report
 
 
@@ -51,6 +57,7 @@ def test_kernel_ingress_evidence_gate_example_runs() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert "sha256:" in completed.stdout
     assert "kernel_ingress_digest" in completed.stdout
+    assert "runtime_matrix_digest" in completed.stdout
     assert "rejection_coverage_digest" in completed.stdout
     assert "proof_bundle_digest" in completed.stdout
     assert "@triton.jit" not in completed.stdout
@@ -73,6 +80,14 @@ def test_kernel_ingress_evidence_gate_rejects_tampered_rejection_coverage() -> N
         match="rejection coverage binding missing",
     ):
         build_gate_report(rejection_coverage_text='{"status": "PASS"}\n')
+
+
+def test_kernel_ingress_evidence_gate_rejects_tampered_runtime_matrix() -> None:
+    with pytest.raises(
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        match="runtime matrix binding missing",
+    ):
+        build_gate_report(runtime_matrix_text='{"status": "PASS"}\n')
 
 
 def test_kernel_ingress_evidence_gate_rejects_tampered_proof_bundle() -> None:
@@ -121,10 +136,12 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
         Path("rfcs/0165-source-to-intent-research-kernel-ingress.md"),
         Path("rfcs/0169-source-to-intent-research-kernel-ingress-proof-bundle.md"),
         Path("rfcs/0172-source-to-intent-research-kernel-ingress-evidence-gate.md"),
+        Path("rfcs/0173-source-to-intent-research-kernel-ingress-runtime-matrix.md"),
     ):
         assert gate_path in path.read_text(encoding="utf-8")
 

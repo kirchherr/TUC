@@ -41,6 +41,10 @@ The bundle records SHA-256 digests for:
 Kernel Ingress artifact path:
 `examples/source_to_intent_research_kernel_ingress.py`
 
+Kernel Ingress Runtime Matrix companion path, included through the Kernel
+Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
+`examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
+
 Kernel Ingress Boundary Budget companion path, included through the Kernel
 Ingress Proof Bundle:
 `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
@@ -105,6 +109,7 @@ kernel ingress conformance gate
 kernel ingress diagnostics
 kernel ingress idiom alignment
 kernel ingress proof bundle
+  includes kernel ingress runtime matrix
   includes kernel ingress boundary budget
   includes kernel ingress rejection coverage
 kernel ingress evidence gate

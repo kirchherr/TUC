@@ -31,6 +31,10 @@ files, access devices, or discover plugins.
 - Tests: `tests/test_source_to_intent_research_kernel_ingress.py`
 - Digest binding: `examples/source_to_intent_research_evidence_gate.py`
 - Proof bundle binding: `examples/source_to_intent_research_proof_bundle.py`
+- Runtime matrix companion:
+  `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
+- Runtime matrix docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Matrix](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md)
 - Boundary budget companion:
   `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
 - Boundary budget docs:
@@ -124,9 +128,14 @@ The companion Kernel Ingress Rejection Coverage report proves the current
 diagnostics and budget rejection surfaces are represented in one deterministic,
 source-free coverage matrix.
 
+The companion Kernel Ingress Runtime Matrix report makes the runtime side of
+the accepted cases explicit: backend sequences, terminal public outputs, trace
+step counts, and runtime evidence digests are bound back to the Kernel Ingress
+E2E report.
+
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
-for the Kernel Ingress E2E, boundary-budget, rejection-coverage, diagnostics,
-conformance, and idiom-alignment artifacts.
+for the Kernel Ingress E2E, runtime-matrix, boundary-budget,
+rejection-coverage, diagnostics, conformance, and idiom-alignment artifacts.
 
 The companion Kernel Ingress Evidence Gate validates the same artifacts and
 their Proof Bundle digest bindings as CI-facing evidence.
