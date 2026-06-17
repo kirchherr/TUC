@@ -20,6 +20,8 @@ production parsing.
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
 - Runtime Coverage Policy input:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
+- Runtime Backend Alignment input:
+  `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
 - Global Evidence Gate binding:
   `examples/source_to_intent_research_evidence_gate.py`
 - Global Proof Bundle binding:
@@ -33,6 +35,7 @@ The gate validates and binds:
 - Kernel Ingress E2E evidence;
 - Kernel Ingress Runtime Matrix evidence;
 - Kernel Ingress Runtime Coverage Policy evidence;
+- Kernel Ingress Runtime Backend Alignment evidence;
 - Kernel Ingress Boundary Budget evidence;
 - Kernel Ingress Rejection Coverage evidence;
 - Kernel Ingress Diagnostics evidence;
@@ -61,6 +64,7 @@ This gate is the merge-facing audit for Kernel Ingress:
 kernel ingress evidence
 runtime matrix
 runtime coverage policy
+runtime backend alignment
 boundary budget
 rejection coverage
 diagnostics

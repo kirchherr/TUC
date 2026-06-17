@@ -43,6 +43,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_rejection_coverage import (
         build_report as build_kernel_ingress_rejection_coverage_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_backend_alignment import (
+        assert_kernel_ingress_runtime_backend_alignment_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_backend_alignment import (
+        build_report as build_kernel_ingress_runtime_backend_alignment_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
         assert_kernel_ingress_runtime_coverage_policy_report_contract,
     )
@@ -91,6 +97,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_rejection_coverage import (
         build_report as build_kernel_ingress_rejection_coverage_report,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_backend_alignment import (  # type: ignore[no-redef]
+        assert_kernel_ingress_runtime_backend_alignment_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_backend_alignment import (
+        build_report as build_kernel_ingress_runtime_backend_alignment_report,
     )
     from source_to_intent_research_kernel_ingress_runtime_coverage_policy import (  # type: ignore[no-redef]
         assert_kernel_ingress_runtime_coverage_policy_report_contract,
@@ -159,6 +171,7 @@ def build_gate_report(
     kernel_ingress_text: str | None = None,
     proof_bundle_text: str | None = None,
     rejection_coverage_text: str | None = None,
+    runtime_backend_alignment_text: str | None = None,
     runtime_coverage_policy_text: str | None = None,
     runtime_matrix_text: str | None = None,
 ) -> str:
@@ -183,6 +196,11 @@ def build_gate_report(
         build_kernel_ingress_runtime_coverage_policy_report()
         if runtime_coverage_policy_text is None
         else runtime_coverage_policy_text
+    )
+    runtime_backend_alignment = (
+        build_kernel_ingress_runtime_backend_alignment_report()
+        if runtime_backend_alignment_text is None
+        else runtime_backend_alignment_text
     )
     rejection_coverage = (
         build_kernel_ingress_rejection_coverage_report()
@@ -212,6 +230,9 @@ def build_gate_report(
     _assert_kernel_ingress_bound(kernel_ingress)
     runtime_matrix_report = _assert_runtime_matrix_bound(runtime_matrix)
     _assert_runtime_coverage_policy_bound(runtime_coverage_policy)
+    runtime_backend_alignment_report = _assert_runtime_backend_alignment_bound(
+        runtime_backend_alignment
+    )
     _assert_boundary_budget_bound(boundary_budget)
     _assert_rejection_coverage_bound(rejection_coverage)
     _assert_diagnostics_bound(diagnostics)
@@ -226,6 +247,9 @@ def build_gate_report(
             ),
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy": (
                 runtime_coverage_policy
+            ),
+            "source_to_intent_research_kernel_ingress_runtime_backend_alignment": (
+                runtime_backend_alignment
             ),
             "source_to_intent_research_kernel_ingress_boundary_budget": (
                 boundary_budget
@@ -246,7 +270,9 @@ def build_gate_report(
         kernel_ingress,
         runtime_matrix,
         runtime_coverage_policy,
+        runtime_backend_alignment,
         runtime_matrix_report,
+        runtime_backend_alignment_report,
         boundary_budget,
         rejection_coverage,
         diagnostics,
@@ -279,6 +305,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  kernel_ingress = "passed"',
         '  runtime_matrix = "passed"',
         '  runtime_coverage_policy = "passed"',
+        '  runtime_backend_alignment = "passed"',
         '  boundary_budget = "passed"',
         '  rejection_coverage = "passed"',
         '  diagnostics = "passed"',
@@ -289,6 +316,8 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  accepted_kernels = "matmul_elementwise,softmax_reduction"',
         '  covered_operation_families = "elementwise,matmul,reduction,softmax"',
         '  backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim"',
+        '  trusted_executor_registry = "trusted_runtime_executor_registry.v0"',
+        '  trusted_runtime_backends = "linear-sim,vector-sim"',
         '  runtime_case_count = "2"',
         (
             '  required_runtime_digest_fields = "runtime_plan_digest,'
@@ -320,6 +349,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         "kernel_ingress_digest",
         "runtime_matrix_digest",
         "runtime_coverage_policy_digest",
+        "runtime_backend_alignment_digest",
         "boundary_budget_digest",
         "rejection_coverage_digest",
         "diagnostics_digest",
@@ -381,6 +411,18 @@ def _assert_runtime_coverage_policy_bound(text: str) -> Mapping[str, object]:
     except (TypeError, ValueError) as exc:
         raise SourceToIntentResearchKernelIngressEvidenceGateError(
             "kernel ingress evidence gate failed: runtime coverage policy binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+    return report
+
+
+def _assert_runtime_backend_alignment_bound(text: str) -> Mapping[str, object]:
+    report = _load_json_report(text, "runtime backend alignment")
+    try:
+        assert_kernel_ingress_runtime_backend_alignment_report_contract(report)
+    except (TypeError, ValueError) as exc:
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: runtime backend alignment binding missing"
         ) from exc
     _assert_gate_text_is_source_free(text)
     return report
@@ -489,7 +531,9 @@ def _render_gate_report(
     kernel_ingress_text: str,
     runtime_matrix_text: str,
     runtime_coverage_policy_text: str,
+    runtime_backend_alignment_text: str,
     runtime_matrix_report: Mapping[str, object],
+    runtime_backend_alignment_report: Mapping[str, object],
     boundary_budget_text: str,
     rejection_coverage_text: str,
     diagnostics_text: str,
@@ -514,6 +558,11 @@ def _render_gate_report(
     lines.append(
         "  runtime_coverage_policy_digest = "
         f'"{_digest(runtime_coverage_policy_text)}"'
+    )
+    lines.append('  runtime_backend_alignment = "passed"')
+    lines.append(
+        "  runtime_backend_alignment_digest = "
+        f'"{_digest(runtime_backend_alignment_text)}"'
     )
     lines.append('  boundary_budget = "passed"')
     lines.append(f'  boundary_budget_digest = "{_digest(boundary_budget_text)}"')
@@ -553,6 +602,15 @@ def _render_gate_report(
     lines.append(
         '  backend_sequences = "'
         + ",".join(_string_list(runtime_matrix_report["backend_sequences"]))
+        + '"'
+    )
+    lines.append(
+        "  trusted_executor_registry = "
+        f'"{runtime_backend_alignment_report["trusted_executor_registry"]}"'
+    )
+    lines.append(
+        '  trusted_runtime_backends = "'
+        + ",".join(_string_list(runtime_backend_alignment_report["required_backend_names"]))
         + '"'
     )
     lines.append(f'  runtime_case_count = "{runtime_matrix_report["case_count"]}"')

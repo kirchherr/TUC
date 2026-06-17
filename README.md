@@ -216,6 +216,9 @@ Current frontend surfaces:
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy requiring
   current accepted runtime cases, backend sequences, terminal outputs, and
   runtime digest fields before Kernel Ingress proof evidence can pass.
+- Source-To-Intent Research Kernel Ingress Runtime Backend Alignment binding
+  accepted backend sequences to trusted Runtime Executor conformance for
+  `linear-sim` and `vector-sim`.
 - Source-To-Intent Research Kernel Ingress Boundary Budget proving accepted
   module-shaped inputs stay within resource limits and budget overflow rejects
   before extraction or lowering.
@@ -274,6 +277,7 @@ examples/source_to_intent_research_proof_bundle.py
 examples/source_to_intent_research_kernel_ingress.py
 examples/source_to_intent_research_kernel_ingress_runtime_matrix.py
 examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py
+examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py
 examples/source_to_intent_research_kernel_ingress_boundary_budget.py
 examples/source_to_intent_research_kernel_ingress_rejection_coverage.py
 examples/source_to_intent_research_kernel_ingress_conformance_gate.py
@@ -311,6 +315,7 @@ Key docs:
 - [Source-to-Intent research kernel ingress](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md)
 - [Source-to-Intent research kernel ingress runtime matrix](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md)
 - [Source-to-Intent research kernel ingress runtime coverage policy](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY.md)
+- [Source-to-Intent research kernel ingress runtime backend alignment](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_BACKEND_ALIGNMENT.md)
 - [Source-to-Intent research kernel ingress boundary budget](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md)
 - [Source-to-Intent research kernel ingress rejection coverage](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_REJECTION_COVERAGE.md)
 - [Source-to-Intent research kernel ingress conformance gate](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_CONFORMANCE_GATE.md)

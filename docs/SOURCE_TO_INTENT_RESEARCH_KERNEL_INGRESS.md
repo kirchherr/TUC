@@ -39,6 +39,10 @@ files, access devices, or discover plugins.
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime coverage policy docs:
   [Source-To-Intent Research Kernel Ingress Runtime Coverage Policy](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY.md)
+- Runtime backend alignment companion:
+  `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
+- Runtime backend alignment docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Backend Alignment](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_BACKEND_ALIGNMENT.md)
 - Boundary budget companion:
   `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
 - Boundary budget docs:
@@ -141,9 +145,13 @@ The companion Kernel Ingress Runtime Coverage Policy turns that matrix into a
 minimum accepted-coverage requirement for current runtime cases, backend
 sequences, terminal outputs, trace-step counts, and runtime digest fields.
 
+The companion Kernel Ingress Runtime Backend Alignment report binds those
+backend sequences to trusted Runtime Executor conformance for `linear-sim` and
+`vector-sim`, without plugin discovery or device access.
+
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
 for the Kernel Ingress E2E, runtime-matrix, runtime-coverage-policy,
-boundary-budget,
+runtime-backend-alignment, boundary-budget,
 rejection-coverage, diagnostics, conformance, and idiom-alignment artifacts.
 
 The companion Kernel Ingress Evidence Gate validates the same artifacts and

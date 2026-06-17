@@ -42,12 +42,12 @@
       "minItems": 2,
       "maxItems": 2
     },
-    "artifact_count": {"const": 8},
+    "artifact_count": {"const": 9},
     "artifact_policy": {"const": "digest_only_source_free"},
     "artifacts": {
       "type": "array",
-      "minItems": 8,
-      "maxItems": 8,
+      "minItems": 9,
+      "maxItems": 9,
       "items": {"$ref": "#/$defs/artifact"}
     },
     "blocked_claims": {
@@ -83,14 +83,15 @@
         {"const": "source_to_intent_research_kernel_ingress"},
         {"const": "source_to_intent_research_kernel_ingress_runtime_matrix"},
         {"const": "source_to_intent_research_kernel_ingress_runtime_coverage_policy"},
+        {"const": "source_to_intent_research_kernel_ingress_runtime_backend_alignment"},
         {"const": "source_to_intent_research_kernel_ingress_boundary_budget"},
         {"const": "source_to_intent_research_kernel_ingress_rejection_coverage"},
         {"const": "source_to_intent_research_kernel_ingress_diagnostics"},
         {"const": "source_to_intent_research_kernel_ingress_conformance_gate"},
         {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"}
       ],
-      "minItems": 8,
-      "maxItems": 8
+      "minItems": 9,
+      "maxItems": 9
     },
     "review_claims": {
       "type": "array",
@@ -103,10 +104,11 @@
         {"const": "kernel_ingress_runtime_e2e"},
         {"const": "runtime_matrix_bound"},
         {"const": "runtime_coverage_policy_bound"},
+        {"const": "runtime_backend_alignment_bound"},
         {"const": "source_free_metadata_only"}
       ],
-      "minItems": 9,
-      "maxItems": 9
+      "minItems": 10,
+      "maxItems": 10
     },
     "schema_version": {
       "const": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0"
@@ -133,6 +135,7 @@
             "source_to_intent_research_kernel_ingress",
             "source_to_intent_research_kernel_ingress_runtime_matrix",
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
+            "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
             "source_to_intent_research_kernel_ingress_boundary_budget",
             "source_to_intent_research_kernel_ingress_rejection_coverage",
             "source_to_intent_research_kernel_ingress_diagnostics",

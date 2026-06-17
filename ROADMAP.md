@@ -548,6 +548,10 @@ Deliverables:
   requiring current accepted runtime cases, backend sequences, terminal outputs,
   trace-step counts, and runtime digest fields before the Kernel Ingress proof
   slice can pass.
+- Source-To-Intent Research Kernel Ingress Runtime Backend Alignment
+  (`examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`)
+  binding accepted backend sequences to trusted Runtime Executor conformance
+  before the Kernel Ingress proof slice can pass.
 - Source-To-Intent Research Kernel Ingress Boundary Budget proving accepted
   realistic module-shaped source buffers stay inside byte, line, AST-node, and
   AST-depth budgets, and that budget overflow rejects before extraction or
@@ -717,6 +721,10 @@ Go/No-Go:
   the runtime matrix to required accepted cases, operation families, backend
   sequences, terminal outputs, trace-step count policy, and runtime digest
   fields before Kernel Ingress proof evidence can pass.
+- Source-To-Intent Research Kernel Ingress Runtime Backend Alignment now binds
+  the runtime matrix and coverage policy to trusted Runtime Executor
+  conformance for `linear-sim` and `vector-sim`, so accepted backend sequences
+  are not merely unchecked string labels.
 - Source-To-Intent Research Kernel Ingress Conformance Gate now proves accepted
   module-shaped source outputs are ordinary Source Intent frontend payloads that
   pass accepted-case conformance and rejected backend-hint/source-text escape
@@ -731,13 +739,15 @@ Go/No-Go:
   not silently expand beyond proven MVP operation families.
 - Source-To-Intent Research Kernel Ingress Proof Bundle now gives reviewers one
   digest-only source-free index for Kernel Ingress E2E, runtime-matrix,
-  runtime-coverage-policy, boundary-budget, rejection-coverage, diagnostics,
-  conformance, and idiom-alignment evidence before the global proof bundle
-  accepts the realistic module-shaped ingress claim.
+  runtime-coverage-policy, runtime-backend-alignment, boundary-budget,
+  rejection-coverage, diagnostics, conformance, and idiom-alignment evidence
+  before the global proof bundle accepts the realistic module-shaped ingress
+  claim.
 - Source-To-Intent Research Kernel Ingress Evidence Gate now validates Kernel
-  Ingress E2E, runtime-matrix, runtime-coverage-policy, boundary-budget,
-  rejection-coverage, diagnostics, conformance, idiom-alignment, and
-  proof-bundle digest bindings as CI-facing evidence.
+  Ingress E2E, runtime-matrix, runtime-coverage-policy,
+  runtime-backend-alignment, boundary-budget, rejection-coverage, diagnostics,
+  conformance, idiom-alignment, and proof-bundle digest bindings as CI-facing
+  evidence.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.

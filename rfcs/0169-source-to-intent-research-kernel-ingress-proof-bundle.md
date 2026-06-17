@@ -7,6 +7,7 @@
   - `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md`
   - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
   - `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
   - `examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
   - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
@@ -24,13 +25,15 @@
   - `rfcs/0172-source-to-intent-research-kernel-ingress-evidence-gate.md`
   - `rfcs/0173-source-to-intent-research-kernel-ingress-runtime-matrix.md`
   - `rfcs/0174-source-to-intent-research-kernel-ingress-runtime-coverage-policy.md`
+  - `rfcs/0175-source-to-intent-research-kernel-ingress-runtime-backend-alignment.md`
 
 ## Context
 
 Kernel Ingress now has focused proof artifacts: runtime E2E evidence,
-runtime-matrix evidence, runtime-coverage-policy evidence, boundary-budget
-evidence, rejection-coverage evidence, source-free diagnostics, frontend
-conformance, and idiom alignment.
+runtime-matrix evidence, runtime-coverage-policy evidence,
+runtime-backend-alignment evidence, boundary-budget evidence,
+rejection-coverage evidence, source-free diagnostics, frontend conformance, and
+idiom alignment.
 
 Each artifact is useful alone, but reviewers need one small digest-only index
 for the Kernel Ingress claim without reading the entire Source-To-Intent
@@ -70,10 +73,10 @@ compiler artifacts.
 
 The Kernel Ingress research claim becomes easier to audit without weakening any
 boundary. Future Kernel Ingress syntax changes must update E2E,
-runtime-matrix, runtime-coverage-policy, boundary-budget, rejection-coverage,
-diagnostics, conformance, idiom-alignment, this bundle, the focused Kernel
-Ingress Evidence Gate, the global Evidence Gate, and the global Proof Bundle
-together.
+runtime-matrix, runtime-coverage-policy, runtime-backend-alignment,
+boundary-budget, rejection-coverage, diagnostics, conformance, idiom-alignment,
+this bundle, the focused Kernel Ingress Evidence Gate, the global Evidence
+Gate, and the global Proof Bundle together.
 
 This still does not prove general Triton source ingestion, production parsing,
 or native performance. Those claims remain blocked.

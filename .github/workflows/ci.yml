@@ -67,6 +67,8 @@ jobs:
         run: python examples/source_to_intent_research_kernel_ingress_runtime_matrix.py
       - name: Source-To-Intent research kernel ingress runtime coverage policy
         run: python examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py
+      - name: Source-To-Intent research kernel ingress runtime backend alignment
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py
       - name: Source-To-Intent research kernel ingress boundary budget
         run: python examples/source_to_intent_research_kernel_ingress_boundary_budget.py
       - name: Source-To-Intent research kernel ingress rejection coverage

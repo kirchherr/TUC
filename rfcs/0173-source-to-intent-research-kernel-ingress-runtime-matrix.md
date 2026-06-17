@@ -7,12 +7,14 @@
   - `examples/source_to_intent_research_kernel_ingress.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
   - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
   - `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
   - `schemas/source_to_intent_research_kernel_ingress_runtime_matrix_report.v0.schema.json`
   - `tests/test_source_to_intent_research_kernel_ingress_runtime_matrix.py`
   - `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md`
   - `rfcs/0174-source-to-intent-research-kernel-ingress-runtime-coverage-policy.md`
+  - `rfcs/0175-source-to-intent-research-kernel-ingress-runtime-backend-alignment.md`
 
 ## Context
 
@@ -40,6 +42,7 @@ The matrix:
 - binds the exact Kernel Ingress E2E report digest;
 - remains metadata-only and source-free;
 - feeds the Runtime Coverage Policy;
+- feeds the Runtime Backend Alignment;
 - is required by the Kernel Ingress Proof Bundle;
 - is required by the focused Kernel Ingress Evidence Gate.
 
@@ -68,6 +71,6 @@ It is a derived metadata artifact over already accepted evidence.
 
 Kernel Ingress runtime coverage is easier to audit. Future source-shape growth
 must update E2E evidence, the runtime matrix, the runtime coverage policy, the
-Kernel Ingress Proof Bundle, the focused Kernel Ingress Evidence Gate, the
-global Evidence Gate, and the global Proof Bundle before it can count as
-accepted research scope.
+runtime backend alignment, the Kernel Ingress Proof Bundle, the focused Kernel
+Ingress Evidence Gate, the global Evidence Gate, and the global Proof Bundle
+before it can count as accepted research scope.

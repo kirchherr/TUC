@@ -27,6 +27,10 @@ performance claims.
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime Coverage Policy docs:
   [Source-To-Intent Research Kernel Ingress Runtime Coverage Policy](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY.md)
+- Runtime Backend Alignment binding:
+  `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
+- Runtime Backend Alignment docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Backend Alignment](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_BACKEND_ALIGNMENT.md)
 - Kernel Ingress Evidence Gate binding:
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 - Global Evidence Gate binding:
@@ -74,6 +78,8 @@ kernel ingress E2E report
 runtime matrix
     ->
 runtime coverage policy
+    ->
+runtime backend alignment
     ->
 kernel ingress proof bundle
     ->
