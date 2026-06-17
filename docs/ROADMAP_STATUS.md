@@ -754,6 +754,15 @@ Current slice:
   backend-sequence and trace-step inventory for accepted Kernel Ingress cases,
   and binding through the Kernel Ingress Proof Bundle and focused Evidence
   Gate.
+- Source-To-Intent Research Kernel Ingress Runtime Step Trace at
+  `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`,
+  with schema at
+  `schemas/source_to_intent_research_kernel_ingress_runtime_step_trace_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_step_trace.json`,
+  operation-level planned/executed backend trace metadata for accepted Kernel
+  Ingress cases, and binding through the Kernel Ingress Proof Bundle, focused
+  Evidence Gate, and Capability Claim.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at

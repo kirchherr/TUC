@@ -33,28 +33,28 @@
       "artifact_id": "source_to_intent_research_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_proof_bundle.review.v0",
-      "digest": "sha256:975436c13219718cef2b1c4891c4a6bc306d897776aaf4b8d0fde9c9918b4fc0",
+      "digest": "sha256:9e6bc63d2418eb1bbc1bed17a97b5654848dcda2f4040fd20a5733cb1163503d",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:18f081adfbefbd40266bb0f2619c1580f38e42218063693bfdb18cd98be73fa4",
+      "digest": "sha256:47607f3d4e1ae55c7107b4d61e673c7c21849d58ffbd65611aac0f9058252cb7",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:f3f05150f3b65b345a2b512bb6281b004a592a1ae9eafb11eb9e028e2be62339",
+      "digest": "sha256:c80f5fcb06cfed9b7a245fbf4a05a1d1697ea9e5a4386fb79490bf6d031b6b6f",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:e831f562aad343542298438d992f74fb8dd5c35dff484c521fb68dd715a3f87d",
+      "digest": "sha256:0a04b48a336f9b57c985aa6a99381b4d7b17c370b469bb960350411c92ec4217",
       "status": "accepted"
     },
     {
@@ -62,6 +62,13 @@
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
       "digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_step_trace",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
+      "digest": "sha256:683ddbc7ad82543ca2537ffbf6cc03874a497a6a2712e4c9b2d8c537705ed4ff",
       "status": "accepted"
     },
     {
@@ -79,13 +86,14 @@
       "status": "accepted"
     }
   ],
-  "evidence_count": 7,
+  "evidence_count": 8,
   "minimum_acceptance_checks": [
     "global_proof_bundle_passes",
     "global_evidence_gate_passes",
     "kernel_ingress_proof_bundle_passes",
     "kernel_ingress_evidence_gate_passes",
     "runtime_matrix_has_combined_mvp_pipeline",
+    "runtime_step_trace_binds_mvp_operation_path",
     "runtime_coverage_policy_requires_exact_trace_counts",
     "runtime_backend_alignment_uses_trusted_executors"
   ],

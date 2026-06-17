@@ -20,6 +20,10 @@ performance claims.
   `tests/test_source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime Matrix input:
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
+- Runtime Step Trace companion:
+  `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
+- Runtime Step Trace docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Step Trace](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE.md)
 - Runtime Backend Alignment binding:
   `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
 - Runtime Backend Alignment docs:
@@ -67,6 +71,8 @@ This artifact turns the Runtime Matrix into a guarded obligation:
 
 ```text
 kernel ingress runtime matrix
+    ->
+runtime step trace
     ->
 runtime coverage policy
     ->

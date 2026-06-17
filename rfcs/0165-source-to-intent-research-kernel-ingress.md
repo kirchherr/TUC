@@ -12,6 +12,7 @@
   - `examples/source_to_intent_research_kernel_ingress_diagnostics.py`
   - `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
   - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`

@@ -6,6 +6,7 @@
 - Related:
   - `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md`
   - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
   - `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
@@ -24,6 +25,7 @@
   - `rfcs/0171-source-to-intent-research-kernel-ingress-rejection-coverage.md`
   - `rfcs/0172-source-to-intent-research-kernel-ingress-evidence-gate.md`
   - `rfcs/0173-source-to-intent-research-kernel-ingress-runtime-matrix.md`
+  - `rfcs/0180-source-to-intent-research-kernel-ingress-runtime-step-trace.md`
   - `rfcs/0174-source-to-intent-research-kernel-ingress-runtime-coverage-policy.md`
   - `rfcs/0175-source-to-intent-research-kernel-ingress-runtime-backend-alignment.md`
 

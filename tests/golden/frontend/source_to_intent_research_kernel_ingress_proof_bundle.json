@@ -11,7 +11,7 @@
     "research_matmul_reduction",
     "research_mvp_pipeline"
   ],
-  "artifact_count": 9,
+  "artifact_count": 10,
   "artifact_policy": "digest_only_source_free",
   "artifacts": [
     {
@@ -26,6 +26,13 @@
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
       "digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_step_trace",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
+      "digest": "sha256:683ddbc7ad82543ca2537ffbf6cc03874a497a6a2712e4c9b2d8c537705ed4ff",
       "status": "accepted"
     },
     {
@@ -96,6 +103,7 @@
   "required_artifacts": [
     "source_to_intent_research_kernel_ingress",
     "source_to_intent_research_kernel_ingress_runtime_matrix",
+    "source_to_intent_research_kernel_ingress_runtime_step_trace",
     "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
     "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
     "source_to_intent_research_kernel_ingress_boundary_budget",
@@ -112,6 +120,7 @@
     "idiom_scope_bound",
     "kernel_ingress_runtime_e2e",
     "runtime_matrix_bound",
+    "runtime_step_trace_bound",
     "runtime_coverage_policy_bound",
     "runtime_backend_alignment_bound",
     "source_free_metadata_only"

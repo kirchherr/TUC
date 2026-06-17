@@ -61,6 +61,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
         build_report as build_kernel_ingress_runtime_matrix_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_step_trace import (
+        assert_kernel_ingress_runtime_step_trace_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_step_trace import (
+        build_report as build_kernel_ingress_runtime_step_trace_report,
+    )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress import (  # type: ignore[no-redef]
         assert_kernel_ingress_report_contract,
@@ -115,6 +121,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_runtime_matrix import (
         build_report as build_kernel_ingress_runtime_matrix_report,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_step_trace import (  # type: ignore[no-redef]
+        assert_kernel_ingress_runtime_step_trace_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_step_trace import (
+        build_report as build_kernel_ingress_runtime_step_trace_report,
     )
 
 from tuc.frontend import (
@@ -178,6 +190,7 @@ def build_gate_report(
     runtime_backend_alignment_text: str | None = None,
     runtime_coverage_policy_text: str | None = None,
     runtime_matrix_text: str | None = None,
+    runtime_step_trace_text: str | None = None,
 ) -> str:
     """Return stable CI-facing Kernel Ingress evidence binding."""
 
@@ -195,6 +208,11 @@ def build_gate_report(
         build_kernel_ingress_runtime_matrix_report()
         if runtime_matrix_text is None
         else runtime_matrix_text
+    )
+    runtime_step_trace = (
+        build_kernel_ingress_runtime_step_trace_report()
+        if runtime_step_trace_text is None
+        else runtime_step_trace_text
     )
     runtime_coverage_policy = (
         build_kernel_ingress_runtime_coverage_policy_report()
@@ -233,6 +251,7 @@ def build_gate_report(
     )
     _assert_kernel_ingress_bound(kernel_ingress)
     runtime_matrix_report = _assert_runtime_matrix_bound(runtime_matrix)
+    runtime_step_trace_report = _assert_runtime_step_trace_bound(runtime_step_trace)
     _assert_runtime_coverage_policy_bound(runtime_coverage_policy)
     runtime_backend_alignment_report = _assert_runtime_backend_alignment_bound(
         runtime_backend_alignment
@@ -248,6 +267,9 @@ def build_gate_report(
             "source_to_intent_research_kernel_ingress": kernel_ingress,
             "source_to_intent_research_kernel_ingress_runtime_matrix": (
                 runtime_matrix
+            ),
+            "source_to_intent_research_kernel_ingress_runtime_step_trace": (
+                runtime_step_trace
             ),
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy": (
                 runtime_coverage_policy
@@ -276,6 +298,8 @@ def build_gate_report(
         runtime_coverage_policy,
         runtime_backend_alignment,
         runtime_matrix_report,
+        runtime_step_trace,
+        runtime_step_trace_report,
         runtime_backend_alignment_report,
         boundary_budget,
         rejection_coverage,
@@ -308,6 +332,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         ),
         '  kernel_ingress = "passed"',
         '  runtime_matrix = "passed"',
+        '  runtime_step_trace = "passed"',
         '  runtime_coverage_policy = "passed"',
         '  runtime_backend_alignment = "passed"',
         '  boundary_budget = "passed"',
@@ -334,6 +359,11 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  trusted_executor_registry = "trusted_runtime_executor_registry.v0"',
         '  trusted_runtime_backends = "linear-sim,vector-sim"',
         '  runtime_case_count = "4"',
+        '  runtime_step_trace_cases = "4"',
+        (
+            '  mvp_pipeline_operation_path = "matmul->softmax'
+            '->reduction->elementwise"'
+        ),
         (
             '  required_runtime_digest_fields = "runtime_plan_digest,'
             'execution_trace_digest,reference_correctness_digest"'
@@ -363,6 +393,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
     for digest_field in (
         "kernel_ingress_digest",
         "runtime_matrix_digest",
+        "runtime_step_trace_digest",
         "runtime_coverage_policy_digest",
         "runtime_backend_alignment_digest",
         "boundary_budget_digest",
@@ -414,6 +445,18 @@ def _assert_runtime_matrix_bound(text: str) -> Mapping[str, object]:
     except (TypeError, ValueError) as exc:
         raise SourceToIntentResearchKernelIngressEvidenceGateError(
             "kernel ingress evidence gate failed: runtime matrix binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+    return report
+
+
+def _assert_runtime_step_trace_bound(text: str) -> Mapping[str, object]:
+    report = _load_json_report(text, "runtime step trace")
+    try:
+        assert_kernel_ingress_runtime_step_trace_report_contract(report)
+    except (TypeError, ValueError) as exc:
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: runtime step trace binding missing"
         ) from exc
     _assert_gate_text_is_source_free(text)
     return report
@@ -555,6 +598,8 @@ def _render_gate_report(
     runtime_coverage_policy_text: str,
     runtime_backend_alignment_text: str,
     runtime_matrix_report: Mapping[str, object],
+    runtime_step_trace_text: str,
+    runtime_step_trace_report: Mapping[str, object],
     runtime_backend_alignment_report: Mapping[str, object],
     boundary_budget_text: str,
     rejection_coverage_text: str,
@@ -576,6 +621,10 @@ def _render_gate_report(
     lines.append(f'  kernel_ingress_digest = "{_digest(kernel_ingress_text)}"')
     lines.append('  runtime_matrix = "passed"')
     lines.append(f'  runtime_matrix_digest = "{_digest(runtime_matrix_text)}"')
+    lines.append('  runtime_step_trace = "passed"')
+    lines.append(
+        f'  runtime_step_trace_digest = "{_digest(runtime_step_trace_text)}"'
+    )
     lines.append('  runtime_coverage_policy = "passed"')
     lines.append(
         "  runtime_coverage_policy_digest = "
@@ -637,6 +686,14 @@ def _render_gate_report(
     )
     lines.append(f'  runtime_case_count = "{runtime_matrix_report["case_count"]}"')
     lines.append(
+        f'  runtime_step_trace_cases = "{runtime_step_trace_report["case_count"]}"'
+    )
+    lines.append(
+        '  mvp_pipeline_operation_path = "'
+        + "->".join(_mvp_pipeline_operation_path(runtime_step_trace_report))
+        + '"'
+    )
+    lines.append(
         '  required_runtime_digest_fields = "runtime_plan_digest,'
         'execution_trace_digest,reference_correctness_digest"'
     )
@@ -693,6 +750,25 @@ def _string_list(value: object) -> list[str]:
             "kernel ingress evidence gate failed: runtime matrix binding missing"
         )
     return [str(item) for item in value]
+
+
+def _mvp_pipeline_operation_path(report: Mapping[str, object]) -> list[str]:
+    cases = report["cases"]
+    if not isinstance(cases, list):
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: runtime step trace binding missing"
+        )
+    for case in cases:
+        if isinstance(case, Mapping) and case.get("case_id") == (
+            "research_module_mvp_pipeline"
+        ):
+            operation_path = case.get("operation_path")
+            if not isinstance(operation_path, list):
+                break
+            return [str(item) for item in operation_path]
+    raise SourceToIntentResearchKernelIngressEvidenceGateError(
+        "kernel ingress evidence gate failed: runtime step trace binding missing"
+    )
 
 
 def _assert_gate_text_is_source_free(text: str) -> None:

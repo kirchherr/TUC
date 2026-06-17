@@ -1,0 +1,347 @@
+{
+  "artifact_policy": "metadata_only_values_omitted",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_count": 4,
+  "cases": [
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_elementwise",
+      "execution_trace_digest": "sha256:d9ee6ed8ea961a6018b3171a73c46dd091d1e02b9796c728b79d78a36fe081ee",
+      "kernel_name": "matmul_elementwise",
+      "operation_path": [
+        "matmul",
+        "elementwise"
+      ],
+      "runtime_plan_digest": "sha256:5dd180f8fc6ca7256f42c8c0a2fb6ba08f3af65e000e70e7c97ace5cb5496c19",
+      "status": "traced",
+      "step_count": 2,
+      "steps": [
+        {
+          "executor_backend": "linear-sim",
+          "input_tensors": [
+            "a",
+            "b"
+          ],
+          "operation_kind": "matmul",
+          "operation_name": "projection",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4,
+              2
+            ]
+          ],
+          "output_tensors": [
+            "projection"
+          ],
+          "planned_backend": "linear-sim",
+          "status": "executed",
+          "step_index": 0
+        },
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "projection"
+          ],
+          "operation_kind": "elementwise",
+          "operation_name": "activated",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4,
+              2
+            ]
+          ],
+          "output_tensors": [
+            "activated"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 1
+        }
+      ],
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_reduction",
+      "execution_trace_digest": "sha256:ed6ed4d8c27ba0fbc78917ee067c9091d7af52239bf58ebb47f61cecc40efc19",
+      "kernel_name": "softmax_reduction",
+      "operation_path": [
+        "softmax",
+        "reduction"
+      ],
+      "runtime_plan_digest": "sha256:739c830c015a9c6200e42c13a3987314f386b0db13001d55344b078aff3cf1f9",
+      "status": "traced",
+      "step_count": 2,
+      "steps": [
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "x"
+          ],
+          "operation_kind": "softmax",
+          "operation_name": "normalized",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4,
+              8
+            ]
+          ],
+          "output_tensors": [
+            "normalized"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 0
+        },
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "normalized"
+          ],
+          "operation_kind": "reduction",
+          "operation_name": "row_sum",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4
+            ]
+          ],
+          "output_tensors": [
+            "row_sum"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 1
+        }
+      ],
+      "terminal_outputs": [
+        "row_sum"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_reduction",
+      "execution_trace_digest": "sha256:55d8e3c3618d217bd05f37806cbbbeb71217bc7e3e339b78302d2b340177a12a",
+      "kernel_name": "matmul_reduction",
+      "operation_path": [
+        "matmul",
+        "reduction"
+      ],
+      "runtime_plan_digest": "sha256:a4db63eef2a05b7c9ca29314d5b24dcdf064f38987bda5bb7fb93824db0bf185",
+      "status": "traced",
+      "step_count": 2,
+      "steps": [
+        {
+          "executor_backend": "linear-sim",
+          "input_tensors": [
+            "a",
+            "b"
+          ],
+          "operation_kind": "matmul",
+          "operation_name": "projection",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4,
+              2
+            ]
+          ],
+          "output_tensors": [
+            "projection"
+          ],
+          "planned_backend": "linear-sim",
+          "status": "executed",
+          "step_index": 0
+        },
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "projection"
+          ],
+          "operation_kind": "reduction",
+          "operation_name": "column_sum",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4
+            ]
+          ],
+          "output_tensors": [
+            "column_sum"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 1
+        }
+      ],
+      "terminal_outputs": [
+        "column_sum"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_mvp_pipeline",
+      "execution_trace_digest": "sha256:0da05472c0cf5ef06362f6c9b1cf2a4f726566cc72c41ac8c48723e978d696cd",
+      "kernel_name": "mvp_pipeline",
+      "operation_path": [
+        "matmul",
+        "softmax",
+        "reduction",
+        "elementwise"
+      ],
+      "runtime_plan_digest": "sha256:59dbf49fb8a9f65895c38b74c214752efc9b5d5cf9390533602040a11c8bf56d",
+      "status": "traced",
+      "step_count": 4,
+      "steps": [
+        {
+          "executor_backend": "linear-sim",
+          "input_tensors": [
+            "a",
+            "b"
+          ],
+          "operation_kind": "matmul",
+          "operation_name": "projection",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4,
+              4
+            ]
+          ],
+          "output_tensors": [
+            "projection"
+          ],
+          "planned_backend": "linear-sim",
+          "status": "executed",
+          "step_index": 0
+        },
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "projection"
+          ],
+          "operation_kind": "softmax",
+          "operation_name": "normalized",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4,
+              4
+            ]
+          ],
+          "output_tensors": [
+            "normalized"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 1
+        },
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "normalized"
+          ],
+          "operation_kind": "reduction",
+          "operation_name": "row_sum",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4
+            ]
+          ],
+          "output_tensors": [
+            "row_sum"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 2
+        },
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "row_sum"
+          ],
+          "operation_kind": "elementwise",
+          "operation_name": "stable",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4
+            ]
+          ],
+          "output_tensors": [
+            "stable"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 3
+        }
+      ],
+      "terminal_outputs": [
+        "stable"
+      ]
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "kernel_ingress_digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+  "runtime_matrix_digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+  "runtime_step_trace_contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_step_trace_report.v0",
+  "source_boundary": "kernel_ingress_runtime_execution_trace_metadata",
+  "status": "PASS",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

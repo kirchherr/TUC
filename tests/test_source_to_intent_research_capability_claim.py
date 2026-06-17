@@ -60,6 +60,7 @@ def test_source_to_intent_research_capability_claim_report_shape() -> None:
         "source_to_intent_research_kernel_ingress_proof_bundle",
         "source_to_intent_research_kernel_ingress_evidence_gate",
         "source_to_intent_research_kernel_ingress_runtime_matrix",
+        "source_to_intent_research_kernel_ingress_runtime_step_trace",
         "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
         "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
     ]
@@ -143,7 +144,7 @@ def test_source_to_intent_research_capability_claim_schema_declares_contract() -
     )
     assert schema["properties"]["accepted_kernel_count"]["const"] == 4
     assert schema["properties"]["runtime_case_count"]["const"] == 4
-    assert schema["properties"]["evidence_count"]["const"] == 7
+    assert schema["properties"]["evidence_count"]["const"] == 8
     assert schema["$defs"]["evidence"]["additionalProperties"] is False
     assert "blocked_claims" in schema["required"]
 
@@ -162,8 +163,16 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md"),
+        Path(
+            "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE.md"
+        ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
         Path("rfcs/0178-source-to-intent-research-capability-claim.md"),
+        Path(
+            "rfcs/"
+            "0180-source-to-intent-research-kernel-ingress-runtime-step-trace.md"
+        ),
     ):
         assert example_path in path.read_text(encoding="utf-8")
 

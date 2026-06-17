@@ -35,6 +35,10 @@ files, access devices, or discover plugins.
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
 - Runtime matrix docs:
   [Source-To-Intent Research Kernel Ingress Runtime Matrix](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md)
+- Runtime step trace companion:
+  `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
+- Runtime step trace docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Step Trace](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE.md)
 - Runtime coverage policy companion:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime coverage policy docs:

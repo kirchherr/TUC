@@ -21,6 +21,8 @@ backend plugins, access devices, or make native performance claims.
   `tests/test_source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
 - Runtime Matrix input:
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
+- Runtime Step Trace companion:
+  `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
 - Runtime Coverage Policy input:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime Executor Conformance input:
@@ -80,6 +82,8 @@ claim:
 kernel ingress runtime matrix
     +
 runtime coverage policy
+    +
+runtime step trace
     +
 runtime executor conformance
     ->

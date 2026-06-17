@@ -74,10 +74,10 @@
     "evidence": {
       "type": "array",
       "items": {"$ref": "#/$defs/evidence"},
-      "minItems": 7,
-      "maxItems": 7
+      "minItems": 8,
+      "maxItems": 8
     },
-    "evidence_count": {"const": 7},
+    "evidence_count": {"const": 8},
     "minimum_acceptance_checks": {
       "type": "array",
       "prefixItems": [
@@ -86,12 +86,13 @@
         {"const": "kernel_ingress_proof_bundle_passes"},
         {"const": "kernel_ingress_evidence_gate_passes"},
         {"const": "runtime_matrix_has_combined_mvp_pipeline"},
+        {"const": "runtime_step_trace_binds_mvp_operation_path"},
         {"const": "runtime_coverage_policy_requires_exact_trace_counts"},
         {"const": "runtime_backend_alignment_uses_trusted_executors"}
       ],
       "items": false,
-      "minItems": 7,
-      "maxItems": 7
+      "minItems": 8,
+      "maxItems": 8
     },
     "parser_status": {"const": "research_explicit_only"},
     "runtime_case_count": {"const": 4},
@@ -142,6 +143,7 @@
             "source_to_intent_research_kernel_ingress_proof_bundle",
             "source_to_intent_research_kernel_ingress_evidence_gate",
             "source_to_intent_research_kernel_ingress_runtime_matrix",
+            "source_to_intent_research_kernel_ingress_runtime_step_trace",
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
             "source_to_intent_research_kernel_ingress_runtime_backend_alignment"
           ]

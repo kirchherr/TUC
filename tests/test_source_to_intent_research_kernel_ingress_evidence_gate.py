@@ -28,6 +28,7 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     )
     assert 'kernel_ingress = "passed"' in report
     assert 'runtime_matrix = "passed"' in report
+    assert 'runtime_step_trace = "passed"' in report
     assert 'runtime_coverage_policy = "passed"' in report
     assert 'runtime_backend_alignment = "passed"' in report
     assert 'boundary_budget = "passed"' in report
@@ -45,6 +46,11 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'trusted_executor_registry = "trusted_runtime_executor_registry.v0"' in report
     assert 'trusted_runtime_backends = "linear-sim,vector-sim"' in report
     assert 'runtime_case_count = "4"' in report
+    assert 'runtime_step_trace_cases = "4"' in report
+    assert (
+        'mvp_pipeline_operation_path = "matmul->softmax->reduction->elementwise"'
+        in report
+    )
     assert 'status = "PASS"' in report
 
 
@@ -63,6 +69,7 @@ def test_kernel_ingress_evidence_gate_example_runs() -> None:
     assert "sha256:" in completed.stdout
     assert "kernel_ingress_digest" in completed.stdout
     assert "runtime_matrix_digest" in completed.stdout
+    assert "runtime_step_trace_digest" in completed.stdout
     assert "runtime_coverage_policy_digest" in completed.stdout
     assert "runtime_backend_alignment_digest" in completed.stdout
     assert "rejection_coverage_digest" in completed.stdout
@@ -95,6 +102,14 @@ def test_kernel_ingress_evidence_gate_rejects_tampered_runtime_matrix() -> None:
         match="runtime matrix binding missing",
     ):
         build_gate_report(runtime_matrix_text='{"status": "PASS"}\n')
+
+
+def test_kernel_ingress_evidence_gate_rejects_tampered_runtime_step_trace() -> None:
+    with pytest.raises(
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        match="runtime step trace binding missing",
+    ):
+        build_gate_report(runtime_step_trace_text='{"status": "PASS"}\n')
 
 
 def test_kernel_ingress_evidence_gate_rejects_tampered_runtime_coverage_policy() -> None:
@@ -171,11 +186,19 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
             "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_BACKEND_ALIGNMENT.md"
         ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md"),
+        Path(
+            "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE.md"
+        ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
         Path("rfcs/0165-source-to-intent-research-kernel-ingress.md"),
         Path("rfcs/0169-source-to-intent-research-kernel-ingress-proof-bundle.md"),
         Path("rfcs/0172-source-to-intent-research-kernel-ingress-evidence-gate.md"),
         Path("rfcs/0173-source-to-intent-research-kernel-ingress-runtime-matrix.md"),
+        Path(
+            "rfcs/"
+            "0180-source-to-intent-research-kernel-ingress-runtime-step-trace.md"
+        ),
         Path(
             "rfcs/"
             "0174-source-to-intent-research-kernel-ingress-runtime-coverage-policy.md"
