@@ -17,6 +17,10 @@ compiler replacement claims remain blocked.
   `schemas/source_to_intent_research_capability_claim_report.v0.schema.json`
 - Example:
   `examples/source_to_intent_research_capability_claim.py`
+- CI gate:
+  `examples/source_to_intent_research_capability_claim_gate.py`
+- Gate docs:
+  [Source-To-Intent Research Capability Claim Gate](SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE.md)
 - Golden:
   `tests/golden/frontend/source_to_intent_research_capability_claim.json`
 - Tests:
@@ -121,7 +125,10 @@ runtime coverage policy
 runtime backend alignment
     ->
 bounded Universal Compute research capability claim
+    ->
+capability claim gate
 ```
 
 Future parser, runtime, backend, or performance claims must add evidence below
-this report before the supported claim scope can expand.
+this report before the supported claim scope can expand, and must update the
+gate before the expanded claim can merge.

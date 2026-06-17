@@ -715,6 +715,11 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_capability_claim.json`, and
   a digest-only supported-claim boundary for the current bounded Universal
   Compute research slice.
+- Source-To-Intent Research Capability Claim Gate at
+  `examples/source_to_intent_research_capability_claim_gate.py`, with
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_capability_claim_gate.txt`,
+  and CI-facing binding for the current supported claim boundary.
 - Source-To-Intent Research Source Runtime Smoke at
   `examples/source_to_intent_research_source_runtime_smoke.py`, with schema at
   `schemas/source_to_intent_research_source_runtime_smoke_report.v0.schema.json`,

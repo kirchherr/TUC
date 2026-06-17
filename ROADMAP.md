@@ -537,6 +537,10 @@ Deliverables:
   bundle and evidence gates while keeping production parser, native
   performance, hardware certification, arbitrary backend execution, and vendor
   compiler replacement claims blocked.
+- Source-To-Intent Research Capability Claim Gate
+  (`examples/source_to_intent_research_capability_claim_gate.py`) binding that
+  high-level claim into CI and failing closed on claim drift, evidence digest
+  drift, source leakage, or unreviewed claim expansion.
 - Source-To-Intent Research Source Runtime Smoke proving accepted source buffers
   can run end-to-end through Preflight, parser, Source Intent, runtime, and
   reference correctness.
