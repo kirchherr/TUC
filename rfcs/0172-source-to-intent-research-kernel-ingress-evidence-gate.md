@@ -6,6 +6,7 @@
 - Related:
   - `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md`
   - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
   - `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
   - `examples/source_to_intent_research_evidence_gate.py`
   - `examples/source_to_intent_research_proof_bundle.py`
@@ -14,12 +15,13 @@
   - `rfcs/0169-source-to-intent-research-kernel-ingress-proof-bundle.md`
   - `rfcs/0171-source-to-intent-research-kernel-ingress-rejection-coverage.md`
   - `rfcs/0173-source-to-intent-research-kernel-ingress-runtime-matrix.md`
+  - `rfcs/0174-source-to-intent-research-kernel-ingress-runtime-coverage-policy.md`
 
 ## Context
 
-Kernel Ingress now has separate E2E, runtime-matrix, boundary-budget,
-rejection-coverage, diagnostics, conformance, idiom-alignment, and proof-bundle
-artifacts.
+Kernel Ingress now has separate E2E, runtime-matrix,
+runtime-coverage-policy, boundary-budget, rejection-coverage, diagnostics,
+conformance, idiom-alignment, and proof-bundle artifacts.
 
 The global Source-To-Intent Research Evidence Gate can bind those artifacts, but
 the realistic module-ingress slice benefits from a focused gate that verifies
@@ -33,6 +35,7 @@ The gate:
 
 - validates Kernel Ingress E2E evidence;
 - validates Runtime Matrix evidence;
+- validates Runtime Coverage Policy evidence;
 - validates Boundary Budget evidence;
 - validates Rejection Coverage evidence;
 - validates Diagnostics evidence;

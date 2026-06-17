@@ -23,6 +23,10 @@ performance claims.
   `examples/source_to_intent_research_kernel_ingress.py`
 - Kernel Ingress Proof Bundle binding:
   `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
+- Runtime Coverage Policy binding:
+  `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
+- Runtime Coverage Policy docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Coverage Policy](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY.md)
 - Kernel Ingress Evidence Gate binding:
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 - Global Evidence Gate binding:
@@ -68,6 +72,8 @@ This artifact makes the practical runtime claim explicit:
 kernel ingress E2E report
     ->
 runtime matrix
+    ->
+runtime coverage policy
     ->
 kernel ingress proof bundle
     ->

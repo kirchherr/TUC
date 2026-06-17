@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_runtime_coverage_policy_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Runtime Coverage Policy Report v0",
+  "description": "Source-free runtime coverage policy for Kernel Ingress research cases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "case_requirements",
+    "default_parser_status",
+    "frontend_ingress_contract",
+    "observed_backend_sequences",
+    "observed_case_count",
+    "observed_operation_families",
+    "observed_terminal_outputs",
+    "parser_status",
+    "policy_contract",
+    "policy_id",
+    "raw_source_policy",
+    "raw_value_policy",
+    "required_backend_sequences",
+    "required_case_count",
+    "required_digest_fields",
+    "required_operation_families",
+    "required_terminal_outputs",
+    "required_trace_step_count_per_case",
+    "runtime_matrix_contract",
+    "runtime_matrix_digest",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "trace_step_policy"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "metadata_only_source_free"},
+    "case_requirements": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case_requirement"},
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "observed_backend_sequences": {"$ref": "#/$defs/backend_sequences"},
+    "observed_case_count": {"const": 2},
+    "observed_operation_families": {"$ref": "#/$defs/operation_families"},
+    "observed_terminal_outputs": {"$ref": "#/$defs/terminal_outputs"},
+    "parser_status": {"const": "research_explicit_only"},
+    "policy_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0"
+    },
+    "policy_id": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_coverage_policy"
+    },
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "required_backend_sequences": {"$ref": "#/$defs/backend_sequences"},
+    "required_case_count": {"const": 2},
+    "required_digest_fields": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "runtime_plan_digest"},
+        {"const": "execution_trace_digest"},
+        {"const": "reference_correctness_digest"}
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "required_operation_families": {"$ref": "#/$defs/operation_families"},
+    "required_terminal_outputs": {"$ref": "#/$defs/terminal_outputs"},
+    "required_trace_step_count_per_case": {"const": 2},
+    "runtime_matrix_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0"
+    },
+    "runtime_matrix_digest": {"$ref": "#/$defs/sha256_digest"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_runtime_coverage_policy_report.v0"
+    },
+    "source_boundary": {
+      "const": "triton_module_source_buffer_to_runtime_via_research_kernel_ingress"
+    },
+    "status": {"const": "PASS"},
+    "trace_step_policy": {
+      "const": "exact_current_trace_count_until_runtime_model_expands"
+    }
+  },
+  "$defs": {
+    "backend_sequences": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "linear-sim->vector-sim"},
+        {"const": "vector-sim->vector-sim"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "case_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_sequence",
+        "case_id",
+        "kernel_name",
+        "operation_families",
+        "status",
+        "terminal_outputs",
+        "trace_step_count"
+      ],
+      "properties": {
+        "backend_sequence": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "case_id": {
+          "enum": [
+            "research_module_matmul_elementwise",
+            "research_module_softmax_reduction"
+          ]
+        },
+        "kernel_name": {
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction"
+          ]
+        },
+        "operation_families": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "elementwise",
+              "matmul",
+              "reduction",
+              "softmax"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "status": {"const": "covered"},
+        "terminal_outputs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "trace_step_count": {"const": 2}
+      }
+    },
+    "operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "elementwise"},
+        {"const": "matmul"},
+        {"const": "reduction"},
+        {"const": "softmax"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "terminal_outputs": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "activated"},
+        {"const": "row_sum"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

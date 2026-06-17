@@ -34,7 +34,7 @@ def test_kernel_ingress_proof_bundle_report_shape() -> None:
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_CONTRACT
     )
     assert report["status"] == "PASS"
-    assert report["artifact_count"] == 7
+    assert report["artifact_count"] == 8
     assert report["claim"] == "realistic_triton_module_ingress_research_slice"
     assert report["accepted_source_names"] == [
         "research_matmul_elementwise",
@@ -53,7 +53,7 @@ def test_kernel_ingress_proof_bundle_report_shape() -> None:
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("artifact_count", 6, "artifact_count"),
+        ("artifact_count", 7, "artifact_count"),
         ("blocked_claims", [], "blocked_claims"),
         ("raw_source", "def kernel(): pass", "top-level report"),
     ],
@@ -98,7 +98,7 @@ def test_kernel_ingress_proof_bundle_example_runs() -> None:
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"status": "PASS"' in completed.stdout
-    assert '"artifact_count": 7' in completed.stdout
+    assert '"artifact_count": 8' in completed.stdout
     assert "realistic_triton_module_ingress_research_slice" in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "import triton" not in completed.stdout
@@ -116,7 +116,7 @@ def test_kernel_ingress_proof_bundle_schema_declares_contract() -> None:
     assert schema["properties"]["bundle_contract"]["const"] == (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_CONTRACT
     )
-    assert schema["properties"]["artifact_count"]["const"] == 7
+    assert schema["properties"]["artifact_count"]["const"] == 8
     assert schema["$defs"]["artifact"]["additionalProperties"] is False
     assert "blocked_claims" in schema["required"]
 
@@ -134,6 +134,10 @@ def test_kernel_ingress_proof_bundle_is_documented_and_in_ci() -> None:
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_REJECTION_COVERAGE.md"),
+        Path(
+            "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY.md"
+        ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
         Path("rfcs/0165-source-to-intent-research-kernel-ingress.md"),
@@ -141,6 +145,10 @@ def test_kernel_ingress_proof_bundle_is_documented_and_in_ci() -> None:
         Path("rfcs/0170-source-to-intent-research-kernel-ingress-boundary-budget.md"),
         Path("rfcs/0171-source-to-intent-research-kernel-ingress-rejection-coverage.md"),
         Path("rfcs/0173-source-to-intent-research-kernel-ingress-runtime-matrix.md"),
+        Path(
+            "rfcs/"
+            "0174-source-to-intent-research-kernel-ingress-runtime-coverage-policy.md"
+        ),
     ):
         assert example_path in path.read_text(encoding="utf-8")
 

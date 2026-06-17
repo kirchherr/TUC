@@ -38,6 +38,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_rejection_coverage import (
         build_report as build_kernel_ingress_rejection_coverage_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
+        assert_kernel_ingress_runtime_coverage_policy_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
+        build_report as build_kernel_ingress_runtime_coverage_policy_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
         assert_kernel_ingress_runtime_matrix_report_contract,
     )
@@ -74,6 +80,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_rejection_coverage import (
         build_report as build_kernel_ingress_rejection_coverage_report,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_coverage_policy import (  # type: ignore[no-redef]
+        assert_kernel_ingress_runtime_coverage_policy_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
+        build_report as build_kernel_ingress_runtime_coverage_policy_report,
     )
     from source_to_intent_research_kernel_ingress_runtime_matrix import (  # type: ignore[no-redef]
         assert_kernel_ingress_runtime_matrix_report_contract,
@@ -121,6 +133,7 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_REVIEW_CLAIMS = (
     "idiom_scope_bound",
     "kernel_ingress_runtime_e2e",
     "runtime_matrix_bound",
+    "runtime_coverage_policy_bound",
     "source_free_metadata_only",
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_FORBIDDEN_FRAGMENTS = (
@@ -172,6 +185,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
     ),
     (
+        "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
+        "json_report",
+        "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
+    ),
+    (
         "source_to_intent_research_kernel_ingress_boundary_budget",
         "json_report",
         "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
@@ -220,6 +238,9 @@ def build_kernel_ingress_proof_bundle_report() -> dict[str, object]:
         "source_to_intent_research_kernel_ingress": build_kernel_ingress_report(),
         "source_to_intent_research_kernel_ingress_runtime_matrix": (
             build_kernel_ingress_runtime_matrix_report()
+        ),
+        "source_to_intent_research_kernel_ingress_runtime_coverage_policy": (
+            build_kernel_ingress_runtime_coverage_policy_report()
         ),
         "source_to_intent_research_kernel_ingress_boundary_budget": (
             build_kernel_ingress_boundary_budget_report()
@@ -352,6 +373,14 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
         artifact_texts["source_to_intent_research_kernel_ingress_runtime_matrix"]
     )
     assert_kernel_ingress_runtime_matrix_report_contract(runtime_matrix)
+    runtime_coverage_policy = json.loads(
+        artifact_texts[
+            "source_to_intent_research_kernel_ingress_runtime_coverage_policy"
+        ]
+    )
+    assert_kernel_ingress_runtime_coverage_policy_report_contract(
+        runtime_coverage_policy
+    )
     boundary_budget = json.loads(
         artifact_texts["source_to_intent_research_kernel_ingress_boundary_budget"]
     )

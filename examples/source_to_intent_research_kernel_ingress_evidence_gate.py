@@ -43,6 +43,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_rejection_coverage import (
         build_report as build_kernel_ingress_rejection_coverage_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
+        assert_kernel_ingress_runtime_coverage_policy_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
+        build_report as build_kernel_ingress_runtime_coverage_policy_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
         assert_kernel_ingress_runtime_matrix_report_contract,
     )
@@ -85,6 +91,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_rejection_coverage import (
         build_report as build_kernel_ingress_rejection_coverage_report,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_coverage_policy import (  # type: ignore[no-redef]
+        assert_kernel_ingress_runtime_coverage_policy_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_coverage_policy import (
+        build_report as build_kernel_ingress_runtime_coverage_policy_report,
     )
     from source_to_intent_research_kernel_ingress_runtime_matrix import (  # type: ignore[no-redef]
         assert_kernel_ingress_runtime_matrix_report_contract,
@@ -147,6 +159,7 @@ def build_gate_report(
     kernel_ingress_text: str | None = None,
     proof_bundle_text: str | None = None,
     rejection_coverage_text: str | None = None,
+    runtime_coverage_policy_text: str | None = None,
     runtime_matrix_text: str | None = None,
 ) -> str:
     """Return stable CI-facing Kernel Ingress evidence binding."""
@@ -165,6 +178,11 @@ def build_gate_report(
         build_kernel_ingress_runtime_matrix_report()
         if runtime_matrix_text is None
         else runtime_matrix_text
+    )
+    runtime_coverage_policy = (
+        build_kernel_ingress_runtime_coverage_policy_report()
+        if runtime_coverage_policy_text is None
+        else runtime_coverage_policy_text
     )
     rejection_coverage = (
         build_kernel_ingress_rejection_coverage_report()
@@ -193,6 +211,7 @@ def build_gate_report(
     )
     _assert_kernel_ingress_bound(kernel_ingress)
     runtime_matrix_report = _assert_runtime_matrix_bound(runtime_matrix)
+    _assert_runtime_coverage_policy_bound(runtime_coverage_policy)
     _assert_boundary_budget_bound(boundary_budget)
     _assert_rejection_coverage_bound(rejection_coverage)
     _assert_diagnostics_bound(diagnostics)
@@ -204,6 +223,9 @@ def build_gate_report(
             "source_to_intent_research_kernel_ingress": kernel_ingress,
             "source_to_intent_research_kernel_ingress_runtime_matrix": (
                 runtime_matrix
+            ),
+            "source_to_intent_research_kernel_ingress_runtime_coverage_policy": (
+                runtime_coverage_policy
             ),
             "source_to_intent_research_kernel_ingress_boundary_budget": (
                 boundary_budget
@@ -223,6 +245,7 @@ def build_gate_report(
     report = _render_gate_report(
         kernel_ingress,
         runtime_matrix,
+        runtime_coverage_policy,
         runtime_matrix_report,
         boundary_budget,
         rejection_coverage,
@@ -255,6 +278,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         ),
         '  kernel_ingress = "passed"',
         '  runtime_matrix = "passed"',
+        '  runtime_coverage_policy = "passed"',
         '  boundary_budget = "passed"',
         '  rejection_coverage = "passed"',
         '  diagnostics = "passed"',
@@ -266,6 +290,10 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  covered_operation_families = "elementwise,matmul,reduction,softmax"',
         '  backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim"',
         '  runtime_case_count = "2"',
+        (
+            '  required_runtime_digest_fields = "runtime_plan_digest,'
+            'execution_trace_digest,reference_correctness_digest"'
+        ),
         '  covered_rejections = "7"',
         (
             '  diagnostics_rejection_reasons = "import_from_statement,'
@@ -291,6 +319,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
     for digest_field in (
         "kernel_ingress_digest",
         "runtime_matrix_digest",
+        "runtime_coverage_policy_digest",
         "boundary_budget_digest",
         "rejection_coverage_digest",
         "diagnostics_digest",
@@ -340,6 +369,18 @@ def _assert_runtime_matrix_bound(text: str) -> Mapping[str, object]:
     except (TypeError, ValueError) as exc:
         raise SourceToIntentResearchKernelIngressEvidenceGateError(
             "kernel ingress evidence gate failed: runtime matrix binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+    return report
+
+
+def _assert_runtime_coverage_policy_bound(text: str) -> Mapping[str, object]:
+    report = _load_json_report(text, "runtime coverage policy")
+    try:
+        assert_kernel_ingress_runtime_coverage_policy_report_contract(report)
+    except (TypeError, ValueError) as exc:
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: runtime coverage policy binding missing"
         ) from exc
     _assert_gate_text_is_source_free(text)
     return report
@@ -447,6 +488,7 @@ def _assert_proof_bundle_bound(
 def _render_gate_report(
     kernel_ingress_text: str,
     runtime_matrix_text: str,
+    runtime_coverage_policy_text: str,
     runtime_matrix_report: Mapping[str, object],
     boundary_budget_text: str,
     rejection_coverage_text: str,
@@ -468,6 +510,11 @@ def _render_gate_report(
     lines.append(f'  kernel_ingress_digest = "{_digest(kernel_ingress_text)}"')
     lines.append('  runtime_matrix = "passed"')
     lines.append(f'  runtime_matrix_digest = "{_digest(runtime_matrix_text)}"')
+    lines.append('  runtime_coverage_policy = "passed"')
+    lines.append(
+        "  runtime_coverage_policy_digest = "
+        f'"{_digest(runtime_coverage_policy_text)}"'
+    )
     lines.append('  boundary_budget = "passed"')
     lines.append(f'  boundary_budget_digest = "{_digest(boundary_budget_text)}"')
     lines.append('  rejection_coverage = "passed"')
@@ -509,6 +556,10 @@ def _render_gate_report(
         + '"'
     )
     lines.append(f'  runtime_case_count = "{runtime_matrix_report["case_count"]}"')
+    lines.append(
+        '  required_runtime_digest_fields = "runtime_plan_digest,'
+        'execution_trace_digest,reference_correctness_digest"'
+    )
     lines.append(
         f'  covered_rejections = "{rejection_coverage["covered_rejection_count"]}"'
     )

@@ -34,6 +34,10 @@ text as compiler input.
   `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
 - Kernel ingress runtime matrix docs:
   [Source-To-Intent Research Kernel Ingress Runtime Matrix](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md)
+- Kernel ingress runtime coverage policy example:
+  `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
+- Kernel ingress runtime coverage policy docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Coverage Policy](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY.md)
 - Kernel ingress boundary budget example:
   `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
 - Kernel ingress boundary budget docs:
@@ -82,9 +86,9 @@ The gate binds:
 - Source-To-Intent Research Kernel Ingress Proof Bundle
 - Source-To-Intent Research Kernel Ingress Evidence Gate
 
-Kernel Ingress Runtime Matrix, Kernel Ingress Boundary Budget, and Kernel
-Ingress Rejection Coverage are bound through the Kernel Ingress Proof Bundle
-and focused Kernel Ingress Evidence Gate.
+Kernel Ingress Runtime Matrix, Kernel Ingress Runtime Coverage Policy, Kernel
+Ingress Boundary Budget, and Kernel Ingress Rejection Coverage are bound through
+the Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate.
 
 Each input artifact is hashed with SHA-256 and the digest is emitted in the
 gate output.
@@ -132,11 +136,12 @@ The gate passes only when:
   operation families against Triton Idiom Coverage before its digest is
   accepted.
 - Research Kernel Ingress Proof Bundle validates the Kernel Ingress E2E,
-  runtime-matrix, boundary-budget, rejection-coverage, diagnostics,
-  conformance, and idiom-alignment artifacts before its digest is accepted.
+  runtime-matrix, runtime-coverage-policy, boundary-budget, rejection-coverage,
+  diagnostics, conformance, and idiom-alignment artifacts before its digest is
+  accepted.
 - Research Kernel Ingress Evidence Gate validates the focused Kernel Ingress
-  proof slice, Runtime Matrix, and exact Proof Bundle digest bindings before
-  its digest is accepted.
+  proof slice, Runtime Matrix, Runtime Coverage Policy, and exact Proof Bundle
+  digest bindings before its digest is accepted.
 - Diagnostics covers the whitelisted rejected source cases.
 - Parser status remains `research_explicit_only`.
 - Default parser status remains `default_parser_blocked`.
@@ -186,6 +191,7 @@ Research Kernel Ingress Idiom Alignment
     +
 Research Kernel Ingress Proof Bundle
     includes Research Kernel Ingress Runtime Matrix
+    includes Research Kernel Ingress Runtime Coverage Policy
     includes Research Kernel Ingress Boundary Budget
     includes Research Kernel Ingress Rejection Coverage
 Research Kernel Ingress Evidence Gate
@@ -197,5 +203,6 @@ Future parser syntax must update the diagnostics evidence, readiness evidence,
 the execution bridge contract, Kernel Ingress evidence, Kernel Ingress Idiom
 Alignment evidence, Kernel Ingress Boundary Budget evidence, Kernel Ingress
 Rejection Coverage evidence, Kernel Ingress Runtime Matrix evidence, Kernel
-Ingress Proof Bundle evidence, Kernel Ingress Evidence Gate evidence, and this
-gate before the expanded syntax can count as accepted research parser scope.
+Ingress Runtime Coverage Policy evidence, Kernel Ingress Proof Bundle evidence,
+Kernel Ingress Evidence Gate evidence, and this gate before the expanded syntax
+can count as accepted research parser scope.
