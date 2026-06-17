@@ -27,6 +27,12 @@ TUC protects three boundaries:
 - **Runtime planning:** explainable placement, movement, memory, and execution
   evidence.
 
+Current high-level research claim artifact:
+
+```bash
+python examples/source_to_intent_research_capability_claim.py
+```
+
 ## Current Proofs
 
 Objective Alpha is the current proof shape:
@@ -205,6 +211,10 @@ Current frontend surfaces:
   within the already covered Triton-like MVP idiom scope.
 - Source-To-Intent Research Proof Bundle providing one digest-only review entry
   for the current safe source-to-runtime research slice.
+- Source-To-Intent Research Capability Claim summarizing the currently
+  supported bounded Universal Compute research slice and explicitly blocking
+  production parser, native performance, hardware certification, arbitrary
+  backend execution, and vendor compiler replacement claims.
 - Source-To-Intent Research Source Runtime Smoke proving accepted source
   buffers can run end-to-end through the controlled research path.
 - Source-To-Intent Research Kernel Ingress proving realistic Triton
@@ -276,6 +286,7 @@ examples/source_to_intent_research_execution_bridge.py
 examples/source_to_intent_research_idiom_alignment.py
 examples/source_to_intent_research_evidence_gate.py
 examples/source_to_intent_research_proof_bundle.py
+examples/source_to_intent_research_capability_claim.py
 examples/source_to_intent_research_kernel_ingress.py
 examples/source_to_intent_research_kernel_ingress_runtime_matrix.py
 examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py
@@ -313,6 +324,7 @@ Key docs:
 - [Source-to-Intent research idiom alignment](docs/SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md)
 - [Source-to-Intent research evidence gate](docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
 - [Source-to-Intent research proof bundle](docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md)
+- [Source-to-Intent research capability claim](docs/SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM.md)
 - [Source-to-Intent research source runtime smoke](docs/SOURCE_TO_INTENT_RESEARCH_SOURCE_RUNTIME_SMOKE.md)
 - [Source-to-Intent research kernel ingress](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md)
 - [Source-to-Intent research kernel ingress runtime matrix](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md)

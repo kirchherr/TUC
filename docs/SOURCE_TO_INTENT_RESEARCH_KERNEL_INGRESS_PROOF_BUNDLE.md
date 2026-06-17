@@ -23,6 +23,8 @@ native performance claims.
 - Focused Kernel Ingress Evidence Gate binding:
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 - Global Proof Bundle binding: `examples/source_to_intent_research_proof_bundle.py`
+- Capability claim consumer:
+  `examples/source_to_intent_research_capability_claim.py`
 - CI entry: `.github/workflows/ci.yml`
 
 ## What It Bundles
@@ -96,10 +98,13 @@ kernel ingress conformance gate
 kernel ingress idiom alignment
     ->
 digest-only kernel ingress proof bundle
+    ->
+research capability claim
 ```
 
 Future Kernel Ingress syntax must update the underlying evidence before this
-bundle can remain valid.
+bundle can remain valid, and before the high-level Research Capability Claim
+can expand.
 
 The focused Kernel Ingress Evidence Gate validates this bundle against the
 artifact digests evaluated in the same invocation.

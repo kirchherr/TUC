@@ -72,6 +72,8 @@ text as compiler input.
   [Source-To-Intent Research Kernel Ingress Evidence Gate](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md)
 - Golden: `tests/golden/frontend/source_to_intent_research_evidence_gate.txt`
 - Tests: `tests/test_source_to_intent_research_evidence_gate.py`
+- Capability claim consumer:
+  `examples/source_to_intent_research_capability_claim.py`
 - CI entry: `.github/workflows/ci.yml`
 
 The gate binds:
@@ -205,6 +207,8 @@ Research Kernel Ingress Proof Bundle
 Research Kernel Ingress Evidence Gate
     ->
 Digest-bound source-free parser research evidence
+    ->
+Source-To-Intent Research Capability Claim
 ```
 
 Future parser syntax must update the diagnostics evidence, readiness evidence,
@@ -213,5 +217,5 @@ Alignment evidence, Kernel Ingress Boundary Budget evidence, Kernel Ingress
 Rejection Coverage evidence, Kernel Ingress Runtime Matrix evidence, Kernel
 Ingress Runtime Coverage Policy evidence, Kernel Ingress Runtime Backend
 Alignment evidence, Kernel Ingress Proof Bundle evidence, Kernel Ingress
-Evidence Gate evidence, and this gate before the expanded syntax can count as
-accepted research parser scope.
+Evidence Gate evidence, this gate, and the Research Capability Claim before
+the expanded syntax can count as accepted research parser scope.

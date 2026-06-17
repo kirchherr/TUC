@@ -531,6 +531,12 @@ Deliverables:
   work can claim coverage.
 - Source-To-Intent Research Proof Bundle giving reviewers one digest-only
   source-free artifact for the current safe source-to-runtime research slice.
+- Source-To-Intent Research Capability Claim
+  (`examples/source_to_intent_research_capability_claim.py`) summarizing the
+  currently supported bounded Universal Compute research slice above the proof
+  bundle and evidence gates while keeping production parser, native
+  performance, hardware certification, arbitrary backend execution, and vendor
+  compiler replacement claims blocked.
 - Source-To-Intent Research Source Runtime Smoke proving accepted source buffers
   can run end-to-end through Preflight, parser, Source Intent, runtime, and
   reference correctness.

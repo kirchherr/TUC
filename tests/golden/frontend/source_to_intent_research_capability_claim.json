@@ -1,0 +1,107 @@
+{
+  "accepted_kernel_count": 4,
+  "accepted_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "artifact_policy": "digest_only_source_free",
+  "blocked_claims": [
+    "arbitrary_backend_execution",
+    "general_triton_source_ingestion",
+    "hardware_certification",
+    "native_performance_claim",
+    "production_parser",
+    "vendor_compiler_replacement"
+  ],
+  "claim_boundary": "static_research_sources_to_capability_selected_trusted_runtime",
+  "claim_contract": "source_to_intent_research_capability_claim.review.v0",
+  "claim_id": "bounded_universal_compute_research_slice",
+  "claim_scope": "accepted_source_to_intent_kernel_ingress_mvp_pipeline",
+  "claim_status": "supported_for_current_research_scope",
+  "combined_pipeline_kernel": "mvp_pipeline",
+  "combined_pipeline_operation_path": [
+    "matmul",
+    "softmax",
+    "reduction",
+    "elementwise"
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "evidence": [
+    {
+      "artifact_id": "source_to_intent_research_proof_bundle",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_proof_bundle.review.v0",
+      "digest": "sha256:975436c13219718cef2b1c4891c4a6bc306d897776aaf4b8d0fde9c9918b4fc0",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_evidence_gate.ci.v0",
+      "digest": "sha256:18f081adfbefbd40266bb0f2619c1580f38e42218063693bfdb18cd98be73fa4",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
+      "digest": "sha256:f3f05150f3b65b345a2b512bb6281b004a592a1ae9eafb11eb9e028e2be62339",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
+      "digest": "sha256:e831f562aad343542298438d992f74fb8dd5c35dff484c521fb68dd715a3f87d",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_matrix",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+      "digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
+      "digest": "sha256:77bcedac7278e1c668d4ebe569e63f83e490af90d40bbafe4df3fd2b954013e6",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_backend_alignment.trusted_executor.v0",
+      "digest": "sha256:746cb44a3d1634ed3d3d8993371c05930de1ec5794bff27f7097470ffb2ddd87",
+      "status": "accepted"
+    }
+  ],
+  "evidence_count": 7,
+  "minimum_acceptance_checks": [
+    "global_proof_bundle_passes",
+    "global_evidence_gate_passes",
+    "kernel_ingress_proof_bundle_passes",
+    "kernel_ingress_evidence_gate_passes",
+    "runtime_matrix_has_combined_mvp_pipeline",
+    "runtime_coverage_policy_requires_exact_trace_counts",
+    "runtime_backend_alignment_uses_trusted_executors"
+  ],
+  "parser_status": "research_explicit_only",
+  "runtime_case_count": 4,
+  "schema_version": "tuc.source_to_intent_research_capability_claim_report.v0",
+  "status": "PASS",
+  "supported_claims": [
+    "bounded_source_to_intent_ingress",
+    "mvp_operation_family_pipeline",
+    "capability_selected_simulator_execution",
+    "digest_bound_evidence_chain",
+    "source_free_review_artifacts"
+  ],
+  "trusted_runtime_backends": [
+    "linear-sim",
+    "vector-sim"
+  ]
+}

@@ -26,6 +26,8 @@ production parsing.
   `examples/source_to_intent_research_evidence_gate.py`
 - Global Proof Bundle binding:
   `examples/source_to_intent_research_proof_bundle.py`
+- Capability claim consumer:
+  `examples/source_to_intent_research_capability_claim.py`
 - CI entry: `.github/workflows/ci.yml`
 
 ## What It Gates
@@ -78,7 +80,10 @@ idiom alignment
 proof bundle
     ->
 kernel ingress evidence gate
+    ->
+research capability claim
 ```
 
 Future Kernel Ingress syntax changes must update this gate before the expanded
-syntax can count as accepted research scope.
+syntax can count as accepted research scope, and must update the Research
+Capability Claim before the high-level supported claim can expand.

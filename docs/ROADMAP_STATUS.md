@@ -708,6 +708,13 @@ Current slice:
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_proof_bundle.json`, and
   digest-only review binding for the current source-to-runtime research proof.
+- Source-To-Intent Research Capability Claim at
+  `examples/source_to_intent_research_capability_claim.py`, with schema at
+  `schemas/source_to_intent_research_capability_claim_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_capability_claim.json`, and
+  a digest-only supported-claim boundary for the current bounded Universal
+  Compute research slice.
 - Source-To-Intent Research Source Runtime Smoke at
   `examples/source_to_intent_research_source_runtime_smoke.py`, with schema at
   `schemas/source_to_intent_research_source_runtime_smoke_report.v0.schema.json`,

@@ -18,6 +18,9 @@ native performance claims.
   `tests/golden/frontend/source_to_intent_research_proof_bundle.json`
 - Tests: `tests/test_source_to_intent_research_proof_bundle.py`
 - CI entry: `.github/workflows/ci.yml`
+- Capability claim consumer:
+  [Source-To-Intent Research Capability Claim](SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM.md)
+  at `examples/source_to_intent_research_capability_claim.py`
 
 ## What It Bundles
 
@@ -126,6 +129,8 @@ kernel ingress evidence gate
 evidence gate
     ->
 digest-only proof bundle
+    ->
+research capability claim
 ```
 
 Future parser-scope changes must update the underlying evidence before the

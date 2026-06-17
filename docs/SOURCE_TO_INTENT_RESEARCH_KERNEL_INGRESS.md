@@ -71,6 +71,8 @@ files, access devices, or discover plugins.
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 - Evidence gate docs:
   [Source-To-Intent Research Kernel Ingress Evidence Gate](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md)
+- Capability claim consumer:
+  `examples/source_to_intent_research_capability_claim.py`
 - CI entry: `.github/workflows/ci.yml`
 - Fixture expansion RFC:
   `rfcs/0176-source-to-intent-research-kernel-ingress-fixture-expansion.md`
@@ -167,6 +169,11 @@ rejection-coverage, diagnostics, conformance, and idiom-alignment artifacts.
 
 The companion Kernel Ingress Evidence Gate validates the same artifacts and
 their Proof Bundle digest bindings as CI-facing evidence.
+
+The Source-To-Intent Research Capability Claim consumes the focused Kernel
+Ingress proof and runtime artifacts to support the current bounded Universal
+Compute research claim without expanding parser, backend, or performance
+claims.
 
 ## Review Meaning
 
