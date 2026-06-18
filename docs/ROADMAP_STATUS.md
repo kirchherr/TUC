@@ -803,6 +803,11 @@ Current slice:
   a digest-bound bridge from Kernel Ingress shape-profile evidence to
   diagnostic `workload_scope_report.v0` data, 20 bounded workload scopes, and
   native performance claims still blocked.
+- Performance Proof Readiness now derives current `workload_scope` and
+  `planner_overhead_report` evidence from Kernel Ingress contracts: the
+  shape-profile-derived workload scope must pass its contract, and the accepted
+  MVP pipeline graph must produce a bounded planner-overhead report that keeps
+  execution timing and break-even evidence blocked.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at
@@ -930,7 +935,9 @@ Current slice:
   evidence, planner-overhead evidence, correctness goldens, and executable
   backend security review exist.
 - Performance Proof Readiness report with deterministic blocked golden evidence
-  for future native performance proposals.
+  for future native performance proposals, currently marking only
+  `workload_scope` and `planner_overhead_report` present from accepted Kernel
+  Ingress evidence.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
 - HAC-IR semantic charter for compute intent, compiler facts, planning

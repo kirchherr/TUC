@@ -393,6 +393,10 @@ evidence for leaky-abstraction limits, planner overhead, break-even workload
 size, native baseline comparison, benchmark artifact digests, benchmark
 methodology, and executable-backend security.
 
+Current readiness evidence marks only Kernel-Ingress-derived workload scope and
+planner-overhead phase separation as present. The report still fails closed for
+native performance claims.
+
 Key docs:
 
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)

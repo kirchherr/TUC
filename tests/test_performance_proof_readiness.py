@@ -4,7 +4,11 @@ from pathlib import Path
 
 import pytest
 
-from examples.performance_proof_readiness import build_blocked_performance_proof_evidence
+from examples.performance_proof_readiness import (
+    _has_kernel_ingress_planner_overhead_evidence,
+    _has_kernel_ingress_workload_scope_evidence,
+    build_blocked_performance_proof_evidence,
+)
 from tuc import (
     PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
     PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION,
@@ -18,7 +22,7 @@ from tuc import (
 )
 
 
-def test_performance_proof_readiness_blocks_with_only_workload_scope() -> None:
+def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence() -> None:
     report = build_performance_proof_readiness_report(
         "blocked-native-performance-proof-proposal",
         build_blocked_performance_proof_evidence(),
@@ -29,13 +33,18 @@ def test_performance_proof_readiness_blocks_with_only_workload_scope() -> None:
     assert len(report.checked_evidence) == len(PERFORMANCE_PROOF_REQUIRED_EVIDENCE)
     assert tuple(
         item.evidence_id for item in report.checked_evidence if item.present
-    ) == ("workload_scope",)
+    ) == ("workload_scope", "planner_overhead_report")
     expected_missing = tuple(
         evidence_id
         for evidence_id in PERFORMANCE_PROOF_REQUIRED_EVIDENCE
-        if evidence_id != "workload_scope"
+        if evidence_id not in {"workload_scope", "planner_overhead_report"}
     )
     assert tuple(issue.evidence_id for issue in report.issues) == expected_missing
+
+
+def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None:
+    assert _has_kernel_ingress_workload_scope_evidence()
+    assert _has_kernel_ingress_planner_overhead_evidence()
 
 
 def test_performance_proof_readiness_dump_matches_golden() -> None:

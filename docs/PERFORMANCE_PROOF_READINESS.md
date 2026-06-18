@@ -85,9 +85,8 @@ or native performance parity.
 
 The current Kernel Ingress workload-scope binding is
 `examples/source_to_intent_research_kernel_ingress_workload_scope.py`. It can
-mark only `workload_scope` as present for readiness review by binding accepted
-Kernel Ingress shape-profile evidence to diagnostic workload scopes. All other
-performance-proof evidence remains required before readiness can pass.
+mark `workload_scope` as present for readiness review by binding accepted
+Kernel Ingress shape-profile evidence to diagnostic workload scopes.
 
 The current diagnostic benchmark methodology report schema is
 `schemas/benchmark_methodology_report.v0.schema.json`. It can satisfy only the
@@ -106,6 +105,17 @@ The current diagnostic planner-overhead report schema is
 existence of a bounded planner phase-separation report. It does not satisfy
 break-even workload-size evidence, execution timing evidence, native baseline
 comparison, or native performance parity.
+
+The current readiness example builds a bounded planner-overhead report for the
+accepted Kernel Ingress MVP pipeline graph and checks the report contract before
+marking `planner_overhead_report` present. It verifies that planner overhead is
+not hidden inside execution time, execution timing remains unmeasured, and
+break-even evidence remains not established. It does not publish raw timings,
+run benchmarks, execute backend artifacts, or create a native performance
+claim.
+
+All other performance-proof evidence remains required before readiness can
+pass.
 
 The current diagnostic break-even workload-size report schema is
 `schemas/break_even_workload_size_report.v0.schema.json`. It can satisfy only

@@ -273,6 +273,11 @@ Completed evidence:
 - Workload-scope reports bound future performance claims to explicit operation
   families, shape profiles, dtype policies, problem-size ranges, and correctness
   references.
+- Kernel Ingress performance-readiness evidence now marks workload-scope and
+  planner-overhead report evidence present by contract-checking the
+  shape-profile-derived workload scopes and a bounded planner-overhead report
+  for the accepted MVP pipeline graph while keeping native performance claims
+  blocked.
 - Benchmark-methodology reports define measurement clocks, iteration policies,
   statistic policy, isolation, outlier handling, and reproducibility policy
   before benchmark numbers can become evidence.
@@ -587,6 +592,10 @@ Deliverables:
   binding those proven shape profiles to diagnostic `workload_scope_report.v0`
   data so future performance proposals have bounded operation-family and
   shape-profile scopes while native performance claims remain blocked.
+- Performance Proof Readiness now derives current `workload_scope` and
+  `planner_overhead_report` evidence from accepted Kernel Ingress contracts
+  instead of hand-coded booleans, while all native performance claims remain
+  blocked.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
   (`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`)
   requiring current accepted runtime cases, backend sequences, terminal outputs,
