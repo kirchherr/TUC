@@ -7,6 +7,8 @@
     "softmax"
   ],
   "artifact_policy": "digest_only_source_free",
+  "backend_equivalence_case_count": 4,
+  "baseline_runtime_backend": "reference-cpu",
   "blocked_claims": [
     "arbitrary_backend_execution",
     "general_triton_source_ingestion",
@@ -33,28 +35,28 @@
       "artifact_id": "source_to_intent_research_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_proof_bundle.review.v0",
-      "digest": "sha256:c617410b032095af92bb5c0a224ca3ac65f91884ec9d5c627981696761d0fc2d",
+      "digest": "sha256:b8841c842841a1a283e150642b69bd1e838820b06e80ab583108134941083062",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:b42da781674539b71ae61a2fdc88955603e7aab1b8dd6391af44d85b17d0b511",
+      "digest": "sha256:65b8f3e6ba6d3627af81666445c765c743efe6b5c8aa13736cfe5db42a591954",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:cb7ade31fe4a30dbb63b20ce423b92d31dc747599f866552579a365b0ecf62f0",
+      "digest": "sha256:6f880319d4dceb52d19a2b95c65dd91e13458ee26b3d3ed2f3e7879e467d0855",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:b71f02c6f762046e00f74ef0c747b0056610ec300d538d0be0564517b19ba57a",
+      "digest": "sha256:4844be80b67eac9f637c6159c77f76ad6425804cfd9524649e12a78ee0777e69",
       "status": "accepted"
     },
     {
@@ -79,6 +81,13 @@
       "status": "accepted"
     },
     {
+      "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
+      "digest": "sha256:71b8c0c7aac1a03e693a0cfd3d1602e06838a559c72ff7cfe264b5c62eb61ed6",
+      "status": "accepted"
+    },
+    {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
@@ -93,7 +102,7 @@
       "status": "accepted"
     }
   ],
-  "evidence_count": 9,
+  "evidence_count": 10,
   "minimum_acceptance_checks": [
     "global_proof_bundle_passes",
     "global_evidence_gate_passes",
@@ -102,6 +111,7 @@
     "runtime_matrix_has_combined_mvp_pipeline",
     "runtime_step_trace_binds_mvp_operation_path",
     "runtime_evidence_bundle_index_binds_standard_execution_evidence",
+    "runtime_backend_equivalence_preserves_outputs",
     "runtime_coverage_policy_requires_exact_trace_counts",
     "runtime_backend_alignment_uses_trusted_executors"
   ],
@@ -112,6 +122,7 @@
   "supported_claims": [
     "bounded_source_to_intent_ingress",
     "mvp_operation_family_pipeline",
+    "source_intent_backend_portability",
     "capability_selected_simulator_execution",
     "digest_bound_evidence_chain",
     "source_free_review_artifacts"

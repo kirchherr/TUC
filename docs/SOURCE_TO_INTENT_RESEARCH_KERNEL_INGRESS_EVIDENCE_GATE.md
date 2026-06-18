@@ -22,6 +22,8 @@ production parsing.
   `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
 - Runtime Evidence Bundle Index input:
   `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
+- Backend Equivalence input:
+  `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 - Runtime Coverage Policy input:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime Backend Alignment input:
@@ -42,6 +44,7 @@ The gate validates and binds:
 - Kernel Ingress Runtime Matrix evidence;
 - Kernel Ingress Runtime Step Trace evidence;
 - Kernel Ingress Runtime Evidence Bundle Index evidence;
+- Kernel Ingress Backend Equivalence evidence;
 - Kernel Ingress Runtime Coverage Policy evidence;
 - Kernel Ingress Runtime Backend Alignment evidence;
 - Kernel Ingress Boundary Budget evidence;
@@ -69,6 +72,10 @@ unique backend sequences: `linear-sim->vector-sim`,
 `vector-sim->vector-sim`, and
 `linear-sim->vector-sim->vector-sim->vector-sim`.
 
+The gate also binds four backend-equivalence comparisons from a
+`reference-cpu` baseline to capability-selected trusted simulator placements,
+without serializing output values.
+
 ## Review Meaning
 
 This gate is the merge-facing audit for Kernel Ingress:
@@ -78,6 +85,7 @@ kernel ingress evidence
 runtime matrix
 runtime step trace
 runtime evidence bundle index
+backend equivalence
 runtime coverage policy
 runtime backend alignment
 boundary budget

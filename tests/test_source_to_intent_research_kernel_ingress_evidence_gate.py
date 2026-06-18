@@ -30,6 +30,7 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'runtime_matrix = "passed"' in report
     assert 'runtime_step_trace = "passed"' in report
     assert 'runtime_evidence_bundle_index = "passed"' in report
+    assert 'runtime_backend_equivalence = "passed"' in report
     assert 'runtime_coverage_policy = "passed"' in report
     assert 'runtime_backend_alignment = "passed"' in report
     assert 'boundary_budget = "passed"' in report
@@ -49,6 +50,13 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'runtime_case_count = "4"' in report
     assert 'runtime_step_trace_cases = "4"' in report
     assert 'runtime_evidence_bundle_cases = "4"' in report
+    assert 'runtime_backend_equivalence_cases = "4"' in report
+    assert 'backend_equivalence_comparisons = "4"' in report
+    assert (
+        'baseline_backend_sequences = "reference-cpu->reference-cpu,'
+        'reference-cpu->reference-cpu->reference-cpu->reference-cpu"'
+        in report
+    )
     assert (
         'runtime_evidence_sections = "tensor_store_evidence,input_manifest,'
         'output_manifest,reference_correctness,execution_receipt"'
@@ -78,6 +86,7 @@ def test_kernel_ingress_evidence_gate_example_runs() -> None:
     assert "runtime_matrix_digest" in completed.stdout
     assert "runtime_step_trace_digest" in completed.stdout
     assert "runtime_evidence_bundle_index_digest" in completed.stdout
+    assert "runtime_backend_equivalence_digest" in completed.stdout
     assert "runtime_coverage_policy_digest" in completed.stdout
     assert "runtime_backend_alignment_digest" in completed.stdout
     assert "rejection_coverage_digest" in completed.stdout
@@ -126,6 +135,14 @@ def test_kernel_ingress_evidence_gate_rejects_tampered_bundle_index() -> None:
         match="runtime evidence bundle index binding missing",
     ):
         build_gate_report(runtime_evidence_bundle_index_text='{"status": "PASS"}\n')
+
+
+def test_kernel_ingress_evidence_gate_rejects_tampered_backend_equivalence() -> None:
+    with pytest.raises(
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        match="runtime backend equivalence binding missing",
+    ):
+        build_gate_report(runtime_backend_equivalence_text='{"status": "PASS"}\n')
 
 
 def test_kernel_ingress_evidence_gate_rejects_tampered_runtime_coverage_policy() -> None:

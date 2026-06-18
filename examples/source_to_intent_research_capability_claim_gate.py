@@ -92,13 +92,15 @@ def assert_capability_claim_gate_report_contract(text: object) -> None:
         f'  claim_status = "{SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_STATUS}"',
         '  accepted_kernel_count = "4"',
         '  runtime_case_count = "4"',
+        '  backend_equivalence_case_count = "4"',
+        '  baseline_runtime_backend = "reference-cpu"',
         (
             '  combined_pipeline = "'
             + "->".join(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_OPERATION_PATH)
             + '"'
         ),
         '  trusted_runtime_backends = "linear-sim,vector-sim"',
-        '  evidence_count = "9"',
+        '  evidence_count = "10"',
         (
             '  supported_claims = "'
             + ",".join(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_SUPPORTED_CLAIMS)
@@ -170,6 +172,11 @@ def _render_gate_report(
         f'  claim_status = "{claim["claim_status"]}"',
         f'  accepted_kernel_count = "{claim["accepted_kernel_count"]}"',
         f'  runtime_case_count = "{claim["runtime_case_count"]}"',
+        (
+            "  backend_equivalence_case_count = "
+            f'"{claim["backend_equivalence_case_count"]}"'
+        ),
+        f'  baseline_runtime_backend = "{claim["baseline_runtime_backend"]}"',
         (
             '  combined_pipeline = "'
             + "->".join(_string_list(claim["combined_pipeline_operation_path"]))

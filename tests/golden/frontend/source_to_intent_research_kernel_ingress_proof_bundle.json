@@ -11,7 +11,7 @@
     "research_matmul_reduction",
     "research_mvp_pipeline"
   ],
-  "artifact_count": 11,
+  "artifact_count": 12,
   "artifact_policy": "digest_only_source_free",
   "artifacts": [
     {
@@ -40,6 +40,13 @@
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0",
       "digest": "sha256:8ec9d3eab1a81bf09513db849ca7ee643188d808f0a8ddb979bb0b1452fc4454",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
+      "digest": "sha256:71b8c0c7aac1a03e693a0cfd3d1602e06838a559c72ff7cfe264b5c62eb61ed6",
       "status": "accepted"
     },
     {
@@ -112,6 +119,7 @@
     "source_to_intent_research_kernel_ingress_runtime_matrix",
     "source_to_intent_research_kernel_ingress_runtime_step_trace",
     "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+    "source_to_intent_research_kernel_ingress_backend_equivalence",
     "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
     "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
     "source_to_intent_research_kernel_ingress_boundary_budget",
@@ -130,6 +138,7 @@
     "runtime_matrix_bound",
     "runtime_step_trace_bound",
     "runtime_evidence_bundle_index_bound",
+    "runtime_backend_equivalence_bound",
     "runtime_coverage_policy_bound",
     "runtime_backend_alignment_bound",
     "source_free_metadata_only"

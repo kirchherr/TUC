@@ -86,6 +86,10 @@ files, access devices, or discover plugins.
   `rfcs/0176-source-to-intent-research-kernel-ingress-fixture-expansion.md`
 - Combined MVP pipeline RFC:
   `rfcs/0177-source-to-intent-research-kernel-ingress-combined-mvp-pipeline.md`
+- Backend equivalence companion:
+  [Source-To-Intent Research Kernel Ingress Backend Equivalence](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE.md)
+- Backend equivalence example:
+  `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 
 ## Accepted Module Shape
 
@@ -170,9 +174,14 @@ The companion Kernel Ingress Runtime Backend Alignment report binds those
 backend sequences to trusted Runtime Executor conformance for `linear-sim` and
 `vector-sim`, without plugin discovery or device access.
 
+The companion Kernel Ingress Backend Equivalence report executes the same
+accepted Source Intent through a neutral `reference-cpu` baseline and
+capability-selected trusted simulator placements, then binds the metadata-only
+`RuntimeBackendEquivalenceReport` results into the Kernel Ingress proof flow.
+
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
-for the Kernel Ingress E2E, runtime-matrix, runtime-coverage-policy,
-runtime-backend-alignment, boundary-budget,
+for the Kernel Ingress E2E, runtime-matrix, runtime-backend-equivalence,
+runtime-coverage-policy, runtime-backend-alignment, boundary-budget,
 rejection-coverage, diagnostics, conformance, and idiom-alignment artifacts.
 
 The companion Kernel Ingress Evidence Gate validates the same artifacts and

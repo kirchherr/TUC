@@ -571,6 +571,11 @@ Deliverables:
   proving accepted Kernel Ingress runtime cases also build and bind standard
   Runtime Execution Evidence Bundles with tensor-store, input-manifest,
   output-manifest, reference-correctness, and execution-receipt evidence.
+- Source-To-Intent Research Kernel Ingress Backend Equivalence
+  (`examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`)
+  proving accepted Kernel Ingress Source Intent preserves public outputs under
+  a neutral `reference-cpu` baseline and capability-selected trusted
+  `linear-sim`/`vector-sim` simulator placements.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
   (`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`)
   requiring current accepted runtime cases, backend sequences, terminal outputs,
@@ -753,6 +758,11 @@ Go/No-Go:
   binds accepted runtime step-trace cases to the standard Runtime Execution
   Evidence Bundle sections, including tensor store, manifests, reference
   correctness, and execution receipt digests.
+- Source-To-Intent Research Kernel Ingress Backend Equivalence now compares
+  accepted Kernel Ingress Source Intent cases under a neutral `reference-cpu`
+  baseline and capability-selected `linear-sim`/`vector-sim` placements,
+  proving terminal public output metadata is preserved without exposing raw
+  source or tensor values.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy now binds
   the runtime matrix to required accepted cases, operation families, backend
   sequences, terminal outputs, trace-step count policy, and runtime digest

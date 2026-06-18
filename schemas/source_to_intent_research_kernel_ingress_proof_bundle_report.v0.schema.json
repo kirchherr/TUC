@@ -46,12 +46,12 @@
       "minItems": 4,
       "maxItems": 4
     },
-    "artifact_count": {"const": 11},
+    "artifact_count": {"const": 12},
     "artifact_policy": {"const": "digest_only_source_free"},
     "artifacts": {
       "type": "array",
-      "minItems": 11,
-      "maxItems": 11,
+      "minItems": 12,
+      "maxItems": 12,
       "items": {"$ref": "#/$defs/artifact"}
     },
     "blocked_claims": {
@@ -88,6 +88,7 @@
         {"const": "source_to_intent_research_kernel_ingress_runtime_matrix"},
         {"const": "source_to_intent_research_kernel_ingress_runtime_step_trace"},
         {"const": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index"},
+        {"const": "source_to_intent_research_kernel_ingress_backend_equivalence"},
         {"const": "source_to_intent_research_kernel_ingress_runtime_coverage_policy"},
         {"const": "source_to_intent_research_kernel_ingress_runtime_backend_alignment"},
         {"const": "source_to_intent_research_kernel_ingress_boundary_budget"},
@@ -96,8 +97,8 @@
         {"const": "source_to_intent_research_kernel_ingress_conformance_gate"},
         {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"}
       ],
-      "minItems": 11,
-      "maxItems": 11
+      "minItems": 12,
+      "maxItems": 12
     },
     "review_claims": {
       "type": "array",
@@ -111,12 +112,13 @@
         {"const": "runtime_matrix_bound"},
         {"const": "runtime_step_trace_bound"},
         {"const": "runtime_evidence_bundle_index_bound"},
+        {"const": "runtime_backend_equivalence_bound"},
         {"const": "runtime_coverage_policy_bound"},
         {"const": "runtime_backend_alignment_bound"},
         {"const": "source_free_metadata_only"}
       ],
-      "minItems": 12,
-      "maxItems": 12
+      "minItems": 13,
+      "maxItems": 13
     },
     "schema_version": {
       "const": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0"
@@ -144,6 +146,7 @@
             "source_to_intent_research_kernel_ingress_runtime_matrix",
             "source_to_intent_research_kernel_ingress_runtime_step_trace",
             "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+            "source_to_intent_research_kernel_ingress_backend_equivalence",
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
             "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
             "source_to_intent_research_kernel_ingress_boundary_budget",

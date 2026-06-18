@@ -69,6 +69,8 @@ jobs:
         run: python examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py
       - name: Source-To-Intent research kernel ingress runtime evidence bundle index
         run: python examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py
+      - name: Source-To-Intent research kernel ingress backend equivalence
+        run: python examples/source_to_intent_research_kernel_ingress_backend_equivalence.py
       - name: Source-To-Intent research kernel ingress runtime coverage policy
         run: python examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py
       - name: Source-To-Intent research kernel ingress runtime backend alignment

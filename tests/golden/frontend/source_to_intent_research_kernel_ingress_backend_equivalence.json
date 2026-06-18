@@ -1,0 +1,175 @@
+{
+  "artifact_policy": "metadata_only_values_omitted",
+  "baseline_backend_sequences": [
+    "reference-cpu->reference-cpu",
+    "reference-cpu->reference-cpu->reference-cpu->reference-cpu"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_backend_sequences": [
+    "linear-sim->vector-sim",
+    "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim"
+  ],
+  "case_count": 4,
+  "cases": [
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_matmul_elementwise",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:342657e13059f353106f3451462ec2f37ee1880330ce691cf3dcb03c744fc452",
+      "equivalence_report_digest": "sha256:f28ddccf6afe497c0b3b54423bb9fac664ba75e491b4134c63fed8982eea06e1",
+      "graph_name": "research_matmul_elementwise",
+      "kernel_name": "matmul_elementwise",
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_bound",
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_softmax_reduction",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:e8ba1ed129150f8548fcb3da9988103d47cc4ce298080434cd7c22d9da2b86a7",
+      "equivalence_report_digest": "sha256:6060ea86aed431c4808a356ec424a18a260a39d1e0fb4b410ff7ed0fd201135f",
+      "graph_name": "research_softmax_reduction",
+      "kernel_name": "softmax_reduction",
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_bound",
+      "terminal_outputs": [
+        "row_sum"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_matmul_reduction",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:adb72fed1e0c092dcea07da0429ea558acaafedaba7a3dfccf08c272bb3681e6",
+      "equivalence_report_digest": "sha256:be9e635b78d89a3f998ad56cddf1476ddad2e7ed18ccfe06c378cd9d934b4911",
+      "graph_name": "research_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_bound",
+      "terminal_outputs": [
+        "column_sum"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 4,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 4,
+      "case_id": "research_module_mvp_pipeline",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:1f977166cbcbf42df4bd9c9489a526a5aefcb21865fd2c22df7e48922bde9e8c",
+      "equivalence_report_digest": "sha256:8c49ae30361bb186bfa678f3f50b04f155472b88d94304832a7d5c415e40e875",
+      "graph_name": "research_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_bound",
+      "terminal_outputs": [
+        "stable"
+      ]
+    }
+  ],
+  "comparison_count": 4,
+  "default_parser_status": "default_parser_blocked",
+  "equivalence_claim": "same_source_intent_preserves_public_outputs_across_backend_placements",
+  "equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "kernel_ingress_backend_equivalence_contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
+  "kernel_ingress_digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_backend_equivalence_report.v0",
+  "source_boundary": "kernel_ingress_source_intent_to_reference_cpu_and_trusted_simulators",
+  "status": "PASS",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0",
+  "trusted_runtime_backends": [
+    "linear-sim",
+    "reference-cpu",
+    "vector-sim"
+  ]
+}

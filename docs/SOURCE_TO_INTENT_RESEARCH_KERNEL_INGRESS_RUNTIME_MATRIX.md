@@ -31,6 +31,10 @@ performance claims.
   `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 - Runtime Evidence Bundle Index docs:
   [Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX.md)
+- Backend Equivalence binding:
+  `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
+- Backend Equivalence docs:
+  [Source-To-Intent Research Kernel Ingress Backend Equivalence](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE.md)
 - Runtime Coverage Policy binding:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime Coverage Policy docs:
@@ -96,6 +100,8 @@ runtime matrix
 runtime step trace
     ->
 runtime evidence bundle index
+    ->
+backend equivalence
     ->
 runtime coverage policy
     ->

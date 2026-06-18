@@ -38,6 +38,8 @@ def test_source_to_intent_research_capability_claim_report_shape() -> None:
     assert report["claim_status"] == "supported_for_current_research_scope"
     assert report["accepted_kernel_count"] == 4
     assert report["runtime_case_count"] == 4
+    assert report["backend_equivalence_case_count"] == 4
+    assert report["baseline_runtime_backend"] == "reference-cpu"
     assert report["combined_pipeline_kernel"] == "mvp_pipeline"
     assert report["combined_pipeline_operation_path"] == [
         "matmul",
@@ -62,6 +64,7 @@ def test_source_to_intent_research_capability_claim_report_shape() -> None:
         "source_to_intent_research_kernel_ingress_runtime_matrix",
         "source_to_intent_research_kernel_ingress_runtime_step_trace",
         "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+        "source_to_intent_research_kernel_ingress_backend_equivalence",
         "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
         "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
     ]
@@ -125,6 +128,7 @@ def test_source_to_intent_research_capability_claim_example_runs() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"status": "PASS"' in completed.stdout
     assert '"claim_id": "bounded_universal_compute_research_slice"' in completed.stdout
+    assert '"baseline_runtime_backend": "reference-cpu"' in completed.stdout
     assert '"combined_pipeline_kernel": "mvp_pipeline"' in completed.stdout
     assert "source_to_intent_research_kernel_ingress_evidence_gate" in completed.stdout
     assert "@triton.jit" not in completed.stdout
@@ -145,7 +149,9 @@ def test_source_to_intent_research_capability_claim_schema_declares_contract() -
     )
     assert schema["properties"]["accepted_kernel_count"]["const"] == 4
     assert schema["properties"]["runtime_case_count"]["const"] == 4
-    assert schema["properties"]["evidence_count"]["const"] == 9
+    assert schema["properties"]["backend_equivalence_case_count"]["const"] == 4
+    assert schema["properties"]["baseline_runtime_backend"]["const"] == "reference-cpu"
+    assert schema["properties"]["evidence_count"]["const"] == 10
     assert schema["$defs"]["evidence"]["additionalProperties"] is False
     assert "blocked_claims" in schema["required"]
 
@@ -172,6 +178,10 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
             "docs/"
             "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX.md"
         ),
+        Path(
+            "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE.md"
+        ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
         Path("rfcs/0178-source-to-intent-research-capability-claim.md"),
         Path(
@@ -181,6 +191,10 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
         Path(
             "rfcs/"
             "0181-source-to-intent-research-kernel-ingress-runtime-evidence-bundle-index.md"
+        ),
+        Path(
+            "rfcs/"
+            "0182-source-to-intent-research-kernel-ingress-backend-equivalence.md"
         ),
     ):
         assert example_path in path.read_text(encoding="utf-8")

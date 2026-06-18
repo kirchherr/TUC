@@ -228,6 +228,10 @@ Current frontend surfaces:
 - Source-To-Intent Research Kernel Ingress Runtime Matrix making accepted
   module-shaped runtime coverage explicit by backend sequence, terminal output,
   trace-step count, and runtime evidence digest.
+- Source-To-Intent Research Kernel Ingress Backend Equivalence proving accepted
+  module-shaped Source Intent preserves terminal public outputs under a
+  neutral `reference-cpu` baseline and capability-selected trusted simulator
+  placements.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy requiring
   current accepted runtime cases, backend sequences, terminal outputs, and
   runtime digest fields before Kernel Ingress proof evidence can pass.
@@ -295,6 +299,7 @@ examples/source_to_intent_research_kernel_ingress.py
 examples/source_to_intent_research_kernel_ingress_runtime_matrix.py
 examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py
 examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py
+examples/source_to_intent_research_kernel_ingress_backend_equivalence.py
 examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py
 examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py
 examples/source_to_intent_research_kernel_ingress_boundary_budget.py
@@ -337,6 +342,7 @@ Key docs:
 - [Source-to-Intent research kernel ingress runtime matrix](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_MATRIX.md)
 - [Source-to-Intent research kernel ingress runtime step trace](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE.md)
 - [Source-to-Intent research kernel ingress runtime evidence bundle index](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX.md)
+- [Source-to-Intent research kernel ingress backend equivalence](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE.md)
 - [Source-to-Intent research kernel ingress runtime coverage policy](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY.md)
 - [Source-to-Intent research kernel ingress runtime backend alignment](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_BACKEND_ALIGNMENT.md)
 - [Source-to-Intent research kernel ingress boundary budget](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BOUNDARY_BUDGET.md)

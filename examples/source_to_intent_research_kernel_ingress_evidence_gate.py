@@ -13,6 +13,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_backend_equivalence import (
+        assert_kernel_ingress_backend_equivalence_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_backend_equivalence import (
+        build_report as build_kernel_ingress_backend_equivalence_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_boundary_budget import (
         assert_kernel_ingress_boundary_budget_report_contract,
     )
@@ -79,6 +85,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress import (
         build_report as build_kernel_ingress_report,
+    )
+    from source_to_intent_research_kernel_ingress_backend_equivalence import (  # type: ignore[no-redef]
+        assert_kernel_ingress_backend_equivalence_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_backend_equivalence import (
+        build_report as build_kernel_ingress_backend_equivalence_report,
     )
     from source_to_intent_research_kernel_ingress_boundary_budget import (  # type: ignore[no-redef]
         assert_kernel_ingress_boundary_budget_report_contract,
@@ -200,6 +212,7 @@ def build_gate_report(
     proof_bundle_text: str | None = None,
     rejection_coverage_text: str | None = None,
     runtime_backend_alignment_text: str | None = None,
+    runtime_backend_equivalence_text: str | None = None,
     runtime_coverage_policy_text: str | None = None,
     runtime_evidence_bundle_index_text: str | None = None,
     runtime_matrix_text: str | None = None,
@@ -231,6 +244,11 @@ def build_gate_report(
         build_kernel_ingress_runtime_evidence_bundle_index_report()
         if runtime_evidence_bundle_index_text is None
         else runtime_evidence_bundle_index_text
+    )
+    runtime_backend_equivalence = (
+        build_kernel_ingress_backend_equivalence_report()
+        if runtime_backend_equivalence_text is None
+        else runtime_backend_equivalence_text
     )
     runtime_coverage_policy = (
         build_kernel_ingress_runtime_coverage_policy_report()
@@ -273,6 +291,9 @@ def build_gate_report(
     runtime_evidence_bundle_index_report = _assert_runtime_evidence_bundle_index_bound(
         runtime_evidence_bundle_index
     )
+    runtime_backend_equivalence_report = _assert_runtime_backend_equivalence_bound(
+        runtime_backend_equivalence
+    )
     _assert_runtime_coverage_policy_bound(runtime_coverage_policy)
     runtime_backend_alignment_report = _assert_runtime_backend_alignment_bound(
         runtime_backend_alignment
@@ -294,6 +315,9 @@ def build_gate_report(
             ),
             "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index": (
                 runtime_evidence_bundle_index
+            ),
+            "source_to_intent_research_kernel_ingress_backend_equivalence": (
+                runtime_backend_equivalence
             ),
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy": (
                 runtime_coverage_policy
@@ -326,6 +350,8 @@ def build_gate_report(
         runtime_step_trace_report,
         runtime_evidence_bundle_index,
         runtime_evidence_bundle_index_report,
+        runtime_backend_equivalence,
+        runtime_backend_equivalence_report,
         runtime_backend_alignment_report,
         boundary_budget,
         rejection_coverage,
@@ -360,6 +386,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  runtime_matrix = "passed"',
         '  runtime_step_trace = "passed"',
         '  runtime_evidence_bundle_index = "passed"',
+        '  runtime_backend_equivalence = "passed"',
         '  runtime_coverage_policy = "passed"',
         '  runtime_backend_alignment = "passed"',
         '  boundary_budget = "passed"',
@@ -388,6 +415,12 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  runtime_case_count = "4"',
         '  runtime_step_trace_cases = "4"',
         '  runtime_evidence_bundle_cases = "4"',
+        '  runtime_backend_equivalence_cases = "4"',
+        '  backend_equivalence_comparisons = "4"',
+        (
+            '  baseline_backend_sequences = "reference-cpu->reference-cpu,'
+            'reference-cpu->reference-cpu->reference-cpu->reference-cpu"'
+        ),
         (
             '  runtime_evidence_sections = "tensor_store_evidence,'
             'input_manifest,output_manifest,reference_correctness,'
@@ -428,6 +461,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         "runtime_matrix_digest",
         "runtime_step_trace_digest",
         "runtime_evidence_bundle_index_digest",
+        "runtime_backend_equivalence_digest",
         "runtime_coverage_policy_digest",
         "runtime_backend_alignment_digest",
         "boundary_budget_digest",
@@ -504,6 +538,19 @@ def _assert_runtime_evidence_bundle_index_bound(text: str) -> Mapping[str, objec
         raise SourceToIntentResearchKernelIngressEvidenceGateError(
             "kernel ingress evidence gate failed: "
             "runtime evidence bundle index binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+    return report
+
+
+def _assert_runtime_backend_equivalence_bound(text: str) -> Mapping[str, object]:
+    report = _load_json_report(text, "runtime backend equivalence")
+    try:
+        assert_kernel_ingress_backend_equivalence_report_contract(report)
+    except (TypeError, ValueError) as exc:
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: "
+            "runtime backend equivalence binding missing"
         ) from exc
     _assert_gate_text_is_source_free(text)
     return report
@@ -649,6 +696,8 @@ def _render_gate_report(
     runtime_step_trace_report: Mapping[str, object],
     runtime_evidence_bundle_index_text: str,
     runtime_evidence_bundle_index_report: Mapping[str, object],
+    runtime_backend_equivalence_text: str,
+    runtime_backend_equivalence_report: Mapping[str, object],
     runtime_backend_alignment_report: Mapping[str, object],
     boundary_budget_text: str,
     rejection_coverage_text: str,
@@ -678,6 +727,11 @@ def _render_gate_report(
     lines.append(
         "  runtime_evidence_bundle_index_digest = "
         f'"{_digest(runtime_evidence_bundle_index_text)}"'
+    )
+    lines.append('  runtime_backend_equivalence = "passed"')
+    lines.append(
+        "  runtime_backend_equivalence_digest = "
+        f'"{_digest(runtime_backend_equivalence_text)}"'
     )
     lines.append('  runtime_coverage_policy = "passed"')
     lines.append(
@@ -745,6 +799,21 @@ def _render_gate_report(
     lines.append(
         "  runtime_evidence_bundle_cases = "
         f'"{runtime_evidence_bundle_index_report["case_count"]}"'
+    )
+    lines.append(
+        "  runtime_backend_equivalence_cases = "
+        f'"{runtime_backend_equivalence_report["case_count"]}"'
+    )
+    lines.append(
+        "  backend_equivalence_comparisons = "
+        f'"{runtime_backend_equivalence_report["comparison_count"]}"'
+    )
+    lines.append(
+        '  baseline_backend_sequences = "'
+        + ",".join(
+            _string_list(runtime_backend_equivalence_report["baseline_backend_sequences"])
+        )
+        + '"'
     )
     lines.append(
         '  runtime_evidence_sections = "'

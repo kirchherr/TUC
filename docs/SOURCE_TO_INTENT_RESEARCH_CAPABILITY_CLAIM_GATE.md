@@ -31,8 +31,9 @@ The gate passes only when the capability claim report:
 - still records `mvp_pipeline` as the combined pipeline kernel;
 - still records `matmul->softmax->reduction->elementwise`;
 - still records four accepted runtime cases;
+- still records four backend-equivalence cases against `reference-cpu`;
 - still records trusted runtime backends `linear-sim` and `vector-sim`;
-- still records seven bound evidence artifacts;
+- still records ten bound evidence artifacts;
 - still blocks production parser, native performance, hardware certification,
   arbitrary backend execution, general Triton ingestion, and vendor compiler
   replacement claims.

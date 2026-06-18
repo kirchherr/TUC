@@ -31,6 +31,8 @@ It does not add syntax, approve general Triton source ingestion, execute
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 - Capability Claim binding:
   `examples/source_to_intent_research_capability_claim.py`
+- Companion backend-equivalence evidence:
+  `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 - CI entry: `.github/workflows/ci.yml`
 
 ## What It Records
@@ -79,6 +81,8 @@ runtime step trace
 standard Runtime Execution Evidence Bundles
     ->
 runtime evidence bundle index
+    +
+backend-equivalence evidence
     ->
 kernel ingress proof bundle
     ->

@@ -5,9 +5,10 @@ for the current bounded Universal Compute research slice.
 
 It turns the existing evidence chain into one explicit claim boundary: accepted
 Source-to-Intent research inputs can reach capability-selected trusted runtime
-execution for the MVP operation families, while production parsing, native
-performance, hardware certification, arbitrary backend execution, and vendor
-compiler replacement claims remain blocked.
+execution for the MVP operation families and preserve public outputs against a
+neutral `reference-cpu` baseline, while production parsing, native performance,
+hardware certification, arbitrary backend execution, and vendor compiler
+replacement claims remain blocked.
 
 ## Contract
 
@@ -58,6 +59,7 @@ The claim report records SHA-256 digests for:
 - Source-To-Intent Research Kernel Ingress Runtime Matrix
 - Source-To-Intent Research Kernel Ingress Runtime Step Trace
 - Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index
+- Source-To-Intent Research Kernel Ingress Backend Equivalence
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
 - Source-To-Intent Research Kernel Ingress Runtime Backend Alignment
 
@@ -69,6 +71,9 @@ Kernel Ingress Runtime Step Trace artifact path:
 
 Kernel Ingress Runtime Evidence Bundle Index artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
+
+Kernel Ingress Backend Equivalence artifact path:
+`examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 
 ## Acceptance Checks
 
@@ -82,6 +87,9 @@ The report passes only when:
 - the runtime step trace binds the combined `mvp_pipeline` operation path;
 - the runtime evidence bundle index binds standard execution evidence sections
   for the combined `mvp_pipeline` case;
+- backend equivalence preserves terminal output metadata between a
+  `reference-cpu` baseline and capability-selected trusted simulator
+  placement for the combined `mvp_pipeline` case;
 - the runtime coverage policy requires exact trace counts, including four
   steps for `mvp_pipeline`;
 - runtime backend alignment uses only trusted executor backends.
@@ -97,6 +105,12 @@ The accepted trusted runtime backends are:
 ```text
 linear-sim
 vector-sim
+```
+
+The baseline runtime backend for portability comparison is:
+
+```text
+reference-cpu
 ```
 
 ## Blocked Claims
@@ -134,6 +148,7 @@ kernel ingress evidence gate
 runtime matrix
 runtime step trace
 runtime evidence bundle index
+backend equivalence
 runtime coverage policy
 runtime backend alignment
     ->
