@@ -114,6 +114,13 @@ break-even evidence remains not established. It does not publish raw timings,
 run benchmarks, execute backend artifacts, or create a native performance
 claim.
 
+The same readiness example also verifies the deterministic Kernel Ingress
+golden at `tests/golden/frontend/source_to_intent_research_kernel_ingress.json`
+before marking `correctness_goldens`, `runtime_plan_goldens`, and
+`compiler_decision_report_goldens` present. The check requires each accepted
+case to expose the corresponding SHA-256 digest field while keeping raw source
+and raw tensor values out of the readiness output.
+
 All other performance-proof evidence remains required before readiness can
 pass.
 

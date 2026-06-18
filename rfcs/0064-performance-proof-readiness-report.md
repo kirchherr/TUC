@@ -94,8 +94,11 @@ The golden report intentionally remains blocked. It may mark workload-scope
 evidence present once a bounded workload-scope report exists. It may mark
 planner-overhead evidence present once a bounded planner-overhead report is
 contract-checked for an accepted graph and still keeps execution timing,
-break-even evidence, and native performance claims blocked. Native performance
-readiness still fails until every required evidence item is present.
+break-even evidence, and native performance claims blocked. It may mark
+correctness, runtime-plan, and compiler-decision golden evidence present once a
+generated accepted ingress report matches deterministic golden output and
+exposes the required digest fields. Native performance readiness still fails
+until every required evidence item is present.
 
 ## Consequences
 

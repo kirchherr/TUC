@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from examples.performance_proof_readiness import (
+    _has_kernel_ingress_golden_digest_evidence,
     _has_kernel_ingress_planner_overhead_evidence,
     _has_kernel_ingress_workload_scope_evidence,
     build_blocked_performance_proof_evidence,
@@ -33,11 +34,24 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
     assert len(report.checked_evidence) == len(PERFORMANCE_PROOF_REQUIRED_EVIDENCE)
     assert tuple(
         item.evidence_id for item in report.checked_evidence if item.present
-    ) == ("workload_scope", "planner_overhead_report")
+    ) == (
+        "workload_scope",
+        "correctness_goldens",
+        "planner_overhead_report",
+        "runtime_plan_goldens",
+        "compiler_decision_report_goldens",
+    )
     expected_missing = tuple(
         evidence_id
         for evidence_id in PERFORMANCE_PROOF_REQUIRED_EVIDENCE
-        if evidence_id not in {"workload_scope", "planner_overhead_report"}
+        if evidence_id
+        not in {
+            "workload_scope",
+            "correctness_goldens",
+            "planner_overhead_report",
+            "runtime_plan_goldens",
+            "compiler_decision_report_goldens",
+        }
     )
     assert tuple(issue.evidence_id for issue in report.issues) == expected_missing
 
@@ -45,6 +59,11 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
 def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None:
     assert _has_kernel_ingress_workload_scope_evidence()
     assert _has_kernel_ingress_planner_overhead_evidence()
+    assert _has_kernel_ingress_golden_digest_evidence("correctness_goldens")
+    assert _has_kernel_ingress_golden_digest_evidence("runtime_plan_goldens")
+    assert _has_kernel_ingress_golden_digest_evidence(
+        "compiler_decision_report_goldens"
+    )
 
 
 def test_performance_proof_readiness_dump_matches_golden() -> None:

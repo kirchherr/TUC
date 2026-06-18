@@ -3,10 +3,15 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 try:
     from examples.source_to_intent_research_kernel_ingress import (
         REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
+        assert_kernel_ingress_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress import (
+        build_report as build_kernel_ingress_report,
     )
     from examples.source_to_intent_research_kernel_ingress_workload_scope import (
         assert_kernel_ingress_workload_scope_report_contract,
@@ -17,6 +22,10 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress import (  # type: ignore[no-redef]
         REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
+        assert_kernel_ingress_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress import (
+        build_report as build_kernel_ingress_report,
     )
     from source_to_intent_research_kernel_ingress_workload_scope import (  # type: ignore[no-redef]
         assert_kernel_ingress_workload_scope_report_contract,
@@ -55,6 +64,14 @@ _KERNEL_INGRESS_MVP_TENSOR_SHAPES = {
     "b": (8, 4),
     "y": (4,),
 }
+_KERNEL_INGRESS_GOLDEN_PATH = Path(
+    "tests/golden/frontend/source_to_intent_research_kernel_ingress.json"
+)
+_KERNEL_INGRESS_DIGEST_EVIDENCE = {
+    "correctness_goldens": "reference_correctness_digest",
+    "runtime_plan_goldens": "runtime_plan_digest",
+    "compiler_decision_report_goldens": "compiler_decision_digest",
+}
 
 
 def build_blocked_performance_proof_evidence() -> (
@@ -70,6 +87,20 @@ def build_blocked_performance_proof_evidence() -> (
         PerformanceProofReadinessEvidence(
             evidence_id="planner_overhead_report",
             present=_has_kernel_ingress_planner_overhead_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="correctness_goldens",
+            present=_has_kernel_ingress_golden_digest_evidence("correctness_goldens"),
+        ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="runtime_plan_goldens",
+            present=_has_kernel_ingress_golden_digest_evidence("runtime_plan_goldens"),
+        ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="compiler_decision_report_goldens",
+            present=_has_kernel_ingress_golden_digest_evidence(
+                "compiler_decision_report_goldens"
+            ),
         ),
     )
 
@@ -126,6 +157,26 @@ def _has_kernel_ingress_planner_overhead_evidence() -> bool:
     phase_names = [phase["phase_name"] for phase in payload["phase_timings"]]
     if phase_names != list(PLANNER_OVERHEAD_PHASES):
         raise ValueError("kernel ingress planner-overhead phase order drift")
+    return True
+
+
+def _has_kernel_ingress_golden_digest_evidence(evidence_id: str) -> bool:
+    digest_key = _KERNEL_INGRESS_DIGEST_EVIDENCE[evidence_id]
+    report_text = build_kernel_ingress_report()
+    report = json.loads(report_text)
+    assert_kernel_ingress_report_contract(report)
+    golden_text = _KERNEL_INGRESS_GOLDEN_PATH.read_text(encoding="utf-8")
+    if report_text != golden_text:
+        raise ValueError("kernel ingress golden report drift")
+    cases = report["cases"]
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("kernel ingress golden cases missing")
+    for case in cases:
+        if not isinstance(case, dict):
+            raise ValueError("kernel ingress golden case drift")
+        digest = case.get(digest_key)
+        if not isinstance(digest, str) or not digest.startswith("sha256:"):
+            raise ValueError(f"kernel ingress {evidence_id} digest missing")
     return True
 
 

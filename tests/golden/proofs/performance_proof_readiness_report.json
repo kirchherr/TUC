@@ -40,7 +40,7 @@
     },
     {
       "evidence_id": "correctness_goldens",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "native_baseline_comparison",
@@ -60,11 +60,11 @@
     },
     {
       "evidence_id": "runtime_plan_goldens",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "compiler_decision_report_goldens",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "benchmark_report_schema",
@@ -105,10 +105,6 @@
       "message": "required performance proof boundary evidence is missing"
     },
     {
-      "evidence_id": "correctness_goldens",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
       "evidence_id": "native_baseline_comparison",
       "message": "required performance proof boundary evidence is missing"
     },
@@ -118,14 +114,6 @@
     },
     {
       "evidence_id": "break_even_workload_size",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
-      "evidence_id": "runtime_plan_goldens",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
-      "evidence_id": "compiler_decision_report_goldens",
       "message": "required performance proof boundary evidence is missing"
     },
     {

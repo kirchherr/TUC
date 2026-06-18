@@ -393,8 +393,9 @@ evidence for leaky-abstraction limits, planner overhead, break-even workload
 size, native baseline comparison, benchmark artifact digests, benchmark
 methodology, and executable-backend security.
 
-Current readiness evidence marks only Kernel-Ingress-derived workload scope and
-planner-overhead phase separation as present. The report still fails closed for
+Current readiness evidence marks only Kernel-Ingress-derived workload scope,
+correctness goldens, planner-overhead phase separation, runtime-plan goldens,
+and compiler-decision goldens as present. The report still fails closed for
 native performance claims.
 
 Key docs:
