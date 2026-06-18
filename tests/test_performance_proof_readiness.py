@@ -18,7 +18,7 @@ from tuc import (
 )
 
 
-def test_performance_proof_readiness_blocks_without_evidence() -> None:
+def test_performance_proof_readiness_blocks_with_only_workload_scope() -> None:
     report = build_performance_proof_readiness_report(
         "blocked-native-performance-proof-proposal",
         build_blocked_performance_proof_evidence(),
@@ -27,10 +27,15 @@ def test_performance_proof_readiness_blocks_without_evidence() -> None:
     assert not report.ready
     assert report.boundary_contract == PERFORMANCE_PROOF_BOUNDARY_CONTRACT
     assert len(report.checked_evidence) == len(PERFORMANCE_PROOF_REQUIRED_EVIDENCE)
-    assert all(not item.present for item in report.checked_evidence)
-    assert tuple(issue.evidence_id for issue in report.issues) == (
-        PERFORMANCE_PROOF_REQUIRED_EVIDENCE
+    assert tuple(
+        item.evidence_id for item in report.checked_evidence if item.present
+    ) == ("workload_scope",)
+    expected_missing = tuple(
+        evidence_id
+        for evidence_id in PERFORMANCE_PROOF_REQUIRED_EVIDENCE
+        if evidence_id != "workload_scope"
     )
+    assert tuple(issue.evidence_id for issue in report.issues) == expected_missing
 
 
 def test_performance_proof_readiness_dump_matches_golden() -> None:

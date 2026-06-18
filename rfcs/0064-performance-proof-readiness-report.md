@@ -90,8 +90,10 @@ The implementation adds:
 - `tests/test_performance_proof_readiness.py`
 - `tests/golden/proofs/performance_proof_readiness_report.json`
 
-The golden report intentionally remains blocked because no native performance
-proof proposal has supplied the required evidence.
+The golden report intentionally remains blocked. It may mark workload-scope
+evidence present once a bounded workload-scope report exists, but native
+performance readiness still fails until every required evidence item is
+present.
 
 ## Consequences
 

@@ -582,6 +582,11 @@ Deliverables:
   outputs and reference correctness across `base` and `alternate` declared
   tensor shape profiles without widening the parser or making performance
   claims.
+- Source-To-Intent Research Kernel Ingress Workload Scope
+  (`examples/source_to_intent_research_kernel_ingress_workload_scope.py`)
+  binding those proven shape profiles to diagnostic `workload_scope_report.v0`
+  data so future performance proposals have bounded operation-family and
+  shape-profile scopes while native performance claims remain blocked.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
   (`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`)
   requiring current accepted runtime cases, backend sequences, terminal outputs,

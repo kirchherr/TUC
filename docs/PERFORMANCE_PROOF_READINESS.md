@@ -83,6 +83,12 @@ existence of a bounded workload-scope contract. It does not satisfy benchmark
 methodology, native baseline comparison, benchmark artifacts, execution timing,
 or native performance parity.
 
+The current Kernel Ingress workload-scope binding is
+`examples/source_to_intent_research_kernel_ingress_workload_scope.py`. It can
+mark only `workload_scope` as present for readiness review by binding accepted
+Kernel Ingress shape-profile evidence to diagnostic workload scopes. All other
+performance-proof evidence remains required before readiness can pass.
+
 The current diagnostic benchmark methodology report schema is
 `schemas/benchmark_methodology_report.v0.schema.json`. It can satisfy only the
 existence of a bounded benchmark methodology contract. It does not run
@@ -234,8 +240,9 @@ tests/golden/proofs/performance_proof_readiness_report.json
 ```
 
 This makes the current roadmap state explicit: TUC has a performance proof
-boundary and a readiness report, but no native performance proof proposal has
-supplied the required evidence.
+boundary, a readiness report, and bounded Kernel Ingress workload-scope
+evidence. Native performance proof readiness still fails because the remaining
+required evidence has not been supplied.
 
 ## Still Blocked
 

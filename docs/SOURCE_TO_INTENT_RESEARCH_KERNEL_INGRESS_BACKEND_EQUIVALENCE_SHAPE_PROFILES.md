@@ -35,6 +35,8 @@ It does not add syntax, approve general Triton source ingestion, execute
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 - Capability Claim binding:
   `examples/source_to_intent_research_capability_claim.py`
+- Workload Scope binding:
+  `examples/source_to_intent_research_kernel_ingress_workload_scope.py`
 - CI entry: `.github/workflows/ci.yml`
 
 ## What It Records
@@ -94,3 +96,7 @@ The claim remains bounded. This is shape-profile portability evidence for the
 current trusted research simulator scope, not a native performance claim, not
 a production Triton compatibility claim, and not proof for arbitrary tensor
 rank or dynamic-shape programs.
+
+The Kernel Ingress Workload Scope binding can consume this report as source
+evidence for diagnostic `workload_scope_report.v0` data. That still does not
+turn the shape profiles into performance evidence.

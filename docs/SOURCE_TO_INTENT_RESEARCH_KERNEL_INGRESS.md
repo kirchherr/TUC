@@ -94,6 +94,10 @@ files, access devices, or discover plugins.
   [Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES.md)
 - Backend equivalence shape-profile example:
   `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
+- Workload scope companion:
+  [Source-To-Intent Research Kernel Ingress Workload Scope](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_WORKLOAD_SCOPE.md)
+- Workload scope example:
+  `examples/source_to_intent_research_kernel_ingress_workload_scope.py`
 
 ## Accepted Module Shape
 
@@ -187,6 +191,10 @@ The companion Kernel Ingress Backend Equivalence Shape Profiles report repeats
 that portability check across `base` and `alternate` declared tensor shape
 profiles, with reference-correctness digests for both baseline and candidate
 placements.
+
+The companion Kernel Ingress Workload Scope report binds those shape profiles
+to diagnostic workload-scope review data for future performance proposals while
+keeping native performance claims blocked.
 
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
 for the Kernel Ingress E2E, runtime-matrix, runtime-backend-equivalence,

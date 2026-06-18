@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_workload_scope_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Workload Scope Report v0",
+  "description": "Metadata-only binding from accepted Kernel Ingress shape-profile evidence to diagnostic workload-scope review data. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "binding_contract",
+    "blocked_claims",
+    "claim",
+    "claim_boundary",
+    "case_count",
+    "issues",
+    "native_performance_claim",
+    "operation_families",
+    "performance_claim_status",
+    "profile_count",
+    "profile_ids",
+    "schema_version",
+    "scope_count",
+    "scopes",
+    "source_boundary",
+    "source_evidence_contract",
+    "source_evidence_digest",
+    "source_schema_version",
+    "status",
+    "trusted_runtime_backends",
+    "workload_scope_artifact_status",
+    "workload_scope_digest",
+    "workload_scope_ready",
+    "workload_scope_schema_version"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "metadata_only_values_omitted"},
+    "binding_contract": {
+      "const": "source_to_intent_research_kernel_ingress_workload_scope.performance_boundary.v0"
+    },
+    "blocked_claims": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "native_performance_claim"},
+        {"const": "native_performance_parity"},
+        {"const": "dynamic_shape_performance_claim"},
+        {"const": "planner_benefit_claim"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "claim": {"const": "shape_profile_evidence_bounds_future_performance_workload_scope"},
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "case_count": {"const": 8},
+    "issues": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "native_performance_claim_blocked"}
+      ],
+      "items": false,
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "native_performance_claim": {"const": false},
+    "operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "elementwise"},
+        {"const": "matmul"},
+        {"const": "reduction"},
+        {"const": "softmax"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "performance_claim_status": {"const": "blocked"},
+    "profile_count": {"const": 2},
+    "profile_ids": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "base"},
+        {"const": "alternate"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_workload_scope_report.v0"
+    },
+    "scope_count": {"const": 20},
+    "scopes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/workload_scope"},
+      "minItems": 20,
+      "maxItems": 20
+    },
+    "source_boundary": {
+      "const": "kernel_ingress_shape_profile_evidence_to_workload_scope_review"
+    },
+    "source_evidence_contract": {
+      "const": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0"
+    },
+    "source_evidence_digest": {"$ref": "#/$defs/sha256_digest"},
+    "source_schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles_report.v0"
+    },
+    "status": {"const": "PASS"},
+    "trusted_runtime_backends": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "linear-sim"},
+        {"const": "reference-cpu"},
+        {"const": "vector-sim"}
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "workload_scope_artifact_status": {"const": "diagnostic_only"},
+    "workload_scope_digest": {"$ref": "#/$defs/sha256_digest"},
+    "workload_scope_ready": {"const": true},
+    "workload_scope_schema_version": {"const": "tuc.workload_scope_report.v0"}
+  },
+  "$defs": {
+    "operation_family": {
+      "enum": ["elementwise", "matmul", "reduction", "softmax"]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "workload_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "correctness_reference_id",
+        "dtype_policy_id",
+        "operation_family",
+        "problem_size_max",
+        "problem_size_min",
+        "scope_id",
+        "shape_profile_id"
+      ],
+      "properties": {
+        "correctness_reference_id": {
+          "const": "kernel_ingress_reference_correctness"
+        },
+        "dtype_policy_id": {"const": "float64_reference"},
+        "operation_family": {"$ref": "#/$defs/operation_family"},
+        "problem_size_max": {"$ref": "#/$defs/problem_size"},
+        "problem_size_min": {"$ref": "#/$defs/problem_size"},
+        "scope_id": {"$ref": "#/$defs/report_text"},
+        "shape_profile_id": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "problem_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000000000
+    }
+  }
+}

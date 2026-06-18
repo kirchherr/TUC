@@ -794,6 +794,15 @@ Current slice:
   `alternate` declared tensor shape profiles, reference-correctness digests
   for both placements, and binding through the Kernel Ingress Proof Bundle,
   focused Evidence Gate, and Capability Claim.
+- Source-To-Intent Research Kernel Ingress Workload Scope at
+  `examples/source_to_intent_research_kernel_ingress_workload_scope.py`,
+  with schema at
+  `schemas/source_to_intent_research_kernel_ingress_workload_scope_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress_workload_scope.json`,
+  a digest-bound bridge from Kernel Ingress shape-profile evidence to
+  diagnostic `workload_scope_report.v0` data, 20 bounded workload scopes, and
+  native performance claims still blocked.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at

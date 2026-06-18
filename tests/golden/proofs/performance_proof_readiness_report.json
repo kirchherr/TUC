@@ -36,7 +36,7 @@
     },
     {
       "evidence_id": "workload_scope",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "correctness_goldens",
@@ -102,10 +102,6 @@
     },
     {
       "evidence_id": "versioned_toolchain_environment",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
-      "evidence_id": "workload_scope",
       "message": "required performance proof boundary evidence is missing"
     },
     {

@@ -18,6 +18,10 @@ raw timing samples, or claim native performance parity.
 - API: `build_workload_scope_report(proposal_name, scopes=())`
 - Dump API: `dump_workload_scope_report(report)`
 - Example: `examples/workload_scope_report.py`
+- Kernel Ingress binding example:
+  `examples/source_to_intent_research_kernel_ingress_workload_scope.py`
+- Kernel Ingress binding docs:
+  `docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_WORKLOAD_SCOPE.md`
 - Tests: `tests/test_workload_scope_report.py`
 - Schema tests: `tests/test_workload_scope_schema.py`
 
@@ -60,6 +64,12 @@ policies, problem-size bounds, and correctness references.
 
 `workload_scope_ready` means only that at least one bounded workload scope is
 present. Native performance claims remain blocked in v0.
+
+The current Source-To-Intent Research Kernel Ingress Workload Scope binding
+derives 20 diagnostic workload scopes from the accepted Kernel Ingress
+shape-profile evidence. It binds the source evidence digest and the standard
+`workload_scope_report.v0` digest without running benchmarks or loading
+benchmark artifacts.
 
 ## Still Blocked
 

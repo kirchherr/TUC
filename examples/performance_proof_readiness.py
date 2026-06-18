@@ -12,7 +12,12 @@ def build_blocked_performance_proof_evidence() -> (
 ):
     """Return the current intentionally blocked performance-proof evidence set."""
 
-    return ()
+    return (
+        PerformanceProofReadinessEvidence(
+            evidence_id="workload_scope",
+            present=True,
+        ),
+    )
 
 
 def main() -> None:
