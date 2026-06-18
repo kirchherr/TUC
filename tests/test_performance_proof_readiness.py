@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from examples.performance_proof_readiness import (
+    _has_benchmark_report_schema_evidence,
     _has_kernel_ingress_golden_digest_evidence,
     _has_kernel_ingress_planner_overhead_evidence,
     _has_kernel_ingress_workload_scope_evidence,
@@ -40,6 +41,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         "planner_overhead_report",
         "runtime_plan_goldens",
         "compiler_decision_report_goldens",
+        "benchmark_report_schema",
     )
     expected_missing = tuple(
         evidence_id
@@ -51,6 +53,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
             "planner_overhead_report",
             "runtime_plan_goldens",
             "compiler_decision_report_goldens",
+            "benchmark_report_schema",
         }
     )
     assert tuple(issue.evidence_id for issue in report.issues) == expected_missing
@@ -64,6 +67,7 @@ def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None
     assert _has_kernel_ingress_golden_digest_evidence(
         "compiler_decision_report_goldens"
     )
+    assert _has_benchmark_report_schema_evidence()
 
 
 def test_performance_proof_readiness_dump_matches_golden() -> None:

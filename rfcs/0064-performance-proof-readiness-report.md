@@ -97,8 +97,10 @@ contract-checked for an accepted graph and still keeps execution timing,
 break-even evidence, and native performance claims blocked. It may mark
 correctness, runtime-plan, and compiler-decision golden evidence present once a
 generated accepted ingress report matches deterministic golden output and
-exposes the required digest fields. Native performance readiness still fails
-until every required evidence item is present.
+exposes the required digest fields. It may mark benchmark-report schema
+evidence present once the schema is fail-closed, diagnostic-only, and native
+claim blocked. Native performance readiness still fails until every required
+evidence item is present.
 
 ## Consequences
 

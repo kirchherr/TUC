@@ -68,7 +68,7 @@
     },
     {
       "evidence_id": "benchmark_report_schema",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "benchmark_report_artifacts",
@@ -114,10 +114,6 @@
     },
     {
       "evidence_id": "break_even_workload_size",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
-      "evidence_id": "benchmark_report_schema",
       "message": "required performance proof boundary evidence is missing"
     },
     {

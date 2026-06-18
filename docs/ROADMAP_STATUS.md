@@ -812,6 +812,10 @@ Current slice:
   `runtime_plan_goldens`, and `compiler_decision_report_goldens` from the
   deterministic Kernel Ingress golden, requiring the generated report to match
   the golden and each accepted case to expose the matching SHA-256 digest field.
+- Performance Proof Readiness now derives `benchmark_report_schema` from the
+  baseline benchmark report schema contract, requiring the schema to remain
+  fail-closed, diagnostic-only, native-claim-blocked, and bound to the
+  performance proof boundary while benchmark artifacts remain missing.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at
@@ -941,8 +945,9 @@ Current slice:
 - Performance Proof Readiness report with deterministic blocked golden evidence
   for future native performance proposals, currently marking only
   `workload_scope`, `correctness_goldens`, `planner_overhead_report`,
-  `runtime_plan_goldens`, and `compiler_decision_report_goldens` present from
-  accepted Kernel Ingress evidence.
+  `runtime_plan_goldens`, `compiler_decision_report_goldens`, and
+  `benchmark_report_schema` present from accepted Kernel Ingress and
+  fail-closed schema evidence.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
 - HAC-IR semantic charter for compute intent, compiler facts, planning

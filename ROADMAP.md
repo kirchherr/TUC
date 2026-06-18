@@ -282,6 +282,10 @@ Completed evidence:
   goldens, runtime-plan goldens, and compiler-decision report goldens present
   only when the deterministic Kernel Ingress golden matches the generated
   report and every accepted case exposes the corresponding SHA-256 digest.
+- Performance-readiness evidence now marks `benchmark_report_schema` present
+  only when the baseline benchmark report schema is fail-closed,
+  diagnostic-only, native-claim-blocked, and bound to the performance proof
+  boundary; benchmark artifacts remain separate and blocked.
 - Benchmark-methodology reports define measurement clocks, iteration policies,
   statistic policy, isolation, outlier handling, and reproducibility policy
   before benchmark numbers can become evidence.
@@ -601,6 +605,9 @@ Deliverables:
   instead of hand-coded booleans, and binds correctness, runtime-plan, and
   compiler-decision golden evidence to the deterministic Kernel Ingress golden
   report while all native performance claims remain blocked.
+- Performance Proof Readiness now treats the baseline benchmark report schema
+  as present only after a fail-closed schema contract check; benchmark report
+  artifacts remain missing until separate bounded artifacts exist.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
   (`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`)
   requiring current accepted runtime cases, backend sequences, terminal outputs,

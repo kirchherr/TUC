@@ -42,6 +42,10 @@ from tuc import (
 )
 from tuc.backends import LinearAlgebraSimulatorBackend, VectorSimulatorBackend
 from tuc.benchmarks import (
+    BENCHMARK_REPORT_ARTIFACT_STATUS,
+    BENCHMARK_REPORT_CLAIM_BOUNDARY,
+    BENCHMARK_REPORT_SCHEMA_VERSION,
+    BENCHMARK_SUITE_VERSION,
     PLANNER_OVERHEAD_ARTIFACT_STATUS,
     PLANNER_OVERHEAD_BREAK_EVEN_STATUS,
     PLANNER_OVERHEAD_EXECUTION_TIME_STATUS,
@@ -66,6 +70,9 @@ _KERNEL_INGRESS_MVP_TENSOR_SHAPES = {
 }
 _KERNEL_INGRESS_GOLDEN_PATH = Path(
     "tests/golden/frontend/source_to_intent_research_kernel_ingress.json"
+)
+_BASELINE_BENCHMARK_SCHEMA_PATH = Path(
+    "schemas/baseline_benchmark_report.v0.schema.json"
 )
 _KERNEL_INGRESS_DIGEST_EVIDENCE = {
     "correctness_goldens": "reference_correctness_digest",
@@ -101,6 +108,10 @@ def build_blocked_performance_proof_evidence() -> (
             present=_has_kernel_ingress_golden_digest_evidence(
                 "compiler_decision_report_goldens"
             ),
+        ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="benchmark_report_schema",
+            present=_has_benchmark_report_schema_evidence(),
         ),
     )
 
@@ -177,6 +188,42 @@ def _has_kernel_ingress_golden_digest_evidence(evidence_id: str) -> bool:
         digest = case.get(digest_key)
         if not isinstance(digest, str) or not digest.startswith("sha256:"):
             raise ValueError(f"kernel ingress {evidence_id} digest missing")
+    return True
+
+
+def _has_benchmark_report_schema_evidence() -> bool:
+    schema = json.loads(_BASELINE_BENCHMARK_SCHEMA_PATH.read_text(encoding="utf-8"))
+    if schema.get("$id") != (
+        "https://github.com/kirchherr/TUC/"
+        "schemas/baseline_benchmark_report.v0.schema.json"
+    ):
+        raise ValueError("benchmark report schema id drift")
+    if schema.get("additionalProperties") is not False:
+        raise ValueError("benchmark report schema must fail closed")
+    properties = schema.get("properties")
+    if not isinstance(properties, dict):
+        raise ValueError("benchmark report schema properties drift")
+    expected_constants = {
+        "artifact_status": BENCHMARK_REPORT_ARTIFACT_STATUS,
+        "claim_boundary": BENCHMARK_REPORT_CLAIM_BOUNDARY,
+        "native_performance_claim": False,
+        "schema_version": BENCHMARK_REPORT_SCHEMA_VERSION,
+        "suite_version": BENCHMARK_SUITE_VERSION,
+    }
+    for key, expected in expected_constants.items():
+        item = properties.get(key)
+        if not isinstance(item, dict) or item.get("const") != expected:
+            raise ValueError(f"benchmark report schema {key} drift")
+    forbidden = {
+        "backend_artifact",
+        "device_identifier",
+        "generated_code",
+        "host_path",
+        "plugin_entrypoint",
+        "raw_timing_samples",
+    }
+    if any(fragment in json.dumps(schema, sort_keys=True) for fragment in forbidden):
+        raise ValueError("benchmark report schema exposes forbidden evidence")
     return True
 
 

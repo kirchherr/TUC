@@ -121,6 +121,14 @@ before marking `correctness_goldens`, `runtime_plan_goldens`, and
 case to expose the corresponding SHA-256 digest field while keeping raw source
 and raw tensor values out of the readiness output.
 
+The readiness example verifies
+`schemas/baseline_benchmark_report.v0.schema.json` before marking
+`benchmark_report_schema` present. The schema must remain fail-closed,
+diagnostic-only, bound to `performance_proof_boundary.blocking.v0`, and must
+forbid native performance claims. This does not mark
+`benchmark_report_artifacts` present and does not accept measured benchmark
+results as proof evidence.
+
 All other performance-proof evidence remains required before readiness can
 pass.
 

@@ -395,8 +395,8 @@ methodology, and executable-backend security.
 
 Current readiness evidence marks only Kernel-Ingress-derived workload scope,
 correctness goldens, planner-overhead phase separation, runtime-plan goldens,
-and compiler-decision goldens as present. The report still fails closed for
-native performance claims.
+compiler-decision goldens, and the fail-closed baseline benchmark report schema
+as present. The report still fails closed for native performance claims.
 
 Key docs:
 
