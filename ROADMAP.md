@@ -576,6 +576,12 @@ Deliverables:
   proving accepted Kernel Ingress Source Intent preserves public outputs under
   a neutral `reference-cpu` baseline and capability-selected trusted
   `linear-sim`/`vector-sim` simulator placements.
+- Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles
+  (`examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`)
+  proving the same accepted Kernel Ingress Source Intent preserves public
+  outputs and reference correctness across `base` and `alternate` declared
+  tensor shape profiles without widening the parser or making performance
+  claims.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
   (`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`)
   requiring current accepted runtime cases, backend sequences, terminal outputs,

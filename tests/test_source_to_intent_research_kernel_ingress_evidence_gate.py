@@ -31,6 +31,7 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'runtime_step_trace = "passed"' in report
     assert 'runtime_evidence_bundle_index = "passed"' in report
     assert 'runtime_backend_equivalence = "passed"' in report
+    assert 'runtime_backend_equivalence_shape_profiles = "passed"' in report
     assert 'runtime_coverage_policy = "passed"' in report
     assert 'runtime_backend_alignment = "passed"' in report
     assert 'boundary_budget = "passed"' in report
@@ -52,6 +53,9 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'runtime_evidence_bundle_cases = "4"' in report
     assert 'runtime_backend_equivalence_cases = "4"' in report
     assert 'backend_equivalence_comparisons = "4"' in report
+    assert 'runtime_backend_equivalence_shape_profile_cases = "8"' in report
+    assert 'backend_equivalence_shape_profile_comparisons = "8"' in report
+    assert 'shape_profile_ids = "base,alternate"' in report
     assert (
         'baseline_backend_sequences = "reference-cpu->reference-cpu,'
         'reference-cpu->reference-cpu->reference-cpu->reference-cpu"'
@@ -87,6 +91,7 @@ def test_kernel_ingress_evidence_gate_example_runs() -> None:
     assert "runtime_step_trace_digest" in completed.stdout
     assert "runtime_evidence_bundle_index_digest" in completed.stdout
     assert "runtime_backend_equivalence_digest" in completed.stdout
+    assert "runtime_backend_equivalence_shape_profiles_digest" in completed.stdout
     assert "runtime_coverage_policy_digest" in completed.stdout
     assert "runtime_backend_alignment_digest" in completed.stdout
     assert "rejection_coverage_digest" in completed.stdout
@@ -143,6 +148,16 @@ def test_kernel_ingress_evidence_gate_rejects_tampered_backend_equivalence() -> 
         match="runtime backend equivalence binding missing",
     ):
         build_gate_report(runtime_backend_equivalence_text='{"status": "PASS"}\n')
+
+
+def test_kernel_ingress_evidence_gate_rejects_tampered_shape_profiles() -> None:
+    with pytest.raises(
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        match="runtime backend equivalence shape profiles binding missing",
+    ):
+        build_gate_report(
+            runtime_backend_equivalence_shape_profiles_text='{"status": "PASS"}\n'
+        )
 
 
 def test_kernel_ingress_evidence_gate_rejects_tampered_runtime_coverage_policy() -> None:
@@ -227,6 +242,10 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
             "docs/"
             "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX.md"
         ),
+        Path(
+            "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES.md"
+        ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
         Path("rfcs/0165-source-to-intent-research-kernel-ingress.md"),
         Path("rfcs/0169-source-to-intent-research-kernel-ingress-proof-bundle.md"),
@@ -239,6 +258,10 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
         Path(
             "rfcs/"
             "0181-source-to-intent-research-kernel-ingress-runtime-evidence-bundle-index.md"
+        ),
+        Path(
+            "rfcs/"
+            "0183-source-to-intent-research-kernel-ingress-backend-equivalence-shape-profiles.md"
         ),
         Path(
             "rfcs/"

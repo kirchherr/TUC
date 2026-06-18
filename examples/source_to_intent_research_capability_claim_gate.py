@@ -93,6 +93,7 @@ def assert_capability_claim_gate_report_contract(text: object) -> None:
         '  accepted_kernel_count = "4"',
         '  runtime_case_count = "4"',
         '  backend_equivalence_case_count = "4"',
+        '  backend_equivalence_shape_profile_case_count = "8"',
         '  baseline_runtime_backend = "reference-cpu"',
         (
             '  combined_pipeline = "'
@@ -100,7 +101,7 @@ def assert_capability_claim_gate_report_contract(text: object) -> None:
             + '"'
         ),
         '  trusted_runtime_backends = "linear-sim,vector-sim"',
-        '  evidence_count = "10"',
+        '  evidence_count = "11"',
         (
             '  supported_claims = "'
             + ",".join(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_SUPPORTED_CLAIMS)
@@ -175,6 +176,10 @@ def _render_gate_report(
         (
             "  backend_equivalence_case_count = "
             f'"{claim["backend_equivalence_case_count"]}"'
+        ),
+        (
+            "  backend_equivalence_shape_profile_case_count = "
+            f'"{claim["backend_equivalence_shape_profile_case_count"]}"'
         ),
         f'  baseline_runtime_backend = "{claim["baseline_runtime_backend"]}"',
         (

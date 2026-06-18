@@ -13,6 +13,7 @@
   - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
   - `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
+  - `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
   - `schemas/source_to_intent_research_capability_claim_report.v0.schema.json`
@@ -24,7 +25,8 @@
 TUC now has a practical Kernel Ingress research slice that carries the current
 MVP operation families through one accepted module-shaped `mvp_pipeline` kernel
 and binds it to runtime matrix, coverage policy, backend alignment, proof
-bundle, evidence gate, and backend-equivalence artifacts.
+bundle, evidence gate, backend-equivalence, and backend-equivalence
+shape-profile artifacts.
 
 That is useful, but reviewers still need one explicit answer to the strategic
 question: what does this prove, and what does it not prove?
@@ -38,8 +40,9 @@ The report:
 - emits a digest-only JSON claim artifact;
 - validates the global proof bundle and global evidence gate;
 - validates the focused Kernel Ingress proof bundle and evidence gate;
-- validates runtime matrix, runtime backend equivalence, runtime coverage
-  policy, and runtime backend alignment;
+- validates runtime matrix, runtime backend equivalence, runtime backend
+  equivalence shape profiles, runtime coverage policy, and runtime backend
+  alignment;
 - records the supported claim
   `bounded_universal_compute_research_slice`;
 - records the scope
@@ -49,6 +52,8 @@ The report:
 - records trusted runtime backends `linear-sim` and `vector-sim`;
 - records `reference-cpu` as the neutral baseline runtime backend for current
   portability comparison;
+- records eight bounded backend-equivalence shape-profile cases across `base`
+  and `alternate` declared tensor shape profiles;
 - keeps production parser, general Triton ingestion, native performance,
   hardware certification, arbitrary backend execution, and vendor compiler
   replacement claims blocked.

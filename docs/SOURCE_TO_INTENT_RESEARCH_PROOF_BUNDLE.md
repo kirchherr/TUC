@@ -60,6 +60,11 @@ Kernel Ingress Backend Equivalence companion path, included through the Kernel
 Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
 `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 
+Kernel Ingress Backend Equivalence Shape Profiles companion path, included
+through the Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence
+Gate:
+`examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
+
 Kernel Ingress Runtime Coverage Policy companion path, included through the
 Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
 `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
@@ -136,6 +141,7 @@ kernel ingress proof bundle
   includes kernel ingress runtime step trace
   includes kernel ingress runtime evidence bundle index
   includes kernel ingress backend equivalence
+  includes kernel ingress backend equivalence shape profiles
   includes kernel ingress runtime coverage policy
   includes kernel ingress runtime backend alignment
   includes kernel ingress boundary budget

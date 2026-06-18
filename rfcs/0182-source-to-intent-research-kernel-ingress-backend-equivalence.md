@@ -23,6 +23,7 @@ placement families without changing frontend intent.
 Add Source-To-Intent Research Kernel Ingress Backend Equivalence v0:
 
 - `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
+- `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
 - `schemas/source_to_intent_research_kernel_ingress_backend_equivalence_report.v0.schema.json`
 - `tests/test_source_to_intent_research_kernel_ingress_backend_equivalence.py`
 - `tests/golden/frontend/source_to_intent_research_kernel_ingress_backend_equivalence.json`
@@ -39,6 +40,10 @@ It executes both plans through the trusted Runtime Executor and validates the
 terminal output metadata with the existing
 `runtime_backend_equivalence.data_only.v0` contract. The emitted report stores
 only summary metadata and digests.
+
+RFC 0183 extends this single-shape backend-equivalence proof with bounded
+`base` and `alternate` declared tensor shape profiles while keeping the same
+source-free runtime boundary.
 
 ## Security Boundary
 

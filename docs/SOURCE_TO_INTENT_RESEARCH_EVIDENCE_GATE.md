@@ -46,6 +46,10 @@ text as compiler input.
   `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 - Kernel ingress backend equivalence docs:
   [Source-To-Intent Research Kernel Ingress Backend Equivalence](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE.md)
+- Kernel ingress backend equivalence shape profiles example:
+  `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
+- Kernel ingress backend equivalence shape profiles docs:
+  [Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES.md)
 - Kernel ingress runtime coverage policy example:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Kernel ingress runtime coverage policy docs:
@@ -106,10 +110,10 @@ The gate binds:
 
 Kernel Ingress Runtime Matrix, Kernel Ingress Runtime Step Trace, Kernel
 Ingress Runtime Evidence Bundle Index, Kernel Ingress Backend Equivalence,
-Kernel Ingress Runtime Coverage Policy, Kernel Ingress Runtime Backend
-Alignment, Kernel Ingress Boundary Budget, and Kernel Ingress Rejection
-Coverage are bound through the Kernel Ingress Proof Bundle and focused Kernel
-Ingress Evidence Gate.
+Kernel Ingress Backend Equivalence Shape Profiles, Kernel Ingress Runtime
+Coverage Policy, Kernel Ingress Runtime Backend Alignment, Kernel Ingress
+Boundary Budget, and Kernel Ingress Rejection Coverage are bound through the
+Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate.
 
 Each input artifact is hashed with SHA-256 and the digest is emitted in the
 gate output.
@@ -159,14 +163,15 @@ The gate passes only when:
   accepted.
 - Research Kernel Ingress Proof Bundle validates the Kernel Ingress E2E,
   runtime-matrix, runtime-step-trace, runtime-evidence-bundle-index,
-  runtime-backend-equivalence, runtime-coverage-policy,
-  runtime-backend-alignment, boundary-budget, rejection-coverage, diagnostics,
-  conformance, and idiom-alignment artifacts before its digest is accepted.
+  runtime-backend-equivalence, runtime-backend-equivalence-shape-profiles,
+  runtime-coverage-policy, runtime-backend-alignment, boundary-budget,
+  rejection-coverage, diagnostics, conformance, and idiom-alignment artifacts
+  before its digest is accepted.
 - Research Kernel Ingress Evidence Gate validates the focused Kernel Ingress
   proof slice, Runtime Matrix, Runtime Step Trace, Runtime Evidence Bundle
-  Index, Backend Equivalence, Runtime Coverage Policy, Runtime Backend
-  Alignment, and exact Proof Bundle digest bindings before its digest is
-  accepted.
+  Index, Backend Equivalence, Backend Equivalence Shape Profiles, Runtime
+  Coverage Policy, Runtime Backend Alignment, and exact Proof Bundle digest
+  bindings before its digest is accepted.
 - Diagnostics covers the whitelisted rejected source cases.
 - Parser status remains `research_explicit_only`.
 - Default parser status remains `default_parser_blocked`.
@@ -219,6 +224,7 @@ Research Kernel Ingress Proof Bundle
     includes Research Kernel Ingress Runtime Step Trace
     includes Research Kernel Ingress Runtime Evidence Bundle Index
     includes Research Kernel Ingress Backend Equivalence
+    includes Research Kernel Ingress Backend Equivalence Shape Profiles
     includes Research Kernel Ingress Runtime Coverage Policy
     includes Research Kernel Ingress Runtime Backend Alignment
     includes Research Kernel Ingress Boundary Budget
@@ -236,7 +242,8 @@ Alignment evidence, Kernel Ingress Boundary Budget evidence, Kernel Ingress
 Rejection Coverage evidence, Kernel Ingress Runtime Matrix evidence, Kernel
 Ingress Runtime Step Trace evidence, Kernel Ingress Runtime Evidence Bundle
 Index evidence, Kernel Ingress Backend Equivalence evidence, Kernel Ingress
-Runtime Coverage Policy evidence, Kernel Ingress Runtime Backend Alignment
-evidence, Kernel Ingress Proof Bundle evidence, Kernel Ingress Evidence Gate
-evidence, this gate, and the Research Capability Claim before the expanded
-syntax can count as accepted research parser scope.
+Backend Equivalence Shape Profiles evidence, Kernel Ingress Runtime Coverage
+Policy evidence, Kernel Ingress Runtime Backend Alignment evidence, Kernel
+Ingress Proof Bundle evidence, Kernel Ingress Evidence Gate evidence, this
+gate, and the Research Capability Claim before the expanded syntax can count
+as accepted research parser scope.

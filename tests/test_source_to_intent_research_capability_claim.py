@@ -39,6 +39,7 @@ def test_source_to_intent_research_capability_claim_report_shape() -> None:
     assert report["accepted_kernel_count"] == 4
     assert report["runtime_case_count"] == 4
     assert report["backend_equivalence_case_count"] == 4
+    assert report["backend_equivalence_shape_profile_case_count"] == 8
     assert report["baseline_runtime_backend"] == "reference-cpu"
     assert report["combined_pipeline_kernel"] == "mvp_pipeline"
     assert report["combined_pipeline_operation_path"] == [
@@ -65,6 +66,7 @@ def test_source_to_intent_research_capability_claim_report_shape() -> None:
         "source_to_intent_research_kernel_ingress_runtime_step_trace",
         "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
         "source_to_intent_research_kernel_ingress_backend_equivalence",
+        "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
         "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
         "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
     ]
@@ -150,8 +152,11 @@ def test_source_to_intent_research_capability_claim_schema_declares_contract() -
     assert schema["properties"]["accepted_kernel_count"]["const"] == 4
     assert schema["properties"]["runtime_case_count"]["const"] == 4
     assert schema["properties"]["backend_equivalence_case_count"]["const"] == 4
+    assert schema["properties"]["backend_equivalence_shape_profile_case_count"][
+        "const"
+    ] == 8
     assert schema["properties"]["baseline_runtime_backend"]["const"] == "reference-cpu"
-    assert schema["properties"]["evidence_count"]["const"] == 10
+    assert schema["properties"]["evidence_count"]["const"] == 11
     assert schema["$defs"]["evidence"]["additionalProperties"] is False
     assert "blocked_claims" in schema["required"]
 
@@ -182,6 +187,10 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
             "docs/"
             "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE.md"
         ),
+        Path(
+            "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES.md"
+        ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
         Path("rfcs/0178-source-to-intent-research-capability-claim.md"),
         Path(
@@ -195,6 +204,10 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
         Path(
             "rfcs/"
             "0182-source-to-intent-research-kernel-ingress-backend-equivalence.md"
+        ),
+        Path(
+            "rfcs/"
+            "0183-source-to-intent-research-kernel-ingress-backend-equivalence-shape-profiles.md"
         ),
     ):
         assert example_path in path.read_text(encoding="utf-8")

@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles Report v0",
+  "description": "Metadata-only portability evidence comparing accepted Kernel Ingress source-intent cases under reference-cpu baseline and capability-selected trusted simulator placements across bounded tensor shape profiles.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "baseline_backend_sequences",
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "candidate_backend_sequences",
+    "comparison_count",
+    "default_parser_status",
+    "equivalence_claim",
+    "equivalence_contract",
+    "executor_contract",
+    "frontend_ingress_contract",
+    "kernel_ingress_backend_equivalence_contract",
+    "kernel_ingress_backend_equivalence_digest",
+    "kernel_ingress_backend_equivalence_shape_profiles_contract",
+    "kernel_ingress_digest",
+    "parser_status",
+    "profile_count",
+    "profile_ids",
+    "raw_source_policy",
+    "raw_value_policy",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "trusted_executor_registry",
+    "trusted_runtime_backends"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "metadata_only_values_omitted"},
+    "baseline_backend_sequences": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "reference-cpu->reference-cpu"},
+        {"const": "reference-cpu->reference-cpu->reference-cpu->reference-cpu"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "blocked_execution_surfaces": {"$ref": "#/$defs/blocked_execution_surfaces"},
+    "case_count": {"const": 8},
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case"},
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "candidate_backend_sequences": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "linear-sim->vector-sim"},
+        {"const": "vector-sim->vector-sim"},
+        {"const": "linear-sim->vector-sim->vector-sim->vector-sim"}
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "comparison_count": {"const": 8},
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "equivalence_claim": {
+      "const": "same_source_intent_preserves_public_outputs_across_backend_placements_and_shape_profiles"
+    },
+    "equivalence_contract": {"const": "runtime_backend_equivalence.data_only.v0"},
+    "executor_contract": {"const": "runtime_executor.trusted_backend.v0"},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "kernel_ingress_backend_equivalence_contract": {
+      "const": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0"
+    },
+    "kernel_ingress_backend_equivalence_digest": {"$ref": "#/$defs/sha256_digest"},
+    "kernel_ingress_backend_equivalence_shape_profiles_contract": {
+      "const": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0"
+    },
+    "kernel_ingress_digest": {"$ref": "#/$defs/sha256_digest"},
+    "parser_status": {"const": "research_explicit_only"},
+    "profile_count": {"const": 2},
+    "profile_ids": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "base"},
+        {"const": "alternate"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles_report.v0"
+    },
+    "source_boundary": {
+      "const": "kernel_ingress_source_intent_shape_profiles_to_reference_cpu_and_trusted_simulators"
+    },
+    "status": {"const": "PASS"},
+    "trusted_executor_registry": {"const": "trusted_runtime_executor_registry.v0"},
+    "trusted_runtime_backends": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "linear-sim"},
+        {"const": "reference-cpu"},
+        {"const": "vector-sim"}
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  },
+  "$defs": {
+    "backend": {"enum": ["linear-sim", "reference-cpu", "vector-sim"]},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "baseline_backend_sequence",
+        "baseline_reference_correctness_digest",
+        "baseline_run_id",
+        "baseline_trace_step_count",
+        "candidate_backend_sequence",
+        "candidate_reference_correctness_digest",
+        "candidate_run_id",
+        "candidate_trace_step_count",
+        "case_id",
+        "comparison_count",
+        "comparison_metadata_digest",
+        "declared_tensor_shapes",
+        "equivalence_report_digest",
+        "graph_name",
+        "kernel_name",
+        "operation_families",
+        "passed",
+        "profile_case_id",
+        "profile_id",
+        "raw_value_policy",
+        "run_count",
+        "status",
+        "terminal_outputs",
+        "tensor_shape_digest"
+      ],
+      "properties": {
+        "baseline_backend_sequence": {
+          "type": "array",
+          "items": {"const": "reference-cpu"},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "baseline_reference_correctness_digest": {"$ref": "#/$defs/sha256_digest"},
+        "baseline_run_id": {"const": "reference_cpu"},
+        "baseline_trace_step_count": {"enum": [2, 4]},
+        "candidate_backend_sequence": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/backend"},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "candidate_reference_correctness_digest": {"$ref": "#/$defs/sha256_digest"},
+        "candidate_run_id": {"const": "capability_selected_simulators"},
+        "candidate_trace_step_count": {"enum": [2, 4]},
+        "case_id": {
+          "enum": [
+            "research_module_matmul_elementwise",
+            "research_module_softmax_reduction",
+            "research_module_matmul_reduction",
+            "research_module_mvp_pipeline"
+          ]
+        },
+        "comparison_count": {"const": 1},
+        "comparison_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "declared_tensor_shapes": {"$ref": "#/$defs/tensor_shapes"},
+        "equivalence_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "graph_name": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction",
+            "research_matmul_reduction",
+            "research_mvp_pipeline"
+          ]
+        },
+        "kernel_name": {
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction",
+            "matmul_reduction",
+            "mvp_pipeline"
+          ]
+        },
+        "operation_families": {
+          "type": "array",
+          "items": {"enum": ["elementwise", "matmul", "reduction", "softmax"]},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "passed": {"const": true},
+        "profile_case_id": {
+          "pattern": "^research_module_(matmul_elementwise|softmax_reduction|matmul_reduction|mvp_pipeline):(base|alternate)$",
+          "type": "string"
+        },
+        "profile_id": {"enum": ["base", "alternate"]},
+        "raw_value_policy": {"const": "omitted_by_policy"},
+        "run_count": {"const": 2},
+        "status": {"const": "backend_equivalence_shape_profile_bound"},
+        "terminal_outputs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "tensor_shape_digest": {"$ref": "#/$defs/sha256_digest"}
+      }
+    },
+    "dimension": {"type": "integer", "minimum": 1, "maximum": 1024},
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "shape": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/dimension"},
+      "minItems": 1,
+      "maxItems": 2
+    },
+    "tensor_shapes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "a": {"$ref": "#/$defs/shape"},
+        "b": {"$ref": "#/$defs/shape"},
+        "x": {"$ref": "#/$defs/shape"},
+        "y": {"$ref": "#/$defs/shape"}
+      },
+      "required": ["y"],
+      "anyOf": [
+        {"required": ["a", "b", "y"]},
+        {"required": ["x", "y"]}
+      ]
+    }
+  }
+}

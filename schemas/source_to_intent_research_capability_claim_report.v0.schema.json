@@ -16,6 +16,7 @@
     "claim_scope",
     "claim_status",
     "backend_equivalence_case_count",
+    "backend_equivalence_shape_profile_case_count",
     "baseline_runtime_backend",
     "combined_pipeline_kernel",
     "combined_pipeline_operation_path",
@@ -60,6 +61,7 @@
     },
     "claim_status": {"const": "supported_for_current_research_scope"},
     "backend_equivalence_case_count": {"const": 4},
+    "backend_equivalence_shape_profile_case_count": {"const": 8},
     "baseline_runtime_backend": {"const": "reference-cpu"},
     "combined_pipeline_kernel": {"const": "mvp_pipeline"},
     "combined_pipeline_operation_path": {
@@ -78,10 +80,10 @@
     "evidence": {
       "type": "array",
       "items": {"$ref": "#/$defs/evidence"},
-      "minItems": 10,
-      "maxItems": 10
+      "minItems": 11,
+      "maxItems": 11
     },
-    "evidence_count": {"const": 10},
+    "evidence_count": {"const": 11},
     "minimum_acceptance_checks": {
       "type": "array",
       "prefixItems": [
@@ -93,12 +95,13 @@
         {"const": "runtime_step_trace_binds_mvp_operation_path"},
         {"const": "runtime_evidence_bundle_index_binds_standard_execution_evidence"},
         {"const": "runtime_backend_equivalence_preserves_outputs"},
+        {"const": "runtime_backend_equivalence_shape_profiles_preserve_outputs"},
         {"const": "runtime_coverage_policy_requires_exact_trace_counts"},
         {"const": "runtime_backend_alignment_uses_trusted_executors"}
       ],
       "items": false,
-      "minItems": 10,
-      "maxItems": 10
+      "minItems": 11,
+      "maxItems": 11
     },
     "parser_status": {"const": "research_explicit_only"},
     "runtime_case_count": {"const": 4},
@@ -112,13 +115,14 @@
         {"const": "bounded_source_to_intent_ingress"},
         {"const": "mvp_operation_family_pipeline"},
         {"const": "source_intent_backend_portability"},
+        {"const": "source_intent_shape_profile_portability"},
         {"const": "capability_selected_simulator_execution"},
         {"const": "digest_bound_evidence_chain"},
         {"const": "source_free_review_artifacts"}
       ],
       "items": false,
-      "minItems": 6,
-      "maxItems": 6
+      "minItems": 7,
+      "maxItems": 7
     },
     "trusted_runtime_backends": {
       "type": "array",
@@ -153,6 +157,7 @@
             "source_to_intent_research_kernel_ingress_runtime_step_trace",
             "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
             "source_to_intent_research_kernel_ingress_backend_equivalence",
+            "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
             "source_to_intent_research_kernel_ingress_runtime_backend_alignment"
           ]

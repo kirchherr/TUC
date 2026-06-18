@@ -32,8 +32,9 @@ The gate passes only when the capability claim report:
 - still records `matmul->softmax->reduction->elementwise`;
 - still records four accepted runtime cases;
 - still records four backend-equivalence cases against `reference-cpu`;
+- still records eight backend-equivalence shape-profile cases;
 - still records trusted runtime backends `linear-sim` and `vector-sim`;
-- still records ten bound evidence artifacts;
+- still records eleven bound evidence artifacts;
 - still blocks production parser, native performance, hardware certification,
   arbitrary backend execution, general Triton ingestion, and vendor compiler
   replacement claims.

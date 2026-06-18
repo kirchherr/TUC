@@ -782,6 +782,18 @@ Current slice:
   `linear-sim`/`vector-sim` runtime equivalence evidence, and binding through
   the Kernel Ingress Proof Bundle, focused Evidence Gate, and Capability
   Claim.
+- Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles
+  at
+  `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`,
+  with schema at
+  `schemas/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.json`,
+  metadata-only `reference-cpu` baseline versus capability-selected
+  `linear-sim`/`vector-sim` equivalence evidence across `base` and
+  `alternate` declared tensor shape profiles, reference-correctness digests
+  for both placements, and binding through the Kernel Ingress Proof Bundle,
+  focused Evidence Gate, and Capability Claim.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at

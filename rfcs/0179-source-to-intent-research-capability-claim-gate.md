@@ -32,8 +32,9 @@ The gate:
 - validates the report contract;
 - compares the supplied report digest with the freshly built current report;
 - emits a source-free text gate with claim ID, claim scope, claim status,
-  accepted kernel count, runtime case count, trusted runtime backends,
-  supported claims, blocked claims, parser status, and artifact policy;
+  accepted kernel count, runtime case count, backend-equivalence shape-profile
+  case count, trusted runtime backends, supported claims, blocked claims,
+  parser status, and artifact policy;
 - fails closed on source leakage, invalid JSON, contract drift, claim expansion,
   or evidence digest drift;
 - runs in CI after the capability claim report.

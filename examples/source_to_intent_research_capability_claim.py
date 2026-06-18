@@ -21,6 +21,13 @@ try:
     from examples.source_to_intent_research_kernel_ingress_backend_equivalence import (
         build_report as build_kernel_ingress_backend_equivalence_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (  # noqa: E501
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES_CONTRACT,
+        assert_kernel_ingress_backend_equivalence_shape_profiles_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (  # noqa: E501
+        build_report as build_kernel_ingress_backend_equivalence_shape_profiles_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_evidence_gate import (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_CONTRACT,
         assert_kernel_ingress_evidence_gate_report_contract,
@@ -90,6 +97,13 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_backend_equivalence import (
         build_report as build_kernel_ingress_backend_equivalence_report,
+    )
+    from source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (  # type: ignore[no-redef]
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES_CONTRACT,
+        assert_kernel_ingress_backend_equivalence_shape_profiles_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (
+        build_report as build_kernel_ingress_backend_equivalence_shape_profiles_report,
     )
     from source_to_intent_research_kernel_ingress_evidence_gate import (  # type: ignore[no-redef]
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_CONTRACT,
@@ -178,6 +192,7 @@ SOURCE_TO_INTENT_RESEARCH_CAPABILITY_SUPPORTED_CLAIMS = (
     "bounded_source_to_intent_ingress",
     "mvp_operation_family_pipeline",
     "source_intent_backend_portability",
+    "source_intent_shape_profile_portability",
     "capability_selected_simulator_execution",
     "digest_bound_evidence_chain",
     "source_free_review_artifacts",
@@ -199,6 +214,7 @@ SOURCE_TO_INTENT_RESEARCH_CAPABILITY_ACCEPTANCE_CHECKS = (
     "runtime_step_trace_binds_mvp_operation_path",
     "runtime_evidence_bundle_index_binds_standard_execution_evidence",
     "runtime_backend_equivalence_preserves_outputs",
+    "runtime_backend_equivalence_shape_profiles_preserve_outputs",
     "runtime_coverage_policy_requires_exact_trace_counts",
     "runtime_backend_alignment_uses_trusted_executors",
 )
@@ -235,6 +251,7 @@ _TOP_LEVEL_KEYS = frozenset(
         "claim_scope",
         "claim_status",
         "backend_equivalence_case_count",
+        "backend_equivalence_shape_profile_case_count",
         "baseline_runtime_backend",
         "combined_pipeline_kernel",
         "combined_pipeline_operation_path",
@@ -295,6 +312,11 @@ _REQUIRED_EVIDENCE = (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_CONTRACT,
     ),
     (
+        "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
+        "json_report",
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES_CONTRACT,
+    ),
+    (
         "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
         "json_report",
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_COVERAGE_POLICY_CONTRACT,
@@ -335,6 +357,9 @@ def build_research_capability_claim_report() -> dict[str, object]:
         "source_to_intent_research_kernel_ingress_backend_equivalence": (
             build_kernel_ingress_backend_equivalence_report()
         ),
+        "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles": (
+            build_kernel_ingress_backend_equivalence_shape_profiles_report()
+        ),
         "source_to_intent_research_kernel_ingress_runtime_coverage_policy": (
             build_kernel_ingress_runtime_coverage_policy_report()
         ),
@@ -351,6 +376,11 @@ def build_research_capability_claim_report() -> dict[str, object]:
     backend_equivalence = json.loads(
         artifact_texts[
             "source_to_intent_research_kernel_ingress_backend_equivalence"
+        ]
+    )
+    backend_equivalence_shape_profiles = json.loads(
+        artifact_texts[
+            "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles"
         ]
     )
     evidence = [
@@ -380,6 +410,9 @@ def build_research_capability_claim_report() -> dict[str, object]:
             SOURCE_TO_INTENT_RESEARCH_CAPABILITY_OPERATION_PATH
         ),
         "backend_equivalence_case_count": backend_equivalence["case_count"],
+        "backend_equivalence_shape_profile_case_count": (
+            backend_equivalence_shape_profiles["case_count"]
+        ),
         "baseline_runtime_backend": "reference-cpu",
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "evidence": evidence,
@@ -437,6 +470,7 @@ def assert_research_capability_claim_report_contract(report: object) -> None:
             SOURCE_TO_INTENT_RESEARCH_CAPABILITY_OPERATION_PATH
         ),
         "backend_equivalence_case_count": 4,
+        "backend_equivalence_shape_profile_case_count": 8,
         "baseline_runtime_backend": "reference-cpu",
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "evidence_count": len(_REQUIRED_EVIDENCE),
@@ -503,6 +537,14 @@ def _assert_evidence_payloads(
         ]
     )
     assert_kernel_ingress_backend_equivalence_report_contract(backend_equivalence)
+    backend_equivalence_shape_profiles = json.loads(
+        artifact_texts[
+            "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles"
+        ]
+    )
+    assert_kernel_ingress_backend_equivalence_shape_profiles_report_contract(
+        backend_equivalence_shape_profiles
+    )
     runtime_coverage_policy = json.loads(
         artifact_texts[
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy"
@@ -524,6 +566,7 @@ def _assert_evidence_payloads(
         runtime_step_trace,
         runtime_evidence_bundle_index,
         backend_equivalence,
+        backend_equivalence_shape_profiles,
         runtime_coverage_policy,
     )
     for text in artifact_texts.values():
@@ -536,6 +579,7 @@ def _assert_mvp_pipeline_bound(
     runtime_step_trace: Mapping[str, object],
     runtime_evidence_bundle_index: Mapping[str, object],
     backend_equivalence: Mapping[str, object],
+    backend_equivalence_shape_profiles: Mapping[str, object],
     runtime_coverage_policy: Mapping[str, object],
 ) -> None:
     cases = runtime_matrix["cases"]
@@ -652,6 +696,51 @@ def _assert_mvp_pipeline_bound(
             raise ValueError(
                 f"source-to-intent research capability equivalence {key} drift"
             )
+    shape_profile_cases = backend_equivalence_shape_profiles["cases"]
+    if not isinstance(shape_profile_cases, list):
+        raise ValueError(
+            "source-to-intent research capability shape profile equivalence drift"
+        )
+    shape_profile_mvp_cases = [
+        case
+        for case in shape_profile_cases
+        if isinstance(case, Mapping)
+        and case.get("case_id") == "research_module_mvp_pipeline"
+    ]
+    if len(shape_profile_mvp_cases) != 2:
+        raise ValueError(
+            "source-to-intent research capability shape profile mvp drift"
+        )
+    expected_profile_ids = ["base", "alternate"]
+    if [case.get("profile_id") for case in shape_profile_mvp_cases] != expected_profile_ids:
+        raise ValueError(
+            "source-to-intent research capability shape profile order drift"
+        )
+    for shape_profile_mvp in shape_profile_mvp_cases:
+        expected_shape_profile_values = {
+            "baseline_backend_sequence": [
+                "reference-cpu",
+                "reference-cpu",
+                "reference-cpu",
+                "reference-cpu",
+            ],
+            "candidate_backend_sequence": [
+                "linear-sim",
+                "vector-sim",
+                "vector-sim",
+                "vector-sim",
+            ],
+            "comparison_count": 1,
+            "graph_name": "research_mvp_pipeline",
+            "passed": True,
+            "terminal_outputs": ["stable"],
+        }
+        for key, expected in expected_shape_profile_values.items():
+            if shape_profile_mvp.get(key) != expected:
+                raise ValueError(
+                    "source-to-intent research capability shape profile "
+                    f"{key} drift"
+                )
     trace_counts = runtime_coverage_policy["required_trace_step_count_per_case"]
     if not isinstance(trace_counts, Mapping):
         raise ValueError("source-to-intent research capability trace policy drift")

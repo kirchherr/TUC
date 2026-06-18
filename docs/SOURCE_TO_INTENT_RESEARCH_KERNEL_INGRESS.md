@@ -90,6 +90,10 @@ files, access devices, or discover plugins.
   [Source-To-Intent Research Kernel Ingress Backend Equivalence](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE.md)
 - Backend equivalence example:
   `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
+- Backend equivalence shape-profile companion:
+  [Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES.md)
+- Backend equivalence shape-profile example:
+  `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
 
 ## Accepted Module Shape
 
@@ -179,10 +183,16 @@ accepted Source Intent through a neutral `reference-cpu` baseline and
 capability-selected trusted simulator placements, then binds the metadata-only
 `RuntimeBackendEquivalenceReport` results into the Kernel Ingress proof flow.
 
+The companion Kernel Ingress Backend Equivalence Shape Profiles report repeats
+that portability check across `base` and `alternate` declared tensor shape
+profiles, with reference-correctness digests for both baseline and candidate
+placements.
+
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
 for the Kernel Ingress E2E, runtime-matrix, runtime-backend-equivalence,
-runtime-coverage-policy, runtime-backend-alignment, boundary-budget,
-rejection-coverage, diagnostics, conformance, and idiom-alignment artifacts.
+runtime-backend-equivalence shape-profile, runtime-coverage-policy,
+runtime-backend-alignment, boundary-budget, rejection-coverage, diagnostics,
+conformance, and idiom-alignment artifacts.
 
 The companion Kernel Ingress Evidence Gate validates the same artifacts and
 their Proof Bundle digest bindings as CI-facing evidence.

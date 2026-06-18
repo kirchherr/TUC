@@ -9,6 +9,7 @@
   - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
   - `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
+  - `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
   - `examples/source_to_intent_research_kernel_ingress_boundary_budget.py`
@@ -37,8 +38,8 @@
 
 Kernel Ingress now has focused proof artifacts: runtime E2E evidence,
 runtime-matrix evidence, runtime-backend-equivalence evidence,
-runtime-coverage-policy evidence, runtime-backend-alignment evidence,
-boundary-budget evidence,
+runtime-backend-equivalence shape-profile evidence, runtime-coverage-policy
+evidence, runtime-backend-alignment evidence, boundary-budget evidence,
 rejection-coverage evidence, source-free diagnostics, frontend conformance, and
 idiom alignment.
 
@@ -80,10 +81,11 @@ compiler artifacts.
 
 The Kernel Ingress research claim becomes easier to audit without weakening any
 boundary. Future Kernel Ingress syntax changes must update E2E,
-runtime-matrix, runtime-backend-equivalence, runtime-coverage-policy,
-runtime-backend-alignment, boundary-budget, rejection-coverage, diagnostics,
-conformance, idiom-alignment, this bundle, the focused Kernel Ingress Evidence
-Gate, the global Evidence Gate, and the global Proof Bundle together.
+runtime-matrix, runtime-backend-equivalence, runtime-backend-equivalence
+shape-profile evidence, runtime-coverage-policy, runtime-backend-alignment,
+boundary-budget, rejection-coverage, diagnostics, conformance,
+idiom-alignment, this bundle, the focused Kernel Ingress Evidence Gate, the
+global Evidence Gate, and the global Proof Bundle together.
 
 This still does not prove general Triton source ingestion, production parsing,
 or native performance. Those claims remain blocked.

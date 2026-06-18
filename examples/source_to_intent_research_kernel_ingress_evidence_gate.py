@@ -19,6 +19,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_backend_equivalence import (
         build_report as build_kernel_ingress_backend_equivalence_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (  # noqa: E501
+        assert_kernel_ingress_backend_equivalence_shape_profiles_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (  # noqa: E501
+        build_report as build_kernel_ingress_backend_equivalence_shape_profiles_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_boundary_budget import (
         assert_kernel_ingress_boundary_budget_report_contract,
     )
@@ -91,6 +97,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
     from source_to_intent_research_kernel_ingress_backend_equivalence import (
         build_report as build_kernel_ingress_backend_equivalence_report,
+    )
+    from source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (  # type: ignore[no-redef]
+        assert_kernel_ingress_backend_equivalence_shape_profiles_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (
+        build_report as build_kernel_ingress_backend_equivalence_shape_profiles_report,
     )
     from source_to_intent_research_kernel_ingress_boundary_budget import (  # type: ignore[no-redef]
         assert_kernel_ingress_boundary_budget_report_contract,
@@ -213,6 +225,7 @@ def build_gate_report(
     rejection_coverage_text: str | None = None,
     runtime_backend_alignment_text: str | None = None,
     runtime_backend_equivalence_text: str | None = None,
+    runtime_backend_equivalence_shape_profiles_text: str | None = None,
     runtime_coverage_policy_text: str | None = None,
     runtime_evidence_bundle_index_text: str | None = None,
     runtime_matrix_text: str | None = None,
@@ -249,6 +262,11 @@ def build_gate_report(
         build_kernel_ingress_backend_equivalence_report()
         if runtime_backend_equivalence_text is None
         else runtime_backend_equivalence_text
+    )
+    runtime_backend_equivalence_shape_profiles = (
+        build_kernel_ingress_backend_equivalence_shape_profiles_report()
+        if runtime_backend_equivalence_shape_profiles_text is None
+        else runtime_backend_equivalence_shape_profiles_text
     )
     runtime_coverage_policy = (
         build_kernel_ingress_runtime_coverage_policy_report()
@@ -294,6 +312,11 @@ def build_gate_report(
     runtime_backend_equivalence_report = _assert_runtime_backend_equivalence_bound(
         runtime_backend_equivalence
     )
+    runtime_backend_equivalence_shape_profiles_report = (
+        _assert_runtime_backend_equivalence_shape_profiles_bound(
+            runtime_backend_equivalence_shape_profiles
+        )
+    )
     _assert_runtime_coverage_policy_bound(runtime_coverage_policy)
     runtime_backend_alignment_report = _assert_runtime_backend_alignment_bound(
         runtime_backend_alignment
@@ -318,6 +341,9 @@ def build_gate_report(
             ),
             "source_to_intent_research_kernel_ingress_backend_equivalence": (
                 runtime_backend_equivalence
+            ),
+            "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles": (
+                runtime_backend_equivalence_shape_profiles
             ),
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy": (
                 runtime_coverage_policy
@@ -352,6 +378,8 @@ def build_gate_report(
         runtime_evidence_bundle_index_report,
         runtime_backend_equivalence,
         runtime_backend_equivalence_report,
+        runtime_backend_equivalence_shape_profiles,
+        runtime_backend_equivalence_shape_profiles_report,
         runtime_backend_alignment_report,
         boundary_budget,
         rejection_coverage,
@@ -387,6 +415,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  runtime_step_trace = "passed"',
         '  runtime_evidence_bundle_index = "passed"',
         '  runtime_backend_equivalence = "passed"',
+        '  runtime_backend_equivalence_shape_profiles = "passed"',
         '  runtime_coverage_policy = "passed"',
         '  runtime_backend_alignment = "passed"',
         '  boundary_budget = "passed"',
@@ -417,6 +446,9 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  runtime_evidence_bundle_cases = "4"',
         '  runtime_backend_equivalence_cases = "4"',
         '  backend_equivalence_comparisons = "4"',
+        '  runtime_backend_equivalence_shape_profile_cases = "8"',
+        '  backend_equivalence_shape_profile_comparisons = "8"',
+        '  shape_profile_ids = "base,alternate"',
         (
             '  baseline_backend_sequences = "reference-cpu->reference-cpu,'
             'reference-cpu->reference-cpu->reference-cpu->reference-cpu"'
@@ -462,6 +494,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         "runtime_step_trace_digest",
         "runtime_evidence_bundle_index_digest",
         "runtime_backend_equivalence_digest",
+        "runtime_backend_equivalence_shape_profiles_digest",
         "runtime_coverage_policy_digest",
         "runtime_backend_alignment_digest",
         "boundary_budget_digest",
@@ -551,6 +584,21 @@ def _assert_runtime_backend_equivalence_bound(text: str) -> Mapping[str, object]
         raise SourceToIntentResearchKernelIngressEvidenceGateError(
             "kernel ingress evidence gate failed: "
             "runtime backend equivalence binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+    return report
+
+
+def _assert_runtime_backend_equivalence_shape_profiles_bound(
+    text: str,
+) -> Mapping[str, object]:
+    report = _load_json_report(text, "runtime backend equivalence shape profiles")
+    try:
+        assert_kernel_ingress_backend_equivalence_shape_profiles_report_contract(report)
+    except (TypeError, ValueError) as exc:
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: "
+            "runtime backend equivalence shape profiles binding missing"
         ) from exc
     _assert_gate_text_is_source_free(text)
     return report
@@ -698,6 +746,8 @@ def _render_gate_report(
     runtime_evidence_bundle_index_report: Mapping[str, object],
     runtime_backend_equivalence_text: str,
     runtime_backend_equivalence_report: Mapping[str, object],
+    runtime_backend_equivalence_shape_profiles_text: str,
+    runtime_backend_equivalence_shape_profiles_report: Mapping[str, object],
     runtime_backend_alignment_report: Mapping[str, object],
     boundary_budget_text: str,
     rejection_coverage_text: str,
@@ -732,6 +782,11 @@ def _render_gate_report(
     lines.append(
         "  runtime_backend_equivalence_digest = "
         f'"{_digest(runtime_backend_equivalence_text)}"'
+    )
+    lines.append('  runtime_backend_equivalence_shape_profiles = "passed"')
+    lines.append(
+        "  runtime_backend_equivalence_shape_profiles_digest = "
+        f'"{_digest(runtime_backend_equivalence_shape_profiles_text)}"'
     )
     lines.append('  runtime_coverage_policy = "passed"')
     lines.append(
@@ -807,6 +862,21 @@ def _render_gate_report(
     lines.append(
         "  backend_equivalence_comparisons = "
         f'"{runtime_backend_equivalence_report["comparison_count"]}"'
+    )
+    lines.append(
+        "  runtime_backend_equivalence_shape_profile_cases = "
+        f'"{runtime_backend_equivalence_shape_profiles_report["case_count"]}"'
+    )
+    lines.append(
+        "  backend_equivalence_shape_profile_comparisons = "
+        f'"{runtime_backend_equivalence_shape_profiles_report["comparison_count"]}"'
+    )
+    lines.append(
+        '  shape_profile_ids = "'
+        + ",".join(
+            _string_list(runtime_backend_equivalence_shape_profiles_report["profile_ids"])
+        )
+        + '"'
     )
     lines.append(
         '  baseline_backend_sequences = "'
