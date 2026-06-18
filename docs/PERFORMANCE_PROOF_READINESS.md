@@ -149,6 +149,14 @@ The current diagnostic leaky-abstraction report schema is
 existence of a bounded HAC-IR boundary review report. It does not satisfy
 native baseline comparison, benchmark artifacts, or native performance parity.
 
+The readiness example derives `leaky_abstraction_report` from the accepted
+Kernel Ingress MVP pipeline graph. It verifies that HAC-IR remains contract
+valid, no forbidden hardware-specific attributes enter HAC-IR, and performance
+facts such as tile shape, vector width, transfer latency, and backend sequence
+choice stay in backend capabilities, backend implementations, runtime plans, or
+compiler decision reports. Native baseline and native performance claims remain
+separate blockers.
+
 The current diagnostic native baseline provenance report schema is
 `schemas/native_baseline_provenance_report.v0.schema.json`. It can satisfy only
 the existence of a bounded native baseline provenance contract. It does not

@@ -100,8 +100,10 @@ generated accepted ingress report matches deterministic golden output and
 exposes the required digest fields. It may mark benchmark-report schema
 evidence present once the schema is fail-closed, diagnostic-only, and native
 claim blocked. It may mark benchmark-methodology evidence present once bounded
-measurement policy is bound to accepted workload scopes. Native performance
-readiness still fails until every required evidence item is present.
+measurement policy is bound to accepted workload scopes. It may mark
+leaky-abstraction evidence present once accepted HAC-IR is contract-valid and
+performance-critical facts remain outside HAC-IR. Native performance readiness
+still fails until every required evidence item is present.
 
 ## Consequences
 

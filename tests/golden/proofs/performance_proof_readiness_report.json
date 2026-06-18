@@ -48,7 +48,7 @@
     },
     {
       "evidence_id": "leaky_abstraction_report",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "planner_overhead_report",
@@ -102,10 +102,6 @@
     },
     {
       "evidence_id": "native_baseline_comparison",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
-      "evidence_id": "leaky_abstraction_report",
       "message": "required performance proof boundary evidence is missing"
     },
     {

@@ -820,6 +820,10 @@ Current slice:
   Kernel Ingress workload scopes, requiring bounded measurement-policy entries
   while benchmark execution, raw timing samples, and benchmark artifacts remain
   missing.
+- Performance Proof Readiness now derives `leaky_abstraction_report` from the
+  accepted Kernel Ingress MVP pipeline, requiring contract-valid HAC-IR, no
+  forbidden hardware-specific HAC-IR attributes, and performance facts assigned
+  outside HAC-IR.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at
@@ -949,7 +953,7 @@ Current slice:
 - Performance Proof Readiness report with deterministic blocked golden evidence
   for future native performance proposals, currently marking only
   `benchmark_methodology`, `workload_scope`, `correctness_goldens`,
-  `planner_overhead_report`, `runtime_plan_goldens`,
+  `leaky_abstraction_report`, `planner_overhead_report`, `runtime_plan_goldens`,
   `compiler_decision_report_goldens`, and `benchmark_report_schema` present
   from accepted Kernel Ingress and fail-closed schema evidence.
 - First native MLIR design spike.

@@ -38,13 +38,20 @@ from tuc import (
     BENCHMARK_METHODOLOGY_ARTIFACT_STATUS,
     BENCHMARK_METHODOLOGY_CLAIM_STATUS,
     BENCHMARK_METHODOLOGY_REPORT_SCHEMA_VERSION,
+    LEAKY_ABSTRACTION_ARTIFACT_STATUS,
+    LEAKY_ABSTRACTION_DEFAULT_ISSUES,
+    LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS,
+    LEAKY_ABSTRACTION_REPORT_SCHEMA_VERSION,
     PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
     BenchmarkMethodology,
+    LeakyAbstractionFact,
     PerformanceProofReadinessEvidence,
     benchmark_methodology_report_to_dict,
     build_benchmark_methodology_report,
+    build_leaky_abstraction_report,
     build_performance_proof_readiness_report,
     dump_performance_proof_readiness_report,
+    leaky_abstraction_report_to_dict,
 )
 from tuc.backends import LinearAlgebraSimulatorBackend, VectorSimulatorBackend
 from tuc.benchmarks import (
@@ -123,6 +130,10 @@ def build_blocked_performance_proof_evidence() -> (
             evidence_id="benchmark_methodology",
             present=_has_kernel_ingress_benchmark_methodology_evidence(),
         ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="leaky_abstraction_report",
+            present=_has_kernel_ingress_leaky_abstraction_evidence(),
+        ),
     )
 
 
@@ -144,17 +155,8 @@ def _has_kernel_ingress_workload_scope_evidence() -> bool:
 
 
 def _has_kernel_ingress_planner_overhead_evidence() -> bool:
-    ingress = ingest_triton_module_source_to_source_intent(
-        REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
-        source_name=_KERNEL_INGRESS_MVP_SOURCE_NAME,
-        kernel_name=_KERNEL_INGRESS_MVP_KERNEL_NAME,
-        tensor_shapes=_KERNEL_INGRESS_MVP_TENSOR_SHAPES,
-    )
-    module = source_intent_from_mapping(ingress.parser_result.source_intent_payload)
-    metadata = source_intent_to_triton_metadata(module)
-    graph = metadata.to_compute_graph()
     measurement = measure_pipeline_planner_overhead(
-        graph,
+        _build_kernel_ingress_mvp_graph(),
         [
             LinearAlgebraSimulatorBackend().capability,
             VectorSimulatorBackend().capability,
@@ -181,6 +183,63 @@ def _has_kernel_ingress_planner_overhead_evidence() -> bool:
     return True
 
 
+def _has_kernel_ingress_leaky_abstraction_evidence() -> bool:
+    measurement = measure_pipeline_planner_overhead(
+        _build_kernel_ingress_mvp_graph(),
+        [
+            LinearAlgebraSimulatorBackend().capability,
+            VectorSimulatorBackend().capability,
+        ],
+    )
+    report = build_leaky_abstraction_report(
+        measurement.compilation.hac_ir,
+        performance_facts=(
+            LeakyAbstractionFact(
+                fact_id="matmul_tile_shape",
+                correct_home="backend_implementation",
+                required_for_performance=True,
+            ),
+            LeakyAbstractionFact(
+                fact_id="vector_lane_width",
+                correct_home="backend_capability",
+                required_for_performance=True,
+            ),
+            LeakyAbstractionFact(
+                fact_id="transfer_latency_model",
+                correct_home="runtime_plan",
+                required_for_performance=True,
+            ),
+            LeakyAbstractionFact(
+                fact_id="backend_sequence_choice",
+                correct_home="compiler_decision_report",
+                required_for_performance=True,
+            ),
+        ),
+    )
+    payload = leaky_abstraction_report_to_dict(report)
+    expected = {
+        "artifact_status": LEAKY_ABSTRACTION_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "detected_leaks": [],
+        "graph_name": _KERNEL_INGRESS_MVP_SOURCE_NAME,
+        "hac_ir_contract_valid": True,
+        "hac_ir_leak_detected": False,
+        "issues": list(LEAKY_ABSTRACTION_DEFAULT_ISSUES),
+        "native_performance_claim": False,
+        "performance_claim_status": LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS,
+        "schema_version": LEAKY_ABSTRACTION_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"kernel ingress leaky-abstraction {key} drift")
+    facts = payload["performance_facts"]
+    if not isinstance(facts, list) or len(facts) != 4:
+        raise ValueError("kernel ingress leaky-abstraction fact drift")
+    if any(fact.get("enters_hac_ir") is not False for fact in facts if isinstance(fact, dict)):
+        raise ValueError("kernel ingress leaky-abstraction fact entered HAC-IR")
+    return True
+
+
 def _has_kernel_ingress_golden_digest_evidence(evidence_id: str) -> bool:
     digest_key = _KERNEL_INGRESS_DIGEST_EVIDENCE[evidence_id]
     report_text = build_kernel_ingress_report()
@@ -199,6 +258,18 @@ def _has_kernel_ingress_golden_digest_evidence(evidence_id: str) -> bool:
         if not isinstance(digest, str) or not digest.startswith("sha256:"):
             raise ValueError(f"kernel ingress {evidence_id} digest missing")
     return True
+
+
+def _build_kernel_ingress_mvp_graph():
+    ingress = ingest_triton_module_source_to_source_intent(
+        REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
+        source_name=_KERNEL_INGRESS_MVP_SOURCE_NAME,
+        kernel_name=_KERNEL_INGRESS_MVP_KERNEL_NAME,
+        tensor_shapes=_KERNEL_INGRESS_MVP_TENSOR_SHAPES,
+    )
+    module = source_intent_from_mapping(ingress.parser_result.source_intent_payload)
+    metadata = source_intent_to_triton_metadata(module)
+    return metadata.to_compute_graph()
 
 
 def _has_benchmark_report_schema_evidence() -> bool:

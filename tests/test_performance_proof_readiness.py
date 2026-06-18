@@ -8,6 +8,7 @@ from examples.performance_proof_readiness import (
     _has_benchmark_report_schema_evidence,
     _has_kernel_ingress_benchmark_methodology_evidence,
     _has_kernel_ingress_golden_digest_evidence,
+    _has_kernel_ingress_leaky_abstraction_evidence,
     _has_kernel_ingress_planner_overhead_evidence,
     _has_kernel_ingress_workload_scope_evidence,
     build_blocked_performance_proof_evidence,
@@ -40,6 +41,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         "benchmark_methodology",
         "workload_scope",
         "correctness_goldens",
+        "leaky_abstraction_report",
         "planner_overhead_report",
         "runtime_plan_goldens",
         "compiler_decision_report_goldens",
@@ -53,6 +55,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
             "workload_scope",
             "benchmark_methodology",
             "correctness_goldens",
+            "leaky_abstraction_report",
             "planner_overhead_report",
             "runtime_plan_goldens",
             "compiler_decision_report_goldens",
@@ -65,6 +68,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
 def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None:
     assert _has_kernel_ingress_workload_scope_evidence()
     assert _has_kernel_ingress_benchmark_methodology_evidence()
+    assert _has_kernel_ingress_leaky_abstraction_evidence()
     assert _has_kernel_ingress_planner_overhead_evidence()
     assert _has_kernel_ingress_golden_digest_evidence("correctness_goldens")
     assert _has_kernel_ingress_golden_digest_evidence("runtime_plan_goldens")

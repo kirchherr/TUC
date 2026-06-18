@@ -290,6 +290,10 @@ Completed evidence:
   when methodology entries are derived from the accepted Kernel Ingress
   workload scopes and remain policy-only, with no benchmark execution or raw
   timing samples.
+- Performance-readiness evidence now marks `leaky_abstraction_report` present
+  only when the accepted Kernel Ingress MVP pipeline keeps performance-critical
+  facts out of HAC-IR and assigns them to backend capability,
+  backend implementation, runtime plan, or compiler decision-report homes.
 - Benchmark-methodology reports define measurement clocks, iteration policies,
   statistic policy, isolation, outlier handling, and reproducibility policy
   before benchmark numbers can become evidence.
@@ -615,6 +619,9 @@ Deliverables:
 - Performance Proof Readiness now treats benchmark methodology as present only
   after binding measurement policy to the accepted Kernel Ingress workload
   scopes; benchmark execution and artifact evidence remain blocked.
+- Performance Proof Readiness now treats leaky-abstraction evidence as present
+  only after the Kernel Ingress MVP pipeline proves HAC-IR is contract-valid
+  and free of forbidden hardware-specific performance facts.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
   (`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`)
   requiring current accepted runtime cases, backend sequences, terminal outputs,
