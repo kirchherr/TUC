@@ -88,6 +88,12 @@ The current Kernel Ingress workload-scope binding is
 mark `workload_scope` as present for readiness review by binding accepted
 Kernel Ingress shape-profile evidence to diagnostic workload scopes.
 
+The readiness example derives `benchmark_methodology` from those same Kernel
+Ingress workload scopes. It builds bounded methodology entries that define the
+clock, warmup and measurement iteration policy, statistic policy, isolation,
+outlier policy, and reproducibility policy before any benchmark artifact can
+count as evidence. This does not run benchmarks or ingest timing samples.
+
 The current diagnostic benchmark methodology report schema is
 `schemas/benchmark_methodology_report.v0.schema.json`. It can satisfy only the
 existence of a bounded benchmark methodology contract. It does not run

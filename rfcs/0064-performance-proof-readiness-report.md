@@ -99,8 +99,9 @@ correctness, runtime-plan, and compiler-decision golden evidence present once a
 generated accepted ingress report matches deterministic golden output and
 exposes the required digest fields. It may mark benchmark-report schema
 evidence present once the schema is fail-closed, diagnostic-only, and native
-claim blocked. Native performance readiness still fails until every required
-evidence item is present.
+claim blocked. It may mark benchmark-methodology evidence present once bounded
+measurement policy is bound to accepted workload scopes. Native performance
+readiness still fails until every required evidence item is present.
 
 ## Consequences
 

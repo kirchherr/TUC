@@ -286,6 +286,10 @@ Completed evidence:
   only when the baseline benchmark report schema is fail-closed,
   diagnostic-only, native-claim-blocked, and bound to the performance proof
   boundary; benchmark artifacts remain separate and blocked.
+- Performance-readiness evidence now marks `benchmark_methodology` present only
+  when methodology entries are derived from the accepted Kernel Ingress
+  workload scopes and remain policy-only, with no benchmark execution or raw
+  timing samples.
 - Benchmark-methodology reports define measurement clocks, iteration policies,
   statistic policy, isolation, outlier handling, and reproducibility policy
   before benchmark numbers can become evidence.
@@ -608,6 +612,9 @@ Deliverables:
 - Performance Proof Readiness now treats the baseline benchmark report schema
   as present only after a fail-closed schema contract check; benchmark report
   artifacts remain missing until separate bounded artifacts exist.
+- Performance Proof Readiness now treats benchmark methodology as present only
+  after binding measurement policy to the accepted Kernel Ingress workload
+  scopes; benchmark execution and artifact evidence remain blocked.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
   (`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`)
   requiring current accepted runtime cases, backend sequences, terminal outputs,

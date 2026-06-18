@@ -35,8 +35,14 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
 
 from tuc import (
+    BENCHMARK_METHODOLOGY_ARTIFACT_STATUS,
+    BENCHMARK_METHODOLOGY_CLAIM_STATUS,
+    BENCHMARK_METHODOLOGY_REPORT_SCHEMA_VERSION,
     PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+    BenchmarkMethodology,
     PerformanceProofReadinessEvidence,
+    benchmark_methodology_report_to_dict,
+    build_benchmark_methodology_report,
     build_performance_proof_readiness_report,
     dump_performance_proof_readiness_report,
 )
@@ -112,6 +118,10 @@ def build_blocked_performance_proof_evidence() -> (
         PerformanceProofReadinessEvidence(
             evidence_id="benchmark_report_schema",
             present=_has_benchmark_report_schema_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="benchmark_methodology",
+            present=_has_kernel_ingress_benchmark_methodology_evidence(),
         ),
     )
 
@@ -224,6 +234,60 @@ def _has_benchmark_report_schema_evidence() -> bool:
     }
     if any(fragment in json.dumps(schema, sort_keys=True) for fragment in forbidden):
         raise ValueError("benchmark report schema exposes forbidden evidence")
+    return True
+
+
+def _has_kernel_ingress_benchmark_methodology_evidence() -> bool:
+    workload_report_text = build_kernel_ingress_workload_scope_report()
+    workload_report = json.loads(workload_report_text)
+    assert_kernel_ingress_workload_scope_report_contract(workload_report)
+    scopes = workload_report["scopes"]
+    if not isinstance(scopes, list) or not scopes:
+        raise ValueError("kernel ingress benchmark methodology scopes missing")
+    scope_ids = tuple(str(scope["scope_id"]) for scope in scopes if isinstance(scope, dict))
+    if len(scope_ids) != len(scopes):
+        raise ValueError("kernel ingress benchmark methodology scope drift")
+    report = build_benchmark_methodology_report(
+        "kernel_ingress_benchmark_methodology_candidate",
+        methodologies=tuple(
+            BenchmarkMethodology(
+                methodology_id=f"methodology_{scope_id}",
+                workload_scope_id=scope_id,
+                measurement_clock="monotonic_ns",
+                warmup_iterations=3,
+                measurement_iterations=20,
+                statistic_policy="min_median_mean",
+                isolation_level="process_isolated",
+                outlier_policy_id="no_raw_sample_storage",
+                reproducibility_policy_id="docker_dev_container",
+            )
+            for scope_id in scope_ids
+        ),
+    )
+    payload = benchmark_methodology_report_to_dict(report)
+    expected = {
+        "artifact_status": BENCHMARK_METHODOLOGY_ARTIFACT_STATUS,
+        "benchmark_methodology_ready": True,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": ["native_performance_claim_blocked"],
+        "native_performance_claim": False,
+        "performance_claim_status": BENCHMARK_METHODOLOGY_CLAIM_STATUS,
+        "proposal_name": "kernel_ingress_benchmark_methodology_candidate",
+        "schema_version": BENCHMARK_METHODOLOGY_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"kernel ingress benchmark methodology {key} drift")
+    methodologies = payload["methodologies"]
+    if not isinstance(methodologies, list):
+        raise ValueError("kernel ingress benchmark methodology entries drift")
+    observed_scope_ids = tuple(
+        str(methodology["workload_scope_id"])
+        for methodology in methodologies
+        if isinstance(methodology, dict)
+    )
+    if observed_scope_ids != scope_ids:
+        raise ValueError("kernel ingress benchmark methodology scope binding drift")
     return True
 
 
