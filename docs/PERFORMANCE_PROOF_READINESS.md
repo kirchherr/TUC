@@ -70,6 +70,14 @@ only the existence of a bounded acceptance-criteria metadata contract. It does
 not run benchmarks, evaluate raw timing samples, grant execution permission, or
 prove native performance parity.
 
+The current readiness example marks `performance_proof_rfc`,
+`performance_claim_threshold_policy`, and `performance_acceptance_criteria`
+present only after binding every accepted Kernel Ingress workload scope to
+accepted, digest-pinned governance reports. Those reports define proposal,
+threshold, and pass/fail metadata before benchmark artifacts can be interpreted.
+They keep `native_performance_claim` false and do not load evidence, run
+benchmarks, grant execution permission, or approve executable backend surfaces.
+
 The current diagnostic CPU baseline report schema is
 `schemas/baseline_benchmark_report.v0.schema.json`. It can satisfy only the
 existence of a bounded report schema for the baseline harness. It does not
@@ -315,9 +323,10 @@ tests/golden/proofs/performance_proof_readiness_report.json
 ```
 
 This makes the current roadmap state explicit: TUC has a performance proof
-boundary, a readiness report, and bounded Kernel Ingress workload-scope
-evidence. Native performance proof readiness still fails because the remaining
-required evidence has not been supplied.
+boundary, a readiness report, accepted governance metadata, and bounded Kernel
+Ingress workload-scope evidence. Native performance proof readiness still fails
+because benchmark report artifacts and executable backend security review have
+not been supplied.
 
 ## Still Blocked
 

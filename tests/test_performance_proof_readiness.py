@@ -12,6 +12,9 @@ from examples.performance_proof_readiness import (
     _has_kernel_ingress_leaky_abstraction_evidence,
     _has_kernel_ingress_native_baseline_comparison_evidence,
     _has_kernel_ingress_native_baseline_provenance_evidence,
+    _has_kernel_ingress_performance_acceptance_criteria_evidence,
+    _has_kernel_ingress_performance_proof_rfc_evidence,
+    _has_kernel_ingress_performance_threshold_policy_evidence,
     _has_kernel_ingress_planner_overhead_evidence,
     _has_kernel_ingress_workload_scope_evidence,
     _has_versioned_toolchain_environment_evidence,
@@ -42,6 +45,9 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
     assert tuple(
         item.evidence_id for item in report.checked_evidence if item.present
     ) == (
+        "performance_proof_rfc",
+        "performance_claim_threshold_policy",
+        "performance_acceptance_criteria",
         "benchmark_methodology",
         "native_baseline_provenance",
         "versioned_toolchain_environment",
@@ -60,6 +66,9 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         for evidence_id in PERFORMANCE_PROOF_REQUIRED_EVIDENCE
         if evidence_id
         not in {
+            "performance_proof_rfc",
+            "performance_claim_threshold_policy",
+            "performance_acceptance_criteria",
             "workload_scope",
             "benchmark_methodology",
             "native_baseline_provenance",
@@ -78,6 +87,9 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
 
 
 def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None:
+    assert _has_kernel_ingress_performance_proof_rfc_evidence()
+    assert _has_kernel_ingress_performance_threshold_policy_evidence()
+    assert _has_kernel_ingress_performance_acceptance_criteria_evidence()
     assert _has_kernel_ingress_workload_scope_evidence()
     assert _has_kernel_ingress_break_even_workload_size_evidence()
     assert _has_kernel_ingress_benchmark_methodology_evidence()

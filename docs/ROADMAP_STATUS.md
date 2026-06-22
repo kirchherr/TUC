@@ -803,6 +803,12 @@ Current slice:
   a digest-bound bridge from Kernel Ingress shape-profile evidence to
   diagnostic `workload_scope_report.v0` data, 20 bounded workload scopes, and
   native performance claims still blocked.
+- Performance Proof Readiness now derives `performance_proof_rfc`,
+  `performance_claim_threshold_policy`, and
+  `performance_acceptance_criteria` from accepted, digest-pinned governance
+  reports for every accepted Kernel Ingress workload scope, while benchmark
+  artifacts, executable backend security review, and native performance claims
+  remain blocked.
 - Performance Proof Readiness now derives current `workload_scope` and
   `planner_overhead_report` evidence from Kernel Ingress contracts: the
   shape-profile-derived workload scope must pass its contract, and the accepted
@@ -1168,12 +1174,10 @@ Current focus:
 - Candidate scoring only after transfer/noise-aware models are stable and its
   decisions can be explained next to manual override effects.
 - Native performance claims remain blocked until
-  [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied and
-  [Performance Proof RFC Report](PERFORMANCE_PROOF_RFC_REPORT.md),
-  [Performance Claim Threshold Policy Report](PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT.md),
-  [Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md),
-  and
-  [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) pass.
+  [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied,
+  benchmark artifact evidence and executable backend security review are
+  supplied, and
+  [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) passes.
 - Noise/error-budget score components only after those models are documented
   outside HAC-IR semantics and covered by goldens.
 - Maintainer teams or organization-backed owner groups before broad external

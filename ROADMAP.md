@@ -273,6 +273,12 @@ Completed evidence:
 - Workload-scope reports bound future performance claims to explicit operation
   families, shape profiles, dtype policies, problem-size ranges, and correctness
   references.
+- Performance-readiness evidence now marks `performance_proof_rfc`,
+  `performance_claim_threshold_policy`, and `performance_acceptance_criteria`
+  present only when every accepted Kernel Ingress workload scope is bound to
+  accepted, digest-pinned governance metadata while benchmark artifacts,
+  executable backend security review, and native performance claims remain
+  blocked.
 - Kernel Ingress performance-readiness evidence now marks workload-scope and
   planner-overhead report evidence present by contract-checking the
   shape-profile-derived workload scopes and a bounded planner-overhead report
@@ -321,6 +327,11 @@ Completed evidence:
 
 Next work:
 
+- Bind benchmark artifact manifest evidence only after bounded stored report
+  artifacts exist and their digests can be reviewed without loading raw output.
+- Bind executable backend security review evidence only after executable
+  surfaces, sandboxing, budgets, provenance, and negative-test evidence are
+  accepted separately.
 - Expand future proof graph families only when the existing proof contracts
   remain stable.
 
@@ -624,6 +635,11 @@ Deliverables:
   binding those proven shape profiles to diagnostic `workload_scope_report.v0`
   data so future performance proposals have bounded operation-family and
   shape-profile scopes while native performance claims remain blocked.
+- Performance Proof Readiness now treats performance RFC, threshold-policy, and
+  acceptance-criteria governance as present only after binding all accepted
+  Kernel Ingress workload scopes to accepted, digest-pinned metadata;
+  benchmark artifacts, executable backend security review, and native
+  performance claims remain blocked.
 - Performance Proof Readiness now derives current `workload_scope` and
   `planner_overhead_report` evidence from accepted Kernel Ingress contracts
   instead of hand-coded booleans, and binds correctness, runtime-plan, and

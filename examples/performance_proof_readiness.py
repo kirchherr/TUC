@@ -52,7 +52,16 @@ from tuc import (
     NATIVE_BASELINE_PROVENANCE_ARTIFACT_STATUS,
     NATIVE_BASELINE_PROVENANCE_CLAIM_STATUS,
     NATIVE_BASELINE_PROVENANCE_REPORT_SCHEMA_VERSION,
+    PERFORMANCE_ACCEPTANCE_CRITERIA_ARTIFACT_STATUS,
+    PERFORMANCE_ACCEPTANCE_CRITERIA_CLAIM_STATUS,
+    PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_SCHEMA_VERSION,
+    PERFORMANCE_CLAIM_THRESHOLD_POLICY_ARTIFACT_STATUS,
+    PERFORMANCE_CLAIM_THRESHOLD_POLICY_CLAIM_STATUS,
+    PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION,
     PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+    PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS,
+    PERFORMANCE_PROOF_RFC_CLAIM_STATUS,
+    PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION,
     TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS,
     TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS,
     TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION,
@@ -64,7 +73,13 @@ from tuc import (
     NativeBaselineComparisonReport,
     NativeBaselineProvenance,
     NativeBaselineProvenanceReport,
+    PerformanceAcceptanceCriteria,
+    PerformanceAcceptanceCriteriaReport,
+    PerformanceClaimThresholdPolicy,
+    PerformanceClaimThresholdPolicyReport,
     PerformanceProofReadinessEvidence,
+    PerformanceProofRFC,
+    PerformanceProofRFCReport,
     ToolchainComponent,
     ToolchainEnvironmentReport,
     benchmark_methodology_report_to_dict,
@@ -74,12 +89,18 @@ from tuc import (
     build_leaky_abstraction_report,
     build_native_baseline_comparison_report,
     build_native_baseline_provenance_report,
+    build_performance_acceptance_criteria_report,
+    build_performance_claim_threshold_policy_report,
     build_performance_proof_readiness_report,
+    build_performance_proof_rfc_report,
     build_toolchain_environment_report,
     dump_performance_proof_readiness_report,
     leaky_abstraction_report_to_dict,
     native_baseline_comparison_report_to_dict,
     native_baseline_provenance_report_to_dict,
+    performance_acceptance_criteria_report_to_dict,
+    performance_claim_threshold_policy_report_to_dict,
+    performance_proof_rfc_report_to_dict,
     toolchain_environment_report_to_dict,
 )
 from tuc.backends import LinearAlgebraSimulatorBackend, VectorSimulatorBackend
@@ -116,6 +137,26 @@ _KERNEL_INGRESS_GOLDEN_PATH = Path(
 _BASELINE_BENCHMARK_SCHEMA_PATH = Path(
     "schemas/baseline_benchmark_report.v0.schema.json"
 )
+_PERFORMANCE_PROOF_GOVERNANCE_PROPOSAL_NAME = (
+    "kernel_ingress_performance_proof_governance_candidate"
+)
+_PERFORMANCE_PROOF_RFC_ID = "kernel_ingress_research_performance_proof_rfc"
+_PERFORMANCE_PROOF_RFC_DIGEST_PATH = Path(
+    "rfcs/0194-performance-readiness-governance-binding.md"
+)
+_PERFORMANCE_CLAIM_THRESHOLD_POLICY_ID = "kernel_ingress_threshold_policy"
+_PERFORMANCE_CLAIM_THRESHOLD_POLICY_DIGEST_PATH = Path(
+    "rfcs/0077-performance-claim-threshold-policy-report.md"
+)
+_PERFORMANCE_ACCEPTANCE_CRITERIA_ID = "kernel_ingress_acceptance_criteria"
+_PERFORMANCE_ACCEPTANCE_CRITERIA_DIGEST_PATH = Path(
+    "rfcs/0078-performance-acceptance-criteria-report.md"
+)
+_PERFORMANCE_EVIDENCE_BUNDLE_ID = "kernel_ingress_readiness_evidence_bundle"
+_PERFORMANCE_THRESHOLD_KIND = "ratio_to_native_at_least"
+_PERFORMANCE_THRESHOLD_BASIS_POINTS = 9500
+_EXECUTABLE_SECURITY_REVIEW_ID = "kernel_ingress_executable_backend_security_review"
+_LEAKY_ABSTRACTION_REPORT_ID = "kernel_ingress_leaky_abstraction_report"
 _BREAK_EVEN_WORKLOAD_SIZE_PROPOSAL_NAME = (
     "kernel_ingress_break_even_workload_size_candidate"
 )
@@ -183,6 +224,16 @@ _KERNEL_INGRESS_DIGEST_EVIDENCE = {
     "runtime_plan_goldens": "runtime_plan_digest",
     "compiler_decision_report_goldens": "compiler_decision_digest",
 }
+_FORBIDDEN_PERFORMANCE_GOVERNANCE_FIELDS = (
+    "host_path",
+    "environment",
+    "device_id",
+    "hardware_serial",
+    "raw_timing_samples",
+    "command_line",
+    "generated_code",
+    "backend_artifact",
+)
 
 
 def build_blocked_performance_proof_evidence() -> (
@@ -191,6 +242,18 @@ def build_blocked_performance_proof_evidence() -> (
     """Return the current intentionally blocked performance-proof evidence set."""
 
     return (
+        PerformanceProofReadinessEvidence(
+            evidence_id="performance_proof_rfc",
+            present=_has_kernel_ingress_performance_proof_rfc_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="performance_claim_threshold_policy",
+            present=_has_kernel_ingress_performance_threshold_policy_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="performance_acceptance_criteria",
+            present=_has_kernel_ingress_performance_acceptance_criteria_evidence(),
+        ),
         PerformanceProofReadinessEvidence(
             evidence_id="workload_scope",
             present=_has_kernel_ingress_workload_scope_evidence(),
@@ -251,6 +314,234 @@ def main() -> None:
     )
     print(dump_performance_proof_readiness_report(report), end="")
 
+
+def _has_kernel_ingress_performance_proof_rfc_evidence() -> bool:
+    workload_report_text = build_kernel_ingress_workload_scope_report()
+    workload_report = json.loads(workload_report_text)
+    assert_kernel_ingress_workload_scope_report_contract(workload_report)
+    scope_ids = _kernel_ingress_workload_scope_ids(workload_report)
+    report = _build_kernel_ingress_performance_proof_rfc_report(scope_ids)
+    payload = performance_proof_rfc_report_to_dict(report)
+    expected = {
+        "artifact_status": PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": ["native_performance_claim_blocked"],
+        "native_performance_claim": False,
+        "performance_claim_status": PERFORMANCE_PROOF_RFC_CLAIM_STATUS,
+        "performance_proof_rfc_ready": True,
+        "proposal_name": _PERFORMANCE_PROOF_GOVERNANCE_PROPOSAL_NAME,
+        "schema_version": PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"performance proof RFC evidence {key} drift")
+    rfcs = payload["rfcs"]
+    if not isinstance(rfcs, list) or len(rfcs) != len(scope_ids):
+        raise ValueError("performance proof RFC entries drift")
+    rfc_digest = _repository_file_digest(_PERFORMANCE_PROOF_RFC_DIGEST_PATH)
+    for rfc, scope_id in zip(rfcs, scope_ids, strict=True):
+        if not isinstance(rfc, dict):
+            raise ValueError("performance proof RFC entry drift")
+        expected_fields = {
+            "acceptance_criteria_id": _acceptance_criteria_id(scope_id),
+            "claim_threshold_policy_id": _threshold_policy_id(scope_id),
+            "evidence_bundle_id": _evidence_bundle_id(scope_id),
+            "rfc_digest": rfc_digest,
+            "rfc_id": _performance_proof_rfc_id(scope_id),
+            "rfc_status": "accepted_by_maintainers",
+            "security_review_id": _EXECUTABLE_SECURITY_REVIEW_ID,
+            "workload_scope_id": scope_id,
+        }
+        for key, value in expected_fields.items():
+            if rfc.get(key) != value:
+                raise ValueError(f"performance proof RFC {key} drift")
+        for forbidden_key in _FORBIDDEN_PERFORMANCE_GOVERNANCE_FIELDS:
+            if forbidden_key in rfc:
+                raise ValueError("performance proof RFC exposes forbidden data")
+    return True
+
+
+def _build_kernel_ingress_performance_proof_rfc_report(
+    scope_ids: tuple[str, ...],
+) -> PerformanceProofRFCReport:
+    return build_performance_proof_rfc_report(
+        _PERFORMANCE_PROOF_GOVERNANCE_PROPOSAL_NAME,
+        rfcs=tuple(
+            PerformanceProofRFC(
+                rfc_id=_performance_proof_rfc_id(scope_id),
+                workload_scope_id=scope_id,
+                claim_threshold_policy_id=_threshold_policy_id(scope_id),
+                acceptance_criteria_id=_acceptance_criteria_id(scope_id),
+                evidence_bundle_id=_evidence_bundle_id(scope_id),
+                security_review_id=_EXECUTABLE_SECURITY_REVIEW_ID,
+                rfc_status="accepted_by_maintainers",
+                rfc_digest=_repository_file_digest(_PERFORMANCE_PROOF_RFC_DIGEST_PATH),
+            )
+            for scope_id in scope_ids
+        ),
+    )
+
+
+def _has_kernel_ingress_performance_threshold_policy_evidence() -> bool:
+    workload_report_text = build_kernel_ingress_workload_scope_report()
+    workload_report = json.loads(workload_report_text)
+    assert_kernel_ingress_workload_scope_report_contract(workload_report)
+    scope_ids = _kernel_ingress_workload_scope_ids(workload_report)
+    report = _build_kernel_ingress_performance_threshold_policy_report(scope_ids)
+    payload = performance_claim_threshold_policy_report_to_dict(report)
+    expected = {
+        "artifact_status": PERFORMANCE_CLAIM_THRESHOLD_POLICY_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": ["native_performance_claim_blocked"],
+        "native_performance_claim": False,
+        "performance_claim_status": PERFORMANCE_CLAIM_THRESHOLD_POLICY_CLAIM_STATUS,
+        "performance_claim_threshold_policy_ready": True,
+        "proposal_name": _PERFORMANCE_PROOF_GOVERNANCE_PROPOSAL_NAME,
+        "schema_version": PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"performance threshold-policy evidence {key} drift")
+    policies = payload["policies"]
+    if not isinstance(policies, list) or len(policies) != len(scope_ids):
+        raise ValueError("performance threshold-policy entries drift")
+    policy_digest = _repository_file_digest(_PERFORMANCE_CLAIM_THRESHOLD_POLICY_DIGEST_PATH)
+    for policy, scope_id in zip(policies, scope_ids, strict=True):
+        if not isinstance(policy, dict):
+            raise ValueError("performance threshold-policy entry drift")
+        expected_fields = {
+            "comparison_metric_id": _NATIVE_BASELINE_COMPARISON_METRIC_ID,
+            "policy_digest": policy_digest,
+            "policy_id": _threshold_policy_id(scope_id),
+            "policy_status": "accepted_by_maintainers",
+            "summary_policy_id": _NATIVE_BASELINE_COMPARISON_SUMMARY_POLICY_ID,
+            "threshold_basis_points": _PERFORMANCE_THRESHOLD_BASIS_POINTS,
+            "threshold_kind": _PERFORMANCE_THRESHOLD_KIND,
+            "workload_scope_id": scope_id,
+        }
+        for key, value in expected_fields.items():
+            if policy.get(key) != value:
+                raise ValueError(f"performance threshold-policy {key} drift")
+        for forbidden_key in _FORBIDDEN_PERFORMANCE_GOVERNANCE_FIELDS:
+            if forbidden_key in policy:
+                raise ValueError("performance threshold-policy exposes forbidden data")
+    return True
+
+
+def _build_kernel_ingress_performance_threshold_policy_report(
+    scope_ids: tuple[str, ...],
+) -> PerformanceClaimThresholdPolicyReport:
+    return build_performance_claim_threshold_policy_report(
+        _PERFORMANCE_PROOF_GOVERNANCE_PROPOSAL_NAME,
+        policies=tuple(
+            PerformanceClaimThresholdPolicy(
+                policy_id=_threshold_policy_id(scope_id),
+                workload_scope_id=scope_id,
+                comparison_metric_id=_NATIVE_BASELINE_COMPARISON_METRIC_ID,
+                summary_policy_id=_NATIVE_BASELINE_COMPARISON_SUMMARY_POLICY_ID,
+                threshold_kind=_PERFORMANCE_THRESHOLD_KIND,
+                threshold_basis_points=_PERFORMANCE_THRESHOLD_BASIS_POINTS,
+                policy_status="accepted_by_maintainers",
+                policy_digest=_repository_file_digest(
+                    _PERFORMANCE_CLAIM_THRESHOLD_POLICY_DIGEST_PATH
+                ),
+            )
+            for scope_id in scope_ids
+        ),
+    )
+
+
+def _has_kernel_ingress_performance_acceptance_criteria_evidence() -> bool:
+    workload_report_text = build_kernel_ingress_workload_scope_report()
+    workload_report = json.loads(workload_report_text)
+    assert_kernel_ingress_workload_scope_report_contract(workload_report)
+    scope_ids = _kernel_ingress_workload_scope_ids(workload_report)
+    report = _build_kernel_ingress_performance_acceptance_criteria_report(scope_ids)
+    payload = performance_acceptance_criteria_report_to_dict(report)
+    expected = {
+        "artifact_status": PERFORMANCE_ACCEPTANCE_CRITERIA_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": ["native_performance_claim_blocked"],
+        "native_performance_claim": False,
+        "performance_acceptance_criteria_ready": True,
+        "performance_claim_status": PERFORMANCE_ACCEPTANCE_CRITERIA_CLAIM_STATUS,
+        "proposal_name": _PERFORMANCE_PROOF_GOVERNANCE_PROPOSAL_NAME,
+        "schema_version": PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"performance acceptance-criteria evidence {key} drift")
+    criteria = payload["criteria"]
+    if not isinstance(criteria, list) or len(criteria) != len(scope_ids):
+        raise ValueError("performance acceptance-criteria entries drift")
+    criteria_digest = _repository_file_digest(_PERFORMANCE_ACCEPTANCE_CRITERIA_DIGEST_PATH)
+    for item, scope_id in zip(criteria, scope_ids, strict=True):
+        if not isinstance(item, dict):
+            raise ValueError("performance acceptance-criteria entry drift")
+        expected_fields = {
+            "benchmark_methodology_id": f"methodology_{scope_id}",
+            "break_even_workload_size_id": f"break_even_{scope_id}",
+            "correctness_evidence_id": "correctness_goldens",
+            "criteria_digest": criteria_digest,
+            "criteria_id": _acceptance_criteria_id(scope_id),
+            "criteria_status": "accepted_by_maintainers",
+            "executable_security_review_id": _EXECUTABLE_SECURITY_REVIEW_ID,
+            "leaky_abstraction_report_id": _LEAKY_ABSTRACTION_REPORT_ID,
+            "native_baseline_comparison_id": f"native_comparison_{scope_id}",
+            "planner_overhead_report_id": _BREAK_EVEN_PLANNER_OVERHEAD_REPORT_ID,
+            "threshold_policy_id": _threshold_policy_id(scope_id),
+            "workload_scope_id": scope_id,
+        }
+        for key, value in expected_fields.items():
+            if item.get(key) != value:
+                raise ValueError(f"performance acceptance-criteria {key} drift")
+        for forbidden_key in _FORBIDDEN_PERFORMANCE_GOVERNANCE_FIELDS:
+            if forbidden_key in item:
+                raise ValueError("performance acceptance-criteria exposes forbidden data")
+    return True
+
+
+def _build_kernel_ingress_performance_acceptance_criteria_report(
+    scope_ids: tuple[str, ...],
+) -> PerformanceAcceptanceCriteriaReport:
+    return build_performance_acceptance_criteria_report(
+        _PERFORMANCE_PROOF_GOVERNANCE_PROPOSAL_NAME,
+        criteria=tuple(
+            PerformanceAcceptanceCriteria(
+                criteria_id=_acceptance_criteria_id(scope_id),
+                workload_scope_id=scope_id,
+                threshold_policy_id=_threshold_policy_id(scope_id),
+                correctness_evidence_id="correctness_goldens",
+                benchmark_methodology_id=f"methodology_{scope_id}",
+                native_baseline_comparison_id=f"native_comparison_{scope_id}",
+                planner_overhead_report_id=_BREAK_EVEN_PLANNER_OVERHEAD_REPORT_ID,
+                break_even_workload_size_id=f"break_even_{scope_id}",
+                leaky_abstraction_report_id=_LEAKY_ABSTRACTION_REPORT_ID,
+                executable_security_review_id=_EXECUTABLE_SECURITY_REVIEW_ID,
+                criteria_status="accepted_by_maintainers",
+                criteria_digest=_repository_file_digest(
+                    _PERFORMANCE_ACCEPTANCE_CRITERIA_DIGEST_PATH
+                ),
+            )
+            for scope_id in scope_ids
+        ),
+    )
+
+
+def _performance_proof_rfc_id(scope_id: str) -> str:
+    return f"{_PERFORMANCE_PROOF_RFC_ID}_{scope_id}"
+
+
+def _threshold_policy_id(scope_id: str) -> str:
+    return f"{_PERFORMANCE_CLAIM_THRESHOLD_POLICY_ID}_{scope_id}"
+
+
+def _acceptance_criteria_id(scope_id: str) -> str:
+    return f"{_PERFORMANCE_ACCEPTANCE_CRITERIA_ID}_{scope_id}"
+
+
+def _evidence_bundle_id(scope_id: str) -> str:
+    return f"{_PERFORMANCE_EVIDENCE_BUNDLE_ID}_{scope_id}"
 
 def _has_kernel_ingress_break_even_workload_size_evidence() -> bool:
     workload_report_text = build_kernel_ingress_workload_scope_report()
