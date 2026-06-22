@@ -29,10 +29,15 @@ HAC-IR must not contain:
 - Vendor names or target architectures.
 - Device identifiers, device paths, runtime handles, streams, queues, or launch
   grids.
+- Vendor execution-model details such as warp size, wavefront size, tensor-core
+  selection, cache-line size, memory-bank placement, hardware serials, or device
+  UUIDs.
 - Backend kernel names, backend binaries, generated artifacts, dynamic
-  libraries, plugin entrypoints, or executable artifact references.
+  libraries, plugin entrypoints, FPGA bitstreams, vendor libraries, or
+  executable artifact references.
 - Specialized placement details such as a photonic mesh, neuromorphic core,
-  CUDA device, HIP target, Metal device, or vendor-specific accelerator knob.
+  CUDA device, HIP/ROCm target, Metal device/family, TPU target, NPU target, or
+  vendor-specific accelerator knob.
 
 Those details belong to backend capabilities, HS-IR, backend lowering, runtime
 planning, or sandboxed artifact handling after a dedicated security RFC.
@@ -58,7 +63,8 @@ Before approving a HAC-IR change, verify:
 - Any new `tuc.*` attribute is compiler-produced, deterministic, bounded, and
   documented.
 - The attribute does not name a vendor, backend, device, plugin, binary,
-  generated artifact, runtime handle, or backend-specific placement target.
+  generated artifact, runtime handle, execution unit, cache detail,
+  memory-bank detail, hardware identifier, or backend-specific placement target.
 - Hardware-specific facts stay in capabilities, HS-IR, runtime plans, or
   backend implementation contracts.
 - The validator rejects malformed values before lowering.

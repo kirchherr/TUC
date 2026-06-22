@@ -376,6 +376,10 @@ Completed evidence:
 - `docs/HAC_IR_NEUTRALITY.md` defines the reviewer-facing neutrality checklist.
 - `HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES` rejects known high-risk vendor, device,
   plugin, backend-artifact, and specialized-placement leakage.
+- The forbidden attribute baseline now also blocks vendor execution units,
+  warp/wavefront sizes, cache-line and memory-bank details, device UUIDs,
+  hardware serials, runtime handles, FPGA bitstreams, vendor libraries, and
+  TPU/NPU/ROCm/Metal-family target leaks from HAC-IR.
 - Negative tests verify that hardware-specific `tuc.*` attributes fail closed
   before backend assignment or lowering can treat them as valid facts.
 - Deterministic HAC-IR golden dumps cover the Objective Alpha proof graph and
@@ -1022,7 +1026,8 @@ Go/No-Go:
 4. Maintain the proof-of-abstraction validation as the first public proof,
    including the
    [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
-5. Harden HAC-IR neutrality and reserved-attribute rejection.
+5. Keep HAC-IR neutrality and reserved-attribute rejection hardened as new
+   proof and frontend surfaces appear.
 6. Strengthen backend capability and conformance tooling.
 7. Make runtime planning explanations richer and golden-tested.
 8. Integrate real Triton intent only after the abstraction proof remains stable.
