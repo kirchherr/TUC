@@ -150,6 +150,7 @@
           "items": {
             "enum": [
               "backend_equivalence",
+              "runtime_planning_explanation",
               "backend_equivalence_portfolio",
               "backend_equivalence_portfolio_policy"
             ]

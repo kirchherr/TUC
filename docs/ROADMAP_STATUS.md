@@ -137,6 +137,10 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_planning_explanation/systolic_report.json`, and
   data-only explanation of accepted systolic placement, fallback, backend
   sequence, candidate-score visibility, and movement bytes.
+- Runtime Evidence Matrix and Runtime Evidence Gate now require and bind
+  Runtime Planning Explanation for `runtime_backend_equivalence`, including the
+  exact `runtime_planning_explanation_systolic` Matrix artifact ID and gate
+  output lines for backend sequence, selection kinds, and movement bytes.
 - Runtime Candidate Scoring Policy v0 with schema at
   `schemas/runtime_candidate_scoring_policy.v0.schema.json` and deterministic
   golden at
@@ -567,9 +571,10 @@ Current slice:
 - Runtime Evidence Gate at `examples/runtime_evidence_gate.py`, with golden
   evidence at `tests/golden/proofs/runtime_evidence_gate.txt`, now composing
   Runtime Evidence Matrix, Runtime Executor Conformance, Runtime Backend
-  Equivalence, Runtime Vector Backend Equivalence, Runtime Mixed Backend
-  Equivalence, Runtime Tensor Store Evidence, Runtime Input Manifest, Runtime
-  Output Manifest, Runtime Output Contract, Runtime Public Output Bundle,
+  Equivalence, Runtime Planning Explanation, Runtime Vector Backend
+  Equivalence, Runtime Mixed Backend Equivalence, Runtime Tensor Store
+  Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
+  Contract, Runtime Public Output Bundle,
   Runtime Reference Correctness, Runtime Execution Receipt, Runtime Execution
   Evidence Bundle, and Source Intent Runtime Returns, with binding checks for
   the backend-equivalence fixture and the `source_intent_return_mlp` frontend
@@ -579,7 +584,8 @@ Current slice:
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
 - Runtime Planning Explanation at
   `examples/runtime_planning_explanation.py`, with golden evidence at
-  `tests/golden/runtime_planning_explanation/systolic_report.json`.
+  `tests/golden/runtime_planning_explanation/systolic_report.json` and
+  Runtime Evidence Gate binding for the backend-equivalence planning slice.
 - Runtime Candidate Scoring Policy at
   `examples/runtime_candidate_scoring_policy.py`, with golden evidence at
   `tests/golden/runtime_candidate_scoring_policy/current_policy_report.json`.
@@ -1151,8 +1157,9 @@ Current focus:
   candidate comparator behavior.
 - Keep Runtime Candidate Scoring Gate passing in CI before accepting richer
   candidate scoring behavior.
-- Keep Runtime Planning Explanation passing before accepting new placement
-  reasons, fallback semantics, or movement-accounting fields.
+- Keep Runtime Planning Explanation and its Runtime Evidence Gate binding
+  passing before accepting new placement reasons, fallback semantics,
+  movement-accounting fields, or planning-explanation artifact IDs.
 - Use Runtime Buffer Lifetime before adding explicit buffer allocation plans,
   memory-pool behavior, or buffer-reuse claims.
 - Use Runtime Allocation Plan before adding memory pools, device allocation,

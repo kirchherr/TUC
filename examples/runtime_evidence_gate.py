@@ -9,6 +9,9 @@ from examples.runtime_mixed_backend_equivalence import (
 )
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
+from examples.runtime_planning_explanation import (
+    build_backend_equivalence_runtime_planning_explanation_report,
+)
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
@@ -35,6 +38,7 @@ from tuc import (
     RuntimeInputManifestReport,
     RuntimeOutputContractReport,
     RuntimeOutputManifestReport,
+    RuntimePlanningExplanationReport,
     RuntimePublicOutputBundle,
     RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceReport,
@@ -61,6 +65,17 @@ RUNTIME_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS = ("backend_equivalence",)
 RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID = "runtime_backend_equivalence"
 RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID = (
     "runtime_backend_equivalence_systolic"
+)
+RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID = (
+    "runtime_planning_explanation_systolic"
+)
+RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS = (
+    "backend_equivalence",
+    "runtime_planning_explanation",
+)
+RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS = (
+    RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
 )
 RUNTIME_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
 RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "systolic_sim"
@@ -142,8 +157,10 @@ def build_gate_matrix_bindings() -> tuple[RuntimeEvidenceGateMatrixBinding, ...]
             graph_id=RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID,
             graph_family=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY,
             source_boundary=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY,
-            required_artifact_kinds=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
-            artifact_ids=(RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,),
+            required_artifact_kinds=(
+                RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS
+            ),
+            artifact_ids=RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS,
         ),
         RuntimeEvidenceGateMatrixBinding(
             binding_id="runtime_vector_backend_equivalence_matrix",
@@ -198,6 +215,9 @@ def build_gate_report(
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
     conformance_report: RuntimeExecutorConformanceReport | None = None,
     backend_equivalence_report: RuntimeBackendEquivalenceReport | None = None,
+    runtime_planning_explanation_report: (
+        RuntimePlanningExplanationReport | None
+    ) = None,
     vector_backend_equivalence_report: (
         RuntimeBackendEquivalenceReport | None
     ) = None,
@@ -240,6 +260,11 @@ def build_gate_report(
         build_backend_equivalence_report()
         if backend_equivalence_report is None
         else backend_equivalence_report
+    )
+    runtime_planning_explanation = (
+        build_backend_equivalence_runtime_planning_explanation_report()
+        if runtime_planning_explanation_report is None
+        else runtime_planning_explanation_report
     )
     vector_backend_equivalence = (
         build_vector_backend_equivalence_report()
@@ -339,7 +364,19 @@ def build_gate_report(
         matrix,
         backend_equivalence,
         artifact_id=RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
+        required_artifact_kinds=(
+            RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS
+        ),
         label="runtime backend equivalence",
+    )
+    _assert_runtime_planning_explanation_passed(runtime_planning_explanation)
+    _assert_runtime_planning_explanation_bound(
+        runtime_planning_explanation,
+        backend_equivalence,
+    )
+    _assert_runtime_planning_explanation_matrix_covered(
+        matrix,
+        runtime_planning_explanation,
     )
     _assert_backend_equivalence_passed(
         vector_backend_equivalence,
@@ -432,6 +469,7 @@ def build_gate_report(
         matrix,
         conformance,
         backend_equivalence,
+        runtime_planning_explanation,
         vector_backend_equivalence,
         mixed_backend_equivalence,
         runtime_hs_ir_plan_alignment,
@@ -575,6 +613,96 @@ def _assert_backend_equivalence_matrix_covered(
     if artifact_ids != (artifact_id,):
         raise RuntimeEvidenceGateError(
             f"{label} matrix coverage failed: artifact_id_mismatch"
+        )
+
+
+def _assert_runtime_planning_explanation_passed(
+    report: RuntimePlanningExplanationReport,
+) -> None:
+    if not isinstance(report, RuntimePlanningExplanationReport):
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation failed: not a report object"
+        )
+    if not report.passed:
+        issues = ",".join(
+            f"{issue.operation_name}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(f"runtime planning explanation failed: {issues}")
+
+
+def _assert_runtime_planning_explanation_bound(
+    report: RuntimePlanningExplanationReport,
+    backend_equivalence: RuntimeBackendEquivalenceReport,
+) -> None:
+    if report.graph_name != RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation binding failed: graph_name_mismatch"
+        )
+    runs = {run.run_id: run for run in backend_equivalence.runs}
+    candidate = runs.get(RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID)
+    if candidate is None:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation binding failed: missing_candidate_run"
+        )
+    if report.backend_sequence != candidate.planned_backend_sequence:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation binding failed: backend_sequence_mismatch"
+        )
+    if report.operation_count != len(candidate.planned_backend_sequence):
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation binding failed: operation_count_mismatch"
+        )
+    if report.candidate_score_mode != "recorded" or report.candidate_score_count < 1:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation binding failed: candidate_scores_missing"
+        )
+    if "fallback" not in report.selection_kinds or report.fallback_count != 1:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation binding failed: fallback_not_explained"
+        )
+
+
+def _assert_runtime_planning_explanation_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+    report: RuntimePlanningExplanationReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(matrix, report.graph_name)
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation matrix coverage failed: graph missing"
+        )
+    if graph.graph_family != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation matrix coverage failed: graph_family_mismatch"
+        )
+    if graph.source_boundary != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation matrix coverage failed: "
+            "source_boundary_mismatch"
+        )
+    if (
+        graph.required_artifact_kinds
+        != RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation matrix coverage failed: "
+            "required_artifacts_mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation matrix coverage failed: "
+            "runtime evidence incomplete"
+        )
+    artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind
+        in RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS
+    )
+    if artifact_ids != RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS:
+        raise RuntimeEvidenceGateError(
+            "runtime planning explanation matrix coverage failed: "
+            "artifact_id_mismatch"
         )
 
 
@@ -1219,6 +1347,7 @@ def _render_gate_report(
     matrix: RuntimeEvidenceMatrixReport,
     conformance: RuntimeExecutorConformanceReport,
     backend_equivalence: RuntimeBackendEquivalenceReport,
+    runtime_planning_explanation: RuntimePlanningExplanationReport,
     vector_backend_equivalence: RuntimeBackendEquivalenceReport,
     mixed_backend_equivalence: RuntimeBackendEquivalenceReport,
     runtime_hs_ir_plan_alignment: RuntimeHsIrPlanAlignmentReport,
@@ -1262,6 +1391,25 @@ def _render_gate_report(
     lines.append(
         "  runtime_backend_equivalence_raw_value_policy = "
         f'"{backend_equivalence.raw_value_policy}"'
+    )
+    lines.append('  runtime_planning_explanation = "passed"')
+    lines.append('  runtime_planning_explanation_binding = "verified"')
+    lines.append('  runtime_planning_explanation_matrix = "covered"')
+    lines.append(
+        "  runtime_planning_explanation_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID}"'
+    )
+    lines.append(
+        "  runtime_planning_explanation_backend_sequence = "
+        f'"{",".join(runtime_planning_explanation.backend_sequence)}"'
+    )
+    lines.append(
+        "  runtime_planning_explanation_selection_kinds = "
+        f'"{",".join(runtime_planning_explanation.selection_kinds)}"'
+    )
+    lines.append(
+        "  runtime_planning_explanation_movement_bytes = "
+        f'"{runtime_planning_explanation.total_data_movement_bytes}"'
     )
     lines.append('  runtime_vector_backend_equivalence = "passed"')
     lines.append('  runtime_vector_backend_equivalence_binding = "verified"')

@@ -19,6 +19,7 @@ execute_graph
   -> Runtime Execution Receipt
   -> Runtime Execution Evidence Bundle
   -> Runtime Backend Equivalence
+  -> Runtime Planning Explanation
   -> Runtime Evidence Gate
 ```
 
@@ -95,6 +96,11 @@ metadata and output omission status. It does not hash tensor contents.
 slice. It serializes only bounded identifiers, counts, layout names, backend
 names, trusted-executor statuses, and metadata digests.
 
+`Runtime Planning Explanation` summarizes accepted `PartitionPlan` assignment
+reasons, backend sequence, fallback count, candidate-score visibility, and
+movement bytes. Runtime Evidence Gate currently binds it to the systolic
+backend-equivalence candidate plan by exact Matrix artifact ID.
+
 ## What Is Never Serialized
 
 Runtime evidence does not serialize:
@@ -129,6 +135,11 @@ stronger portability or performance claims are made.
 `Runtime HS-IR Plan Alignment` is the current bridge between backend-specific
 IR facts and practical runtime execution evidence. It makes HS-IR drift from
 the accepted plan or trace visible as deterministic JSON.
+
+`Runtime Planning Explanation` is the current bridge between accepted
+partition decisions and reviewer-facing planning rationale. It makes fallback
+and movement accounting visible before richer planning behavior can count as
+gated evidence.
 
 Together, the gates keep the core proof visible:
 

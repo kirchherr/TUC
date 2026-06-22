@@ -9,7 +9,9 @@ import pytest
 
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
 from examples.runtime_evidence_gate import (
+    RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID,
     RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
@@ -29,6 +31,10 @@ from examples.runtime_mixed_backend_equivalence import (
 )
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
+from examples.runtime_planning_explanation import (
+    build_backend_equivalence_runtime_planning_explanation_report,
+    build_systolic_runtime_planning_explanation_report,
+)
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
@@ -60,6 +66,8 @@ from tuc import (
     RuntimeOutputContractReport,
     RuntimeOutputManifestIssue,
     RuntimeOutputManifestReport,
+    RuntimePlanningExplanationIssue,
+    RuntimePlanningExplanationReport,
     RuntimeReferenceCorrectnessIssue,
     RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceIssue,
@@ -99,6 +107,22 @@ def test_runtime_evidence_gate_example_runs() -> None:
         "runtime_backend_equivalence_matrix_artifact = "
         f'"{RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
     ) in completed.stdout
+    assert 'runtime_planning_explanation = "passed"' in completed.stdout
+    assert 'runtime_planning_explanation_binding = "verified"' in completed.stdout
+    assert 'runtime_planning_explanation_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_planning_explanation_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert (
+        'runtime_planning_explanation_backend_sequence = '
+        '"systolic-sim,reference-cpu"'
+    ) in completed.stdout
+    assert (
+        'runtime_planning_explanation_selection_kinds = '
+        '"fallback,preferred_for"'
+    ) in completed.stdout
+    assert 'runtime_planning_explanation_movement_bytes = "32"' in completed.stdout
     assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
     assert (
         'runtime_vector_backend_equivalence_binding = "verified"'
@@ -259,6 +283,79 @@ def test_runtime_evidence_gate_rejects_unbound_backend_equivalence() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="backend equivalence binding"):
         build_gate_report(backend_equivalence_report=mismatched_report)
+
+
+def test_runtime_evidence_gate_rejects_failed_runtime_planning_explanation() -> None:
+    report = build_backend_equivalence_runtime_planning_explanation_report()
+    unknown_step = replace(
+        report.steps[0],
+        reason="unclassified_reason",
+        selection_kind="unknown",
+    )
+    failed_report = RuntimePlanningExplanationReport(
+        graph_name=report.graph_name,
+        steps=(unknown_step, *report.steps[1:]),
+        transfer_edge_count=report.transfer_edge_count,
+        layout_conversion_count=report.layout_conversion_count,
+        total_transfer_bytes=report.total_transfer_bytes,
+        total_layout_conversion_bytes=report.total_layout_conversion_bytes,
+        total_data_movement_bytes=report.total_data_movement_bytes,
+        candidate_score_mode=report.candidate_score_mode,
+        issues=(
+            RuntimePlanningExplanationIssue(
+                operation_name="projection",
+                issue_code="unknown_selection_reason",
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="planning explanation failed",
+    ):
+        build_gate_report(runtime_planning_explanation_report=failed_report)
+
+
+def test_runtime_evidence_gate_rejects_unbound_runtime_planning_explanation() -> None:
+    unbound_report = build_systolic_runtime_planning_explanation_report()
+
+    assert unbound_report.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="planning explanation binding",
+    ):
+        build_gate_report(runtime_planning_explanation_report=unbound_report)
+
+
+def test_runtime_evidence_gate_rejects_wrong_runtime_planning_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_planning_explanation = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_planning_explanation_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_planning_explanation_other",
+                    )
+                    if artifact.artifact_kind == "runtime_planning_explanation"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_planning_explanation.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="planning explanation matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_planning_explanation)
 
 
 def test_runtime_evidence_gate_rejects_failed_vector_backend_equivalence() -> None:

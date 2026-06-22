@@ -11,6 +11,8 @@ import pytest
 
 from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS,
+    RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS,
     build_gate_matrix_bindings,
@@ -57,6 +59,18 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
         "runtime_mixed_backend_equivalence_matrix",
         "runtime_backend_equivalence_portfolio_matrix",
     )
+    systolic = {
+        binding.binding_id: binding for binding in report.bindings
+    }["runtime_backend_equivalence_matrix"]
+    assert systolic.required_artifact_kinds == (
+        RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS
+    )
+    assert systolic.expected_artifact_ids == (
+        RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS
+    )
+    assert systolic.observed_artifact_ids == (
+        RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS
+    )
     mixed = {
         binding.binding_id: binding for binding in report.bindings
     }["runtime_mixed_backend_equivalence_matrix"]
@@ -99,6 +113,7 @@ def test_runtime_evidence_gate_matrix_coverage_example_runs() -> None:
     assert '"coverage_passed": true' in completed.stdout
     assert '"binding_count": 4' in completed.stdout
     assert "runtime_backend_equivalence_systolic" in completed.stdout
+    assert "runtime_planning_explanation_systolic" in completed.stdout
     assert "runtime_hs_ir_plan_alignment_mixed" in completed.stdout
     assert "runtime_backend_equivalence_portfolio_policy" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
@@ -253,6 +268,9 @@ def test_runtime_evidence_gate_matrix_coverage_schema_matches_contract() -> None
         item["const"]
         for item in schema["properties"]["blocked_execution_surfaces"]["prefixItems"]
     ] == list(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)
+    assert "runtime_planning_explanation" in schema["$defs"]["binding"][
+        "properties"
+    ]["required_artifact_kinds"]["items"]["enum"]
 
 
 def test_runtime_evidence_gate_matrix_coverage_schema_fails_closed() -> None:

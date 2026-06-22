@@ -127,7 +127,9 @@ Current runtime surfaces:
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
 - Runtime Planning Explanation v0 for accepted `PartitionPlan` backend
-  sequence, fallback, candidate-score visibility, and movement accounting.
+  sequence, fallback, candidate-score visibility, and movement accounting, now
+  bound into Runtime Evidence Matrix and Runtime Evidence Gate for the
+  systolic backend-equivalence slice.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 

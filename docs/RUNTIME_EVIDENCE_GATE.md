@@ -3,7 +3,8 @@
 Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
 Evidence, Runtime Backend Equivalence and Backend Equivalence Portfolio
-evidence, Runtime HS-IR Plan Alignment evidence, Runtime Input Manifest
+evidence, Runtime Planning Explanation evidence, Runtime HS-IR Plan Alignment
+evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
@@ -17,6 +18,7 @@ It runs:
 - `build_current_runtime_evidence_matrix_report()`
 - `run_runtime_executor_conformance()`
 - `build_backend_equivalence_report()`
+- `examples/runtime_planning_explanation.py`
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
 - `examples/runtime_hs_ir_plan_alignment.py`
@@ -38,8 +40,8 @@ The gate passes only when:
 
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
-  entries with scoped `backend_equivalence` requirements and exact
-  artifact-ID bindings
+  entries, with the systolic entry requiring both `backend_equivalence` and
+  `runtime_planning_explanation`, plus exact artifact-ID bindings
 - the Runtime Evidence Matrix includes the backend-equivalence portfolio graph
   entry with scoped `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` requirements and exact artifact-ID
@@ -47,8 +49,9 @@ The gate passes only when:
 - the Runtime Evidence Matrix includes `runtime_hs_ir_plan_alignment` evidence
   on the mixed backend-equivalence graph with exact artifact-ID binding
 - Runtime Evidence Gate Matrix Coverage passes, proving the exact
-  backend-equivalence, HS-IR alignment, and portfolio Matrix graph/artifact
-  bindings are present in one deterministic audit report
+  backend-equivalence, runtime-planning-explanation, HS-IR alignment, and
+  portfolio Matrix graph/artifact bindings are present in one deterministic
+  audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
@@ -59,6 +62,13 @@ The gate passes only when:
   report is inventoried by the Runtime Evidence Matrix as scoped
   `backend_equivalence` evidence with the exact
   `runtime_backend_equivalence_systolic` artifact ID
+- Runtime Planning Explanation passes for the same systolic candidate plan
+- Runtime Planning Explanation binding passes, proving the checked explanation
+  report is the expected `systolic-sim,reference-cpu` backend sequence with
+  visible fallback and recorded candidate-score diagnostics
+- Runtime Planning Explanation matrix coverage passes, proving the explanation
+  report is inventoried by the Runtime Evidence Matrix with the exact
+  `runtime_planning_explanation_systolic` artifact ID
 - Runtime Vector Backend Equivalence passes for the `reference_cpu` baseline
   run and the `vector_sim` candidate run
 - Runtime Vector Backend Equivalence binding passes, proving the checked report
@@ -191,6 +201,12 @@ Runtime HS-IR Plan Alignment schema:
 schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json
 ```
 
+Runtime Planning Explanation schema:
+
+```text
+schemas/runtime_planning_explanation_report.v0.schema.json
+```
+
 Runtime Evidence Gate Matrix Coverage schema:
 
 ```text
@@ -235,6 +251,16 @@ It composes bounded in-repository checks:
 - a bounded Runtime Backend Equivalence matrix lookup that verifies graph
   family, source boundary, required artifact kinds, completeness, and
   exact `backend_equivalence` artifact coverage
+- data-only Runtime Planning Explanation metadata explaining the accepted
+  systolic candidate plan with backend sequence, fallback, candidate-score
+  visibility, and movement bytes
+- a bounded Runtime Planning Explanation binding check that compares graph ID,
+  candidate backend sequence, operation count, fallback visibility, and
+  candidate-score visibility against the Backend Equivalence report already
+  checked by the gate
+- a bounded Runtime Planning Explanation matrix lookup that verifies graph
+  family, source boundary, required artifact kinds, completeness, and exact
+  `runtime_planning_explanation` artifact coverage
 - data-only Runtime Vector Backend Equivalence metadata comparing the expected
   `reference_cpu` and `vector_sim` trusted execution placements with raw tensor
   values omitted by policy

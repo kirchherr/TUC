@@ -309,6 +309,7 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "reference_correctness",
     "execution_receipt",
     "backend_equivalence",
+    "runtime_planning_explanation",
     "backend_equivalence_portfolio",
     "backend_equivalence_portfolio_policy",
     "runtime_hs_ir_plan_alignment",
@@ -1410,8 +1411,15 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "backend_equivalence",
                         "runtime_backend_equivalence_systolic",
                     ),
+                    _runtime_evidence_artifact(
+                        "runtime_planning_explanation",
+                        "runtime_planning_explanation_systolic",
+                    ),
                 ),
-                required_artifact_kinds=("backend_equivalence",),
+                required_artifact_kinds=(
+                    "backend_equivalence",
+                    "runtime_planning_explanation",
+                ),
             ),
             RuntimeEvidenceGraph(
                 graph_id="runtime_vector_backend_equivalence",

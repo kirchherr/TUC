@@ -70,3 +70,10 @@ For the systolic proof graph, the report shows:
 
 This strengthens runtime planning explainability without changing placement
 behavior or adding hardware-specific facts to HAC-IR.
+
+Runtime Evidence Matrix and Runtime Evidence Gate now bind a matching
+backend-equivalence planning explanation under the exact
+`runtime_planning_explanation_systolic` artifact ID. That gate binding checks
+that the explanation belongs to `runtime_backend_equivalence`, matches the
+`systolic-sim,reference-cpu` candidate backend sequence, records candidate-score
+visibility, and keeps the fallback explicit.

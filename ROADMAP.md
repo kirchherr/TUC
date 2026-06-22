@@ -538,7 +538,9 @@ Completed evidence:
   Matrix artifact binding before accepting the mixed accelerator slice.
 - Runtime Planning Explanation reports summarize accepted `PartitionPlan`
   selection kinds, backend sequence, fallback count, candidate-score visibility,
-  and movement bytes for the systolic proof slice.
+  and movement bytes; Runtime Evidence Matrix and Runtime Evidence Gate now
+  bind that report to the systolic backend-equivalence slice by exact artifact
+  ID.
 
 Next work:
 
@@ -1037,8 +1039,8 @@ Go/No-Go:
 5. Keep HAC-IR neutrality and reserved-attribute rejection hardened as new
    proof and frontend surfaces appear.
 6. Strengthen backend capability and conformance tooling.
-7. Bind runtime planning explanations into broader runtime evidence once the
-   schema proves stable.
+7. Extend planning explanation coverage only when new proof slices add
+   distinct placement, fallback, or movement evidence.
 8. Integrate real Triton intent only after the abstraction proof remains stable.
 9. Expand to specialized hardware simulators only when they strengthen the
    universal compute claim.
