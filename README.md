@@ -126,6 +126,8 @@ Current runtime surfaces:
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
   Manifest, and Memory Planning Gate.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
+- Runtime Planning Explanation v0 for accepted `PartitionPlan` backend
+  sequence, fallback, candidate-score visibility, and movement accounting.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
@@ -145,6 +147,7 @@ examples/runtime_backend_equivalence_portfolio_policy.py
 examples/runtime_vector_backend_equivalence.py
 examples/runtime_mixed_backend_equivalence.py
 examples/runtime_hs_ir_plan_alignment.py
+examples/runtime_planning_explanation.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
 examples/source_intent_runtime_returns.py
@@ -168,6 +171,7 @@ Key docs:
 - [Runtime Backend Equivalence Portfolio](docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md)
 - [Runtime Evidence Gate Matrix Coverage](docs/RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
 - [Runtime HS-IR Plan Alignment](docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md)
+- [Runtime Planning Explanation](docs/RUNTIME_PLANNING_EXPLANATION.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -187,6 +191,7 @@ schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
 schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
 schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json
 schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json
+schemas/runtime_planning_explanation_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json

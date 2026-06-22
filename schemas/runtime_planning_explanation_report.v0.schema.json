@@ -1,0 +1,293 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_planning_explanation_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "backend_sequence": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "candidate_score_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "candidate_score_mode": {
+      "enum": [
+        "not_recorded",
+        "recorded"
+      ],
+      "type": "string"
+    },
+    "explanation_contract": {
+      "const": "runtime_planning_explanation.data_only.v0"
+    },
+    "explanation_status": {
+      "enum": [
+        "failed",
+        "passed"
+      ],
+      "type": "string"
+    },
+    "fallback_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 128,
+      "type": "array"
+    },
+    "layout_conversion_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "operation_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_planning_explanation_report.v0"
+    },
+    "selection_kinds": {
+      "items": {
+        "$ref": "#/$defs/selection_kind"
+      },
+      "maxItems": 6,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "steps": {
+      "items": {
+        "$ref": "#/$defs/explanation_step"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "total_data_movement_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "total_layout_conversion_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "total_transfer_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "transfer_edge_count": {
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "backend_sequence",
+    "blocked_execution_surfaces",
+    "candidate_score_count",
+    "candidate_score_mode",
+    "explanation_contract",
+    "explanation_status",
+    "fallback_count",
+    "graph_name",
+    "issues",
+    "layout_conversion_count",
+    "operation_count",
+    "passed",
+    "schema_version",
+    "selection_kinds",
+    "steps",
+    "total_data_movement_bytes",
+    "total_layout_conversion_bytes",
+    "total_transfer_bytes",
+    "transfer_edge_count"
+  ],
+  "type": "object",
+  "$defs": {
+    "explanation_reason": {
+      "maxLength": 2048,
+      "not": {
+        "pattern": "backend_artifact|callable|command|device_id|dynamic_library|env|environment|executable|file_path|generated_code|host_path|import_module|jit_function|module|network|plugin_entrypoint|python_module|python_source|raw_benchmark_output|raw_timing_samples|subprocess|url"
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:=;,-]*$",
+      "type": "string"
+    },
+    "explanation_step": {
+      "additionalProperties": false,
+      "properties": {
+        "backend_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "candidate_score_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "layout_conversion_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "memory_domain": {
+          "enum": [
+            "host_ram",
+            "gpu_hbm",
+            "device_sram",
+            "analog_weight_bank",
+            "neuromorphic_synapse_array",
+            "persistent_nvm",
+            "stream_buffer",
+            "unknown"
+          ]
+        },
+        "movement_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "operation_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "produced_layout": {
+          "enum": [
+            "row_major",
+            "column_major",
+            "blocked",
+            "vector",
+            "unknown"
+          ]
+        },
+        "reason": {
+          "$ref": "#/$defs/explanation_reason"
+        },
+        "rejected_candidate_score_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "selected_candidate_score_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "selection_kind": {
+          "$ref": "#/$defs/selection_kind"
+        },
+        "transfer_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "backend_name",
+        "candidate_score_count",
+        "layout_conversion_bytes",
+        "memory_domain",
+        "movement_bytes",
+        "operation_name",
+        "produced_layout",
+        "reason",
+        "rejected_candidate_score_count",
+        "selected_candidate_score_count",
+        "selection_kind",
+        "transfer_bytes"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "operation_name": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "operation_name"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "selection_kind": {
+      "enum": [
+        "fallback",
+        "manual_override_prefer",
+        "manual_override_require",
+        "preferred_for",
+        "supported",
+        "unknown"
+      ],
+      "type": "string"
+    }
+  }
+}

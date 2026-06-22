@@ -536,6 +536,9 @@ Completed evidence:
   produced layouts, and layout-conversion accounting.
 - Runtime Evidence Gate checks the Runtime HS-IR Plan Alignment report and
   Matrix artifact binding before accepting the mixed accelerator slice.
+- Runtime Planning Explanation reports summarize accepted `PartitionPlan`
+  selection kinds, backend sequence, fallback count, candidate-score visibility,
+  and movement bytes for the systolic proof slice.
 
 Next work:
 
@@ -1034,7 +1037,8 @@ Go/No-Go:
 5. Keep HAC-IR neutrality and reserved-attribute rejection hardened as new
    proof and frontend surfaces appear.
 6. Strengthen backend capability and conformance tooling.
-7. Make runtime planning explanations richer and golden-tested.
+7. Bind runtime planning explanations into broader runtime evidence once the
+   schema proves stable.
 8. Integrate real Triton intent only after the abstraction proof remains stable.
 9. Expand to specialized hardware simulators only when they strengthen the
    universal compute claim.

@@ -131,6 +131,12 @@ hardware-independent interface into capability-driven runtime planning.
   deterministic golden at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`,
   and CI coverage in the `python` workflow job.
+- Runtime Planning Explanation v0 with schema at
+  `schemas/runtime_planning_explanation_report.v0.schema.json`,
+  deterministic golden at
+  `tests/golden/runtime_planning_explanation/systolic_report.json`, and
+  data-only explanation of accepted systolic placement, fallback, backend
+  sequence, candidate-score visibility, and movement bytes.
 - Runtime Candidate Scoring Policy v0 with schema at
   `schemas/runtime_candidate_scoring_policy.v0.schema.json` and deterministic
   golden at
@@ -571,6 +577,9 @@ Current slice:
 - Runtime Candidate Score Evidence at
   `examples/runtime_candidate_score_evidence.py`, with golden evidence at
   `tests/golden/runtime_candidate_score_evidence/profiled_candidate_score_report.json`.
+- Runtime Planning Explanation at
+  `examples/runtime_planning_explanation.py`, with golden evidence at
+  `tests/golden/runtime_planning_explanation/systolic_report.json`.
 - Runtime Candidate Scoring Policy at
   `examples/runtime_candidate_scoring_policy.py`, with golden evidence at
   `tests/golden/runtime_candidate_scoring_policy/current_policy_report.json`.
@@ -1142,6 +1151,8 @@ Current focus:
   candidate comparator behavior.
 - Keep Runtime Candidate Scoring Gate passing in CI before accepting richer
   candidate scoring behavior.
+- Keep Runtime Planning Explanation passing before accepting new placement
+  reasons, fallback semantics, or movement-accounting fields.
 - Use Runtime Buffer Lifetime before adding explicit buffer allocation plans,
   memory-pool behavior, or buffer-reuse claims.
 - Use Runtime Allocation Plan before adding memory pools, device allocation,
