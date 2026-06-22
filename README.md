@@ -71,6 +71,14 @@ python examples/research_onboarding_evidence.py
 
 See [Research Onboarding Evidence](docs/RESEARCH_ONBOARDING_EVIDENCE.md).
 
+Review the Objective Alpha public proof bundle:
+
+```bash
+python examples/objective_alpha_public_proof_bundle.py
+```
+
+See [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
+
 ## Runtime Execution
 
 Runtime Executor v0 runs already-compiled graphs through a fixed trusted

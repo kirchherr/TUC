@@ -1019,7 +1019,9 @@ Go/No-Go:
    [Research Onboarding Evidence](docs/RESEARCH_ONBOARDING_EVIDENCE.md).
 3. Apply external feedback through bounded triage, starting with
    [External Review Triage 2026-06-22](docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md).
-4. Maintain the proof-of-abstraction validation as the first public proof.
+4. Maintain the proof-of-abstraction validation as the first public proof,
+   including the
+   [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
 5. Harden HAC-IR neutrality and reserved-attribute rejection.
 6. Strengthen backend capability and conformance tooling.
 7. Make runtime planning explanations richer and golden-tested.

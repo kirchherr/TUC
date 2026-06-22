@@ -1,0 +1,64 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_claims": [
+    "native_performance_parity",
+    "vendor_compiler_replacement",
+    "broad_source_code_parsing",
+    "arbitrary_third_party_backend_execution",
+    "device_access",
+    "generated_artifact_execution"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "broad_source_parser_claim": false,
+  "bundle_contract": "objective_alpha.public_proof_bundle.v0",
+  "bundle_id": "objective_alpha_public_proof_bundle",
+  "bundle_metadata_digest": "e78f4ac2d61c73056b1abcaa6362c8753f77d5dedc1b3f0a903072aa0f375550",
+  "claim_status": "correctness_and_inspectability_only",
+  "evidence_entries": [
+    {
+      "artifact_kind": "deterministic_proof_output",
+      "entry_point": "python examples/proof_of_execution.py",
+      "evidence_id": "proof_of_execution",
+      "metadata_digest": "fd1f76d3d6c1f4015f9e4217c0031b5512f4f6ff8314fa6efb1d61a4ca3d7b59",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_matrix_report",
+      "entry_point": "python examples/runtime_evidence_matrix.py",
+      "evidence_id": "runtime_evidence_matrix",
+      "metadata_digest": "bc47394e67f859663c4a421207abe6573448120f4bfc2d35c9a7f3b8c7ec3a6a",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "deterministic_gate_output",
+      "entry_point": "python examples/runtime_evidence_gate.py",
+      "evidence_id": "runtime_evidence_gate",
+      "metadata_digest": "153abe83e9b19f576d9f6ee71357912914dd231d2bf9e57a0274a69d0e6f9093",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_onboarding_report",
+      "entry_point": "python examples/research_onboarding_evidence.py",
+      "evidence_id": "research_onboarding_evidence",
+      "metadata_digest": "878f56330a092a8c9393e30fc6406db601702fc4c332a36971f3cd6c23bc527c",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    }
+  ],
+  "native_performance_claim": false,
+  "raw_output_policy": "digest_only",
+  "schema_version": "tuc.objective_alpha_public_proof_bundle.v0",
+  "vendor_replacement_claim": false
+}

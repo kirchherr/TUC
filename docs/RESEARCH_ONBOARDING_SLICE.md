@@ -72,6 +72,7 @@ proof can count as merge evidence.
 - Performance boundary: `docs/PERFORMANCE_PROOF_BOUNDARY.md`
 - External review response: `docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md`
 - Onboarding evidence: `docs/RESEARCH_ONBOARDING_EVIDENCE.md`
+- Public proof bundle: `docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md`
 
 ## Contribution Lanes
 
