@@ -390,6 +390,7 @@ Current authoring path:
 ```text
 manifest
     -> Manifest Claim Review
+    -> Backend Capability Coverage
     -> Backend Registry diagnostics
     -> Compiler decision report
     -> Backend conformance
@@ -400,6 +401,7 @@ Key docs:
 
 - [Backend API v0.1](docs/BACKEND_API.md)
 - [Backend capability schema](docs/BACKEND_CAPABILITY_SCHEMA.md)
+- [Backend capability coverage](docs/BACKEND_CAPABILITY_COVERAGE.md)
 - [Manifest Claim Review](docs/MANIFEST_CLAIM_REVIEW.md)
 - [Backend Author Evidence Gate](docs/BACKEND_AUTHOR_EVIDENCE_GATE.md)
 

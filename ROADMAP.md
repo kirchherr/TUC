@@ -428,6 +428,9 @@ Completed evidence:
   lowering without modifying TUC core.
 - Backend conformance reports can be emitted as deterministic JSON artifacts
   for maintainer review.
+- Backend Capability Coverage emits a schema-versioned pure-data matrix showing
+  which simulator capability descriptions cover current MVP operation families
+  before conformance or execution begins.
 - Backend capability schema assumptions for error budgets, latency, energy,
   calibration, and noise modeling are documented separately from HAC-IR and
   executable backend behavior.
@@ -465,6 +468,8 @@ Go/No-Go:
 - Specialized accelerator manifests pass claim review before acceptance.
 - External backend author onboarding fails closed when claim review blocks a
   manifest.
+- Current simulator capability data covers `matmul`, `elementwise`,
+  `reduction`, and `softmax` in one deterministic coverage artifact.
 - External backend author onboarding has one deterministic readiness report.
 - External backend author onboarding evidence is checked by CI.
 - Capability checks never import backend code, run subprocesses, load dynamic

@@ -21,6 +21,7 @@ The v0.1 surface is:
 - `LoweringResult`
 - Schema-versioned backend capability manifests.
 - Schema-versioned transfer-cost profile manifests.
+- Schema-versioned backend capability coverage reports.
 - Explicit backend capability registry.
 - HAC-IR and HS-IR dialect contracts.
 - Trusted Runtime Backend Executor Contract for fixed in-process execution.
@@ -100,6 +101,19 @@ diagnostics = registry.diagnose_operation_support(operation)
 These diagnostics are suitable for compiler review, backend author feedback, and
 future partitioning reports because they state why a backend accepted or
 rejected an operation without executing backend code.
+
+Before running trusted backend conformance, maintainers can also emit a
+repository-level capability coverage matrix:
+
+```text
+examples/backend_capability_coverage.py
+```
+
+That report is schema-versioned at
+`schemas/backend_capability_coverage_report.v0.schema.json` and shows which
+neutral operation families are covered by current capability data. It does not
+load plugins, instantiate third-party backend objects, run lowering, touch
+devices, or execute artifacts.
 
 ## Capability Fields
 
@@ -210,14 +224,15 @@ It demonstrates the intended review flow for a toy backend author:
 
 1. Provide a schema-versioned manifest.
 2. Pass Manifest Claim Review for that explicit manifest path.
-3. Load it through `BackendRegistry.from_manifest_paths(...)`.
-4. Compile a graph using capability data only.
-5. Run `assert_backend_conformance(...)`.
-6. Lower only the HAC-IR subgraph assigned to the explicitly constructed
+3. Confirm operation-family coverage through Backend Capability Coverage.
+4. Load it through `BackendRegistry.from_manifest_paths(...)`.
+5. Compile a graph using capability data only.
+6. Run `assert_backend_conformance(...)`.
+7. Lower only the HAC-IR subgraph assigned to the explicitly constructed
    trusted backend object.
-7. Emit claim-review and conformance reports as deterministic review
+8. Emit claim-review and conformance reports as deterministic review
    artifact.
-8. Emit Backend Author Readiness as the top-level pass/fail authoring artifact.
+9. Emit Backend Author Readiness as the top-level pass/fail authoring artifact.
 
 ## Transfer-Cost Profiles
 

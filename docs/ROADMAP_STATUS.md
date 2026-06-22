@@ -190,6 +190,12 @@ hardware-independent interface into capability-driven runtime planning.
 - Backend Author Evidence Gate with deterministic golden evidence at
   `tests/golden/backend_author_readiness/backend_author_evidence_gate.txt` and
   CI coverage in the `python` workflow job.
+- Backend Capability Coverage v0 with schema at
+  `schemas/backend_capability_coverage_report.v0.schema.json`, deterministic
+  golden evidence at
+  `tests/golden/backend_capability_coverage/current_report.json`, and
+  execution-free coverage for `matmul`, `elementwise`, `reduction`, and
+  `softmax` across current simulator capability data.
 - Runtime readiness and execution-trace goldens for `proof_of_abstraction`,
   `proof_of_reduction`, and `proof_of_softmax`.
 - Separate `proof_of_execution` HAC-IR, runtime-plan, and compiler-decision

@@ -1,0 +1,102 @@
+{
+  "backend_count": 3,
+  "backend_names": [
+    "linear-sim",
+    "systolic-sim",
+    "vector-sim"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "complete": true,
+  "coverage_contract": "backend_capability_coverage.data_only.v0",
+  "coverage_status": "complete",
+  "issues": [],
+  "operation_count": 4,
+  "required_operation_kinds": [
+    "matmul",
+    "elementwise",
+    "reduction",
+    "softmax"
+  ],
+  "rows": [
+    {
+      "accepting_backends": [
+        "linear-sim",
+        "systolic-sim"
+      ],
+      "memory_domains": [
+        "analog_weight_bank",
+        "device_sram"
+      ],
+      "operation_kind": "matmul",
+      "preferred_backends": [
+        "linear-sim",
+        "systolic-sim"
+      ],
+      "produced_layouts": [
+        "blocked",
+        "row_major"
+      ],
+      "status": "covered"
+    },
+    {
+      "accepting_backends": [
+        "vector-sim"
+      ],
+      "memory_domains": [
+        "device_sram"
+      ],
+      "operation_kind": "elementwise",
+      "preferred_backends": [
+        "vector-sim"
+      ],
+      "produced_layouts": [
+        "row_major"
+      ],
+      "status": "covered"
+    },
+    {
+      "accepting_backends": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "memory_domains": [
+        "analog_weight_bank",
+        "device_sram"
+      ],
+      "operation_kind": "reduction",
+      "preferred_backends": [
+        "vector-sim"
+      ],
+      "produced_layouts": [
+        "row_major"
+      ],
+      "status": "covered"
+    },
+    {
+      "accepting_backends": [
+        "vector-sim"
+      ],
+      "memory_domains": [
+        "device_sram"
+      ],
+      "operation_kind": "softmax",
+      "preferred_backends": [
+        "vector-sim"
+      ],
+      "produced_layouts": [
+        "row_major"
+      ],
+      "status": "covered"
+    }
+  ],
+  "schema_version": "tuc.backend_capability_coverage_report.v0"
+}
