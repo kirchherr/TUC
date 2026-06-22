@@ -29,6 +29,9 @@ hardware-independent interface into capability-driven runtime planning.
 - [Research Onboarding Slice](RESEARCH_ONBOARDING_SLICE.md) provides a short
   first-run path from the Universal Compute claim to Objective Alpha executable
   evidence.
+- [Research Onboarding Evidence](RESEARCH_ONBOARDING_EVIDENCE.md) emits the
+  first-run proof path as schema-versioned review evidence with blocked claims
+  and blocked execution surfaces.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
 - Golden runtime-plan dump for proof-of-abstraction placement and transfer

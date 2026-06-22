@@ -1,0 +1,67 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_claims": [
+    "native_performance_parity",
+    "vendor_compiler_replacement",
+    "broad_source_code_parsing",
+    "arbitrary_third_party_backend_execution",
+    "device_access",
+    "generated_artifact_execution"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "broad_source_parser_claim": false,
+  "claim_status": "bounded_research_claim",
+  "documentation_paths": [
+    "docs/RESEARCH_ONBOARDING_SLICE.md",
+    "docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md",
+    "docs/RUNTIME_EXECUTOR.md",
+    "docs/RUNTIME_EVIDENCE_FLOW.md",
+    "docs/PERFORMANCE_PROOF_BOUNDARY.md"
+  ],
+  "evidence_metadata_digest": "bceab43a21933f6637b5563144d521e09903b8a62c74c90758763f76f3c38e88",
+  "evidence_steps": [
+    {
+      "artifact_kind": "deterministic_proof_output",
+      "command": "python examples/proof_of_execution.py",
+      "documentation_path": "docs/RESEARCH_ONBOARDING_SLICE.md",
+      "evidence_id": "proof_of_execution",
+      "purpose": "execute_trusted_objective_alpha_slice"
+    },
+    {
+      "artifact_kind": "schema_versioned_matrix_report",
+      "command": "python examples/runtime_evidence_matrix.py",
+      "documentation_path": "docs/RUNTIME_EVIDENCE_FLOW.md",
+      "evidence_id": "runtime_evidence_matrix",
+      "purpose": "inventory_required_runtime_evidence"
+    },
+    {
+      "artifact_kind": "deterministic_gate_output",
+      "command": "python examples/runtime_evidence_gate.py",
+      "documentation_path": "docs/RUNTIME_EVIDENCE_FLOW.md",
+      "evidence_id": "runtime_evidence_gate",
+      "purpose": "verify_merge_facing_evidence_requirements"
+    }
+  ],
+  "native_performance_claim": false,
+  "onboarding_contract": "research_onboarding.first_proof_path.v0",
+  "proof_shape": [
+    "Graph",
+    "HAC-IR",
+    "Runtime Plan",
+    "Trusted Prototype Backends",
+    "Reference-Checked Result",
+    "Metadata-Only Evidence"
+  ],
+  "report_id": "objective_alpha_research_onboarding",
+  "schema_version": "tuc.research_onboarding_report.v0",
+  "vendor_replacement_claim": false
+}

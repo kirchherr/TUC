@@ -63,6 +63,14 @@ python examples/runtime_evidence_matrix.py
 python examples/runtime_evidence_gate.py
 ```
 
+Review the first-run onboarding evidence:
+
+```bash
+python examples/research_onboarding_evidence.py
+```
+
+See [Research Onboarding Evidence](docs/RESEARCH_ONBOARDING_EVIDENCE.md).
+
 ## Runtime Execution
 
 Runtime Executor v0 runs already-compiled graphs through a fixed trusted

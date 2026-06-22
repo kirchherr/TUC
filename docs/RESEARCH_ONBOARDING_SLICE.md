@@ -34,6 +34,12 @@ python examples/runtime_evidence_matrix.py
 python examples/runtime_evidence_gate.py
 ```
 
+Emit the data-only onboarding evidence report:
+
+```bash
+python examples/research_onboarding_evidence.py
+```
+
 The first command executes the smallest proof that a neutral graph can be
 planned and run through trusted prototype executors. The matrix inventories the
 proof evidence. The gate checks that required evidence is present before the
@@ -65,6 +71,7 @@ proof can count as merge evidence.
 - Frontend intake: `docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md`
 - Performance boundary: `docs/PERFORMANCE_PROOF_BOUNDARY.md`
 - External review response: `docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md`
+- Onboarding evidence: `docs/RESEARCH_ONBOARDING_EVIDENCE.md`
 
 ## Contribution Lanes
 

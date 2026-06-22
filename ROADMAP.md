@@ -1015,7 +1015,8 @@ Go/No-Go:
 
 1. Keep the master plan and roadmap aligned.
 2. Keep the first public entry path short through
-   [Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md).
+   [Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md) and
+   [Research Onboarding Evidence](docs/RESEARCH_ONBOARDING_EVIDENCE.md).
 3. Apply external feedback through bounded triage, starting with
    [External Review Triage 2026-06-22](docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md).
 4. Maintain the proof-of-abstraction validation as the first public proof.

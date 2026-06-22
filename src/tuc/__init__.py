@@ -313,6 +313,23 @@ from tuc.proof import (
     toolchain_environment_report_to_dict,
     workload_scope_report_to_dict,
 )
+from tuc.research_onboarding import (
+    RESEARCH_ONBOARDING_ARTIFACT_STATUS,
+    RESEARCH_ONBOARDING_BLOCKED_CLAIMS,
+    RESEARCH_ONBOARDING_CLAIM_STATUS,
+    RESEARCH_ONBOARDING_CONTRACT,
+    RESEARCH_ONBOARDING_DOCUMENTATION_PATHS,
+    RESEARCH_ONBOARDING_PROOF_SHAPE,
+    RESEARCH_ONBOARDING_REPORT_ID,
+    RESEARCH_ONBOARDING_REPORT_SCHEMA_VERSION,
+    RESEARCH_ONBOARDING_REQUIRED_COMMANDS,
+    ResearchOnboardingEvidenceStep,
+    ResearchOnboardingReport,
+    assert_research_onboarding_report,
+    build_research_onboarding_report,
+    dump_research_onboarding_report,
+    research_onboarding_report_to_dict,
+)
 from tuc.runtime import (
     MAX_RUNTIME_ALLOCATION_BINDINGS,
     MAX_RUNTIME_ALLOCATION_FIELD_BYTES,
@@ -656,6 +673,21 @@ from tuc.runtime import (
 )
 
 __all__ = [
+    "RESEARCH_ONBOARDING_ARTIFACT_STATUS",
+    "RESEARCH_ONBOARDING_BLOCKED_CLAIMS",
+    "RESEARCH_ONBOARDING_CLAIM_STATUS",
+    "RESEARCH_ONBOARDING_CONTRACT",
+    "RESEARCH_ONBOARDING_DOCUMENTATION_PATHS",
+    "RESEARCH_ONBOARDING_PROOF_SHAPE",
+    "RESEARCH_ONBOARDING_REPORT_ID",
+    "RESEARCH_ONBOARDING_REPORT_SCHEMA_VERSION",
+    "RESEARCH_ONBOARDING_REQUIRED_COMMANDS",
+    "ResearchOnboardingEvidenceStep",
+    "ResearchOnboardingReport",
+    "assert_research_onboarding_report",
+    "build_research_onboarding_report",
+    "dump_research_onboarding_report",
+    "research_onboarding_report_to_dict",
     "BENCHMARK_ARTIFACT_KINDS",
     "BENCHMARK_ARTIFACT_MANIFEST_ARTIFACT_STATUS",
     "BENCHMARK_ARTIFACT_MANIFEST_CLAIM_STATUS",

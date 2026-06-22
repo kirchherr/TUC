@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/research_onboarding_report.v0.schema.json",
+  "title": "TUC Research Onboarding Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "broad_source_parser_claim",
+    "claim_status",
+    "documentation_paths",
+    "evidence_metadata_digest",
+    "evidence_steps",
+    "native_performance_claim",
+    "onboarding_contract",
+    "proof_shape",
+    "report_id",
+    "schema_version",
+    "vendor_replacement_claim"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.research_onboarding_report.v0"
+    },
+    "report_id": {
+      "const": "objective_alpha_research_onboarding"
+    },
+    "onboarding_contract": {
+      "const": "research_onboarding.first_proof_path.v0"
+    },
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "claim_status": {
+      "const": "bounded_research_claim"
+    },
+    "native_performance_claim": {
+      "const": false
+    },
+    "broad_source_parser_claim": {
+      "const": false
+    },
+    "vendor_replacement_claim": {
+      "const": false
+    },
+    "proof_shape": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "string"
+      },
+      "prefixItems": [
+        { "const": "Graph" },
+        { "const": "HAC-IR" },
+        { "const": "Runtime Plan" },
+        { "const": "Trusted Prototype Backends" },
+        { "const": "Reference-Checked Result" },
+        { "const": "Metadata-Only Evidence" }
+      ]
+    },
+    "documentation_paths": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "string"
+      },
+      "prefixItems": [
+        { "const": "docs/RESEARCH_ONBOARDING_SLICE.md" },
+        { "const": "docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md" },
+        { "const": "docs/RUNTIME_EXECUTOR.md" },
+        { "const": "docs/RUNTIME_EVIDENCE_FLOW.md" },
+        { "const": "docs/PERFORMANCE_PROOF_BOUNDARY.md" }
+      ]
+    },
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "string"
+      },
+      "prefixItems": [
+        { "const": "native_performance_parity" },
+        { "const": "vendor_compiler_replacement" },
+        { "const": "broad_source_code_parsing" },
+        { "const": "arbitrary_third_party_backend_execution" },
+        { "const": "device_access" },
+        { "const": "generated_artifact_execution" }
+      ]
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_steps": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifact_kind",
+          "command",
+          "documentation_path",
+          "evidence_id",
+          "purpose"
+        ],
+        "properties": {
+          "artifact_kind": {
+            "type": "string"
+          },
+          "command": {
+            "enum": [
+              "python examples/proof_of_execution.py",
+              "python examples/runtime_evidence_matrix.py",
+              "python examples/runtime_evidence_gate.py"
+            ]
+          },
+          "documentation_path": {
+            "enum": [
+              "docs/RESEARCH_ONBOARDING_SLICE.md",
+              "docs/RUNTIME_EVIDENCE_FLOW.md"
+            ]
+          },
+          "evidence_id": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
