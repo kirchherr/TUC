@@ -404,12 +404,15 @@ metadata, digest-bound versioned toolchain environment evidence, correctness
 goldens, planner-overhead phase separation, leaky-abstraction boundary evidence,
 runtime-plan goldens, compiler-decision goldens, and the fail-closed baseline
 benchmark report schema. Readiness can be metadata-complete while native
-performance claims stay blocked.
+performance claims stay blocked. The Performance Proof Interpretation report is
+the next gate: it records that readiness is true while accepted measurement
+interpretation artifacts are still not supplied.
 
 Key docs:
 
 - [Performance proof boundary](docs/PERFORMANCE_PROOF_BOUNDARY.md)
 - [Performance proof readiness](docs/PERFORMANCE_PROOF_READINESS.md)
+- [Performance proof interpretation](docs/PERFORMANCE_PROOF_INTERPRETATION.md)
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
 - [Executable backend security review](docs/EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md)

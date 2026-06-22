@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/performance_proof_interpretation_report.v0.schema.json",
+  "title": "TUC Performance Proof Interpretation Report v0",
+  "description": "Diagnostic-only schema for interpreting readiness and measurement metadata before any native performance claim. This is not a native performance proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "blocked_claims",
+    "claim_boundary",
+    "issues",
+    "measurement_interpretation_artifacts",
+    "measurement_interpretation_status",
+    "native_performance_claim",
+    "performance_claim_status",
+    "performance_proof_interpretation_ready",
+    "proposal_name",
+    "readiness_issue_count",
+    "readiness_proposal_name",
+    "readiness_ready",
+    "schema_version"
+  ],
+  "properties": {
+    "artifact_status": {
+      "const": "diagnostic_only"
+    },
+    "blocked_claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "claim_boundary": {
+      "const": "performance_proof_boundary.blocking.v0"
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/report_text"
+      }
+    },
+    "measurement_interpretation_artifacts": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/report_text"
+      }
+    },
+    "measurement_interpretation_status": {
+      "type": "string",
+      "enum": [
+        "not_supplied",
+        "interpreted"
+      ]
+    },
+    "native_performance_claim": {
+      "const": false
+    },
+    "performance_claim_status": {
+      "const": "blocked"
+    },
+    "performance_proof_interpretation_ready": {
+      "type": "boolean"
+    },
+    "proposal_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "readiness_issue_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 128
+    },
+    "readiness_proposal_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "readiness_ready": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "tuc.performance_proof_interpretation_report.v0"
+    }
+  },
+  "$defs": {
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    }
+  }
+}

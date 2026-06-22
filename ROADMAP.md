@@ -332,11 +332,16 @@ Completed evidence:
   present only when every tracked executable surface is bound to accepted,
   digest-pinned security-review metadata; readiness can be metadata-complete
   while native performance claims remain blocked.
+- Performance Proof Interpretation now separates that metadata-complete
+  readiness state from native benchmark interpretation, proving that a green
+  readiness report still leaves native performance claims blocked until accepted
+  measurement-interpretation artifacts exist.
 
 Next work:
 
-- Keep Performance Proof Readiness metadata-complete while separating it from
-  any future native benchmark interpretation or execution permission.
+- Add accepted measurement-interpretation artifacts only after benchmark
+  outputs, timing summaries, planner overhead, and native comparison semantics
+  are separately reviewed as data-only evidence.
 - Expand future proof graph families only when the existing proof contracts
   remain stable.
 
@@ -740,6 +745,8 @@ Deliverables:
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
   evidence.
+- Performance Proof Interpretation report for the post-readiness gate that
+  blocks native claims until accepted measurement interpretation exists.
 
 Go/No-Go:
 

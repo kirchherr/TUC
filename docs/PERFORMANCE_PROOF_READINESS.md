@@ -25,8 +25,10 @@ The readiness report does not claim native performance parity.
 - Example: `examples/performance_proof_readiness.py`
 - Golden: `tests/golden/proofs/performance_proof_readiness_report.json`
 - Tests: `tests/test_performance_proof_readiness.py`
+- Next gate: [Performance Proof Interpretation](PERFORMANCE_PROOF_INTERPRETATION.md)
+- Next gate schema: `schemas/performance_proof_interpretation_report.v0.schema.json`
 
-The report is ready only when every required evidence ID is present.
+The report is ready only when every required evidence ID is present. A ready report is metadata-complete; it is not a benchmark interpretation, execution grant, or native performance proof. The next review step is the data-only Performance Proof Interpretation report.
 
 ## Required Evidence
 
@@ -340,7 +342,9 @@ boundary, a readiness report, accepted governance metadata, bounded Kernel
 Ingress workload-scope evidence, digest-bound benchmark artifact inventory, and
 a digest-bound executable backend security review. Native performance claims
 remain blocked because readiness is not a benchmark result, execution grant, or
-native performance proof.
+native performance proof. `examples/performance_proof_interpretation.py` records
+that next gate explicitly: readiness is true, but measurement interpretation is
+not supplied.
 
 ## Still Blocked
 

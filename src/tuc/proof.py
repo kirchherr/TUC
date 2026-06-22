@@ -23,6 +23,15 @@ PROOF_REPORT_SCHEMA_VERSION = "proof-report.v0"
 PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION = (
     "tuc.performance_proof_readiness_report.v0"
 )
+PERFORMANCE_PROOF_INTERPRETATION_REPORT_SCHEMA_VERSION = (
+    "tuc.performance_proof_interpretation_report.v0"
+)
+PERFORMANCE_PROOF_INTERPRETATION_ARTIFACT_STATUS = "diagnostic_only"
+PERFORMANCE_PROOF_INTERPRETATION_CLAIM_STATUS = "blocked"
+PERFORMANCE_PROOF_INTERPRETATION_DEFAULT_ISSUES = (
+    "measurement_interpretation_artifacts_not_supplied",
+    "native_performance_claim_blocked",
+)
 PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION = "tuc.performance_proof_rfc_report.v0"
 PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS = "diagnostic_only"
 PERFORMANCE_PROOF_RFC_CLAIM_STATUS = "blocked"
@@ -329,6 +338,9 @@ MAX_RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES = 512
 MAX_PERFORMANCE_PROOF_READINESS_ISSUES = 128
+MAX_PERFORMANCE_PROOF_INTERPRETATION_REPORT_BYTES = 64 * 1024
+MAX_PERFORMANCE_PROOF_INTERPRETATION_FIELD_BYTES = 512
+MAX_PERFORMANCE_PROOF_INTERPRETATION_ARTIFACTS = 128
 MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES = 512
 MAX_PERFORMANCE_PROOF_RFCS = 128
@@ -564,6 +576,34 @@ class PerformanceProofReadinessReport:
     def ready(self) -> bool:
         return not self.issues
 
+
+@dataclass(frozen=True)
+class PerformanceProofInterpretationReport:
+    """Data-only interpretation gate after performance readiness passes."""
+
+    proposal_name: str
+    readiness_proposal_name: str
+    readiness_ready: bool
+    readiness_boundary_contract: str
+    readiness_issue_count: int
+    measurement_interpretation_artifacts: tuple[str, ...]
+    blocked_claims: tuple[str, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def performance_proof_interpretation_ready(self) -> bool:
+        """Return whether measurement interpretation metadata is complete."""
+
+        blocking_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue != "native_performance_claim_blocked"
+        )
+        return (
+            self.readiness_ready
+            and bool(self.measurement_interpretation_artifacts)
+            and not blocking_issues
+        )
 
 class PerformanceProofReadinessError(AssertionError):
     """Raised when a performance proof proposal is not ready."""
@@ -1490,6 +1530,35 @@ def build_performance_proof_readiness_report(
     )
 
 
+def build_performance_proof_interpretation_report(
+    proposal_name: str,
+    readiness_report: PerformanceProofReadinessReport,
+    measurement_interpretation_artifacts: Iterable[str] = (),
+) -> PerformanceProofInterpretationReport:
+    """Build a data-only interpretation gate for performance-proof claims."""
+
+    _validate_performance_proof_interpretation_text(proposal_name, "proposal_name")
+    _validate_performance_readiness_report(readiness_report)
+    artifacts = _normalize_performance_proof_interpretation_artifacts(
+        measurement_interpretation_artifacts,
+    )
+    issues = list(PERFORMANCE_PROOF_INTERPRETATION_DEFAULT_ISSUES)
+    if artifacts:
+        issues.remove("measurement_interpretation_artifacts_not_supplied")
+    if not readiness_report.ready:
+        issues.append("performance_proof_readiness_not_ready")
+
+    return PerformanceProofInterpretationReport(
+        proposal_name=proposal_name,
+        readiness_proposal_name=readiness_report.proposal_name,
+        readiness_ready=readiness_report.ready,
+        readiness_boundary_contract=readiness_report.boundary_contract,
+        readiness_issue_count=len(readiness_report.issues),
+        measurement_interpretation_artifacts=artifacts,
+        blocked_claims=PERFORMANCE_PROOF_BLOCKED_CLAIMS,
+        issues=tuple(dict.fromkeys(issues)),
+    )
+
 def build_performance_proof_rfc_report(
     proposal_name: str,
     rfcs: Iterable[PerformanceProofRFC] = (),
@@ -1982,6 +2051,36 @@ def performance_proof_readiness_report_to_dict(
     }
 
 
+def performance_proof_interpretation_report_to_dict(
+    report: PerformanceProofInterpretationReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible performance interpretation report."""
+
+    _validate_performance_proof_interpretation_report(report)
+    measurement_status = (
+        "interpreted" if report.measurement_interpretation_artifacts else "not_supplied"
+    )
+    return {
+        "artifact_status": PERFORMANCE_PROOF_INTERPRETATION_ARTIFACT_STATUS,
+        "blocked_claims": list(report.blocked_claims),
+        "claim_boundary": report.readiness_boundary_contract,
+        "issues": list(report.issues),
+        "measurement_interpretation_artifacts": list(
+            report.measurement_interpretation_artifacts
+        ),
+        "measurement_interpretation_status": measurement_status,
+        "native_performance_claim": False,
+        "performance_claim_status": PERFORMANCE_PROOF_INTERPRETATION_CLAIM_STATUS,
+        "performance_proof_interpretation_ready": (
+            report.performance_proof_interpretation_ready
+        ),
+        "proposal_name": report.proposal_name,
+        "readiness_issue_count": report.readiness_issue_count,
+        "readiness_proposal_name": report.readiness_proposal_name,
+        "readiness_ready": report.readiness_ready,
+        "schema_version": PERFORMANCE_PROOF_INTERPRETATION_REPORT_SCHEMA_VERSION,
+    }
+
 def performance_proof_rfc_report_to_dict(
     report: PerformanceProofRFCReport,
 ) -> dict[str, object]:
@@ -2393,6 +2492,20 @@ def dump_performance_proof_readiness_report(
         raise ValueError("performance proof readiness report exceeds byte limit")
     return text + "\n"
 
+
+def dump_performance_proof_interpretation_report(
+    report: PerformanceProofInterpretationReport,
+) -> str:
+    """Render a stable performance-proof interpretation artifact."""
+
+    text = json.dumps(
+        performance_proof_interpretation_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_PERFORMANCE_PROOF_INTERPRETATION_REPORT_BYTES:
+        raise ValueError("performance proof interpretation report exceeds byte limit")
+    return text + "\n"
 
 def dump_runtime_evidence_matrix_report(
     report: RuntimeEvidenceMatrixReport,
@@ -3282,6 +3395,23 @@ def _normalize_performance_evidence(
     return evidence_by_id
 
 
+def _normalize_performance_proof_interpretation_artifacts(
+    artifacts: Iterable[str],
+) -> tuple[str, ...]:
+    normalized = tuple(artifacts)
+    if len(normalized) > MAX_PERFORMANCE_PROOF_INTERPRETATION_ARTIFACTS:
+        raise ValueError("performance proof interpretation artifact count exceeds limit")
+    seen: set[str] = set()
+    for artifact_id in normalized:
+        _validate_performance_proof_interpretation_text(
+            artifact_id,
+            "measurement_interpretation_artifact",
+        )
+        if artifact_id in seen:
+            raise ValueError("duplicate performance proof interpretation artifact id")
+        seen.add(artifact_id)
+    return normalized
+
 def _normalize_leaky_abstraction_facts(
     performance_facts: Iterable[LeakyAbstractionFact],
 ) -> tuple[LeakyAbstractionFact, ...]:
@@ -3352,6 +3482,40 @@ def _validate_performance_readiness_report(
         _validate_performance_report_text(issue.evidence_id, "issue evidence_id")
         _validate_performance_report_text(issue.message, "issue message")
 
+
+def _validate_performance_proof_interpretation_report(
+    report: PerformanceProofInterpretationReport,
+) -> None:
+    if not isinstance(report, PerformanceProofInterpretationReport):
+        raise TypeError("performance proof interpretation report must be report object")
+    _validate_performance_proof_interpretation_text(
+        report.proposal_name,
+        "proposal_name",
+    )
+    _validate_performance_proof_interpretation_text(
+        report.readiness_proposal_name,
+        "readiness_proposal_name",
+    )
+    if type(report.readiness_ready) is not bool:
+        raise TypeError("performance proof interpretation readiness flag must be bool")
+    if report.readiness_boundary_contract != PERFORMANCE_PROOF_BOUNDARY_CONTRACT:
+        raise ValueError(
+            "performance proof interpretation boundary contract must be "
+            f"{PERFORMANCE_PROOF_BOUNDARY_CONTRACT!r}"
+        )
+    if (
+        not isinstance(report.readiness_issue_count, int)
+        or report.readiness_issue_count < 0
+        or report.readiness_issue_count > MAX_PERFORMANCE_PROOF_READINESS_ISSUES
+    ):
+        raise ValueError("performance proof interpretation readiness issue count invalid")
+    _normalize_performance_proof_interpretation_artifacts(
+        report.measurement_interpretation_artifacts,
+    )
+    if tuple(report.blocked_claims) != PERFORMANCE_PROOF_BLOCKED_CLAIMS:
+        raise ValueError("performance proof interpretation blocked claims must match")
+    for issue in report.issues:
+        _validate_performance_proof_interpretation_text(issue, "issue")
 
 def _validate_performance_proof_rfc_report(
     report: PerformanceProofRFCReport,
@@ -3666,6 +3830,12 @@ def _validate_performance_report_text(value: str, label: str) -> None:
     if len(value.encode("utf-8")) > MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES:
         raise ValueError(f"{label} exceeds performance proof readiness field limit")
 
+def _validate_performance_proof_interpretation_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe performance proof interpretation identifier")
+    if len(value.encode("utf-8")) > MAX_PERFORMANCE_PROOF_INTERPRETATION_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds performance proof interpretation field limit")
+
 
 def _validate_performance_proof_rfc_text(value: str, label: str) -> None:
     if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
@@ -3929,6 +4099,9 @@ __all__ = [
     "LeakyAbstractionLeak",
     "LeakyAbstractionReport",
     "MAX_PERFORMANCE_PROOF_READINESS_ISSUES",
+    "MAX_PERFORMANCE_PROOF_INTERPRETATION_ARTIFACTS",
+    "MAX_PERFORMANCE_PROOF_INTERPRETATION_FIELD_BYTES",
+    "MAX_PERFORMANCE_PROOF_INTERPRETATION_REPORT_BYTES",
     "MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES",
     "MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES",
     "MAX_PERFORMANCE_PROOF_RFCS",
@@ -3977,6 +4150,10 @@ __all__ = [
     "PERFORMANCE_CLAIM_THRESHOLD_POLICY_KINDS",
     "PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION",
     "PERFORMANCE_CLAIM_THRESHOLD_POLICY_STATUSES",
+    "PERFORMANCE_PROOF_INTERPRETATION_ARTIFACT_STATUS",
+    "PERFORMANCE_PROOF_INTERPRETATION_CLAIM_STATUS",
+    "PERFORMANCE_PROOF_INTERPRETATION_DEFAULT_ISSUES",
+    "PERFORMANCE_PROOF_INTERPRETATION_REPORT_SCHEMA_VERSION",
     "PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION",
     "PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS",
     "PERFORMANCE_PROOF_RFC_CLAIM_STATUS",
@@ -3988,6 +4165,7 @@ __all__ = [
     "PerformanceClaimThresholdPolicyReport",
     "PerformanceAcceptanceCriteria",
     "PerformanceAcceptanceCriteriaReport",
+    "PerformanceProofInterpretationReport",
     "PerformanceProofReadinessError",
     "PerformanceProofReadinessEvidence",
     "PerformanceProofReadinessIssue",
@@ -4026,6 +4204,7 @@ __all__ = [
     "build_leaky_abstraction_report",
     "build_native_baseline_comparison_report",
     "build_native_baseline_provenance_report",
+    "build_performance_proof_interpretation_report",
     "build_performance_proof_readiness_report",
     "build_performance_proof_rfc_report",
     "build_current_runtime_evidence_matrix_report",
@@ -4042,6 +4221,7 @@ __all__ = [
     "dump_leaky_abstraction_report",
     "dump_native_baseline_comparison_report",
     "dump_native_baseline_provenance_report",
+    "dump_performance_proof_interpretation_report",
     "dump_performance_proof_readiness_report",
     "dump_performance_proof_rfc_report",
     "dump_runtime_evidence_gate_matrix_coverage_report",
@@ -4052,6 +4232,7 @@ __all__ = [
     "native_baseline_provenance_report_to_dict",
     "performance_acceptance_criteria_report_to_dict",
     "performance_claim_threshold_policy_report_to_dict",
+    "performance_proof_interpretation_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "performance_proof_rfc_report_to_dict",
     "proof_metadata_from_partition_plan",

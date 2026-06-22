@@ -856,6 +856,9 @@ Current slice:
   executable surface, with digest-bound threat-model, sandbox, budget,
   provenance, and negative-test metadata while execution permission and native
   performance claims remain blocked.
+- Performance Proof Interpretation now records the post-readiness gate: current
+  Kernel Ingress readiness is metadata-complete, but measurement interpretation
+  artifacts are not supplied and native performance claims remain blocked.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at
@@ -989,6 +992,9 @@ Current slice:
   planner-overhead, break-even, correctness/runtime-plan/compiler-decision
   goldens, benchmark schema/artifact inventory, and executable backend security
   review evidence present while native performance claims remain blocked.
+- Performance Proof Interpretation report with deterministic blocked golden
+  evidence for the current post-readiness state, linking readiness to a separate
+  measurement-interpretation gate.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
 - HAC-IR semantic charter for compute intent, compiler facts, planning
@@ -1186,8 +1192,9 @@ Current focus:
 - Native performance claims remain blocked until a separate performance proof
   proposal interprets accepted measurement artifacts under the
   [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md); a passing
-  [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) is
-  necessary metadata, not the proof itself.
+  [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) and
+  [Performance Proof Interpretation Report](PERFORMANCE_PROOF_INTERPRETATION.md)
+  are necessary metadata, not the proof itself.
 - Noise/error-budget score components only after those models are documented
   outside HAC-IR semantics and covered by goldens.
 - Maintainer teams or organization-backed owner groups before broad external
