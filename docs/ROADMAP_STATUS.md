@@ -23,6 +23,12 @@ hardware-independent interface into capability-driven runtime planning.
 - Unit tests and Phase 0 vertical-slice example.
 - Initial commit pushed to GitHub.
 - Strategic master plan promoted as the top-level project guide.
+- [External Review Triage 2026-06-22](EXTERNAL_REVIEW_TRIAGE_2026_06_22.md)
+  records which external review suggestions are adopted now, adopted later, or
+  rejected to avoid diluting the research claim.
+- [Research Onboarding Slice](RESEARCH_ONBOARDING_SLICE.md) provides a short
+  first-run path from the Universal Compute claim to Objective Alpha executable
+  evidence.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
 - Golden runtime-plan dump for proof-of-abstraction placement and transfer

@@ -1014,12 +1014,16 @@ Go/No-Go:
 ## Current Priority Order
 
 1. Keep the master plan and roadmap aligned.
-2. Maintain the proof-of-abstraction validation as the first public proof.
-3. Harden HAC-IR neutrality and reserved-attribute rejection.
-4. Strengthen backend capability and conformance tooling.
-5. Make runtime planning explanations richer and golden-tested.
-6. Integrate real Triton intent only after the abstraction proof remains stable.
-7. Expand to specialized hardware simulators only when they strengthen the
+2. Keep the first public entry path short through
+   [Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md).
+3. Apply external feedback through bounded triage, starting with
+   [External Review Triage 2026-06-22](docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md).
+4. Maintain the proof-of-abstraction validation as the first public proof.
+5. Harden HAC-IR neutrality and reserved-attribute rejection.
+6. Strengthen backend capability and conformance tooling.
+7. Make runtime planning explanations richer and golden-tested.
+8. Integrate real Triton intent only after the abstraction proof remains stable.
+9. Expand to specialized hardware simulators only when they strengthen the
    universal compute claim.
 
 ## Success Metrics

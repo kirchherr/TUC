@@ -10,6 +10,10 @@ translation layer between them can stay inspectable, secure, and portable.
 
 - Strategic north star: [TUC Master Plan](TUC_MASTER_PLAN.md)
 - Operational status: [Roadmap Status](docs/ROADMAP_STATUS.md)
+- First research proof path:
+  [Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md)
+- External feedback triage:
+  [2026-06-22 Review Response](docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md)
 
 ## Core Claims
 
