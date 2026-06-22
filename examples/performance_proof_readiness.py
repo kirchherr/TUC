@@ -39,6 +39,9 @@ from tuc import (
     BENCHMARK_METHODOLOGY_ARTIFACT_STATUS,
     BENCHMARK_METHODOLOGY_CLAIM_STATUS,
     BENCHMARK_METHODOLOGY_REPORT_SCHEMA_VERSION,
+    BREAK_EVEN_WORKLOAD_SIZE_ARTIFACT_STATUS,
+    BREAK_EVEN_WORKLOAD_SIZE_CLAIM_STATUS,
+    BREAK_EVEN_WORKLOAD_SIZE_REPORT_SCHEMA_VERSION,
     LEAKY_ABSTRACTION_ARTIFACT_STATUS,
     LEAKY_ABSTRACTION_DEFAULT_ISSUES,
     LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS,
@@ -54,6 +57,8 @@ from tuc import (
     TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS,
     TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION,
     BenchmarkMethodology,
+    BreakEvenWorkloadSize,
+    BreakEvenWorkloadSizeReport,
     LeakyAbstractionFact,
     NativeBaselineComparison,
     NativeBaselineComparisonReport,
@@ -63,7 +68,9 @@ from tuc import (
     ToolchainComponent,
     ToolchainEnvironmentReport,
     benchmark_methodology_report_to_dict,
+    break_even_workload_size_report_to_dict,
     build_benchmark_methodology_report,
+    build_break_even_workload_size_report,
     build_leaky_abstraction_report,
     build_native_baseline_comparison_report,
     build_native_baseline_provenance_report,
@@ -109,6 +116,12 @@ _KERNEL_INGRESS_GOLDEN_PATH = Path(
 _BASELINE_BENCHMARK_SCHEMA_PATH = Path(
     "schemas/baseline_benchmark_report.v0.schema.json"
 )
+_BREAK_EVEN_WORKLOAD_SIZE_PROPOSAL_NAME = (
+    "kernel_ingress_break_even_workload_size_candidate"
+)
+_BREAK_EVEN_PLANNER_OVERHEAD_REPORT_ID = "kernel_ingress_planner_overhead_report"
+_BREAK_EVEN_EXECUTION_METRIC_ID = "median_execution_time_ns"
+_BREAK_EVEN_AMORTIZATION_POLICY_ID = "single_compile_many_runs"
 _NATIVE_BASELINE_PROVENANCE_PROPOSAL_NAME = (
     "kernel_ingress_native_baseline_provenance_candidate"
 )
@@ -187,6 +200,10 @@ def build_blocked_performance_proof_evidence() -> (
             present=_has_kernel_ingress_planner_overhead_evidence(),
         ),
         PerformanceProofReadinessEvidence(
+            evidence_id="break_even_workload_size",
+            present=_has_kernel_ingress_break_even_workload_size_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
             evidence_id="correctness_goldens",
             present=_has_kernel_ingress_golden_digest_evidence("correctness_goldens"),
         ),
@@ -233,6 +250,85 @@ def main() -> None:
         build_blocked_performance_proof_evidence(),
     )
     print(dump_performance_proof_readiness_report(report), end="")
+
+
+def _has_kernel_ingress_break_even_workload_size_evidence() -> bool:
+    workload_report_text = build_kernel_ingress_workload_scope_report()
+    workload_report = json.loads(workload_report_text)
+    assert_kernel_ingress_workload_scope_report_contract(workload_report)
+    scopes = _kernel_ingress_workload_scopes(workload_report)
+    report = _build_kernel_ingress_break_even_workload_size_report(scopes)
+    payload = break_even_workload_size_report_to_dict(report)
+    expected = {
+        "artifact_status": BREAK_EVEN_WORKLOAD_SIZE_ARTIFACT_STATUS,
+        "break_even_workload_size_ready": False,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": [
+            "native_performance_claim_blocked",
+            "break_even_workload_not_validated_by_ci",
+            "break_even_workload_digest_not_supplied",
+        ],
+        "native_performance_claim": False,
+        "performance_claim_status": BREAK_EVEN_WORKLOAD_SIZE_CLAIM_STATUS,
+        "proposal_name": _BREAK_EVEN_WORKLOAD_SIZE_PROPOSAL_NAME,
+        "schema_version": BREAK_EVEN_WORKLOAD_SIZE_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"break-even workload-size evidence {key} drift")
+    workloads = payload["workloads"]
+    if not isinstance(workloads, list):
+        raise ValueError("break-even workload-size entries drift")
+    if len(workloads) != len(scopes):
+        raise ValueError("break-even workload-size count drift")
+    for workload, scope in zip(workloads, scopes, strict=True):
+        if not isinstance(workload, dict):
+            raise ValueError("break-even workload-size entry drift")
+        scope_id = str(scope["scope_id"])
+        problem_size = int(scope["problem_size_max"])
+        expected_fields = {
+            "amortization_policy_id": _BREAK_EVEN_AMORTIZATION_POLICY_ID,
+            "break_even_id": f"break_even_{scope_id}",
+            "break_even_problem_size": problem_size,
+            "break_even_status": "estimated_not_validated",
+            "evidence_digest": "not_supplied",
+            "execution_metric_id": _BREAK_EVEN_EXECUTION_METRIC_ID,
+            "planner_overhead_report_id": _BREAK_EVEN_PLANNER_OVERHEAD_REPORT_ID,
+            "workload_scope_id": scope_id,
+        }
+        for key, value in expected_fields.items():
+            if workload.get(key) != value:
+                raise ValueError(f"break-even workload-size {key} drift")
+        for forbidden_key in (
+            "host_path",
+            "environment",
+            "device_id",
+            "hardware_serial",
+            "raw_timing_samples",
+        ):
+            if forbidden_key in workload:
+                raise ValueError("break-even workload-size exposes forbidden data")
+    return True
+
+
+def _build_kernel_ingress_break_even_workload_size_report(
+    scopes: tuple[dict[str, object], ...],
+) -> BreakEvenWorkloadSizeReport:
+    return build_break_even_workload_size_report(
+        _BREAK_EVEN_WORKLOAD_SIZE_PROPOSAL_NAME,
+        workloads=tuple(
+            BreakEvenWorkloadSize(
+                break_even_id=f"break_even_{scope['scope_id']}",
+                workload_scope_id=str(scope["scope_id"]),
+                planner_overhead_report_id=_BREAK_EVEN_PLANNER_OVERHEAD_REPORT_ID,
+                execution_metric_id=_BREAK_EVEN_EXECUTION_METRIC_ID,
+                amortization_policy_id=_BREAK_EVEN_AMORTIZATION_POLICY_ID,
+                break_even_status="estimated_not_validated",
+                break_even_problem_size=int(scope["problem_size_max"]),
+            )
+            for scope in scopes
+        ),
+    )
 
 
 def _has_kernel_ingress_native_baseline_provenance_evidence() -> bool:
@@ -315,15 +411,27 @@ def _build_kernel_ingress_native_baseline_provenance_report(
 def _kernel_ingress_workload_scope_ids(
     workload_report: dict[str, object],
 ) -> tuple[str, ...]:
+    return tuple(
+        str(scope["scope_id"])
+        for scope in _kernel_ingress_workload_scopes(workload_report)
+    )
+
+
+def _kernel_ingress_workload_scopes(
+    workload_report: dict[str, object],
+) -> tuple[dict[str, object], ...]:
     scopes = workload_report["scopes"]
     if not isinstance(scopes, list) or not scopes:
         raise ValueError("kernel ingress workload scopes missing")
-    scope_ids = tuple(
-        str(scope["scope_id"]) for scope in scopes if isinstance(scope, dict)
-    )
-    if len(scope_ids) != len(scopes):
+    normalized = tuple(scope for scope in scopes if isinstance(scope, dict))
+    if len(normalized) != len(scopes):
         raise ValueError("kernel ingress workload scope drift")
-    return scope_ids
+    for scope in normalized:
+        scope_id = scope.get("scope_id")
+        problem_size_max = scope.get("problem_size_max")
+        if not isinstance(scope_id, str) or not isinstance(problem_size_max, int):
+            raise ValueError("kernel ingress workload scope shape drift")
+    return normalized
 
 
 def _has_kernel_ingress_native_baseline_comparison_evidence() -> bool:

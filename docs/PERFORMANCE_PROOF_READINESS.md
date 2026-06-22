@@ -154,6 +154,16 @@ the existence of a bounded break-even workload-size metadata contract. It does
 not run benchmarks, load benchmark artifacts, ingest raw timing samples, or
 prove native performance parity.
 
+The current readiness example marks `break_even_workload_size` present only
+after binding every accepted Kernel Ingress workload scope to an
+`estimated_not_validated` break-even entry. The entry uses the workload scope's
+bounded maximum problem size as the estimate, references the Kernel Ingress
+planner-overhead report ID, omits evidence digests, and keeps
+`break_even_workload_size_ready` false. This proves only that future benchmark
+artifacts have an amortization review surface; it does not validate break-even
+sizes, compare timing samples, load benchmark artifacts, or claim planner
+benefit.
+
 The current diagnostic leaky-abstraction report schema is
 `schemas/leaky_abstraction_report.v0.schema.json`. It can satisfy only the
 existence of a bounded HAC-IR boundary review report. It does not satisfy

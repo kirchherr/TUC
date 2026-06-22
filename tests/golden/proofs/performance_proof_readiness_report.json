@@ -56,7 +56,7 @@
     },
     {
       "evidence_id": "break_even_workload_size",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "runtime_plan_goldens",
@@ -90,10 +90,6 @@
     },
     {
       "evidence_id": "performance_acceptance_criteria",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
-      "evidence_id": "break_even_workload_size",
       "message": "required performance proof boundary evidence is missing"
     },
     {

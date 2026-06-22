@@ -7,6 +7,7 @@ import pytest
 from examples.performance_proof_readiness import (
     _has_benchmark_report_schema_evidence,
     _has_kernel_ingress_benchmark_methodology_evidence,
+    _has_kernel_ingress_break_even_workload_size_evidence,
     _has_kernel_ingress_golden_digest_evidence,
     _has_kernel_ingress_leaky_abstraction_evidence,
     _has_kernel_ingress_native_baseline_comparison_evidence,
@@ -49,6 +50,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         "native_baseline_comparison",
         "leaky_abstraction_report",
         "planner_overhead_report",
+        "break_even_workload_size",
         "runtime_plan_goldens",
         "compiler_decision_report_goldens",
         "benchmark_report_schema",
@@ -66,6 +68,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
             "correctness_goldens",
             "leaky_abstraction_report",
             "planner_overhead_report",
+            "break_even_workload_size",
             "runtime_plan_goldens",
             "compiler_decision_report_goldens",
             "benchmark_report_schema",
@@ -76,6 +79,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
 
 def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None:
     assert _has_kernel_ingress_workload_scope_evidence()
+    assert _has_kernel_ingress_break_even_workload_size_evidence()
     assert _has_kernel_ingress_benchmark_methodology_evidence()
     assert _has_kernel_ingress_native_baseline_provenance_evidence()
     assert _has_kernel_ingress_native_baseline_comparison_evidence()

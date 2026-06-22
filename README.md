@@ -394,12 +394,12 @@ size, native baseline comparison, benchmark artifact digests, benchmark
 methodology, and executable-backend security.
 
 Current readiness evidence marks only Kernel-Ingress-derived workload scope,
-benchmark methodology, native-baseline provenance candidates, blocked native
-comparison metadata, digest-bound versioned toolchain environment evidence,
-correctness goldens, planner-overhead phase separation, leaky-abstraction
-boundary evidence, runtime-plan goldens, compiler-decision goldens, and the
-fail-closed baseline benchmark report schema as present. The report still fails
-closed for native performance claims.
+break-even workload estimates, benchmark methodology, native-baseline
+provenance candidates, blocked native comparison metadata, digest-bound
+versioned toolchain environment evidence, correctness goldens, planner-overhead
+phase separation, leaky-abstraction boundary evidence, runtime-plan goldens,
+compiler-decision goldens, and the fail-closed baseline benchmark report schema
+as present. The report still fails closed for native performance claims.
 
 Key docs:
 

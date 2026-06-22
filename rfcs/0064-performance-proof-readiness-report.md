@@ -111,8 +111,12 @@ mark native-baseline comparison present once accepted workload scopes are bound
 to data-only comparison references while measurement, digest validation,
 artifact loading, and native claims remain blocked. It may mark leaky-abstraction
 evidence present once accepted HAC-IR is contract-valid and performance-critical
-facts remain outside HAC-IR. Native performance readiness still fails until
-every required evidence item is present.
+facts remain outside HAC-IR. It may mark break-even workload-size evidence
+present once accepted workload scopes are bound to bounded
+`estimated_not_validated` amortization entries while CI validation, evidence
+digests, benchmark artifact loading, timing comparison, planner-benefit claims,
+and native performance claims remain blocked. Native performance readiness
+still fails until every required evidence item is present.
 
 ## Consequences
 

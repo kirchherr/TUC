@@ -832,6 +832,11 @@ Current slice:
   bounded comparison references for every accepted Kernel Ingress workload
   scope, while benchmark artifact loading, digest validation, timing
   comparison, and native performance claims remain blocked.
+- Performance Proof Readiness now derives `break_even_workload_size` from
+  bounded `estimated_not_validated` amortization entries for every accepted
+  Kernel Ingress workload scope, while CI validation, evidence digests,
+  benchmark artifact loading, timing comparison, and planner-benefit claims
+  remain blocked.
 - Performance Proof Readiness now derives `leaky_abstraction_report` from the
   accepted Kernel Ingress MVP pipeline, requiring contract-valid HAC-IR, no
   forbidden hardware-specific HAC-IR attributes, and performance facts assigned

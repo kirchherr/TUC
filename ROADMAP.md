@@ -302,6 +302,10 @@ Completed evidence:
   only when each accepted Kernel Ingress workload scope is bound to a bounded,
   data-only comparison reference while measurement, digest validation, artifact
   loading, and native claims remain blocked.
+- Performance-readiness evidence now marks `break_even_workload_size` present
+  only when each accepted Kernel Ingress workload scope is bound to a bounded,
+  `estimated_not_validated` amortization entry while digest validation, timing
+  comparison, artifact loading, and planner-benefit claims remain blocked.
 - Performance-readiness evidence now marks `leaky_abstraction_report` present
   only when the accepted Kernel Ingress MVP pipeline keeps performance-critical
   facts out of HAC-IR and assigns them to backend capability,
@@ -643,6 +647,10 @@ Deliverables:
   only after binding all accepted Kernel Ingress workload scopes to data-only
   comparison references; benchmark artifact loading, digest validation, timing
   comparison, and native claims remain blocked.
+- Performance Proof Readiness now treats break-even workload size as present
+  only after binding all accepted Kernel Ingress workload scopes to bounded,
+  estimated amortization entries; CI validation, evidence digests, benchmark
+  artifact loading, and planner-benefit claims remain blocked.
 - Performance Proof Readiness now treats leaky-abstraction evidence as present
   only after the Kernel Ingress MVP pipeline proves HAC-IR is contract-valid
   and free of forbidden hardware-specific performance facts.
