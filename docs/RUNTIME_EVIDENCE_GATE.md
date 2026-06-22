@@ -19,6 +19,7 @@ It runs:
 - `run_runtime_executor_conformance()`
 - `build_backend_equivalence_report()`
 - `examples/runtime_planning_explanation.py`
+- `examples/runtime_mixed_planning_explanation.py`
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
 - `examples/runtime_hs_ir_plan_alignment.py`
@@ -40,7 +41,7 @@ The gate passes only when:
 
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
-  entries, with the systolic entry requiring both `backend_equivalence` and
+  entries, with the systolic and mixed entries requiring
   `runtime_planning_explanation`, plus exact artifact-ID bindings
 - the Runtime Evidence Matrix includes the backend-equivalence portfolio graph
   entry with scoped `backend_equivalence_portfolio` and
@@ -89,6 +90,16 @@ The gate passes only when:
   report is inventoried by the Runtime Evidence Matrix as scoped
   `backend_equivalence` evidence with the exact
   `runtime_backend_equivalence_mixed` artifact ID
+- Runtime Mixed Planning Explanation passes for the same mixed accelerator
+  candidate plan
+- Runtime Mixed Planning Explanation binding passes, proving the checked
+  explanation report is the expected
+  `systolic-sim,vector-sim,vector-sim,vector-sim` backend sequence with no
+  fallback, visible layout-conversion movement, and recorded candidate-score
+  diagnostics
+- Runtime Mixed Planning Explanation matrix coverage passes, proving the
+  explanation report is inventoried by the Runtime Evidence Matrix with the
+  exact `runtime_planning_explanation_mixed` artifact ID
 - Runtime HS-IR Plan Alignment passes for the mixed accelerator proof slice
 - Runtime HS-IR Plan Alignment binding passes, proving the checked report is
   the expected `systolic-sim,vector-sim,vector-sim,vector-sim` HS-IR,
@@ -252,13 +263,13 @@ It composes bounded in-repository checks:
   family, source boundary, required artifact kinds, completeness, and
   exact `backend_equivalence` artifact coverage
 - data-only Runtime Planning Explanation metadata explaining the accepted
-  systolic candidate plan with backend sequence, fallback, candidate-score
-  visibility, and movement bytes
-- a bounded Runtime Planning Explanation binding check that compares graph ID,
-  candidate backend sequence, operation count, fallback visibility, and
-  candidate-score visibility against the Backend Equivalence report already
-  checked by the gate
-- a bounded Runtime Planning Explanation matrix lookup that verifies graph
+  systolic and mixed candidate plans with backend sequence, fallback or
+  no-fallback placement, candidate-score visibility, and movement bytes
+- bounded Runtime Planning Explanation binding checks that compare graph ID,
+  candidate backend sequence, operation count, fallback/no-fallback visibility,
+  candidate-score visibility, and movement visibility against Backend
+  Equivalence reports already checked by the gate
+- bounded Runtime Planning Explanation matrix lookups that verify graph
   family, source boundary, required artifact kinds, completeness, and exact
   `runtime_planning_explanation` artifact coverage
 - data-only Runtime Vector Backend Equivalence metadata comparing the expected

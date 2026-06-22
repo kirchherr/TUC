@@ -645,6 +645,11 @@
           "artifact_status": "present"
         },
         {
+          "artifact_id": "runtime_planning_explanation_mixed",
+          "artifact_kind": "runtime_planning_explanation",
+          "artifact_status": "present"
+        },
+        {
           "artifact_id": "runtime_hs_ir_plan_alignment_mixed",
           "artifact_kind": "runtime_hs_ir_plan_alignment",
           "artifact_status": "present"
@@ -655,6 +660,7 @@
       "missing_required_artifact_kinds": [],
       "required_artifact_kinds": [
         "backend_equivalence",
+        "runtime_planning_explanation",
         "runtime_hs_ir_plan_alignment"
       ],
       "runtime_evidence_complete": true,

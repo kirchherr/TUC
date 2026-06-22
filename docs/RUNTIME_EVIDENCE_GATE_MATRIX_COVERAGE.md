@@ -37,7 +37,8 @@ The current audit covers four gate-required Matrix bindings:
 The systolic backend-equivalence binding requires both
 `runtime_backend_equivalence_systolic` and
 `runtime_planning_explanation_systolic`. The mixed backend-equivalence binding
-requires both `runtime_backend_equivalence_mixed` and
+requires `runtime_backend_equivalence_mixed`,
+`runtime_planning_explanation_mixed`, and
 `runtime_hs_ir_plan_alignment_mixed`.
 
 Each binding records:

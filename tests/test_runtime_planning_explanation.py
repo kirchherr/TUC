@@ -10,6 +10,7 @@ from typing import Any
 import pytest
 
 from examples.runtime_planning_explanation import (
+    build_mixed_backend_equivalence_runtime_planning_explanation_report,
     build_systolic_runtime_planning_explanation_report,
 )
 from tuc import (
@@ -32,7 +33,12 @@ from tuc.runtime.planning_explanation import (
 )
 
 SCHEMA_PATH = Path("schemas/runtime_planning_explanation_report.v0.schema.json")
-GOLDEN_PATH = Path("tests/golden/runtime_planning_explanation/systolic_report.json")
+SYSTOLIC_GOLDEN_PATH = Path(
+    "tests/golden/runtime_planning_explanation/systolic_report.json"
+)
+MIXED_GOLDEN_PATH = Path(
+    "tests/golden/runtime_planning_explanation/mixed_backend_equivalence_report.json"
+)
 
 
 def test_systolic_runtime_planning_explanation_passes() -> None:
@@ -62,11 +68,57 @@ def test_systolic_runtime_planning_explanation_passes() -> None:
     assert assert_runtime_planning_explanation(report) is report
 
 
+def test_mixed_backend_equivalence_runtime_planning_explanation_passes() -> None:
+    report = build_mixed_backend_equivalence_runtime_planning_explanation_report()
+
+    assert report.passed
+    assert report.graph_name == "runtime_mixed_backend_equivalence"
+    assert report.explanation_contract == RUNTIME_PLANNING_EXPLANATION_CONTRACT
+    assert report.explanation_status == "passed"
+    assert report.candidate_score_mode == "recorded"
+    assert report.operation_count == 4
+    assert report.backend_sequence == (
+        "systolic-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim",
+    )
+    assert report.selection_kinds == ("preferred_for",)
+    assert report.fallback_count == 0
+    assert report.transfer_edge_count == 0
+    assert report.layout_conversion_count == 1
+    assert report.total_transfer_bytes == 0
+    assert report.total_layout_conversion_bytes == 24
+    assert report.total_data_movement_bytes == 24
+    assert report.candidate_score_count == 4
+    assert tuple(step.operation_name for step in report.steps) == (
+        "projection",
+        "normalize",
+        "sum_rows",
+        "activation",
+    )
+    assert report.steps[0].backend_name == "systolic-sim"
+    assert report.steps[1].backend_name == "vector-sim"
+    assert report.steps[1].layout_conversion_bytes == 24
+    assert report.steps[1].movement_bytes == 24
+    assert all(step.selection_kind == "preferred_for" for step in report.steps)
+    assert all(step.selected_candidate_score_count == 1 for step in report.steps)
+    assert assert_runtime_planning_explanation(report) is report
+
+
 def test_runtime_planning_explanation_dump_matches_golden() -> None:
     report = build_systolic_runtime_planning_explanation_report()
 
-    assert dump_runtime_planning_explanation_report(report) == GOLDEN_PATH.read_text(
-        encoding="utf-8"
+    assert dump_runtime_planning_explanation_report(report) == (
+        SYSTOLIC_GOLDEN_PATH.read_text(encoding="utf-8")
+    )
+
+
+def test_mixed_runtime_planning_explanation_dump_matches_golden() -> None:
+    report = build_mixed_backend_equivalence_runtime_planning_explanation_report()
+
+    assert dump_runtime_planning_explanation_report(report) == (
+        MIXED_GOLDEN_PATH.read_text(encoding="utf-8")
     )
 
 
@@ -78,10 +130,25 @@ def test_runtime_planning_explanation_example_runs() -> None:
         text=True,
     )
 
-    assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
+    assert completed.stdout == SYSTOLIC_GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"explanation_status": "passed"' in completed.stdout
     assert '"systolic-sim"' in completed.stdout
     assert '"reference-cpu"' in completed.stdout
+
+
+def test_runtime_mixed_planning_explanation_example_runs() -> None:
+    completed = subprocess.run(
+        [sys.executable, "examples/runtime_mixed_planning_explanation.py"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.stdout == MIXED_GOLDEN_PATH.read_text(encoding="utf-8")
+    assert '"graph_name": "runtime_mixed_backend_equivalence"' in completed.stdout
+    assert '"fallback_count": 0' in completed.stdout
+    assert '"total_data_movement_bytes": 24' in completed.stdout
+    assert '"vector-sim"' in completed.stdout
 
 
 def test_runtime_planning_explanation_to_dict_requires_report() -> None:
@@ -208,19 +275,31 @@ def test_runtime_planning_explanation_schema_fails_closed() -> None:
 
 def test_runtime_planning_explanation_golden_matches_schema_shape() -> None:
     schema = _load_schema()
-    golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
+    systolic_golden = json.loads(SYSTOLIC_GOLDEN_PATH.read_text(encoding="utf-8"))
+    mixed_golden = json.loads(MIXED_GOLDEN_PATH.read_text(encoding="utf-8"))
 
-    assert sorted(golden) == sorted(schema["required"])
-    assert golden["schema_version"] == RUNTIME_PLANNING_EXPLANATION_REPORT_SCHEMA_VERSION
-    assert golden["explanation_contract"] == RUNTIME_PLANNING_EXPLANATION_CONTRACT
-    assert golden["blocked_execution_surfaces"] == list(
-        RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
-    )
-    assert golden["passed"] is True
-    assert golden["issues"] == []
-    assert golden["candidate_score_count"] == 1
-    assert golden["backend_sequence"] == ["systolic-sim", "reference-cpu"]
-    assert golden["selection_kinds"] == ["fallback", "preferred_for"]
+    for golden in (systolic_golden, mixed_golden):
+        assert sorted(golden) == sorted(schema["required"])
+        assert golden["schema_version"] == (
+            RUNTIME_PLANNING_EXPLANATION_REPORT_SCHEMA_VERSION
+        )
+        assert golden["explanation_contract"] == RUNTIME_PLANNING_EXPLANATION_CONTRACT
+        assert golden["blocked_execution_surfaces"] == list(
+            RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+        )
+        assert golden["passed"] is True
+        assert golden["issues"] == []
+    assert systolic_golden["candidate_score_count"] == 1
+    assert systolic_golden["backend_sequence"] == ["systolic-sim", "reference-cpu"]
+    assert systolic_golden["selection_kinds"] == ["fallback", "preferred_for"]
+    assert mixed_golden["candidate_score_count"] == 4
+    assert mixed_golden["backend_sequence"] == [
+        "systolic-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim",
+    ]
+    assert mixed_golden["selection_kinds"] == ["preferred_for"]
 
 
 def test_runtime_planning_explanation_schema_is_referenced() -> None:

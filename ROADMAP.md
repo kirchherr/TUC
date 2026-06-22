@@ -539,8 +539,8 @@ Completed evidence:
 - Runtime Planning Explanation reports summarize accepted `PartitionPlan`
   selection kinds, backend sequence, fallback count, candidate-score visibility,
   and movement bytes; Runtime Evidence Matrix and Runtime Evidence Gate now
-  bind that report to the systolic backend-equivalence slice by exact artifact
-  ID.
+  bind those reports to the systolic and mixed backend-equivalence slices by
+  exact artifact ID.
 
 Next work:
 

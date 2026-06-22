@@ -14,16 +14,18 @@ It is intentionally not a new planner. It reads the accepted plan and records:
 
 ## Artifact
 
-The executable example is:
+The executable examples are:
 
 ```text
 examples/runtime_planning_explanation.py
+examples/runtime_mixed_planning_explanation.py
 ```
 
-The deterministic golden is:
+The deterministic goldens are:
 
 ```text
 tests/golden/runtime_planning_explanation/systolic_report.json
+tests/golden/runtime_planning_explanation/mixed_backend_equivalence_report.json
 ```
 
 The schema is:
@@ -71,9 +73,12 @@ For the systolic proof graph, the report shows:
 This strengthens runtime planning explainability without changing placement
 behavior or adding hardware-specific facts to HAC-IR.
 
-Runtime Evidence Matrix and Runtime Evidence Gate now bind a matching
-backend-equivalence planning explanation under the exact
-`runtime_planning_explanation_systolic` artifact ID. That gate binding checks
-that the explanation belongs to `runtime_backend_equivalence`, matches the
-`systolic-sim,reference-cpu` candidate backend sequence, records candidate-score
-visibility, and keeps the fallback explicit.
+Runtime Evidence Matrix and Runtime Evidence Gate now bind matching
+backend-equivalence planning explanations under exact artifact IDs:
+`runtime_planning_explanation_systolic` for the fallback-bearing systolic
+slice and `runtime_planning_explanation_mixed` for the mixed accelerator
+slice. The systolic binding checks the `systolic-sim,reference-cpu` candidate
+sequence, recorded candidate-score visibility, and explicit fallback. The mixed
+binding checks the `systolic-sim,vector-sim,vector-sim,vector-sim` candidate
+sequence, recorded candidate-score visibility, no fallback, and visible
+layout-conversion movement.

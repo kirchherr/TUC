@@ -110,7 +110,7 @@ The current matrix is complete across every accepted graph fixture:
 - `runtime_backend_equivalence`, `runtime_vector_backend_equivalence`, and
   `runtime_mixed_backend_equivalence` are complete under their scoped
   backend-equivalence evidence requirements. The mixed fixture also inventories
-  `runtime_hs_ir_plan_alignment` evidence.
+  `runtime_planning_explanation` and `runtime_hs_ir_plan_alignment` evidence.
 - `runtime_backend_equivalence_portfolio` is complete under its scoped
   `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` evidence requirements, inventorying
@@ -128,9 +128,10 @@ to remain present with the `runtime_backend_equivalence` source boundary and
 count as passing gate evidence; the gate binds each checked equivalence report
 to its matrix graph by graph ID and exact artifact ID. The mixed
 backend-equivalence graph must additionally keep the
-`runtime_hs_ir_plan_alignment` artifact kind and exact
-`runtime_hs_ir_plan_alignment_mixed` artifact ID before its HS-IR alignment
-report can count as passing gate evidence. It also requires the
+`runtime_planning_explanation` and `runtime_hs_ir_plan_alignment` artifact
+kinds with exact `runtime_planning_explanation_mixed` and
+`runtime_hs_ir_plan_alignment_mixed` artifact IDs before its planning
+explanation and HS-IR alignment reports can count as passing gate evidence. It also requires the
 `runtime_backend_equivalence_portfolio` graph to remain present with the
 `runtime_backend_equivalence` source boundary and
 `backend_equivalence_portfolio` plus

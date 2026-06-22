@@ -74,6 +74,11 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
     mixed = {
         binding.binding_id: binding for binding in report.bindings
     }["runtime_mixed_backend_equivalence_matrix"]
+    assert mixed.required_artifact_kinds == (
+        "backend_equivalence",
+        "runtime_planning_explanation",
+        "runtime_hs_ir_plan_alignment",
+    )
     assert mixed.expected_artifact_ids == (
         RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS
     )
@@ -114,6 +119,7 @@ def test_runtime_evidence_gate_matrix_coverage_example_runs() -> None:
     assert '"binding_count": 4' in completed.stdout
     assert "runtime_backend_equivalence_systolic" in completed.stdout
     assert "runtime_planning_explanation_systolic" in completed.stdout
+    assert "runtime_planning_explanation_mixed" in completed.stdout
     assert "runtime_hs_ir_plan_alignment_mixed" in completed.stdout
     assert "runtime_backend_equivalence_portfolio_policy" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
@@ -160,6 +166,7 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_artifact_id() -> No
     assert mixed.coverage_status == "failed"
     assert mixed.observed_artifact_ids == (
         "runtime_backend_equivalence_other",
+        "runtime_planning_explanation_mixed",
         "runtime_hs_ir_plan_alignment_mixed",
     )
 

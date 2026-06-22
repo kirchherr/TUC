@@ -11,6 +11,7 @@ from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
 from examples.runtime_planning_explanation import (
     build_backend_equivalence_runtime_planning_explanation_report,
+    build_mixed_backend_equivalence_runtime_planning_explanation_report,
 )
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
@@ -101,15 +102,20 @@ RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID = "runtime_mixed_backend_equivalence"
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID = (
     "runtime_backend_equivalence_mixed"
 )
+RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID = (
+    "runtime_planning_explanation_mixed"
+)
 RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID = (
     "runtime_hs_ir_plan_alignment_mixed"
 )
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS = (
     "backend_equivalence",
+    "runtime_planning_explanation",
     "runtime_hs_ir_plan_alignment",
 )
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS = (
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
 )
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
@@ -222,6 +228,9 @@ def build_gate_report(
         RuntimeBackendEquivalenceReport | None
     ) = None,
     mixed_backend_equivalence_report: RuntimeBackendEquivalenceReport | None = None,
+    mixed_runtime_planning_explanation_report: (
+        RuntimePlanningExplanationReport | None
+    ) = None,
     runtime_hs_ir_plan_alignment_report: RuntimeHsIrPlanAlignmentReport | None = None,
     backend_equivalence_portfolio_report: (
         RuntimeBackendEquivalencePortfolioReport | None
@@ -275,6 +284,11 @@ def build_gate_report(
         build_mixed_backend_equivalence_report()
         if mixed_backend_equivalence_report is None
         else mixed_backend_equivalence_report
+    )
+    mixed_runtime_planning_explanation = (
+        build_mixed_backend_equivalence_runtime_planning_explanation_report()
+        if mixed_runtime_planning_explanation_report is None
+        else mixed_runtime_planning_explanation_report
     )
     runtime_hs_ir_plan_alignment = (
         build_alignment_report()
@@ -411,6 +425,15 @@ def build_gate_report(
         ),
         label="runtime mixed backend equivalence",
     )
+    _assert_runtime_planning_explanation_passed(mixed_runtime_planning_explanation)
+    _assert_mixed_runtime_planning_explanation_bound(
+        mixed_runtime_planning_explanation,
+        mixed_backend_equivalence,
+    )
+    _assert_mixed_runtime_planning_explanation_matrix_covered(
+        matrix,
+        mixed_runtime_planning_explanation,
+    )
     _assert_runtime_hs_ir_plan_alignment_passed(runtime_hs_ir_plan_alignment)
     _assert_runtime_hs_ir_plan_alignment_bound(
         runtime_hs_ir_plan_alignment,
@@ -472,6 +495,7 @@ def build_gate_report(
         runtime_planning_explanation,
         vector_backend_equivalence,
         mixed_backend_equivalence,
+        mixed_runtime_planning_explanation,
         runtime_hs_ir_plan_alignment,
         backend_equivalence_portfolio,
         backend_equivalence_portfolio_policy,
@@ -702,6 +726,94 @@ def _assert_runtime_planning_explanation_matrix_covered(
     if artifact_ids != RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS:
         raise RuntimeEvidenceGateError(
             "runtime planning explanation matrix coverage failed: "
+            "artifact_id_mismatch"
+        )
+
+
+def _assert_mixed_runtime_planning_explanation_bound(
+    report: RuntimePlanningExplanationReport,
+    mixed_equivalence: RuntimeBackendEquivalenceReport,
+) -> None:
+    if report.graph_name != RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation binding failed: graph_name_mismatch"
+        )
+    runs = {run.run_id: run for run in mixed_equivalence.runs}
+    candidate = runs.get(RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID)
+    if candidate is None:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation binding failed: missing_candidate_run"
+        )
+    if report.backend_sequence != candidate.planned_backend_sequence:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation binding failed: "
+            "backend_sequence_mismatch"
+        )
+    if report.operation_count != len(candidate.planned_backend_sequence):
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation binding failed: operation_count_mismatch"
+        )
+    if report.candidate_score_mode != "recorded" or report.candidate_score_count < 1:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation binding failed: "
+            "candidate_scores_missing"
+        )
+    if "fallback" in report.selection_kinds or report.fallback_count != 0:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation binding failed: fallback_unexpected"
+        )
+    if report.selection_kinds != ("preferred_for",):
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation binding failed: selection_kinds_mismatch"
+        )
+    if report.layout_conversion_count < 1 or report.total_data_movement_bytes < 1:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation binding failed: movement_not_explained"
+        )
+
+
+def _assert_mixed_runtime_planning_explanation_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+    report: RuntimePlanningExplanationReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(matrix, report.graph_name)
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation matrix coverage failed: graph missing"
+        )
+    if graph.graph_family != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation matrix coverage failed: "
+            "graph_family_mismatch"
+        )
+    if graph.source_boundary != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation matrix coverage failed: "
+            "source_boundary_mismatch"
+        )
+    if (
+        graph.required_artifact_kinds
+        != RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation matrix coverage failed: "
+            "required_artifacts_mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation matrix coverage failed: "
+            "runtime evidence incomplete"
+        )
+    artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind == "runtime_planning_explanation"
+    )
+    if artifact_ids != (
+        RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime mixed planning explanation matrix coverage failed: "
             "artifact_id_mismatch"
         )
 
@@ -1350,6 +1462,7 @@ def _render_gate_report(
     runtime_planning_explanation: RuntimePlanningExplanationReport,
     vector_backend_equivalence: RuntimeBackendEquivalenceReport,
     mixed_backend_equivalence: RuntimeBackendEquivalenceReport,
+    mixed_runtime_planning_explanation: RuntimePlanningExplanationReport,
     runtime_hs_ir_plan_alignment: RuntimeHsIrPlanAlignmentReport,
     backend_equivalence_portfolio: RuntimeBackendEquivalencePortfolioReport,
     backend_equivalence_portfolio_policy: (
@@ -1448,6 +1561,25 @@ def _render_gate_report(
     lines.append(
         "  runtime_mixed_backend_equivalence_raw_value_policy = "
         f'"{mixed_backend_equivalence.raw_value_policy}"'
+    )
+    lines.append('  runtime_mixed_planning_explanation = "passed"')
+    lines.append('  runtime_mixed_planning_explanation_binding = "verified"')
+    lines.append('  runtime_mixed_planning_explanation_matrix = "covered"')
+    lines.append(
+        "  runtime_mixed_planning_explanation_matrix_artifact = "
+        f'"{RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID}"'
+    )
+    lines.append(
+        "  runtime_mixed_planning_explanation_backend_sequence = "
+        f'"{",".join(mixed_runtime_planning_explanation.backend_sequence)}"'
+    )
+    lines.append(
+        "  runtime_mixed_planning_explanation_selection_kinds = "
+        f'"{",".join(mixed_runtime_planning_explanation.selection_kinds)}"'
+    )
+    lines.append(
+        "  runtime_mixed_planning_explanation_movement_bytes = "
+        f'"{mixed_runtime_planning_explanation.total_data_movement_bytes}"'
     )
     lines.append('  runtime_hs_ir_plan_alignment = "passed"')
     lines.append('  runtime_hs_ir_plan_alignment_binding = "verified"')

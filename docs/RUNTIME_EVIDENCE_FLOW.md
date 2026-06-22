@@ -98,8 +98,9 @@ names, trusted-executor statuses, and metadata digests.
 
 `Runtime Planning Explanation` summarizes accepted `PartitionPlan` assignment
 reasons, backend sequence, fallback count, candidate-score visibility, and
-movement bytes. Runtime Evidence Gate currently binds it to the systolic
-backend-equivalence candidate plan by exact Matrix artifact ID.
+movement bytes. Runtime Evidence Gate binds it to both the systolic fallback
+backend-equivalence candidate plan and the mixed no-fallback accelerator
+candidate plan by exact Matrix artifact IDs.
 
 ## What Is Never Serialized
 

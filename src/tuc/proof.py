@@ -1443,12 +1443,17 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "runtime_backend_equivalence_mixed",
                     ),
                     _runtime_evidence_artifact(
+                        "runtime_planning_explanation",
+                        "runtime_planning_explanation_mixed",
+                    ),
+                    _runtime_evidence_artifact(
                         "runtime_hs_ir_plan_alignment",
                         "runtime_hs_ir_plan_alignment_mixed",
                     ),
                 ),
                 required_artifact_kinds=(
                     "backend_equivalence",
+                    "runtime_planning_explanation",
                     "runtime_hs_ir_plan_alignment",
                 ),
             ),

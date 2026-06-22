@@ -98,13 +98,15 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "source_intent_runtime_returns",
     }
     assert graphs["runtime_backend_equivalence"]["required_artifact_kinds"] == [
-        "backend_equivalence"
+        "backend_equivalence",
+        "runtime_planning_explanation",
     ]
     assert graphs["runtime_vector_backend_equivalence"]["required_artifact_kinds"] == [
         "backend_equivalence"
     ]
     assert graphs["runtime_mixed_backend_equivalence"]["required_artifact_kinds"] == [
         "backend_equivalence",
+        "runtime_planning_explanation",
         "runtime_hs_ir_plan_alignment",
     ]
     assert {
@@ -112,6 +114,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         for artifact in graphs["runtime_mixed_backend_equivalence"]["artifacts"]
     } == {
         "backend_equivalence",
+        "runtime_planning_explanation",
         "runtime_hs_ir_plan_alignment",
     }
     assert graphs["runtime_backend_equivalence_portfolio"][

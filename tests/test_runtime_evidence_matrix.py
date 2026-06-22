@@ -58,6 +58,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     )
     assert graphs["runtime_mixed_backend_equivalence"].required_artifact_kinds == (
         "backend_equivalence",
+        "runtime_planning_explanation",
         "runtime_hs_ir_plan_alignment",
     )
     assert graphs[
@@ -77,6 +78,10 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     assert (
         "runtime_planning_explanation"
         in graphs["runtime_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_planning_explanation"
+        in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
     )
     assert (
         "runtime_hs_ir_plan_alignment"
