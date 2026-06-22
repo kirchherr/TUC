@@ -107,9 +107,12 @@ Toolchain Environment Report components with SHA-256 digests and no host
 discovery. It may mark native-baseline provenance present once accepted workload
 scopes are bound to data-only native baseline candidates while reproduction,
 artifact digests, comparison evidence, and native claims remain blocked. It may
-mark leaky-abstraction evidence present once accepted HAC-IR is contract-valid
-and performance-critical facts remain outside HAC-IR. Native performance
-readiness still fails until every required evidence item is present.
+mark native-baseline comparison present once accepted workload scopes are bound
+to data-only comparison references while measurement, digest validation,
+artifact loading, and native claims remain blocked. It may mark leaky-abstraction
+evidence present once accepted HAC-IR is contract-valid and performance-critical
+facts remain outside HAC-IR. Native performance readiness still fails until
+every required evidence item is present.
 
 ## Consequences
 

@@ -9,6 +9,7 @@ from examples.performance_proof_readiness import (
     _has_kernel_ingress_benchmark_methodology_evidence,
     _has_kernel_ingress_golden_digest_evidence,
     _has_kernel_ingress_leaky_abstraction_evidence,
+    _has_kernel_ingress_native_baseline_comparison_evidence,
     _has_kernel_ingress_native_baseline_provenance_evidence,
     _has_kernel_ingress_planner_overhead_evidence,
     _has_kernel_ingress_workload_scope_evidence,
@@ -45,6 +46,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         "versioned_toolchain_environment",
         "workload_scope",
         "correctness_goldens",
+        "native_baseline_comparison",
         "leaky_abstraction_report",
         "planner_overhead_report",
         "runtime_plan_goldens",
@@ -60,6 +62,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
             "benchmark_methodology",
             "native_baseline_provenance",
             "versioned_toolchain_environment",
+            "native_baseline_comparison",
             "correctness_goldens",
             "leaky_abstraction_report",
             "planner_overhead_report",
@@ -75,6 +78,7 @@ def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None
     assert _has_kernel_ingress_workload_scope_evidence()
     assert _has_kernel_ingress_benchmark_methodology_evidence()
     assert _has_kernel_ingress_native_baseline_provenance_evidence()
+    assert _has_kernel_ingress_native_baseline_comparison_evidence()
     assert _has_versioned_toolchain_environment_evidence()
     assert _has_kernel_ingress_leaky_abstraction_evidence()
     assert _has_kernel_ingress_planner_overhead_evidence()

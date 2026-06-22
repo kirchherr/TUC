@@ -187,6 +187,14 @@ the existence of a bounded native comparison metadata contract. It does not
 load benchmark artifacts, parse raw benchmark output, store timing samples, or
 prove native performance parity.
 
+The current readiness example marks `native_baseline_comparison` present only
+after binding every accepted Kernel Ingress workload scope to a data-only native
+comparison reference. Each comparison is `not_measured`, carries no comparison
+digest, and keeps `native_baseline_comparison_ready` false. This proves only
+that future benchmark artifacts have a bounded comparison surface; it does not
+load artifacts, validate CI benchmark output, compare timing samples, or make a
+native performance claim.
+
 The current diagnostic benchmark artifact manifest report schema is
 `schemas/benchmark_artifact_manifest_report.v0.schema.json`. It can satisfy only
 the existence of a bounded benchmark artifact inventory contract. It does not

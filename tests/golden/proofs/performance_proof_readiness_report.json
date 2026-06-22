@@ -44,7 +44,7 @@
     },
     {
       "evidence_id": "native_baseline_comparison",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "leaky_abstraction_report",
@@ -90,10 +90,6 @@
     },
     {
       "evidence_id": "performance_acceptance_criteria",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
-      "evidence_id": "native_baseline_comparison",
       "message": "required performance proof boundary evidence is missing"
     },
     {

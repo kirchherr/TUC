@@ -828,6 +828,10 @@ Current slice:
   bounded native baseline candidates for every accepted Kernel Ingress workload
   scope, while native reproduction, artifact digests, comparison evidence, and
   native performance claims remain blocked.
+- Performance Proof Readiness now derives `native_baseline_comparison` from
+  bounded comparison references for every accepted Kernel Ingress workload
+  scope, while benchmark artifact loading, digest validation, timing
+  comparison, and native performance claims remain blocked.
 - Performance Proof Readiness now derives `leaky_abstraction_report` from the
   accepted Kernel Ingress MVP pipeline, requiring contract-valid HAC-IR, no
   forbidden hardware-specific HAC-IR attributes, and performance facts assigned

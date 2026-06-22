@@ -43,6 +43,9 @@ from tuc import (
     LEAKY_ABSTRACTION_DEFAULT_ISSUES,
     LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS,
     LEAKY_ABSTRACTION_REPORT_SCHEMA_VERSION,
+    NATIVE_BASELINE_COMPARISON_ARTIFACT_STATUS,
+    NATIVE_BASELINE_COMPARISON_CLAIM_STATUS,
+    NATIVE_BASELINE_COMPARISON_REPORT_SCHEMA_VERSION,
     NATIVE_BASELINE_PROVENANCE_ARTIFACT_STATUS,
     NATIVE_BASELINE_PROVENANCE_CLAIM_STATUS,
     NATIVE_BASELINE_PROVENANCE_REPORT_SCHEMA_VERSION,
@@ -52,6 +55,8 @@ from tuc import (
     TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION,
     BenchmarkMethodology,
     LeakyAbstractionFact,
+    NativeBaselineComparison,
+    NativeBaselineComparisonReport,
     NativeBaselineProvenance,
     NativeBaselineProvenanceReport,
     PerformanceProofReadinessEvidence,
@@ -60,11 +65,13 @@ from tuc import (
     benchmark_methodology_report_to_dict,
     build_benchmark_methodology_report,
     build_leaky_abstraction_report,
+    build_native_baseline_comparison_report,
     build_native_baseline_provenance_report,
     build_performance_proof_readiness_report,
     build_toolchain_environment_report,
     dump_performance_proof_readiness_report,
     leaky_abstraction_report_to_dict,
+    native_baseline_comparison_report_to_dict,
     native_baseline_provenance_report_to_dict,
     toolchain_environment_report_to_dict,
 )
@@ -108,6 +115,11 @@ _NATIVE_BASELINE_PROVENANCE_PROPOSAL_NAME = (
 _NATIVE_BASELINE_TARGET_PLATFORM_ID = "portable_cpu_native_library"
 _NATIVE_BASELINE_SOURCE_PROVENANCE_ID = "documented_native_baseline_policy"
 _NATIVE_BASELINE_TOOLCHAIN_ID = "kernel_ingress_toolchain_environment_candidate"
+_NATIVE_BASELINE_COMPARISON_PROPOSAL_NAME = (
+    "kernel_ingress_native_baseline_comparison_candidate"
+)
+_NATIVE_BASELINE_COMPARISON_METRIC_ID = "median_execution_time_ns"
+_NATIVE_BASELINE_COMPARISON_SUMMARY_POLICY_ID = "median_iqr"
 _TOOLCHAIN_ENVIRONMENT_PROPOSAL_NAME = "kernel_ingress_toolchain_environment_candidate"
 _TOOLCHAIN_ENVIRONMENT_COMPONENT_FILES: tuple[tuple[str, str, str, str, Path], ...] = (
     (
@@ -199,6 +211,10 @@ def build_blocked_performance_proof_evidence() -> (
         PerformanceProofReadinessEvidence(
             evidence_id="native_baseline_provenance",
             present=_has_kernel_ingress_native_baseline_provenance_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
+            evidence_id="native_baseline_comparison",
+            present=_has_kernel_ingress_native_baseline_comparison_evidence(),
         ),
         PerformanceProofReadinessEvidence(
             evidence_id="versioned_toolchain_environment",
@@ -308,6 +324,86 @@ def _kernel_ingress_workload_scope_ids(
     if len(scope_ids) != len(scopes):
         raise ValueError("kernel ingress workload scope drift")
     return scope_ids
+
+
+def _has_kernel_ingress_native_baseline_comparison_evidence() -> bool:
+    workload_report_text = build_kernel_ingress_workload_scope_report()
+    workload_report = json.loads(workload_report_text)
+    assert_kernel_ingress_workload_scope_report_contract(workload_report)
+    scope_ids = _kernel_ingress_workload_scope_ids(workload_report)
+    report = _build_kernel_ingress_native_baseline_comparison_report(scope_ids)
+    payload = native_baseline_comparison_report_to_dict(report)
+    expected = {
+        "artifact_status": NATIVE_BASELINE_COMPARISON_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": [
+            "native_performance_claim_blocked",
+            "native_baseline_comparison_not_validated_by_ci",
+            "native_baseline_comparison_digest_not_supplied",
+        ],
+        "native_baseline_comparison_ready": False,
+        "native_performance_claim": False,
+        "performance_claim_status": NATIVE_BASELINE_COMPARISON_CLAIM_STATUS,
+        "proposal_name": _NATIVE_BASELINE_COMPARISON_PROPOSAL_NAME,
+        "schema_version": NATIVE_BASELINE_COMPARISON_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"native baseline comparison evidence {key} drift")
+    comparisons = payload["comparisons"]
+    if not isinstance(comparisons, list):
+        raise ValueError("native baseline comparison entries drift")
+    if len(comparisons) != len(scope_ids):
+        raise ValueError("native baseline comparison count drift")
+    observed_scope_ids = tuple(
+        str(comparison["workload_scope_id"])
+        for comparison in comparisons
+        if isinstance(comparison, dict)
+    )
+    if observed_scope_ids != scope_ids:
+        raise ValueError("native baseline comparison scope binding drift")
+    for comparison in comparisons:
+        if not isinstance(comparison, dict):
+            raise ValueError("native baseline comparison entry drift")
+        expected_fields = {
+            "comparison_digest": "not_supplied",
+            "comparison_metric_id": _NATIVE_BASELINE_COMPARISON_METRIC_ID,
+            "result_status": "not_measured",
+            "summary_policy_id": _NATIVE_BASELINE_COMPARISON_SUMMARY_POLICY_ID,
+        }
+        for key, value in expected_fields.items():
+            if comparison.get(key) != value:
+                raise ValueError(f"native baseline comparison {key} drift")
+        for forbidden_key in (
+            "host_path",
+            "environment",
+            "device_id",
+            "hardware_serial",
+            "raw_timing_samples",
+        ):
+            if forbidden_key in comparison:
+                raise ValueError("native baseline comparison exposes forbidden data")
+    return True
+
+
+def _build_kernel_ingress_native_baseline_comparison_report(
+    scope_ids: tuple[str, ...],
+) -> NativeBaselineComparisonReport:
+    return build_native_baseline_comparison_report(
+        _NATIVE_BASELINE_COMPARISON_PROPOSAL_NAME,
+        comparisons=tuple(
+            NativeBaselineComparison(
+                comparison_id=f"native_comparison_{scope_id}",
+                workload_scope_id=scope_id,
+                baseline_artifact_id=f"tuc_baseline_artifact_{scope_id}",
+                native_artifact_id=f"native_baseline_artifact_{scope_id}",
+                comparison_metric_id=_NATIVE_BASELINE_COMPARISON_METRIC_ID,
+                summary_policy_id=_NATIVE_BASELINE_COMPARISON_SUMMARY_POLICY_ID,
+                result_status="not_measured",
+            )
+            for scope_id in scope_ids
+        ),
+    )
 
 
 def _has_versioned_toolchain_environment_evidence() -> bool:
