@@ -388,21 +388,23 @@ Key docs:
 TUC currently proves correctness and inspectability, not native performance
 parity.
 
-Native performance claims remain blocked until the project has accepted
-executable-backend security review. Existing Kernel Ingress governance, policy,
-scope, methodology, provenance, comparison, planner, break-even,
-leaky-abstraction, benchmark artifact inventory, and golden evidence remains
-review metadata, not a native performance proof.
+Native performance claims remain blocked even though the current Kernel Ingress
+proof slice now has accepted executable-backend security review metadata.
+Existing Kernel Ingress governance, policy, scope, methodology, provenance,
+comparison, planner, break-even, leaky-abstraction, benchmark artifact
+inventory, executable-surface review, and golden evidence remain review
+metadata, not a native performance proof.
 
 Current readiness evidence marks accepted, digest-pinned performance RFC,
-threshold-policy, acceptance-criteria, and benchmark artifact manifest metadata
-present, along with Kernel-Ingress-derived workload scope, break-even workload
-estimates, benchmark methodology, native-baseline provenance candidates, blocked
-native comparison metadata, digest-bound versioned toolchain environment
-evidence, correctness goldens, planner-overhead phase separation,
-leaky-abstraction boundary evidence, runtime-plan goldens, compiler-decision
-goldens, and the fail-closed baseline benchmark report schema. The report still
-fails closed for native performance claims.
+threshold-policy, acceptance-criteria, benchmark artifact manifest metadata,
+and executable-backend security review metadata present, along with
+Kernel-Ingress-derived workload scope, break-even workload estimates, benchmark
+methodology, native-baseline provenance candidates, blocked native comparison
+metadata, digest-bound versioned toolchain environment evidence, correctness
+goldens, planner-overhead phase separation, leaky-abstraction boundary evidence,
+runtime-plan goldens, compiler-decision goldens, and the fail-closed baseline
+benchmark report schema. Readiness can be metadata-complete while native
+performance claims stay blocked.
 
 Key docs:
 

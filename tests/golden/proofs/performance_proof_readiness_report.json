@@ -76,16 +76,11 @@
     },
     {
       "evidence_id": "executable_backend_security_review",
-      "present": false
+      "present": true
     }
   ],
-  "issues": [
-    {
-      "evidence_id": "executable_backend_security_review",
-      "message": "required performance proof boundary evidence is missing"
-    }
-  ],
-  "proposal_name": "blocked-native-performance-proof-proposal",
-  "ready": false,
+  "issues": [],
+  "proposal_name": "current-kernel-ingress-performance-proof-readiness",
+  "ready": true,
   "schema_version": "tuc.performance_proof_readiness_report.v0"
 }

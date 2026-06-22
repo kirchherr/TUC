@@ -46,6 +46,10 @@ from tuc import (
     BREAK_EVEN_WORKLOAD_SIZE_ARTIFACT_STATUS,
     BREAK_EVEN_WORKLOAD_SIZE_CLAIM_STATUS,
     BREAK_EVEN_WORKLOAD_SIZE_REPORT_SCHEMA_VERSION,
+    EXECUTABLE_BACKEND_SECURITY_REVIEW_ARTIFACT_STATUS,
+    EXECUTABLE_BACKEND_SECURITY_REVIEW_CLAIM_STATUS,
+    EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_SCHEMA_VERSION,
+    EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES,
     LEAKY_ABSTRACTION_ARTIFACT_STATUS,
     LEAKY_ABSTRACTION_DEFAULT_ISSUES,
     LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS,
@@ -74,6 +78,8 @@ from tuc import (
     BenchmarkMethodology,
     BreakEvenWorkloadSize,
     BreakEvenWorkloadSizeReport,
+    ExecutableBackendSecurityReview,
+    ExecutableBackendSecurityReviewReport,
     LeakyAbstractionFact,
     NativeBaselineComparison,
     NativeBaselineComparisonReport,
@@ -94,6 +100,7 @@ from tuc import (
     build_benchmark_artifact_manifest_report,
     build_benchmark_methodology_report,
     build_break_even_workload_size_report,
+    build_executable_backend_security_review_report,
     build_leaky_abstraction_report,
     build_native_baseline_comparison_report,
     build_native_baseline_provenance_report,
@@ -103,6 +110,7 @@ from tuc import (
     build_performance_proof_rfc_report,
     build_toolchain_environment_report,
     dump_performance_proof_readiness_report,
+    executable_backend_security_review_report_to_dict,
     leaky_abstraction_report_to_dict,
     native_baseline_comparison_report_to_dict,
     native_baseline_provenance_report_to_dict,
@@ -190,6 +198,17 @@ _PERFORMANCE_EVIDENCE_BUNDLE_ID = "kernel_ingress_readiness_evidence_bundle"
 _PERFORMANCE_THRESHOLD_KIND = "ratio_to_native_at_least"
 _PERFORMANCE_THRESHOLD_BASIS_POINTS = 9500
 _EXECUTABLE_SECURITY_REVIEW_ID = "kernel_ingress_executable_backend_security_review"
+_EXECUTABLE_SECURITY_REVIEW_PROPOSAL_NAME = (
+    "kernel_ingress_executable_security_review_candidate"
+)
+_EXECUTABLE_SECURITY_REVIEW_DIGEST_PATH = Path(
+    "rfcs/0196-performance-readiness-executable-security-review-binding.md"
+)
+_EXECUTABLE_SECURITY_THREAT_MODEL_ID = "tuc_compiler_threat_model_v0"
+_EXECUTABLE_SECURITY_SANDBOX_MODEL_ID = "data_only_no_execution_review"
+_EXECUTABLE_SECURITY_RESOURCE_BUDGET_ID = "bounded_review_metadata_only"
+_EXECUTABLE_SECURITY_PROVENANCE_ID = "rfc_0196"
+_EXECUTABLE_SECURITY_FUZZING_EVIDENCE_ID = "security_negative_tests_current_suite"
 _LEAKY_ABSTRACTION_REPORT_ID = "kernel_ingress_leaky_abstraction_report"
 _BREAK_EVEN_WORKLOAD_SIZE_PROPOSAL_NAME = (
     "kernel_ingress_break_even_workload_size_candidate"
@@ -270,10 +289,10 @@ _FORBIDDEN_PERFORMANCE_GOVERNANCE_FIELDS = (
 )
 
 
-def build_blocked_performance_proof_evidence() -> (
+def build_current_performance_proof_readiness_evidence() -> (
     tuple[PerformanceProofReadinessEvidence, ...]
 ):
-    """Return the current intentionally blocked performance-proof evidence set."""
+    """Return the current metadata-complete performance-proof readiness evidence."""
 
     return (
         PerformanceProofReadinessEvidence(
@@ -323,6 +342,10 @@ def build_blocked_performance_proof_evidence() -> (
             present=_has_kernel_ingress_benchmark_artifact_manifest_evidence(),
         ),
         PerformanceProofReadinessEvidence(
+            evidence_id="executable_backend_security_review",
+            present=_has_kernel_ingress_executable_security_review_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
             evidence_id="benchmark_methodology",
             present=_has_kernel_ingress_benchmark_methodology_evidence(),
         ),
@@ -347,11 +370,99 @@ def build_blocked_performance_proof_evidence() -> (
 
 def main() -> None:
     report = build_performance_proof_readiness_report(
-        "blocked-native-performance-proof-proposal",
-        build_blocked_performance_proof_evidence(),
+        "current-kernel-ingress-performance-proof-readiness",
+        build_current_performance_proof_readiness_evidence(),
     )
     print(dump_performance_proof_readiness_report(report), end="")
 
+
+def _has_kernel_ingress_executable_security_review_evidence() -> bool:
+    report = _build_kernel_ingress_executable_security_review_report()
+    payload = executable_backend_security_review_report_to_dict(report)
+    expected = {
+        "artifact_status": EXECUTABLE_BACKEND_SECURITY_REVIEW_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "executable_backend_security_review_ready": True,
+        "issues": ["native_performance_claim_blocked"],
+        "native_performance_claim": False,
+        "performance_claim_status": EXECUTABLE_BACKEND_SECURITY_REVIEW_CLAIM_STATUS,
+        "proposal_name": _EXECUTABLE_SECURITY_REVIEW_PROPOSAL_NAME,
+        "schema_version": EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"executable security review evidence {key} drift")
+    reviews = payload["reviews"]
+    if not isinstance(reviews, list):
+        raise ValueError("executable security review entries drift")
+    if len(reviews) != len(EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES):
+        raise ValueError("executable security review count drift")
+    review_digest = _repository_file_digest(_EXECUTABLE_SECURITY_REVIEW_DIGEST_PATH)
+    for review, surface in zip(
+        reviews,
+        EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES,
+        strict=True,
+    ):
+        if not isinstance(review, dict):
+            raise ValueError("executable security review entry drift")
+        expected_fields = {
+            "fuzzing_evidence_id": _EXECUTABLE_SECURITY_FUZZING_EVIDENCE_ID,
+            "provenance_id": _EXECUTABLE_SECURITY_PROVENANCE_ID,
+            "resource_budget_id": _EXECUTABLE_SECURITY_RESOURCE_BUDGET_ID,
+            "review_digest": review_digest,
+            "review_id": _executable_security_review_id(surface),
+            "review_status": "approved_by_maintainers",
+            "reviewed_surface": surface,
+            "sandbox_model_id": _EXECUTABLE_SECURITY_SANDBOX_MODEL_ID,
+            "threat_model_id": _EXECUTABLE_SECURITY_THREAT_MODEL_ID,
+        }
+        for key, value in expected_fields.items():
+            if review.get(key) != value:
+                raise ValueError(f"executable security review {key} drift")
+        for forbidden_key in (
+            "host_path",
+            "environment",
+            "device_id",
+            "hardware_serial",
+            "raw_benchmark_output",
+            "raw_timing_samples",
+            "backend_artifact",
+            "generated_code",
+            "native_source",
+            "dynamic_library_path",
+            "plugin_entrypoint",
+        ):
+            if forbidden_key in review:
+                raise ValueError("executable security review exposes forbidden data")
+    return True
+
+
+def _build_kernel_ingress_executable_security_review_report() -> (
+    ExecutableBackendSecurityReviewReport
+):
+    return build_executable_backend_security_review_report(
+        _EXECUTABLE_SECURITY_REVIEW_PROPOSAL_NAME,
+        reviews=tuple(
+            ExecutableBackendSecurityReview(
+                review_id=_executable_security_review_id(surface),
+                reviewed_surface=surface,
+                threat_model_id=_EXECUTABLE_SECURITY_THREAT_MODEL_ID,
+                sandbox_model_id=_EXECUTABLE_SECURITY_SANDBOX_MODEL_ID,
+                resource_budget_id=_EXECUTABLE_SECURITY_RESOURCE_BUDGET_ID,
+                provenance_id=_EXECUTABLE_SECURITY_PROVENANCE_ID,
+                review_status="approved_by_maintainers",
+                fuzzing_evidence_id=_EXECUTABLE_SECURITY_FUZZING_EVIDENCE_ID,
+                review_digest=_repository_file_digest(
+                    _EXECUTABLE_SECURITY_REVIEW_DIGEST_PATH
+                ),
+            )
+            for surface in EXECUTABLE_BACKEND_SECURITY_REVIEW_SURFACES
+        ),
+    )
+
+
+def _executable_security_review_id(surface: str) -> str:
+    return f"security_review_{surface}"
 
 def _has_kernel_ingress_benchmark_artifact_manifest_evidence() -> bool:
     report = _build_kernel_ingress_benchmark_artifact_manifest_report()

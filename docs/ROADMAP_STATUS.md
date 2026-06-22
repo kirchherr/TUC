@@ -807,8 +807,8 @@ Current slice:
   `performance_claim_threshold_policy`, and
   `performance_acceptance_criteria` from accepted, digest-pinned governance
   reports for every accepted Kernel Ingress workload scope, while benchmark
-  artifacts, executable backend security review, and native performance claims
-  remain blocked.
+  artifacts, executable-surface review, and native performance claims remain
+  separate gates.
 - Performance Proof Readiness now derives current `workload_scope` and
   `planner_overhead_report` evidence from Kernel Ingress contracts: the
   shape-profile-derived workload scope must pass its contract, and the accepted
@@ -825,8 +825,7 @@ Current slice:
 - Performance Proof Readiness now derives `benchmark_report_artifacts` from a
   complete Benchmark Artifact Manifest over digest-pinned repository-golden
   descriptors for every required artifact kind, while artifact loading, timing
-  validation, executable backend security review, and native performance claims
-  remain blocked.
+  validation, and native performance claims remain blocked.
 - Performance Proof Readiness now derives `benchmark_methodology` from accepted
   Kernel Ingress workload scopes, requiring bounded measurement-policy entries
   while benchmark execution, raw timing samples, and benchmark artifacts remain
@@ -852,6 +851,11 @@ Current slice:
   accepted Kernel Ingress MVP pipeline, requiring contract-valid HAC-IR, no
   forbidden hardware-specific HAC-IR attributes, and performance facts assigned
   outside HAC-IR.
+- Performance Proof Readiness now derives `executable_backend_security_review`
+  from a complete Executable Backend Security Review Report over every tracked
+  executable surface, with digest-bound threat-model, sandbox, budget,
+  provenance, and negative-test metadata while execution permission and native
+  performance claims remain blocked.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at
@@ -978,12 +982,13 @@ Current slice:
   native baseline provenance, native baseline comparison, leaky-abstraction
   evidence, planner-overhead evidence, correctness goldens, and executable
   backend security review exist.
-- Performance Proof Readiness report with deterministic blocked golden evidence
-  for future native performance proposals, currently marking only
-  `benchmark_methodology`, `workload_scope`, `correctness_goldens`,
-  `leaky_abstraction_report`, `planner_overhead_report`, `runtime_plan_goldens`,
-  `compiler_decision_report_goldens`, and `benchmark_report_schema` present
-  from accepted Kernel Ingress and fail-closed schema evidence.
+- Performance Proof Readiness report with deterministic metadata-complete golden
+  evidence for the current Kernel Ingress proof slice, marking accepted
+  governance metadata, workload scope, methodology, toolchain environment,
+  native-baseline provenance/comparison metadata, leaky-abstraction,
+  planner-overhead, break-even, correctness/runtime-plan/compiler-decision
+  goldens, benchmark schema/artifact inventory, and executable backend security
+  review evidence present while native performance claims remain blocked.
 - First native MLIR design spike.
 - HAC-IR v0 dialect contracts for MVP operations and compiler attributes.
 - HAC-IR semantic charter for compute intent, compiler facts, planning
@@ -1178,10 +1183,11 @@ Current focus:
   capability diagnostics, and proof goldens stay inspectable.
 - Candidate scoring only after transfer/noise-aware models are stable and its
   decisions can be explained next to manual override effects.
-- Native performance claims remain blocked until
-  [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied,
-  executable backend security review is supplied, and
-  [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) passes.
+- Native performance claims remain blocked until a separate performance proof
+  proposal interprets accepted measurement artifacts under the
+  [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md); a passing
+  [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) is
+  necessary metadata, not the proof itself.
 - Noise/error-budget score components only after those models are documented
   outside HAC-IR semantics and covered by goldens.
 - Maintainer teams or organization-backed owner groups before broad external

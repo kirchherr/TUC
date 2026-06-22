@@ -149,12 +149,9 @@ The readiness example verifies
 `schemas/baseline_benchmark_report.v0.schema.json` before marking
 `benchmark_report_schema` present. The schema must remain fail-closed,
 diagnostic-only, bound to `performance_proof_boundary.blocking.v0`, and must
-forbid native performance claims. This does not mark
-`benchmark_report_artifacts` present and does not accept measured benchmark
-results as proof evidence.
-
-All other performance-proof evidence remains required before readiness can
-pass.
+forbid native performance claims. This schema check is separate from benchmark
+artifact inventory and does not accept measured benchmark results as proof
+evidence.
 
 The current diagnostic break-even workload-size report schema is
 `schemas/break_even_workload_size_report.v0.schema.json`. It can satisfy only
@@ -230,8 +227,16 @@ The current diagnostic executable backend security review report schema is
 `schemas/executable_backend_security_review_report.v0.schema.json`. It can
 satisfy only the existence of a bounded executable-surface security review
 metadata contract. It does not execute backend artifacts, access devices, load
-dynamic libraries, run subprocesses, discover plugins, or approve native
-performance parity.
+dynamic libraries, run subprocesses, discover plugins, approve execution, or
+approve native performance parity.
+
+The current readiness example marks `executable_backend_security_review`
+present only after building a complete Executable Backend Security Review
+Report over every tracked executable surface, binding each entry to threat
+model, sandbox model, resource budget, provenance, negative-test evidence, and
+a repository RFC digest. This makes the readiness report metadata-complete for
+the current Kernel Ingress proof slice, but it does not grant runtime execution
+permission or prove native performance parity.
 
 ## Blocked Claims
 
@@ -323,7 +328,8 @@ which is data-only and remains separate from execution permission.
 
 ## Evidence
 
-The current golden report intentionally remains blocked:
+The current golden report is metadata-complete for the Kernel Ingress proof
+slice:
 
 ```text
 tests/golden/proofs/performance_proof_readiness_report.json
@@ -331,9 +337,10 @@ tests/golden/proofs/performance_proof_readiness_report.json
 
 This makes the current roadmap state explicit: TUC has a performance proof
 boundary, a readiness report, accepted governance metadata, bounded Kernel
-Ingress workload-scope evidence, and digest-bound benchmark artifact inventory.
-Native performance proof readiness still fails because executable backend
-security review has not been supplied.
+Ingress workload-scope evidence, digest-bound benchmark artifact inventory, and
+a digest-bound executable backend security review. Native performance claims
+remain blocked because readiness is not a benchmark result, execution grant, or
+native performance proof.
 
 ## Still Blocked
 

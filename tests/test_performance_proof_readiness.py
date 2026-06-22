@@ -9,6 +9,7 @@ from examples.performance_proof_readiness import (
     _has_kernel_ingress_benchmark_artifact_manifest_evidence,
     _has_kernel_ingress_benchmark_methodology_evidence,
     _has_kernel_ingress_break_even_workload_size_evidence,
+    _has_kernel_ingress_executable_security_review_evidence,
     _has_kernel_ingress_golden_digest_evidence,
     _has_kernel_ingress_leaky_abstraction_evidence,
     _has_kernel_ingress_native_baseline_comparison_evidence,
@@ -19,7 +20,7 @@ from examples.performance_proof_readiness import (
     _has_kernel_ingress_planner_overhead_evidence,
     _has_kernel_ingress_workload_scope_evidence,
     _has_versioned_toolchain_environment_evidence,
-    build_blocked_performance_proof_evidence,
+    build_current_performance_proof_readiness_evidence,
 )
 from tuc import (
     PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
@@ -34,13 +35,13 @@ from tuc import (
 )
 
 
-def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence() -> None:
+def test_performance_proof_readiness_is_complete_for_current_kernel_ingress_evidence() -> None:
     report = build_performance_proof_readiness_report(
-        "blocked-native-performance-proof-proposal",
-        build_blocked_performance_proof_evidence(),
+        "current-kernel-ingress-performance-proof-readiness",
+        build_current_performance_proof_readiness_evidence(),
     )
 
-    assert not report.ready
+    assert report.ready
     assert report.boundary_contract == PERFORMANCE_PROOF_BOUNDARY_CONTRACT
     assert len(report.checked_evidence) == len(PERFORMANCE_PROOF_REQUIRED_EVIDENCE)
     assert tuple(
@@ -62,6 +63,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         "compiler_decision_report_goldens",
         "benchmark_report_schema",
         "benchmark_report_artifacts",
+        "executable_backend_security_review",
     )
     expected_missing = tuple(
         evidence_id
@@ -84,8 +86,10 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
             "compiler_decision_report_goldens",
             "benchmark_report_schema",
             "benchmark_report_artifacts",
+            "executable_backend_security_review",
         }
     )
+    assert expected_missing == ()
     assert tuple(issue.evidence_id for issue in report.issues) == expected_missing
 
 
@@ -108,12 +112,13 @@ def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None
     )
     assert _has_benchmark_report_schema_evidence()
     assert _has_kernel_ingress_benchmark_artifact_manifest_evidence()
+    assert _has_kernel_ingress_executable_security_review_evidence()
 
 
 def test_performance_proof_readiness_dump_matches_golden() -> None:
     report = build_performance_proof_readiness_report(
-        "blocked-native-performance-proof-proposal",
-        build_blocked_performance_proof_evidence(),
+        "current-kernel-ingress-performance-proof-readiness",
+        build_current_performance_proof_readiness_evidence(),
     )
     expected = (
         Path("tests/golden/proofs/performance_proof_readiness_report.json")
@@ -168,11 +173,25 @@ def test_performance_proof_readiness_rejects_duplicate_evidence() -> None:
         )
 
 
+def test_assert_performance_proof_readiness_passes_current_evidence() -> None:
+    report = assert_performance_proof_readiness(
+        "current-kernel-ingress-performance-proof-readiness",
+        build_current_performance_proof_readiness_evidence(),
+    )
+
+    assert report.ready
+
+
 def test_assert_performance_proof_readiness_raises_on_missing_evidence() -> None:
     with pytest.raises(PerformanceProofReadinessError):
         assert_performance_proof_readiness(
             "blocked-performance-proof",
-            build_blocked_performance_proof_evidence(),
+            (
+                PerformanceProofReadinessEvidence(
+                    evidence_id="performance_proof_rfc",
+                    present=True,
+                ),
+            ),
         )
 
 
@@ -194,8 +213,8 @@ def test_performance_proof_readiness_report_rejects_oversized_text() -> None:
 
 def test_performance_proof_readiness_report_schema_version_is_stable() -> None:
     report = build_performance_proof_readiness_report(
-        "blocked-native-performance-proof-proposal",
-        build_blocked_performance_proof_evidence(),
+        "current-kernel-ingress-performance-proof-readiness",
+        build_current_performance_proof_readiness_evidence(),
     )
 
     assert (

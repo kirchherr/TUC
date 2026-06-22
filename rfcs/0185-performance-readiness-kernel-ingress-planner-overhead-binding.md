@@ -33,7 +33,7 @@ contracts:
 ## Decision
 
 Update `examples/performance_proof_readiness.py` so
-`build_blocked_performance_proof_evidence()` derives current evidence by:
+`build_current_performance_proof_readiness_evidence()` derives current evidence by:
 
 1. building and contract-checking
    `examples/source_to_intent_research_kernel_ingress_workload_scope.py`;

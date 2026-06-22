@@ -277,8 +277,8 @@ Completed evidence:
   `performance_claim_threshold_policy`, and `performance_acceptance_criteria`
   present only when every accepted Kernel Ingress workload scope is bound to
   accepted, digest-pinned governance metadata while benchmark artifacts,
-  executable backend security review, and native performance claims remain
-  blocked.
+  executable-surface review, and native performance claims remain separate
+  gates.
 - Kernel Ingress performance-readiness evidence now marks workload-scope and
   planner-overhead report evidence present by contract-checking the
   shape-profile-derived workload scopes and a bounded planner-overhead report
@@ -295,8 +295,7 @@ Completed evidence:
 - Performance-readiness evidence now marks `benchmark_report_artifacts` present
   only when all required benchmark artifact kinds are bound to digest-pinned
   repository-golden descriptors while raw output loading, timing validation,
-  executable backend security review, and native performance claims remain
-  blocked.
+  and native performance claims remain blocked.
 - Performance-readiness evidence now marks `benchmark_methodology` present only
   when methodology entries are derived from the accepted Kernel Ingress
   workload scopes and remain policy-only, with no benchmark execution or raw
@@ -329,12 +328,15 @@ Completed evidence:
 - Executable-backend security review reports identify future executable
   surfaces, threat models, sandbox models, budgets, provenance, fuzzing
   evidence, and maintainer approval without approving execution.
+- Performance-readiness evidence now marks `executable_backend_security_review`
+  present only when every tracked executable surface is bound to accepted,
+  digest-pinned security-review metadata; readiness can be metadata-complete
+  while native performance claims remain blocked.
 
 Next work:
 
-- Bind executable backend security review evidence only after executable
-  surfaces, sandboxing, budgets, provenance, and negative-test evidence are
-  accepted separately.
+- Keep Performance Proof Readiness metadata-complete while separating it from
+  any future native benchmark interpretation or execution permission.
 - Expand future proof graph families only when the existing proof contracts
   remain stable.
 
@@ -641,8 +643,8 @@ Deliverables:
 - Performance Proof Readiness now treats performance RFC, threshold-policy, and
   acceptance-criteria governance as present only after binding all accepted
   Kernel Ingress workload scopes to accepted, digest-pinned metadata;
-  benchmark artifacts, executable backend security review, and native
-  performance claims remain blocked.
+  benchmark artifacts, executable-surface review, and native performance claims
+  remain separate gates.
 - Performance Proof Readiness now derives current `workload_scope` and
   `planner_overhead_report` evidence from accepted Kernel Ingress contracts
   instead of hand-coded booleans, and binds correctness, runtime-plan, and
@@ -652,8 +654,8 @@ Deliverables:
   as present only after a fail-closed schema contract check.
 - Performance Proof Readiness now treats benchmark report artifacts as present
   only after all required artifact kinds are listed through a digest-bound
-  repository-golden manifest; artifact loading, timing validation, executable
-  backend security review, and native performance claims remain blocked.
+  repository-golden manifest; artifact loading, timing validation, and native
+  performance claims remain blocked.
 - Performance Proof Readiness now treats benchmark methodology as present only
   after binding measurement policy to the accepted Kernel Ingress workload
   scopes; benchmark execution and artifact evidence remain blocked.

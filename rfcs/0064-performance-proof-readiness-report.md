@@ -90,40 +90,42 @@ The implementation adds:
 - `tests/test_performance_proof_readiness.py`
 - `tests/golden/proofs/performance_proof_readiness_report.json`
 
-The golden report intentionally remains blocked. It may mark performance-proof
-RFC, threshold-policy, and acceptance-criteria evidence present once accepted
-Kernel Ingress workload scopes are bound to accepted, digest-pinned governance
-metadata while executable backend security review and native claims remain
-blocked. It may mark benchmark-report artifact evidence present once all
+The golden report can be metadata-complete for a specific proof slice without
+becoming a native performance proof. It may mark performance-proof RFC,
+threshold-policy, and acceptance-criteria evidence present once accepted Kernel
+Ingress workload scopes are bound to accepted, digest-pinned governance
+metadata. It may mark benchmark-report artifact evidence present once all
 required artifact kinds are bound to digest-pinned repository-golden descriptors
 without loading raw output or validating timings. It may mark workload-scope
 evidence present once a bounded workload-scope report exists. It may mark
 planner-overhead evidence present once a bounded planner-overhead report is
-contract-checked for an
-accepted graph and still keeps execution timing, break-even evidence, and
-native performance claims blocked. It may mark correctness, runtime-plan, and
-compiler-decision golden evidence present once a generated accepted ingress
-report matches deterministic golden output and exposes the required digest
-fields. It may mark benchmark-report schema evidence present once the schema is
-fail-closed, diagnostic-only, and native claim blocked. It may mark
-benchmark-methodology evidence present once bounded measurement policy is bound
-to accepted workload scopes. It may mark versioned toolchain-environment
-evidence present once repository-controlled CI,
+contract-checked for an accepted graph and still keeps execution timing,
+break-even evidence, and native performance claims blocked. It may mark
+correctness, runtime-plan, and compiler-decision golden evidence present once a
+generated accepted ingress report matches deterministic golden output and
+exposes the required digest fields. It may mark benchmark-report schema
+evidence present once the schema is fail-closed, diagnostic-only, and native
+claim blocked. It may mark benchmark-methodology evidence present once bounded
+measurement policy is bound to accepted workload scopes. It may mark versioned
+toolchain-environment evidence present once repository-controlled CI,
 dependency, Docker, compiler, and compose declarations are represented as
 Toolchain Environment Report components with SHA-256 digests and no host
-discovery. It may mark native-baseline provenance present once accepted workload
-scopes are bound to data-only native baseline candidates while reproduction,
-artifact digests, comparison evidence, and native claims remain blocked. It may
-mark native-baseline comparison present once accepted workload scopes are bound
-to data-only comparison references while measurement, digest validation,
-artifact loading, and native claims remain blocked. It may mark leaky-abstraction
-evidence present once accepted HAC-IR is contract-valid and performance-critical
-facts remain outside HAC-IR. It may mark break-even workload-size evidence
-present once accepted workload scopes are bound to bounded
-`estimated_not_validated` amortization entries while CI validation, evidence
-digests, benchmark artifact loading, timing comparison, planner-benefit claims,
-and native performance claims remain blocked. Native performance readiness
-still fails until every required evidence item is present.
+discovery. It may mark native-baseline provenance present once accepted
+workload scopes are bound to data-only native baseline candidates while
+reproduction, artifact digests, comparison evidence, and native claims remain
+blocked. It may mark native-baseline comparison present once accepted workload
+scopes are bound to data-only comparison references while measurement, digest
+validation, artifact loading, and native claims remain blocked. It may mark
+leaky-abstraction evidence present once accepted HAC-IR is contract-valid and
+performance-critical facts remain outside HAC-IR. It may mark break-even
+workload-size evidence present once accepted workload scopes are bound to
+bounded `estimated_not_validated` amortization entries while CI validation,
+evidence digests, benchmark artifact loading, timing comparison,
+planner-benefit claims, and native performance claims remain blocked. It may
+mark executable backend security review present once every executable surface is
+bound to accepted, digest-pinned security-review metadata. Native performance
+claims remain blocked until a separate performance proof interprets accepted
+measurement artifacts under the Performance Proof Boundary.
 
 ## Consequences
 
