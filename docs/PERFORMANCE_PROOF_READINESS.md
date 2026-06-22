@@ -173,6 +173,14 @@ the existence of a bounded native baseline provenance contract. It does not
 satisfy native baseline comparison, benchmark report artifacts, execution
 timing, or native performance parity.
 
+The current readiness example marks `native_baseline_provenance` present only
+after binding every accepted Kernel Ingress workload scope to a data-only native
+baseline candidate. The candidates use a portable CPU native-library target ID,
+are marked `documented_not_executed`, omit artifact digests, and keep
+`native_baseline_ready` false. This proves only that future comparisons have a
+bounded provenance surface; it does not reproduce native baselines, load native
+artifacts, compare benchmark results, or make a native performance claim.
+
 The current diagnostic native baseline comparison report schema is
 `schemas/native_baseline_comparison_report.v0.schema.json`. It can satisfy only
 the existence of a bounded native comparison metadata contract. It does not

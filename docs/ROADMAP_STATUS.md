@@ -824,6 +824,10 @@ Current slice:
   from a bounded Toolchain Environment Report over repository-controlled CI,
   dependency, Docker, compiler, and compose declarations with SHA-256 digests;
   host discovery, environment capture, and device inspection remain blocked.
+- Performance Proof Readiness now derives `native_baseline_provenance` from
+  bounded native baseline candidates for every accepted Kernel Ingress workload
+  scope, while native reproduction, artifact digests, comparison evidence, and
+  native performance claims remain blocked.
 - Performance Proof Readiness now derives `leaky_abstraction_report` from the
   accepted Kernel Ingress MVP pipeline, requiring contract-valid HAC-IR, no
   forbidden hardware-specific HAC-IR attributes, and performance facts assigned

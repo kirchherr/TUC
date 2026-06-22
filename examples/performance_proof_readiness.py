@@ -43,22 +43,29 @@ from tuc import (
     LEAKY_ABSTRACTION_DEFAULT_ISSUES,
     LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS,
     LEAKY_ABSTRACTION_REPORT_SCHEMA_VERSION,
+    NATIVE_BASELINE_PROVENANCE_ARTIFACT_STATUS,
+    NATIVE_BASELINE_PROVENANCE_CLAIM_STATUS,
+    NATIVE_BASELINE_PROVENANCE_REPORT_SCHEMA_VERSION,
     PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
     TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS,
     TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS,
     TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION,
     BenchmarkMethodology,
     LeakyAbstractionFact,
+    NativeBaselineProvenance,
+    NativeBaselineProvenanceReport,
     PerformanceProofReadinessEvidence,
     ToolchainComponent,
     ToolchainEnvironmentReport,
     benchmark_methodology_report_to_dict,
     build_benchmark_methodology_report,
     build_leaky_abstraction_report,
+    build_native_baseline_provenance_report,
     build_performance_proof_readiness_report,
     build_toolchain_environment_report,
     dump_performance_proof_readiness_report,
     leaky_abstraction_report_to_dict,
+    native_baseline_provenance_report_to_dict,
     toolchain_environment_report_to_dict,
 )
 from tuc.backends import LinearAlgebraSimulatorBackend, VectorSimulatorBackend
@@ -95,6 +102,12 @@ _KERNEL_INGRESS_GOLDEN_PATH = Path(
 _BASELINE_BENCHMARK_SCHEMA_PATH = Path(
     "schemas/baseline_benchmark_report.v0.schema.json"
 )
+_NATIVE_BASELINE_PROVENANCE_PROPOSAL_NAME = (
+    "kernel_ingress_native_baseline_provenance_candidate"
+)
+_NATIVE_BASELINE_TARGET_PLATFORM_ID = "portable_cpu_native_library"
+_NATIVE_BASELINE_SOURCE_PROVENANCE_ID = "documented_native_baseline_policy"
+_NATIVE_BASELINE_TOOLCHAIN_ID = "kernel_ingress_toolchain_environment_candidate"
 _TOOLCHAIN_ENVIRONMENT_PROPOSAL_NAME = "kernel_ingress_toolchain_environment_candidate"
 _TOOLCHAIN_ENVIRONMENT_COMPONENT_FILES: tuple[tuple[str, str, str, str, Path], ...] = (
     (
@@ -184,6 +197,10 @@ def build_blocked_performance_proof_evidence() -> (
             present=_has_kernel_ingress_benchmark_methodology_evidence(),
         ),
         PerformanceProofReadinessEvidence(
+            evidence_id="native_baseline_provenance",
+            present=_has_kernel_ingress_native_baseline_provenance_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
             evidence_id="versioned_toolchain_environment",
             present=_has_versioned_toolchain_environment_evidence(),
         ),
@@ -200,6 +217,97 @@ def main() -> None:
         build_blocked_performance_proof_evidence(),
     )
     print(dump_performance_proof_readiness_report(report), end="")
+
+
+def _has_kernel_ingress_native_baseline_provenance_evidence() -> bool:
+    workload_report_text = build_kernel_ingress_workload_scope_report()
+    workload_report = json.loads(workload_report_text)
+    assert_kernel_ingress_workload_scope_report_contract(workload_report)
+    scope_ids = _kernel_ingress_workload_scope_ids(workload_report)
+    report = _build_kernel_ingress_native_baseline_provenance_report(scope_ids)
+    payload = native_baseline_provenance_report_to_dict(report)
+    expected = {
+        "artifact_status": NATIVE_BASELINE_PROVENANCE_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": [
+            "native_baseline_comparison_not_supplied",
+            "native_performance_claim_blocked",
+            "native_baseline_not_reproduced_by_ci",
+            "native_baseline_artifact_digest_not_supplied",
+        ],
+        "native_baseline_ready": False,
+        "native_performance_claim": False,
+        "performance_claim_status": NATIVE_BASELINE_PROVENANCE_CLAIM_STATUS,
+        "proposal_name": _NATIVE_BASELINE_PROVENANCE_PROPOSAL_NAME,
+        "schema_version": NATIVE_BASELINE_PROVENANCE_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"native baseline provenance evidence {key} drift")
+    baselines = payload["baselines"]
+    if not isinstance(baselines, list):
+        raise ValueError("native baseline provenance entries drift")
+    if len(baselines) != len(scope_ids):
+        raise ValueError("native baseline provenance count drift")
+    observed_scope_ids = tuple(
+        str(baseline["workload_scope_id"])
+        for baseline in baselines
+        if isinstance(baseline, dict)
+    )
+    if observed_scope_ids != scope_ids:
+        raise ValueError("native baseline provenance scope binding drift")
+    for baseline in baselines:
+        if not isinstance(baseline, dict):
+            raise ValueError("native baseline provenance entry drift")
+        expected_fields = {
+            "artifact_digest_status": "not_supplied",
+            "implementation_kind": "vendor_library",
+            "reproducibility_status": "documented_not_executed",
+            "source_provenance_id": _NATIVE_BASELINE_SOURCE_PROVENANCE_ID,
+            "target_platform_id": _NATIVE_BASELINE_TARGET_PLATFORM_ID,
+            "toolchain_id": _NATIVE_BASELINE_TOOLCHAIN_ID,
+        }
+        for key, value in expected_fields.items():
+            if baseline.get(key) != value:
+                raise ValueError(f"native baseline provenance {key} drift")
+        for forbidden_key in ("host_path", "environment", "device_id", "hardware_serial"):
+            if forbidden_key in baseline:
+                raise ValueError("native baseline provenance exposes forbidden host data")
+    return True
+
+
+def _build_kernel_ingress_native_baseline_provenance_report(
+    scope_ids: tuple[str, ...],
+) -> NativeBaselineProvenanceReport:
+    return build_native_baseline_provenance_report(
+        _NATIVE_BASELINE_PROVENANCE_PROPOSAL_NAME,
+        baselines=tuple(
+            NativeBaselineProvenance(
+                baseline_id=f"native_baseline_{scope_id}",
+                workload_scope_id=scope_id,
+                implementation_kind="vendor_library",
+                target_platform_id=_NATIVE_BASELINE_TARGET_PLATFORM_ID,
+                source_provenance_id=_NATIVE_BASELINE_SOURCE_PROVENANCE_ID,
+                toolchain_id=_NATIVE_BASELINE_TOOLCHAIN_ID,
+                reproducibility_status="documented_not_executed",
+            )
+            for scope_id in scope_ids
+        ),
+    )
+
+
+def _kernel_ingress_workload_scope_ids(
+    workload_report: dict[str, object],
+) -> tuple[str, ...]:
+    scopes = workload_report["scopes"]
+    if not isinstance(scopes, list) or not scopes:
+        raise ValueError("kernel ingress workload scopes missing")
+    scope_ids = tuple(
+        str(scope["scope_id"]) for scope in scopes if isinstance(scope, dict)
+    )
+    if len(scope_ids) != len(scopes):
+        raise ValueError("kernel ingress workload scope drift")
+    return scope_ids
 
 
 def _has_versioned_toolchain_environment_evidence() -> bool:
@@ -447,7 +555,9 @@ def _has_kernel_ingress_benchmark_methodology_evidence() -> bool:
     scopes = workload_report["scopes"]
     if not isinstance(scopes, list) or not scopes:
         raise ValueError("kernel ingress benchmark methodology scopes missing")
-    scope_ids = tuple(str(scope["scope_id"]) for scope in scopes if isinstance(scope, dict))
+    scope_ids = tuple(
+        str(scope["scope_id"]) for scope in scopes if isinstance(scope, dict)
+    )
     if len(scope_ids) != len(scopes):
         raise ValueError("kernel ingress benchmark methodology scope drift")
     report = build_benchmark_methodology_report(
