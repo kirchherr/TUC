@@ -84,7 +84,11 @@
         "runtime_planning_explanation",
         "backend_equivalence_portfolio",
         "backend_equivalence_portfolio_policy",
-        "runtime_hs_ir_plan_alignment"
+        "runtime_hs_ir_plan_alignment",
+        "runtime_buffer_lifetime",
+        "runtime_allocation_plan",
+        "runtime_memory_budget",
+        "runtime_allocation_request_manifest"
       ]
     },
     "graph": {
@@ -122,7 +126,8 @@
             "typed_compute_graph",
             "triton_metadata",
             "source_intent_metadata",
-            "runtime_backend_equivalence"
+            "runtime_backend_equivalence",
+            "runtime_memory_planning"
           ]
         }
       }

@@ -526,7 +526,9 @@ Completed evidence:
   allocator admission requests without runtime handles.
 - Runtime Memory Planning Gate verifies allocation-plan, memory-budget,
   allocation-request-manifest, and lifetime/allocation/budget/request digest
-  binding evidence before allocator behavior can be accepted.
+  binding evidence before allocator behavior can be accepted. Runtime Evidence
+  Matrix and Runtime Evidence Gate now require the memory-planning artifact set
+  by exact artifact ID before the central runtime gate can pass.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and

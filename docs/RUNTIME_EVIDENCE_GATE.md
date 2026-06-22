@@ -8,7 +8,8 @@ evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
-plus Source Intent Runtime Returns evidence for the frontend return boundary.
+Runtime Memory Planning Gate evidence, plus Source Intent Runtime Returns
+evidence for the frontend return boundary.
 Source Intent Runtime Returns must also be bound to the curated
 Runtime Evidence Matrix graph that inventories the same frontend-originated
 fixture.
@@ -26,6 +27,7 @@ It runs:
 - `build_runtime_backend_equivalence_portfolio_report()`
 - `build_default_runtime_backend_equivalence_portfolio_policy_report()`
 - `build_runtime_evidence_gate_matrix_coverage_report()`
+- `examples/runtime_memory_planning_gate.py`
 - `build_tensor_store_evidence_report()`
 - `build_input_manifest_report()`
 - `build_output_manifest_report()`
@@ -50,9 +52,9 @@ The gate passes only when:
 - the Runtime Evidence Matrix includes `runtime_hs_ir_plan_alignment` evidence
   on the mixed backend-equivalence graph with exact artifact-ID binding
 - Runtime Evidence Gate Matrix Coverage passes, proving the exact
-  backend-equivalence, runtime-planning-explanation, HS-IR alignment, and
-  portfolio Matrix graph/artifact bindings are present in one deterministic
-  audit report
+  backend-equivalence, runtime-planning-explanation, HS-IR alignment,
+  portfolio, and memory-planning Matrix graph/artifact bindings are present in
+  one deterministic audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
@@ -119,6 +121,11 @@ The gate passes only when:
   policy artifact IDs
 - Runtime Backend Equivalence Portfolio Policy binding passes, proving the
   accepted slice membership and backend sequences match the portfolio report
+- Runtime Memory Planning Gate passes, proving Buffer Lifetime, Allocation
+  Plan, Memory Budget, and Allocation Request Manifest evidence agree by
+  metadata digest and keep runtime handles omitted
+- Runtime Memory Planning matrix coverage passes, proving the memory-planning
+  graph is inventoried by Runtime Evidence Matrix with exact artifact IDs
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
   record boundary
 - Runtime Input Manifest passes for accepted graph external inputs
@@ -320,6 +327,11 @@ It composes bounded in-repository checks:
 - a bounded Runtime Evidence Gate Matrix Coverage check that fails closed if a
   gate-required graph, source boundary, required artifact kind, or concrete
   artifact ID drifts
+- data-only Runtime Memory Planning Gate text proving lifetime, allocation,
+  budget, and request-manifest evidence bindings without runtime handles
+- a bounded Runtime Memory Planning matrix lookup that verifies graph family,
+  source boundary, required artifact kinds, completeness, and exact artifact
+  coverage
 - data-only Runtime Tensor Store record metadata with raw tensor values omitted
   by policy
 - data-only Runtime Input Manifest metadata for accepted graph external inputs

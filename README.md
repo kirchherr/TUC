@@ -124,7 +124,8 @@ Current runtime surfaces:
   inventoried by Runtime Evidence Matrix and required by Runtime Evidence Gate
   for the mixed accelerator proof slice.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
-  Manifest, and Memory Planning Gate.
+  Manifest, and Memory Planning Gate, now inventoried by Runtime Evidence
+  Matrix and required by Runtime Evidence Gate through exact artifact IDs.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
 - Runtime Planning Explanation v0 for accepted `PartitionPlan` backend
   sequence, fallback/no-fallback placement, candidate-score visibility, and

@@ -26,7 +26,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     graphs = {graph.graph_id: graph for graph in report.graphs}
 
     assert report.evidence_contract == RUNTIME_EVIDENCE_MATRIX_CONTRACT
-    assert len(report.graphs) == 11
+    assert len(report.graphs) == 12
     assert report.runtime_evidence_matrix_complete
     assert graphs["proof_of_abstraction"].runtime_evidence_complete
     assert graphs["proof_of_reduction"].runtime_evidence_complete
@@ -39,6 +39,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     assert graphs["runtime_vector_backend_equivalence"].runtime_evidence_complete
     assert graphs["runtime_mixed_backend_equivalence"].runtime_evidence_complete
     assert graphs["runtime_backend_equivalence_portfolio"].runtime_evidence_complete
+    assert graphs["runtime_memory_planning"].runtime_evidence_complete
     assert graphs["source_intent_return_mlp"].source_boundary == (
         "source_intent_metadata"
     )
@@ -66,6 +67,15 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     ].required_artifact_kinds == (
         "backend_equivalence_portfolio",
         "backend_equivalence_portfolio_policy",
+    )
+    assert graphs["runtime_memory_planning"].source_boundary == (
+        "runtime_memory_planning"
+    )
+    assert graphs["runtime_memory_planning"].required_artifact_kinds == (
+        "runtime_buffer_lifetime",
+        "runtime_allocation_plan",
+        "runtime_memory_budget",
+        "runtime_allocation_request_manifest",
     )
     assert all(
         "backend_equivalence" in graphs[graph_id].present_artifact_kinds
@@ -95,6 +105,12 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "backend_equivalence_portfolio_policy"
         in graphs["runtime_backend_equivalence_portfolio"].present_artifact_kinds
     )
+    assert graphs["runtime_memory_planning"].present_artifact_kinds == {
+        "runtime_buffer_lifetime",
+        "runtime_allocation_plan",
+        "runtime_memory_budget",
+        "runtime_allocation_request_manifest",
+    }
     full_runtime_graphs = tuple(
         graph
         for graph in report.graphs
@@ -162,6 +178,9 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert '"runtime_planning_explanation"' in completed.stdout
     assert '"runtime_hs_ir_plan_alignment"' in completed.stdout
     assert "runtime_backend_equivalence_portfolio" in completed.stdout
+    assert "runtime_memory_planning" in completed.stdout
+    assert '"runtime_buffer_lifetime"' in completed.stdout
+    assert '"runtime_allocation_request_manifest"' in completed.stdout
     assert '"backend_equivalence_portfolio"' in completed.stdout
     assert '"backend_equivalence_portfolio_policy"' in completed.stdout
 

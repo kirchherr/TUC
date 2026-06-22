@@ -15,6 +15,9 @@ from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
+    RUNTIME_MEMORY_PLANNING_GRAPH_ID,
+    RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS,
+    RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
@@ -101,7 +104,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_evidence_matrix = "complete"' in completed.stdout
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
     assert 'runtime_evidence_gate_matrix_coverage = "passed"' in completed.stdout
-    assert 'runtime_evidence_gate_matrix_bindings = "4"' in completed.stdout
+    assert 'runtime_evidence_gate_matrix_bindings = "5"' in completed.stdout
     assert 'runtime_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_backend_equivalence_binding = "verified"' in completed.stdout
     assert 'runtime_backend_equivalence_matrix = "covered"' in completed.stdout
@@ -207,6 +210,12 @@ def test_runtime_evidence_gate_example_runs() -> None:
         'runtime_backend_equivalence_portfolio_policy_binding = "verified"'
         in completed.stdout
     )
+    assert 'runtime_memory_planning_gate = "passed"' in completed.stdout
+    assert 'runtime_memory_planning_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_memory_planning_matrix_artifacts = "
+        f'"{",".join(RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS)}"'
+    ) in completed.stdout
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
     assert 'runtime_input_manifest = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
@@ -905,6 +914,79 @@ def test_runtime_evidence_gate_rejects_wrong_backend_portfolio_matrix_artifact_i
         match="backend equivalence portfolio matrix coverage",
     ):
         build_gate_report(matrix_report=mismatched_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_failed_runtime_memory_planning_gate() -> None:
+    failed_gate = (
+        "runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {\n"
+        "  buffer_lifetime = \"passed\"\n"
+        "  allocation_plan = \"passed\"\n"
+        "  memory_budget = \"passed\"\n"
+        "  status = \"WARN\"\n"
+        "}\n"
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="runtime memory planning gate failed",
+    ):
+        build_gate_report(memory_planning_gate_text=failed_gate)
+
+
+def test_runtime_evidence_gate_rejects_missing_memory_planning_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    without_memory_planning = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_missing_memory_planning_graph",
+        tuple(
+            graph
+            for graph in report.graphs
+            if graph.graph_id != RUNTIME_MEMORY_PLANNING_GRAPH_ID
+        ),
+    )
+
+    assert without_memory_planning.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="runtime evidence gate matrix coverage",
+    ):
+        build_gate_report(matrix_report=without_memory_planning)
+
+
+def test_runtime_evidence_gate_rejects_wrong_memory_planning_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_memory_planning = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_memory_planning_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_memory_budget_other",
+                    )
+                    if artifact.artifact_kind == "runtime_memory_budget"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_MEMORY_PLANNING_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_memory_planning.runtime_evidence_matrix_complete
+    assert RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS == (
+        "runtime_buffer_lifetime",
+        "runtime_allocation_plan",
+        "runtime_memory_budget",
+        "runtime_allocation_request_manifest",
+    )
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="runtime evidence gate matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_memory_planning)
 
 
 def test_runtime_evidence_gate_rejects_unbound_backend_equivalence_portfolio_policy() -> None:

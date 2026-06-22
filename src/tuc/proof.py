@@ -291,6 +291,7 @@ RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES = (
     "triton_metadata",
     "source_intent_metadata",
     "runtime_backend_equivalence",
+    "runtime_memory_planning",
 )
 RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "proof_report_golden",
@@ -313,6 +314,10 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "backend_equivalence_portfolio",
     "backend_equivalence_portfolio_policy",
     "runtime_hs_ir_plan_alignment",
+    "runtime_buffer_lifetime",
+    "runtime_allocation_plan",
+    "runtime_memory_budget",
+    "runtime_allocation_request_manifest",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "hac_ir_golden",
@@ -1474,6 +1479,35 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                 required_artifact_kinds=(
                     "backend_equivalence_portfolio",
                     "backend_equivalence_portfolio_policy",
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_memory_planning",
+                graph_family="runtime_memory_planning",
+                source_boundary="runtime_memory_planning",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "runtime_buffer_lifetime",
+                        "runtime_buffer_lifetime_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_allocation_plan",
+                        "runtime_allocation_plan_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_memory_budget",
+                        "runtime_memory_budget_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_allocation_request_manifest",
+                        "runtime_allocation_request_manifest_current",
+                    ),
+                ),
+                required_artifact_kinds=(
+                    "runtime_buffer_lifetime",
+                    "runtime_allocation_plan",
+                    "runtime_memory_budget",
+                    "runtime_allocation_request_manifest",
                 ),
             ),
         ),

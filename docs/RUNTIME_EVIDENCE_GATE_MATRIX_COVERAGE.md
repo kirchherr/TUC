@@ -9,7 +9,8 @@ It answers a narrow review question:
 ```text
 Does the current Runtime Evidence Matrix still point at the exact evidence
 artifacts that Runtime Evidence Gate accepts for backend-equivalence,
-runtime-planning explanation, HS-IR alignment, and portfolio coverage?
+runtime-planning explanation, HS-IR alignment, portfolio coverage, and memory
+planning coverage?
 ```
 
 ## Contract
@@ -27,19 +28,23 @@ runtime-planning explanation, HS-IR alignment, and portfolio coverage?
 
 ## Current Bindings
 
-The current audit covers four gate-required Matrix bindings:
+The current audit covers five gate-required Matrix bindings:
 
 - `runtime_backend_equivalence_matrix`
 - `runtime_vector_backend_equivalence_matrix`
 - `runtime_mixed_backend_equivalence_matrix`
 - `runtime_backend_equivalence_portfolio_matrix`
+- `runtime_memory_planning_matrix`
 
 The systolic backend-equivalence binding requires both
 `runtime_backend_equivalence_systolic` and
 `runtime_planning_explanation_systolic`. The mixed backend-equivalence binding
 requires `runtime_backend_equivalence_mixed`,
 `runtime_planning_explanation_mixed`, and
-`runtime_hs_ir_plan_alignment_mixed`.
+`runtime_hs_ir_plan_alignment_mixed`. The memory-planning binding requires
+`runtime_buffer_lifetime_current`, `runtime_allocation_plan_current`,
+`runtime_memory_budget_current`, and
+`runtime_allocation_request_manifest_current`.
 
 Each binding records:
 

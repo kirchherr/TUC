@@ -4,6 +4,9 @@ from examples.runtime_backend_equivalence import build_backend_equivalence_repor
 from examples.runtime_execution_receipt import build_execution_receipt_report
 from examples.runtime_hs_ir_plan_alignment import build_alignment_report
 from examples.runtime_input_manifest import build_input_manifest_report
+from examples.runtime_memory_planning_gate import (
+    build_gate_report as build_memory_planning_gate_report,
+)
 from examples.runtime_mixed_backend_equivalence import (
     build_mixed_backend_equivalence_report,
 )
@@ -148,6 +151,21 @@ RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS = (
     "runtime_backend_equivalence_portfolio",
     "runtime_backend_equivalence_portfolio_policy",
 )
+RUNTIME_MEMORY_PLANNING_GRAPH_ID = "runtime_memory_planning"
+RUNTIME_MEMORY_PLANNING_MATRIX_GRAPH_FAMILY = "runtime_memory_planning"
+RUNTIME_MEMORY_PLANNING_MATRIX_SOURCE_BOUNDARY = "runtime_memory_planning"
+RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS = (
+    "runtime_buffer_lifetime",
+    "runtime_allocation_plan",
+    "runtime_memory_budget",
+    "runtime_allocation_request_manifest",
+)
+RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS = (
+    "runtime_buffer_lifetime_current",
+    "runtime_allocation_plan_current",
+    "runtime_memory_budget_current",
+    "runtime_allocation_request_manifest_current",
+)
 
 
 class RuntimeEvidenceGateError(AssertionError):
@@ -195,6 +213,14 @@ def build_gate_matrix_bindings() -> tuple[RuntimeEvidenceGateMatrixBinding, ...]
                 RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_REQUIRED_ARTIFACTS
             ),
             artifact_ids=RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
+        ),
+        RuntimeEvidenceGateMatrixBinding(
+            binding_id="runtime_memory_planning_matrix",
+            graph_id=RUNTIME_MEMORY_PLANNING_GRAPH_ID,
+            graph_family=RUNTIME_MEMORY_PLANNING_MATRIX_GRAPH_FAMILY,
+            source_boundary=RUNTIME_MEMORY_PLANNING_MATRIX_SOURCE_BOUNDARY,
+            required_artifact_kinds=RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS,
+            artifact_ids=RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS,
         ),
     )
 
@@ -250,6 +276,7 @@ def build_gate_report(
     source_intent_runtime_returns_report: (
         SourceIntentRuntimeReturnsReport | None
     ) = None,
+    memory_planning_gate_text: str | None = None,
     tensor_store_report: RuntimeTensorStoreEvidenceReport | None = None,
 ) -> str:
     """Return the stable CI-facing runtime evidence gate report."""
@@ -363,6 +390,11 @@ def build_gate_report(
         if source_intent_runtime_returns_report is None
         else source_intent_runtime_returns_report
     )
+    memory_planning_gate = (
+        build_memory_planning_gate_report()
+        if memory_planning_gate_text is None
+        else memory_planning_gate_text
+    )
     _assert_matrix_complete(matrix)
     _assert_conformance_passed(conformance)
     _assert_backend_equivalence_passed(
@@ -460,6 +492,8 @@ def build_gate_report(
         backend_equivalence_portfolio,
     )
     _assert_gate_matrix_coverage_passed(gate_matrix_coverage)
+    _assert_runtime_memory_planning_gate_passed(memory_planning_gate)
+    _assert_runtime_memory_planning_matrix_covered(matrix)
     _assert_tensor_store_evidence_passed(tensor_store)
     _assert_input_manifest_passed(input_manifest)
     _assert_output_manifest_passed(output_manifest)
@@ -500,6 +534,7 @@ def build_gate_report(
         backend_equivalence_portfolio,
         backend_equivalence_portfolio_policy,
         gate_matrix_coverage,
+        memory_planning_gate,
         tensor_store,
         input_manifest,
         output_manifest,
@@ -1102,6 +1137,85 @@ def _assert_backend_equivalence_portfolio_slice_bound(
             )
 
 
+def _assert_runtime_memory_planning_gate_passed(report: str) -> None:
+    if not isinstance(report, str):
+        raise RuntimeEvidenceGateError(
+            "runtime memory planning gate failed: not a text report"
+        )
+    required_lines = (
+        'runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {',
+        '  buffer_lifetime = "passed"',
+        '  allocation_plan = "passed"',
+        '  allocation_lifetime_binding = "verified"',
+        '  memory_budget = "passed"',
+        '  memory_budget_allocation_binding = "verified"',
+        '  allocation_request_manifest = "passed"',
+        '  allocation_request_manifest_binding = "verified"',
+        '  allocation_request_handle_policy = "no_runtime_handles"',
+        '  blocked_execution_surfaces = '
+        f'"{",".join(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)}"',
+        '  status = "PASS"',
+    )
+    for line in required_lines:
+        if line not in report:
+            raise RuntimeEvidenceGateError(
+                "runtime memory planning gate failed: required_line_missing"
+            )
+    if not report.rstrip().endswith('status = "PASS"\n}'):
+        raise RuntimeEvidenceGateError(
+            "runtime memory planning gate failed: status_not_pass"
+        )
+    for forbidden in (
+        "raw_tensor_value",
+        "tensor_value",
+        "runtime_handle =",
+        "device_id",
+        "command_line",
+        "plugin_entrypoint",
+        "python_source",
+    ):
+        if forbidden in report:
+            raise RuntimeEvidenceGateError(
+                "runtime memory planning gate failed: forbidden_surface_leaked"
+            )
+
+
+def _assert_runtime_memory_planning_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(matrix, RUNTIME_MEMORY_PLANNING_GRAPH_ID)
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "runtime memory planning matrix coverage failed: graph missing"
+        )
+    if graph.graph_family != RUNTIME_MEMORY_PLANNING_MATRIX_GRAPH_FAMILY:
+        raise RuntimeEvidenceGateError(
+            "runtime memory planning matrix coverage failed: graph_family_mismatch"
+        )
+    if graph.source_boundary != RUNTIME_MEMORY_PLANNING_MATRIX_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "runtime memory planning matrix coverage failed: source_boundary_mismatch"
+        )
+    if graph.required_artifact_kinds != RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS:
+        raise RuntimeEvidenceGateError(
+            "runtime memory planning matrix coverage failed: "
+            "required_artifacts_mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "runtime memory planning matrix coverage failed: runtime evidence incomplete"
+        )
+    artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind in RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS
+    )
+    if artifact_ids != RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS:
+        raise RuntimeEvidenceGateError(
+            "runtime memory planning matrix coverage failed: artifact_id_mismatch"
+        )
+
+
 def _assert_tensor_store_evidence_passed(
     report: RuntimeTensorStoreEvidenceReport,
 ) -> None:
@@ -1469,6 +1583,7 @@ def _render_gate_report(
         RuntimeBackendEquivalencePortfolioPolicyReport
     ),
     gate_matrix_coverage: RuntimeEvidenceGateMatrixCoverageReport,
+    memory_planning_gate: str,
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
@@ -1624,6 +1739,16 @@ def _render_gate_report(
     lines.append(
         "  runtime_backend_equivalence_portfolio_policy_required_slices = "
         f'"{backend_equivalence_portfolio_policy.requirement_count}"'
+    )
+    lines.append('  runtime_memory_planning_gate = "passed"')
+    lines.append('  runtime_memory_planning_matrix = "covered"')
+    lines.append(
+        "  runtime_memory_planning_matrix_artifacts = "
+        f'"{",".join(RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS)}"'
+    )
+    lines.append(
+        "  runtime_memory_planning_gate_bytes = "
+        f'"{len(memory_planning_gate.encode("utf-8"))}"'
     )
     lines.append('  runtime_tensor_store_evidence = "passed"')
     lines.append(f'  runtime_tensor_store_records = "{len(tensor_store.records)}"')

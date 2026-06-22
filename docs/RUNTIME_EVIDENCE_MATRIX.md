@@ -116,6 +116,9 @@ The current matrix is complete across every accepted graph fixture:
   `backend_equivalence_portfolio_policy` evidence requirements, inventorying
   both the aggregate backend-diversity artifact and its accepted membership
   policy.
+- `runtime_memory_planning` is complete under scoped Buffer Lifetime,
+  Allocation Plan, Memory Budget, and Allocation Request Manifest evidence
+  requirements.
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.
@@ -137,7 +140,11 @@ explanation and HS-IR alignment reports can count as passing gate evidence. It a
 `backend_equivalence_portfolio` plus
 `backend_equivalence_portfolio_policy` artifact kinds before portfolio evidence
 can count as passing gate evidence; the gate binds the portfolio matrix coverage
-to the exact portfolio and policy artifact IDs. It also requires
+to the exact portfolio and policy artifact IDs. The runtime-memory-planning
+graph must remain present with the `runtime_memory_planning` source boundary
+and exact Buffer Lifetime, Allocation Plan, Memory Budget, and Allocation
+Request Manifest artifact IDs before Memory Planning Gate evidence can count as
+central runtime gate evidence. It also requires
 `source_intent_return_mlp` to
 remain present with the `source_intent_metadata` source boundary and the
 `source_intent_return_semantics` plus `source_intent_runtime_returns` artifact

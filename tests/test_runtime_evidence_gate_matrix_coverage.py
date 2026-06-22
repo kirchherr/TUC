@@ -13,6 +13,9 @@ from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
     RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS,
     RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS,
+    RUNTIME_MEMORY_PLANNING_GRAPH_ID,
+    RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS,
+    RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS,
     build_gate_matrix_bindings,
@@ -50,7 +53,7 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
     )
     assert report.matrix_complete
     assert report.coverage_passed
-    assert report.binding_count == 4
+    assert report.binding_count == 5
     assert report.issues == ()
     assert {binding.coverage_status for binding in report.bindings} == {"covered"}
     assert tuple(binding.binding_id for binding in report.bindings) == (
@@ -58,6 +61,7 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
         "runtime_vector_backend_equivalence_matrix",
         "runtime_mixed_backend_equivalence_matrix",
         "runtime_backend_equivalence_portfolio_matrix",
+        "runtime_memory_planning_matrix",
     )
     systolic = {
         binding.binding_id: binding for binding in report.bindings
@@ -84,6 +88,18 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
     )
     assert mixed.observed_artifact_ids == (
         RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS
+    )
+    memory = {
+        binding.binding_id: binding for binding in report.bindings
+    }["runtime_memory_planning_matrix"]
+    assert memory.required_artifact_kinds == (
+        RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS
+    )
+    assert memory.expected_artifact_ids == (
+        RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS
+    )
+    assert memory.observed_artifact_ids == (
+        RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS
     )
     assert tuple(runtime_evidence_gate_matrix_coverage_report_to_dict(report)) == (
         "artifact_status",
@@ -116,12 +132,14 @@ def test_runtime_evidence_gate_matrix_coverage_example_runs() -> None:
 
     assert "runtime_evidence_gate_matrix_coverage.data_only.v0" in completed.stdout
     assert '"coverage_passed": true' in completed.stdout
-    assert '"binding_count": 4' in completed.stdout
+    assert '"binding_count": 5' in completed.stdout
     assert "runtime_backend_equivalence_systolic" in completed.stdout
     assert "runtime_planning_explanation_systolic" in completed.stdout
     assert "runtime_planning_explanation_mixed" in completed.stdout
     assert "runtime_hs_ir_plan_alignment_mixed" in completed.stdout
     assert "runtime_backend_equivalence_portfolio_policy" in completed.stdout
+    assert "runtime_buffer_lifetime_current" in completed.stdout
+    assert "runtime_allocation_request_manifest_current" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "runtime_handle" not in completed.stdout
     assert "command_line" not in completed.stdout
@@ -168,6 +186,41 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_artifact_id() -> No
         "runtime_backend_equivalence_other",
         "runtime_planning_explanation_mixed",
         "runtime_hs_ir_plan_alignment_mixed",
+    )
+
+
+def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_memory_artifact_id() -> None:
+    matrix = build_current_runtime_evidence_matrix_report()
+    forged = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_matrix_coverage_wrong_memory_artifact",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    RuntimeEvidenceArtifact(
+                        artifact_kind=artifact.artifact_kind,
+                        artifact_id="runtime_memory_budget_other",
+                    )
+                    if artifact.artifact_kind == "runtime_memory_budget"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_MEMORY_PLANNING_GRAPH_ID
+            else graph
+            for graph in matrix.graphs
+        ),
+    )
+
+    report = build_runtime_evidence_gate_matrix_coverage_report(
+        "runtime_evidence_gate_matrix_coverage",
+        forged,
+        build_gate_matrix_bindings(),
+    )
+
+    assert not report.coverage_passed
+    assert report.issues == (
+        "runtime_memory_planning_matrix.artifact_id_mismatch",
     )
 
 
@@ -275,9 +328,15 @@ def test_runtime_evidence_gate_matrix_coverage_schema_matches_contract() -> None
         item["const"]
         for item in schema["properties"]["blocked_execution_surfaces"]["prefixItems"]
     ] == list(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)
-    assert "runtime_planning_explanation" in schema["$defs"]["binding"][
+    required_kind_enum = schema["$defs"]["binding"]["properties"][
+        "required_artifact_kinds"
+    ]["items"]["enum"]
+    assert "runtime_planning_explanation" in required_kind_enum
+    assert "runtime_memory_budget" in required_kind_enum
+    assert "runtime_allocation_request_manifest" in required_kind_enum
+    assert "runtime_memory_planning" in schema["$defs"]["binding"][
         "properties"
-    ]["required_artifact_kinds"]["items"]["enum"]
+    ]["source_boundary"]["enum"]
 
 
 def test_runtime_evidence_gate_matrix_coverage_schema_fails_closed() -> None:
@@ -319,7 +378,7 @@ def test_runtime_evidence_gate_matrix_coverage_golden_matches_schema() -> None:
     assert golden["coverage_contract"] == RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_CONTRACT
     assert golden["coverage_passed"] is True
     assert golden["matrix_complete"] is True
-    assert golden["binding_count"] == len(golden["bindings"]) == 4
+    assert golden["binding_count"] == len(golden["bindings"]) == 5
     assert golden["issues"] == []
     assert golden["blocked_execution_surfaces"] == list(
         RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES

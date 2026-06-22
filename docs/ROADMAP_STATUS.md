@@ -1176,7 +1176,8 @@ Current focus:
 - Use Runtime Allocation Request Manifest before accepting memory pools, device
   allocation, aliasing, runtime handles, or allocator behavior that can reserve
   runtime memory.
-- Keep Runtime Memory Planning Gate passing in CI before accepting allocator,
+- Keep Runtime Memory Planning Gate and its Runtime Evidence Gate matrix
+  binding passing in CI before accepting allocator,
   memory-pool, device-allocation, or aliasing changes.
 - Keep Memory Budget reports bound to the Allocation Plan evaluated by the same
   gate invocation before accepting allocator, memory-pool, device-allocation, or

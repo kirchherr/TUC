@@ -1,6 +1,6 @@
 {
   "artifact_status": "review_evidence",
-  "binding_count": 4,
+  "binding_count": 5,
   "bindings": [
     {
       "binding_id": "runtime_backend_equivalence_matrix",
@@ -81,6 +81,32 @@
         "backend_equivalence_portfolio_policy"
       ],
       "source_boundary": "runtime_backend_equivalence"
+    },
+    {
+      "binding_id": "runtime_memory_planning_matrix",
+      "coverage_status": "covered",
+      "expected_artifact_ids": [
+        "runtime_buffer_lifetime_current",
+        "runtime_allocation_plan_current",
+        "runtime_memory_budget_current",
+        "runtime_allocation_request_manifest_current"
+      ],
+      "graph_family": "runtime_memory_planning",
+      "graph_id": "runtime_memory_planning",
+      "issues": [],
+      "observed_artifact_ids": [
+        "runtime_buffer_lifetime_current",
+        "runtime_allocation_plan_current",
+        "runtime_memory_budget_current",
+        "runtime_allocation_request_manifest_current"
+      ],
+      "required_artifact_kinds": [
+        "runtime_buffer_lifetime",
+        "runtime_allocation_plan",
+        "runtime_memory_budget",
+        "runtime_allocation_request_manifest"
+      ],
+      "source_boundary": "runtime_memory_planning"
     }
   ],
   "blocked_execution_surfaces": [
