@@ -93,10 +93,13 @@ The implementation adds:
 The golden report intentionally remains blocked. It may mark performance-proof
 RFC, threshold-policy, and acceptance-criteria evidence present once accepted
 Kernel Ingress workload scopes are bound to accepted, digest-pinned governance
-metadata while benchmark artifacts, executable backend security review, and
-native claims remain blocked. It may mark workload-scope evidence present once
-a bounded workload-scope report exists. It may mark planner-overhead evidence
-present once a bounded planner-overhead report is contract-checked for an
+metadata while executable backend security review and native claims remain
+blocked. It may mark benchmark-report artifact evidence present once all
+required artifact kinds are bound to digest-pinned repository-golden descriptors
+without loading raw output or validating timings. It may mark workload-scope
+evidence present once a bounded workload-scope report exists. It may mark
+planner-overhead evidence present once a bounded planner-overhead report is
+contract-checked for an
 accepted graph and still keeps execution timing, break-even evidence, and
 native performance claims blocked. It may mark correctness, runtime-plan, and
 compiler-decision golden evidence present once a generated accepted ingress

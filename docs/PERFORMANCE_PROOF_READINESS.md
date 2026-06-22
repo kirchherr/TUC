@@ -219,6 +219,13 @@ the existence of a bounded benchmark artifact inventory contract. It does not
 load benchmark artifacts, satisfy benchmark result acceptance, validate raw
 native output, or prove native performance parity.
 
+The current readiness example marks `benchmark_report_artifacts` present only
+after binding all required benchmark artifact kinds to repository-golden
+descriptors with SHA-256 digests. Those descriptors are inventory review
+objects, not raw benchmark reports. The readiness example does not parse
+benchmark artifact contents, load raw output, validate native timings, or accept
+benchmark results as proof.
+
 The current diagnostic executable backend security review report schema is
 `schemas/executable_backend_security_review_report.v0.schema.json`. It can
 satisfy only the existence of a bounded executable-surface security review
@@ -323,10 +330,10 @@ tests/golden/proofs/performance_proof_readiness_report.json
 ```
 
 This makes the current roadmap state explicit: TUC has a performance proof
-boundary, a readiness report, accepted governance metadata, and bounded Kernel
-Ingress workload-scope evidence. Native performance proof readiness still fails
-because benchmark report artifacts and executable backend security review have
-not been supplied.
+boundary, a readiness report, accepted governance metadata, bounded Kernel
+Ingress workload-scope evidence, and digest-bound benchmark artifact inventory.
+Native performance proof readiness still fails because executable backend
+security review has not been supplied.
 
 ## Still Blocked
 

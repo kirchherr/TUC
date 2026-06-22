@@ -821,7 +821,12 @@ Current slice:
 - Performance Proof Readiness now derives `benchmark_report_schema` from the
   baseline benchmark report schema contract, requiring the schema to remain
   fail-closed, diagnostic-only, native-claim-blocked, and bound to the
-  performance proof boundary while benchmark artifacts remain missing.
+  performance proof boundary.
+- Performance Proof Readiness now derives `benchmark_report_artifacts` from a
+  complete Benchmark Artifact Manifest over digest-pinned repository-golden
+  descriptors for every required artifact kind, while artifact loading, timing
+  validation, executable backend security review, and native performance claims
+  remain blocked.
 - Performance Proof Readiness now derives `benchmark_methodology` from accepted
   Kernel Ingress workload scopes, requiring bounded measurement-policy entries
   while benchmark execution, raw timing samples, and benchmark artifacts remain
@@ -1175,8 +1180,7 @@ Current focus:
   decisions can be explained next to manual override effects.
 - Native performance claims remain blocked until
   [Performance Proof Boundary](PERFORMANCE_PROOF_BOUNDARY.md) is satisfied,
-  benchmark artifact evidence and executable backend security review are
-  supplied, and
+  executable backend security review is supplied, and
   [Performance Proof Readiness Report](PERFORMANCE_PROOF_READINESS.md) passes.
 - Noise/error-budget score components only after those models are documented
   outside HAC-IR semantics and covered by goldens.

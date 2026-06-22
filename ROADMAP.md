@@ -291,7 +291,12 @@ Completed evidence:
 - Performance-readiness evidence now marks `benchmark_report_schema` present
   only when the baseline benchmark report schema is fail-closed,
   diagnostic-only, native-claim-blocked, and bound to the performance proof
-  boundary; benchmark artifacts remain separate and blocked.
+  boundary.
+- Performance-readiness evidence now marks `benchmark_report_artifacts` present
+  only when all required benchmark artifact kinds are bound to digest-pinned
+  repository-golden descriptors while raw output loading, timing validation,
+  executable backend security review, and native performance claims remain
+  blocked.
 - Performance-readiness evidence now marks `benchmark_methodology` present only
   when methodology entries are derived from the accepted Kernel Ingress
   workload scopes and remain policy-only, with no benchmark execution or raw
@@ -327,8 +332,6 @@ Completed evidence:
 
 Next work:
 
-- Bind benchmark artifact manifest evidence only after bounded stored report
-  artifacts exist and their digests can be reviewed without loading raw output.
 - Bind executable backend security review evidence only after executable
   surfaces, sandboxing, budgets, provenance, and negative-test evidence are
   accepted separately.
@@ -646,8 +649,11 @@ Deliverables:
   compiler-decision golden evidence to the deterministic Kernel Ingress golden
   report while all native performance claims remain blocked.
 - Performance Proof Readiness now treats the baseline benchmark report schema
-  as present only after a fail-closed schema contract check; benchmark report
-  artifacts remain missing until separate bounded artifacts exist.
+  as present only after a fail-closed schema contract check.
+- Performance Proof Readiness now treats benchmark report artifacts as present
+  only after all required artifact kinds are listed through a digest-bound
+  repository-golden manifest; artifact loading, timing validation, executable
+  backend security review, and native performance claims remain blocked.
 - Performance Proof Readiness now treats benchmark methodology as present only
   after binding measurement policy to the accepted Kernel Ingress workload
   scopes; benchmark execution and artifact evidence remain blocked.

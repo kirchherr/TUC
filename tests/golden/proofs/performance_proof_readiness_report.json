@@ -72,7 +72,7 @@
     },
     {
       "evidence_id": "benchmark_report_artifacts",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "executable_backend_security_review",
@@ -80,10 +80,6 @@
     }
   ],
   "issues": [
-    {
-      "evidence_id": "benchmark_report_artifacts",
-      "message": "required performance proof boundary evidence is missing"
-    },
     {
       "evidence_id": "executable_backend_security_review",
       "message": "required performance proof boundary evidence is missing"

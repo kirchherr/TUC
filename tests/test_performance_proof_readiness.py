@@ -6,6 +6,7 @@ import pytest
 
 from examples.performance_proof_readiness import (
     _has_benchmark_report_schema_evidence,
+    _has_kernel_ingress_benchmark_artifact_manifest_evidence,
     _has_kernel_ingress_benchmark_methodology_evidence,
     _has_kernel_ingress_break_even_workload_size_evidence,
     _has_kernel_ingress_golden_digest_evidence,
@@ -60,6 +61,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         "runtime_plan_goldens",
         "compiler_decision_report_goldens",
         "benchmark_report_schema",
+        "benchmark_report_artifacts",
     )
     expected_missing = tuple(
         evidence_id
@@ -81,6 +83,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
             "runtime_plan_goldens",
             "compiler_decision_report_goldens",
             "benchmark_report_schema",
+            "benchmark_report_artifacts",
         }
     )
     assert tuple(issue.evidence_id for issue in report.issues) == expected_missing
@@ -104,6 +107,7 @@ def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None
         "compiler_decision_report_goldens"
     )
     assert _has_benchmark_report_schema_evidence()
+    assert _has_kernel_ingress_benchmark_artifact_manifest_evidence()
 
 
 def test_performance_proof_readiness_dump_matches_golden() -> None:

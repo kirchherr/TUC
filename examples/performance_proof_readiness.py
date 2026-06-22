@@ -36,6 +36,10 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
 
 from tuc import (
+    BENCHMARK_ARTIFACT_MANIFEST_ARTIFACT_STATUS,
+    BENCHMARK_ARTIFACT_MANIFEST_CLAIM_STATUS,
+    BENCHMARK_ARTIFACT_MANIFEST_REPORT_SCHEMA_VERSION,
+    BENCHMARK_ARTIFACT_REQUIRED_KINDS,
     BENCHMARK_METHODOLOGY_ARTIFACT_STATUS,
     BENCHMARK_METHODOLOGY_CLAIM_STATUS,
     BENCHMARK_METHODOLOGY_REPORT_SCHEMA_VERSION,
@@ -65,6 +69,8 @@ from tuc import (
     TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS,
     TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS,
     TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION,
+    BenchmarkArtifactManifestReport,
+    BenchmarkArtifactReference,
     BenchmarkMethodology,
     BreakEvenWorkloadSize,
     BreakEvenWorkloadSizeReport,
@@ -82,8 +88,10 @@ from tuc import (
     PerformanceProofRFCReport,
     ToolchainComponent,
     ToolchainEnvironmentReport,
+    benchmark_artifact_manifest_report_to_dict,
     benchmark_methodology_report_to_dict,
     break_even_workload_size_report_to_dict,
+    build_benchmark_artifact_manifest_report,
     build_benchmark_methodology_report,
     build_break_even_workload_size_report,
     build_leaky_abstraction_report,
@@ -136,6 +144,32 @@ _KERNEL_INGRESS_GOLDEN_PATH = Path(
 )
 _BASELINE_BENCHMARK_SCHEMA_PATH = Path(
     "schemas/baseline_benchmark_report.v0.schema.json"
+)
+_BENCHMARK_ARTIFACT_MANIFEST_PROPOSAL_NAME = (
+    "kernel_ingress_benchmark_artifact_manifest_candidate"
+)
+_BENCHMARK_ARTIFACT_DESCRIPTOR_FILES: tuple[tuple[str, str, str, Path], ...] = (
+    (
+        "kernel_ingress_baseline_benchmark_report",
+        "baseline_benchmark_report",
+        BENCHMARK_REPORT_SCHEMA_VERSION,
+        Path("tests/golden/proofs/benchmark_artifacts/baseline_benchmark_report.json"),
+    ),
+    (
+        "kernel_ingress_native_benchmark_report",
+        "native_benchmark_report",
+        "tuc.native_benchmark_report.v0",
+        Path("tests/golden/proofs/benchmark_artifacts/native_benchmark_report.json"),
+    ),
+    (
+        "kernel_ingress_native_baseline_comparison_report",
+        "native_baseline_comparison_report",
+        NATIVE_BASELINE_COMPARISON_REPORT_SCHEMA_VERSION,
+        Path(
+            "tests/golden/proofs/benchmark_artifacts/"
+            "native_baseline_comparison_report.json"
+        ),
+    ),
 )
 _PERFORMANCE_PROOF_GOVERNANCE_PROPOSAL_NAME = (
     "kernel_ingress_performance_proof_governance_candidate"
@@ -285,6 +319,10 @@ def build_blocked_performance_proof_evidence() -> (
             present=_has_benchmark_report_schema_evidence(),
         ),
         PerformanceProofReadinessEvidence(
+            evidence_id="benchmark_report_artifacts",
+            present=_has_kernel_ingress_benchmark_artifact_manifest_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
             evidence_id="benchmark_methodology",
             present=_has_kernel_ingress_benchmark_methodology_evidence(),
         ),
@@ -314,6 +352,80 @@ def main() -> None:
     )
     print(dump_performance_proof_readiness_report(report), end="")
 
+
+def _has_kernel_ingress_benchmark_artifact_manifest_evidence() -> bool:
+    report = _build_kernel_ingress_benchmark_artifact_manifest_report()
+    payload = benchmark_artifact_manifest_report_to_dict(report)
+    expected = {
+        "artifact_status": BENCHMARK_ARTIFACT_MANIFEST_ARTIFACT_STATUS,
+        "benchmark_artifact_manifest_complete": True,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": ["native_performance_claim_blocked"],
+        "native_performance_claim": False,
+        "performance_claim_status": BENCHMARK_ARTIFACT_MANIFEST_CLAIM_STATUS,
+        "proposal_name": _BENCHMARK_ARTIFACT_MANIFEST_PROPOSAL_NAME,
+        "required_artifact_kinds": list(BENCHMARK_ARTIFACT_REQUIRED_KINDS),
+        "schema_version": BENCHMARK_ARTIFACT_MANIFEST_REPORT_SCHEMA_VERSION,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"benchmark artifact manifest evidence {key} drift")
+    artifacts = payload["artifacts"]
+    if not isinstance(artifacts, list):
+        raise ValueError("benchmark artifact manifest entries drift")
+    if len(artifacts) != len(_BENCHMARK_ARTIFACT_DESCRIPTOR_FILES):
+        raise ValueError("benchmark artifact manifest count drift")
+    for artifact, expected_artifact in zip(
+        artifacts,
+        _BENCHMARK_ARTIFACT_DESCRIPTOR_FILES,
+        strict=True,
+    ):
+        if not isinstance(artifact, dict):
+            raise ValueError("benchmark artifact manifest entry drift")
+        artifact_id, artifact_kind, schema_version, path = expected_artifact
+        expected_fields = {
+            "artifact_digest": _repository_file_digest(path),
+            "artifact_id": artifact_id,
+            "artifact_kind": artifact_kind,
+            "schema_version": schema_version,
+            "storage_scope": "repository_golden",
+        }
+        for key, value in expected_fields.items():
+            if artifact.get(key) != value:
+                raise ValueError(f"benchmark artifact manifest {key} drift")
+        for forbidden_key in (
+            "host_path",
+            "url",
+            "environment",
+            "device_id",
+            "hardware_serial",
+            "raw_timing_samples",
+            "raw_benchmark_output",
+            "backend_artifact",
+        ):
+            if forbidden_key in artifact:
+                raise ValueError("benchmark artifact manifest exposes forbidden data")
+    return True
+
+
+def _build_kernel_ingress_benchmark_artifact_manifest_report() -> (
+    BenchmarkArtifactManifestReport
+):
+    return build_benchmark_artifact_manifest_report(
+        _BENCHMARK_ARTIFACT_MANIFEST_PROPOSAL_NAME,
+        artifacts=tuple(
+            BenchmarkArtifactReference(
+                artifact_id=artifact_id,
+                artifact_kind=artifact_kind,
+                schema_version=schema_version,
+                artifact_digest=_repository_file_digest(path),
+                storage_scope="repository_golden",
+            )
+            for artifact_id, artifact_kind, schema_version, path in (
+                _BENCHMARK_ARTIFACT_DESCRIPTOR_FILES
+            )
+        ),
+    )
 
 def _has_kernel_ingress_performance_proof_rfc_evidence() -> bool:
     workload_report_text = build_kernel_ingress_workload_scope_report()
