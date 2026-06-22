@@ -106,6 +106,16 @@ existence of a bounded versioned toolchain environment contract. It does not
 inspect the host, read environment variables, run discovery commands, access
 devices, or prove native performance parity.
 
+The current readiness example marks `versioned_toolchain_environment` present
+only after building a Toolchain Environment Report from repository-controlled
+version declarations and file digests: the GitHub Actions Python runtime policy,
+`pyproject.toml` package metadata, `requirements/dev.txt` development dependency
+metadata, the dev Dockerfile, the native compiler policy declared by that
+Dockerfile, and `docker-compose.yml`. Each component must carry a `sha256:`
+digest of its repository file. The check does not collect host package versions,
+read environment variables, inspect devices, run discovery commands, or turn
+unlocked dependency declarations into native baseline provenance.
+
 The current diagnostic planner-overhead report schema is
 `schemas/planner_overhead_report.v0.schema.json`. It can satisfy only the
 existence of a bounded planner phase-separation report. It does not satisfy

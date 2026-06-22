@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from hashlib import sha256
 from pathlib import Path
 
 try:
@@ -43,15 +44,22 @@ from tuc import (
     LEAKY_ABSTRACTION_PERFORMANCE_CLAIM_STATUS,
     LEAKY_ABSTRACTION_REPORT_SCHEMA_VERSION,
     PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+    TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS,
+    TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS,
+    TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION,
     BenchmarkMethodology,
     LeakyAbstractionFact,
     PerformanceProofReadinessEvidence,
+    ToolchainComponent,
+    ToolchainEnvironmentReport,
     benchmark_methodology_report_to_dict,
     build_benchmark_methodology_report,
     build_leaky_abstraction_report,
     build_performance_proof_readiness_report,
+    build_toolchain_environment_report,
     dump_performance_proof_readiness_report,
     leaky_abstraction_report_to_dict,
+    toolchain_environment_report_to_dict,
 )
 from tuc.backends import LinearAlgebraSimulatorBackend, VectorSimulatorBackend
 from tuc.benchmarks import (
@@ -86,6 +94,51 @@ _KERNEL_INGRESS_GOLDEN_PATH = Path(
 )
 _BASELINE_BENCHMARK_SCHEMA_PATH = Path(
     "schemas/baseline_benchmark_report.v0.schema.json"
+)
+_TOOLCHAIN_ENVIRONMENT_PROPOSAL_NAME = "kernel_ingress_toolchain_environment_candidate"
+_TOOLCHAIN_ENVIRONMENT_COMPONENT_FILES: tuple[tuple[str, str, str, str, Path], ...] = (
+    (
+        "ci_python_runtime",
+        "python_runtime",
+        "python_3.12",
+        "github_actions_ci",
+        Path(".github/workflows/ci.yml"),
+    ),
+    (
+        "project_dependency_metadata",
+        "python_package",
+        "pyproject_dependency_set",
+        "pyproject_toml",
+        Path("pyproject.toml"),
+    ),
+    (
+        "dev_dependency_metadata",
+        "python_package",
+        "requirements_dev_set",
+        "requirements_dev_txt",
+        Path("requirements/dev.txt"),
+    ),
+    (
+        "dev_container_image",
+        "container_image",
+        "ubuntu_24.04_llvm_18_dev",
+        "docker_dev_dockerfile",
+        Path("docker/dev/Dockerfile"),
+    ),
+    (
+        "native_compiler_policy",
+        "native_compiler",
+        "clang_18_llvm_18",
+        "docker_dev_dockerfile",
+        Path("docker/dev/Dockerfile"),
+    ),
+    (
+        "dev_compose_environment",
+        "container_image",
+        "docker_compose_dev",
+        "docker_compose_yaml",
+        Path("docker-compose.yml"),
+    ),
 )
 _KERNEL_INGRESS_DIGEST_EVIDENCE = {
     "correctness_goldens": "reference_correctness_digest",
@@ -131,6 +184,10 @@ def build_blocked_performance_proof_evidence() -> (
             present=_has_kernel_ingress_benchmark_methodology_evidence(),
         ),
         PerformanceProofReadinessEvidence(
+            evidence_id="versioned_toolchain_environment",
+            present=_has_versioned_toolchain_environment_evidence(),
+        ),
+        PerformanceProofReadinessEvidence(
             evidence_id="leaky_abstraction_report",
             present=_has_kernel_ingress_leaky_abstraction_evidence(),
         ),
@@ -143,6 +200,81 @@ def main() -> None:
         build_blocked_performance_proof_evidence(),
     )
     print(dump_performance_proof_readiness_report(report), end="")
+
+
+def _has_versioned_toolchain_environment_evidence() -> bool:
+    report = _build_versioned_toolchain_environment_report()
+    payload = toolchain_environment_report_to_dict(report)
+    expected = {
+        "artifact_status": TOOLCHAIN_ENVIRONMENT_ARTIFACT_STATUS,
+        "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
+        "issues": ["native_performance_claim_blocked"],
+        "native_performance_claim": False,
+        "performance_claim_status": TOOLCHAIN_ENVIRONMENT_CLAIM_STATUS,
+        "proposal_name": _TOOLCHAIN_ENVIRONMENT_PROPOSAL_NAME,
+        "schema_version": TOOLCHAIN_ENVIRONMENT_REPORT_SCHEMA_VERSION,
+        "toolchain_environment_ready": True,
+    }
+    for key, value in expected.items():
+        if payload[key] != value:
+            raise ValueError(f"toolchain environment evidence {key} drift")
+    components = payload["components"]
+    if not isinstance(components, list):
+        raise ValueError("toolchain environment components drift")
+    if len(components) != len(_TOOLCHAIN_ENVIRONMENT_COMPONENT_FILES):
+        raise ValueError("toolchain environment component count drift")
+    for component, expected_component in zip(
+        components,
+        _TOOLCHAIN_ENVIRONMENT_COMPONENT_FILES,
+        strict=True,
+    ):
+        if not isinstance(component, dict):
+            raise ValueError("toolchain environment component drift")
+        component_id, component_kind, version_id, provenance_id, path = expected_component
+        expected_fields = {
+            "component_id": component_id,
+            "component_kind": component_kind,
+            "version_id": version_id,
+            "provenance_id": provenance_id,
+            "component_digest": _repository_file_digest(path),
+        }
+        for key, value in expected_fields.items():
+            if component.get(key) != value:
+                raise ValueError(f"toolchain environment component {key} drift")
+        for forbidden_key in ("host_path", "environment", "device_id", "hardware_serial"):
+            if forbidden_key in component:
+                raise ValueError("toolchain environment exposes forbidden host data")
+    return True
+
+
+def _build_versioned_toolchain_environment_report() -> ToolchainEnvironmentReport:
+    return build_toolchain_environment_report(
+        _TOOLCHAIN_ENVIRONMENT_PROPOSAL_NAME,
+        components=tuple(
+            ToolchainComponent(
+                component_id=component_id,
+                component_kind=component_kind,
+                version_id=version_id,
+                provenance_id=provenance_id,
+                component_digest=_repository_file_digest(path),
+            )
+            for (
+                component_id,
+                component_kind,
+                version_id,
+                provenance_id,
+                path,
+            ) in _TOOLCHAIN_ENVIRONMENT_COMPONENT_FILES
+        ),
+    )
+
+
+def _repository_file_digest(path: Path) -> str:
+    if path.is_absolute() or ".." in path.parts:
+        raise ValueError("toolchain environment digest path must be repository relative")
+    if not path.is_file():
+        raise ValueError("toolchain environment digest path missing")
+    return "sha256:" + sha256(path.read_bytes()).hexdigest()
 
 
 def _has_kernel_ingress_workload_scope_evidence() -> bool:

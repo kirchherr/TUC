@@ -32,7 +32,7 @@
     },
     {
       "evidence_id": "versioned_toolchain_environment",
-      "present": false
+      "present": true
     },
     {
       "evidence_id": "workload_scope",
@@ -94,10 +94,6 @@
     },
     {
       "evidence_id": "native_baseline_provenance",
-      "message": "required performance proof boundary evidence is missing"
-    },
-    {
-      "evidence_id": "versioned_toolchain_environment",
       "message": "required performance proof boundary evidence is missing"
     },
     {

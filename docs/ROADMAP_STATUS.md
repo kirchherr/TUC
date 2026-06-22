@@ -820,6 +820,10 @@ Current slice:
   Kernel Ingress workload scopes, requiring bounded measurement-policy entries
   while benchmark execution, raw timing samples, and benchmark artifacts remain
   missing.
+- Performance Proof Readiness now derives `versioned_toolchain_environment`
+  from a bounded Toolchain Environment Report over repository-controlled CI,
+  dependency, Docker, compiler, and compose declarations with SHA-256 digests;
+  host discovery, environment capture, and device inspection remain blocked.
 - Performance Proof Readiness now derives `leaky_abstraction_report` from the
   accepted Kernel Ingress MVP pipeline, requiring contract-valid HAC-IR, no
   forbidden hardware-specific HAC-IR attributes, and performance facts assigned

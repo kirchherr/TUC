@@ -11,6 +11,7 @@ from examples.performance_proof_readiness import (
     _has_kernel_ingress_leaky_abstraction_evidence,
     _has_kernel_ingress_planner_overhead_evidence,
     _has_kernel_ingress_workload_scope_evidence,
+    _has_versioned_toolchain_environment_evidence,
     build_blocked_performance_proof_evidence,
 )
 from tuc import (
@@ -39,6 +40,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         item.evidence_id for item in report.checked_evidence if item.present
     ) == (
         "benchmark_methodology",
+        "versioned_toolchain_environment",
         "workload_scope",
         "correctness_goldens",
         "leaky_abstraction_report",
@@ -54,6 +56,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
         not in {
             "workload_scope",
             "benchmark_methodology",
+            "versioned_toolchain_environment",
             "correctness_goldens",
             "leaky_abstraction_report",
             "planner_overhead_report",
@@ -68,6 +71,7 @@ def test_performance_proof_readiness_blocks_with_current_kernel_ingress_evidence
 def test_current_kernel_ingress_readiness_evidence_is_contract_checked() -> None:
     assert _has_kernel_ingress_workload_scope_evidence()
     assert _has_kernel_ingress_benchmark_methodology_evidence()
+    assert _has_versioned_toolchain_environment_evidence()
     assert _has_kernel_ingress_leaky_abstraction_evidence()
     assert _has_kernel_ingress_planner_overhead_evidence()
     assert _has_kernel_ingress_golden_digest_evidence("correctness_goldens")

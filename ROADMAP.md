@@ -290,6 +290,10 @@ Completed evidence:
   when methodology entries are derived from the accepted Kernel Ingress
   workload scopes and remain policy-only, with no benchmark execution or raw
   timing samples.
+- Performance-readiness evidence now marks `versioned_toolchain_environment`
+  present only when repository-controlled CI, dependency, Docker, compiler, and
+  compose declarations are represented as bounded Toolchain Environment Report
+  components with `sha256:` digests and no host discovery.
 - Performance-readiness evidence now marks `leaky_abstraction_report` present
   only when the accepted Kernel Ingress MVP pipeline keeps performance-critical
   facts out of HAC-IR and assigns them to backend capability,
@@ -619,6 +623,10 @@ Deliverables:
 - Performance Proof Readiness now treats benchmark methodology as present only
   after binding measurement policy to the accepted Kernel Ingress workload
   scopes; benchmark execution and artifact evidence remain blocked.
+- Performance Proof Readiness now treats versioned toolchain environment
+  evidence as present only after binding repository-controlled CI, dependency,
+  Docker, compiler, and compose declarations to Toolchain Environment Report
+  components with SHA-256 digests; host discovery remains blocked.
 - Performance Proof Readiness now treats leaky-abstraction evidence as present
   only after the Kernel Ingress MVP pipeline proves HAC-IR is contract-valid
   and free of forbidden hardware-specific performance facts.
