@@ -173,3 +173,5 @@ It keeps the following surfaces blocked:
 - subprocess execution
 
 The matrix is therefore a proof inventory, not an execution mechanism.
+
+Runtime Memory Planning matrix coverage now includes `runtime_allocation_reconciliation` as the policy artifact that binds Allocation Admission and Allocation Receipt before future allocator implementations.

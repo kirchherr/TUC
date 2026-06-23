@@ -159,7 +159,8 @@
               "runtime_memory_budget",
               "runtime_allocation_request_manifest",
         "runtime_allocation_admission",
-        "runtime_allocation_receipt"
+        "runtime_allocation_receipt",
+        "runtime_allocation_reconciliation"
             ]
           }
         },

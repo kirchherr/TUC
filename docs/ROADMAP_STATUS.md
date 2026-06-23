@@ -1284,3 +1284,7 @@ Current focus:
   contribution.
 - Plugin lifecycle RFC and sandboxing model before any executable backend
   discovery, artifact execution, or native plugin ABI.
+
+## Runtime Allocation Reconciliation
+
+- Runtime Allocation Reconciliation at `examples/runtime_allocation_reconciliation.py`, schema at `schemas/runtime_allocation_reconciliation_report.v0.schema.json`, and golden at `tests/golden/runtime_allocation_reconciliation/current_report.json` now reconcile Admission and Receipt before any allocator handle or memory address surface exists.

@@ -161,6 +161,7 @@ RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS = (
     "runtime_allocation_request_manifest",
     "runtime_allocation_admission",
     "runtime_allocation_receipt",
+    "runtime_allocation_reconciliation",
 )
 RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS = (
     "runtime_buffer_lifetime_current",
@@ -169,6 +170,7 @@ RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS = (
     "runtime_allocation_request_manifest_current",
     "runtime_allocation_admission_current",
     "runtime_allocation_receipt_current",
+    "runtime_allocation_reconciliation_current",
 )
 
 

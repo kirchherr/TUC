@@ -44,8 +44,9 @@ requires `runtime_backend_equivalence_mixed`,
 `runtime_hs_ir_plan_alignment_mixed`. The memory-planning binding requires
 `runtime_buffer_lifetime_current`, `runtime_allocation_plan_current`,
 `runtime_memory_budget_current`, `runtime_allocation_request_manifest_current`,
-`runtime_allocation_admission_current`, and
-`runtime_allocation_receipt_current`.
+`runtime_allocation_admission_current`,
+`runtime_allocation_receipt_current`, and
+`runtime_allocation_reconciliation_current`.
 
 Each binding records:
 

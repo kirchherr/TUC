@@ -78,6 +78,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "runtime_allocation_request_manifest",
         "runtime_allocation_admission",
         "runtime_allocation_receipt",
+        "runtime_allocation_reconciliation",
     )
     assert all(
         "backend_equivalence" in graphs[graph_id].present_artifact_kinds
@@ -114,6 +115,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "runtime_allocation_request_manifest",
         "runtime_allocation_admission",
         "runtime_allocation_receipt",
+        "runtime_allocation_reconciliation",
     }
     full_runtime_graphs = tuple(
         graph
@@ -187,6 +189,7 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert '"runtime_allocation_request_manifest"' in completed.stdout
     assert '"runtime_allocation_admission"' in completed.stdout
     assert '"runtime_allocation_receipt"' in completed.stdout
+    assert '"runtime_allocation_reconciliation"' in completed.stdout
     assert '"backend_equivalence_portfolio"' in completed.stdout
     assert '"backend_equivalence_portfolio_policy"' in completed.stdout
 

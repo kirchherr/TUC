@@ -24,12 +24,14 @@ from tuc import (
     RuntimeAllocationIssue,
     RuntimeAllocationPlanReport,
     RuntimeAllocationReceiptReport,
+    RuntimeAllocationReconciliationReport,
     RuntimeBufferLifetimeIssue,
     RuntimeBufferLifetimeReport,
     RuntimeMemoryBudgetReport,
     RuntimeMemoryDomainBudget,
     build_runtime_allocation_admission_report,
     build_runtime_allocation_receipt_report,
+    build_runtime_allocation_reconciliation_report,
     build_runtime_allocation_request_manifest_report,
     build_runtime_memory_budget_report,
 )
@@ -54,6 +56,12 @@ def test_runtime_memory_planning_gate_matches_golden() -> None:
     assert 'allocation_receipt = "passed"' in report
     assert 'allocation_receipt_binding = "verified"' in report
     assert 'allocation_receipt_mode = "dry_run_only"' in report
+    assert 'allocation_reconciliation = "passed"' in report
+    assert 'allocation_reconciliation_binding = "verified"' in report
+    assert (
+        'allocation_reconciliation_policy = '
+        '"allocation_reconciliation.no_handles.no_pointers.contiguous_offsets.v0"'
+    ) in report
     assert report.rstrip().endswith('status = "PASS"\n}')
 
 
@@ -218,6 +226,49 @@ def test_runtime_memory_planning_gate_rejects_stale_allocation_receipt() -> None
 
     with pytest.raises(RuntimeMemoryPlanningGateError, match="allocation receipt"):
         build_gate_report(allocation_receipt_report=stale_receipt)
+
+
+def test_runtime_memory_planning_gate_rejects_stale_allocation_reconciliation() -> None:
+    request_manifest = build_current_runtime_allocation_request_manifest_report()
+    memory_budget = build_current_runtime_memory_budget_report()
+    admission = build_runtime_allocation_admission_report(
+        request_manifest,
+        memory_budget,
+    )
+    receipt = build_runtime_allocation_receipt_report(admission)
+    reconciliation = build_runtime_allocation_reconciliation_report(admission, receipt)
+    stale_reconciliation = RuntimeAllocationReconciliationReport(
+        graph_name=reconciliation.graph_name,
+        operation_count=reconciliation.operation_count,
+        source_admission_contract=reconciliation.source_admission_contract,
+        source_admission_schema_version=(
+            reconciliation.source_admission_schema_version
+        ),
+        source_admission_issue_count=reconciliation.source_admission_issue_count,
+        source_admission_metadata_digest=(
+            reconciliation.source_admission_metadata_digest
+        ),
+        source_admission_count=reconciliation.source_admission_count,
+        source_admission_total_admitted_bytes=(
+            reconciliation.source_admission_total_admitted_bytes
+        ),
+        source_receipt_contract=reconciliation.source_receipt_contract,
+        source_receipt_schema_version=reconciliation.source_receipt_schema_version,
+        source_receipt_issue_count=reconciliation.source_receipt_issue_count,
+        source_receipt_metadata_digest="sha256:" + "1" * 64,
+        source_receipt_source_admission_metadata_digest=(
+            reconciliation.source_receipt_source_admission_metadata_digest
+        ),
+        source_receipt_count=reconciliation.source_receipt_count,
+        source_receipt_total_receipted_bytes=(
+            reconciliation.source_receipt_total_receipted_bytes
+        ),
+        rows=reconciliation.rows,
+        issues=reconciliation.issues,
+    )
+
+    with pytest.raises(RuntimeMemoryPlanningGateError, match="allocation reconciliation"):
+        build_gate_report(allocation_reconciliation_report=stale_reconciliation)
 
 
 def test_runtime_memory_planning_gate_rejects_graph_mismatch() -> None:

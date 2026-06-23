@@ -11,6 +11,7 @@ It runs:
 - `build_runtime_allocation_request_manifest_report()`
 - `build_runtime_allocation_admission_report()`
 - `build_runtime_allocation_receipt_report()`
+- `build_runtime_allocation_reconciliation_report()`
 - `examples/runtime_memory_planning_gate.py`
 
 The gate passes only when:
@@ -29,6 +30,8 @@ The gate passes only when:
   Memory Budget evaluated by the same gate invocation
 - Runtime Allocation Receipt passes and is bound to the Allocation Admission
   evaluated by the same gate invocation
+- Runtime Allocation Reconciliation passes and is bound to the same Allocation
+  Admission and Allocation Receipt evaluated by the same gate invocation
 
 Schema coverage:
 
@@ -36,6 +39,7 @@ Schema coverage:
 schemas/runtime_allocation_request_manifest_report.v0.schema.json
 schemas/runtime_allocation_admission_report.v0.schema.json
 schemas/runtime_allocation_receipt_report.v0.schema.json
+schemas/runtime_allocation_reconciliation_report.v0.schema.json
 ```
 
 Golden output:
@@ -80,3 +84,5 @@ accepted unless it is tied to the same Request Manifest and Memory Budget.
 
 The allocation-receipt binding prevents dry-run allocator receipt evidence from
 being accepted unless it is tied to the same Allocation Admission.
+
+The allocation-reconciliation binding prevents stale or inconsistent Admission/Receipt ledgers from being accepted before any real allocator surface is introduced.
