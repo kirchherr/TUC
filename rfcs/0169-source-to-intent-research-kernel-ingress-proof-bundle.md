@@ -8,6 +8,7 @@
   - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
   - `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
   - `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
@@ -30,6 +31,7 @@
   - `rfcs/0173-source-to-intent-research-kernel-ingress-runtime-matrix.md`
   - `rfcs/0180-source-to-intent-research-kernel-ingress-runtime-step-trace.md`
   - `rfcs/0181-source-to-intent-research-kernel-ingress-runtime-evidence-bundle-index.md`
+  - `rfcs/0209-source-to-intent-research-kernel-ingress-runtime-output-closure-index.md`
   - `rfcs/0182-source-to-intent-research-kernel-ingress-backend-equivalence.md`
   - `rfcs/0174-source-to-intent-research-kernel-ingress-runtime-coverage-policy.md`
   - `rfcs/0175-source-to-intent-research-kernel-ingress-runtime-backend-alignment.md`
@@ -37,7 +39,7 @@
 ## Context
 
 Kernel Ingress now has focused proof artifacts: runtime E2E evidence,
-runtime-matrix evidence, runtime-backend-equivalence evidence,
+runtime-matrix evidence, runtime-output-closure evidence, runtime-backend-equivalence evidence,
 runtime-backend-equivalence shape-profile evidence, runtime-coverage-policy
 evidence, runtime-backend-alignment evidence, boundary-budget evidence,
 rejection-coverage evidence, source-free diagnostics, frontend conformance, and
@@ -81,8 +83,9 @@ compiler artifacts.
 
 The Kernel Ingress research claim becomes easier to audit without weakening any
 boundary. Future Kernel Ingress syntax changes must update E2E,
-runtime-matrix, runtime-backend-equivalence, runtime-backend-equivalence
-shape-profile evidence, runtime-coverage-policy, runtime-backend-alignment,
+runtime-matrix, runtime-output-closure, runtime-backend-equivalence,
+runtime-backend-equivalence shape-profile evidence, runtime-coverage-policy,
+runtime-backend-alignment,
 boundary-budget, rejection-coverage, diagnostics, conformance,
 idiom-alignment, this bundle, the focused Kernel Ingress Evidence Gate, the
 global Evidence Gate, and the global Proof Bundle together.

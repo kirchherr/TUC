@@ -77,6 +77,13 @@ try:
     from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
         build_report as build_kernel_ingress_runtime_matrix_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # noqa: E501
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX_CONTRACT,
+        assert_kernel_ingress_runtime_output_closure_index_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # noqa: E501
+        build_report as build_kernel_ingress_runtime_output_closure_index_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_runtime_step_trace import (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE_CONTRACT,
         assert_kernel_ingress_runtime_step_trace_report_contract,
@@ -154,6 +161,13 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress_runtime_matrix import (
         build_report as build_kernel_ingress_runtime_matrix_report,
     )
+    from source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # type: ignore[no-redef]  # noqa: E501
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX_CONTRACT,
+        assert_kernel_ingress_runtime_output_closure_index_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_output_closure_index import (
+        build_report as build_kernel_ingress_runtime_output_closure_index_report,
+    )
     from source_to_intent_research_kernel_ingress_runtime_step_trace import (  # type: ignore[no-redef]
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE_CONTRACT,
         assert_kernel_ingress_runtime_step_trace_report_contract,
@@ -203,6 +217,7 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE_REVIEW_CLAIMS = (
     "runtime_matrix_bound",
     "runtime_step_trace_bound",
     "runtime_evidence_bundle_index_bound",
+    "runtime_output_closure_index_bound",
     "runtime_backend_equivalence_bound",
     "runtime_backend_equivalence_shape_profiles_bound",
     "runtime_coverage_policy_bound",
@@ -266,6 +281,11 @@ _REQUIRED_ARTIFACTS = (
         "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
         "json_report",
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX_CONTRACT,
+    ),
+    (
+        "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
+        "json_report",
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX_CONTRACT,
     ),
     (
         "source_to_intent_research_kernel_ingress_backend_equivalence",
@@ -346,6 +366,9 @@ def build_kernel_ingress_proof_bundle_report() -> dict[str, object]:
         ),
         "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index": (
             build_kernel_ingress_runtime_evidence_bundle_index_report()
+        ),
+        "source_to_intent_research_kernel_ingress_runtime_output_closure_index": (
+            build_kernel_ingress_runtime_output_closure_index_report()
         ),
         "source_to_intent_research_kernel_ingress_backend_equivalence": (
             build_kernel_ingress_backend_equivalence_report()
@@ -503,6 +526,14 @@ def _assert_artifact_payloads(artifact_texts: Mapping[str, str]) -> None:
     )
     assert_kernel_ingress_runtime_evidence_bundle_index_report_contract(
         runtime_evidence_bundle_index
+    )
+    runtime_output_closure_index = json.loads(
+        artifact_texts[
+            "source_to_intent_research_kernel_ingress_runtime_output_closure_index"
+        ]
+    )
+    assert_kernel_ingress_runtime_output_closure_index_report_contract(
+        runtime_output_closure_index
     )
     backend_equivalence = json.loads(
         artifact_texts[

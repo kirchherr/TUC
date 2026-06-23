@@ -70,6 +70,13 @@ try:
     from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
         build_report as build_kernel_ingress_runtime_matrix_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # noqa: E501
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX_CONTRACT,
+        assert_kernel_ingress_runtime_output_closure_index_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # noqa: E501
+        build_report as build_kernel_ingress_runtime_output_closure_index_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_runtime_step_trace import (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE_CONTRACT,
         assert_kernel_ingress_runtime_step_trace_report_contract,
@@ -147,6 +154,13 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress_runtime_matrix import (
         build_report as build_kernel_ingress_runtime_matrix_report,
     )
+    from source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # type: ignore[no-redef]  # noqa: E501
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX_CONTRACT,
+        assert_kernel_ingress_runtime_output_closure_index_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_output_closure_index import (
+        build_report as build_kernel_ingress_runtime_output_closure_index_report,
+    )
     from source_to_intent_research_kernel_ingress_runtime_step_trace import (  # type: ignore[no-redef]
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_STEP_TRACE_CONTRACT,
         assert_kernel_ingress_runtime_step_trace_report_contract,
@@ -213,6 +227,7 @@ SOURCE_TO_INTENT_RESEARCH_CAPABILITY_ACCEPTANCE_CHECKS = (
     "runtime_matrix_has_combined_mvp_pipeline",
     "runtime_step_trace_binds_mvp_operation_path",
     "runtime_evidence_bundle_index_binds_standard_execution_evidence",
+    "runtime_output_closure_index_closes_public_outputs",
     "runtime_backend_equivalence_preserves_outputs",
     "runtime_backend_equivalence_shape_profiles_preserve_outputs",
     "runtime_coverage_policy_requires_exact_trace_counts",
@@ -307,6 +322,11 @@ _REQUIRED_EVIDENCE = (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX_CONTRACT,
     ),
     (
+        "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
+        "json_report",
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX_CONTRACT,
+    ),
+    (
         "source_to_intent_research_kernel_ingress_backend_equivalence",
         "json_report",
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_CONTRACT,
@@ -353,6 +373,9 @@ def build_research_capability_claim_report() -> dict[str, object]:
         ),
         "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index": (
             build_kernel_ingress_runtime_evidence_bundle_index_report()
+        ),
+        "source_to_intent_research_kernel_ingress_runtime_output_closure_index": (
+            build_kernel_ingress_runtime_output_closure_index_report()
         ),
         "source_to_intent_research_kernel_ingress_backend_equivalence": (
             build_kernel_ingress_backend_equivalence_report()
@@ -531,6 +554,14 @@ def _assert_evidence_payloads(
     assert_kernel_ingress_runtime_evidence_bundle_index_report_contract(
         runtime_evidence_bundle_index
     )
+    runtime_output_closure_index = json.loads(
+        artifact_texts[
+            "source_to_intent_research_kernel_ingress_runtime_output_closure_index"
+        ]
+    )
+    assert_kernel_ingress_runtime_output_closure_index_report_contract(
+        runtime_output_closure_index
+    )
     backend_equivalence = json.loads(
         artifact_texts[
             "source_to_intent_research_kernel_ingress_backend_equivalence"
@@ -565,6 +596,7 @@ def _assert_evidence_payloads(
         runtime_matrix,
         runtime_step_trace,
         runtime_evidence_bundle_index,
+        runtime_output_closure_index,
         backend_equivalence,
         backend_equivalence_shape_profiles,
         runtime_coverage_policy,
@@ -578,6 +610,7 @@ def _assert_mvp_pipeline_bound(
     runtime_matrix: Mapping[str, object],
     runtime_step_trace: Mapping[str, object],
     runtime_evidence_bundle_index: Mapping[str, object],
+    runtime_output_closure_index: Mapping[str, object],
     backend_equivalence: Mapping[str, object],
     backend_equivalence_shape_profiles: Mapping[str, object],
     runtime_coverage_policy: Mapping[str, object],
@@ -650,6 +683,8 @@ def _assert_mvp_pipeline_bound(
             "tensor_store_evidence",
             "input_manifest",
             "output_manifest",
+            "output_contract",
+            "public_output_bundle",
             "reference_correctness",
             "execution_receipt",
         ],
@@ -660,6 +695,32 @@ def _assert_mvp_pipeline_bound(
         if bundle_mvp.get(key) != expected:
             raise ValueError(
                 f"source-to-intent research capability bundle {key} drift"
+            )
+    output_closure_cases = runtime_output_closure_index["cases"]
+    if not isinstance(output_closure_cases, list):
+        raise ValueError("source-to-intent research capability output closure drift")
+    output_closure_mvp_cases = [
+        case
+        for case in output_closure_cases
+        if isinstance(case, Mapping)
+        and case.get("case_id") == "research_module_mvp_pipeline"
+    ]
+    if len(output_closure_mvp_cases) != 1:
+        raise ValueError("source-to-intent research capability output closure mvp drift")
+    output_closure_mvp = output_closure_mvp_cases[0]
+    expected_output_closure_values = {
+        "graph_name": "research_mvp_pipeline",
+        "operation_path": list(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_OPERATION_PATH),
+        "output_closure_check_count": 2,
+        "output_closure_contract": "runtime_execution_output_closure.data_only.v0",
+        "passed": True,
+        "status": "runtime_output_closure_bound",
+        "step_count": 4,
+    }
+    for key, expected in expected_output_closure_values.items():
+        if output_closure_mvp.get(key) != expected:
+            raise ValueError(
+                f"source-to-intent research capability output closure {key} drift"
             )
     equivalence_cases = backend_equivalence["cases"]
     if not isinstance(equivalence_cases, list):

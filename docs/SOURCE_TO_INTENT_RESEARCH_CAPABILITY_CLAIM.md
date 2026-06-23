@@ -59,6 +59,7 @@ The claim report records SHA-256 digests for:
 - Source-To-Intent Research Kernel Ingress Runtime Matrix
 - Source-To-Intent Research Kernel Ingress Runtime Step Trace
 - Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index
+- Source-To-Intent Research Kernel Ingress Runtime Output Closure Index
 - Source-To-Intent Research Kernel Ingress Backend Equivalence
 - Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
@@ -72,6 +73,9 @@ Kernel Ingress Runtime Step Trace artifact path:
 
 Kernel Ingress Runtime Evidence Bundle Index artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
+
+Kernel Ingress Runtime Output Closure Index artifact path:
+`examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
 
 Kernel Ingress Backend Equivalence artifact path:
 `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
@@ -91,6 +95,8 @@ The report passes only when:
 - the runtime step trace binds the combined `mvp_pipeline` operation path;
 - the runtime evidence bundle index binds standard execution evidence sections
   for the combined `mvp_pipeline` case;
+- the runtime output closure index closes public output metadata for the
+  combined `mvp_pipeline` case;
 - backend equivalence preserves terminal output metadata between a
   `reference-cpu` baseline and capability-selected trusted simulator
   placement for the combined `mvp_pipeline` case;
@@ -155,6 +161,7 @@ kernel ingress evidence gate
 runtime matrix
 runtime step trace
 runtime evidence bundle index
+runtime output closure index
 backend equivalence
 backend equivalence shape profiles
 runtime coverage policy

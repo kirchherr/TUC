@@ -8,6 +8,7 @@
   - `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
   - `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
   - `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
@@ -22,6 +23,7 @@
   - `rfcs/0173-source-to-intent-research-kernel-ingress-runtime-matrix.md`
   - `rfcs/0180-source-to-intent-research-kernel-ingress-runtime-step-trace.md`
   - `rfcs/0181-source-to-intent-research-kernel-ingress-runtime-evidence-bundle-index.md`
+  - `rfcs/0209-source-to-intent-research-kernel-ingress-runtime-output-closure-index.md`
   - `rfcs/0182-source-to-intent-research-kernel-ingress-backend-equivalence.md`
   - `rfcs/0174-source-to-intent-research-kernel-ingress-runtime-coverage-policy.md`
   - `rfcs/0175-source-to-intent-research-kernel-ingress-runtime-backend-alignment.md`
@@ -29,7 +31,7 @@
 ## Context
 
 Kernel Ingress now has separate E2E, runtime-matrix,
-runtime-backend-equivalence, runtime-backend-equivalence shape-profile,
+runtime-output-closure, runtime-backend-equivalence, runtime-backend-equivalence shape-profile,
 runtime-coverage-policy, runtime-backend-alignment, boundary-budget,
 rejection-coverage, diagnostics, conformance, idiom-alignment, and
 proof-bundle artifacts.
@@ -46,6 +48,7 @@ The gate:
 
 - validates Kernel Ingress E2E evidence;
 - validates Runtime Matrix evidence;
+- validates Runtime Output Closure Index evidence;
 - validates Runtime Backend Equivalence evidence;
 - validates Runtime Backend Equivalence Shape Profiles evidence;
 - validates Runtime Coverage Policy evidence;

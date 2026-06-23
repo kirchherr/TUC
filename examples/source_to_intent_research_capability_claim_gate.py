@@ -101,7 +101,7 @@ def assert_capability_claim_gate_report_contract(text: object) -> None:
             + '"'
         ),
         '  trusted_runtime_backends = "linear-sim,vector-sim"',
-        '  evidence_count = "11"',
+        '  evidence_count = "12"',
         (
             '  supported_claims = "'
             + ",".join(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_SUPPORTED_CLAIMS)

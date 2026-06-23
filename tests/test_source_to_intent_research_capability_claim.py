@@ -65,6 +65,7 @@ def test_source_to_intent_research_capability_claim_report_shape() -> None:
         "source_to_intent_research_kernel_ingress_runtime_matrix",
         "source_to_intent_research_kernel_ingress_runtime_step_trace",
         "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+        "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
         "source_to_intent_research_kernel_ingress_backend_equivalence",
         "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
         "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
@@ -156,7 +157,7 @@ def test_source_to_intent_research_capability_claim_schema_declares_contract() -
         "const"
     ] == 8
     assert schema["properties"]["baseline_runtime_backend"]["const"] == "reference-cpu"
-    assert schema["properties"]["evidence_count"]["const"] == 11
+    assert schema["properties"]["evidence_count"]["const"] == 12
     assert schema["$defs"]["evidence"]["additionalProperties"] is False
     assert "blocked_claims" in schema["required"]
 
@@ -185,6 +186,10 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
         ),
         Path(
             "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md"
+        ),
+        Path(
+            "docs/"
             "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE.md"
         ),
         Path(
@@ -200,6 +205,10 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
         Path(
             "rfcs/"
             "0181-source-to-intent-research-kernel-ingress-runtime-evidence-bundle-index.md"
+        ),
+        Path(
+            "rfcs/"
+            "0209-source-to-intent-research-kernel-ingress-runtime-output-closure-index.md"
         ),
         Path(
             "rfcs/"

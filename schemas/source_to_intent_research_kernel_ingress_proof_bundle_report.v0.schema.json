@@ -27,10 +27,18 @@
     "accepted_kernel_names": {
       "type": "array",
       "prefixItems": [
-        {"const": "matmul_elementwise"},
-        {"const": "softmax_reduction"},
-        {"const": "matmul_reduction"},
-        {"const": "mvp_pipeline"}
+        {
+          "const": "matmul_elementwise"
+        },
+        {
+          "const": "softmax_reduction"
+        },
+        {
+          "const": "matmul_reduction"
+        },
+        {
+          "const": "mvp_pipeline"
+        }
       ],
       "minItems": 4,
       "maxItems": 4
@@ -38,28 +46,48 @@
     "accepted_source_names": {
       "type": "array",
       "prefixItems": [
-        {"const": "research_matmul_elementwise"},
-        {"const": "research_softmax_reduction"},
-        {"const": "research_matmul_reduction"},
-        {"const": "research_mvp_pipeline"}
+        {
+          "const": "research_matmul_elementwise"
+        },
+        {
+          "const": "research_softmax_reduction"
+        },
+        {
+          "const": "research_matmul_reduction"
+        },
+        {
+          "const": "research_mvp_pipeline"
+        }
       ],
       "minItems": 4,
       "maxItems": 4
     },
-    "artifact_count": {"const": 13},
-    "artifact_policy": {"const": "digest_only_source_free"},
+    "artifact_count": {
+      "const": 14
+    },
+    "artifact_policy": {
+      "const": "digest_only_source_free"
+    },
     "artifacts": {
       "type": "array",
-      "minItems": 13,
-      "maxItems": 13,
-      "items": {"$ref": "#/$defs/artifact"}
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
     },
     "blocked_claims": {
       "type": "array",
       "prefixItems": [
-        {"const": "general_triton_source_ingestion"},
-        {"const": "native_performance_claim"},
-        {"const": "production_parser"}
+        {
+          "const": "general_triton_source_ingestion"
+        },
+        {
+          "const": "native_performance_claim"
+        },
+        {
+          "const": "production_parser"
+        }
       ],
       "minItems": 3,
       "maxItems": 3
@@ -67,60 +95,134 @@
     "bundle_contract": {
       "const": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0"
     },
-    "claim": {"const": "realistic_triton_module_ingress_research_slice"},
+    "claim": {
+      "const": "realistic_triton_module_ingress_research_slice"
+    },
     "covered_operation_families": {
       "type": "array",
       "prefixItems": [
-        {"const": "elementwise"},
-        {"const": "matmul"},
-        {"const": "reduction"},
-        {"const": "softmax"}
+        {
+          "const": "elementwise"
+        },
+        {
+          "const": "matmul"
+        },
+        {
+          "const": "reduction"
+        },
+        {
+          "const": "softmax"
+        }
       ],
       "minItems": 4,
       "maxItems": 4
     },
-    "default_parser_status": {"const": "default_parser_blocked"},
-    "parser_status": {"const": "research_explicit_only"},
+    "default_parser_status": {
+      "const": "default_parser_blocked"
+    },
+    "parser_status": {
+      "const": "research_explicit_only"
+    },
     "required_artifacts": {
       "type": "array",
       "prefixItems": [
-        {"const": "source_to_intent_research_kernel_ingress"},
-        {"const": "source_to_intent_research_kernel_ingress_runtime_matrix"},
-        {"const": "source_to_intent_research_kernel_ingress_runtime_step_trace"},
-        {"const": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index"},
-        {"const": "source_to_intent_research_kernel_ingress_backend_equivalence"},
-        {"const": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles"},
-        {"const": "source_to_intent_research_kernel_ingress_runtime_coverage_policy"},
-        {"const": "source_to_intent_research_kernel_ingress_runtime_backend_alignment"},
-        {"const": "source_to_intent_research_kernel_ingress_boundary_budget"},
-        {"const": "source_to_intent_research_kernel_ingress_rejection_coverage"},
-        {"const": "source_to_intent_research_kernel_ingress_diagnostics"},
-        {"const": "source_to_intent_research_kernel_ingress_conformance_gate"},
-        {"const": "source_to_intent_research_kernel_ingress_idiom_alignment"}
+        {
+          "const": "source_to_intent_research_kernel_ingress"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_runtime_matrix"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_runtime_step_trace"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_runtime_output_closure_index"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_backend_equivalence"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_runtime_coverage_policy"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_runtime_backend_alignment"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_boundary_budget"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_rejection_coverage"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_diagnostics"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_conformance_gate"
+        },
+        {
+          "const": "source_to_intent_research_kernel_ingress_idiom_alignment"
+        }
       ],
-      "minItems": 13,
-      "maxItems": 13
+      "minItems": 14,
+      "maxItems": 14
     },
     "review_claims": {
       "type": "array",
       "prefixItems": [
-        {"const": "conformance_bound"},
-        {"const": "boundary_budget_bound"},
-        {"const": "rejection_coverage_bound"},
-        {"const": "diagnostics_bound"},
-        {"const": "idiom_scope_bound"},
-        {"const": "kernel_ingress_runtime_e2e"},
-        {"const": "runtime_matrix_bound"},
-        {"const": "runtime_step_trace_bound"},
-        {"const": "runtime_evidence_bundle_index_bound"},
-        {"const": "runtime_backend_equivalence_bound"},
-        {"const": "runtime_backend_equivalence_shape_profiles_bound"},
-        {"const": "runtime_coverage_policy_bound"},
-        {"const": "runtime_backend_alignment_bound"},
-        {"const": "source_free_metadata_only"}
+        {
+          "const": "conformance_bound"
+        },
+        {
+          "const": "boundary_budget_bound"
+        },
+        {
+          "const": "rejection_coverage_bound"
+        },
+        {
+          "const": "diagnostics_bound"
+        },
+        {
+          "const": "idiom_scope_bound"
+        },
+        {
+          "const": "kernel_ingress_runtime_e2e"
+        },
+        {
+          "const": "runtime_matrix_bound"
+        },
+        {
+          "const": "runtime_step_trace_bound"
+        },
+        {
+          "const": "runtime_evidence_bundle_index_bound"
+        },
+        {
+          "const": "runtime_output_closure_index_bound"
+        },
+        {
+          "const": "runtime_backend_equivalence_bound"
+        },
+        {
+          "const": "runtime_backend_equivalence_shape_profiles_bound"
+        },
+        {
+          "const": "runtime_coverage_policy_bound"
+        },
+        {
+          "const": "runtime_backend_alignment_bound"
+        },
+        {
+          "const": "source_free_metadata_only"
+        }
       ],
-      "minItems": 14,
-      "maxItems": 14
+      "minItems": 15,
+      "maxItems": 15
     },
     "schema_version": {
       "const": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0"
@@ -128,7 +230,9 @@
     "source_boundary": {
       "const": "triton_module_source_buffer_to_source_intent_to_runtime_metadata_only"
     },
-    "status": {"const": "PASS"}
+    "status": {
+      "const": "PASS"
+    }
   },
   "$defs": {
     "artifact": {
@@ -148,6 +252,7 @@
             "source_to_intent_research_kernel_ingress_runtime_matrix",
             "source_to_intent_research_kernel_ingress_runtime_step_trace",
             "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+            "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
             "source_to_intent_research_kernel_ingress_backend_equivalence",
             "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
@@ -159,10 +264,21 @@
             "source_to_intent_research_kernel_ingress_idiom_alignment"
           ]
         },
-        "artifact_kind": {"enum": ["json_report", "text_gate"]},
-        "contract": {"$ref": "#/$defs/report_text"},
-        "digest": {"$ref": "#/$defs/sha256_digest"},
-        "status": {"const": "accepted"}
+        "artifact_kind": {
+          "enum": [
+            "json_report",
+            "text_gate"
+          ]
+        },
+        "contract": {
+          "$ref": "#/$defs/report_text"
+        },
+        "digest": {
+          "$ref": "#/$defs/sha256_digest"
+        },
+        "status": {
+          "const": "accepted"
+        }
       }
     },
     "report_text": {

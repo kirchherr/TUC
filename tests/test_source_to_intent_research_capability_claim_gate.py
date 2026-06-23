@@ -38,7 +38,7 @@ def test_source_to_intent_research_capability_claim_gate_matches_golden() -> Non
     assert 'baseline_runtime_backend = "reference-cpu"' in report
     assert 'combined_pipeline = "matmul->softmax->reduction->elementwise"' in report
     assert 'trusted_runtime_backends = "linear-sim,vector-sim"' in report
-    assert 'evidence_count = "11"' in report
+    assert 'evidence_count = "12"' in report
     assert 'status = "PASS"' in report
 
 

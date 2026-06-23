@@ -56,6 +56,10 @@ Kernel Ingress Runtime Evidence Bundle Index companion path, included through
 the Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
 `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 
+Kernel Ingress Runtime Output Closure Index companion path, included through
+the Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
+`examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
+
 Kernel Ingress Backend Equivalence companion path, included through the Kernel
 Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
 `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`

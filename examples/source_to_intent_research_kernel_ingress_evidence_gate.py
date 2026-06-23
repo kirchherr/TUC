@@ -79,6 +79,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_runtime_matrix import (
         build_report as build_kernel_ingress_runtime_matrix_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # noqa: E501
+        assert_kernel_ingress_runtime_output_closure_index_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # noqa: E501
+        build_report as build_kernel_ingress_runtime_output_closure_index_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_runtime_step_trace import (
         assert_kernel_ingress_runtime_step_trace_report_contract,
     )
@@ -158,6 +164,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress_runtime_matrix import (
         build_report as build_kernel_ingress_runtime_matrix_report,
     )
+    from source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # type: ignore[no-redef]  # noqa: E501
+        assert_kernel_ingress_runtime_output_closure_index_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_output_closure_index import (
+        build_report as build_kernel_ingress_runtime_output_closure_index_report,
+    )
     from source_to_intent_research_kernel_ingress_runtime_step_trace import (  # type: ignore[no-redef]
         assert_kernel_ingress_runtime_step_trace_report_contract,
     )
@@ -228,6 +240,7 @@ def build_gate_report(
     runtime_backend_equivalence_shape_profiles_text: str | None = None,
     runtime_coverage_policy_text: str | None = None,
     runtime_evidence_bundle_index_text: str | None = None,
+    runtime_output_closure_index_text: str | None = None,
     runtime_matrix_text: str | None = None,
     runtime_step_trace_text: str | None = None,
 ) -> str:
@@ -257,6 +270,11 @@ def build_gate_report(
         build_kernel_ingress_runtime_evidence_bundle_index_report()
         if runtime_evidence_bundle_index_text is None
         else runtime_evidence_bundle_index_text
+    )
+    runtime_output_closure_index = (
+        build_kernel_ingress_runtime_output_closure_index_report()
+        if runtime_output_closure_index_text is None
+        else runtime_output_closure_index_text
     )
     runtime_backend_equivalence = (
         build_kernel_ingress_backend_equivalence_report()
@@ -309,6 +327,9 @@ def build_gate_report(
     runtime_evidence_bundle_index_report = _assert_runtime_evidence_bundle_index_bound(
         runtime_evidence_bundle_index
     )
+    runtime_output_closure_index_report = _assert_runtime_output_closure_index_bound(
+        runtime_output_closure_index
+    )
     runtime_backend_equivalence_report = _assert_runtime_backend_equivalence_bound(
         runtime_backend_equivalence
     )
@@ -338,6 +359,9 @@ def build_gate_report(
             ),
             "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index": (
                 runtime_evidence_bundle_index
+            ),
+            "source_to_intent_research_kernel_ingress_runtime_output_closure_index": (
+                runtime_output_closure_index
             ),
             "source_to_intent_research_kernel_ingress_backend_equivalence": (
                 runtime_backend_equivalence
@@ -376,6 +400,8 @@ def build_gate_report(
         runtime_step_trace_report,
         runtime_evidence_bundle_index,
         runtime_evidence_bundle_index_report,
+        runtime_output_closure_index,
+        runtime_output_closure_index_report,
         runtime_backend_equivalence,
         runtime_backend_equivalence_report,
         runtime_backend_equivalence_shape_profiles,
@@ -414,6 +440,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  runtime_matrix = "passed"',
         '  runtime_step_trace = "passed"',
         '  runtime_evidence_bundle_index = "passed"',
+        '  runtime_output_closure_index = "passed"',
         '  runtime_backend_equivalence = "passed"',
         '  runtime_backend_equivalence_shape_profiles = "passed"',
         '  runtime_coverage_policy = "passed"',
@@ -444,6 +471,12 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  runtime_case_count = "4"',
         '  runtime_step_trace_cases = "4"',
         '  runtime_evidence_bundle_cases = "4"',
+        '  runtime_output_closure_cases = "4"',
+        '  runtime_output_closure_check_count = "2"',
+        (
+            '  output_closure_contract = '
+            '"runtime_execution_output_closure.data_only.v0"'
+        ),
         '  runtime_backend_equivalence_cases = "4"',
         '  backend_equivalence_comparisons = "4"',
         '  runtime_backend_equivalence_shape_profile_cases = "8"',
@@ -455,8 +488,8 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         ),
         (
             '  runtime_evidence_sections = "tensor_store_evidence,'
-            'input_manifest,output_manifest,reference_correctness,'
-            'execution_receipt"'
+            'input_manifest,output_manifest,output_contract,'
+            'public_output_bundle,reference_correctness,execution_receipt"'
         ),
         (
             '  mvp_pipeline_operation_path = "matmul->softmax'
@@ -493,6 +526,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         "runtime_matrix_digest",
         "runtime_step_trace_digest",
         "runtime_evidence_bundle_index_digest",
+        "runtime_output_closure_index_digest",
         "runtime_backend_equivalence_digest",
         "runtime_backend_equivalence_shape_profiles_digest",
         "runtime_coverage_policy_digest",
@@ -571,6 +605,19 @@ def _assert_runtime_evidence_bundle_index_bound(text: str) -> Mapping[str, objec
         raise SourceToIntentResearchKernelIngressEvidenceGateError(
             "kernel ingress evidence gate failed: "
             "runtime evidence bundle index binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+    return report
+
+
+def _assert_runtime_output_closure_index_bound(text: str) -> Mapping[str, object]:
+    report = _load_json_report(text, "runtime output closure index")
+    try:
+        assert_kernel_ingress_runtime_output_closure_index_report_contract(report)
+    except (TypeError, ValueError) as exc:
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: "
+            "runtime output closure index binding missing"
         ) from exc
     _assert_gate_text_is_source_free(text)
     return report
@@ -744,6 +791,8 @@ def _render_gate_report(
     runtime_step_trace_report: Mapping[str, object],
     runtime_evidence_bundle_index_text: str,
     runtime_evidence_bundle_index_report: Mapping[str, object],
+    runtime_output_closure_index_text: str,
+    runtime_output_closure_index_report: Mapping[str, object],
     runtime_backend_equivalence_text: str,
     runtime_backend_equivalence_report: Mapping[str, object],
     runtime_backend_equivalence_shape_profiles_text: str,
@@ -777,6 +826,11 @@ def _render_gate_report(
     lines.append(
         "  runtime_evidence_bundle_index_digest = "
         f'"{_digest(runtime_evidence_bundle_index_text)}"'
+    )
+    lines.append('  runtime_output_closure_index = "passed"')
+    lines.append(
+        "  runtime_output_closure_index_digest = "
+        f'"{_digest(runtime_output_closure_index_text)}"'
     )
     lines.append('  runtime_backend_equivalence = "passed"')
     lines.append(
@@ -854,6 +908,18 @@ def _render_gate_report(
     lines.append(
         "  runtime_evidence_bundle_cases = "
         f'"{runtime_evidence_bundle_index_report["case_count"]}"'
+    )
+    lines.append(
+        "  runtime_output_closure_cases = "
+        f'"{runtime_output_closure_index_report["case_count"]}"'
+    )
+    lines.append(
+        "  runtime_output_closure_check_count = "
+        f'"{len(runtime_output_closure_index_report["output_closure_required_evidence_kinds"])}"'
+    )
+    lines.append(
+        "  output_closure_contract = "
+        f'"{runtime_output_closure_index_report["output_closure_contract"]}"'
     )
     lines.append(
         "  runtime_backend_equivalence_cases = "

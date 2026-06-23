@@ -30,6 +30,7 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'runtime_matrix = "passed"' in report
     assert 'runtime_step_trace = "passed"' in report
     assert 'runtime_evidence_bundle_index = "passed"' in report
+    assert 'runtime_output_closure_index = "passed"' in report
     assert 'runtime_backend_equivalence = "passed"' in report
     assert 'runtime_backend_equivalence_shape_profiles = "passed"' in report
     assert 'runtime_coverage_policy = "passed"' in report
@@ -51,6 +52,9 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'runtime_case_count = "4"' in report
     assert 'runtime_step_trace_cases = "4"' in report
     assert 'runtime_evidence_bundle_cases = "4"' in report
+    assert 'runtime_output_closure_cases = "4"' in report
+    assert 'runtime_output_closure_check_count = "2"' in report
+    assert 'output_closure_contract = "runtime_execution_output_closure.data_only.v0"' in report
     assert 'runtime_backend_equivalence_cases = "4"' in report
     assert 'backend_equivalence_comparisons = "4"' in report
     assert 'runtime_backend_equivalence_shape_profile_cases = "8"' in report
@@ -63,7 +67,8 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     )
     assert (
         'runtime_evidence_sections = "tensor_store_evidence,input_manifest,'
-        'output_manifest,reference_correctness,execution_receipt"'
+        'output_manifest,output_contract,public_output_bundle,'
+        'reference_correctness,execution_receipt"'
         in report
     )
     assert (
@@ -90,6 +95,7 @@ def test_kernel_ingress_evidence_gate_example_runs() -> None:
     assert "runtime_matrix_digest" in completed.stdout
     assert "runtime_step_trace_digest" in completed.stdout
     assert "runtime_evidence_bundle_index_digest" in completed.stdout
+    assert "runtime_output_closure_index_digest" in completed.stdout
     assert "runtime_backend_equivalence_digest" in completed.stdout
     assert "runtime_backend_equivalence_shape_profiles_digest" in completed.stdout
     assert "runtime_coverage_policy_digest" in completed.stdout
@@ -140,6 +146,14 @@ def test_kernel_ingress_evidence_gate_rejects_tampered_bundle_index() -> None:
         match="runtime evidence bundle index binding missing",
     ):
         build_gate_report(runtime_evidence_bundle_index_text='{"status": "PASS"}\n')
+
+
+def test_kernel_ingress_evidence_gate_rejects_tampered_output_closure_index() -> None:
+    with pytest.raises(
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        match="runtime output closure index binding missing",
+    ):
+        build_gate_report(runtime_output_closure_index_text='{"status": "PASS"}\n')
 
 
 def test_kernel_ingress_evidence_gate_rejects_tampered_backend_equivalence() -> None:
@@ -244,6 +258,10 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
         ),
         Path(
             "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md"
+        ),
+        Path(
+            "docs/"
             "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES.md"
         ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
@@ -258,6 +276,10 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
         Path(
             "rfcs/"
             "0181-source-to-intent-research-kernel-ingress-runtime-evidence-bundle-index.md"
+        ),
+        Path(
+            "rfcs/"
+            "0209-source-to-intent-research-kernel-ingress-runtime-output-closure-index.md"
         ),
         Path(
             "rfcs/"

@@ -350,6 +350,7 @@ examples/source_to_intent_research_kernel_ingress.py
 examples/source_to_intent_research_kernel_ingress_runtime_matrix.py
 examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py
 examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py
+examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py
 examples/source_to_intent_research_kernel_ingress_backend_equivalence.py
 examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py
 examples/source_to_intent_research_kernel_ingress_workload_scope.py
@@ -388,6 +389,7 @@ Key docs:
 - [Source-to-Intent research idiom alignment](docs/SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md)
 - [Source-to-Intent research evidence gate](docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md)
 - [Source-to-Intent research proof bundle](docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md)
+- [Kernel Ingress runtime output closure index](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md)
 - [Source-to-Intent research capability claim](docs/SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM.md)
 - [Source-to-Intent research capability claim gate](docs/SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE.md)
 - [Source-to-Intent research source runtime smoke](docs/SOURCE_TO_INTENT_RESEARCH_SOURCE_RUNTIME_SMOKE.md)

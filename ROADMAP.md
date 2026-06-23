@@ -652,6 +652,11 @@ Deliverables:
   proving accepted Kernel Ingress runtime cases also build and bind standard
   Runtime Execution Evidence Bundles with tensor-store, input-manifest,
   output-manifest, reference-correctness, and execution-receipt evidence.
+- Source-To-Intent Research Kernel Ingress Runtime Output Closure Index
+  (`examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`)
+  proving accepted Kernel Ingress runtime cases also close their public output
+  boundary through Runtime Execution Output Closure before they can strengthen
+  the bounded research claim.
 - Source-To-Intent Research Kernel Ingress Backend Equivalence
   (`examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`)
   proving accepted Kernel Ingress Source Intent preserves public outputs under
@@ -890,6 +895,11 @@ Go/No-Go:
   binds accepted runtime step-trace cases to the standard Runtime Execution
   Evidence Bundle sections, including tensor store, manifests, reference
   correctness, and execution receipt digests.
+- Source-To-Intent Research Kernel Ingress Runtime Output Closure Index now
+  binds accepted Kernel Ingress runtime cases to Runtime Execution Output
+  Closure, requiring public output metadata to close across Output Contract,
+  Public Output Bundle, Runtime Execution Receipt, and Runtime Execution
+  Evidence Bundle before the Kernel Ingress claim can pass.
 - Source-To-Intent Research Kernel Ingress Backend Equivalence now compares
   accepted Kernel Ingress Source Intent cases under a neutral `reference-cpu`
   baseline and capability-selected `linear-sim`/`vector-sim` placements,

@@ -43,6 +43,10 @@ files, access devices, or discover plugins.
   `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 - Runtime evidence bundle index docs:
   [Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX.md)
+- Runtime output closure index companion:
+  `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
+- Runtime output closure index docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Output Closure Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md)
 - Runtime coverage policy companion:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime coverage policy docs:

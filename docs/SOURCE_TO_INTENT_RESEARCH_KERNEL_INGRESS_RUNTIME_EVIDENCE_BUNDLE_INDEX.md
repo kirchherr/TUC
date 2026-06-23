@@ -29,6 +29,8 @@ It does not add syntax, approve general Triton source ingestion, execute
   `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
 - Kernel Ingress Evidence Gate binding:
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
+- Runtime Output Closure Index consumer:
+  `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
 - Capability Claim binding:
   `examples/source_to_intent_research_capability_claim.py`
 - Companion backend-equivalence evidence:
@@ -81,6 +83,8 @@ runtime step trace
 standard Runtime Execution Evidence Bundles
     ->
 runtime evidence bundle index
+    ->
+runtime output closure index
     +
 backend-equivalence evidence
     ->

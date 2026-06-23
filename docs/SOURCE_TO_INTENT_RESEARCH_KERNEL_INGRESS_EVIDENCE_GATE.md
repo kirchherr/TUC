@@ -22,6 +22,8 @@ production parsing.
   `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
 - Runtime Evidence Bundle Index input:
   `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
+- Runtime Output Closure Index input:
+  `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
 - Backend Equivalence input:
   `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 - Backend Equivalence Shape Profiles input:
@@ -46,6 +48,7 @@ The gate validates and binds:
 - Kernel Ingress Runtime Matrix evidence;
 - Kernel Ingress Runtime Step Trace evidence;
 - Kernel Ingress Runtime Evidence Bundle Index evidence;
+- Kernel Ingress Runtime Output Closure Index evidence;
 - Kernel Ingress Backend Equivalence evidence;
 - Kernel Ingress Backend Equivalence Shape Profiles evidence;
 - Kernel Ingress Runtime Coverage Policy evidence;
@@ -92,6 +95,7 @@ kernel ingress evidence
 runtime matrix
 runtime step trace
 runtime evidence bundle index
+runtime output closure index
 backend equivalence
 backend equivalence shape profiles
 runtime coverage policy

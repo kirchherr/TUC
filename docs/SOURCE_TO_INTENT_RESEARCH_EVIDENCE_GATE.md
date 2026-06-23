@@ -42,6 +42,10 @@ text as compiler input.
   `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 - Kernel ingress runtime evidence bundle index docs:
   [Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_EVIDENCE_BUNDLE_INDEX.md)
+- Kernel ingress runtime output closure index example:
+  `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
+- Kernel ingress runtime output closure index docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Output Closure Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md)
 - Kernel ingress backend equivalence example:
   `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 - Kernel ingress backend equivalence docs:
@@ -109,7 +113,7 @@ The gate binds:
 - Source-To-Intent Research Kernel Ingress Evidence Gate
 
 Kernel Ingress Runtime Matrix, Kernel Ingress Runtime Step Trace, Kernel
-Ingress Runtime Evidence Bundle Index, Kernel Ingress Backend Equivalence,
+Ingress Runtime Evidence Bundle Index, Kernel Ingress Runtime Output Closure Index, Kernel Ingress Backend Equivalence,
 Kernel Ingress Backend Equivalence Shape Profiles, Kernel Ingress Runtime
 Coverage Policy, Kernel Ingress Runtime Backend Alignment, Kernel Ingress
 Boundary Budget, and Kernel Ingress Rejection Coverage are bound through the
