@@ -50,6 +50,12 @@ Run the softmax closure:
 python examples/runtime_softmax_execution_output_closure.py
 ```
 
+Replay serialized Bundle and Output Closure evidence:
+
+```bash
+python examples/runtime_evidence_replay_verifier.py
+```
+
 Golden evidence:
 
 ```text

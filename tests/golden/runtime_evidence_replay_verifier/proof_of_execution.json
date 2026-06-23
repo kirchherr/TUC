@@ -1,0 +1,93 @@
+{
+  "artifact_status": "review_verification",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "check_count": 8,
+  "checks": [
+    {
+      "check_id": "graph_name_match",
+      "expected": "proof_of_execution",
+      "observed": "proof_of_execution",
+      "row_status": "verified",
+      "subject": "runtime_execution_output_closure"
+    },
+    {
+      "check_id": "evidence_bundle_metadata_digest_replayed",
+      "expected": "sha256:435f598796ca773151fea4d3e513d08137d34b75321efbe12606930b5da4e4a7",
+      "observed": "sha256:435f598796ca773151fea4d3e513d08137d34b75321efbe12606930b5da4e4a7",
+      "row_status": "verified",
+      "subject": "runtime_execution_evidence_bundle"
+    },
+    {
+      "check_id": "execution_receipt_metadata_digest_replayed",
+      "expected": "sha256:e40452abd09937b93bc87ea14477072e28d5587d8030045bd71ec39488c8adca",
+      "observed": "sha256:e40452abd09937b93bc87ea14477072e28d5587d8030045bd71ec39488c8adca",
+      "row_status": "verified",
+      "subject": "runtime_execution_receipt"
+    },
+    {
+      "check_id": "output_closure_metadata_digest_replayed",
+      "expected": "sha256:379a3b8f2322da59e1032db7103f0cb8292028bb9526104f9a76cfbf52465465",
+      "observed": "sha256:379a3b8f2322da59e1032db7103f0cb8292028bb9526104f9a76cfbf52465465",
+      "row_status": "verified",
+      "subject": "runtime_execution_output_closure"
+    },
+    {
+      "check_id": "closure_binds_evidence_bundle",
+      "expected": "sha256:435f598796ca773151fea4d3e513d08137d34b75321efbe12606930b5da4e4a7",
+      "observed": "sha256:435f598796ca773151fea4d3e513d08137d34b75321efbe12606930b5da4e4a7",
+      "row_status": "verified",
+      "subject": "runtime_execution_evidence_bundle"
+    },
+    {
+      "check_id": "closure_binds_execution_receipt",
+      "expected": "sha256:e40452abd09937b93bc87ea14477072e28d5587d8030045bd71ec39488c8adca",
+      "observed": "sha256:e40452abd09937b93bc87ea14477072e28d5587d8030045bd71ec39488c8adca",
+      "row_status": "verified",
+      "subject": "runtime_execution_receipt"
+    },
+    {
+      "check_id": "closure_binds_output_contract",
+      "expected": "sha256:3ccd79419dd0dd3dcaa7728710b12c860d3a00f832d065e359dc5b0a09959f70",
+      "observed": "sha256:3ccd79419dd0dd3dcaa7728710b12c860d3a00f832d065e359dc5b0a09959f70",
+      "row_status": "verified",
+      "subject": "runtime_output_contract"
+    },
+    {
+      "check_id": "closure_binds_public_output_bundle",
+      "expected": "sha256:b8bb4e0b3e15e45a69eada3b9722ea54512bbb793a33211e99cc32af918ea6dc",
+      "observed": "sha256:b8bb4e0b3e15e45a69eada3b9722ea54512bbb793a33211e99cc32af918ea6dc",
+      "row_status": "verified",
+      "subject": "runtime_public_output_bundle"
+    }
+  ],
+  "evidence_bundle_metadata_digest": "sha256:435f598796ca773151fea4d3e513d08137d34b75321efbe12606930b5da4e4a7",
+  "evidence_bundle_report_digest": "sha256:606f141587ff092f5bd71d46b98d8cc1261f342b17e4b1589f582254aae3eaee",
+  "execution_receipt_metadata_digest": "sha256:e40452abd09937b93bc87ea14477072e28d5587d8030045bd71ec39488c8adca",
+  "graph_name": "proof_of_execution",
+  "input_policy": "serialized_json_reports_only",
+  "issues": [],
+  "output_closure_metadata_digest": "sha256:379a3b8f2322da59e1032db7103f0cb8292028bb9526104f9a76cfbf52465465",
+  "output_closure_report_digest": "sha256:9d06b10a255223dd0b9a07ccb2f9ee5401ddeda6686341be792b3d5216d7c7d1",
+  "output_contract_metadata_digest": "sha256:3ccd79419dd0dd3dcaa7728710b12c860d3a00f832d065e359dc5b0a09959f70",
+  "passed": true,
+  "public_output_bundle_metadata_digest": "sha256:b8bb4e0b3e15e45a69eada3b9722ea54512bbb793a33211e99cc32af918ea6dc",
+  "raw_value_policy": "omitted_by_policy",
+  "reexecution_policy": "runtime_reexecution_not_required",
+  "replay_contract": "runtime_evidence_replay_verifier.review.v0",
+  "replay_metadata_digest": "sha256:bb223cb1eb86d81d6f1c67c939fe1ba1af4c476995d192f7515cbdd5afe750cc",
+  "replay_mode": "metadata_digest_replay_only",
+  "required_inputs": [
+    "runtime_execution_evidence_bundle",
+    "runtime_execution_output_closure"
+  ],
+  "schema_version": "tuc.runtime_evidence_replay_verifier_report.v0"
+}

@@ -342,6 +342,11 @@ hardware-independent interface into capability-driven runtime planning.
   `rfcs/0205-runtime-execution-output-closure-report.md`,
   `rfcs/0207-runtime-multi-output-execution-output-closure.md`, and
   `rfcs/0208-runtime-softmax-execution-output-closure.md`.
+- Runtime Evidence Replay Verifier v0 with schema at
+  `schemas/runtime_evidence_replay_verifier_report.v0.schema.json`, example at
+  `examples/runtime_evidence_replay_verifier.py`, deterministic golden evidence
+  at `tests/golden/runtime_evidence_replay_verifier/proof_of_execution.json`,
+  and RFC at `rfcs/0210-runtime-evidence-replay-verifier.md`.
 - Runtime Execution Receipt Binding in Runtime Evidence Gate, rejecting receipts
   whose graph names, contracts, metadata digests, item counts, pass status, or
   raw-value policy do not match the evidence reports evaluated by the same gate

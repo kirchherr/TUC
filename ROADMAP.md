@@ -228,6 +228,10 @@ Completed evidence:
 - Runtime Evidence Gate Matrix Coverage emits those exact Matrix graph/artifact
   bindings as a schema-versioned JSON audit and the Runtime Evidence Gate
   requires that audit to pass.
+- Runtime Evidence Replay Verifier v0 (`examples/runtime_evidence_replay_verifier.py`)
+  replay-checks serialized Runtime Execution Evidence Bundle and Runtime
+  Execution Output Closure reports by metadata digest without re-running source,
+  JIT, plugins, devices, or backend artifacts.
 - Runtime HS-IR Plan Alignment binds HS-IR backend/layout decisions to the
   accepted `PartitionPlan` and observed `RuntimeExecutionTrace` for the mixed
   accelerator proof slice without serializing tensor values or adding

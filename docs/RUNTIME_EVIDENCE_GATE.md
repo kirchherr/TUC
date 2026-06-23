@@ -9,8 +9,9 @@ evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
 Runtime Execution Output Closure evidence, Runtime Memory Planning Gate evidence,
-plus Source Intent Runtime Returns
-evidence for the frontend return boundary.
+plus Source Intent Runtime Returns evidence for the frontend return boundary.
+The CI runtime evidence path also runs `examples/runtime_evidence_replay_verifier.py`
+as a companion replay check over serialized Bundle and Output Closure reports.
 Source Intent Runtime Returns must also be bound to the curated
 Runtime Evidence Matrix graph that inventories the same frontend-originated
 fixture.
@@ -154,6 +155,9 @@ The gate passes only when:
   Runtime Execution Receipt and Runtime Execution Evidence Bundle
 - Runtime Execution Output Closure binding passes, proving the closure report
   matches the specific receipt and bundle evaluated by this gate invocation
+- the CI companion Runtime Evidence Replay Verifier passes, proving serialized
+  Bundle and Output Closure evidence can be replay-checked by metadata digest
+  without re-running source, JIT, plugins, devices, or backend artifacts
 - Source Intent Runtime Returns passes, proving explicit frontend return aliases
   resolve through Runtime Output Contract and Runtime Public Output Bundle
 - the Source Intent Runtime Returns report is bound to the
@@ -208,6 +212,12 @@ Runtime Execution Output Closure schema:
 
 ```text
 schemas/runtime_execution_output_closure_report.v0.schema.json
+```
+
+Runtime Evidence Replay Verifier schema:
+
+```text
+schemas/runtime_evidence_replay_verifier_report.v0.schema.json
 ```
 
 Runtime Backend Equivalence schema:

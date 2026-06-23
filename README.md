@@ -113,6 +113,10 @@ Current runtime surfaces:
 - Runtime Execution Output Closure v0 auditing that Receipt and Evidence Bundle
   bind the same public Output Contract and Public Output Bundle across
   proof-of-execution, multi-output, and softmax fixtures.
+- Runtime Evidence Replay Verifier v0 replay-checking serialized Runtime
+  Execution Evidence Bundle and Runtime Execution Output Closure reports by
+  metadata digest without re-running source, JIT, plugins, devices, or backend
+  artifacts.
 - Runtime Backend Equivalence v0 comparing `reference-cpu` against
   `systolic-sim`, `vector-sim`, and mixed `systolic-sim` plus `vector-sim`
   placements without serialized tensor values, with all proof slices bound into
@@ -153,6 +157,7 @@ examples/runtime_input_manifest.py
 examples/runtime_execution_receipt.py
 examples/runtime_execution_evidence_bundle.py
 examples/runtime_execution_output_closure.py
+examples/runtime_evidence_replay_verifier.py
 examples/runtime_multi_output_execution_output_closure.py
 examples/runtime_softmax_execution_output_closure.py
 examples/runtime_backend_equivalence.py
@@ -186,6 +191,7 @@ Key docs:
 - [Runtime Execution Receipt](docs/RUNTIME_EXECUTION_RECEIPT.md)
 - [Runtime Execution Evidence Bundle](docs/RUNTIME_EXECUTION_EVIDENCE_BUNDLE.md)
 - [Runtime Execution Output Closure](docs/RUNTIME_EXECUTION_OUTPUT_CLOSURE.md)
+- [Runtime Evidence Replay Verifier](docs/RUNTIME_EVIDENCE_REPLAY_VERIFIER.md)
 - [Runtime Backend Equivalence](docs/RUNTIME_BACKEND_EQUIVALENCE.md)
 - [Runtime Backend Equivalence Portfolio](docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md)
 - [Runtime Evidence Gate Matrix Coverage](docs/RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
@@ -209,6 +215,7 @@ schemas/runtime_input_manifest_report.v0.schema.json
 schemas/runtime_execution_receipt_report.v0.schema.json
 schemas/runtime_execution_evidence_bundle_report.v0.schema.json
 schemas/runtime_execution_output_closure_report.v0.schema.json
+schemas/runtime_evidence_replay_verifier_report.v0.schema.json
 schemas/runtime_backend_equivalence_report.v0.schema.json
 schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json
 schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json

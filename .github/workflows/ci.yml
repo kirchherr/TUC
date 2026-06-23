@@ -41,6 +41,8 @@ jobs:
         run: python examples/backend_api_v0.py
       - name: Runtime evidence gate
         run: python examples/runtime_evidence_gate.py
+      - name: Runtime evidence replay verifier
+        run: python examples/runtime_evidence_replay_verifier.py
       - name: Runtime candidate score evidence
         run: python examples/runtime_candidate_score_evidence.py
       - name: Runtime candidate scoring gate

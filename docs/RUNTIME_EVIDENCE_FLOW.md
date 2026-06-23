@@ -18,6 +18,8 @@ execute_graph
   -> Runtime Reference Correctness
   -> Runtime Execution Receipt
   -> Runtime Execution Evidence Bundle
+  -> Runtime Execution Output Closure
+  -> Runtime Evidence Replay Verifier
   -> Runtime Backend Equivalence
   -> Runtime Planning Explanation
   -> Runtime Evidence Gate
@@ -141,6 +143,11 @@ the accepted plan or trace visible as deterministic JSON.
 partition decisions and reviewer-facing planning rationale. It makes fallback
 and movement accounting visible before richer planning behavior can count as
 gated evidence.
+
+`Runtime Evidence Replay Verifier` replays serialized Runtime Execution Evidence
+Bundle and Runtime Execution Output Closure reports by metadata digest only. See
+[RUNTIME_EVIDENCE_REPLAY_VERIFIER.md](RUNTIME_EVIDENCE_REPLAY_VERIFIER.md) and
+`examples/runtime_evidence_replay_verifier.py`.
 
 Together, the gates keep the core proof visible:
 

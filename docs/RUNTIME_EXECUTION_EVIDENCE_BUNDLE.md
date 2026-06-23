@@ -49,6 +49,12 @@ Run:
 python examples/runtime_execution_evidence_bundle.py
 ```
 
+Replay the serialized bundle together with Runtime Execution Output Closure:
+
+```bash
+python examples/runtime_evidence_replay_verifier.py
+```
+
 Golden evidence:
 
 ```text
