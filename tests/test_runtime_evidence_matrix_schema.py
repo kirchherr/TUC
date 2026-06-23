@@ -116,6 +116,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "backend_equivalence",
         "runtime_planning_explanation",
         "runtime_hs_ir_plan_alignment",
+        "runtime_layout_conversion_evidence",
     }
     assert graphs["runtime_backend_equivalence_portfolio"][
         "required_artifact_kinds"

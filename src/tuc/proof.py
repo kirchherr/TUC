@@ -314,6 +314,7 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "backend_equivalence_portfolio",
     "backend_equivalence_portfolio_policy",
     "runtime_hs_ir_plan_alignment",
+    "runtime_layout_conversion_evidence",
     "runtime_buffer_lifetime",
     "runtime_allocation_plan",
     "runtime_memory_budget",
@@ -1457,6 +1458,10 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     _runtime_evidence_artifact(
                         "runtime_hs_ir_plan_alignment",
                         "runtime_hs_ir_plan_alignment_mixed",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_layout_conversion_evidence",
+                        "runtime_layout_conversion_evidence_mixed",
                     ),
                 ),
                 required_artifact_kinds=(

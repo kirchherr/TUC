@@ -653,6 +653,11 @@
           "artifact_id": "runtime_hs_ir_plan_alignment_mixed",
           "artifact_kind": "runtime_hs_ir_plan_alignment",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "runtime_layout_conversion_evidence_mixed",
+          "artifact_kind": "runtime_layout_conversion_evidence",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "backend_equivalence",

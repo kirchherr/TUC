@@ -38,6 +38,15 @@ The first current golden records the `blocked -> row_major` transition between
 the `systolic-sim` projection and the `vector-sim` consumer in the mixed
 backend-equivalence proof slice.
 
+## Matrix Inventory
+
+Runtime Evidence Matrix v0 inventories this report as
+`runtime_layout_conversion_evidence_mixed` on the
+`runtime_mixed_backend_equivalence` graph. It is optional review evidence for
+now: the mixed graph's required artifact kinds remain `backend_equivalence`,
+`runtime_planning_explanation`, and `runtime_hs_ir_plan_alignment` until layout
+conversion evidence is stable enough to become gate-required evidence.
+
 ## What It Proves
 
 - layout transitions are visible in review artifacts instead of hidden inside a

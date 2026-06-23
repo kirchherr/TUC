@@ -85,8 +85,10 @@ Each conversion record contains only data such as:
 - `consumer_input_id`
 - `conversion_status`
 
-Future HS-IR and Runtime Tensor Store digest bindings remain deferred until this
-optional report is stable across another proof slice.
+Runtime Evidence Matrix inventories the first report as optional mixed
+backend-equivalence review evidence. Future Runtime Evidence Gate, HS-IR, and
+Runtime Tensor Store digest bindings remain deferred until this optional report
+is stable across another proof slice.
 
 The artifact must not contain tensor values, tensor-value digests, runtime
 handles, allocation handles, device identifiers, host paths, command lines,
@@ -122,8 +124,8 @@ This RFC adds report generation only. Existing runtime plans, tensor
 store evidence, backend equivalence evidence, and HS-IR plan alignment remain
 valid. It does not add a runtime layout converter.
 
-The v0 implementation enters as optional inventory first. It should be bound
-into Runtime Evidence Matrix and Runtime Evidence Gate only after schema,
+The v0 implementation enters as optional Runtime Evidence Matrix inventory
+first. It should be bound into Runtime Evidence Gate only after schema,
 goldens, and negative tests remain stable across another proof slice.
 
 ## Testing
@@ -137,8 +139,10 @@ The v0 implementation adds:
 - negative tests for raw tensor values or value digests;
 - negative tests for device identifiers, handles, host paths, commands,
   generated code, and plugin entrypoints;
-- Runtime Evidence Matrix inventory later, once the report becomes required evidence;
-- Runtime Evidence Gate binding to exact artifact IDs.
+- optional Runtime Evidence Matrix inventory for the first mixed
+  backend-equivalence report;
+- Runtime Evidence Gate binding to exact artifact IDs later, once the report
+  becomes required evidence.
 
 ## Open Questions
 

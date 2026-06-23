@@ -101,6 +101,10 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
     )
     assert (
+        "runtime_layout_conversion_evidence"
+        in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
         "backend_equivalence_portfolio"
         in graphs["runtime_backend_equivalence_portfolio"].present_artifact_kinds
     )
@@ -183,6 +187,7 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert '"backend_equivalence"' in completed.stdout
     assert '"runtime_planning_explanation"' in completed.stdout
     assert '"runtime_hs_ir_plan_alignment"' in completed.stdout
+    assert '"runtime_layout_conversion_evidence"' in completed.stdout
     assert "runtime_backend_equivalence_portfolio" in completed.stdout
     assert "runtime_memory_planning" in completed.stdout
     assert '"runtime_buffer_lifetime"' in completed.stdout
