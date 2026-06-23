@@ -330,6 +330,12 @@ hardware-independent interface into capability-driven runtime planning.
   and Runtime Public Output Bundle evidence into Runtime Execution Receipt and
   Runtime Execution Evidence Bundle, with the decision captured in
   `rfcs/0204-runtime-execution-output-closure.md`.
+- Runtime Execution Output Closure Report v0 with schema at
+  `schemas/runtime_execution_output_closure_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/runtime_execution_output_closure/proof_of_execution.json`, and
+  Runtime Evidence Gate binding, with the decision captured in
+  `rfcs/0205-runtime-execution-output-closure-report.md`.
 - Runtime Execution Receipt Binding in Runtime Evidence Gate, rejecting receipts
   whose graph names, contracts, metadata digests, item counts, pass status, or
   raw-value policy do not match the evidence reports evaluated by the same gate
@@ -599,8 +605,9 @@ Current slice:
   Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
   Contract, Runtime Public Output Bundle,
   Runtime Reference Correctness, Runtime Execution Receipt, Runtime Execution
-  Evidence Bundle, proof-of-execution public-output closure, and Source Intent
-  Runtime Returns, with binding checks for
+  Evidence Bundle, Runtime Execution Output Closure,
+  proof-of-execution public-output closure, and Source Intent Runtime Returns,
+  with binding checks for
   the backend-equivalence fixture and the `source_intent_return_mlp` frontend
   fixture.
 - Runtime Candidate Score Evidence at

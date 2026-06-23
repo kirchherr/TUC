@@ -8,7 +8,8 @@ evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
-Runtime Memory Planning Gate evidence, plus Source Intent Runtime Returns
+Runtime Execution Output Closure evidence, Runtime Memory Planning Gate evidence,
+plus Source Intent Runtime Returns
 evidence for the frontend return boundary.
 Source Intent Runtime Returns must also be bound to the curated
 Runtime Evidence Matrix graph that inventories the same frontend-originated
@@ -37,6 +38,7 @@ It runs:
 - `build_execution_receipt_report()`
 - `build_execution_receipt_evidence_reports()`
 - `build_runtime_execution_evidence_bundle_report()`
+- `build_runtime_execution_output_closure_report()`
 - `examples/source_intent_runtime_returns.py`
 - `examples/runtime_evidence_gate.py`
 
@@ -147,6 +149,11 @@ The gate passes only when:
 - Runtime Execution Evidence Bundle binding passes, proving embedded report
   metadata matches the specific evidence reports evaluated by this gate
   invocation
+- Runtime Execution Output Closure passes, proving the proof-of-execution
+  Output Contract and Runtime Public Output Bundle are bound identically by the
+  Runtime Execution Receipt and Runtime Execution Evidence Bundle
+- Runtime Execution Output Closure binding passes, proving the closure report
+  matches the specific receipt and bundle evaluated by this gate invocation
 - Source Intent Runtime Returns passes, proving explicit frontend return aliases
   resolve through Runtime Output Contract and Runtime Public Output Bundle
 - the Source Intent Runtime Returns report is bound to the
@@ -195,6 +202,12 @@ Runtime Execution Evidence Bundle schema:
 
 ```text
 schemas/runtime_execution_evidence_bundle_report.v0.schema.json
+```
+
+Runtime Execution Output Closure schema:
+
+```text
+schemas/runtime_execution_output_closure_report.v0.schema.json
 ```
 
 Runtime Backend Equivalence schema:

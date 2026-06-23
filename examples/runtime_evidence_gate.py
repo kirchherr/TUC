@@ -39,6 +39,7 @@ from tuc import (
     RuntimeEvidenceGraph,
     RuntimeEvidenceMatrixReport,
     RuntimeExecutionEvidenceBundleReport,
+    RuntimeExecutionOutputClosureReport,
     RuntimeExecutionReceiptReport,
     RuntimeExecutorConformanceReport,
     RuntimeHsIrPlanAlignmentReport,
@@ -56,6 +57,7 @@ from tuc import (
     build_runtime_backend_equivalence_portfolio_report,
     build_runtime_evidence_gate_matrix_coverage_report,
     build_runtime_execution_evidence_bundle_report,
+    build_runtime_execution_output_closure_report,
     run_runtime_executor_conformance,
 )
 
@@ -278,6 +280,9 @@ def build_gate_report(
     ) = None,
     execution_receipt_report: RuntimeExecutionReceiptReport | None = None,
     input_manifest_report: RuntimeInputManifestReport | None = None,
+    execution_output_closure_report: (
+        RuntimeExecutionOutputClosureReport | None
+    ) = None,
     output_contract_report: RuntimeOutputContractReport | None = None,
     output_manifest_report: RuntimeOutputManifestReport | None = None,
     public_output_bundle: RuntimePublicOutputBundle | None = None,
@@ -398,6 +403,16 @@ def build_gate_report(
         )
         if execution_evidence_bundle_report is None
         else execution_evidence_bundle_report
+    )
+    execution_output_closure = (
+        build_runtime_execution_output_closure_report(
+            execution_output_contract,
+            execution_public_bundle,
+            execution_receipt,
+            execution_evidence_bundle,
+        )
+        if execution_output_closure_report is None
+        else execution_output_closure_report
     )
     source_intent_runtime_returns = (
         run_runtime_returns().runtime_returns
@@ -535,6 +550,14 @@ def build_gate_report(
         reference_correctness,
         execution_receipt,
     )
+    _assert_execution_output_closure_passed(execution_output_closure)
+    _assert_execution_output_closure_matches_gate_reports(
+        execution_output_closure,
+        execution_output_contract,
+        execution_public_bundle,
+        execution_receipt,
+        execution_evidence_bundle,
+    )
     _assert_source_intent_runtime_returns_passed(source_intent_runtime_returns)
     _assert_source_intent_runtime_returns_matrix_covered(
         matrix,
@@ -561,6 +584,7 @@ def build_gate_report(
         reference_correctness,
         execution_receipt,
         execution_evidence_bundle,
+        execution_output_closure,
         source_intent_runtime_returns,
     )
 
@@ -1574,6 +1598,54 @@ def _assert_execution_evidence_bundle_matches_gate_reports(
                 )
 
 
+def _assert_execution_output_closure_passed(
+    report: RuntimeExecutionOutputClosureReport,
+) -> None:
+    if not isinstance(report, RuntimeExecutionOutputClosureReport):
+        raise RuntimeEvidenceGateError(
+            "runtime execution output closure failed: not a report object"
+        )
+    if report.issues:
+        issues = ",".join(
+            f"{issue.subject}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(
+            f"runtime execution output closure failed: {issues}"
+        )
+
+
+def _assert_execution_output_closure_matches_gate_reports(
+    report: RuntimeExecutionOutputClosureReport,
+    output_contract: RuntimeOutputContractReport,
+    public_output_bundle: RuntimePublicOutputBundle,
+    execution_receipt: RuntimeExecutionReceiptReport,
+    execution_evidence_bundle: RuntimeExecutionEvidenceBundleReport,
+) -> None:
+    expected = build_runtime_execution_output_closure_report(
+        output_contract,
+        public_output_bundle,
+        execution_receipt,
+        execution_evidence_bundle,
+    )
+    fields = (
+        "graph_name",
+        "source_output_contract_metadata_digest",
+        "source_public_output_bundle_metadata_digest",
+        "source_execution_receipt_metadata_digest",
+        "source_execution_evidence_bundle_metadata_digest",
+        "source_bundle_execution_receipt_metadata_digest",
+        "checks",
+        "closure_policy_id",
+        "raw_value_policy",
+    )
+    for field_name in fields:
+        if getattr(report, field_name) != getattr(expected, field_name):
+            raise RuntimeEvidenceGateError(
+                "runtime execution output closure binding failed: "
+                f"{field_name}_mismatch"
+            )
+
+
 def _assert_source_intent_runtime_returns_passed(
     report: SourceIntentRuntimeReturnsReport,
 ) -> None:
@@ -1666,6 +1738,7 @@ def _render_gate_report(
     reference_correctness: RuntimeReferenceCorrectnessReport,
     execution_receipt: RuntimeExecutionReceiptReport,
     execution_evidence_bundle: RuntimeExecutionEvidenceBundleReport,
+    execution_output_closure: RuntimeExecutionOutputClosureReport,
     source_intent_runtime_returns: SourceIntentRuntimeReturnsReport,
 ) -> str:
     lines = ["runtime.evidence_gate @runtime_evidence_gate_v0 {"]
@@ -1881,6 +1954,20 @@ def _render_gate_report(
     lines.append(
         "  runtime_execution_evidence_bundle_raw_value_policy = "
         f'"{execution_evidence_bundle.raw_value_policy}"'
+    )
+    lines.append('  runtime_execution_output_closure = "passed"')
+    lines.append('  runtime_execution_output_closure_binding = "verified"')
+    lines.append(
+        "  runtime_execution_output_closure_checks = "
+        f'"{execution_output_closure.check_count}"'
+    )
+    lines.append(
+        "  runtime_execution_output_closure_policy = "
+        f'"{execution_output_closure.closure_policy_id}"'
+    )
+    lines.append(
+        "  runtime_execution_output_closure_raw_value_policy = "
+        f'"{execution_output_closure.raw_value_policy}"'
     )
     lines.append('  source_intent_runtime_returns_matrix = "covered"')
     lines.append('  source_intent_runtime_returns = "passed"')

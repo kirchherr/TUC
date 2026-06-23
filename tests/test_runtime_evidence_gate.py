@@ -62,6 +62,8 @@ from tuc import (
     RuntimeEvidenceGraph,
     RuntimeExecutionEvidenceBundleIssue,
     RuntimeExecutionEvidenceBundleReport,
+    RuntimeExecutionOutputClosureIssue,
+    RuntimeExecutionOutputClosureReport,
     RuntimeExecutionReceiptIssue,
     RuntimeExecutionReceiptReport,
     RuntimeExecutorConformanceCase,
@@ -85,6 +87,8 @@ from tuc import (
     build_runtime_backend_equivalence_portfolio_report,
     build_runtime_evidence_matrix_report,
     build_runtime_execution_evidence_bundle_report,
+    build_runtime_execution_output_closure_report,
+    build_runtime_execution_receipt_report,
 )
 from tuc.ir import OperationKind
 
@@ -229,6 +233,9 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_execution_receipt_binding = "verified"' in completed.stdout
     assert 'runtime_execution_evidence_bundle = "passed"' in completed.stdout
     assert 'runtime_execution_evidence_bundle_binding = "verified"' in completed.stdout
+    assert 'runtime_execution_output_closure = "passed"' in completed.stdout
+    assert 'runtime_execution_output_closure_binding = "verified"' in completed.stdout
+    assert 'runtime_execution_output_closure_checks = "2"' in completed.stdout
     assert 'source_intent_runtime_returns = "passed"' in completed.stdout
 
 
@@ -1231,6 +1238,88 @@ def test_runtime_evidence_gate_rejects_unbound_execution_evidence_bundle() -> No
 
     with pytest.raises(RuntimeEvidenceGateError, match="evidence bundle binding failed"):
         build_gate_report(execution_evidence_bundle_report=stale_bundle)
+
+
+def test_runtime_evidence_gate_rejects_failed_execution_output_closure() -> None:
+    evidence = build_execution_receipt_evidence_reports()
+    receipt = build_runtime_execution_receipt_report(
+        evidence.execution,
+        evidence.tensor_store,
+        evidence.input_manifest,
+        evidence.output_manifest,
+        evidence.output_contract,
+        evidence.public_output_bundle,
+        evidence.reference_correctness,
+    )
+    bundle = build_runtime_execution_evidence_bundle_report(
+        evidence.tensor_store,
+        evidence.input_manifest,
+        evidence.output_manifest,
+        evidence.output_contract,
+        evidence.public_output_bundle,
+        evidence.reference_correctness,
+        receipt,
+    )
+    report = build_runtime_execution_output_closure_report(
+        evidence.output_contract,
+        evidence.public_output_bundle,
+        receipt,
+        bundle,
+    )
+    forged_check = replace(
+        report.checks[0],
+        receipt_metadata_digest="sha256:" + "1" * 64,
+    )
+    failed_report = RuntimeExecutionOutputClosureReport(
+        graph_name=report.graph_name,
+        source_output_contract_schema_version=(
+            report.source_output_contract_schema_version
+        ),
+        source_output_contract_metadata_digest=(
+            report.source_output_contract_metadata_digest
+        ),
+        source_output_contract_item_count=report.source_output_contract_item_count,
+        source_output_contract_passed=report.source_output_contract_passed,
+        source_public_output_bundle_schema_version=(
+            report.source_public_output_bundle_schema_version
+        ),
+        source_public_output_bundle_metadata_digest=(
+            report.source_public_output_bundle_metadata_digest
+        ),
+        source_public_output_bundle_item_count=(
+            report.source_public_output_bundle_item_count
+        ),
+        source_public_output_bundle_passed=report.source_public_output_bundle_passed,
+        source_execution_receipt_schema_version=(
+            report.source_execution_receipt_schema_version
+        ),
+        source_execution_receipt_metadata_digest=(
+            report.source_execution_receipt_metadata_digest
+        ),
+        source_execution_receipt_passed=report.source_execution_receipt_passed,
+        source_execution_evidence_bundle_schema_version=(
+            report.source_execution_evidence_bundle_schema_version
+        ),
+        source_execution_evidence_bundle_metadata_digest=(
+            report.source_execution_evidence_bundle_metadata_digest
+        ),
+        source_execution_evidence_bundle_passed=(
+            report.source_execution_evidence_bundle_passed
+        ),
+        source_bundle_execution_receipt_metadata_digest=(
+            report.source_bundle_execution_receipt_metadata_digest
+        ),
+        checks=(forged_check, *report.checks[1:]),
+        issues=(
+            RuntimeExecutionOutputClosureIssue(
+                subject="output_contract",
+                issue_code="receipt_metadata_digest_mismatch",
+            ),
+        ),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="output closure failed"):
+        build_gate_report(execution_output_closure_report=failed_report)
 
 
 def test_runtime_evidence_gate_rejects_invalid_source_intent_runtime_returns() -> None:
