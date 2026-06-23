@@ -159,12 +159,14 @@ RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS = (
     "runtime_allocation_plan",
     "runtime_memory_budget",
     "runtime_allocation_request_manifest",
+    "runtime_allocation_admission",
 )
 RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS = (
     "runtime_buffer_lifetime_current",
     "runtime_allocation_plan_current",
     "runtime_memory_budget_current",
     "runtime_allocation_request_manifest_current",
+    "runtime_allocation_admission_current",
 )
 
 
@@ -1152,6 +1154,8 @@ def _assert_runtime_memory_planning_gate_passed(report: str) -> None:
         '  allocation_request_manifest = "passed"',
         '  allocation_request_manifest_binding = "verified"',
         '  allocation_request_handle_policy = "no_runtime_handles"',
+        '  allocation_admission = "passed"',
+        '  allocation_admission_binding = "verified"',
         '  blocked_execution_surfaces = '
         f'"{",".join(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)}"',
         '  status = "PASS"',

@@ -21,7 +21,7 @@
   "broad_source_parser_claim": false,
   "bundle_contract": "objective_alpha.public_proof_bundle.v0",
   "bundle_id": "objective_alpha_public_proof_bundle",
-  "bundle_metadata_digest": "9f09e95794b1cd3f2c0effa010e301b1516ca0e501a41842dd1d65acb8c64c48",
+  "bundle_metadata_digest": "812e766de811266df77a7a531ecb6ac16a94144b6d1944e81986854ee12e1412",
   "claim_status": "correctness_and_inspectability_only",
   "evidence_entries": [
     {
@@ -36,7 +36,7 @@
       "artifact_kind": "schema_versioned_matrix_report",
       "entry_point": "python examples/runtime_evidence_matrix.py",
       "evidence_id": "runtime_evidence_matrix",
-      "metadata_digest": "103bdc35a4fb80652a741d0f224109225480adc77d72bd9b24dae93348ce2c80",
+      "metadata_digest": "c3a81680e68c23086aaa4939f9128b5273a92a11f136a7c35692e14583450bfe",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -44,7 +44,7 @@
       "artifact_kind": "deterministic_gate_output",
       "entry_point": "python examples/runtime_evidence_gate.py",
       "evidence_id": "runtime_evidence_gate",
-      "metadata_digest": "7ed83f20ea2d383ac21d1404d20df0ed1f0a3f9977d1e9aff9cb934b605e8642",
+      "metadata_digest": "39faff8122facc01a399671cecb1715f11f060e1f9babb75704438207ab4ae62",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -52,7 +52,7 @@
       "artifact_kind": "deterministic_memory_planning_gate_output",
       "entry_point": "python examples/runtime_memory_planning_gate.py",
       "evidence_id": "runtime_memory_planning_gate",
-      "metadata_digest": "85d12c4c9c62684e93223b2fd863a78e61570a354ee7349e8cdd4a739255685f",
+      "metadata_digest": "679636653ca62cc4144dcfda416b2fdf01716cf5b8bbbf319b2897f6d8ce0071",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },

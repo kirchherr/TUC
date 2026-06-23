@@ -9,6 +9,7 @@ It runs:
 - `build_current_runtime_allocation_plan_report()`
 - `build_current_runtime_memory_budget_report()`
 - `build_runtime_allocation_request_manifest_report()`
+- `build_runtime_allocation_admission_report()`
 - `examples/runtime_memory_planning_gate.py`
 
 The gate passes only when:
@@ -23,11 +24,14 @@ The gate passes only when:
   Plan evaluated by the same gate invocation
 - the Runtime Allocation Request Manifest passes and is bound to the Allocation
   Plan and Memory Budget evaluated by the same gate invocation
+- Runtime Allocation Admission passes and is bound to the Request Manifest and
+  Memory Budget evaluated by the same gate invocation
 
 Schema coverage:
 
 ```text
 schemas/runtime_allocation_request_manifest_report.v0.schema.json
+schemas/runtime_allocation_admission_report.v0.schema.json
 ```
 
 Golden output:
@@ -66,3 +70,6 @@ accepted for a different buffer-lifetime report.
 
 The allocation-request manifest binding prevents stale future allocator request
 evidence from being accepted for a different Allocation Plan or Memory Budget.
+
+The allocation-admission binding prevents allocator-admission evidence from being
+accepted unless it is tied to the same Request Manifest and Memory Budget.

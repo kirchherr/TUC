@@ -19,12 +19,15 @@ from examples.runtime_memory_planning_gate import (
 )
 from tuc import (
     MemoryDomainKind,
+    RuntimeAllocationAdmissionIssue,
+    RuntimeAllocationAdmissionReport,
     RuntimeAllocationIssue,
     RuntimeAllocationPlanReport,
     RuntimeBufferLifetimeIssue,
     RuntimeBufferLifetimeReport,
     RuntimeMemoryBudgetReport,
     RuntimeMemoryDomainBudget,
+    build_runtime_allocation_admission_report,
     build_runtime_allocation_request_manifest_report,
     build_runtime_memory_budget_report,
 )
@@ -44,6 +47,8 @@ def test_runtime_memory_planning_gate_matches_golden() -> None:
     assert 'allocation_request_manifest = "passed"' in report
     assert 'allocation_request_manifest_binding = "verified"' in report
     assert 'allocation_request_handle_policy = "no_runtime_handles"' in report
+    assert 'allocation_admission = "passed"' in report
+    assert 'allocation_admission_binding = "verified"' in report
     assert report.rstrip().endswith('status = "PASS"\n}')
 
 
@@ -140,6 +145,48 @@ def test_runtime_memory_planning_gate_rejects_failed_request_manifest() -> None:
         match="allocation request manifest failed",
     ):
         build_gate_report(request_manifest_report=failed)
+
+
+def test_runtime_memory_planning_gate_rejects_failed_allocation_admission() -> None:
+    request_manifest = build_current_runtime_allocation_request_manifest_report()
+    memory_budget = build_current_runtime_memory_budget_report()
+    failed = build_runtime_allocation_admission_report(request_manifest, memory_budget)
+    blocked = tuple(
+        replace(admission, admission_status="blocked_by_budget_evidence")
+        for admission in failed.admissions
+    )
+    failed_admission = RuntimeAllocationAdmissionReport(
+        graph_name=failed.graph_name,
+        operation_count=failed.operation_count,
+        source_request_manifest_contract=failed.source_request_manifest_contract,
+        source_request_manifest_schema_version=(
+            failed.source_request_manifest_schema_version
+        ),
+        source_request_manifest_issue_count=failed.source_request_manifest_issue_count,
+        source_request_manifest_metadata_digest=(
+            failed.source_request_manifest_metadata_digest
+        ),
+        source_request_manifest_budget_allocation_digest=(
+            failed.source_request_manifest_budget_allocation_digest
+        ),
+        source_memory_budget_contract=failed.source_memory_budget_contract,
+        source_memory_budget_schema_version=failed.source_memory_budget_schema_version,
+        source_memory_budget_issue_count=failed.source_memory_budget_issue_count,
+        source_memory_budget_allocation_digest=(
+            failed.source_memory_budget_allocation_digest
+        ),
+        admissions=blocked,
+        issues=tuple(
+            RuntimeAllocationAdmissionIssue(
+                subject=admission.request_id,
+                issue_code="allocation_admission_blocked",
+            )
+            for admission in blocked
+        ),
+    )
+
+    with pytest.raises(RuntimeMemoryPlanningGateError, match="allocation admission"):
+        build_gate_report(allocation_admission_report=failed_admission)
 
 
 def test_runtime_memory_planning_gate_rejects_graph_mismatch() -> None:

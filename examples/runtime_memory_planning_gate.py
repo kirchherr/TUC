@@ -20,18 +20,24 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
 
 from tuc import (
+    RUNTIME_ALLOCATION_ADMISSION_CONTRACT,
+    RUNTIME_ALLOCATION_ADMISSION_STATUS,
     RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION,
+    RUNTIME_ALLOCATION_REQUEST_MANIFEST_REPORT_SCHEMA_VERSION,
     RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION,
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION,
+    RuntimeAllocationAdmissionReport,
     RuntimeAllocationPlanReport,
     RuntimeAllocationRequestManifestReport,
     RuntimeBufferLifetimeReport,
     RuntimeMemoryBudgetReport,
+    assert_runtime_allocation_admission,
     assert_runtime_allocation_plan,
     assert_runtime_allocation_request_manifest,
     assert_runtime_buffer_lifetime,
     assert_runtime_memory_budget,
+    build_runtime_allocation_admission_report,
     build_runtime_allocation_request_manifest_report,
 )
 
@@ -46,6 +52,7 @@ def build_gate_report(
     lifetime_report: RuntimeBufferLifetimeReport | None = None,
     memory_budget_report: RuntimeMemoryBudgetReport | None = None,
     request_manifest_report: RuntimeAllocationRequestManifestReport | None = None,
+    allocation_admission_report: RuntimeAllocationAdmissionReport | None = None,
 ) -> str:
     """Return the stable CI-facing runtime memory planning gate report."""
 
@@ -80,7 +87,24 @@ def build_gate_report(
         memory_budget,
         request_manifest,
     )
-    return _render_gate_report(lifetime, allocation, memory_budget, request_manifest)
+    allocation_admission = (
+        build_runtime_allocation_admission_report(request_manifest, memory_budget)
+        if allocation_admission_report is None
+        else allocation_admission_report
+    )
+    _assert_allocation_admission_passed(allocation_admission)
+    _assert_allocation_admission_matches_sources(
+        request_manifest,
+        memory_budget,
+        allocation_admission,
+    )
+    return _render_gate_report(
+        lifetime,
+        allocation,
+        memory_budget,
+        request_manifest,
+        allocation_admission,
+    )
 
 
 def main() -> None:
@@ -122,6 +146,17 @@ def _assert_allocation_request_manifest_passed(
     except AssertionError as exc:
         raise RuntimeMemoryPlanningGateError(
             f"runtime allocation request manifest failed: {exc}"
+        ) from exc
+
+
+def _assert_allocation_admission_passed(
+    report: RuntimeAllocationAdmissionReport,
+) -> None:
+    try:
+        assert_runtime_allocation_admission(report)
+    except AssertionError as exc:
+        raise RuntimeMemoryPlanningGateError(
+            f"runtime allocation admission failed: {exc}"
         ) from exc
 
 
@@ -261,6 +296,111 @@ def _assert_request_manifest_matches_sources(
         )
 
 
+def _assert_allocation_admission_matches_sources(
+    request_manifest: RuntimeAllocationRequestManifestReport,
+    memory_budget: RuntimeMemoryBudgetReport,
+    allocation_admission: RuntimeAllocationAdmissionReport,
+) -> None:
+    if request_manifest.graph_name != allocation_admission.graph_name:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission graph mismatch"
+        )
+    if request_manifest.operation_count != allocation_admission.operation_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission operation count mismatch"
+        )
+    if allocation_admission.admission_contract != RUNTIME_ALLOCATION_ADMISSION_CONTRACT:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission contract mismatch"
+        )
+    if (
+        allocation_admission.source_request_manifest_contract
+        != request_manifest.manifest_contract
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest contract mismatch"
+        )
+    if (
+        allocation_admission.source_request_manifest_schema_version
+        != RUNTIME_ALLOCATION_REQUEST_MANIFEST_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest schema mismatch"
+        )
+    if allocation_admission.source_request_manifest_issue_count != len(
+        request_manifest.issues
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest issue count mismatch"
+        )
+    if (
+        allocation_admission.source_request_manifest_metadata_digest
+        != request_manifest.manifest_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest digest mismatch"
+        )
+    if (
+        allocation_admission.source_request_manifest_budget_allocation_digest
+        != request_manifest.source_memory_budget_allocation_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest budget mismatch"
+        )
+    if allocation_admission.source_memory_budget_contract != memory_budget.budget_contract:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission budget contract mismatch"
+        )
+    if (
+        allocation_admission.source_memory_budget_schema_version
+        != RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission budget schema mismatch"
+        )
+    if allocation_admission.source_memory_budget_issue_count != len(memory_budget.issues):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission budget issue count mismatch"
+        )
+    if (
+        allocation_admission.source_memory_budget_allocation_digest
+        != memory_budget.source_allocation_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission budget digest mismatch"
+        )
+    if allocation_admission.admission_count != request_manifest.request_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission count mismatch"
+        )
+    if allocation_admission.blocked_admission_count != 0:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission blocked"
+        )
+    if allocation_admission.total_admitted_bytes != request_manifest.total_reserved_bytes:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission bytes mismatch"
+        )
+    if tuple(admission.request_id for admission in allocation_admission.admissions) != tuple(
+        request.request_id for request in request_manifest.requests
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission request binding mismatch"
+        )
+    if tuple(admission.slot_id for admission in allocation_admission.admissions) != tuple(
+        request.slot_id for request in request_manifest.requests
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission slot binding mismatch"
+        )
+    if {
+        admission.admission_status for admission in allocation_admission.admissions
+    } != {RUNTIME_ALLOCATION_ADMISSION_STATUS}:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission status mismatch"
+        )
+
+
 def _request_slot_payloads(
     request_manifest: RuntimeAllocationRequestManifestReport,
 ) -> tuple[tuple[object, ...], ...]:
@@ -302,6 +442,7 @@ def _render_gate_report(
     allocation: RuntimeAllocationPlanReport,
     memory_budget: RuntimeMemoryBudgetReport,
     request_manifest: RuntimeAllocationRequestManifestReport,
+    allocation_admission: RuntimeAllocationAdmissionReport,
 ) -> str:
     lines = ["runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {"]
     lines.append('  buffer_lifetime = "passed"')
@@ -323,6 +464,17 @@ def _render_gate_report(
     lines.append(f'  allocation_requests = "{request_manifest.request_count}"')
     lines.append(
         f'  allocation_request_handle_policy = "{request_manifest.handle_policy}"'
+    )
+    lines.append('  allocation_admission = "passed"')
+    lines.append('  allocation_admission_binding = "verified"')
+    lines.append(f'  allocation_admissions = "{allocation_admission.admission_count}"')
+    lines.append(
+        '  allocation_admission_blocked = '
+        f'"{allocation_admission.blocked_admission_count}"'
+    )
+    lines.append(
+        '  allocation_admitted_bytes = '
+        f'"{allocation_admission.total_admitted_bytes}"'
     )
     lines.append(
         "  blocked_execution_surfaces = "

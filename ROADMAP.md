@@ -524,11 +524,15 @@ Completed evidence:
   allocation.
 - Runtime Allocation Request Manifest reports expose bounded, data-only future
   allocator admission requests without runtime handles.
+- Runtime Allocation Admission reports bind those requests to current Memory
+  Budget evidence before any real allocator, memory pool, device allocation, or
+  runtime handle can be accepted.
 - Runtime Memory Planning Gate verifies allocation-plan, memory-budget,
-  allocation-request-manifest, and lifetime/allocation/budget/request digest
-  binding evidence before allocator behavior can be accepted. Runtime Evidence
-  Matrix and Runtime Evidence Gate now require the memory-planning artifact set
-  by exact artifact ID before the central runtime gate can pass.
+  allocation-request-manifest, allocation-admission, and
+  lifetime/allocation/budget/request/admission digest binding evidence before
+  allocator behavior can be accepted. Runtime Evidence Matrix and Runtime
+  Evidence Gate now require the memory-planning artifact set by exact artifact
+  ID before the central runtime gate can pass.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and

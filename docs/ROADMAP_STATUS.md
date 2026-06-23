@@ -176,11 +176,18 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_allocation_request_manifest/current_report.json`, and
   no-runtime-handles future allocator admission requests bound to Allocation
   Plan and Memory Budget metadata.
+- Runtime Allocation Admission v0 with schema at
+  `schemas/runtime_allocation_admission_report.v0.schema.json`,
+  deterministic golden at
+  `tests/golden/runtime_allocation_admission/current_report.json`, and
+  data-only allocator-admission decisions bound to Allocation Request Manifest
+  and Memory Budget evidence before any allocator behavior exists.
 - Runtime Memory Planning Gate v0 with deterministic golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt` and CI coverage
   in the `python` workflow job, now verifying Allocation Plan binding to Buffer
-  Lifetime, Memory Budget binding to Allocation Plan, and Allocation Request
-  Manifest binding to Allocation Plan and Memory Budget in the same gate
+  Lifetime, Memory Budget binding to Allocation Plan, Allocation Request
+  Manifest binding to Allocation Plan and Memory Budget, and Allocation
+  Admission binding to Request Manifest and Memory Budget in the same gate
   invocation.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
@@ -617,13 +624,20 @@ Current slice:
   `examples/runtime_allocation_request_manifest.py`, with golden evidence at
   `tests/golden/runtime_allocation_request_manifest/current_report.json`,
   exposing bounded future allocator requests without runtime handles.
+- Runtime Allocation Admission at `examples/runtime_allocation_admission.py`,
+  with schema at `schemas/runtime_allocation_admission_report.v0.schema.json`
+  and golden evidence at
+  `tests/golden/runtime_allocation_admission/current_report.json`, admitting
+  only requests that match current Memory Budget evidence without runtime
+  handles.
 - Runtime Memory Planning Gate at `examples/runtime_memory_planning_gate.py`,
   with golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt`, rejecting stale
-  Allocation Plan evidence whose source Buffer Lifetime digest does not match
+  Allocation Plan evidence whose source Buffer Lifetime digest does not match,
   stale Memory Budget evidence whose source Allocation Plan digest does not
-  match, and stale Allocation Request Manifest evidence whose source Allocation
-  Plan or Memory Budget binding does not match.
+  match, stale Allocation Request Manifest evidence whose source Allocation
+  Plan or Memory Budget binding does not match, and stale Allocation Admission
+  evidence whose Request Manifest or Memory Budget binding does not match.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -1177,6 +1191,9 @@ Current focus:
 - Use Runtime Allocation Request Manifest before accepting memory pools, device
   allocation, aliasing, runtime handles, or allocator behavior that can reserve
   runtime memory.
+- Use Runtime Allocation Admission before accepting memory pools, device
+  allocation, aliasing, runtime handles, or allocator behavior that can admit
+  runtime memory requests.
 - Keep Runtime Memory Planning Gate and its Runtime Evidence Gate matrix
   binding passing in CI before accepting allocator,
   memory-pool, device-allocation, or aliasing changes.
@@ -1187,6 +1204,9 @@ Current focus:
   Memory Budget evaluated by the same gate invocation before accepting
   allocator, memory-pool, device-allocation, runtime-handle, or aliasing
   changes.
+- Keep Allocation Admission reports bound to the Request Manifest and Memory
+  Budget evaluated by the same gate invocation before accepting allocator,
+  memory-pool, device-allocation, runtime-handle, or aliasing changes.
 - Keep Allocation Plan reports bound to the Buffer Lifetime report evaluated by
   the same gate invocation before accepting allocator, memory-pool,
   device-allocation, or aliasing changes.

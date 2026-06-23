@@ -122,8 +122,8 @@ The gate passes only when:
 - Runtime Backend Equivalence Portfolio Policy binding passes, proving the
   accepted slice membership and backend sequences match the portfolio report
 - Runtime Memory Planning Gate passes, proving Buffer Lifetime, Allocation
-  Plan, Memory Budget, and Allocation Request Manifest evidence agree by
-  metadata digest and keep runtime handles omitted
+  Plan, Memory Budget, Allocation Request Manifest, and Allocation Admission
+  evidence agree by metadata digest and keep runtime handles omitted
 - Runtime Memory Planning matrix coverage passes, proving the memory-planning
   graph is inventoried by Runtime Evidence Matrix with exact artifact IDs
 - Runtime Tensor Store Evidence passes for the current proof-of-execution
@@ -328,7 +328,7 @@ It composes bounded in-repository checks:
   gate-required graph, source boundary, required artifact kind, or concrete
   artifact ID drifts
 - data-only Runtime Memory Planning Gate text proving lifetime, allocation,
-  budget, and request-manifest evidence bindings without runtime handles
+  budget, request, and admission evidence bindings without runtime handles
 - a bounded Runtime Memory Planning matrix lookup that verifies graph family,
   source boundary, required artifact kinds, completeness, and exact artifact
   coverage

@@ -17,6 +17,11 @@ runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {
   allocation_request_manifest_binding = "verified"
   allocation_requests = "3"
   allocation_request_handle_policy = "no_runtime_handles"
+  allocation_admission = "passed"
+  allocation_admission_binding = "verified"
+  allocation_admissions = "3"
+  allocation_admission_blocked = "0"
+  allocation_admitted_bytes = "192"
   blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
   status = "PASS"
 }

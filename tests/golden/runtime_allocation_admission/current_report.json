@@ -1,0 +1,66 @@
+{
+  "admission_contract": "runtime_allocation_admission.data_only.v0",
+  "admission_count": 3,
+  "admissions": [
+    {
+      "admission_status": "admitted_by_budget_evidence",
+      "budget_id": "host_ram_alpha_budget",
+      "bytes_reserved": 64,
+      "domain_max_reserved_bytes": 192,
+      "domain_total_reserved_bytes": 192,
+      "handle_policy": "no_runtime_handles",
+      "memory_domain": "host_ram",
+      "request_id": "alloc_request_001",
+      "slot_id": "slot_001"
+    },
+    {
+      "admission_status": "admitted_by_budget_evidence",
+      "budget_id": "host_ram_alpha_budget",
+      "bytes_reserved": 64,
+      "domain_max_reserved_bytes": 192,
+      "domain_total_reserved_bytes": 192,
+      "handle_policy": "no_runtime_handles",
+      "memory_domain": "host_ram",
+      "request_id": "alloc_request_002",
+      "slot_id": "slot_002"
+    },
+    {
+      "admission_status": "admitted_by_budget_evidence",
+      "budget_id": "host_ram_alpha_budget",
+      "bytes_reserved": 64,
+      "domain_max_reserved_bytes": 192,
+      "domain_total_reserved_bytes": 192,
+      "handle_policy": "no_runtime_handles",
+      "memory_domain": "host_ram",
+      "request_id": "alloc_request_003",
+      "slot_id": "slot_003"
+    }
+  ],
+  "blocked_admission_count": 0,
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "graph_name": "runtime_buffer_lifetime",
+  "handle_policy": "no_runtime_handles",
+  "issues": [],
+  "operation_count": 4,
+  "passed": true,
+  "schema_version": "tuc.runtime_allocation_admission_report.v0",
+  "source_memory_budget_allocation_digest": "sha256:45f693be572dd776078e7fb0211b1562a48c4d50ad62b55e7f680975b36f2ede",
+  "source_memory_budget_contract": "runtime_memory_budget.data_only.v0",
+  "source_memory_budget_issue_count": 0,
+  "source_memory_budget_schema_version": "tuc.runtime_memory_budget_report.v0",
+  "source_request_manifest_budget_allocation_digest": "sha256:45f693be572dd776078e7fb0211b1562a48c4d50ad62b55e7f680975b36f2ede",
+  "source_request_manifest_contract": "runtime_allocation_request_manifest.data_only.v0",
+  "source_request_manifest_issue_count": 0,
+  "source_request_manifest_metadata_digest": "sha256:e4ece2b0e7a9811062744f2d924a1a68c12844df779410dbe84399dd48e6e636",
+  "source_request_manifest_schema_version": "tuc.runtime_allocation_request_manifest_report.v0",
+  "total_admitted_bytes": 192
+}

@@ -318,6 +318,7 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "runtime_allocation_plan",
     "runtime_memory_budget",
     "runtime_allocation_request_manifest",
+    "runtime_allocation_admission",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "hac_ir_golden",
@@ -1502,12 +1503,17 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "runtime_allocation_request_manifest",
                         "runtime_allocation_request_manifest_current",
                     ),
+                    _runtime_evidence_artifact(
+                        "runtime_allocation_admission",
+                        "runtime_allocation_admission_current",
+                    ),
                 ),
                 required_artifact_kinds=(
                     "runtime_buffer_lifetime",
                     "runtime_allocation_plan",
                     "runtime_memory_budget",
                     "runtime_allocation_request_manifest",
+                    "runtime_allocation_admission",
                 ),
             ),
         ),

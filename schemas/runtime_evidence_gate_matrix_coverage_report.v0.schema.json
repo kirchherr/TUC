@@ -157,7 +157,8 @@
               "runtime_buffer_lifetime",
               "runtime_allocation_plan",
               "runtime_memory_budget",
-              "runtime_allocation_request_manifest"
+              "runtime_allocation_request_manifest",
+        "runtime_allocation_admission"
             ]
           }
         },

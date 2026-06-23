@@ -89,7 +89,8 @@
         "runtime_buffer_lifetime_current",
         "runtime_allocation_plan_current",
         "runtime_memory_budget_current",
-        "runtime_allocation_request_manifest_current"
+        "runtime_allocation_request_manifest_current",
+        "runtime_allocation_admission_current"
       ],
       "graph_family": "runtime_memory_planning",
       "graph_id": "runtime_memory_planning",
@@ -98,13 +99,15 @@
         "runtime_buffer_lifetime_current",
         "runtime_allocation_plan_current",
         "runtime_memory_budget_current",
-        "runtime_allocation_request_manifest_current"
+        "runtime_allocation_request_manifest_current",
+        "runtime_allocation_admission_current"
       ],
       "required_artifact_kinds": [
         "runtime_buffer_lifetime",
         "runtime_allocation_plan",
         "runtime_memory_budget",
-        "runtime_allocation_request_manifest"
+        "runtime_allocation_request_manifest",
+        "runtime_allocation_admission"
       ],
       "source_boundary": "runtime_memory_planning"
     }

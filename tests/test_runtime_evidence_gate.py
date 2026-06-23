@@ -981,6 +981,7 @@ def test_runtime_evidence_gate_rejects_wrong_memory_planning_matrix_artifact_id(
         "runtime_allocation_plan",
         "runtime_memory_budget",
         "runtime_allocation_request_manifest",
+        "runtime_allocation_admission",
     )
     with pytest.raises(
         RuntimeEvidenceGateError,
