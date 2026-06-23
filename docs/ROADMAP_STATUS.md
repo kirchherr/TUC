@@ -33,8 +33,9 @@ hardware-independent interface into capability-driven runtime planning.
   first-run proof path as schema-versioned review evidence with blocked claims
   and blocked execution surfaces.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
-  binds proof execution, runtime evidence matrix, runtime evidence gate, and
-  onboarding evidence as one digest-only review artifact.
+  binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
+  Memory Planning Gate, and onboarding evidence as one digest-only review
+  artifact.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
 - Golden runtime-plan dump for proof-of-abstraction placement and transfer

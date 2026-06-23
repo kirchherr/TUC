@@ -154,7 +154,7 @@ def test_objective_alpha_public_bundle_schema_matches_contract() -> None:
     assert schema["properties"]["native_performance_claim"]["const"] is False
     assert schema["properties"]["broad_source_parser_claim"]["const"] is False
     assert schema["properties"]["vendor_replacement_claim"]["const"] is False
-    assert schema["properties"]["evidence_entries"]["maxItems"] == 4
+    assert schema["properties"]["evidence_entries"]["maxItems"] == 5
 
 
 def test_objective_alpha_public_bundle_schema_fails_closed() -> None:

@@ -5,8 +5,9 @@ Status: Accepted
 ## Summary
 
 Add a digest-only public proof bundle for Objective Alpha. The bundle connects
-proof execution, runtime evidence matrix, runtime evidence gate, and research
-onboarding evidence into one deterministic JSON artifact.
+proof execution, runtime evidence matrix, runtime evidence gate, Runtime Memory
+Planning Gate evidence, and research onboarding evidence into one deterministic
+JSON artifact.
 
 ## Motivation
 
@@ -33,8 +34,9 @@ The bundle is digest-only. It does not accept external inputs, parse source,
 discover plugins, access devices, ingest benchmark output, load dynamic
 libraries, execute generated artifacts, or publish raw tensor values.
 
-The example runs trusted in-repository evidence builders and records only
-SHA-256 digests plus fixed entry point metadata.
+The example runs trusted in-repository evidence builders, including Runtime
+Memory Planning Gate, and records only SHA-256 digests plus fixed entry point
+metadata.
 
 ## Consequences
 

@@ -14,6 +14,7 @@ The bundle links these trusted in-repository evidence entry points:
 - `python examples/proof_of_execution.py`
 - `python examples/runtime_evidence_matrix.py`
 - `python examples/runtime_evidence_gate.py`
+- `python examples/runtime_memory_planning_gate.py`
 - `python examples/research_onboarding_evidence.py`
 
 Each entry is represented by a SHA-256 digest. The bundle does not embed raw
@@ -29,7 +30,8 @@ backend execution, device access, or generated-artifact execution.
 
 ## Security Boundary
 
-The example runs only trusted in-repository proof/evidence builders. The bundle
+The example runs only trusted in-repository proof/evidence builders, including
+the Runtime Memory Planning Gate as a separate digest-only entry. The bundle
 model accepts only fixed evidence IDs, fixed entry points, fixed artifact kinds,
 passed status, digest-only raw output policy, and SHA-256 digests.
 
