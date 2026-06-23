@@ -133,3 +133,8 @@ can expand.
 
 The focused Kernel Ingress Evidence Gate validates this bundle against the
 artifact digests evaluated in the same invocation.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

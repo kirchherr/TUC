@@ -122,11 +122,11 @@
       "items": {
         "$ref": "#/$defs/evidence"
       },
-      "minItems": 12,
-      "maxItems": 12
+      "minItems": 13,
+      "maxItems": 13
     },
     "evidence_count": {
-      "const": 12
+      "const": 13
     },
     "minimum_acceptance_checks": {
       "type": "array",
@@ -156,6 +156,9 @@
           "const": "runtime_output_closure_index_closes_public_outputs"
         },
         {
+          "const": "runtime_replay_verifier_index_replays_serialized_evidence"
+        },
+        {
           "const": "runtime_backend_equivalence_preserves_outputs"
         },
         {
@@ -169,8 +172,8 @@
         }
       ],
       "items": false,
-      "minItems": 12,
-      "maxItems": 12
+      "minItems": 13,
+      "maxItems": 13
     },
     "parser_status": {
       "const": "research_explicit_only"
@@ -250,6 +253,7 @@
             "source_to_intent_research_kernel_ingress_runtime_step_trace",
             "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
             "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
+            "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index",
             "source_to_intent_research_kernel_ingress_backend_equivalence",
             "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy",

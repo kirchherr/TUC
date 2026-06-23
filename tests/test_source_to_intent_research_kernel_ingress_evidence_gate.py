@@ -31,6 +31,7 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'runtime_step_trace = "passed"' in report
     assert 'runtime_evidence_bundle_index = "passed"' in report
     assert 'runtime_output_closure_index = "passed"' in report
+    assert 'runtime_replay_verifier_index = "passed"' in report
     assert 'runtime_backend_equivalence = "passed"' in report
     assert 'runtime_backend_equivalence_shape_profiles = "passed"' in report
     assert 'runtime_coverage_policy = "passed"' in report
@@ -55,6 +56,9 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'runtime_output_closure_cases = "4"' in report
     assert 'runtime_output_closure_check_count = "2"' in report
     assert 'output_closure_contract = "runtime_execution_output_closure.data_only.v0"' in report
+    assert 'runtime_replay_verifier_cases = "4"' in report
+    assert 'runtime_replay_verifier_check_count = "8"' in report
+    assert 'replay_verifier_contract = "runtime_evidence_replay_verifier.review.v0"' in report
     assert 'runtime_backend_equivalence_cases = "4"' in report
     assert 'backend_equivalence_comparisons = "4"' in report
     assert 'runtime_backend_equivalence_shape_profile_cases = "8"' in report
@@ -96,6 +100,7 @@ def test_kernel_ingress_evidence_gate_example_runs() -> None:
     assert "runtime_step_trace_digest" in completed.stdout
     assert "runtime_evidence_bundle_index_digest" in completed.stdout
     assert "runtime_output_closure_index_digest" in completed.stdout
+    assert "runtime_replay_verifier_index_digest" in completed.stdout
     assert "runtime_backend_equivalence_digest" in completed.stdout
     assert "runtime_backend_equivalence_shape_profiles_digest" in completed.stdout
     assert "runtime_coverage_policy_digest" in completed.stdout
@@ -154,6 +159,15 @@ def test_kernel_ingress_evidence_gate_rejects_tampered_output_closure_index() ->
         match="runtime output closure index binding missing",
     ):
         build_gate_report(runtime_output_closure_index_text='{"status": "PASS"}\n')
+
+
+
+def test_kernel_ingress_evidence_gate_rejects_tampered_replay_verifier_index() -> None:
+    with pytest.raises(
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        match="runtime replay verifier index binding missing",
+    ):
+        build_gate_report(runtime_replay_verifier_index_text='{"status": "PASS"}\n')
 
 
 def test_kernel_ingress_evidence_gate_rejects_tampered_backend_equivalence() -> None:
@@ -262,6 +276,10 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
         ),
         Path(
             "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_REPLAY_VERIFIER_INDEX.md"
+        ),
+        Path(
+            "docs/"
             "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES.md"
         ),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
@@ -280,6 +298,10 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
         Path(
             "rfcs/"
             "0209-source-to-intent-research-kernel-ingress-runtime-output-closure-index.md"
+        ),
+        Path(
+            "rfcs/"
+            "0211-source-to-intent-research-kernel-ingress-runtime-replay-verifier-index.md"
         ),
         Path(
             "rfcs/"

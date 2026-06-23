@@ -91,3 +91,8 @@ capability claim
 Future accepted Kernel Ingress cases must produce closed Runtime Execution
 Output Closure evidence before they can strengthen the bounded Universal
 Compute research claim.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

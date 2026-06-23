@@ -89,3 +89,8 @@ Evidence Gate and the global Source-To-Intent Research Evidence Gate together.
 
 This still does not prove general Triton source ingestion, production parsing,
 or native performance. Those claims remain blocked.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

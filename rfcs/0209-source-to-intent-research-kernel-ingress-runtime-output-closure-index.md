@@ -59,3 +59,8 @@ but also that their public runtime-output boundary is closed by Runtime
 Execution Output Closure. This strengthens the bounded Universal Compute
 research claim without claiming CUDA replacement, native performance parity, or
 general source parser completeness.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

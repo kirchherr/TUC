@@ -661,6 +661,10 @@ Deliverables:
   proving accepted Kernel Ingress runtime cases also close their public output
   boundary through Runtime Execution Output Closure before they can strengthen
   the bounded research claim.
+- Source-To-Intent Research Kernel Ingress Runtime Replay Verifier Index
+  (`examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`)
+  proving accepted Kernel Ingress runtime evidence can be replay-verified from
+  serialized, source-free Runtime Evidence Bundle and Output Closure reports.
 - Source-To-Intent Research Kernel Ingress Backend Equivalence
   (`examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`)
   proving accepted Kernel Ingress Source Intent preserves public outputs under

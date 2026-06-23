@@ -79,6 +79,8 @@ jobs:
         run: python examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py
       - name: Source-To-Intent research kernel ingress runtime output closure index
         run: python examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py
+      - name: Source-To-Intent research kernel ingress runtime replay verifier index
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py
       - name: Source-To-Intent research kernel ingress backend equivalence
         run: python examples/source_to_intent_research_kernel_ingress_backend_equivalence.py
       - name: Source-To-Intent research kernel ingress backend equivalence shape profiles

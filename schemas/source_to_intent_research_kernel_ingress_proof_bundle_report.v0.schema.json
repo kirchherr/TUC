@@ -63,15 +63,15 @@
       "maxItems": 4
     },
     "artifact_count": {
-      "const": 14
+      "const": 15
     },
     "artifact_policy": {
       "const": "digest_only_source_free"
     },
     "artifacts": {
       "type": "array",
-      "minItems": 14,
-      "maxItems": 14,
+      "minItems": 15,
+      "maxItems": 15,
       "items": {
         "$ref": "#/$defs/artifact"
       }
@@ -142,6 +142,9 @@
           "const": "source_to_intent_research_kernel_ingress_runtime_output_closure_index"
         },
         {
+          "const": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index"
+        },
+        {
           "const": "source_to_intent_research_kernel_ingress_backend_equivalence"
         },
         {
@@ -169,8 +172,8 @@
           "const": "source_to_intent_research_kernel_ingress_idiom_alignment"
         }
       ],
-      "minItems": 14,
-      "maxItems": 14
+      "minItems": 15,
+      "maxItems": 15
     },
     "review_claims": {
       "type": "array",
@@ -206,6 +209,9 @@
           "const": "runtime_output_closure_index_bound"
         },
         {
+          "const": "runtime_replay_verifier_index_bound"
+        },
+        {
           "const": "runtime_backend_equivalence_bound"
         },
         {
@@ -221,8 +227,8 @@
           "const": "source_free_metadata_only"
         }
       ],
-      "minItems": 15,
-      "maxItems": 15
+      "minItems": 16,
+      "maxItems": 16
     },
     "schema_version": {
       "const": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0"
@@ -253,6 +259,7 @@
             "source_to_intent_research_kernel_ingress_runtime_step_trace",
             "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
             "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
+            "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index",
             "source_to_intent_research_kernel_ingress_backend_equivalence",
             "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
             "source_to_intent_research_kernel_ingress_runtime_coverage_policy",

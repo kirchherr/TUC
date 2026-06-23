@@ -77,3 +77,8 @@ without inflating it into a production compiler or performance claim.
 
 Future claim expansion must add lower-level evidence first, then update this
 report, its schema, golden, tests, docs, and CI binding.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

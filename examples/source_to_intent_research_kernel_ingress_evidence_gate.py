@@ -85,6 +85,12 @@ try:
     from examples.source_to_intent_research_kernel_ingress_runtime_output_closure_index import (  # noqa: E501
         build_report as build_kernel_ingress_runtime_output_closure_index_report,
     )
+    from examples.source_to_intent_research_kernel_ingress_runtime_replay_verifier_index import (  # noqa: E501
+        assert_kernel_ingress_runtime_replay_verifier_index_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_runtime_replay_verifier_index import (  # noqa: E501
+        build_report as build_kernel_ingress_runtime_replay_verifier_index_report,
+    )
     from examples.source_to_intent_research_kernel_ingress_runtime_step_trace import (
         assert_kernel_ingress_runtime_step_trace_report_contract,
     )
@@ -170,6 +176,12 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from source_to_intent_research_kernel_ingress_runtime_output_closure_index import (
         build_report as build_kernel_ingress_runtime_output_closure_index_report,
     )
+    from source_to_intent_research_kernel_ingress_runtime_replay_verifier_index import (  # type: ignore[no-redef]  # noqa: E501
+        assert_kernel_ingress_runtime_replay_verifier_index_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_runtime_replay_verifier_index import (
+        build_report as build_kernel_ingress_runtime_replay_verifier_index_report,
+    )
     from source_to_intent_research_kernel_ingress_runtime_step_trace import (  # type: ignore[no-redef]
         assert_kernel_ingress_runtime_step_trace_report_contract,
     )
@@ -241,6 +253,7 @@ def build_gate_report(
     runtime_coverage_policy_text: str | None = None,
     runtime_evidence_bundle_index_text: str | None = None,
     runtime_output_closure_index_text: str | None = None,
+    runtime_replay_verifier_index_text: str | None = None,
     runtime_matrix_text: str | None = None,
     runtime_step_trace_text: str | None = None,
 ) -> str:
@@ -275,6 +288,11 @@ def build_gate_report(
         build_kernel_ingress_runtime_output_closure_index_report()
         if runtime_output_closure_index_text is None
         else runtime_output_closure_index_text
+    )
+    runtime_replay_verifier_index = (
+        build_kernel_ingress_runtime_replay_verifier_index_report()
+        if runtime_replay_verifier_index_text is None
+        else runtime_replay_verifier_index_text
     )
     runtime_backend_equivalence = (
         build_kernel_ingress_backend_equivalence_report()
@@ -330,6 +348,9 @@ def build_gate_report(
     runtime_output_closure_index_report = _assert_runtime_output_closure_index_bound(
         runtime_output_closure_index
     )
+    runtime_replay_verifier_index_report = _assert_runtime_replay_verifier_index_bound(
+        runtime_replay_verifier_index
+    )
     runtime_backend_equivalence_report = _assert_runtime_backend_equivalence_bound(
         runtime_backend_equivalence
     )
@@ -362,6 +383,9 @@ def build_gate_report(
             ),
             "source_to_intent_research_kernel_ingress_runtime_output_closure_index": (
                 runtime_output_closure_index
+            ),
+            "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index": (
+                runtime_replay_verifier_index
             ),
             "source_to_intent_research_kernel_ingress_backend_equivalence": (
                 runtime_backend_equivalence
@@ -402,6 +426,8 @@ def build_gate_report(
         runtime_evidence_bundle_index_report,
         runtime_output_closure_index,
         runtime_output_closure_index_report,
+        runtime_replay_verifier_index,
+        runtime_replay_verifier_index_report,
         runtime_backend_equivalence,
         runtime_backend_equivalence_report,
         runtime_backend_equivalence_shape_profiles,
@@ -441,6 +467,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         '  runtime_step_trace = "passed"',
         '  runtime_evidence_bundle_index = "passed"',
         '  runtime_output_closure_index = "passed"',
+        '  runtime_replay_verifier_index = "passed"',
         '  runtime_backend_equivalence = "passed"',
         '  runtime_backend_equivalence_shape_profiles = "passed"',
         '  runtime_coverage_policy = "passed"',
@@ -476,6 +503,12 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         (
             '  output_closure_contract = '
             '"runtime_execution_output_closure.data_only.v0"'
+        ),
+        '  runtime_replay_verifier_cases = "4"',
+        '  runtime_replay_verifier_check_count = "8"',
+        (
+            '  replay_verifier_contract = '
+            '"runtime_evidence_replay_verifier.review.v0"'
         ),
         '  runtime_backend_equivalence_cases = "4"',
         '  backend_equivalence_comparisons = "4"',
@@ -527,6 +560,7 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         "runtime_step_trace_digest",
         "runtime_evidence_bundle_index_digest",
         "runtime_output_closure_index_digest",
+        "runtime_replay_verifier_index_digest",
         "runtime_backend_equivalence_digest",
         "runtime_backend_equivalence_shape_profiles_digest",
         "runtime_coverage_policy_digest",
@@ -621,6 +655,20 @@ def _assert_runtime_output_closure_index_bound(text: str) -> Mapping[str, object
         ) from exc
     _assert_gate_text_is_source_free(text)
     return report
+
+
+def _assert_runtime_replay_verifier_index_bound(text: str) -> Mapping[str, object]:
+    report = _load_json_report(text, "runtime replay verifier index")
+    try:
+        assert_kernel_ingress_runtime_replay_verifier_index_report_contract(report)
+    except (TypeError, ValueError) as exc:
+        raise SourceToIntentResearchKernelIngressEvidenceGateError(
+            "kernel ingress evidence gate failed: "
+            "runtime replay verifier index binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+    return report
+
 
 
 def _assert_runtime_backend_equivalence_bound(text: str) -> Mapping[str, object]:
@@ -793,6 +841,8 @@ def _render_gate_report(
     runtime_evidence_bundle_index_report: Mapping[str, object],
     runtime_output_closure_index_text: str,
     runtime_output_closure_index_report: Mapping[str, object],
+    runtime_replay_verifier_index_text: str,
+    runtime_replay_verifier_index_report: Mapping[str, object],
     runtime_backend_equivalence_text: str,
     runtime_backend_equivalence_report: Mapping[str, object],
     runtime_backend_equivalence_shape_profiles_text: str,
@@ -831,6 +881,11 @@ def _render_gate_report(
     lines.append(
         "  runtime_output_closure_index_digest = "
         f'"{_digest(runtime_output_closure_index_text)}"'
+    )
+    lines.append('  runtime_replay_verifier_index = "passed"')
+    lines.append(
+        "  runtime_replay_verifier_index_digest = "
+        f'"{_digest(runtime_replay_verifier_index_text)}"'
     )
     lines.append('  runtime_backend_equivalence = "passed"')
     lines.append(
@@ -920,6 +975,18 @@ def _render_gate_report(
     lines.append(
         "  output_closure_contract = "
         f'"{runtime_output_closure_index_report["output_closure_contract"]}"'
+    )
+    lines.append(
+        "  runtime_replay_verifier_cases = "
+        f'"{runtime_replay_verifier_index_report["case_count"]}"'
+    )
+    lines.append(
+        "  runtime_replay_verifier_check_count = "
+        f'"{runtime_replay_verifier_index_report["cases"][0]["replay_check_count"]}"'
+    )
+    lines.append(
+        "  replay_verifier_contract = "
+        f'"{runtime_replay_verifier_index_report["replay_verifier_contract"]}"'
     )
     lines.append(
         "  runtime_backend_equivalence_cases = "

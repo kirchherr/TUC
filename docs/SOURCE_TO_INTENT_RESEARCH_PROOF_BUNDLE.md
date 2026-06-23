@@ -160,3 +160,8 @@ research capability claim
 
 Future parser-scope changes must update the underlying evidence before the
 bundle can remain valid.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

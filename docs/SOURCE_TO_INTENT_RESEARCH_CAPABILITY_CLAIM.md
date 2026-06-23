@@ -175,3 +175,8 @@ capability claim gate
 Future parser, runtime, backend, or performance claims must add evidence below
 this report before the supported claim scope can expand, and must update the
 gate before the expanded claim can merge.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

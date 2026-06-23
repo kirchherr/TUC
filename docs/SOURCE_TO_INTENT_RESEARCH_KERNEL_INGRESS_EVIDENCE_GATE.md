@@ -115,3 +115,8 @@ research capability claim
 Future Kernel Ingress syntax changes must update this gate before the expanded
 syntax can count as accepted research scope, and must update the Research
 Capability Claim before the high-level supported claim can expand.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

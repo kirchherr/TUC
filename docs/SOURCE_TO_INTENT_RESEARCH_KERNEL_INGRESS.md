@@ -220,3 +220,10 @@ This is a credible research step toward the roadmap's first real Triton kernel
 ingestion path. It proves that a realistic module-shaped source buffer can feed
 the existing safe source-to-runtime slice, while default source parser intake
 remains blocked.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py
+
+- Runtime Replay Verifier Index doc: docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_REPLAY_VERIFIER_INDEX.md

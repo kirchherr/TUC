@@ -251,3 +251,8 @@ Policy evidence, Kernel Ingress Runtime Backend Alignment evidence, Kernel
 Ingress Proof Bundle evidence, Kernel Ingress Evidence Gate evidence, this
 gate, and the Research Capability Claim before the expanded syntax can count
 as accepted research parser scope.
+
+
+## Follow-Up Evidence
+
+- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

@@ -873,6 +873,15 @@ Current slice:
   digest-only bindings from accepted Kernel Ingress cases to Runtime Execution
   Output Closure, and binding through the Kernel Ingress Proof Bundle, focused
   Evidence Gate, and Capability Claim.
+- Source-To-Intent Research Kernel Ingress Runtime Replay Verifier Index at
+  `examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`,
+  with schema at
+  `schemas/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.json`,
+  digest-only replay bindings from serialized Runtime Evidence Bundle and
+  Output Closure reports, and binding through the Kernel Ingress Proof Bundle,
+  focused Evidence Gate, and Capability Claim.
 - Source-To-Intent Research Kernel Ingress Backend Equivalence at
   `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`,
   with schema at
