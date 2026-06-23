@@ -32,16 +32,23 @@ the same Runtime Execution Receipt digest as the receipt evaluated by the gate.
 
 ## Evidence
 
-Run:
+Run the proof-of-execution closure:
 
 ```bash
 python examples/runtime_execution_output_closure.py
+```
+
+Run the multi-output closure:
+
+```bash
+python examples/runtime_multi_output_execution_output_closure.py
 ```
 
 Golden evidence:
 
 ```text
 tests/golden/runtime_execution_output_closure/proof_of_execution.json
+tests/golden/runtime_execution_output_closure/multi_output_execution.json
 ```
 
 ## Security Boundary
@@ -58,9 +65,11 @@ artifact files from matrix identifiers.
 
 ## Review Meaning
 
-A passing Runtime Execution Output Closure proves that the proof-of-execution
-public output boundary is closed by metadata digest across source public-output
-evidence, Runtime Execution Receipt, and Runtime Execution Evidence Bundle.
+A passing Runtime Execution Output Closure proves that a runtime public output
+boundary is closed by metadata digest across source public-output evidence,
+Runtime Execution Receipt, and Runtime Execution Evidence Bundle. The current
+evidence covers both the proof-of-execution fixture and a two-public-output
+fixture.
 
 It is not a performance claim, cryptographic attestation, hardware endorsement,
 or source parser completeness claim.

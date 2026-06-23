@@ -333,9 +333,12 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Execution Output Closure Report v0 with schema at
   `schemas/runtime_execution_output_closure_report.v0.schema.json`,
   deterministic golden evidence at
-  `tests/golden/runtime_execution_output_closure/proof_of_execution.json`, and
-  Runtime Evidence Gate binding, with the decision captured in
-  `rfcs/0205-runtime-execution-output-closure-report.md`.
+  `tests/golden/runtime_execution_output_closure/proof_of_execution.json`,
+  multi-output closure evidence at
+  `tests/golden/runtime_execution_output_closure/multi_output_execution.json`,
+  and Runtime Evidence Gate binding, with the decisions captured in
+  `rfcs/0205-runtime-execution-output-closure-report.md` and
+  `rfcs/0207-runtime-multi-output-execution-output-closure.md`.
 - Runtime Execution Receipt Binding in Runtime Evidence Gate, rejecting receipts
   whose graph names, contracts, metadata digests, item counts, pass status, or
   raw-value policy do not match the evidence reports evaluated by the same gate

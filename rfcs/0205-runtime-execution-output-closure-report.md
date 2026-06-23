@@ -17,6 +17,7 @@ Add Runtime Execution Output Closure Report v0:
 - `examples/runtime_execution_output_closure.py`
 - `schemas/runtime_execution_output_closure_report.v0.schema.json`
 - `tests/golden/runtime_execution_output_closure/proof_of_execution.json`
+- `tests/golden/runtime_execution_output_closure/multi_output_execution.json`
 - [Runtime Execution Output Closure](../docs/RUNTIME_EXECUTION_OUTPUT_CLOSURE.md)
 
 Runtime Evidence Gate now requires the report to pass and verifies that it is
@@ -36,4 +37,5 @@ points.
 
 The public-output closure is now directly reviewable and CI-facing. A stale or
 forged receipt/bundle public-output link fails as an explicit output-closure
-issue instead of being hidden inside nested evidence.
+issue instead of being hidden inside nested evidence. The same report contract is
+reused for the multi-output fixture through RFC 0207.
