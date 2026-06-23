@@ -4,6 +4,9 @@ Runtime Evidence Flow explains how TUC turns trusted prototype execution into
 reviewable metadata without serializing raw tensor values or approving external
 execution surfaces.
 
+For the shortest end-to-end reading path, see
+[Minimal TUC Walkthrough](MINIMAL_TUC_WALKTHROUGH.md).
+
 The current flow is:
 
 ```text
@@ -134,6 +137,10 @@ Allocation Receipt evidence before allocator behavior can be accepted.
 systolic, vector, and mixed accelerator proof slices. It demonstrates that
 distinct backend placements can preserve observable output semantics before
 stronger portability or performance claims are made.
+
+The proof class is described in
+[Proof Of Backend Equivalence](PROOF_OF_BACKEND_EQUIVALENCE.md), including its
+non-claims and review checklist.
 
 `Runtime HS-IR Plan Alignment` is the current bridge between backend-specific
 IR facts and practical runtime execution evidence. It makes HS-IR drift from

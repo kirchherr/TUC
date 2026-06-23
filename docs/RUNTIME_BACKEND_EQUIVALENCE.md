@@ -3,6 +3,9 @@
 Runtime Backend Equivalence v0 is a schema-versioned, data-only review artifact
 for comparing two trusted Runtime Executor placements of the same graph.
 
+For the project-level proof interpretation, see
+[Proof Of Backend Equivalence](PROOF_OF_BACKEND_EQUIVALENCE.md).
+
 It is a practical runtime proof slice: the same compute intent is compiled and
 executed twice, once as a neutral baseline placement and once with an explicit
 accelerator placement. The report records whether terminal outputs match while

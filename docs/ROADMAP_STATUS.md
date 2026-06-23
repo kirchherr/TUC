@@ -32,6 +32,17 @@ hardware-independent interface into capability-driven runtime planning.
 - [Research Onboarding Evidence](RESEARCH_ONBOARDING_EVIDENCE.md) emits the
   first-run proof path as schema-versioned review evidence with blocked claims
   and blocked execution surfaces.
+- [Minimal TUC Walkthrough](MINIMAL_TUC_WALKTHROUGH.md) gives reviewers the
+  shortest current path through compute intent, trusted runtime execution,
+  runtime evidence, replay verification, backend equivalence, and evidence
+  gates without expanding the README.
+- [Proof Of Backend Equivalence](PROOF_OF_BACKEND_EQUIVALENCE.md) promotes
+  backend equivalence to an explicit proof type with required evidence, current
+  artifacts, non-claims, and a secure review checklist.
+- [RFC 0212: Runtime Layout Conversion Evidence](../rfcs/0212-runtime-layout-conversion-evidence.md)
+  defines the next data-only proof boundary for explicit planned layout
+  transitions before any native converter, allocation handle, or real residency
+  claim is accepted.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding
@@ -1275,6 +1286,9 @@ Current focus:
   as practical execution evidence.
 - Treat softmax decomposition as runtime/HS-IR planning evidence, not HAC-IR
   semantics.
+- Use RFC 0212 before accepting runtime layout conversion behavior, hidden
+  backend-local layout transitions, native layout converters, or real
+  device-residency claims.
 
 ## Next
 
@@ -1327,6 +1341,9 @@ Current focus:
   contribution.
 - Plugin lifecycle RFC and sandboxing model before any executable backend
   discovery, artifact execution, or native plugin ABI.
+- Runtime Layout Conversion Evidence should enter as optional data-only
+  inventory before it becomes Runtime Evidence Matrix or Runtime Evidence Gate
+  required evidence.
 
 ## Runtime Allocation Reconciliation
 
