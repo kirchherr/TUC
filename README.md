@@ -111,8 +111,8 @@ Current runtime surfaces:
 - Runtime Execution Evidence Bundle v0 packaging one coherent metadata-only
   execution evidence set, including the public output boundary, for review.
 - Runtime Execution Output Closure v0 auditing that Receipt and Evidence Bundle
-  bind the same public Output Contract and Public Output Bundle across both
-  proof-of-execution and multi-output fixtures.
+  bind the same public Output Contract and Public Output Bundle across
+  proof-of-execution, multi-output, and softmax fixtures.
 - Runtime Backend Equivalence v0 comparing `reference-cpu` against
   `systolic-sim`, `vector-sim`, and mixed `systolic-sim` plus `vector-sim`
   placements without serialized tensor values, with all proof slices bound into
@@ -154,6 +154,7 @@ examples/runtime_execution_receipt.py
 examples/runtime_execution_evidence_bundle.py
 examples/runtime_execution_output_closure.py
 examples/runtime_multi_output_execution_output_closure.py
+examples/runtime_softmax_execution_output_closure.py
 examples/runtime_backend_equivalence.py
 examples/runtime_backend_equivalence_portfolio.py
 examples/runtime_backend_equivalence_portfolio_policy.py

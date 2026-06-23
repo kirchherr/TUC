@@ -44,11 +44,18 @@ Run the multi-output closure:
 python examples/runtime_multi_output_execution_output_closure.py
 ```
 
+Run the softmax closure:
+
+```bash
+python examples/runtime_softmax_execution_output_closure.py
+```
+
 Golden evidence:
 
 ```text
 tests/golden/runtime_execution_output_closure/proof_of_execution.json
 tests/golden/runtime_execution_output_closure/multi_output_execution.json
+tests/golden/runtime_execution_output_closure/proof_of_softmax.json
 ```
 
 ## Security Boundary
@@ -68,8 +75,8 @@ artifact files from matrix identifiers.
 A passing Runtime Execution Output Closure proves that a runtime public output
 boundary is closed by metadata digest across source public-output evidence,
 Runtime Execution Receipt, and Runtime Execution Evidence Bundle. The current
-evidence covers both the proof-of-execution fixture and a two-public-output
-fixture.
+evidence covers the proof-of-execution fixture, a two-public-output fixture,
+and the `matmul -> softmax` proof fixture.
 
 It is not a performance claim, cryptographic attestation, hardware endorsement,
 or source parser completeness claim.
