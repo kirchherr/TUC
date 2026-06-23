@@ -21,6 +21,7 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS = (
     "proof_of_execution",
     "runtime_evidence_matrix",
     "runtime_evidence_gate",
+    "runtime_execution_output_closure",
     "runtime_memory_planning_gate",
     "research_onboarding_evidence",
 )
@@ -28,6 +29,7 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_POINTS = (
     "python examples/proof_of_execution.py",
     "python examples/runtime_evidence_matrix.py",
     "python examples/runtime_evidence_gate.py",
+    "python examples/runtime_execution_output_closure.py",
     "python examples/runtime_memory_planning_gate.py",
     "python examples/research_onboarding_evidence.py",
 )
@@ -35,6 +37,7 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ARTIFACT_KINDS = (
     "deterministic_proof_output",
     "schema_versioned_matrix_report",
     "deterministic_gate_output",
+    "schema_versioned_output_closure_report",
     "deterministic_memory_planning_gate_output",
     "schema_versioned_onboarding_report",
 )

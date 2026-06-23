@@ -78,6 +78,9 @@ python examples/objective_alpha_public_proof_bundle.py
 ```
 
 See [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
+It directly exposes Runtime Execution Output Closure as a digest-only public
+entry, so reviewers can inspect the output boundary without unpacking gate
+internals.
 
 ## Runtime Execution
 

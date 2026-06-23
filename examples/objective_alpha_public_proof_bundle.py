@@ -8,6 +8,9 @@ from examples.proof_of_execution import render_proof_report, run_proof
 from examples.research_onboarding_evidence import build_report as build_onboarding_report
 from examples.runtime_evidence_gate import build_gate_report
 from examples.runtime_evidence_matrix import build_report as build_matrix_report
+from examples.runtime_execution_output_closure import (
+    build_report as build_output_closure_report,
+)
 from examples.runtime_memory_planning_gate import (
     build_gate_report as build_memory_planning_gate_report,
 )
@@ -28,6 +31,7 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
     proof_output = render_proof_report(proof) + "\n"
     matrix_output = build_matrix_report()
     gate_output = build_gate_report()
+    output_closure_output = build_output_closure_report()
     memory_planning_gate_output = build_memory_planning_gate_report()
     onboarding_output = build_onboarding_report()
     return build_objective_alpha_public_proof_bundle(
@@ -49,6 +53,12 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
                 entry_point="python examples/runtime_evidence_gate.py",
                 artifact_kind="deterministic_gate_output",
                 metadata_digest=_digest_text(gate_output),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="runtime_execution_output_closure",
+                entry_point="python examples/runtime_execution_output_closure.py",
+                artifact_kind="schema_versioned_output_closure_report",
+                metadata_digest=_digest_text(output_closure_output),
             ),
             ObjectiveAlphaPublicEvidenceEntry(
                 evidence_id="runtime_memory_planning_gate",
