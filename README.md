@@ -124,9 +124,9 @@ Current runtime surfaces:
   inventoried by Runtime Evidence Matrix and required by Runtime Evidence Gate
   for the mixed accelerator proof slice.
 - Runtime Buffer Lifetime, Allocation Plan, Memory Budget, Allocation Request
-  Manifest, Allocation Admission, and Memory Planning Gate, now inventoried by
-  Runtime Evidence Matrix and required by Runtime Evidence Gate through exact
-  artifact IDs.
+  Manifest, Allocation Admission, Allocation Receipt, and Memory Planning Gate,
+  now inventoried by Runtime Evidence Matrix and required by Runtime Evidence
+  Gate through exact artifact IDs.
 - Runtime Candidate Score Evidence, Policy, Conformance, and Scoring Gate.
 - Runtime Planning Explanation v0 for accepted `PartitionPlan` backend
   sequence, fallback/no-fallback placement, candidate-score visibility, and
@@ -160,6 +160,7 @@ examples/runtime_reference_correctness.py
 examples/runtime_candidate_scoring_gate.py
 examples/runtime_allocation_request_manifest.py
 examples/runtime_allocation_admission.py
+examples/runtime_allocation_receipt.py
 examples/runtime_memory_planning_gate.py
 ```
 
@@ -183,6 +184,7 @@ Key docs:
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
 - [Runtime Allocation Request Manifest](docs/RUNTIME_ALLOCATION_REQUEST_MANIFEST.md)
 - [Runtime Allocation Admission](docs/RUNTIME_ALLOCATION_ADMISSION.md)
+- [Runtime Allocation Receipt](docs/RUNTIME_ALLOCATION_RECEIPT.md)
 - [Runtime Memory Planning Gate](docs/RUNTIME_MEMORY_PLANNING_GATE.md)
 - [Runtime Candidate Scoring Gate](docs/RUNTIME_CANDIDATE_SCORING_GATE.md)
 - [Runtime override policy](docs/RUNTIME_OVERRIDE_POLICY.md)
@@ -204,6 +206,7 @@ schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json
 schemas/runtime_allocation_request_manifest_report.v0.schema.json
 schemas/runtime_allocation_admission_report.v0.schema.json
+schemas/runtime_allocation_receipt_report.v0.schema.json
 ```
 
 ## Frontend Intake

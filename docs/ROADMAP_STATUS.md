@@ -182,13 +182,18 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_allocation_admission/current_report.json`, and
   data-only allocator-admission decisions bound to Allocation Request Manifest
   and Memory Budget evidence before any allocator behavior exists.
+- Runtime Allocation Receipt v0 with schema at
+  `schemas/runtime_allocation_receipt_report.v0.schema.json`, deterministic
+  golden at `tests/golden/runtime_allocation_receipt/current_report.json`, and
+  dry-run allocation ledger entries bound to Allocation Admission evidence
+  without pointers, handles, memory pools, or device access.
 - Runtime Memory Planning Gate v0 with deterministic golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt` and CI coverage
   in the `python` workflow job, now verifying Allocation Plan binding to Buffer
   Lifetime, Memory Budget binding to Allocation Plan, Allocation Request
-  Manifest binding to Allocation Plan and Memory Budget, and Allocation
-  Admission binding to Request Manifest and Memory Budget in the same gate
-  invocation.
+  Manifest binding to Allocation Plan and Memory Budget, Allocation Admission
+  binding to Request Manifest and Memory Budget, and Allocation Receipt binding
+  to Allocation Admission in the same gate invocation.
 - Systolic simulator proof with `systolic-sim` placement, `device_sram`
   memory-domain evidence, `blocked -> row_major` layout-conversion evidence,
   deterministic proof/HAC-IR/runtime-plan/compiler-decision/readiness/trace/
@@ -630,14 +635,21 @@ Current slice:
   `tests/golden/runtime_allocation_admission/current_report.json`, admitting
   only requests that match current Memory Budget evidence without runtime
   handles.
+- Runtime Allocation Receipt at `examples/runtime_allocation_receipt.py`, with
+  schema at `schemas/runtime_allocation_receipt_report.v0.schema.json` and
+  golden evidence at
+  `tests/golden/runtime_allocation_receipt/current_report.json`, recording
+  deterministic dry-run allocation ledger entries without pointers or handles.
 - Runtime Memory Planning Gate at `examples/runtime_memory_planning_gate.py`,
   with golden evidence at
   `tests/golden/runtime_memory_planning_gate/current_gate.txt`, rejecting stale
   Allocation Plan evidence whose source Buffer Lifetime digest does not match,
   stale Memory Budget evidence whose source Allocation Plan digest does not
   match, stale Allocation Request Manifest evidence whose source Allocation
-  Plan or Memory Budget binding does not match, and stale Allocation Admission
-  evidence whose Request Manifest or Memory Budget binding does not match.
+  Plan or Memory Budget binding does not match, stale Allocation Admission
+  evidence whose Request Manifest or Memory Budget binding does not match, and
+  stale Allocation Receipt evidence whose Allocation Admission binding does not
+  match.
 - Systolic simulator proof at `examples/proof_of_systolic_execution.py`, with
   evidence goldens under `tests/golden/proofs/`,
   `tests/golden/hac_ir/`, `tests/golden/runtime_plans/`,
@@ -1194,6 +1206,9 @@ Current focus:
 - Use Runtime Allocation Admission before accepting memory pools, device
   allocation, aliasing, runtime handles, or allocator behavior that can admit
   runtime memory requests.
+- Use Runtime Allocation Receipt before accepting memory pools, device
+  allocation, aliasing, runtime handles, or allocator behavior that can record
+  runtime allocation outcomes.
 - Keep Runtime Memory Planning Gate and its Runtime Evidence Gate matrix
   binding passing in CI before accepting allocator,
   memory-pool, device-allocation, or aliasing changes.
@@ -1207,6 +1222,9 @@ Current focus:
 - Keep Allocation Admission reports bound to the Request Manifest and Memory
   Budget evaluated by the same gate invocation before accepting allocator,
   memory-pool, device-allocation, runtime-handle, or aliasing changes.
+- Keep Allocation Receipt reports bound to the Allocation Admission evaluated by
+  the same gate invocation before accepting allocator, memory-pool,
+  device-allocation, runtime-handle, or aliasing changes.
 - Keep Allocation Plan reports bound to the Buffer Lifetime report evaluated by
   the same gate invocation before accepting allocator, memory-pool,
   device-allocation, or aliasing changes.

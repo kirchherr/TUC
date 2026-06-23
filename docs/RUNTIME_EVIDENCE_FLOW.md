@@ -125,8 +125,8 @@ that linked evidence reports agree on graph names, contracts, metadata digests,
 item counts, pass status, and raw-value policy.
 
 `Runtime Memory Planning Gate` separately checks Buffer Lifetime, Allocation
-Plan, Memory Budget, Allocation Request Manifest, and Allocation Admission
-evidence before allocator behavior can be accepted.
+Plan, Memory Budget, Allocation Request Manifest, Allocation Admission, and
+Allocation Receipt evidence before allocator behavior can be accepted.
 
 `Runtime Backend Equivalence` is required by Runtime Evidence Gate for the
 systolic, vector, and mixed accelerator proof slices. It demonstrates that

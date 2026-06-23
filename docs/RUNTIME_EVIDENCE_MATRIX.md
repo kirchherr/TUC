@@ -117,8 +117,8 @@ The current matrix is complete across every accepted graph fixture:
   both the aggregate backend-diversity artifact and its accepted membership
   policy.
 - `runtime_memory_planning` is complete under scoped Buffer Lifetime,
-  Allocation Plan, Memory Budget, Allocation Request Manifest, and Allocation
-  Admission evidence requirements.
+  Allocation Plan, Memory Budget, Allocation Request Manifest, Allocation
+  Admission, and Allocation Receipt evidence requirements.
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.

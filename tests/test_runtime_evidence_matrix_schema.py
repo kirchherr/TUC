@@ -129,6 +129,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "runtime_memory_budget",
         "runtime_allocation_request_manifest",
         "runtime_allocation_admission",
+        "runtime_allocation_receipt",
     ]
     assert {
         artifact["artifact_kind"]
@@ -146,6 +147,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "runtime_memory_budget",
         "runtime_allocation_request_manifest",
         "runtime_allocation_admission",
+        "runtime_allocation_receipt",
     }
 
 

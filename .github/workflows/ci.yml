@@ -45,6 +45,10 @@ jobs:
         run: python examples/runtime_candidate_score_evidence.py
       - name: Runtime candidate scoring gate
         run: python examples/runtime_candidate_scoring_gate.py
+      - name: Runtime allocation admission
+        run: python examples/runtime_allocation_admission.py
+      - name: Runtime allocation receipt
+        run: python examples/runtime_allocation_receipt.py
       - name: Runtime memory planning gate
         run: python examples/runtime_memory_planning_gate.py
       - name: Backend author evidence gate

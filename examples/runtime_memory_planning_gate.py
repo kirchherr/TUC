@@ -21,23 +21,30 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
 
 from tuc import (
     RUNTIME_ALLOCATION_ADMISSION_CONTRACT,
+    RUNTIME_ALLOCATION_ADMISSION_REPORT_SCHEMA_VERSION,
     RUNTIME_ALLOCATION_ADMISSION_STATUS,
     RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION,
+    RUNTIME_ALLOCATION_RECEIPT_ALLOCATION_MODE,
+    RUNTIME_ALLOCATION_RECEIPT_CONTRACT,
+    RUNTIME_ALLOCATION_RECEIPT_STATUS,
     RUNTIME_ALLOCATION_REQUEST_MANIFEST_REPORT_SCHEMA_VERSION,
     RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION,
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION,
     RuntimeAllocationAdmissionReport,
     RuntimeAllocationPlanReport,
+    RuntimeAllocationReceiptReport,
     RuntimeAllocationRequestManifestReport,
     RuntimeBufferLifetimeReport,
     RuntimeMemoryBudgetReport,
     assert_runtime_allocation_admission,
     assert_runtime_allocation_plan,
+    assert_runtime_allocation_receipt,
     assert_runtime_allocation_request_manifest,
     assert_runtime_buffer_lifetime,
     assert_runtime_memory_budget,
     build_runtime_allocation_admission_report,
+    build_runtime_allocation_receipt_report,
     build_runtime_allocation_request_manifest_report,
 )
 
@@ -53,6 +60,7 @@ def build_gate_report(
     memory_budget_report: RuntimeMemoryBudgetReport | None = None,
     request_manifest_report: RuntimeAllocationRequestManifestReport | None = None,
     allocation_admission_report: RuntimeAllocationAdmissionReport | None = None,
+    allocation_receipt_report: RuntimeAllocationReceiptReport | None = None,
 ) -> str:
     """Return the stable CI-facing runtime memory planning gate report."""
 
@@ -98,12 +106,23 @@ def build_gate_report(
         memory_budget,
         allocation_admission,
     )
+    allocation_receipt = (
+        build_runtime_allocation_receipt_report(allocation_admission)
+        if allocation_receipt_report is None
+        else allocation_receipt_report
+    )
+    _assert_allocation_receipt_passed(allocation_receipt)
+    _assert_allocation_receipt_matches_source(
+        allocation_admission,
+        allocation_receipt,
+    )
     return _render_gate_report(
         lifetime,
         allocation,
         memory_budget,
         request_manifest,
         allocation_admission,
+        allocation_receipt,
     )
 
 
@@ -157,6 +176,17 @@ def _assert_allocation_admission_passed(
     except AssertionError as exc:
         raise RuntimeMemoryPlanningGateError(
             f"runtime allocation admission failed: {exc}"
+        ) from exc
+
+
+def _assert_allocation_receipt_passed(
+    report: RuntimeAllocationReceiptReport,
+) -> None:
+    try:
+        assert_runtime_allocation_receipt(report)
+    except AssertionError as exc:
+        raise RuntimeMemoryPlanningGateError(
+            f"runtime allocation receipt failed: {exc}"
         ) from exc
 
 
@@ -401,6 +431,89 @@ def _assert_allocation_admission_matches_sources(
         )
 
 
+def _assert_allocation_receipt_matches_source(
+    allocation_admission: RuntimeAllocationAdmissionReport,
+    allocation_receipt: RuntimeAllocationReceiptReport,
+) -> None:
+    if allocation_admission.graph_name != allocation_receipt.graph_name:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt graph mismatch"
+        )
+    if allocation_admission.operation_count != allocation_receipt.operation_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt operation count mismatch"
+        )
+    if allocation_receipt.receipt_contract != RUNTIME_ALLOCATION_RECEIPT_CONTRACT:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt contract mismatch"
+        )
+    if allocation_receipt.allocation_mode != RUNTIME_ALLOCATION_RECEIPT_ALLOCATION_MODE:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt mode mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_contract
+        != allocation_admission.admission_contract
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admission contract mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_schema_version
+        != RUNTIME_ALLOCATION_ADMISSION_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admission schema mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_issue_count
+        != len(allocation_admission.issues)
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admission issue count mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_metadata_digest
+        != allocation_admission.admission_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admission digest mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_total_admitted_bytes
+        != allocation_admission.total_admitted_bytes
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admitted bytes mismatch"
+        )
+    if allocation_receipt.receipt_count != allocation_admission.admission_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt count mismatch"
+        )
+    if allocation_receipt.total_receipted_bytes != allocation_admission.total_admitted_bytes:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt bytes mismatch"
+        )
+    if tuple(receipt.request_id for receipt in allocation_receipt.receipts) != tuple(
+        admission.request_id for admission in allocation_admission.admissions
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt request binding mismatch"
+        )
+    if tuple(receipt.slot_id for receipt in allocation_receipt.receipts) != tuple(
+        admission.slot_id for admission in allocation_admission.admissions
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt slot binding mismatch"
+        )
+    if {receipt.allocation_status for receipt in allocation_receipt.receipts} != {
+        RUNTIME_ALLOCATION_RECEIPT_STATUS
+    }:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt status mismatch"
+        )
+
+
 def _request_slot_payloads(
     request_manifest: RuntimeAllocationRequestManifestReport,
 ) -> tuple[tuple[object, ...], ...]:
@@ -443,6 +556,7 @@ def _render_gate_report(
     memory_budget: RuntimeMemoryBudgetReport,
     request_manifest: RuntimeAllocationRequestManifestReport,
     allocation_admission: RuntimeAllocationAdmissionReport,
+    allocation_receipt: RuntimeAllocationReceiptReport,
 ) -> str:
     lines = ["runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {"]
     lines.append('  buffer_lifetime = "passed"')
@@ -475,6 +589,14 @@ def _render_gate_report(
     lines.append(
         '  allocation_admitted_bytes = '
         f'"{allocation_admission.total_admitted_bytes}"'
+    )
+    lines.append('  allocation_receipt = "passed"')
+    lines.append('  allocation_receipt_binding = "verified"')
+    lines.append(f'  allocation_receipts = "{allocation_receipt.receipt_count}"')
+    lines.append(f'  allocation_receipt_mode = "{allocation_receipt.allocation_mode}"')
+    lines.append(
+        '  allocation_receipted_bytes = '
+        f'"{allocation_receipt.total_receipted_bytes}"'
     )
     lines.append(
         "  blocked_execution_surfaces = "

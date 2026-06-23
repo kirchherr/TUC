@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
+from hashlib import sha256
 
 from tuc.ir.memory import MemoryDomainKind
 from tuc.runtime.allocation_request_manifest import (
@@ -12,6 +14,7 @@ from tuc.runtime.allocation_request_manifest import (
     RUNTIME_ALLOCATION_REQUEST_MANIFEST_CONTRACT,
     RUNTIME_ALLOCATION_REQUEST_MANIFEST_REPORT_SCHEMA_VERSION,
     RUNTIME_ALLOCATION_REQUEST_STATUS,
+    RuntimeAllocationRequest,
     RuntimeAllocationRequestManifestReport,
 )
 from tuc.runtime.executor import RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
@@ -19,6 +22,7 @@ from tuc.runtime.memory_budget import (
     RUNTIME_MEMORY_BUDGET_CONTRACT,
     RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION,
     RuntimeMemoryBudgetReport,
+    RuntimeMemoryDomainUsage,
 )
 
 RUNTIME_ALLOCATION_ADMISSION_REPORT_SCHEMA_VERSION = (
@@ -237,6 +241,12 @@ class RuntimeAllocationAdmissionReport:
             if admission.admission_status == RUNTIME_ALLOCATION_ADMISSION_STATUS
         )
 
+    @property
+    def admission_metadata_digest(self) -> str:
+        """Return a digest over allocation-admission metadata only."""
+
+        return _metadata_digest(runtime_allocation_admission_report_to_dict(self))
+
 
 class RuntimeAllocationAdmissionError(AssertionError):
     """Raised when runtime allocation admission evidence fails."""
@@ -388,15 +398,13 @@ def dump_runtime_allocation_admission_report(
 
 def _admission_from_request(
     request: object,
-    usage_by_domain: object,
+    usage_by_domain: Mapping[MemoryDomainKind, RuntimeMemoryDomainUsage],
     sources_passed: bool,
 ) -> RuntimeAllocationAdmission:
-    from tuc.runtime.allocation_request_manifest import RuntimeAllocationRequest
-
     if not isinstance(request, RuntimeAllocationRequest):
         raise TypeError("allocation admission request must be request object")
-    if not isinstance(usage_by_domain, dict):
-        raise TypeError("allocation admission usage lookup must be a dict")
+    if not isinstance(usage_by_domain, Mapping):
+        raise TypeError("allocation admission usage lookup must be a mapping")
     usage = usage_by_domain.get(request.memory_domain)
     if usage is None:
         budget_id = _MISSING_BUDGET_ID
@@ -492,6 +500,15 @@ def _derive_admission_issues(
                 )
             )
     return tuple(issues)
+
+
+def _metadata_digest(payload: object) -> str:
+    encoded = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return "sha256:" + sha256(encoded).hexdigest()
 
 
 def _validate_text(value: str, label: str) -> None:

@@ -715,6 +715,11 @@
           "artifact_id": "runtime_allocation_admission_current",
           "artifact_kind": "runtime_allocation_admission",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "runtime_allocation_receipt_current",
+          "artifact_kind": "runtime_allocation_receipt",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "runtime_memory_planning",
@@ -725,7 +730,8 @@
         "runtime_allocation_plan",
         "runtime_memory_budget",
         "runtime_allocation_request_manifest",
-        "runtime_allocation_admission"
+        "runtime_allocation_admission",
+        "runtime_allocation_receipt"
       ],
       "runtime_evidence_complete": true,
       "source_boundary": "runtime_memory_planning"

@@ -23,11 +23,13 @@ from tuc import (
     RuntimeAllocationAdmissionReport,
     RuntimeAllocationIssue,
     RuntimeAllocationPlanReport,
+    RuntimeAllocationReceiptReport,
     RuntimeBufferLifetimeIssue,
     RuntimeBufferLifetimeReport,
     RuntimeMemoryBudgetReport,
     RuntimeMemoryDomainBudget,
     build_runtime_allocation_admission_report,
+    build_runtime_allocation_receipt_report,
     build_runtime_allocation_request_manifest_report,
     build_runtime_memory_budget_report,
 )
@@ -49,6 +51,9 @@ def test_runtime_memory_planning_gate_matches_golden() -> None:
     assert 'allocation_request_handle_policy = "no_runtime_handles"' in report
     assert 'allocation_admission = "passed"' in report
     assert 'allocation_admission_binding = "verified"' in report
+    assert 'allocation_receipt = "passed"' in report
+    assert 'allocation_receipt_binding = "verified"' in report
+    assert 'allocation_receipt_mode = "dry_run_only"' in report
     assert report.rstrip().endswith('status = "PASS"\n}')
 
 
@@ -187,6 +192,32 @@ def test_runtime_memory_planning_gate_rejects_failed_allocation_admission() -> N
 
     with pytest.raises(RuntimeMemoryPlanningGateError, match="allocation admission"):
         build_gate_report(allocation_admission_report=failed_admission)
+
+
+def test_runtime_memory_planning_gate_rejects_stale_allocation_receipt() -> None:
+    request_manifest = build_current_runtime_allocation_request_manifest_report()
+    memory_budget = build_current_runtime_memory_budget_report()
+    admission = build_runtime_allocation_admission_report(
+        request_manifest,
+        memory_budget,
+    )
+    receipt = build_runtime_allocation_receipt_report(admission)
+    stale_receipt = RuntimeAllocationReceiptReport(
+        graph_name=receipt.graph_name,
+        operation_count=receipt.operation_count,
+        source_admission_contract=receipt.source_admission_contract,
+        source_admission_schema_version=receipt.source_admission_schema_version,
+        source_admission_issue_count=receipt.source_admission_issue_count,
+        source_admission_metadata_digest="sha256:" + "1" * 64,
+        source_admission_total_admitted_bytes=(
+            receipt.source_admission_total_admitted_bytes
+        ),
+        receipts=receipt.receipts,
+        issues=receipt.issues,
+    )
+
+    with pytest.raises(RuntimeMemoryPlanningGateError, match="allocation receipt"):
+        build_gate_report(allocation_receipt_report=stale_receipt)
 
 
 def test_runtime_memory_planning_gate_rejects_graph_mismatch() -> None:

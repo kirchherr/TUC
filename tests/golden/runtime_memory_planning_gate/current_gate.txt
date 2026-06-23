@@ -22,6 +22,11 @@ runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {
   allocation_admissions = "3"
   allocation_admission_blocked = "0"
   allocation_admitted_bytes = "192"
+  allocation_receipt = "passed"
+  allocation_receipt_binding = "verified"
+  allocation_receipts = "3"
+  allocation_receipt_mode = "dry_run_only"
+  allocation_receipted_bytes = "192"
   blocked_execution_surfaces = "backend_plugin_discovery,device_access,dynamic_import,dynamic_library_loading,generated_artifact_execution,jit_execution,network_access,subprocess_execution"
   status = "PASS"
 }
