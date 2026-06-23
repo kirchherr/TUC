@@ -49,6 +49,8 @@ def test_runtime_execution_evidence_bundle_passes_for_execution_proof() -> None:
     assert report.tensor_store_report.graph_name == report.graph_name
     assert report.input_manifest_report.graph_name == report.graph_name
     assert report.output_manifest_report.graph_name == report.graph_name
+    assert report.output_contract_report.graph_name == report.graph_name
+    assert report.public_output_bundle.graph_name == report.graph_name
     assert report.reference_correctness_report.graph_name == report.graph_name
     assert report.execution_receipt_report.graph_name == report.graph_name
     assert tuple(runtime_execution_evidence_bundle_report_to_dict(report)) == (
@@ -59,9 +61,11 @@ def test_runtime_execution_evidence_bundle_passes_for_execution_proof() -> None:
         "execution_receipt",
         "graph_name",
         "input_manifest",
+        "output_contract",
         "issues",
         "linkage_policy",
         "output_manifest",
+        "public_output_bundle",
         "passed",
         "raw_value_policy",
         "reference_correctness",
@@ -108,6 +112,8 @@ def test_runtime_execution_evidence_bundle_issues_must_be_derived() -> None:
             tensor_store_report=report.tensor_store_report,
             input_manifest_report=report.input_manifest_report,
             output_manifest_report=report.output_manifest_report,
+            output_contract_report=report.output_contract_report,
+            public_output_bundle=report.public_output_bundle,
             reference_correctness_report=report.reference_correctness_report,
             execution_receipt_report=bad_receipt,
             issues=(),
@@ -122,6 +128,8 @@ def test_runtime_execution_evidence_bundle_records_receipt_mismatch() -> None:
         tensor_store_report=report.tensor_store_report,
         input_manifest_report=report.input_manifest_report,
         output_manifest_report=report.output_manifest_report,
+        output_contract_report=report.output_contract_report,
+        public_output_bundle=report.public_output_bundle,
         reference_correctness_report=report.reference_correctness_report,
         execution_receipt_report=bad_receipt,
         issues=(
@@ -146,6 +154,8 @@ def test_runtime_execution_evidence_bundle_rejects_forbidden_surface_names() -> 
             tensor_store_report=report.tensor_store_report,
             input_manifest_report=report.input_manifest_report,
             output_manifest_report=report.output_manifest_report,
+            output_contract_report=report.output_contract_report,
+            public_output_bundle=report.public_output_bundle,
             reference_correctness_report=report.reference_correctness_report,
             execution_receipt_report=report.execution_receipt_report,
             issues=(),
@@ -189,6 +199,12 @@ def test_runtime_execution_evidence_bundle_schema_matches_contract() -> None:
     )
     assert schema["properties"]["output_manifest"]["$ref"] == (
         "runtime_output_manifest_report.v0.schema.json"
+    )
+    assert schema["properties"]["output_contract"]["$ref"] == (
+        "runtime_output_contract_report.v0.schema.json"
+    )
+    assert schema["properties"]["public_output_bundle"]["$ref"] == (
+        "runtime_public_output_bundle_report.v0.schema.json"
     )
     assert schema["properties"]["reference_correctness"]["$ref"] == (
         "runtime_reference_correctness_report.v0.schema.json"
@@ -252,6 +268,8 @@ def test_runtime_execution_evidence_bundle_golden_matches_schema_shape() -> None
     assert golden["tensor_store_evidence"]["graph_name"] == golden["graph_name"]
     assert golden["input_manifest"]["graph_name"] == golden["graph_name"]
     assert golden["output_manifest"]["graph_name"] == golden["graph_name"]
+    assert golden["output_contract"]["graph_name"] == golden["graph_name"]
+    assert golden["public_output_bundle"]["graph_name"] == golden["graph_name"]
     assert golden["reference_correctness"]["graph_name"] == golden["graph_name"]
     assert golden["execution_receipt"]["graph_name"] == golden["graph_name"]
 

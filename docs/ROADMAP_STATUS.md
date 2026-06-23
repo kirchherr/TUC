@@ -310,21 +310,26 @@ hardware-independent interface into capability-driven runtime planning.
   `schemas/runtime_execution_receipt_report.v0.schema.json`, deterministic
   golden evidence at
   `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
-  tensor-store, input-manifest, output-manifest, and reference-correctness
-  evidence by metadata digest without raw tensor values.
+  tensor-store, input-manifest, output-manifest, output-contract,
+  public-output-bundle, and reference-correctness evidence by metadata digest
+  without raw tensor values.
 - Runtime Execution Evidence Bundle v0 with schema at
   `schemas/runtime_execution_evidence_bundle_report.v0.schema.json`,
   deterministic golden evidence at
   `tests/golden/runtime_execution_evidence_bundle/proof_of_execution.json`,
-  packaging tensor-store, input-manifest, output-manifest,
-  reference-correctness, and execution-receipt reports into one metadata-only
-  review artifact.
+  packaging tensor-store, input-manifest, output-manifest, output-contract,
+  public-output-bundle, reference-correctness, and execution-receipt reports
+  into one metadata-only review artifact.
 - Runtime Execution Evidence Bundle Binding in Runtime Evidence Gate, rejecting
   stale or forged bundles whose embedded graph names, contracts, metadata
   digests, item counts, pass status, or raw-value policy do not match the
   evidence reports evaluated by the same gate invocation, with the decision
   captured in
   `rfcs/0130-runtime-evidence-gate-execution-bundle-binding.md`.
+- Runtime Execution Output Closure v0 binds proof-of-execution Output Contract
+  and Runtime Public Output Bundle evidence into Runtime Execution Receipt and
+  Runtime Execution Evidence Bundle, with the decision captured in
+  `rfcs/0204-runtime-execution-output-closure.md`.
 - Runtime Execution Receipt Binding in Runtime Evidence Gate, rejecting receipts
   whose graph names, contracts, metadata digests, item counts, pass status, or
   raw-value policy do not match the evidence reports evaluated by the same gate
@@ -538,12 +543,13 @@ Current slice:
 - Runtime Execution Receipt at `examples/runtime_execution_receipt.py`, with
   golden evidence at
   `tests/golden/runtime_execution_receipt/proof_of_execution.json`, linking
-  runtime evidence digests and operation trace metadata without tensor values.
+  runtime evidence digests, public output metadata, and operation trace metadata
+  without tensor values.
 - Runtime Execution Evidence Bundle at
   `examples/runtime_execution_evidence_bundle.py`, with golden evidence at
   `tests/golden/runtime_execution_evidence_bundle/proof_of_execution.json`,
-  embedding the receipt and evidence reports as one metadata-only review
-  package.
+  embedding the receipt, public output reports, and runtime evidence reports as
+  one metadata-only review package.
 - Runtime Multi-Output Evidence at `examples/runtime_multi_output_evidence.py`,
   with golden evidence at
   `tests/golden/runtime_multi_output_evidence/current_report.json`, covering
@@ -593,7 +599,8 @@ Current slice:
   Evidence, Runtime Input Manifest, Runtime Output Manifest, Runtime Output
   Contract, Runtime Public Output Bundle,
   Runtime Reference Correctness, Runtime Execution Receipt, Runtime Execution
-  Evidence Bundle, and Source Intent Runtime Returns, with binding checks for
+  Evidence Bundle, proof-of-execution public-output closure, and Source Intent
+  Runtime Returns, with binding checks for
   the backend-equivalence fixture and the `source_intent_return_mlp` frontend
   fixture.
 - Runtime Candidate Score Evidence at

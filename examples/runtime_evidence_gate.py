@@ -1,7 +1,10 @@
 """Run the CI-facing Runtime Evidence Gate."""
 
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
-from examples.runtime_execution_receipt import build_execution_receipt_report
+from examples.runtime_execution_receipt import (
+    build_execution_receipt_evidence_reports,
+    build_execution_receipt_report,
+)
 from examples.runtime_hs_ir_plan_alignment import build_alignment_report
 from examples.runtime_input_manifest import build_input_manifest_report
 from examples.runtime_memory_planning_gate import (
@@ -375,6 +378,9 @@ def build_gate_report(
         if reference_correctness_report is None
         else reference_correctness_report
     )
+    execution_receipt_evidence = build_execution_receipt_evidence_reports()
+    execution_output_contract = execution_receipt_evidence.output_contract
+    execution_public_bundle = execution_receipt_evidence.public_output_bundle
     execution_receipt = (
         build_execution_receipt_report()
         if execution_receipt_report is None
@@ -385,6 +391,8 @@ def build_gate_report(
             tensor_store,
             input_manifest,
             output_manifest,
+            execution_output_contract,
+            execution_public_bundle,
             reference_correctness,
             execution_receipt,
         )
@@ -512,6 +520,8 @@ def build_gate_report(
         tensor_store,
         input_manifest,
         output_manifest,
+        execution_output_contract,
+        execution_public_bundle,
         reference_correctness,
     )
     _assert_execution_evidence_bundle_passed(execution_evidence_bundle)
@@ -520,6 +530,8 @@ def build_gate_report(
         tensor_store,
         input_manifest,
         output_manifest,
+        execution_output_contract,
+        execution_public_bundle,
         reference_correctness,
         execution_receipt,
     )
@@ -1326,6 +1338,8 @@ def _assert_execution_receipt_matches_gate_reports(
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
+    output_contract: RuntimeOutputContractReport,
+    public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness: RuntimeReferenceCorrectnessReport,
 ) -> None:
     links = {link.evidence_kind: link for link in receipt.evidence_links}
@@ -1353,6 +1367,22 @@ def _assert_execution_receipt_matches_gate_reports(
             "metadata_digest": output_manifest.output_metadata_digest,
             "passed": output_manifest.passed,
             "raw_value_policy": output_manifest.raw_value_policy,
+        },
+        "output_contract": {
+            "evidence_contract": output_contract.output_contract,
+            "graph_name": output_contract.graph_name,
+            "item_count": len(output_contract.public_outputs),
+            "metadata_digest": output_contract.contract_metadata_digest,
+            "passed": output_contract.passed,
+            "raw_value_policy": output_contract.raw_value_policy,
+        },
+        "public_output_bundle": {
+            "evidence_contract": public_output_bundle.bundle_contract,
+            "graph_name": public_output_bundle.graph_name,
+            "item_count": len(public_output_bundle.outputs),
+            "metadata_digest": public_output_bundle.bundle_metadata_digest,
+            "passed": public_output_bundle.passed,
+            "raw_value_policy": public_output_bundle.raw_value_policy,
         },
         "reference_correctness": {
             "evidence_contract": reference_correctness.correctness_contract,
@@ -1408,6 +1438,8 @@ def _assert_execution_evidence_bundle_matches_gate_reports(
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
+    output_contract: RuntimeOutputContractReport,
+    public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness: RuntimeReferenceCorrectnessReport,
     execution_receipt: RuntimeExecutionReceiptReport,
 ) -> None:
@@ -1435,6 +1467,22 @@ def _assert_execution_evidence_bundle_matches_gate_reports(
             "metadata_digest": output_manifest.output_metadata_digest,
             "passed": output_manifest.passed,
             "raw_value_policy": output_manifest.raw_value_policy,
+        },
+        "output_contract": {
+            "contract": output_contract.output_contract,
+            "graph_name": output_contract.graph_name,
+            "item_count": len(output_contract.public_outputs),
+            "metadata_digest": output_contract.contract_metadata_digest,
+            "passed": output_contract.passed,
+            "raw_value_policy": output_contract.raw_value_policy,
+        },
+        "public_output_bundle": {
+            "contract": public_output_bundle.bundle_contract,
+            "graph_name": public_output_bundle.graph_name,
+            "item_count": len(public_output_bundle.outputs),
+            "metadata_digest": public_output_bundle.bundle_metadata_digest,
+            "passed": public_output_bundle.passed,
+            "raw_value_policy": public_output_bundle.raw_value_policy,
         },
         "reference_correctness": {
             "contract": reference_correctness.correctness_contract,
@@ -1477,6 +1525,22 @@ def _assert_execution_evidence_bundle_matches_gate_reports(
             "metadata_digest": bundle.output_manifest_report.output_metadata_digest,
             "passed": bundle.output_manifest_report.passed,
             "raw_value_policy": bundle.output_manifest_report.raw_value_policy,
+        },
+        "output_contract": {
+            "contract": bundle.output_contract_report.output_contract,
+            "graph_name": bundle.output_contract_report.graph_name,
+            "item_count": len(bundle.output_contract_report.public_outputs),
+            "metadata_digest": bundle.output_contract_report.contract_metadata_digest,
+            "passed": bundle.output_contract_report.passed,
+            "raw_value_policy": bundle.output_contract_report.raw_value_policy,
+        },
+        "public_output_bundle": {
+            "contract": bundle.public_output_bundle.bundle_contract,
+            "graph_name": bundle.public_output_bundle.graph_name,
+            "item_count": len(bundle.public_output_bundle.outputs),
+            "metadata_digest": bundle.public_output_bundle.bundle_metadata_digest,
+            "passed": bundle.public_output_bundle.passed,
+            "raw_value_policy": bundle.public_output_bundle.raw_value_policy,
         },
         "reference_correctness": {
             "contract": bundle.reference_correctness_report.correctness_contract,

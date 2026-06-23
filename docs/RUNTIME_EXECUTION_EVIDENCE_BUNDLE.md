@@ -26,13 +26,16 @@ The bundle embeds:
 - Runtime Tensor Store Evidence
 - Runtime Input Manifest
 - Runtime Output Manifest
+- Runtime Output Contract
+- Runtime Public Output Bundle
 - Runtime Reference Correctness
 - Runtime Execution Receipt
 
 The bundle rechecks that every embedded report has the same graph name and
 passing status. It also verifies that receipt links match the embedded evidence
 reports by graph name, evidence contract, metadata digest, item count, pass
-status, and raw-value policy.
+status, and raw-value policy, including the explicit public-output contract and
+read-only public output bundle.
 
 Runtime Evidence Gate additionally binds the bundle to the specific evidence
 reports evaluated by the same gate invocation. The bundle remains a derived
@@ -66,8 +69,8 @@ artifact files from matrix identifiers.
 ## Review Meaning
 
 A passing Runtime Execution Evidence Bundle proves that one execution's
-metadata-only evidence reports and receipt are mutually coherent and bound to
-the same graph execution.
+metadata-only evidence reports, public-output reports, and receipt are
+mutually coherent and bound to the same graph execution.
 
 It is not a native performance claim, a cryptographic attestation, a hardware
 endorsement, or a tensor-content hash.

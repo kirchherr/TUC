@@ -16,9 +16,17 @@ from tuc.runtime.input_manifest import (
     RuntimeInputManifestReport,
     runtime_input_manifest_report_to_dict,
 )
+from tuc.runtime.output_contract import (
+    RuntimeOutputContractReport,
+    runtime_output_contract_report_to_dict,
+)
 from tuc.runtime.output_manifest import (
     RuntimeOutputManifestReport,
     runtime_output_manifest_report_to_dict,
+)
+from tuc.runtime.public_output_bundle import (
+    RuntimePublicOutputBundle,
+    runtime_public_output_bundle_report_to_dict,
 )
 from tuc.runtime.reference_correctness import (
     RuntimeReferenceCorrectnessReport,
@@ -42,6 +50,8 @@ RUNTIME_EXECUTION_EVIDENCE_BUNDLE_SECTIONS = (
     "tensor_store_evidence",
     "input_manifest",
     "output_manifest",
+    "output_contract",
+    "public_output_bundle",
     "reference_correctness",
     "execution_receipt",
 )
@@ -109,6 +119,8 @@ class RuntimeExecutionEvidenceBundleReport:
     tensor_store_report: RuntimeTensorStoreEvidenceReport
     input_manifest_report: RuntimeInputManifestReport
     output_manifest_report: RuntimeOutputManifestReport
+    output_contract_report: RuntimeOutputContractReport
+    public_output_bundle: RuntimePublicOutputBundle
     reference_correctness_report: RuntimeReferenceCorrectnessReport
     execution_receipt_report: RuntimeExecutionReceiptReport
     issues: tuple[RuntimeExecutionEvidenceBundleIssue, ...]
@@ -139,6 +151,8 @@ class RuntimeExecutionEvidenceBundleReport:
             self.tensor_store_report,
             self.input_manifest_report,
             self.output_manifest_report,
+            self.output_contract_report,
+            self.public_output_bundle,
             self.reference_correctness_report,
             self.execution_receipt_report,
         )
@@ -156,6 +170,8 @@ class RuntimeExecutionEvidenceBundleReport:
             self.tensor_store_report,
             self.input_manifest_report,
             self.output_manifest_report,
+            self.output_contract_report,
+            self.public_output_bundle,
             self.reference_correctness_report,
             self.execution_receipt_report,
         )
@@ -176,7 +192,9 @@ class RuntimeExecutionEvidenceBundleReport:
             "execution_receipt": self.execution_receipt_report.receipt_metadata_digest,
             "graph_name": self.graph_name,
             "input_manifest": self.input_manifest_report.input_metadata_digest,
+            "output_contract": self.output_contract_report.contract_metadata_digest,
             "output_manifest": self.output_manifest_report.output_metadata_digest,
+            "public_output_bundle": self.public_output_bundle.bundle_metadata_digest,
             "reference_correctness": (
                 self.reference_correctness_report.comparison_metadata_digest
             ),
@@ -193,6 +211,8 @@ def build_runtime_execution_evidence_bundle_report(
     tensor_store_report: RuntimeTensorStoreEvidenceReport,
     input_manifest_report: RuntimeInputManifestReport,
     output_manifest_report: RuntimeOutputManifestReport,
+    output_contract_report: RuntimeOutputContractReport,
+    public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness_report: RuntimeReferenceCorrectnessReport,
     execution_receipt_report: RuntimeExecutionReceiptReport,
 ) -> RuntimeExecutionEvidenceBundleReport:
@@ -202,6 +222,8 @@ def build_runtime_execution_evidence_bundle_report(
         tensor_store_report,
         input_manifest_report,
         output_manifest_report,
+        output_contract_report,
+        public_output_bundle,
         reference_correctness_report,
         execution_receipt_report,
     )
@@ -211,6 +233,8 @@ def build_runtime_execution_evidence_bundle_report(
         tensor_store_report=tensor_store_report,
         input_manifest_report=input_manifest_report,
         output_manifest_report=output_manifest_report,
+        output_contract_report=output_contract_report,
+        public_output_bundle=public_output_bundle,
         reference_correctness_report=reference_correctness_report,
         execution_receipt_report=execution_receipt_report,
         issues=_derive_issues(
@@ -218,6 +242,8 @@ def build_runtime_execution_evidence_bundle_report(
             tensor_store_report,
             input_manifest_report,
             output_manifest_report,
+            output_contract_report,
+            public_output_bundle,
             reference_correctness_report,
             execution_receipt_report,
         ),
@@ -257,6 +283,9 @@ def runtime_execution_evidence_bundle_report_to_dict(
         "input_manifest": runtime_input_manifest_report_to_dict(
             report.input_manifest_report
         ),
+        "output_contract": runtime_output_contract_report_to_dict(
+            report.output_contract_report
+        ),
         "issues": [
             {
                 "issue_code": issue.issue_code,
@@ -267,6 +296,9 @@ def runtime_execution_evidence_bundle_report_to_dict(
         "linkage_policy": report.linkage_policy,
         "output_manifest": runtime_output_manifest_report_to_dict(
             report.output_manifest_report
+        ),
+        "public_output_bundle": runtime_public_output_bundle_report_to_dict(
+            report.public_output_bundle
         ),
         "passed": report.passed,
         "raw_value_policy": report.raw_value_policy,
@@ -301,6 +333,8 @@ def _derive_issues(
     tensor_store: RuntimeTensorStoreEvidenceReport,
     input_manifest: RuntimeInputManifestReport,
     output_manifest: RuntimeOutputManifestReport,
+    output_contract: RuntimeOutputContractReport,
+    public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness: RuntimeReferenceCorrectnessReport,
     execution_receipt: RuntimeExecutionReceiptReport,
 ) -> tuple[RuntimeExecutionEvidenceBundleIssue, ...]:
@@ -309,6 +343,12 @@ def _derive_issues(
         ("tensor_store_evidence", tensor_store.graph_name, tensor_store.passed),
         ("input_manifest", input_manifest.graph_name, input_manifest.passed),
         ("output_manifest", output_manifest.graph_name, output_manifest.passed),
+        ("output_contract", output_contract.graph_name, output_contract.passed),
+        (
+            "public_output_bundle",
+            public_output_bundle.graph_name,
+            public_output_bundle.passed,
+        ),
         (
             "reference_correctness",
             reference_correctness.graph_name,
@@ -357,6 +397,22 @@ def _derive_issues(
             output_manifest.output_metadata_digest,
             output_manifest.passed,
             output_manifest.raw_value_policy,
+        ),
+        "output_contract": (
+            output_contract.output_contract,
+            output_contract.graph_name,
+            len(output_contract.public_outputs),
+            output_contract.contract_metadata_digest,
+            output_contract.passed,
+            output_contract.raw_value_policy,
+        ),
+        "public_output_bundle": (
+            public_output_bundle.bundle_contract,
+            public_output_bundle.graph_name,
+            len(public_output_bundle.outputs),
+            public_output_bundle.bundle_metadata_digest,
+            public_output_bundle.passed,
+            public_output_bundle.raw_value_policy,
         ),
         "reference_correctness": (
             reference_correctness.correctness_contract,
@@ -414,6 +470,8 @@ def _validate_report_objects(
     tensor_store_report: RuntimeTensorStoreEvidenceReport,
     input_manifest_report: RuntimeInputManifestReport,
     output_manifest_report: RuntimeOutputManifestReport,
+    output_contract_report: RuntimeOutputContractReport,
+    public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness_report: RuntimeReferenceCorrectnessReport,
     execution_receipt_report: RuntimeExecutionReceiptReport,
 ) -> None:
@@ -423,6 +481,10 @@ def _validate_report_objects(
         raise TypeError("runtime evidence bundle input manifest report mismatch")
     if not isinstance(output_manifest_report, RuntimeOutputManifestReport):
         raise TypeError("runtime evidence bundle output manifest report mismatch")
+    if not isinstance(output_contract_report, RuntimeOutputContractReport):
+        raise TypeError("runtime evidence bundle output contract report mismatch")
+    if not isinstance(public_output_bundle, RuntimePublicOutputBundle):
+        raise TypeError("runtime evidence bundle public output bundle mismatch")
     if not isinstance(reference_correctness_report, RuntimeReferenceCorrectnessReport):
         raise TypeError("runtime evidence bundle reference correctness report mismatch")
     if not isinstance(execution_receipt_report, RuntimeExecutionReceiptReport):

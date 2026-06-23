@@ -78,7 +78,9 @@ from tuc.runtime import (
     build_runtime_execution_evidence_bundle_report,
     build_runtime_execution_receipt_report,
     build_runtime_input_manifest_report,
+    build_runtime_output_contract_report,
     build_runtime_output_manifest_report,
+    build_runtime_public_output_bundle,
     build_runtime_reference_correctness_report,
     build_runtime_tensor_store_evidence_report,
     dump_runtime_execution_evidence_bundle_report,
@@ -387,11 +389,22 @@ def _build_case(
         compiled.hac_ir.graph,
         execution,
     )
+    output_contract = build_runtime_output_contract_report(
+        compiled.hac_ir.graph,
+        execution,
+        {f"public_{output.tensor_name}": output.tensor_name for output in output_manifest.outputs},
+    )
+    public_output_bundle = build_runtime_public_output_bundle(
+        execution,
+        output_contract,
+    )
     receipt = build_runtime_execution_receipt_report(
         execution,
         tensor_store,
         input_manifest,
         output_manifest,
+        output_contract,
+        public_output_bundle,
         correctness,
     )
     bundle = assert_runtime_execution_evidence_bundle(
@@ -399,6 +412,8 @@ def _build_case(
             tensor_store,
             input_manifest,
             output_manifest,
+            output_contract,
+            public_output_bundle,
             correctness,
             receipt,
         )
@@ -477,7 +492,7 @@ def _assert_case_contract(case: object) -> str:
         if case[key] != expected_value:
             raise ValueError(f"kernel ingress runtime evidence bundle {key} drift")
     expected_counts = {
-        "execution_receipt_link_count": 4,
+        "execution_receipt_link_count": 6,
         "output_count": 1,
         "passed": True,
         "raw_value_policy": RUNTIME_TENSOR_STORE_RAW_VALUE_STATUS,

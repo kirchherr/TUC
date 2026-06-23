@@ -14,7 +14,10 @@ from examples.source_to_intent_research_kernel_ingress_runtime_evidence_bundle_i
     build_kernel_ingress_runtime_evidence_bundle_index_report,
     build_report,
 )
-from tuc.runtime import RUNTIME_EXECUTION_EVIDENCE_BUNDLE_CONTRACT
+from tuc.runtime import (
+    RUNTIME_EXECUTION_EVIDENCE_BUNDLE_CONTRACT,
+    RUNTIME_EXECUTION_EVIDENCE_BUNDLE_SECTIONS,
+)
 
 GOLDEN_PATH = Path(
     "tests/golden/frontend/"
@@ -41,13 +44,9 @@ def test_kernel_ingress_runtime_evidence_bundle_index_report_shape() -> None:
     )
     assert report["status"] == "PASS"
     assert report["case_count"] == 4
-    assert report["runtime_evidence_sections"] == [
-        "tensor_store_evidence",
-        "input_manifest",
-        "output_manifest",
-        "reference_correctness",
-        "execution_receipt",
-    ]
+    assert report["runtime_evidence_sections"] == list(
+        RUNTIME_EXECUTION_EVIDENCE_BUNDLE_SECTIONS
+    )
     mvp_case = report["cases"][3]
     assert mvp_case["case_id"] == "research_module_mvp_pipeline"
     assert mvp_case["graph_name"] == "research_mvp_pipeline"
@@ -60,7 +59,7 @@ def test_kernel_ingress_runtime_evidence_bundle_index_report_shape() -> None:
     assert mvp_case["passed"] is True
     assert mvp_case["step_count"] == 4
     assert mvp_case["tensor_store_record_count"] == 6
-    assert mvp_case["execution_receipt_link_count"] == 4
+    assert mvp_case["execution_receipt_link_count"] == 6
     assert mvp_case["raw_value_policy"] == "omitted_by_policy"
 
 

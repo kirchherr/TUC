@@ -35,6 +35,7 @@ It runs:
 - `build_public_output_bundle()`
 - `build_reference_correctness_report()`
 - `build_execution_receipt_report()`
+- `build_execution_receipt_evidence_reports()`
 - `build_runtime_execution_evidence_bundle_report()`
 - `examples/source_intent_runtime_returns.py`
 - `examples/runtime_evidence_gate.py`

@@ -102,10 +102,11 @@ Current runtime surfaces:
   resolves through Runtime Output Contract and Runtime Public Output Bundle.
 - Runtime Reference Correctness v0 for output/reference comparison without
   serialized tensor values.
-- Runtime Execution Receipt v0 linking runtime evidence reports by metadata
-  digest without serialized tensor values.
+- Runtime Execution Receipt v0 linking runtime evidence reports, public output
+  contracts, and public output bundles by metadata digest without serialized
+  tensor values.
 - Runtime Execution Evidence Bundle v0 packaging one coherent metadata-only
-  execution evidence set for review.
+  execution evidence set, including the public output boundary, for review.
 - Runtime Backend Equivalence v0 comparing `reference-cpu` against
   `systolic-sim`, `vector-sim`, and mixed `systolic-sim` plus `vector-sim`
   placements without serialized tensor values, with all proof slices bound into

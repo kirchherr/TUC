@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "bundle_contract": "runtime_execution_evidence_bundle.data_only.v0",
-  "bundle_metadata_digest": "sha256:617cb50e07d7337bc66011a5fb63439c0cf01cb0031d0fcca0b25a4856a8720b",
+  "bundle_metadata_digest": "sha256:435f598796ca773151fea4d3e513d08137d34b75321efbe12606930b5da4e4a7",
   "execution_receipt": {
     "artifact_status": "review_evidence",
     "blocked_execution_surfaces": [
@@ -24,7 +24,7 @@
       "network_access",
       "subprocess_execution"
     ],
-    "evidence_link_count": 4,
+    "evidence_link_count": 6,
     "evidence_links": [
       {
         "evidence_contract": "runtime_tensor_store_evidence.data_only.v0",
@@ -50,6 +50,24 @@
         "graph_name": "proof_of_execution",
         "item_count": 1,
         "metadata_digest": "sha256:39d09e42752ab1232ee50253b9cfc3f1f83a3f5f417c754f30af090c0291ad11",
+        "passed": true,
+        "raw_value_policy": "omitted_by_policy"
+      },
+      {
+        "evidence_contract": "runtime_output_contract.data_only.v0",
+        "evidence_kind": "output_contract",
+        "graph_name": "proof_of_execution",
+        "item_count": 1,
+        "metadata_digest": "sha256:3ccd79419dd0dd3dcaa7728710b12c860d3a00f832d065e359dc5b0a09959f70",
+        "passed": true,
+        "raw_value_policy": "omitted_by_policy"
+      },
+      {
+        "evidence_contract": "runtime_public_output_bundle.readonly_values.v0",
+        "evidence_kind": "public_output_bundle",
+        "graph_name": "proof_of_execution",
+        "item_count": 1,
+        "metadata_digest": "sha256:b8bb4e0b3e15e45a69eada3b9722ea54512bbb793a33211e99cc32af918ea6dc",
         "passed": true,
         "raw_value_policy": "omitted_by_policy"
       },
@@ -130,11 +148,13 @@
     "passed": true,
     "raw_value_policy": "omitted_by_policy",
     "receipt_contract": "runtime_execution_receipt.data_only.v0",
-    "receipt_metadata_digest": "sha256:f871dd6ec2234272380d9551468abf90899d44eb00d47b5f84cc91a4208dde72",
+    "receipt_metadata_digest": "sha256:e40452abd09937b93bc87ea14477072e28d5587d8030045bd71ec39488c8adca",
     "required_evidence_kinds": [
       "tensor_store_evidence",
       "input_manifest",
       "output_manifest",
+      "output_contract",
+      "public_output_bundle",
       "reference_correctness"
     ],
     "schema_version": "tuc.runtime_execution_receipt_report.v0"
@@ -223,6 +243,60 @@
   },
   "issues": [],
   "linkage_policy": "embedded_metadata_reports",
+  "output_contract": {
+    "alias_count": 1,
+    "alias_policy": "explicit_output_aliases",
+    "aliases": [
+      {
+        "public_name": "public_activated",
+        "required": true,
+        "tensor_name": "activated"
+      }
+    ],
+    "artifact_status": "review_evidence",
+    "available_tensor_names": [
+      "activated"
+    ],
+    "blocked_execution_surfaces": [
+      "backend_plugin_discovery",
+      "device_access",
+      "dynamic_import",
+      "dynamic_library_loading",
+      "generated_artifact_execution",
+      "jit_execution",
+      "network_access",
+      "subprocess_execution"
+    ],
+    "contract_metadata_digest": "sha256:3ccd79419dd0dd3dcaa7728710b12c860d3a00f832d065e359dc5b0a09959f70",
+    "executor_contract": "runtime_executor.trusted_backend.v0",
+    "graph_name": "proof_of_execution",
+    "issues": [],
+    "output_contract": "runtime_output_contract.data_only.v0",
+    "output_manifest_contract": "runtime_output_manifest.data_only.v0",
+    "output_manifest_passed": true,
+    "passed": true,
+    "public_output_count": 1,
+    "public_outputs": [
+      {
+        "dtype": "float64",
+        "producer_id": "activation",
+        "producer_kind": "operation",
+        "public_name": "public_activated",
+        "raw_value_status": "omitted_by_policy",
+        "shape": [
+          2
+        ],
+        "tensor_name": "activated",
+        "value_role": "computed"
+      }
+    ],
+    "raw_value_policy": "omitted_by_policy",
+    "schema_version": "tuc.runtime_output_contract_report.v0",
+    "terminal_output_policy": "graph_terminal_outputs",
+    "terminal_tensor_names": [
+      "activated"
+    ]
+  },
   "output_manifest": {
     "artifact_status": "review_evidence",
     "blocked_execution_surfaces": [
@@ -277,6 +351,51 @@
     "value_record_contract": "runtime_value_record.internal.v0"
   },
   "passed": true,
+  "public_output_bundle": {
+    "artifact_status": "review_evidence",
+    "blocked_execution_surfaces": [
+      "backend_plugin_discovery",
+      "device_access",
+      "dynamic_import",
+      "dynamic_library_loading",
+      "generated_artifact_execution",
+      "jit_execution",
+      "network_access",
+      "subprocess_execution"
+    ],
+    "bundle_contract": "runtime_public_output_bundle.readonly_values.v0",
+    "bundle_metadata_digest": "sha256:b8bb4e0b3e15e45a69eada3b9722ea54512bbb793a33211e99cc32af918ea6dc",
+    "executor_contract": "runtime_executor.trusted_backend.v0",
+    "graph_name": "proof_of_execution",
+    "output_contract": "runtime_output_contract.data_only.v0",
+    "passed": true,
+    "public_output_count": 1,
+    "public_output_names": [
+      "public_activated"
+    ],
+    "public_outputs": [
+      {
+        "dtype": "float64",
+        "producer_id": "activation",
+        "producer_kind": "operation",
+        "public_name": "public_activated",
+        "raw_value_status": "omitted_by_policy",
+        "readonly": true,
+        "record_contract": "runtime_value_record.internal.v0",
+        "shape": [
+          2
+        ],
+        "tensor_name": "activated",
+        "value_contract": "runtime_public_output_value.readonly_numpy.v0",
+        "value_role": "computed"
+      }
+    ],
+    "raw_value_policy": "omitted_by_policy",
+    "schema_version": "tuc.runtime_public_output_bundle_report.v0",
+    "tensor_names": [
+      "activated"
+    ]
+  },
   "raw_value_policy": "omitted_by_policy",
   "reference_correctness": {
     "artifact_status": "review_evidence",
@@ -330,6 +449,8 @@
     "tensor_store_evidence",
     "input_manifest",
     "output_manifest",
+    "output_contract",
+    "public_output_bundle",
     "reference_correctness",
     "execution_receipt"
   ],

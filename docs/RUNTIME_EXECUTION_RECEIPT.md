@@ -7,7 +7,8 @@ It answers one narrow question:
 
 ```text
 Did the accepted runtime execution produce a complete metadata-only evidence
-chain for inputs, internal records, terminal outputs, and reference correctness?
+chain for inputs, internal records, terminal outputs, public output aliases,
+public output bundle construction, and reference correctness?
 ```
 
 ## Contract
@@ -26,6 +27,8 @@ The receipt requires these evidence kinds:
 - `tensor_store_evidence`
 - `input_manifest`
 - `output_manifest`
+- `output_contract`
+- `public_output_bundle`
 - `reference_correctness`
 
 Each link records:
@@ -71,8 +74,9 @@ artifact files from matrix identifiers.
 
 A passing Runtime Execution Receipt proves that one trusted runtime execution
 has a complete linked evidence chain with matching graph names, expected
-contracts, passing evidence reports, non-empty item counts, and raw values
-omitted by policy.
+contracts, passing evidence reports, non-empty item counts, raw values
+omitted by policy, and an explicit public-output boundary bound to the
+execution proof.
 
 It is not a performance claim, a native backend authorization, a cryptographic
 attestation, or a tensor-content hash.

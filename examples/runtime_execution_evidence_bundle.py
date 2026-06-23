@@ -1,13 +1,10 @@
 """Emit the Runtime Execution Evidence Bundle for the current execution proof."""
 
-from examples.proof_of_execution import run_proof
+from examples.runtime_execution_receipt import build_execution_receipt_evidence_reports
 from tuc import (
     RuntimeExecutionEvidenceBundleReport,
     build_runtime_execution_evidence_bundle_report,
     build_runtime_execution_receipt_report,
-    build_runtime_input_manifest_report,
-    build_runtime_output_manifest_report,
-    build_runtime_tensor_store_evidence_report,
     dump_runtime_execution_evidence_bundle_report,
 )
 
@@ -15,27 +12,23 @@ from tuc import (
 def build_execution_evidence_bundle_report() -> RuntimeExecutionEvidenceBundleReport:
     """Return the current proof-of-execution evidence bundle report."""
 
-    proof = run_proof()
-    graph = proof.compiled.hac_ir.graph
-    tensor_store = build_runtime_tensor_store_evidence_report(
-        graph,
-        proof.compiled.partition_plan,
-        proof.execution,
-    )
-    input_manifest = build_runtime_input_manifest_report(graph, proof.execution)
-    output_manifest = build_runtime_output_manifest_report(graph, proof.execution)
+    evidence = build_execution_receipt_evidence_reports()
     receipt = build_runtime_execution_receipt_report(
-        proof.execution,
-        tensor_store,
-        input_manifest,
-        output_manifest,
-        proof.correctness,
+        evidence.execution,
+        evidence.tensor_store,
+        evidence.input_manifest,
+        evidence.output_manifest,
+        evidence.output_contract,
+        evidence.public_output_bundle,
+        evidence.reference_correctness,
     )
     return build_runtime_execution_evidence_bundle_report(
-        tensor_store,
-        input_manifest,
-        output_manifest,
-        proof.correctness,
+        evidence.tensor_store,
+        evidence.input_manifest,
+        evidence.output_manifest,
+        evidence.output_contract,
+        evidence.public_output_bundle,
+        evidence.reference_correctness,
         receipt,
     )
 

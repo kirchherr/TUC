@@ -27,7 +27,10 @@ from examples.runtime_evidence_gate import (
     RuntimeEvidenceGateError,
     build_gate_report,
 )
-from examples.runtime_execution_receipt import build_execution_receipt_report
+from examples.runtime_execution_receipt import (
+    build_execution_receipt_evidence_reports,
+    build_execution_receipt_report,
+)
 from examples.runtime_hs_ir_plan_alignment import build_alignment_report
 from examples.runtime_input_manifest import build_input_manifest_report
 from examples.runtime_mixed_backend_equivalence import (
@@ -1163,6 +1166,7 @@ def test_runtime_evidence_gate_rejects_unbound_execution_receipt_digest() -> Non
 
 def test_runtime_evidence_gate_rejects_failed_execution_evidence_bundle() -> None:
     receipt = build_execution_receipt_report()
+    execution_evidence = build_execution_receipt_evidence_reports()
     tensor_store = build_tensor_store_evidence_report()
     input_manifest = build_input_manifest_report()
     output_manifest = build_output_manifest_report()
@@ -1186,6 +1190,8 @@ def test_runtime_evidence_gate_rejects_failed_execution_evidence_bundle() -> Non
         tensor_store_report=tensor_store,
         input_manifest_report=input_manifest,
         output_manifest_report=output_manifest,
+        output_contract_report=execution_evidence.output_contract,
+        public_output_bundle=execution_evidence.public_output_bundle,
         reference_correctness_report=reference_correctness,
         execution_receipt_report=forged_receipt,
         issues=(
@@ -1202,6 +1208,7 @@ def test_runtime_evidence_gate_rejects_failed_execution_evidence_bundle() -> Non
 
 def test_runtime_evidence_gate_rejects_unbound_execution_evidence_bundle() -> None:
     receipt = build_execution_receipt_report()
+    execution_evidence = build_execution_receipt_evidence_reports()
     tensor_store = build_tensor_store_evidence_report()
     input_manifest = build_input_manifest_report()
     output_manifest = build_output_manifest_report()
@@ -1216,6 +1223,8 @@ def test_runtime_evidence_gate_rejects_unbound_execution_evidence_bundle() -> No
         tensor_store,
         input_manifest,
         output_manifest,
+        execution_evidence.output_contract,
+        execution_evidence.public_output_bundle,
         reference_correctness,
         truncated_receipt,
     )

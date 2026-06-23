@@ -267,9 +267,11 @@ def test_runtime_execution_receipt_golden_matches_schema_shape() -> None:
     )
     assert golden["passed"] is True
     assert golden["issues"] == []
-    assert golden["evidence_link_count"] == len(golden["evidence_links"]) == 4
+    assert golden["evidence_link_count"] == len(golden["evidence_links"]) == 6
     assert golden["operation_count"] == len(golden["operations"]) == 3
     assert golden["evidence_links"][0]["evidence_kind"] == "tensor_store_evidence"
+    assert golden["evidence_links"][3]["evidence_kind"] == "output_contract"
+    assert golden["evidence_links"][4]["evidence_kind"] == "public_output_bundle"
     assert golden["operations"][0]["operation_name"] == "linear_projection"
 
 
