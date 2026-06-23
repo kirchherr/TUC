@@ -2,11 +2,11 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Summary
 
-Add a future data-only Runtime Layout Conversion Evidence artifact that records
+Add a data-only Runtime Layout Conversion Evidence v0 artifact that records
 explicit planned layout transitions before TUC accepts any runtime layout
 converter, native allocation behavior, or real device-residency claim.
 
@@ -50,27 +50,29 @@ abstraction boundary.
 
 ## Proposal
 
-Introduce a future `RuntimeLayoutConversionEvidence` report with a schema such
-as `schemas/runtime_layout_conversion_evidence_report.v0.schema.json`.
+Introduce `RuntimeLayoutConversionEvidence` report v0 with schema
+`schemas/runtime_layout_conversion_evidence_report.v0.schema.json`.
 
-Each report would contain:
+Each report contains:
 
 - `schema_version`
 - `graph_name`
 - `evidence_contract`
 - `source_partition_plan_digest`
-- `source_hs_ir_plan_alignment_digest`, when available
-- `source_runtime_tensor_store_evidence_digest`
-- bounded `conversion_records`
+- `conversion_scope`
+- `execution_policy`
+- `residency_claim_status`
+- bounded `conversions`
+- `conversion_metadata_digest`
 - `raw_value_policy`
-- `status`
+- `passed` and derived `issues`
 
-Each conversion record would contain only data such as:
+Each conversion record contains only data such as:
 
 - `conversion_id`
 - `tensor_name`
-- `producer_operation_id`
-- `consumer_operation_id`
+- `source_operation`
+- `target_operation`
 - `from_backend`
 - `to_backend`
 - `from_memory_domain`
@@ -80,8 +82,11 @@ Each conversion record would contain only data such as:
 - `planned_bytes`
 - `planner_reason`
 - `source_value_record_id`
-- `result_value_record_id`
-- `status`
+- `consumer_input_id`
+- `conversion_status`
+
+Future HS-IR and Runtime Tensor Store digest bindings remain deferred until this
+optional report is stable across another proof slice.
 
 The artifact must not contain tensor values, tensor-value digests, runtime
 handles, allocation handles, device identifiers, host paths, command lines,
@@ -113,17 +118,17 @@ environment variables, backend binaries, generated code, or plugin entrypoints.
 
 ## Compatibility
 
-This RFC adds no runtime behavior by itself. Existing runtime plans, tensor
+This RFC adds report generation only. Existing runtime plans, tensor
 store evidence, backend equivalence evidence, and HS-IR plan alignment remain
-valid.
+valid. It does not add a runtime layout converter.
 
-Future implementations should first add the report as optional inventory, then
-bind it into Runtime Evidence Matrix and Runtime Evidence Gate only after
-schema, goldens, and negative tests are stable.
+The v0 implementation enters as optional inventory first. It should be bound
+into Runtime Evidence Matrix and Runtime Evidence Gate only after schema,
+goldens, and negative tests remain stable across another proof slice.
 
 ## Testing
 
-Future implementation should add:
+The v0 implementation adds:
 
 - schema validation for valid conversion evidence;
 - golden report for a known planned layout transition;
@@ -132,7 +137,7 @@ Future implementation should add:
 - negative tests for raw tensor values or value digests;
 - negative tests for device identifiers, handles, host paths, commands,
   generated code, and plugin entrypoints;
-- Runtime Evidence Matrix inventory once the report becomes required evidence;
+- Runtime Evidence Matrix inventory later, once the report becomes required evidence;
 - Runtime Evidence Gate binding to exact artifact IDs.
 
 ## Open Questions

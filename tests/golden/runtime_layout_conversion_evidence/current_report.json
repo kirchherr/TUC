@@ -1,0 +1,45 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "conversion_count": 1,
+  "conversion_metadata_digest": "sha256:9d07f000336e1150dced149fc2c5a5ef8a88467cdac15b3c6297ecfb6e8b1839",
+  "conversion_scope": "planned_logical_layout_only",
+  "conversions": [
+    {
+      "consumer_input_id": "normalize:projection",
+      "conversion_id": "layout_conversion_0000",
+      "conversion_status": "planned",
+      "from_backend": "systolic-sim",
+      "from_layout": "blocked",
+      "from_memory_domain": "device_sram",
+      "planned_bytes": 24,
+      "planner_reason": "layout_mismatch",
+      "source_operation": "projection",
+      "source_value_record_id": "projection:projection",
+      "target_operation": "normalize",
+      "tensor_name": "projection",
+      "to_backend": "vector-sim",
+      "to_layout": "row_major",
+      "to_memory_domain": "device_sram"
+    }
+  ],
+  "evidence_contract": "runtime_layout_conversion_evidence.data_only.v0",
+  "execution_policy": "does_not_execute_conversions",
+  "graph_name": "runtime_mixed_backend_equivalence",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "residency_claim_status": "not_physical_residency_evidence",
+  "schema_version": "tuc.runtime_layout_conversion_evidence_report.v0",
+  "source_partition_plan_digest": "sha256:11ccb6e40e3403fd3ec9eeef0e4721bf993a1459bf67c994872d306db16ee0a3",
+  "total_planned_bytes": 24
+}

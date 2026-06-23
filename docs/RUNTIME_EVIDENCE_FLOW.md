@@ -151,6 +151,14 @@ partition decisions and reviewer-facing planning rationale. It makes fallback
 and movement accounting visible before richer planning behavior can count as
 gated evidence.
 
+`Runtime Layout Conversion Evidence` is the current optional bridge between
+planned layout-conversion edges and reviewer-facing layout-transition evidence.
+It records planned logical layout transitions from an accepted `PartitionPlan`
+without executing converters, allocating memory, or claiming physical device
+residency. See
+[RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md](RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md)
+and `examples/runtime_layout_conversion_evidence.py`.
+
 `Runtime Evidence Replay Verifier` replays serialized Runtime Execution Evidence
 Bundle and Runtime Execution Output Closure reports by metadata digest only. See
 [RUNTIME_EVIDENCE_REPLAY_VERIFIER.md](RUNTIME_EVIDENCE_REPLAY_VERIFIER.md) and

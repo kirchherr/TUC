@@ -43,6 +43,12 @@ hardware-independent interface into capability-driven runtime planning.
   defines the next data-only proof boundary for explicit planned layout
   transitions before any native converter, allocation handle, or real residency
   claim is accepted.
+- Runtime Layout Conversion Evidence v0 records the current planned
+  `blocked -> row_major` transition from the mixed backend-equivalence plan as
+  data-only evidence at
+  `schemas/runtime_layout_conversion_evidence_report.v0.schema.json`, with
+  deterministic golden evidence at
+  `tests/golden/runtime_layout_conversion_evidence/current_report.json`.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding
@@ -1341,9 +1347,10 @@ Current focus:
   contribution.
 - Plugin lifecycle RFC and sandboxing model before any executable backend
   discovery, artifact execution, or native plugin ABI.
-- Runtime Layout Conversion Evidence should enter as optional data-only
-  inventory before it becomes Runtime Evidence Matrix or Runtime Evidence Gate
-  required evidence.
+- Runtime Layout Conversion Evidence now exists as optional data-only
+  inventory. It should become Runtime Evidence Matrix or Runtime Evidence Gate
+  required evidence only after the schema, golden, and negative tests remain
+  stable across another proof slice.
 
 ## Runtime Allocation Reconciliation
 
