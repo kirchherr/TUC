@@ -19,6 +19,8 @@ physical device residency.
 - Scope: `planned_logical_layout_only`
 - Execution policy: `does_not_execute_conversions`
 - Residency claim status: `not_physical_residency_evidence`
+- Gate-readiness schema:
+  `schemas/runtime_layout_conversion_gate_readiness_report.v0.schema.json`
 
 ## What It Records
 
@@ -46,6 +48,11 @@ Runtime Evidence Matrix v0 inventories this report as
 now: the mixed graph's required artifact kinds remain `backend_equivalence`,
 `runtime_planning_explanation`, and `runtime_hs_ir_plan_alignment` until layout
 conversion evidence is stable enough to become gate-required evidence.
+
+[Runtime Layout Conversion Gate Readiness](RUNTIME_LAYOUT_CONVERSION_GATE_READINESS.md)
+records the exact remaining prerequisites for that promotion. The current
+readiness status is blocked because only one layout-conversion proof slice
+exists and gate/digest bindings are intentionally deferred.
 
 ## What It Proves
 
