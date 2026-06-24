@@ -273,6 +273,14 @@ hardware-independent interface into capability-driven runtime planning.
 - Backend Author Evidence Gate with deterministic golden evidence at
   `tests/golden/backend_author_readiness/backend_author_evidence_gate.txt` and
   CI coverage in the `python` workflow job.
+- [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) records
+  the current blocking policy for future executable backend plugins, with schema
+  at `schemas/backend_plugin_lifecycle_policy_report.v0.schema.json`, golden
+  evidence at `tests/golden/backend_plugin_lifecycle_policy/current_report.json`,
+  and RFC [0217](../rfcs/0217-backend-plugin-lifecycle-policy.md). It keeps
+  plugin discovery, artifact execution, and native plugin ABI loading disabled
+  until sandbox, provenance, resource-budget, fuzzing or negative-test, and
+  maintainer-approval evidence exists.
 - Backend Capability Coverage v0 with schema at
   `schemas/backend_capability_coverage_report.v0.schema.json`, deterministic
   golden evidence at
@@ -1384,8 +1392,11 @@ Current focus:
   outside HAC-IR semantics and covered by goldens.
 - Maintainer teams or organization-backed owner groups before broad external
   contribution.
-- Plugin lifecycle RFC and sandboxing model before any executable backend
-  discovery, artifact execution, or native plugin ABI.
+- Backend Plugin Lifecycle Policy now supplies the plugin lifecycle RFC and
+  blocking policy. A concrete sandbox model, artifact provenance model,
+  resource-budget evidence, fuzzing or negative-test evidence, and maintainer
+  approval remain required before any executable backend discovery, artifact
+  execution, or native plugin ABI.
 - Runtime Layout Conversion Evidence is now graph-scoped required Runtime
   Evidence Matrix and Runtime Evidence Gate evidence for
   `runtime_mixed_backend_equivalence`, backed by Gate Readiness, Digest

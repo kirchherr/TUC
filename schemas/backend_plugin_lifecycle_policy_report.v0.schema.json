@@ -1,0 +1,345 @@
+{
+  "$id": "https://tuc.dev/schemas/backend_plugin_lifecycle_policy_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_execution_enabled": {
+      "const": false
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "execution_status": {
+      "const": "external_plugins_blocked"
+    },
+    "missing_requirement_count": {
+      "maximum": 16,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "native_plugin_abi_enabled": {
+      "const": false
+    },
+    "plugin_discovery_enabled": {
+      "const": false
+    },
+    "policy_contract": {
+      "const": "backend_plugin_lifecycle_policy.blocking.v0"
+    },
+    "policy_enforced": {
+      "const": true
+    },
+    "policy_id": {
+      "const": "backend_plugin_lifecycle_policy_v0"
+    },
+    "policy_issues": {
+      "items": {
+        "$ref": "#/$defs/policy_issue"
+      },
+      "maxItems": 32,
+      "type": "array"
+    },
+    "policy_status": {
+      "const": "accepted_blocking_policy"
+    },
+    "ready_to_enable_plugins": {
+      "type": "boolean"
+    },
+    "requirement_count": {
+      "const": 9
+    },
+    "requirements": {
+      "items": false,
+      "maxItems": 9,
+      "minItems": 9,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/capability_manifest_claim_review_requirement"
+        },
+        {
+          "$ref": "#/$defs/backend_author_evidence_gate_requirement"
+        },
+        {
+          "$ref": "#/$defs/trusted_executor_contract_requirement"
+        },
+        {
+          "$ref": "#/$defs/plugin_lifecycle_rfc_requirement"
+        },
+        {
+          "$ref": "#/$defs/sandbox_model_requirement"
+        },
+        {
+          "$ref": "#/$defs/artifact_provenance_requirement"
+        },
+        {
+          "$ref": "#/$defs/resource_budget_requirement"
+        },
+        {
+          "$ref": "#/$defs/fuzz_negative_tests_requirement"
+        },
+        {
+          "$ref": "#/$defs/maintainer_approval_requirement"
+        }
+      ],
+      "type": "array"
+    },
+    "sandbox_model_status": {
+      "const": "required_not_approved"
+    },
+    "schema_version": {
+      "const": "tuc.backend_plugin_lifecycle_policy_report.v0"
+    }
+  },
+  "required": [
+    "artifact_execution_enabled",
+    "blocked_execution_surfaces",
+    "execution_status",
+    "missing_requirement_count",
+    "native_plugin_abi_enabled",
+    "plugin_discovery_enabled",
+    "policy_contract",
+    "policy_enforced",
+    "policy_id",
+    "policy_issues",
+    "policy_status",
+    "ready_to_enable_plugins",
+    "requirement_count",
+    "requirements",
+    "sandbox_model_status",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "artifact_provenance_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "artifact_provenance"
+        },
+        "status": {
+          "const": "missing"
+        }
+      }
+    },
+    "backend_author_evidence_gate_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "backend_author_evidence_gate"
+        },
+        "status": {
+          "const": "satisfied"
+        }
+      }
+    },
+    "capability_manifest_claim_review_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "capability_manifest_claim_review"
+        },
+        "status": {
+          "const": "satisfied"
+        }
+      }
+    },
+    "fuzz_negative_tests_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "fuzz_negative_tests"
+        },
+        "status": {
+          "const": "missing"
+        }
+      }
+    },
+    "maintainer_approval_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "maintainer_approval"
+        },
+        "status": {
+          "const": "missing"
+        }
+      }
+    },
+    "plugin_lifecycle_rfc_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "plugin_lifecycle_rfc"
+        },
+        "status": {
+          "const": "satisfied"
+        }
+      }
+    },
+    "policy_issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/policy_issue_code"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "policy_issue_code": {
+      "enum": [
+        "artifact_execution_enabled",
+        "external_plugins_enabled_before_requirements",
+        "missing_required_requirement",
+        "native_plugin_abi_enabled",
+        "plugin_discovery_enabled",
+        "sandbox_status_inconsistent"
+      ],
+      "type": "string"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "requirement": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "required_before": {
+          "$ref": "#/$defs/report_text"
+        },
+        "requirement_id": {
+          "$ref": "#/$defs/requirement_id"
+        },
+        "status": {
+          "$ref": "#/$defs/requirement_status"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "required_before",
+        "requirement_id",
+        "status"
+      ],
+      "type": "object"
+    },
+    "requirement_id": {
+      "enum": [
+        "artifact_provenance",
+        "backend_author_evidence_gate",
+        "capability_manifest_claim_review",
+        "fuzz_negative_tests",
+        "maintainer_approval",
+        "plugin_lifecycle_rfc",
+        "resource_budget",
+        "sandbox_model",
+        "trusted_executor_contract"
+      ],
+      "type": "string"
+    },
+    "requirement_status": {
+      "enum": [
+        "missing",
+        "satisfied"
+      ],
+      "type": "string"
+    },
+    "resource_budget_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "resource_budget"
+        },
+        "status": {
+          "const": "missing"
+        }
+      }
+    },
+    "sandbox_model_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "sandbox_model"
+        },
+        "status": {
+          "const": "missing"
+        }
+      }
+    },
+    "trusted_executor_contract_requirement": {
+      "$ref": "#/$defs/requirement",
+      "properties": {
+        "requirement_id": {
+          "const": "trusted_executor_contract"
+        },
+        "status": {
+          "const": "satisfied"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "artifact_execution_enabled": false,
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "execution_status": "external_plugins_blocked",
+  "missing_requirement_count": 5,
+  "native_plugin_abi_enabled": false,
+  "plugin_discovery_enabled": false,
+  "policy_contract": "backend_plugin_lifecycle_policy.blocking.v0",
+  "policy_enforced": true,
+  "policy_id": "backend_plugin_lifecycle_policy_v0",
+  "policy_issues": [],
+  "policy_status": "accepted_blocking_policy",
+  "ready_to_enable_plugins": false,
+  "requirement_count": 9,
+  "requirements": [
+    {
+      "evidence_id": "manifest_claim_review.data_only.v0",
+      "required_before": "backend_plugin_discovery",
+      "requirement_id": "capability_manifest_claim_review",
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "backend_author_evidence_gate.ci.v0",
+      "required_before": "backend_plugin_discovery",
+      "requirement_id": "backend_author_evidence_gate",
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "runtime_executor.trusted_backend.v0",
+      "required_before": "generated_artifact_execution",
+      "requirement_id": "trusted_executor_contract",
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "rfc_0217_backend_plugin_lifecycle_policy",
+      "required_before": "backend_plugin_discovery",
+      "requirement_id": "plugin_lifecycle_rfc",
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "not_approved",
+      "required_before": "generated_artifact_execution",
+      "requirement_id": "sandbox_model",
+      "status": "missing"
+    },
+    {
+      "evidence_id": "not_approved",
+      "required_before": "generated_artifact_execution",
+      "requirement_id": "artifact_provenance",
+      "status": "missing"
+    },
+    {
+      "evidence_id": "not_approved",
+      "required_before": "device_access",
+      "requirement_id": "resource_budget",
+      "status": "missing"
+    },
+    {
+      "evidence_id": "not_approved",
+      "required_before": "dynamic_library_loading",
+      "requirement_id": "fuzz_negative_tests",
+      "status": "missing"
+    },
+    {
+      "evidence_id": "not_approved",
+      "required_before": "backend_plugin_discovery",
+      "requirement_id": "maintainer_approval",
+      "status": "missing"
+    }
+  ],
+  "sandbox_model_status": "required_not_approved",
+  "schema_version": "tuc.backend_plugin_lifecycle_policy_report.v0"
+}

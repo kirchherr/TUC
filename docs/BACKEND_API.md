@@ -286,6 +286,10 @@ Backend API v0.1 follows these rules:
 - Backend lowering must validate `capability.supports(operation)` before
   emitting artifacts.
 - Backend artifacts are data until a later RFC defines an execution sandbox.
+- External executable backend plugins must remain blocked by
+  [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) until
+  sandbox, provenance, resource-budget, fuzzing or negative-test, and
+  maintainer-approval evidence exists.
 
 ## Author Checklist
 
@@ -345,7 +349,8 @@ Backend API v0.1 does not yet provide:
 - Stable binary ABI.
 - Plugin packaging.
 - Auto-discovery.
-- Backend plugin lifecycle management.
+- Backend plugin lifecycle management beyond the current blocking policy in
+  [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md).
 - Device enumeration.
 - Artifact execution.
 - Sandboxing.

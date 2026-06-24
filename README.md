@@ -439,6 +439,16 @@ manifest
     -> Backend Author Readiness
 ```
 
+Current plugin lifecycle boundary:
+
+```bash
+python examples/backend_plugin_lifecycle_policy.py
+```
+
+This policy keeps external plugin discovery, generated artifact execution, and
+native plugin ABI loading blocked until sandbox, provenance, resource-budget,
+fuzzing or negative-test, and maintainer-approval evidence exists.
+
 Key docs:
 
 - [Backend API v0.1](docs/BACKEND_API.md)
@@ -446,6 +456,7 @@ Key docs:
 - [Backend capability coverage](docs/BACKEND_CAPABILITY_COVERAGE.md)
 - [Manifest Claim Review](docs/MANIFEST_CLAIM_REVIEW.md)
 - [Backend Author Evidence Gate](docs/BACKEND_AUTHOR_EVIDENCE_GATE.md)
+- [Backend Plugin Lifecycle Policy](docs/BACKEND_PLUGIN_LIFECYCLE_POLICY.md)
 
 ## Performance Boundaries
 
@@ -480,6 +491,7 @@ Key docs:
 - [Planner overhead report](docs/PLANNER_OVERHEAD_REPORT.md)
 - [Leaky abstraction report](docs/LEAKY_ABSTRACTION_REPORT.md)
 - [Executable backend security review](docs/EXECUTABLE_BACKEND_SECURITY_REVIEW_REPORT.md)
+- [Backend Plugin Lifecycle Policy](docs/BACKEND_PLUGIN_LIFECYCLE_POLICY.md)
 
 ## Governance
 

@@ -26,7 +26,11 @@ variables, or approve native performance claims.
 - Schema tests: `tests/test_executable_backend_security_review_schema.py`
 
 The report is not an execution approval. It records bounded review metadata that
-future native performance proposals can reference.
+future native performance proposals can reference. Executable backend plugin
+surfaces also remain blocked by
+[Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) until its
+missing sandbox, provenance, resource-budget, fuzzing or negative-test, and
+maintainer-approval requirements are satisfied.
 
 ## Review Fields
 
@@ -78,6 +82,8 @@ These remain blocked after this report exists:
 - subprocess execution
 - network access
 - plugin auto-discovery
+- changing `ready_to_enable_plugins` in Backend Plugin Lifecycle Policy without
+  accepted lifecycle evidence
 - native code execution
 - generated-code execution
 - treating a security review as benchmark proof
