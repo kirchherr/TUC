@@ -49,9 +49,9 @@ Backend Plugin Lifecycle Policy now treats `sandbox_model` as satisfied by the
 accepted sandbox model contract.
 
 The lifecycle policy remains blocking. After RFC 0219, artifact provenance is
-accepted as data-only evidence, and after RFC 0220 resource-budget evidence is
-accepted as data-only evidence. Fuzzing or negative-test evidence and
-maintainer approval are still missing.
+accepted as data-only evidence, after RFC 0220 resource-budget evidence is
+accepted as data-only evidence, and after RFC 0221 fuzz/negative-test evidence
+is accepted as data-only evidence. Maintainer approval is still missing.
 
 ## Security Boundary
 

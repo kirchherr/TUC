@@ -37,8 +37,8 @@ contract, content digest, CPU budget, memory budget, and IO-like budget fields
 for output, artifact size, cache entries, and diagnostics.
 
 Backend Plugin Lifecycle Policy now treats `resource_budget` as satisfied by
-this accepted resource budget contract. The policy remains blocking because
-fuzzing or negative-test evidence and maintainer approval are still missing.
+this accepted resource budget contract. The policy remains blocking because maintainer approval is still missing after
+RFC 0221 accepts fuzz/negative-test evidence.
 
 ## Security Boundary
 
@@ -58,8 +58,8 @@ secrets, URLs, or raw benchmark output.
 TUC now has a concrete resource-budget evidence layer for future executable
 backend artifacts without opening a compiler execution surface.
 
-Future plugin proposals still need fuzzing or negative-test evidence,
-maintainer approval, and an explicit implementation RFC before any plugin
+Future plugin proposals still need maintainer approval and an explicit
+implementation RFC before any plugin
 discovery, artifact execution, native plugin ABI, dynamic-library loading,
 device access, subprocess execution, network access, or JIT execution can be
 enabled.

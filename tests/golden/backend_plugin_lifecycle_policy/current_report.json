@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "execution_status": "external_plugins_blocked",
-  "missing_requirement_count": 2,
+  "missing_requirement_count": 1,
   "native_plugin_abi_enabled": false,
   "plugin_discovery_enabled": false,
   "policy_contract": "backend_plugin_lifecycle_policy.blocking.v0",
@@ -65,10 +65,10 @@
       "status": "satisfied"
     },
     {
-      "evidence_id": "not_approved",
+      "evidence_id": "backend_plugin_fuzz_negative_tests.data_only.v0",
       "required_before": "dynamic_library_loading",
       "requirement_id": "fuzz_negative_tests",
-      "status": "missing"
+      "status": "satisfied"
     },
     {
       "evidence_id": "not_approved",

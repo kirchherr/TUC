@@ -7,6 +7,7 @@ import re
 from dataclasses import dataclass
 
 from tuc.backends.artifact_provenance import BACKEND_PLUGIN_ARTIFACT_PROVENANCE_CONTRACT
+from tuc.backends.fuzz_negative_tests import BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS_CONTRACT
 from tuc.backends.resource_budget import BACKEND_PLUGIN_RESOURCE_BUDGET_CONTRACT
 from tuc.backends.sandbox_model import (
     BACKEND_PLUGIN_SANDBOX_MODEL_CONTRACT,
@@ -334,8 +335,8 @@ def _current_lifecycle_requirements() -> tuple[BackendPluginLifecycleRequirement
         ),
         BackendPluginLifecycleRequirement(
             requirement_id="fuzz_negative_tests",
-            status="missing",
-            evidence_id="not_approved",
+            status="satisfied",
+            evidence_id=BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS_CONTRACT,
             required_before="dynamic_library_loading",
         ),
         BackendPluginLifecycleRequirement(

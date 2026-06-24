@@ -290,8 +290,9 @@ Backend API v0.1 follows these rules:
   [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) until the accepted
   [Backend Plugin Sandbox Model](BACKEND_PLUGIN_SANDBOX_MODEL.md) and
   [Backend Plugin Artifact Provenance](BACKEND_PLUGIN_ARTIFACT_PROVENANCE.md),
-  and [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md)
-  are bound with fuzzing or negative-test and maintainer-approval evidence.
+  and [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md), and
+  [Backend Plugin Fuzz Negative Tests](BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md)
+  are bound with maintainer-approval evidence.
 
 ## Author Checklist
 
@@ -355,7 +356,8 @@ Backend API v0.1 does not yet provide:
   [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) and the
   data-only [Backend Plugin Sandbox Model](BACKEND_PLUGIN_SANDBOX_MODEL.md)
   and [Backend Plugin Artifact Provenance](BACKEND_PLUGIN_ARTIFACT_PROVENANCE.md),
-  plus [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md).
+  plus [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md)
+  and [Backend Plugin Fuzz Negative Tests](BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md).
 - Device enumeration.
 - Artifact execution.
 - Sandboxing.

@@ -179,7 +179,7 @@
           "const": "fuzz_negative_tests"
         },
         "status": {
-          "const": "missing"
+          "const": "satisfied"
         }
       }
     },

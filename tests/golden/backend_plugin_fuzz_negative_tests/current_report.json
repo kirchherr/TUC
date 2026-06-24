@@ -1,0 +1,79 @@
+{
+  "artifact_provenance_contract": "backend_plugin_artifact_provenance.data_only.v0",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_count": 5,
+  "cases": [
+    {
+      "blocked_surface": "dynamic_import",
+      "case_id": "forbidden_execution_surface_identifier",
+      "case_kind": "forbidden_execution_surface",
+      "case_status": "covered_by_repository_tests",
+      "evidence_id": "backend_plugin_artifact_provenance.rejects_forbidden_identifiers",
+      "expected_result": "rejects_before_execution",
+      "seed_id": "seed_python_module_identifier"
+    },
+    {
+      "blocked_surface": "generated_artifact_execution",
+      "case_id": "invalid_artifact_digest",
+      "case_kind": "invalid_digest",
+      "case_status": "covered_by_repository_tests",
+      "evidence_id": "backend_plugin_artifact_provenance.rejects_invalid_digest",
+      "expected_result": "rejects_before_execution",
+      "seed_id": "seed_invalid_sha256_digest"
+    },
+    {
+      "blocked_surface": "device_access",
+      "case_id": "oversized_resource_budget",
+      "case_kind": "oversized_resource_budget",
+      "case_status": "covered_by_repository_tests",
+      "evidence_id": "backend_plugin_resource_budget.rejects_limits_above_policy",
+      "expected_result": "rejects_before_execution",
+      "seed_id": "seed_oversized_memory_budget"
+    },
+    {
+      "blocked_surface": "generated_artifact_execution",
+      "case_id": "duplicate_evidence_record",
+      "case_kind": "duplicate_record",
+      "case_status": "covered_by_repository_tests",
+      "evidence_id": "backend_plugin_resource_budget.rejects_duplicate_budget_ids",
+      "expected_result": "rejects_before_execution",
+      "seed_id": "seed_duplicate_budget_id"
+    },
+    {
+      "blocked_surface": "backend_plugin_discovery",
+      "case_id": "schema_forbidden_surface_keys",
+      "case_kind": "schema_fail_closed",
+      "case_status": "covered_by_repository_tests",
+      "evidence_id": "backend_plugin_resource_budget.schema_fails_closed",
+      "expected_result": "rejects_before_execution",
+      "seed_id": "seed_forbidden_schema_surface_keys"
+    }
+  ],
+  "evidence_ready": true,
+  "execution_allowed": false,
+  "execution_permission": "not_granted",
+  "issues": [],
+  "negative_tests_contract": "backend_plugin_fuzz_negative_tests.data_only.v0",
+  "negative_tests_policy": "fuzz_negative_tests.required_cases.no_execution.v0",
+  "negative_tests_status": "accepted_data_only_test_evidence",
+  "required_bindings": [
+    "sandbox_model",
+    "artifact_provenance",
+    "resource_budget",
+    "negative_case_inventory",
+    "fuzz_seed_policy"
+  ],
+  "resource_budget_contract": "backend_plugin_resource_budget.data_only.v0",
+  "sandbox_model_contract": "backend_plugin_sandbox_model.data_only.v0",
+  "schema_version": "tuc.backend_plugin_fuzz_negative_tests_report.v0",
+  "seed_policy": "deterministic_seed_ids_only"
+}

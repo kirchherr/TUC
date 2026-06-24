@@ -37,9 +37,9 @@ The resource budget model is accepted as data-only evidence:
 
 This satisfies the `resource_budget` requirement in
 [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md), but it
-does not make plugins executable. Fuzzing or negative-test evidence and
-maintainer approval still remain required before plugin enablement can be
-proposed.
+does not make plugins executable. Fuzzing or negative-test evidence now exists
+as separate data-only evidence; maintainer approval still remains required
+before plugin enablement can be proposed.
 
 ## Static Bounds
 
@@ -78,6 +78,6 @@ A passing resource budget report means TUC has accepted static, reviewable
 resource limits for a future backend artifact.
 
 It does not mean TUC has a sandbox implementation, an executable plugin ABI,
-fuzz evidence, maintainer approval, runtime enforcement, native performance
-claims, or permission to execute backend artifacts. Those require separate
-accepted evidence and changes to the lifecycle policy.
+maintainer approval, runtime enforcement, native performance claims, or
+permission to execute backend artifacts. Those require separate accepted
+evidence and changes to the lifecycle policy.
