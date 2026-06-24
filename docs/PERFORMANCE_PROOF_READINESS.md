@@ -140,6 +140,13 @@ break-even evidence remains not established. It does not publish raw timings,
 run benchmarks, execute backend artifacts, or create a native performance
 claim.
 
+The broader [Planner Overhead Portfolio](PLANNER_OVERHEAD_PORTFOLIO.md) at
+`examples/planner_overhead_portfolio.py` applies the same diagnostic boundary
+to all accepted Kernel Ingress cases through
+`schemas/planner_overhead_portfolio_report.v0.schema.json`. It is supporting
+portfolio evidence; readiness can still use the MVP pipeline graph as its
+minimal current planner-overhead binding.
+
 The same readiness example also verifies the deterministic Kernel Ingress
 golden at `tests/golden/frontend/source_to_intent_research_kernel_ingress.json`
 before marking `correctness_goldens`, `runtime_plan_goldens`, and

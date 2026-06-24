@@ -260,6 +260,11 @@ diagnostic report contract at
 `schemas/planner_overhead_report.v0.schema.json`. It separates compiler and
 runtime-planning phases from execution time, but execution time and break-even
 workload size remain explicitly not measured.
+The current [Planner Overhead Portfolio](PLANNER_OVERHEAD_PORTFOLIO.md) binds
+that diagnostic contract to every accepted Kernel Ingress research case through
+`examples/planner_overhead_portfolio.py` and
+`schemas/planner_overhead_portfolio_report.v0.schema.json`. The portfolio
+omits raw duration values and remains metadata-only.
 
 ## Break-Even Workload Size Gate
 

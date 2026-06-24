@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/planner_overhead_portfolio_report.v0.schema.json",
+  "title": "TUC Planner Overhead Portfolio Report v0",
+  "description": "Deterministic metadata-only portfolio evidence for Kernel Ingress planner-overhead phase coverage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "break_even_status",
+    "case_count",
+    "cases",
+    "claim_boundary",
+    "covered_operation_families",
+    "e2e_contract",
+    "execution_time_status",
+    "frontend_ingress_contract",
+    "kernel_ingress_digest",
+    "native_performance_claim",
+    "parser_status",
+    "planner_overhead_contract",
+    "planner_overhead_hidden_in_execution_time",
+    "planner_overhead_schema_version",
+    "portfolio_contract",
+    "raw_source_policy",
+    "raw_timing_policy",
+    "raw_value_policy",
+    "schema_version",
+    "source_boundary",
+    "status"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "break_even_status": {"const": "not_established"},
+    "case_count": {"const": 4},
+    "cases": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/case"}
+    },
+    "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
+    "covered_operation_families": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/operation_family"}
+    },
+    "e2e_contract": {
+      "const": "source_to_intent_research_kernel_ingress.e2e.v0"
+    },
+    "execution_time_status": {"const": "not_measured"},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "kernel_ingress_digest": {"$ref": "#/$defs/sha256_digest"},
+    "native_performance_claim": {"const": false},
+    "parser_status": {"const": "research_explicit_only"},
+    "planner_overhead_contract": {"const": "tuc.planner_overhead_report.v0"},
+    "planner_overhead_hidden_in_execution_time": {"const": false},
+    "planner_overhead_schema_version": {"const": "tuc.planner_overhead_report.v0"},
+    "portfolio_contract": {"const": "planner_overhead_portfolio.kernel_ingress.v0"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_timing_policy": {
+      "const": "measured_compiler_phase_durations_omitted_for_deterministic_evidence"
+    },
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "schema_version": {"const": "tuc.planner_overhead_portfolio_report.v0"},
+    "source_boundary": {"const": "kernel_ingress_compute_graphs_after_source_intent"},
+    "status": {"const": "PASS"}
+  },
+  "$defs": {
+    "backend_name": {
+      "type": "string",
+      "enum": ["linear-sim", "vector-sim"]
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_sequence",
+        "break_even_status",
+        "case_id",
+        "execution_time_status",
+        "graph_name",
+        "kernel_name",
+        "measured_compiler_phase_count",
+        "native_performance_claim",
+        "operation_families",
+        "phase_contract",
+        "planner_overhead_hidden_in_execution_time",
+        "source_name",
+        "status",
+        "timing_policy",
+        "unmeasured_issues",
+        "unmeasured_phase_count",
+        "unmeasured_phases"
+      ],
+      "properties": {
+        "backend_sequence": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {"$ref": "#/$defs/backend_name"}
+        },
+        "break_even_status": {"const": "not_established"},
+        "case_id": {"$ref": "#/$defs/case_id"},
+        "execution_time_status": {"const": "not_measured"},
+        "graph_name": {"$ref": "#/$defs/source_name"},
+        "kernel_name": {"$ref": "#/$defs/kernel_name"},
+        "measured_compiler_phase_count": {"const": 5},
+        "native_performance_claim": {"const": false},
+        "operation_families": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {"$ref": "#/$defs/operation_family"}
+        },
+        "phase_contract": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "items": {"$ref": "#/$defs/phase_name"}
+        },
+        "planner_overhead_hidden_in_execution_time": {"const": false},
+        "source_name": {"$ref": "#/$defs/source_name"},
+        "status": {"const": "planner_overhead_bound"},
+        "timing_policy": {
+          "const": "measured_compiler_phase_durations_omitted_for_deterministic_evidence"
+        },
+        "unmeasured_issues": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {"$ref": "#/$defs/issue_id"}
+        },
+        "unmeasured_phase_count": {"const": 3},
+        "unmeasured_phases": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/unmeasured_phase_name"}
+        }
+      }
+    },
+    "case_id": {
+      "type": "string",
+      "enum": [
+        "research_module_matmul_elementwise",
+        "research_module_softmax_reduction",
+        "research_module_matmul_reduction",
+        "research_module_mvp_pipeline"
+      ]
+    },
+    "issue_id": {
+      "type": "string",
+      "enum": [
+        "graph_construction_not_measured",
+        "frontend_intake_not_measured",
+        "execution_time_not_measured",
+        "break_even_not_established"
+      ]
+    },
+    "kernel_name": {
+      "type": "string",
+      "enum": [
+        "matmul_elementwise",
+        "softmax_reduction",
+        "matmul_reduction",
+        "mvp_pipeline"
+      ]
+    },
+    "operation_family": {
+      "type": "string",
+      "enum": ["elementwise", "matmul", "reduction", "softmax"]
+    },
+    "phase_name": {
+      "type": "string",
+      "enum": [
+        "graph_construction",
+        "frontend_intake",
+        "tlir_module_construction",
+        "tlir_to_hac_lowering",
+        "runtime_planning",
+        "backend_selection_report",
+        "hs_ir_generation",
+        "execution"
+      ]
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "source_name": {
+      "type": "string",
+      "enum": [
+        "research_matmul_elementwise",
+        "research_softmax_reduction",
+        "research_matmul_reduction",
+        "research_mvp_pipeline"
+      ]
+    },
+    "unmeasured_phase_name": {
+      "type": "string",
+      "enum": ["graph_construction", "frontend_intake", "execution"]
+    }
+  }
+}

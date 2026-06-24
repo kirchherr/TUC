@@ -1069,6 +1069,14 @@ Current slice:
 - Performance Proof Interpretation now records the post-readiness gate: current
   Kernel Ingress readiness is metadata-complete, but measurement interpretation
   artifacts are not supplied and native performance claims remain blocked.
+- Planner Overhead Portfolio at `examples/planner_overhead_portfolio.py`, with
+  schema at `schemas/planner_overhead_portfolio_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/proofs/planner_overhead_portfolio_report.json`, and
+  documentation at `docs/PLANNER_OVERHEAD_PORTFOLIO.md`, now binds the
+  diagnostic planner-overhead phase contract to all accepted Kernel Ingress
+  research cases while omitting raw duration values and keeping execution,
+  break-even, and native performance claims blocked.
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy at
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`,
   with schema at
