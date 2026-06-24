@@ -76,12 +76,14 @@ def test_runtime_layout_conversion_gate_readiness_is_blocked_by_design() -> None
         "passed",
         "passed",
         "passed",
-        "blocked",
+        "passed",
         "blocked",
         "blocked",
     )
+    assert report.checks[4].evidence_id == (
+        "runtime_layout_conversion_evidence_reduction_slice"
+    )
     assert tuple(issue.subject for issue in report.issues) == (
-        "second_independent_layout_conversion_slice",
         "gate_exact_artifact_binding",
         "hs_ir_and_tensor_store_digest_binding",
     )
@@ -223,7 +225,7 @@ def test_runtime_layout_conversion_gate_readiness_golden_matches_schema_shape() 
     assert golden["source_conversion_count"] == 1
     assert golden["source_evidence_issue_count"] == 0
     assert len(golden["checks"]) == MAX_RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_CHECKS
-    assert len(golden["issues"]) == 3
+    assert len(golden["issues"]) == 2
 
 
 def test_runtime_layout_conversion_gate_readiness_schema_is_referenced() -> None:

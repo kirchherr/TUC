@@ -59,6 +59,11 @@ hardware-independent interface into capability-driven runtime planning.
   `schemas/runtime_layout_conversion_gate_readiness_report.v0.schema.json` and
   deterministic blocked golden evidence at
   `tests/golden/runtime_layout_conversion_gate_readiness/current_report.json`.
+- Runtime Layout Conversion Evidence now has a second independent
+  `runtime_layout_conversion_reduction_slice` proof fixture with deterministic
+  golden evidence at
+  `tests/golden/runtime_layout_conversion_evidence/second_slice_report.json`,
+  clearing the Readiness blocker for `second_independent_layout_conversion_slice`.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding
@@ -1359,9 +1364,8 @@ Current focus:
   discovery, artifact execution, or native plugin ABI.
 - Runtime Layout Conversion Evidence now exists as optional data-only Matrix
   inventory with a blocked Gate Readiness report. It should become required
-  Runtime Evidence Matrix or Runtime Evidence Gate evidence only after the
-  readiness report is ready across another proof slice and exact gate/digest
-  bindings exist.
+  Runtime Evidence Matrix or Runtime Evidence Gate evidence only after exact
+  gate and HS-IR/Tensor Store digest bindings exist.
 
 ## Runtime Allocation Reconciliation
 

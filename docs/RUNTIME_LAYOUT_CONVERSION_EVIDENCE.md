@@ -14,6 +14,8 @@ physical device residency.
 - Example: `examples/runtime_layout_conversion_evidence.py`
 - Golden:
   `tests/golden/runtime_layout_conversion_evidence/current_report.json`
+- Second-slice golden:
+  `tests/golden/runtime_layout_conversion_evidence/second_slice_report.json`
 - RFC: `rfcs/0212-runtime-layout-conversion-evidence.md`
 - Contract: `runtime_layout_conversion_evidence.data_only.v0`
 - Scope: `planned_logical_layout_only`
@@ -40,6 +42,10 @@ The first current golden records the `blocked -> row_major` transition between
 the `systolic-sim` projection and the `vector-sim` consumer in the mixed
 backend-equivalence proof slice.
 
+The second-slice golden records an independent `blocked -> row_major`
+transition between `score_projection` and `reduce_scores` in the
+`runtime_layout_conversion_reduction_slice` graph.
+
 ## Matrix Inventory
 
 Runtime Evidence Matrix v0 inventories this report as
@@ -51,8 +57,8 @@ conversion evidence is stable enough to become gate-required evidence.
 
 [Runtime Layout Conversion Gate Readiness](RUNTIME_LAYOUT_CONVERSION_GATE_READINESS.md)
 records the exact remaining prerequisites for that promotion. The current
-readiness status is blocked because only one layout-conversion proof slice
-exists and gate/digest bindings are intentionally deferred.
+readiness status is blocked because gate/digest bindings are intentionally
+deferred.
 
 ## What It Proves
 

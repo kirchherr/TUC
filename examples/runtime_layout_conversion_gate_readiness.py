@@ -4,9 +4,15 @@ try:
     from examples.runtime_layout_conversion_evidence import (
         build_current_runtime_layout_conversion_evidence_report,
     )
+    from examples.runtime_layout_conversion_second_slice import (
+        build_second_runtime_layout_conversion_evidence_report,
+    )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     from runtime_layout_conversion_evidence import (  # type: ignore[no-redef]
         build_current_runtime_layout_conversion_evidence_report,
+    )
+    from runtime_layout_conversion_second_slice import (  # type: ignore[no-redef]
+        build_second_runtime_layout_conversion_evidence_report,
     )
 
 from tuc.runtime.layout_conversion_gate_readiness import (
@@ -23,6 +29,14 @@ def build_current_runtime_layout_conversion_gate_readiness_report() -> (
     """Return the current gate-readiness report for layout conversion evidence."""
 
     source_evidence = build_current_runtime_layout_conversion_evidence_report()
+    second_slice = build_second_runtime_layout_conversion_evidence_report()
+    second_slice_ready = (
+        second_slice.passed
+        and len(second_slice.conversions) >= 1
+        and second_slice.graph_name != source_evidence.graph_name
+        and second_slice.conversion_metadata_digest
+        != source_evidence.conversion_metadata_digest
+    )
     checks = (
         RuntimeLayoutConversionGateReadinessCheck(
             check_name="layout_conversion_evidence_report_passes",
@@ -50,9 +64,13 @@ def build_current_runtime_layout_conversion_gate_readiness_report() -> (
         ),
         RuntimeLayoutConversionGateReadinessCheck(
             check_name="second_independent_layout_conversion_slice",
-            status="blocked",
-            evidence_id="missing_second_layout_conversion_slice",
-            detail="one_slice_only",
+            status="passed" if second_slice_ready else "blocked",
+            evidence_id=(
+                "runtime_layout_conversion_evidence_reduction_slice"
+                if second_slice_ready
+                else "missing_second_layout_conversion_slice"
+            ),
+            detail="second_slice_report_passed" if second_slice_ready else "one_slice_only",
         ),
         RuntimeLayoutConversionGateReadinessCheck(
             check_name="gate_exact_artifact_binding",

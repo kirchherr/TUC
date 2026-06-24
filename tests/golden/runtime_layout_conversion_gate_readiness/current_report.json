@@ -37,9 +37,9 @@
     },
     {
       "check_name": "second_independent_layout_conversion_slice",
-      "detail": "one_slice_only",
-      "evidence_id": "missing_second_layout_conversion_slice",
-      "status": "blocked"
+      "detail": "second_slice_report_passed",
+      "evidence_id": "runtime_layout_conversion_evidence_reduction_slice",
+      "status": "passed"
     },
     {
       "check_name": "gate_exact_artifact_binding",
@@ -57,10 +57,6 @@
   "issues": [
     {
       "issue_code": "readiness_check_not_passed",
-      "subject": "second_independent_layout_conversion_slice"
-    },
-    {
-      "issue_code": "readiness_check_not_passed",
       "subject": "gate_exact_artifact_binding"
     },
     {
@@ -70,7 +66,7 @@
   ],
   "proposal_name": "runtime_layout_conversion_gate_required_evidence",
   "readiness_contract": "runtime_layout_conversion_gate_readiness.data_only.v0",
-  "readiness_metadata_digest": "sha256:f6f5a0c15bcca294a4d64580f130fa629cc0f260170616356f18e746f6f53b8b",
+  "readiness_metadata_digest": "sha256:bf66b44ab1de0767630d9b96f64ca1e8beee77f8579299ab912a2ba0eafc3e10",
   "readiness_status": "blocked",
   "ready": false,
   "schema_version": "tuc.runtime_layout_conversion_gate_readiness_report.v0",

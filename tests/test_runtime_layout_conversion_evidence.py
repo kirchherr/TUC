@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 import subprocess
@@ -11,6 +11,9 @@ import pytest
 
 from examples.runtime_layout_conversion_evidence import (
     build_current_runtime_layout_conversion_evidence_report,
+)
+from examples.runtime_layout_conversion_second_slice import (
+    build_second_runtime_layout_conversion_evidence_report,
 )
 from examples.runtime_mixed_backend_equivalence import build_graph
 from tuc import SystolicArraySimulatorBackend, VectorSimulatorBackend, compile_graph
@@ -37,6 +40,9 @@ from tuc.runtime.plan import LayoutConversionCost
 
 SCHEMA_PATH = Path("schemas/runtime_layout_conversion_evidence_report.v0.schema.json")
 GOLDEN_PATH = Path("tests/golden/runtime_layout_conversion_evidence/current_report.json")
+SECOND_SLICE_GOLDEN_PATH = Path(
+    "tests/golden/runtime_layout_conversion_evidence/second_slice_report.json"
+)
 
 
 def test_runtime_layout_conversion_evidence_report_passes() -> None:
@@ -79,6 +85,55 @@ def test_runtime_layout_conversion_evidence_dump_matches_golden() -> None:
     assert dump_runtime_layout_conversion_evidence_report(report) == (
         GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
     )
+
+
+def test_runtime_layout_conversion_second_slice_passes() -> None:
+    primary = build_current_runtime_layout_conversion_evidence_report()
+    report = build_second_runtime_layout_conversion_evidence_report()
+
+    assert report.passed is True
+    assert report.graph_name == "runtime_layout_conversion_reduction_slice"
+    assert report.source_partition_plan_digest != primary.source_partition_plan_digest
+    assert report.conversion_metadata_digest != primary.conversion_metadata_digest
+    assert len(report.conversions) == 1
+    assert report.total_planned_bytes == 32
+
+    record = report.conversions[0]
+    assert record.conversion_id == "layout_conversion_0000"
+    assert record.tensor_name == "scores"
+    assert record.source_operation == "score_projection"
+    assert record.target_operation == "reduce_scores"
+    assert record.from_backend == "systolic-sim"
+    assert record.to_backend == "vector-sim"
+    assert record.from_layout is LayoutKind.BLOCKED
+    assert record.to_layout is LayoutKind.ROW_MAJOR
+    assert record.planned_bytes == 32
+    assert record.planner_reason == "layout_mismatch"
+
+
+def test_runtime_layout_conversion_second_slice_dump_matches_golden() -> None:
+    report = build_second_runtime_layout_conversion_evidence_report()
+
+    assert dump_runtime_layout_conversion_evidence_report(report) == (
+        SECOND_SLICE_GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
+    )
+
+
+def test_runtime_layout_conversion_second_slice_example_runs() -> None:
+    completed = subprocess.run(
+        [sys.executable, "examples/runtime_layout_conversion_second_slice.py"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.stdout == (
+        SECOND_SLICE_GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
+    )
+    assert "runtime_layout_conversion_reduction_slice" in completed.stdout
+    assert "runtime_handle" not in completed.stdout
+    assert "memory_address" not in completed.stdout
+    assert "raw_tensor_value" not in completed.stdout
 
 
 def test_runtime_layout_conversion_evidence_example_runs() -> None:
