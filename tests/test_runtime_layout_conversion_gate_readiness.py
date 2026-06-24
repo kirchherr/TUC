@@ -15,6 +15,11 @@ from examples.runtime_layout_conversion_evidence import (
 from examples.runtime_layout_conversion_gate_readiness import (
     build_current_runtime_layout_conversion_gate_readiness_report,
 )
+from tuc import (
+    RuntimeEvidenceArtifact,
+    build_current_runtime_evidence_matrix_report,
+    build_runtime_evidence_matrix_report,
+)
 from tuc.runtime.layout_conversion_gate_readiness import (
     MAX_RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_CHECKS,
     MAX_RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_ISSUES,
@@ -77,14 +82,16 @@ def test_runtime_layout_conversion_gate_readiness_is_blocked_by_design() -> None
         "passed",
         "passed",
         "passed",
-        "blocked",
+        "passed",
         "blocked",
     )
     assert report.checks[4].evidence_id == (
         "runtime_layout_conversion_evidence_reduction_slice"
     )
+    assert report.checks[5].evidence_id == (
+        RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_TARGET_ARTIFACT_ID
+    )
     assert tuple(issue.subject for issue in report.issues) == (
-        "gate_exact_artifact_binding",
         "hs_ir_and_tensor_store_digest_binding",
     )
 
@@ -134,6 +141,45 @@ def test_runtime_layout_conversion_gate_readiness_rejects_wrong_check_order() ->
 
     with pytest.raises(ValueError, match="checks are out of order"):
         build_runtime_layout_conversion_gate_readiness_report(source, checks)
+
+
+def test_runtime_layout_conversion_gate_readiness_blocks_wrong_matrix_artifact() -> None:
+    matrix = build_current_runtime_evidence_matrix_report()
+    forged = build_runtime_evidence_matrix_report(
+        "runtime_layout_conversion_gate_readiness_wrong_artifact",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    RuntimeEvidenceArtifact(
+                        artifact_kind=artifact.artifact_kind,
+                        artifact_id="runtime_layout_conversion_evidence_other",
+                    )
+                    if artifact.artifact_kind
+                    == RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_TARGET_ARTIFACT_KIND
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id
+            == RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_TARGET_GRAPH_ID
+            else graph
+            for graph in matrix.graphs
+        ),
+    )
+
+    report = build_current_runtime_layout_conversion_gate_readiness_report(
+        matrix_report=forged,
+    )
+
+    exact_binding = {
+        check.check_name: check for check in report.checks
+    }["gate_exact_artifact_binding"]
+    assert exact_binding.status == "blocked"
+    assert exact_binding.evidence_id == "missing_runtime_evidence_gate_binding"
+    assert "gate_exact_artifact_binding" in {
+        issue.subject for issue in report.issues
+    }
 
 
 def test_runtime_layout_conversion_gate_readiness_rejects_forbidden_text() -> None:
@@ -225,7 +271,7 @@ def test_runtime_layout_conversion_gate_readiness_golden_matches_schema_shape() 
     assert golden["source_conversion_count"] == 1
     assert golden["source_evidence_issue_count"] == 0
     assert len(golden["checks"]) == MAX_RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_CHECKS
-    assert len(golden["issues"]) == 2
+    assert len(golden["issues"]) == 1
 
 
 def test_runtime_layout_conversion_gate_readiness_schema_is_referenced() -> None:

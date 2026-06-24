@@ -21,9 +21,9 @@ Evidence Matrix. That is useful, but it is not yet enough to promote the
 artifact into a merge gate.
 
 Without an explicit readiness report, TUC could accidentally turn narrow proof
-slices into a general gate requirement before exact gate and digest bindings
-exist. That would weaken the Universal Compute proof by making review evidence
-look more operationally bound than it is.
+slices into a general gate requirement before digest bindings exist. That would
+weaken the Universal Compute proof by making review evidence look more
+operationally bound than it is.
 
 ## Goals
 
@@ -60,11 +60,8 @@ The report records:
 - target graph, artifact kind, artifact ID, and current gate status;
 - blocked execution surfaces.
 
-The current report is blocked because:
-
-- exact Runtime Evidence Gate artifact binding is not implemented;
-- HS-IR and Runtime Tensor Store digest binding for layout transitions is still
-  deferred.
+The current report is blocked because HS-IR and Runtime Tensor Store digest
+binding for layout transitions is still deferred.
 
 ## Invariants
 
@@ -87,8 +84,8 @@ The v0 implementation adds:
 - a deterministic readiness example and golden report;
 - a second independent layout-conversion evidence example and golden report;
 - schema checks for constants, check order, and fail-closed objects;
-- negative tests for forged issues, wrong check order, and forbidden execution
-  surface text;
+- negative tests for forged issues, wrong check order, wrong Matrix artifact
+  binding, and forbidden execution surface text;
 - documentation references from the layout-conversion evidence docs and roadmap.
 
 ## Open Questions

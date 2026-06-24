@@ -43,9 +43,9 @@
     },
     {
       "check_name": "gate_exact_artifact_binding",
-      "detail": "not_gate_required_yet",
-      "evidence_id": "missing_runtime_evidence_gate_binding",
-      "status": "blocked"
+      "detail": "exact_artifact_binding_verified",
+      "evidence_id": "runtime_layout_conversion_evidence_mixed",
+      "status": "passed"
     },
     {
       "check_name": "hs_ir_and_tensor_store_digest_binding",
@@ -57,16 +57,12 @@
   "issues": [
     {
       "issue_code": "readiness_check_not_passed",
-      "subject": "gate_exact_artifact_binding"
-    },
-    {
-      "issue_code": "readiness_check_not_passed",
       "subject": "hs_ir_and_tensor_store_digest_binding"
     }
   ],
   "proposal_name": "runtime_layout_conversion_gate_required_evidence",
   "readiness_contract": "runtime_layout_conversion_gate_readiness.data_only.v0",
-  "readiness_metadata_digest": "sha256:bf66b44ab1de0767630d9b96f64ca1e8beee77f8579299ab912a2ba0eafc3e10",
+  "readiness_metadata_digest": "sha256:2075a15976b43bfa072ed425d7eb907af909f934d6f15eb44c58576f4fb3a19c",
   "readiness_status": "blocked",
   "ready": false,
   "schema_version": "tuc.runtime_layout_conversion_gate_readiness_report.v0",

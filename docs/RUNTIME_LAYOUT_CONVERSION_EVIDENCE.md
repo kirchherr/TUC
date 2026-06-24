@@ -57,8 +57,8 @@ conversion evidence is stable enough to become gate-required evidence.
 
 [Runtime Layout Conversion Gate Readiness](RUNTIME_LAYOUT_CONVERSION_GATE_READINESS.md)
 records the exact remaining prerequisites for that promotion. The current
-readiness status is blocked because gate/digest bindings are intentionally
-deferred.
+readiness status is blocked because HS-IR/Tensor Store digest binding is
+intentionally deferred.
 
 ## What It Proves
 

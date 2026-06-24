@@ -5,8 +5,8 @@ Runtime Layout Conversion Gate Readiness v0 records whether
 Runtime Evidence Gate evidence.
 
 The current answer is intentionally **blocked**. TUC now has two stable
-layout-conversion evidence slices and optional Runtime Evidence Matrix
-inventory, but it does not yet have exact Runtime Evidence Gate binding or
+layout-conversion evidence slices, optional Runtime Evidence Matrix inventory,
+and exact Matrix/artifact binding for the target evidence. It does not yet have
 HS-IR/Tensor Store digest binding for layout transitions.
 
 ## Contract
@@ -35,8 +35,7 @@ The report evaluates:
 - `gate_exact_artifact_binding`
 - `hs_ir_and_tensor_store_digest_binding`
 
-The first five checks currently pass. The final two checks remain blocked by
-design.
+The first six checks currently pass. The final check remains blocked by design.
 
 ## Security Boundary
 
@@ -51,5 +50,5 @@ code, benchmark samples, or plugin entrypoints.
 ## Promotion Rule
 
 Layout Conversion Evidence should become Runtime Evidence Gate-required only
-after this readiness report is ready and the target evidence has exact gate and
-digest bindings.
+after this readiness report is ready and the target evidence has HS-IR/Tensor
+Store digest binding.
