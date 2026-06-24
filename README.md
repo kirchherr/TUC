@@ -121,6 +121,9 @@ Current runtime surfaces:
   `systolic-sim`, `vector-sim`, and mixed `systolic-sim` plus `vector-sim`
   placements without serialized tensor values, with all proof slices bound into
   the Runtime Evidence Gate.
+- Proof Of Backend Equivalence v0 promoting the mixed `reference-cpu` versus
+  `systolic-sim + vector-sim` placement comparison into one canonical
+  metadata-only proof entrypoint.
 - Mixed Runtime Tensor Store Evidence v0 proving the accepted
   `systolic-sim -> vector-sim` plan produces read-only Runtime Value Records
   with placement metadata and without serialized tensor values.
@@ -165,6 +168,7 @@ examples/runtime_backend_equivalence_portfolio.py
 examples/runtime_backend_equivalence_portfolio_policy.py
 examples/runtime_vector_backend_equivalence.py
 examples/runtime_mixed_backend_equivalence.py
+examples/proof_of_backend_equivalence.py
 examples/runtime_hs_ir_plan_alignment.py
 examples/runtime_planning_explanation.py
 examples/runtime_mixed_planning_explanation.py
@@ -193,6 +197,7 @@ Key docs:
 - [Runtime Execution Output Closure](docs/RUNTIME_EXECUTION_OUTPUT_CLOSURE.md)
 - [Runtime Evidence Replay Verifier](docs/RUNTIME_EVIDENCE_REPLAY_VERIFIER.md)
 - [Runtime Backend Equivalence](docs/RUNTIME_BACKEND_EQUIVALENCE.md)
+- [Proof Of Backend Equivalence](docs/PROOF_OF_BACKEND_EQUIVALENCE.md)
 - [Runtime Backend Equivalence Portfolio](docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md)
 - [Runtime Evidence Gate Matrix Coverage](docs/RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
 - [Runtime HS-IR Plan Alignment](docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md)

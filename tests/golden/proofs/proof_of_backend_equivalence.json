@@ -1,0 +1,73 @@
+{
+  "artifact_status": "review_evidence",
+  "baseline_backend_sequence": [
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu"
+  ],
+  "baseline_placement": "reference_cpu",
+  "baseline_run_id": "reference_cpu",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_backend_sequence": [
+    "systolic-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim"
+  ],
+  "candidate_placement": "systolic_sim_plus_vector_sim",
+  "candidate_run_id": "mixed_accelerators",
+  "claim": "same_compute_intent_preserves_terminal_semantics_across_mixed_backend_placement",
+  "comparison_count": 1,
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "runtime_mixed_backend_equivalence",
+  "non_claims": [
+    "native_device_execution",
+    "native_performance_parity",
+    "physical_device_residency",
+    "backend_plugin_safety",
+    "broad_source_parser_correctness"
+  ],
+  "proof_contract": "proof_of_backend_equivalence.mixed_backend.v0",
+  "proof_kind": "backend_equivalence",
+  "proof_status": "PASS",
+  "raw_value_policy": "omitted_by_policy",
+  "runtime_equivalence_comparison_digest": "sha256:ed3fb85e2e4f20f468ca27e2bc8770310ea3ea8bab476975b3efd7032a8248bf",
+  "runtime_equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "runtime_equivalence_report_digest": "sha256:a63416802b4c1e8ab68c8c25ba0a98f735c4d65953ca9d90282655bd65312f45",
+  "runtime_equivalence_schema_version": "tuc.runtime_backend_equivalence_report.v0",
+  "schema_version": "tuc.proof_of_backend_equivalence_report.v0",
+  "source_report_id": "runtime_mixed_backend_equivalence",
+  "terminal_output_checks": [
+    {
+      "atol": 1e-12,
+      "baseline_dtype": "float64",
+      "baseline_output_value_status": "omitted_by_policy",
+      "baseline_shape": [
+        2
+      ],
+      "candidate_dtype": "float64",
+      "candidate_output_value_status": "omitted_by_policy",
+      "candidate_shape": [
+        2
+      ],
+      "comparison_status": "matched",
+      "expected_dtype": "float64",
+      "expected_shape": [
+        2
+      ],
+      "rtol": 1e-12,
+      "tensor_name": "activated"
+    }
+  ],
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

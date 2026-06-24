@@ -140,7 +140,8 @@ stronger portability or performance claims are made.
 
 The proof class is described in
 [Proof Of Backend Equivalence](PROOF_OF_BACKEND_EQUIVALENCE.md), including its
-non-claims and review checklist.
+non-claims and review checklist. The canonical entrypoint is
+`examples/proof_of_backend_equivalence.py`.
 
 `Runtime HS-IR Plan Alignment` is the current bridge between backend-specific
 IR facts and practical runtime execution evidence. It makes HS-IR drift from

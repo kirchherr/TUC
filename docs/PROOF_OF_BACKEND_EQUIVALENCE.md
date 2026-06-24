@@ -28,6 +28,29 @@ research evidence uses trusted simulator placements such as `linear-sim` and
 `vector-sim`. Runtime-level historical fixtures also cover a specialized
 accelerator simulator, but no single simulator is the proof center.
 
+## Canonical Entrypoint
+
+The canonical proof entrypoint is:
+
+```bash
+python examples/proof_of_backend_equivalence.py
+```
+
+It emits `tuc.proof_of_backend_equivalence_report.v0` evidence using
+`schemas/proof_of_backend_equivalence_report.v0.schema.json`.
+
+The current golden is:
+
+```text
+tests/golden/proofs/proof_of_backend_equivalence.json
+```
+
+The proof wraps the existing mixed Runtime Backend Equivalence report for
+`reference-cpu` versus `systolic-sim + vector-sim` placement and binds it by
+SHA-256 digest. It publishes only proof metadata, backend sequences, terminal
+output comparison status, raw-value omission policy, blocked execution
+surfaces, and explicit non-claims.
+
 ## Required Evidence
 
 A Backend Equivalence proof needs:

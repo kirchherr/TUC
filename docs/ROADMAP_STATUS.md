@@ -39,6 +39,13 @@ hardware-independent interface into capability-driven runtime planning.
 - [Proof Of Backend Equivalence](PROOF_OF_BACKEND_EQUIVALENCE.md) promotes
   backend equivalence to an explicit proof type with required evidence, current
   artifacts, non-claims, and a secure review checklist.
+- Proof Of Backend Equivalence now has a canonical entrypoint at
+  `examples/proof_of_backend_equivalence.py`, schema at
+  `schemas/proof_of_backend_equivalence_report.v0.schema.json`, and
+  deterministic golden evidence at
+  `tests/golden/proofs/proof_of_backend_equivalence.json`, binding the mixed
+  `reference-cpu` versus `systolic-sim + vector-sim` equivalence report by
+  digest without serializing tensor values or claiming native execution.
 - [RFC 0212: Runtime Layout Conversion Evidence](../rfcs/0212-runtime-layout-conversion-evidence.md)
   defines the next optional data-only proof boundary for explicit planned layout
   transitions before any native converter, allocation handle, or real residency

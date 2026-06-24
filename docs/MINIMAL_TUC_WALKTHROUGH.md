@@ -42,6 +42,7 @@ From the repository root:
 
 ```bash
 python examples/proof_of_execution.py
+python examples/proof_of_backend_equivalence.py
 python examples/runtime_evidence_gate.py
 python examples/source_to_intent_research_kernel_ingress_evidence_gate.py
 ```
@@ -50,14 +51,17 @@ With the Docker development environment:
 
 ```bash
 docker compose run --rm dev python examples/proof_of_execution.py
+docker compose run --rm dev python examples/proof_of_backend_equivalence.py
 docker compose run --rm dev python examples/runtime_evidence_gate.py
 docker compose run --rm dev python examples/source_to_intent_research_kernel_ingress_evidence_gate.py
 ```
 
 The first command demonstrates trusted runtime execution for an already
-compiled graph. The second checks the runtime evidence set. The third checks the
-current Source-To-Intent Kernel Ingress research slice, including runtime
-evidence, replay, backend equivalence, and source-free proof-bundle bindings.
+compiled graph. The second shows the canonical Backend Equivalence proof for
+`reference-cpu` versus mixed `systolic-sim + vector-sim` placement. The third
+checks the runtime evidence set. The fourth checks the current Source-To-Intent
+Kernel Ingress research slice, including runtime evidence, replay, backend
+equivalence, and source-free proof-bundle bindings.
 
 ## What To Inspect
 
@@ -75,6 +79,7 @@ Backend equivalence evidence:
 tests/golden/runtime_backend_equivalence/current_report.json
 tests/golden/runtime_backend_equivalence/vector_sim_report.json
 tests/golden/runtime_backend_equivalence/mixed_accelerators.json
+tests/golden/proofs/proof_of_backend_equivalence.json
 tests/golden/frontend/source_to_intent_research_kernel_ingress_backend_equivalence.json
 tests/golden/frontend/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.json
 ```

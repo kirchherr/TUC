@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/proof_of_backend_equivalence_report.v0.schema.json",
+  "title": "TUC Proof of Backend Equivalence Report v0",
+  "description": "Canonical metadata-only proof summary for mixed backend equivalence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "baseline_backend_sequence",
+    "baseline_placement",
+    "baseline_run_id",
+    "blocked_execution_surfaces",
+    "candidate_backend_sequence",
+    "candidate_placement",
+    "candidate_run_id",
+    "claim",
+    "comparison_count",
+    "executor_contract",
+    "graph_name",
+    "non_claims",
+    "proof_contract",
+    "proof_kind",
+    "proof_status",
+    "raw_value_policy",
+    "runtime_equivalence_comparison_digest",
+    "runtime_equivalence_contract",
+    "runtime_equivalence_report_digest",
+    "runtime_equivalence_schema_version",
+    "schema_version",
+    "source_report_id",
+    "terminal_output_checks",
+    "trusted_executor_registry"
+  ],
+  "properties": {
+    "artifact_status": {"const": "review_evidence"},
+    "baseline_backend_sequence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"const": "reference-cpu"}
+    },
+    "baseline_placement": {"const": "reference_cpu"},
+    "baseline_run_id": {"const": "reference_cpu"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": false,
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ]
+    },
+    "candidate_backend_sequence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/backend_name"},
+      "prefixItems": [
+        {"const": "systolic-sim"},
+        {"const": "vector-sim"},
+        {"const": "vector-sim"},
+        {"const": "vector-sim"}
+      ]
+    },
+    "candidate_placement": {"const": "systolic_sim_plus_vector_sim"},
+    "candidate_run_id": {"const": "mixed_accelerators"},
+    "claim": {
+      "const": "same_compute_intent_preserves_terminal_semantics_across_mixed_backend_placement"
+    },
+    "comparison_count": {"const": 1},
+    "executor_contract": {"const": "runtime_executor.trusted_backend.v0"},
+    "graph_name": {"const": "runtime_mixed_backend_equivalence"},
+    "non_claims": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/non_claim"}
+    },
+    "proof_contract": {"const": "proof_of_backend_equivalence.mixed_backend.v0"},
+    "proof_kind": {"const": "backend_equivalence"},
+    "proof_status": {"const": "PASS"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "runtime_equivalence_comparison_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_equivalence_contract": {"const": "runtime_backend_equivalence.data_only.v0"},
+    "runtime_equivalence_report_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_equivalence_schema_version": {
+      "const": "tuc.runtime_backend_equivalence_report.v0"
+    },
+    "schema_version": {"const": "tuc.proof_of_backend_equivalence_report.v0"},
+    "source_report_id": {"const": "runtime_mixed_backend_equivalence"},
+    "terminal_output_checks": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {"$ref": "#/$defs/terminal_output_check"}
+    },
+    "trusted_executor_registry": {"const": "trusted_runtime_executor_registry.v0"}
+  },
+  "$defs": {
+    "backend_name": {
+      "type": "string",
+      "enum": ["systolic-sim", "vector-sim"]
+    },
+    "non_claim": {
+      "type": "string",
+      "enum": [
+        "native_device_execution",
+        "native_performance_parity",
+        "physical_device_residency",
+        "backend_plugin_safety",
+        "broad_source_parser_correctness"
+      ]
+    },
+    "shape": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 2147483647
+      }
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "terminal_output_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "atol",
+        "baseline_dtype",
+        "baseline_output_value_status",
+        "baseline_shape",
+        "candidate_dtype",
+        "candidate_output_value_status",
+        "candidate_shape",
+        "comparison_status",
+        "expected_dtype",
+        "expected_shape",
+        "rtol",
+        "tensor_name"
+      ],
+      "properties": {
+        "atol": {"const": 1e-12},
+        "baseline_dtype": {"const": "float64"},
+        "baseline_output_value_status": {"const": "omitted_by_policy"},
+        "baseline_shape": {"$ref": "#/$defs/shape"},
+        "candidate_dtype": {"const": "float64"},
+        "candidate_output_value_status": {"const": "omitted_by_policy"},
+        "candidate_shape": {"$ref": "#/$defs/shape"},
+        "comparison_status": {"const": "matched"},
+        "expected_dtype": {"const": "float64"},
+        "expected_shape": {"$ref": "#/$defs/shape"},
+        "rtol": {"const": 1e-12},
+        "tensor_name": {"const": "activated"}
+      }
+    }
+  }
+}
