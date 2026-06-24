@@ -1,0 +1,169 @@
+{
+  "$id": "https://tuc.dev/schemas/backend_plugin_resource_budget_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "type": "array"
+    },
+    "budget_count": {"const": 1},
+    "budget_policy": {"const": "resource_budget.static_bounds.no_execution.v0"},
+    "budget_ready": {"const": true},
+    "budget_status": {"const": "accepted_data_only_budget"},
+    "budgets": {
+      "items": false,
+      "maxItems": 16,
+      "minItems": 1,
+      "prefixItems": [
+        {"$ref": "#/$defs/budget"}
+      ],
+      "type": "array"
+    },
+    "execution_allowed": {"const": false},
+    "execution_permission": {"const": "not_granted"},
+    "issues": {
+      "items": {"$ref": "#/$defs/budget_issue"},
+      "maxItems": 64,
+      "type": "array"
+    },
+    "required_bindings": {
+      "items": false,
+      "maxItems": 6,
+      "minItems": 6,
+      "prefixItems": [
+        {"const": "sandbox_model"},
+        {"const": "artifact_provenance"},
+        {"const": "content_digest"},
+        {"const": "cpu_budget"},
+        {"const": "memory_budget"},
+        {"const": "io_budget"}
+      ],
+      "type": "array"
+    },
+    "resource_budget_contract": {"const": "backend_plugin_resource_budget.data_only.v0"},
+    "schema_version": {"const": "tuc.backend_plugin_resource_budget_report.v0"}
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "budget_count",
+    "budget_policy",
+    "budget_ready",
+    "budget_status",
+    "budgets",
+    "execution_allowed",
+    "execution_permission",
+    "issues",
+    "required_bindings",
+    "resource_budget_contract",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "budget": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_digest": {"$ref": "#/$defs/sha256_digest"},
+        "artifact_id": {"$ref": "#/$defs/report_text"},
+        "artifact_size_limit_bytes": {"maximum": 67108864, "minimum": 1, "type": "integer"},
+        "budget_id": {"$ref": "#/$defs/report_text"},
+        "budget_scope": {"const": "generated_artifact_execution"},
+        "budget_status": {"const": "reviewed_static_bounds"},
+        "cache_entry_limit": {"maximum": 64, "minimum": 1, "type": "integer"},
+        "cpu_time_limit_ms": {"maximum": 60000, "minimum": 1, "type": "integer"},
+        "diagnostics_limit_bytes": {"maximum": 65536, "minimum": 1, "type": "integer"},
+        "memory_limit_bytes": {"maximum": 536870912, "minimum": 1, "type": "integer"},
+        "output_limit_bytes": {"maximum": 1048576, "minimum": 1, "type": "integer"},
+        "provenance_contract": {"const": "backend_plugin_artifact_provenance.data_only.v0"},
+        "sandbox_model_contract": {"const": "backend_plugin_sandbox_model.data_only.v0"}
+      },
+      "required": [
+        "artifact_digest",
+        "artifact_id",
+        "artifact_size_limit_bytes",
+        "budget_id",
+        "budget_scope",
+        "budget_status",
+        "cache_entry_limit",
+        "cpu_time_limit_ms",
+        "diagnostics_limit_bytes",
+        "memory_limit_bytes",
+        "output_limit_bytes",
+        "provenance_contract",
+        "sandbox_model_contract"
+      ],
+      "type": "object"
+    },
+    "budget_issue": {
+      "additionalProperties": false,
+      "properties": {
+        "budget_id": {"$ref": "#/$defs/report_text"},
+        "issue_code": {"$ref": "#/$defs/issue_code"}
+      },
+      "required": ["budget_id", "issue_code"],
+      "type": "object"
+    },
+    "issue_code": {
+      "enum": [
+        "artifact_provenance_binding_mismatch",
+        "budget_execution_permission_granted",
+        "budget_limit_exceeds_policy",
+        "budget_limit_not_positive",
+        "budget_missing_required_binding",
+        "budget_scope_invalid",
+        "budget_status_invalid",
+        "duplicate_budget_id",
+        "invalid_artifact_digest",
+        "sandbox_binding_mismatch"
+      ],
+      "type": "string"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  }
+}

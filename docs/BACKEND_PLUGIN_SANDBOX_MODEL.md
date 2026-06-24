@@ -38,9 +38,9 @@ The sandbox model is accepted as a data-only model:
 This satisfies the `sandbox_model` requirement in
 [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md), but it
 does not make plugins executable. Artifact provenance now exists as separate
-data-only evidence; resource-budget evidence, fuzzing or negative-test
-evidence, and maintainer approval still remain required before plugin
-enablement can be proposed.
+data-only evidence. Resource-budget evidence now exists as separate data-only
+evidence; fuzzing or negative-test evidence and maintainer approval still
+remain required before plugin enablement can be proposed.
 
 ## Required Controls
 

@@ -279,8 +279,8 @@ hardware-independent interface into capability-driven runtime planning.
   evidence at `tests/golden/backend_plugin_lifecycle_policy/current_report.json`,
   and RFC [0217](../rfcs/0217-backend-plugin-lifecycle-policy.md). It keeps
   plugin discovery, artifact execution, and native plugin ABI loading disabled
-  until the accepted sandbox model and artifact provenance are bound with
-  resource-budget, fuzzing or negative-test, and maintainer-approval evidence.
+  until the accepted sandbox model, artifact provenance, and resource budget are
+  bound with fuzzing or negative-test and maintainer-approval evidence.
 - [Backend Plugin Sandbox Model](BACKEND_PLUGIN_SANDBOX_MODEL.md) now satisfies
   the Lifecycle Policy `sandbox_model` requirement with data-only evidence at
   `schemas/backend_plugin_sandbox_model_report.v0.schema.json`, deterministic
@@ -294,6 +294,13 @@ hardware-independent interface into capability-driven runtime planning.
   deterministic golden evidence at
   `tests/golden/backend_plugin_artifact_provenance/current_report.json`, and
   RFC [0219](../rfcs/0219-backend-plugin-artifact-provenance.md), while
+  keeping `execution_allowed: false` and `execution_permission: not_granted`.
+- [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md) now
+  satisfies the Lifecycle Policy `resource_budget` requirement with static
+  data-only budget evidence at
+  `schemas/backend_plugin_resource_budget_report.v0.schema.json`, deterministic
+  golden evidence at `tests/golden/backend_plugin_resource_budget/current_report.json`,
+  and RFC [0220](../rfcs/0220-backend-plugin-resource-budget.md), while
   keeping `execution_allowed: false` and `execution_permission: not_granted`.
 - Backend Capability Coverage v0 with schema at
   `schemas/backend_capability_coverage_report.v0.schema.json`, deterministic
@@ -1408,10 +1415,10 @@ Current focus:
   contribution.
 - Backend Plugin Lifecycle Policy now supplies the plugin lifecycle RFC and
   blocking policy. Backend Plugin Sandbox Model supplies the accepted
-  data-only sandbox model, and Backend Plugin Artifact Provenance supplies
-  accepted digest-bound provenance. Resource-budget evidence, fuzzing or
-  negative-test evidence, and maintainer approval remain required before any
-  executable backend discovery,
+  data-only sandbox model, Backend Plugin Artifact Provenance supplies accepted
+  digest-bound provenance, and Backend Plugin Resource Budget supplies accepted
+  static budget evidence. Fuzzing or negative-test evidence and maintainer
+  approval remain required before any executable backend discovery,
   artifact execution, or native plugin ABI.
 - Runtime Layout Conversion Evidence is now graph-scoped required Runtime
   Evidence Matrix and Runtime Evidence Gate evidence for

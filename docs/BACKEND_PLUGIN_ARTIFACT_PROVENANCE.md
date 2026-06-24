@@ -37,9 +37,9 @@ The artifact provenance model is accepted as data-only evidence:
 
 This satisfies the `artifact_provenance` requirement in
 [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md), but it
-does not make plugins executable. Resource-budget evidence, fuzzing or
-negative-test evidence, and maintainer approval still remain required before
-plugin enablement can be proposed.
+does not make plugins executable. Resource-budget evidence now exists as
+separate data-only evidence; fuzzing or negative-test evidence and maintainer
+approval still remain required before plugin enablement can be proposed.
 
 ## Required Bindings
 
@@ -74,6 +74,6 @@ A passing artifact provenance report means TUC has accepted a digest-bound,
 reviewed metadata record for a future backend artifact.
 
 It does not mean TUC has an executable plugin ABI, sandbox implementation,
-resource budget, fuzz evidence, maintainer approval, or permission to execute
-backend artifacts. Those require separate accepted evidence and changes to the
-lifecycle policy.
+fuzz evidence, maintainer approval, runtime enforcement, or permission to
+execute backend artifacts. Those require separate accepted evidence and changes
+to the lifecycle policy.

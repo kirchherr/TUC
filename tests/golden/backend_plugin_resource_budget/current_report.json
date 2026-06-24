@@ -1,0 +1,46 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "budget_count": 1,
+  "budget_policy": "resource_budget.static_bounds.no_execution.v0",
+  "budget_ready": true,
+  "budget_status": "accepted_data_only_budget",
+  "budgets": [
+    {
+      "artifact_digest": "sha256:8b4f6d3c2a1e0f9d8c7b6a594837261504f3e2d1c0b9a897867564534231201f",
+      "artifact_id": "external_vector_lowering_artifact",
+      "artifact_size_limit_bytes": 1048576,
+      "budget_id": "external_vector_lowering_resource_budget",
+      "budget_scope": "generated_artifact_execution",
+      "budget_status": "reviewed_static_bounds",
+      "cache_entry_limit": 4,
+      "cpu_time_limit_ms": 1000,
+      "diagnostics_limit_bytes": 32768,
+      "memory_limit_bytes": 67108864,
+      "output_limit_bytes": 262144,
+      "provenance_contract": "backend_plugin_artifact_provenance.data_only.v0",
+      "sandbox_model_contract": "backend_plugin_sandbox_model.data_only.v0"
+    }
+  ],
+  "execution_allowed": false,
+  "execution_permission": "not_granted",
+  "issues": [],
+  "required_bindings": [
+    "sandbox_model",
+    "artifact_provenance",
+    "content_digest",
+    "cpu_budget",
+    "memory_budget",
+    "io_budget"
+  ],
+  "resource_budget_contract": "backend_plugin_resource_budget.data_only.v0",
+  "schema_version": "tuc.backend_plugin_resource_budget_report.v0"
+}

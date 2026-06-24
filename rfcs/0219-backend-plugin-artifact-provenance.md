@@ -37,8 +37,8 @@ not a host path, package URL, import path, or executable entry point.
 
 Backend Plugin Lifecycle Policy now treats `artifact_provenance` as satisfied
 by this accepted provenance contract. The policy remains blocking because
-resource-budget evidence, fuzzing or negative-test evidence, and maintainer
-approval are still missing.
+resource-budget evidence is accepted by RFC 0220, while fuzzing or
+negative-test evidence and maintainer approval are still missing.
 
 ## Security Boundary
 
@@ -57,8 +57,8 @@ benchmark output.
 TUC now has a concrete provenance requirement for future executable backend
 artifacts without opening a compiler execution surface.
 
-Future plugin proposals still need resource budgets, fuzzing or negative-test
-evidence, maintainer approval, and an explicit implementation RFC before any
+Future plugin proposals still need fuzzing or negative-test evidence,
+maintainer approval, and an explicit implementation RFC before any
 plugin discovery, artifact execution, native plugin ABI, dynamic-library
 loading, device access, subprocess execution, network access, or JIT execution
 can be enabled.

@@ -315,7 +315,7 @@
           "const": "resource_budget"
         },
         "status": {
-          "const": "missing"
+          "const": "satisfied"
         }
       }
     },

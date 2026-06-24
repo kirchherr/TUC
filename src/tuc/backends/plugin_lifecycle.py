@@ -7,6 +7,7 @@ import re
 from dataclasses import dataclass
 
 from tuc.backends.artifact_provenance import BACKEND_PLUGIN_ARTIFACT_PROVENANCE_CONTRACT
+from tuc.backends.resource_budget import BACKEND_PLUGIN_RESOURCE_BUDGET_CONTRACT
 from tuc.backends.sandbox_model import (
     BACKEND_PLUGIN_SANDBOX_MODEL_CONTRACT,
     BACKEND_PLUGIN_SANDBOX_MODEL_STATUS,
@@ -327,8 +328,8 @@ def _current_lifecycle_requirements() -> tuple[BackendPluginLifecycleRequirement
         ),
         BackendPluginLifecycleRequirement(
             requirement_id="resource_budget",
-            status="missing",
-            evidence_id="not_approved",
+            status="satisfied",
+            evidence_id=BACKEND_PLUGIN_RESOURCE_BUDGET_CONTRACT,
             required_before="device_access",
         ),
         BackendPluginLifecycleRequirement(

@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "execution_status": "external_plugins_blocked",
-  "missing_requirement_count": 3,
+  "missing_requirement_count": 2,
   "native_plugin_abi_enabled": false,
   "plugin_discovery_enabled": false,
   "policy_contract": "backend_plugin_lifecycle_policy.blocking.v0",
@@ -59,10 +59,10 @@
       "status": "satisfied"
     },
     {
-      "evidence_id": "not_approved",
+      "evidence_id": "backend_plugin_resource_budget.data_only.v0",
       "required_before": "device_access",
       "requirement_id": "resource_budget",
-      "status": "missing"
+      "status": "satisfied"
     },
     {
       "evidence_id": "not_approved",
