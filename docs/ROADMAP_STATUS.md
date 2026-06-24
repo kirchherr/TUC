@@ -68,6 +68,17 @@ hardware-independent interface into capability-driven runtime planning.
   artifact kind, and `runtime_layout_conversion_evidence_mixed` artifact ID for
   the target evidence, clearing the `gate_exact_artifact_binding` blocker
   without making layout-conversion evidence gate-required yet.
+- [Runtime Layout Conversion Digest Binding](RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING.md)
+  now binds Runtime Layout Conversion Evidence to Runtime HS-IR Plan Alignment
+  and Runtime Tensor Store Evidence with schema at
+  `schemas/runtime_layout_conversion_digest_binding_report.v0.schema.json` and
+  deterministic golden evidence at
+  `tests/golden/runtime_layout_conversion_digest_binding/current_report.json`,
+  clearing the `hs_ir_and_tensor_store_digest_binding` readiness blocker.
+- Runtime Layout Conversion Gate Readiness is now `ready` with all seven checks
+  passed, while `runtime_layout_conversion_evidence` remains optional Runtime
+  Evidence Matrix inventory until a separate maintainer policy change promotes
+  it to Runtime Evidence Gate-required status.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding
@@ -1367,9 +1378,9 @@ Current focus:
 - Plugin lifecycle RFC and sandboxing model before any executable backend
   discovery, artifact execution, or native plugin ABI.
 - Runtime Layout Conversion Evidence now exists as optional data-only Matrix
-  inventory with a blocked Gate Readiness report. It should become required
-  Runtime Evidence Matrix or Runtime Evidence Gate evidence only after
-  HS-IR/Tensor Store digest binding exists.
+  inventory with a ready Gate Readiness report. It should become required
+  Runtime Evidence Matrix or Runtime Evidence Gate evidence only through a
+  separate policy change that binds the ready report to gate enforcement.
 
 ## Runtime Allocation Reconciliation
 

@@ -49,22 +49,17 @@
     },
     {
       "check_name": "hs_ir_and_tensor_store_digest_binding",
-      "detail": "digest_binding_deferred",
-      "evidence_id": "missing_hs_ir_tensor_store_digest_binding",
-      "status": "blocked"
+      "detail": "exact_digest_binding_verified",
+      "evidence_id": "runtime_layout_conversion_digest_binding_mixed",
+      "status": "passed"
     }
   ],
-  "issues": [
-    {
-      "issue_code": "readiness_check_not_passed",
-      "subject": "hs_ir_and_tensor_store_digest_binding"
-    }
-  ],
+  "issues": [],
   "proposal_name": "runtime_layout_conversion_gate_required_evidence",
   "readiness_contract": "runtime_layout_conversion_gate_readiness.data_only.v0",
-  "readiness_metadata_digest": "sha256:2075a15976b43bfa072ed425d7eb907af909f934d6f15eb44c58576f4fb3a19c",
-  "readiness_status": "blocked",
-  "ready": false,
+  "readiness_metadata_digest": "sha256:bc98dd9222bf414aab8897f355fdd45f362c4b7b60f1c561333323f37a7e3c5e",
+  "readiness_status": "ready",
+  "ready": true,
   "schema_version": "tuc.runtime_layout_conversion_gate_readiness_report.v0",
   "source_conversion_count": 1,
   "source_conversion_metadata_digest": "sha256:9d07f000336e1150dced149fc2c5a5ef8a88467cdac15b3c6297ecfb6e8b1839",

@@ -10,8 +10,9 @@ Add a data-only readiness report for deciding when
 Runtime Layout Conversion Evidence can become required Runtime Evidence Gate
 evidence.
 
-This RFC does not make layout conversion evidence gate-required. It records why
-the current state is still blocked.
+This RFC does not make layout conversion evidence gate-required. It records the
+promotion prerequisites and now points to the digest-binding evidence that makes
+the current readiness report ready.
 
 ## Motivation
 
@@ -50,6 +51,10 @@ operationally bound than it is.
 Introduce `RuntimeLayoutConversionGateReadinessReport` with schema
 `schemas/runtime_layout_conversion_gate_readiness_report.v0.schema.json`.
 
+Runtime Layout Conversion Digest Binding is defined in
+`schemas/runtime_layout_conversion_digest_binding_report.v0.schema.json` and
+RFC 0214.
+
 The report records:
 
 - the source layout-conversion evidence contract and schema version;
@@ -60,8 +65,8 @@ The report records:
 - target graph, artifact kind, artifact ID, and current gate status;
 - blocked execution surfaces.
 
-The current report is blocked because HS-IR and Runtime Tensor Store digest
-binding for layout transitions is still deferred.
+The current report is ready because RFC 0214 adds HS-IR and Runtime Tensor
+Store digest binding for the mixed layout transition.
 
 ## Invariants
 
@@ -83,6 +88,7 @@ The v0 implementation adds:
 
 - a deterministic readiness example and golden report;
 - a second independent layout-conversion evidence example and golden report;
+- a digest-binding example and golden report;
 - schema checks for constants, check order, and fail-closed objects;
 - negative tests for forged issues, wrong check order, wrong Matrix artifact
   binding, and forbidden execution surface text;
@@ -90,6 +96,7 @@ The v0 implementation adds:
 
 ## Open Questions
 
-- Should HS-IR and Runtime Tensor Store digest binding be one readiness check or
-  separate checks once the second slice exists?
+- Should layout-conversion evidence be promoted as a required gate only for the
+  mixed backend-equivalence graph first, or should TUC define a broader
+  per-graph promotion policy?
 - Should no-op layout preservation records ever count toward readiness?

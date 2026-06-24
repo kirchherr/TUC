@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 try:
+    from examples.runtime_layout_conversion_digest_binding import (
+        build_current_runtime_layout_conversion_digest_binding_report,
+    )
     from examples.runtime_layout_conversion_evidence import (
         build_current_runtime_layout_conversion_evidence_report,
     )
@@ -10,6 +13,9 @@ try:
         build_second_runtime_layout_conversion_evidence_report,
     )
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
+    from runtime_layout_conversion_digest_binding import (  # type: ignore[no-redef]
+        build_current_runtime_layout_conversion_digest_binding_report,
+    )
     from runtime_layout_conversion_evidence import (  # type: ignore[no-redef]
         build_current_runtime_layout_conversion_evidence_report,
     )
@@ -18,6 +24,10 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
 
 from tuc import RuntimeEvidenceMatrixReport, build_current_runtime_evidence_matrix_report
+from tuc.runtime.layout_conversion_digest_binding import (
+    RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING_ARTIFACT_ID,
+    RuntimeLayoutConversionDigestBindingReport,
+)
 from tuc.runtime.layout_conversion_evidence import RuntimeLayoutConversionEvidenceReport
 from tuc.runtime.layout_conversion_gate_readiness import (
     RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_TARGET_ARTIFACT_ID,
@@ -35,6 +45,7 @@ def build_current_runtime_layout_conversion_gate_readiness_report(
     source_evidence: RuntimeLayoutConversionEvidenceReport | None = None,
     second_slice: RuntimeLayoutConversionEvidenceReport | None = None,
     matrix_report: RuntimeEvidenceMatrixReport | None = None,
+    digest_binding_report: RuntimeLayoutConversionDigestBindingReport | None = None,
 ) -> RuntimeLayoutConversionGateReadinessReport:
     """Return the current gate-readiness report for layout conversion evidence."""
 
@@ -53,6 +64,11 @@ def build_current_runtime_layout_conversion_gate_readiness_report(
         if matrix_report is None
         else matrix_report
     )
+    digest_binding_report = (
+        build_current_runtime_layout_conversion_digest_binding_report()
+        if digest_binding_report is None
+        else digest_binding_report
+    )
     second_slice_ready = (
         second_slice.passed
         and len(second_slice.conversions) >= 1
@@ -63,6 +79,10 @@ def build_current_runtime_layout_conversion_gate_readiness_report(
     matrix_inventory_ready = _matrix_has_layout_conversion_inventory(matrix_report)
     exact_binding_ready = _matrix_binding_matches_source_report(
         matrix_report,
+        source_evidence,
+    )
+    digest_binding_ready = _digest_binding_matches_source_report(
+        digest_binding_report,
         source_evidence,
     )
     checks = (
@@ -124,9 +144,17 @@ def build_current_runtime_layout_conversion_gate_readiness_report(
         ),
         RuntimeLayoutConversionGateReadinessCheck(
             check_name="hs_ir_and_tensor_store_digest_binding",
-            status="blocked",
-            evidence_id="missing_hs_ir_tensor_store_digest_binding",
-            detail="digest_binding_deferred",
+            status="passed" if digest_binding_ready else "blocked",
+            evidence_id=(
+                RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING_ARTIFACT_ID
+                if digest_binding_ready
+                else "missing_hs_ir_tensor_store_digest_binding"
+            ),
+            detail=(
+                "exact_digest_binding_verified"
+                if digest_binding_ready
+                else "digest_binding_deferred"
+            ),
         ),
     )
     return build_runtime_layout_conversion_gate_readiness_report(
@@ -173,6 +201,27 @@ def _matrix_binding_matches_source_report(
                 )
         return False
     return False
+
+
+def _digest_binding_matches_source_report(
+    digest_binding_report: RuntimeLayoutConversionDigestBindingReport,
+    source_evidence: RuntimeLayoutConversionEvidenceReport,
+) -> bool:
+    return (
+        digest_binding_report.passed
+        and digest_binding_report.graph_name == source_evidence.graph_name
+        and digest_binding_report.source_layout_conversion_passed
+        and digest_binding_report.source_layout_conversion_count
+        == len(source_evidence.conversions)
+        and digest_binding_report.source_layout_conversion_issue_count
+        == len(source_evidence.issues)
+        and digest_binding_report.source_layout_conversion_total_planned_bytes
+        == source_evidence.total_planned_bytes
+        and digest_binding_report.source_layout_conversion_metadata_digest
+        == source_evidence.conversion_metadata_digest
+        and digest_binding_report.source_partition_plan_digest
+        == source_evidence.source_partition_plan_digest
+    )
 
 
 def main() -> None:

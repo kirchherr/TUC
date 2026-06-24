@@ -23,6 +23,8 @@ physical device residency.
 - Residency claim status: `not_physical_residency_evidence`
 - Gate-readiness schema:
   `schemas/runtime_layout_conversion_gate_readiness_report.v0.schema.json`
+- Digest-binding schema:
+  `schemas/runtime_layout_conversion_digest_binding_report.v0.schema.json`
 
 ## What It Records
 
@@ -56,9 +58,11 @@ now: the mixed graph's required artifact kinds remain `backend_equivalence`,
 conversion evidence is stable enough to become gate-required evidence.
 
 [Runtime Layout Conversion Gate Readiness](RUNTIME_LAYOUT_CONVERSION_GATE_READINESS.md)
-records the exact remaining prerequisites for that promotion. The current
-readiness status is blocked because HS-IR/Tensor Store digest binding is
-intentionally deferred.
+now records that the current promotion prerequisites are ready. The final
+readiness blocker is satisfied by
+[Runtime Layout Conversion Digest Binding](RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING.md),
+which connects the layout-conversion metadata digest to HS-IR alignment and
+Tensor Store record metadata for the mixed slice.
 
 ## What It Proves
 

@@ -9,6 +9,9 @@ from typing import Any
 
 import pytest
 
+from examples.runtime_layout_conversion_digest_binding import (
+    build_current_runtime_layout_conversion_digest_binding_report,
+)
 from examples.runtime_layout_conversion_evidence import (
     build_current_runtime_layout_conversion_evidence_report,
 )
@@ -19,6 +22,9 @@ from tuc import (
     RuntimeEvidenceArtifact,
     build_current_runtime_evidence_matrix_report,
     build_runtime_evidence_matrix_report,
+)
+from tuc.runtime.layout_conversion_digest_binding import (
+    RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING_ARTIFACT_ID,
 )
 from tuc.runtime.layout_conversion_gate_readiness import (
     MAX_RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_CHECKS,
@@ -47,11 +53,11 @@ GOLDEN_PATH = Path(
 )
 
 
-def test_runtime_layout_conversion_gate_readiness_is_blocked_by_design() -> None:
+def test_runtime_layout_conversion_gate_readiness_is_ready() -> None:
     report = build_current_runtime_layout_conversion_gate_readiness_report()
 
-    assert report.ready is False
-    assert report.readiness_status == "blocked"
+    assert report.ready is True
+    assert report.readiness_status == "ready"
     assert report.readiness_contract == (
         RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_CONTRACT
     )
@@ -83,7 +89,7 @@ def test_runtime_layout_conversion_gate_readiness_is_blocked_by_design() -> None
         "passed",
         "passed",
         "passed",
-        "blocked",
+        "passed",
     )
     assert report.checks[4].evidence_id == (
         "runtime_layout_conversion_evidence_reduction_slice"
@@ -91,12 +97,11 @@ def test_runtime_layout_conversion_gate_readiness_is_blocked_by_design() -> None
     assert report.checks[5].evidence_id == (
         RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_TARGET_ARTIFACT_ID
     )
-    assert tuple(issue.subject for issue in report.issues) == (
-        "hs_ir_and_tensor_store_digest_binding",
+    assert report.checks[6].evidence_id == (
+        RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING_ARTIFACT_ID
     )
-
-    with pytest.raises(RuntimeLayoutConversionGateReadinessError):
-        assert_runtime_layout_conversion_gate_readiness(report)
+    assert report.issues == ()
+    assert assert_runtime_layout_conversion_gate_readiness(report) is report
 
 
 def test_runtime_layout_conversion_gate_readiness_dump_matches_golden() -> None:
@@ -121,17 +126,31 @@ def test_runtime_layout_conversion_gate_readiness_example_runs() -> None:
     assert "runtime_layout_conversion_gate_readiness.data_only.v0" in (
         completed.stdout
     )
-    assert '"readiness_status": "blocked"' in completed.stdout
+    assert '"readiness_status": "ready"' in completed.stdout
     assert "runtime_handle" not in completed.stdout
     assert "memory_address" not in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
 
 
 def test_runtime_layout_conversion_gate_readiness_rejects_forged_issues() -> None:
+    source = build_current_runtime_layout_conversion_evidence_report()
     report = build_current_runtime_layout_conversion_gate_readiness_report()
+    failed_checks = (
+        *report.checks[:6],
+        RuntimeLayoutConversionGateReadinessCheck(
+            check_name="hs_ir_and_tensor_store_digest_binding",
+            status="blocked",
+            evidence_id="missing_hs_ir_tensor_store_digest_binding",
+            detail="digest_binding_deferred",
+        ),
+    )
+    failed = build_runtime_layout_conversion_gate_readiness_report(
+        source,
+        failed_checks,
+    )
 
     with pytest.raises(ValueError, match="issues must be derived"):
-        replace(report, issues=())
+        replace(failed, issues=())
 
 
 def test_runtime_layout_conversion_gate_readiness_rejects_wrong_check_order() -> None:
@@ -180,6 +199,29 @@ def test_runtime_layout_conversion_gate_readiness_blocks_wrong_matrix_artifact()
     assert "gate_exact_artifact_binding" in {
         issue.subject for issue in report.issues
     }
+
+def test_runtime_layout_conversion_gate_readiness_blocks_forged_digest_binding() -> None:
+    forged = replace(
+        build_current_runtime_layout_conversion_digest_binding_report(),
+        source_layout_conversion_metadata_digest=(
+            "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        ),
+    )
+
+    report = build_current_runtime_layout_conversion_gate_readiness_report(
+        digest_binding_report=forged,
+    )
+
+    digest_binding = {
+        check.check_name: check for check in report.checks
+    }["hs_ir_and_tensor_store_digest_binding"]
+    assert digest_binding.status == "blocked"
+    assert digest_binding.evidence_id == "missing_hs_ir_tensor_store_digest_binding"
+    assert "hs_ir_and_tensor_store_digest_binding" in {
+        issue.subject for issue in report.issues
+    }
+    with pytest.raises(RuntimeLayoutConversionGateReadinessError):
+        assert_runtime_layout_conversion_gate_readiness(report)
 
 
 def test_runtime_layout_conversion_gate_readiness_rejects_forbidden_text() -> None:
@@ -266,12 +308,12 @@ def test_runtime_layout_conversion_gate_readiness_golden_matches_schema_shape() 
     assert golden["artifact_status"] == (
         RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_ARTIFACT_STATUS
     )
-    assert golden["ready"] is False
-    assert golden["readiness_status"] == "blocked"
+    assert golden["ready"] is True
+    assert golden["readiness_status"] == "ready"
     assert golden["source_conversion_count"] == 1
     assert golden["source_evidence_issue_count"] == 0
     assert len(golden["checks"]) == MAX_RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_CHECKS
-    assert len(golden["issues"]) == 1
+    assert len(golden["issues"]) == 0
 
 
 def test_runtime_layout_conversion_gate_readiness_schema_is_referenced() -> None:
