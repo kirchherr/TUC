@@ -48,9 +48,9 @@ metadata-only diagnostics.
 Backend Plugin Lifecycle Policy now treats `sandbox_model` as satisfied by the
 accepted sandbox model contract.
 
-The lifecycle policy remains blocking because artifact provenance,
-resource-budget evidence, fuzzing or negative-test evidence, and maintainer
-approval are still missing.
+The lifecycle policy remains blocking. After RFC 0219, artifact provenance is
+accepted as data-only evidence; resource-budget evidence, fuzzing or
+negative-test evidence, and maintainer approval are still missing.
 
 ## Security Boundary
 

@@ -28,8 +28,10 @@ variables, or approve native performance claims.
 The report is not an execution approval. It records bounded review metadata that
 future native performance proposals can reference. Executable backend plugin
 surfaces also remain blocked by
-[Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) until its accepted sandbox model is bound with provenance, resource-budget,
-fuzzing or negative-test, and maintainer-approval requirements.
+[Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) until
+its accepted sandbox model and artifact provenance are bound with
+resource-budget, fuzzing or negative-test, and maintainer-approval
+requirements.
 
 ## Review Fields
 
@@ -82,7 +84,8 @@ These remain blocked after this report exists:
 - network access
 - plugin auto-discovery
 - changing `ready_to_enable_plugins` in Backend Plugin Lifecycle Policy without
-  accepted lifecycle evidence, including the Backend Plugin Sandbox Model
+  accepted lifecycle evidence, including the Backend Plugin Sandbox Model and
+  Backend Plugin Artifact Provenance
 - native code execution
 - generated-code execution
 - treating a security review as benchmark proof

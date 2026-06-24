@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "execution_status": "external_plugins_blocked",
-  "missing_requirement_count": 4,
+  "missing_requirement_count": 3,
   "native_plugin_abi_enabled": false,
   "plugin_discovery_enabled": false,
   "policy_contract": "backend_plugin_lifecycle_policy.blocking.v0",
@@ -53,10 +53,10 @@
       "status": "satisfied"
     },
     {
-      "evidence_id": "not_approved",
+      "evidence_id": "backend_plugin_artifact_provenance.data_only.v0",
       "required_before": "generated_artifact_execution",
       "requirement_id": "artifact_provenance",
-      "status": "missing"
+      "status": "satisfied"
     },
     {
       "evidence_id": "not_approved",

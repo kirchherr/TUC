@@ -47,9 +47,9 @@ proposed for enablement:
 - fuzzing and negative-test evidence;
 - maintainer approval.
 
-The first five are currently satisfied by existing review surfaces after RFC
-0218. Artifact provenance, resource-budget evidence, fuzzing or negative-test
-evidence, and maintainer approval remain missing by design.
+The first six are currently satisfied by existing review surfaces after RFC
+0219. Resource-budget evidence, fuzzing or negative-test evidence, and
+maintainer approval remain missing by design.
 
 ## Security Boundary
 
@@ -67,7 +67,9 @@ native library paths, secrets, or raw benchmark output.
 Future executable backend proposals now have a concrete entry condition:
 change the lifecycle policy only after a sandbox model, provenance model,
 resource budgets, negative tests or fuzzing evidence, and maintainer approval
-exist as accepted evidence.
+exist as accepted evidence. After RFC 0219, the sandbox and provenance models
+exist; the remaining blockers are resource budgets, negative tests or fuzzing
+evidence, and maintainer approval.
 
 This protects the Universal Compute research claim. Backends can still enter
 TUC as declarative capability data, while executable behavior remains behind an

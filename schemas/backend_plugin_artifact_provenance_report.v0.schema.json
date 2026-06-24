@@ -1,0 +1,232 @@
+{
+  "$id": "https://tuc.dev/schemas/backend_plugin_artifact_provenance_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_count": {
+      "const": 1
+    },
+    "artifacts": {
+      "items": false,
+      "maxItems": 16,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/artifact"
+        }
+      ],
+      "type": "array"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "execution_allowed": {
+      "const": false
+    },
+    "execution_permission": {
+      "const": "not_granted"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/provenance_issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "provenance_contract": {
+      "const": "backend_plugin_artifact_provenance.data_only.v0"
+    },
+    "provenance_policy": {
+      "const": "artifact_provenance.digest_bound.reviewed.no_execution.v0"
+    },
+    "provenance_ready": {
+      "const": true
+    },
+    "provenance_status": {
+      "const": "accepted_data_only_provenance"
+    },
+    "required_bindings": {
+      "items": false,
+      "maxItems": 5,
+      "minItems": 5,
+      "prefixItems": [
+        {
+          "const": "sandbox_model"
+        },
+        {
+          "const": "content_digest"
+        },
+        {
+          "const": "source_scope"
+        },
+        {
+          "const": "build_recipe"
+        },
+        {
+          "const": "review_record"
+        }
+      ],
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.backend_plugin_artifact_provenance_report.v0"
+    }
+  },
+  "required": [
+    "artifact_count",
+    "artifacts",
+    "blocked_execution_surfaces",
+    "execution_allowed",
+    "execution_permission",
+    "issues",
+    "provenance_contract",
+    "provenance_policy",
+    "provenance_ready",
+    "provenance_status",
+    "required_bindings",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_digest": {
+          "$ref": "#/$defs/sha256_digest"
+        },
+        "artifact_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "build_recipe_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "review_record_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "review_status": {
+          "const": "reviewed_digest_bound"
+        },
+        "sandbox_model_contract": {
+          "const": "backend_plugin_sandbox_model.data_only.v0"
+        },
+        "source_scope_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "storage_scope": {
+          "$ref": "#/$defs/storage_scope"
+        }
+      },
+      "required": [
+        "artifact_digest",
+        "artifact_id",
+        "build_recipe_id",
+        "review_record_id",
+        "review_status",
+        "sandbox_model_contract",
+        "source_scope_id",
+        "storage_scope"
+      ],
+      "type": "object"
+    },
+    "issue_code": {
+      "enum": [
+        "artifact_execution_permission_granted",
+        "artifact_missing_required_binding",
+        "artifact_review_status_invalid",
+        "duplicate_artifact_id",
+        "invalid_artifact_digest",
+        "invalid_storage_scope",
+        "sandbox_binding_mismatch"
+      ],
+      "type": "string"
+    },
+    "provenance_issue": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "issue_code": {
+          "$ref": "#/$defs/issue_code"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "issue_code"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "storage_scope": {
+      "enum": [
+        "external_attestation",
+        "release_artifact",
+        "repository_evidence"
+      ],
+      "type": "string"
+    }
+  }
+}

@@ -48,13 +48,13 @@ The policy currently records nine requirements:
 - `trusted_executor_contract`: satisfied
 - `plugin_lifecycle_rfc`: satisfied
 - `sandbox_model`: satisfied
-- `artifact_provenance`: missing
+- `artifact_provenance`: satisfied
 - `resource_budget`: missing
 - `fuzz_negative_tests`: missing
 - `maintainer_approval`: missing
 
-Until all remaining missing requirements are satisfied by separate accepted evidence, TUC
-must continue to reject:
+Until all remaining missing requirements are satisfied by separate accepted
+evidence, TUC must continue to reject:
 
 - backend plugin discovery
 - generated artifact execution
@@ -82,6 +82,6 @@ A passing policy report means the current repository is still protecting TUC's
 compiler boundary from executable backend plugin surfaces.
 
 It does not approve any plugin implementation. A future plugin proposal must
-bind to the accepted sandbox model, add artifact provenance evidence,
-resource budgets, fuzzing or negative-test evidence, and maintainer approval before it can change
-`ready_to_enable_plugins`.
+bind to the accepted sandbox model and artifact provenance evidence, then add
+resource budgets, fuzzing or negative-test evidence, and maintainer approval
+before it can change `ready_to_enable_plugins`.

@@ -146,7 +146,7 @@
           "const": "artifact_provenance"
         },
         "status": {
-          "const": "missing"
+          "const": "satisfied"
         }
       }
     },
