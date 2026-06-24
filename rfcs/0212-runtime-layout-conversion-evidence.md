@@ -62,7 +62,7 @@ Each report contains:
 - `conversion_scope`
 - `execution_policy`
 - `residency_claim_status`
-- bounded `conversions`
+- `conversion_records` as bounded `conversions`
 - `conversion_metadata_digest`
 - `raw_value_policy`
 - `passed` and derived `issues`

@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from tuc.backends.artifact_provenance import BACKEND_PLUGIN_ARTIFACT_PROVENANCE_CONTRACT
 from tuc.backends.fuzz_negative_tests import BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS_CONTRACT
+from tuc.backends.maintainer_approval import BACKEND_PLUGIN_MAINTAINER_APPROVAL_CONTRACT
 from tuc.backends.resource_budget import BACKEND_PLUGIN_RESOURCE_BUDGET_CONTRACT
 from tuc.backends.sandbox_model import (
     BACKEND_PLUGIN_SANDBOX_MODEL_CONTRACT,
@@ -18,9 +19,7 @@ from tuc.runtime.executor import RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
 BACKEND_PLUGIN_LIFECYCLE_POLICY_REPORT_SCHEMA_VERSION = (
     "tuc.backend_plugin_lifecycle_policy_report.v0"
 )
-BACKEND_PLUGIN_LIFECYCLE_POLICY_CONTRACT = (
-    "backend_plugin_lifecycle_policy.blocking.v0"
-)
+BACKEND_PLUGIN_LIFECYCLE_POLICY_CONTRACT = "backend_plugin_lifecycle_policy.blocking.v0"
 BACKEND_PLUGIN_LIFECYCLE_POLICY_ID = "backend_plugin_lifecycle_policy_v0"
 BACKEND_PLUGIN_LIFECYCLE_POLICY_STATUS = "accepted_blocking_policy"
 BACKEND_PLUGIN_LIFECYCLE_EXECUTION_STATUS = "external_plugins_blocked"
@@ -36,9 +35,7 @@ BACKEND_PLUGIN_LIFECYCLE_REQUIRED_REQUIREMENTS = (
     "fuzz_negative_tests",
     "maintainer_approval",
 )
-BACKEND_PLUGIN_LIFECYCLE_REQUIREMENT_STATUSES = frozenset(
-    {"satisfied", "missing"}
-)
+BACKEND_PLUGIN_LIFECYCLE_REQUIREMENT_STATUSES = frozenset({"satisfied", "missing"})
 BACKEND_PLUGIN_LIFECYCLE_POLICY_ISSUE_CODES = frozenset(
     {
         "artifact_execution_enabled",
@@ -128,9 +125,7 @@ class BackendPluginLifecyclePolicyReport:
     plugin_discovery_enabled: bool = False
     artifact_execution_enabled: bool = False
     native_plugin_abi_enabled: bool = False
-    blocked_execution_surfaces: tuple[str, ...] = (
-        RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
-    )
+    blocked_execution_surfaces: tuple[str, ...] = RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
 
     def __post_init__(self) -> None:
         _validate_policy_text(self.policy_id, "policy_id")
@@ -341,8 +336,8 @@ def _current_lifecycle_requirements() -> tuple[BackendPluginLifecycleRequirement
         ),
         BackendPluginLifecycleRequirement(
             requirement_id="maintainer_approval",
-            status="missing",
-            evidence_id="not_approved",
+            status="satisfied",
+            evidence_id=BACKEND_PLUGIN_MAINTAINER_APPROVAL_CONTRACT,
             required_before="backend_plugin_discovery",
         ),
     )
@@ -401,11 +396,7 @@ def _derive_policy_issues(
             )
         )
     sandbox_requirement = next(
-        (
-            item
-            for item in report.requirements
-            if item.requirement_id == "sandbox_model"
-        ),
+        (item for item in report.requirements if item.requirement_id == "sandbox_model"),
         None,
     )
     if (

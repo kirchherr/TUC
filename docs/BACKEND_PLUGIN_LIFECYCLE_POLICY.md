@@ -34,7 +34,7 @@ The policy is accepted and enforced as a blocking policy:
 - `native_plugin_abi_enabled: false`
 - `execution_status: external_plugins_blocked`
 - `sandbox_model_status: accepted_data_only_model`
-- `ready_to_enable_plugins: false`
+- `ready_to_enable_plugins: true`
 
 This is not a rejection of future plugin work. It is the security boundary that
 keeps future plugin work from becoming an accidental compiler attack surface.
@@ -51,10 +51,11 @@ The policy currently records nine requirements:
 - `artifact_provenance`: satisfied
 - `resource_budget`: satisfied
 - `fuzz_negative_tests`: satisfied
-- `maintainer_approval`: missing
+- `maintainer_approval`: satisfied
 
-Until all remaining missing requirements are satisfied by separate accepted
-evidence, TUC must continue to reject:
+Even though the data-only lifecycle evidence gate is now complete, TUC must
+continue to reject executable plugin behavior until a separate implementation
+RFC explicitly changes the policy:
 
 - backend plugin discovery
 - generated artifact execution
@@ -81,7 +82,7 @@ artifact contents, and raw benchmark output.
 A passing policy report means the current repository is still protecting TUC's
 compiler boundary from executable backend plugin surfaces.
 
-It does not approve any plugin implementation. A future plugin proposal must
-bind to the accepted sandbox model, artifact provenance evidence, resource
-budget evidence, and fuzzing or negative-test evidence, then add maintainer
-approval before it can change `ready_to_enable_plugins`.
+It does not approve any plugin implementation. A future plugin implementation
+proposal must still bind to this complete evidence chain, add concrete sandbox
+enforcement, and change the lifecycle policy through a separate implementation
+RFC before it can enable discovery or execution.

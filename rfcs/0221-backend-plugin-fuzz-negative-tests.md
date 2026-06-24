@@ -9,7 +9,8 @@ future executable backend plugin work. RFC 0218 accepted a data-only sandbox
 model, RFC 0219 accepted digest-bound artifact provenance, and RFC 0220
 accepted static resource-budget evidence.
 
-The next missing lifecycle requirement is fuzzing or negative-test evidence.
+At this RFC step, the next missing lifecycle requirement was fuzzing or
+negative-test evidence.
 Without a fail-closed negative-test inventory, future plugin proposals could
 claim metadata is reviewed while malformed identifiers, oversized budgets,
 duplicate records, invalid digests, or forbidden execution-surface keys are not
@@ -40,8 +41,8 @@ evidence identifier. The report also binds to the accepted sandbox model,
 artifact provenance, and resource budget contracts.
 
 Backend Plugin Lifecycle Policy now treats `fuzz_negative_tests` as satisfied
-by this accepted data-only evidence contract. The policy remains blocking
-because maintainer approval is still missing.
+by this accepted data-only evidence contract. The policy remains
+execution-blocking after RFC 0222 accepts maintainer approval evidence.
 
 ## Security Boundary
 
@@ -61,7 +62,7 @@ corpus inputs, or artifact bytes.
 TUC now has a concrete negative-test evidence layer for future executable
 backend artifacts without opening a compiler execution surface.
 
-Future plugin proposals still need maintainer approval and an explicit
-implementation RFC before any plugin discovery, artifact execution, native
-plugin ABI, dynamic-library loading, device access, subprocess execution,
-network access, or JIT execution can be enabled.
+Future plugin proposals still need an explicit implementation RFC before any
+plugin discovery, artifact execution, native plugin ABI, dynamic-library
+loading, device access, subprocess execution, network access, or JIT execution
+can be enabled.

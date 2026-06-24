@@ -446,9 +446,10 @@ python examples/backend_plugin_lifecycle_policy.py
 ```
 
 This policy keeps external plugin discovery, generated artifact execution, and
-native plugin ABI loading blocked. The sandbox model, artifact provenance, resource budget, and fuzz/negative-test
-evidence now exist as data-only evidence; maintainer-approval evidence still
-remains required.
+native plugin ABI loading blocked. The sandbox model, artifact provenance,
+resource budget, fuzz/negative-test evidence, and maintainer approval now exist
+as data-only evidence; the lifecycle evidence gate is complete without enabling
+execution.
 
 Key docs:
 
@@ -462,6 +463,7 @@ Key docs:
 - [Backend Plugin Artifact Provenance](docs/BACKEND_PLUGIN_ARTIFACT_PROVENANCE.md)
 - [Backend Plugin Resource Budget](docs/BACKEND_PLUGIN_RESOURCE_BUDGET.md)
 - [Backend Plugin Fuzz Negative Tests](docs/BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md)
+- [Backend Plugin Maintainer Approval](docs/BACKEND_PLUGIN_MAINTAINER_APPROVAL.md)
 
 ## Performance Boundaries
 
@@ -501,6 +503,7 @@ Key docs:
 - [Backend Plugin Artifact Provenance](docs/BACKEND_PLUGIN_ARTIFACT_PROVENANCE.md)
 - [Backend Plugin Resource Budget](docs/BACKEND_PLUGIN_RESOURCE_BUDGET.md)
 - [Backend Plugin Fuzz Negative Tests](docs/BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md)
+- [Backend Plugin Maintainer Approval](docs/BACKEND_PLUGIN_MAINTAINER_APPROVAL.md)
 
 ## Governance
 

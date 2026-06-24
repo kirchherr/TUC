@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "execution_status": "external_plugins_blocked",
-  "missing_requirement_count": 1,
+  "missing_requirement_count": 0,
   "native_plugin_abi_enabled": false,
   "plugin_discovery_enabled": false,
   "policy_contract": "backend_plugin_lifecycle_policy.blocking.v0",
@@ -19,7 +19,7 @@
   "policy_id": "backend_plugin_lifecycle_policy_v0",
   "policy_issues": [],
   "policy_status": "accepted_blocking_policy",
-  "ready_to_enable_plugins": false,
+  "ready_to_enable_plugins": true,
   "requirement_count": 9,
   "requirements": [
     {
@@ -71,10 +71,10 @@
       "status": "satisfied"
     },
     {
-      "evidence_id": "not_approved",
+      "evidence_id": "backend_plugin_maintainer_approval.data_only.v0",
       "required_before": "backend_plugin_discovery",
       "requirement_id": "maintainer_approval",
-      "status": "missing"
+      "status": "satisfied"
     }
   ],
   "sandbox_model_status": "accepted_data_only_model",

@@ -292,7 +292,9 @@ Backend API v0.1 follows these rules:
   [Backend Plugin Artifact Provenance](BACKEND_PLUGIN_ARTIFACT_PROVENANCE.md),
   and [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md), and
   [Backend Plugin Fuzz Negative Tests](BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md)
-  are bound with maintainer-approval evidence.
+  and [Backend Plugin Maintainer Approval](BACKEND_PLUGIN_MAINTAINER_APPROVAL.md)
+  are bound as data-only lifecycle evidence. Execution still needs a separate
+  implementation RFC and policy change.
 
 ## Author Checklist
 
@@ -357,7 +359,8 @@ Backend API v0.1 does not yet provide:
   data-only [Backend Plugin Sandbox Model](BACKEND_PLUGIN_SANDBOX_MODEL.md)
   and [Backend Plugin Artifact Provenance](BACKEND_PLUGIN_ARTIFACT_PROVENANCE.md),
   plus [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md)
-  and [Backend Plugin Fuzz Negative Tests](BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md).
+  and [Backend Plugin Fuzz Negative Tests](BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md),
+  plus [Backend Plugin Maintainer Approval](BACKEND_PLUGIN_MAINTAINER_APPROVAL.md).
 - Device enumeration.
 - Artifact execution.
 - Sandboxing.

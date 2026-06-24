@@ -38,8 +38,9 @@ The fuzz and negative-test model is accepted as data-only evidence:
 
 This satisfies the `fuzz_negative_tests` requirement in
 [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md), but it
-does not make plugins executable. Maintainer approval still remains required
-before plugin enablement can be proposed.
+does not make plugins executable. Maintainer approval now exists as data-only
+lifecycle evidence; any executable plugin behavior still requires a separate
+implementation RFC and explicit policy change.
 
 ## Required Case Kinds
 
@@ -78,5 +79,4 @@ enablement can be proposed.
 It does not mean TUC has a sandbox implementation, an executable plugin ABI,
 maintainer approval, native fuzz infrastructure, sanitizer coverage, runtime
 enforcement, native performance claims, or permission to execute backend
-artifacts. Those require separate accepted evidence and changes to the
-lifecycle policy.
+artifacts. Those require separate implementation evidence and changes to the lifecycle policy.

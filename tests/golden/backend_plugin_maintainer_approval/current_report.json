@@ -1,0 +1,44 @@
+{
+  "approval_contract": "backend_plugin_maintainer_approval.data_only.v0",
+  "approval_count": 1,
+  "approval_policy": "maintainer_approval.review_record.no_execution.v0",
+  "approval_ready": true,
+  "approval_status": "accepted_data_only_approval",
+  "approvals": [
+    {
+      "approval_decision": "approved_for_proposal_gate",
+      "approval_id": "backend_plugin_lifecycle_maintainer_approval",
+      "approval_scope": "lifecycle_evidence_gate",
+      "approval_status": "reviewed_by_maintainers",
+      "artifact_provenance_contract": "backend_plugin_artifact_provenance.data_only.v0",
+      "fuzz_negative_tests_contract": "backend_plugin_fuzz_negative_tests.data_only.v0",
+      "implementation_rfc_required": true,
+      "maintainer_group_id": "tuc_maintainers",
+      "resource_budget_contract": "backend_plugin_resource_budget.data_only.v0",
+      "review_record_id": "rfc_0222_backend_plugin_maintainer_approval",
+      "sandbox_model_contract": "backend_plugin_sandbox_model.data_only.v0"
+    }
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "execution_allowed": false,
+  "execution_permission": "not_granted",
+  "issues": [],
+  "required_bindings": [
+    "sandbox_model",
+    "artifact_provenance",
+    "resource_budget",
+    "fuzz_negative_tests",
+    "blocked_execution_surfaces",
+    "implementation_rfc_required"
+  ],
+  "schema_version": "tuc.backend_plugin_maintainer_approval_report.v0"
+}

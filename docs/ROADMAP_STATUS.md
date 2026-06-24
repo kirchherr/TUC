@@ -40,7 +40,7 @@ hardware-independent interface into capability-driven runtime planning.
   backend equivalence to an explicit proof type with required evidence, current
   artifacts, non-claims, and a secure review checklist.
 - [RFC 0212: Runtime Layout Conversion Evidence](../rfcs/0212-runtime-layout-conversion-evidence.md)
-  defines the next data-only proof boundary for explicit planned layout
+  defines the next optional data-only proof boundary for explicit planned layout
   transitions before any native converter, allocation handle, or real residency
   claim is accepted.
 - Runtime Layout Conversion Evidence v0 records the current planned
@@ -279,8 +279,7 @@ hardware-independent interface into capability-driven runtime planning.
   evidence at `tests/golden/backend_plugin_lifecycle_policy/current_report.json`,
   and RFC [0217](../rfcs/0217-backend-plugin-lifecycle-policy.md). It keeps
   plugin discovery, artifact execution, and native plugin ABI loading disabled
-  until the accepted sandbox model, artifact provenance, resource budget, and
-  fuzz/negative-test evidence are bound with maintainer-approval evidence.
+  even though the data-only lifecycle evidence gate is complete.
 - [Backend Plugin Sandbox Model](BACKEND_PLUGIN_SANDBOX_MODEL.md) now satisfies
   the Lifecycle Policy `sandbox_model` requirement with data-only evidence at
   `schemas/backend_plugin_sandbox_model_report.v0.schema.json`, deterministic
@@ -309,6 +308,14 @@ hardware-independent interface into capability-driven runtime planning.
   deterministic golden evidence at
   `tests/golden/backend_plugin_fuzz_negative_tests/current_report.json`, and
   RFC [0221](../rfcs/0221-backend-plugin-fuzz-negative-tests.md), while
+  keeping `execution_allowed: false` and `execution_permission: not_granted`.
+- [Backend Plugin Maintainer Approval](BACKEND_PLUGIN_MAINTAINER_APPROVAL.md)
+  now satisfies the Lifecycle Policy `maintainer_approval` requirement with
+  data-only approval evidence at
+  `schemas/backend_plugin_maintainer_approval_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/backend_plugin_maintainer_approval/current_report.json`, and
+  RFC [0222](../rfcs/0222-backend-plugin-maintainer-approval.md), while
   keeping `execution_allowed: false` and `execution_permission: not_granted`.
 - Backend Capability Coverage v0 with schema at
   `schemas/backend_capability_coverage_report.v0.schema.json`, deterministic
@@ -1426,9 +1433,10 @@ Current focus:
   data-only sandbox model, Backend Plugin Artifact Provenance supplies accepted
   digest-bound provenance, and Backend Plugin Resource Budget supplies accepted
   static budget evidence, and Backend Plugin Fuzz Negative Tests supplies
-  accepted deterministic rejection evidence. Maintainer approval remains
-  required before any executable backend discovery,
-  artifact execution, or native plugin ABI.
+  accepted deterministic rejection evidence, and Backend Plugin Maintainer
+  Approval supplies accepted proposal-gate evidence. Executable backend
+  discovery, artifact execution, or native plugin ABI still require a separate
+  implementation RFC and policy change.
 - Runtime Layout Conversion Evidence is now graph-scoped required Runtime
   Evidence Matrix and Runtime Evidence Gate evidence for
   `runtime_mixed_backend_equivalence`, backed by Gate Readiness, Digest

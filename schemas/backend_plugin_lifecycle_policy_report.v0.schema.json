@@ -42,9 +42,7 @@
       "const": "external_plugins_blocked"
     },
     "missing_requirement_count": {
-      "maximum": 16,
-      "minimum": 0,
-      "type": "integer"
+      "const": 0
     },
     "native_plugin_abi_enabled": {
       "const": false
@@ -72,7 +70,7 @@
       "const": "accepted_blocking_policy"
     },
     "ready_to_enable_plugins": {
-      "type": "boolean"
+      "const": true
     },
     "requirement_count": {
       "const": 9
@@ -190,7 +188,7 @@
           "const": "maintainer_approval"
         },
         "status": {
-          "const": "missing"
+          "const": "satisfied"
         }
       }
     },

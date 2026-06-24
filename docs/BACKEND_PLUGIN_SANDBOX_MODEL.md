@@ -37,9 +37,10 @@ The sandbox model is accepted as a data-only model:
 
 This satisfies the `sandbox_model` requirement in
 [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md), but it
-does not make plugins executable. Artifact provenance, resource-budget evidence, and
-fuzz/negative-test evidence now exist as separate data-only evidence; maintainer
-approval still remains required before plugin enablement can be proposed.
+does not make plugins executable. Artifact provenance, resource-budget evidence,
+fuzz/negative-test evidence, and maintainer approval now exist as separate
+data-only lifecycle evidence; executable plugin behavior still requires a
+separate implementation RFC and explicit policy change.
 
 ## Required Controls
 
@@ -76,6 +77,5 @@ A passing sandbox model means TUC has an accepted control model for future
 executable backend plugin proposals.
 
 It does not mean TUC has a sandbox implementation, an executable plugin ABI,
-runtime enforcement, maintainer approval, or permission to execute backend
-artifacts. Those require maintainer approval plus explicit implementation
-evidence and changes to the lifecycle policy.
+runtime enforcement, or permission to execute backend
+artifacts. Those require explicit implementation evidence and changes to the lifecycle policy.

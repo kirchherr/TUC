@@ -28,24 +28,23 @@ from tuc import (
 )
 
 SCHEMA_PATH = Path("schemas/backend_plugin_lifecycle_policy_report.v0.schema.json")
-GOLDEN_PATH = Path(
-    "tests/golden/backend_plugin_lifecycle_policy/current_report.json"
-)
+GOLDEN_PATH = Path("tests/golden/backend_plugin_lifecycle_policy/current_report.json")
 
 
 def test_backend_plugin_lifecycle_policy_blocks_plugins_by_default() -> None:
     report = build_current_backend_plugin_lifecycle_policy_report()
 
     assert report.policy_enforced
-    assert not report.ready_to_enable_plugins
-    assert report.missing_requirement_count == 1
+    assert report.ready_to_enable_plugins
+    assert report.missing_requirement_count == 0
     assert not report.plugin_discovery_enabled
     assert not report.artifact_execution_enabled
     assert not report.native_plugin_abi_enabled
     assert tuple(item.requirement_id for item in report.requirements) == (
         BACKEND_PLUGIN_LIFECYCLE_REQUIRED_REQUIREMENTS
     )
-    assert tuple(item.status for item in report.requirements[:8]) == (
+    assert tuple(item.status for item in report.requirements[:9]) == (
+        "satisfied",
         "satisfied",
         "satisfied",
         "satisfied",
@@ -55,7 +54,6 @@ def test_backend_plugin_lifecycle_policy_blocks_plugins_by_default() -> None:
         "satisfied",
         "satisfied",
     )
-    assert {item.status for item in report.requirements[8:]} == {"missing"}
 
 
 def test_backend_plugin_lifecycle_policy_assertion_passes() -> None:
@@ -110,7 +108,6 @@ def test_backend_plugin_lifecycle_policy_assertion_rejects_unenforced_policy() -
     report = BackendPluginLifecyclePolicyReport(
         requirements=(requirement,),
         policy_issues=(
-
             BackendPluginLifecyclePolicyIssue(
                 subject="backend_author_evidence_gate",
                 issue_code="missing_required_requirement",
@@ -161,16 +158,16 @@ def test_backend_plugin_lifecycle_policy_example_matches_golden() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     loaded = json.loads(completed.stdout)
     assert loaded["policy_enforced"] is True
-    assert loaded["ready_to_enable_plugins"] is False
-    assert loaded["missing_requirement_count"] == 1
+    assert loaded["ready_to_enable_plugins"] is True
+    assert loaded["missing_requirement_count"] == 0
 
 
 def test_backend_plugin_lifecycle_policy_dump_matches_golden() -> None:
     report = build_backend_plugin_lifecycle_policy_report()
 
-    assert dump_backend_plugin_lifecycle_policy_report(
-        report
-    ) == GOLDEN_PATH.read_text(encoding="utf-8")
+    assert dump_backend_plugin_lifecycle_policy_report(report) == GOLDEN_PATH.read_text(
+        encoding="utf-8"
+    )
 
 
 def test_backend_plugin_lifecycle_policy_to_dict_requires_report() -> None:
@@ -182,9 +179,7 @@ def test_backend_plugin_lifecycle_policy_schema_matches_contract() -> None:
     schema = _load_schema()
 
     assert schema["$schema"] == "https://json-schema.org/draft/2020-12/schema"
-    assert schema["$id"].endswith(
-        "/schemas/backend_plugin_lifecycle_policy_report.v0.schema.json"
-    )
+    assert schema["$id"].endswith("/schemas/backend_plugin_lifecycle_policy_report.v0.schema.json")
     assert schema["additionalProperties"] is False
     assert schema["properties"]["schema_version"]["const"] == (
         BACKEND_PLUGIN_LIFECYCLE_POLICY_REPORT_SCHEMA_VERSION
@@ -193,6 +188,7 @@ def test_backend_plugin_lifecycle_policy_schema_matches_contract() -> None:
         BACKEND_PLUGIN_LIFECYCLE_POLICY_CONTRACT
     )
     assert schema["properties"]["policy_enforced"]["const"] is True
+    assert schema["properties"]["ready_to_enable_plugins"]["const"] is True
     assert schema["properties"]["plugin_discovery_enabled"]["const"] is False
     assert schema["properties"]["artifact_execution_enabled"]["const"] is False
     assert schema["properties"]["native_plugin_abi_enabled"]["const"] is False
@@ -201,11 +197,11 @@ def test_backend_plugin_lifecycle_policy_schema_matches_contract() -> None:
         len(BACKEND_PLUGIN_LIFECYCLE_REQUIRED_REQUIREMENTS)
     )
     assert (
-        schema["properties"]["requirements"]["maxItems"]
-    ) <= MAX_BACKEND_PLUGIN_LIFECYCLE_REQUIREMENTS
+        (schema["properties"]["requirements"]["maxItems"])
+        <= MAX_BACKEND_PLUGIN_LIFECYCLE_REQUIREMENTS
+    )
     assert [
-        item["const"]
-        for item in schema["properties"]["blocked_execution_surfaces"]["prefixItems"]
+        item["const"] for item in schema["properties"]["blocked_execution_surfaces"]["prefixItems"]
     ] == list(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)
 
 
@@ -230,9 +226,7 @@ def test_backend_plugin_lifecycle_policy_schema_fails_closed() -> None:
         assert forbidden not in schema["$defs"]["policy_issue"]["properties"]
     assert "python_module" in schema["$defs"]["report_text"]["not"]["enum"]
     assert "plugin_entrypoint" in schema["$defs"]["report_text"]["not"]["enum"]
-    assert schema["$defs"]["report_text"]["pattern"] == (
-        "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
-    )
+    assert schema["$defs"]["report_text"]["pattern"] == ("^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
 
 
 def test_backend_plugin_lifecycle_policy_golden_matches_schema_shape() -> None:
@@ -240,17 +234,13 @@ def test_backend_plugin_lifecycle_policy_golden_matches_schema_shape() -> None:
     golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
 
     assert sorted(golden) == sorted(schema["required"])
-    assert golden["schema_version"] == (
-        BACKEND_PLUGIN_LIFECYCLE_POLICY_REPORT_SCHEMA_VERSION
-    )
+    assert golden["schema_version"] == (BACKEND_PLUGIN_LIFECYCLE_POLICY_REPORT_SCHEMA_VERSION)
     assert golden["policy_contract"] == BACKEND_PLUGIN_LIFECYCLE_POLICY_CONTRACT
-    assert golden["blocked_execution_surfaces"] == list(
-        RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
-    )
+    assert golden["blocked_execution_surfaces"] == list(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)
     assert golden["policy_enforced"] is True
-    assert golden["ready_to_enable_plugins"] is False
+    assert golden["ready_to_enable_plugins"] is True
     assert golden["requirement_count"] == len(golden["requirements"]) == 9
-    assert golden["missing_requirement_count"] == 1
+    assert golden["missing_requirement_count"] == 0
     assert golden["policy_issues"] == []
 
 
