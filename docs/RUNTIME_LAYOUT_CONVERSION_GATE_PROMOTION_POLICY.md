@@ -4,9 +4,10 @@ Runtime Layout Conversion Gate Promotion Policy v0 records whether the current
 ready layout-conversion evidence may be proposed for Runtime Evidence Gate
 enforcement.
 
-The current answer is **promotion ready, not enforced**. This is intentional:
-the policy proves that a separate gate-requirement change can be reviewed, but
-it does not activate that gate by itself.
+The current answer is **promotion ready and enforced by Runtime Evidence
+Gate**. The policy remains data-only: it records the accepted graph-scoped
+promotion decision while the actual enforcement lives in
+`examples/runtime_evidence_gate.py`.
 
 ## Contract
 
@@ -20,7 +21,7 @@ it does not activate that gate by itself.
   `runtime_layout_conversion_gate_promotion_policy.data_only.v0`
 - Policy ID: `runtime_layout_conversion_gate_promotion_policy_mixed`
 - Promotion scope: `single_graph_candidate`
-- Enforcement status: `not_enforced`
+- Enforcement status: `enforced_by_runtime_evidence_gate`
 
 ## What It Records
 
@@ -34,17 +35,17 @@ The report binds the policy decision to:
 - source digest-binding artifact ID
   `runtime_layout_conversion_digest_binding_mixed`;
 - required next action
-  `separate_runtime_evidence_gate_requirement_change`.
+  `monitor_runtime_evidence_gate_layout_conversion_requirement`.
 
 ## What It Means
 
-`promotion_ready: true` means the evidence is ready for a separate maintainer
-change that updates Runtime Evidence Matrix requirements and Runtime Evidence
-Gate enforcement.
+`promotion_ready: true` means the evidence has cleared the graph-scoped
+promotion prerequisites.
 
-`enforcement_status: not_enforced` means the current report does not change the
-gate. Runtime Layout Conversion Evidence remains optional review inventory
-until a dedicated gate-enforcement change is accepted.
+`enforcement_status: enforced_by_runtime_evidence_gate` means Runtime Evidence
+Gate now requires `runtime_layout_conversion_evidence_mixed` for
+`runtime_mixed_backend_equivalence` and verifies its bindings before the gate
+can pass.
 
 ## Security Boundary
 

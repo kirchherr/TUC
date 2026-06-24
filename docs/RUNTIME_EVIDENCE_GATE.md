@@ -26,6 +26,11 @@ It runs:
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
 - `examples/runtime_hs_ir_plan_alignment.py`
+- `examples/runtime_layout_conversion_evidence.py`
+- `examples/runtime_mixed_tensor_store_evidence.py`
+- `examples/runtime_layout_conversion_digest_binding.py`
+- `examples/runtime_layout_conversion_gate_readiness.py`
+- `examples/runtime_layout_conversion_gate_promotion_policy.py`
 - `build_runtime_backend_equivalence_portfolio_report()`
 - `build_default_runtime_backend_equivalence_portfolio_policy_report()`
 - `build_runtime_evidence_gate_matrix_coverage_report()`
@@ -48,7 +53,9 @@ The gate passes only when:
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
   entries, with the systolic and mixed entries requiring
-  `runtime_planning_explanation`, plus exact artifact-ID bindings
+  `runtime_planning_explanation`, and the mixed entry also requiring
+  `runtime_hs_ir_plan_alignment` and `runtime_layout_conversion_evidence`, plus
+  exact artifact-ID bindings
 - the Runtime Evidence Matrix includes the backend-equivalence portfolio graph
   entry with scoped `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` requirements and exact artifact-ID
@@ -57,8 +64,8 @@ The gate passes only when:
   on the mixed backend-equivalence graph with exact artifact-ID binding
 - Runtime Evidence Gate Matrix Coverage passes, proving the exact
   backend-equivalence, runtime-planning-explanation, HS-IR alignment,
-  portfolio, and memory-planning Matrix graph/artifact bindings are present in
-  one deterministic audit report
+  layout-conversion, portfolio, and memory-planning Matrix graph/artifact
+  bindings are present in one deterministic audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
@@ -113,6 +120,20 @@ The gate passes only when:
 - Runtime HS-IR Plan Alignment matrix coverage passes, proving the checked
   report is inventoried by the Runtime Evidence Matrix with the exact
   `runtime_hs_ir_plan_alignment_mixed` artifact ID
+- Runtime Layout Conversion Evidence passes for the mixed accelerator proof
+  slice
+- Runtime Layout Conversion Evidence binding passes, proving conversion count
+  and planned bytes agree with Mixed Planning Explanation and HS-IR Plan
+  Alignment
+- Runtime Layout Conversion Evidence matrix coverage passes, proving the report
+  is required by the Runtime Evidence Matrix with the exact
+  `runtime_layout_conversion_evidence_mixed` artifact ID
+- Runtime Layout Conversion Digest Binding passes, proving the layout-conversion
+  metadata digest is bound to HS-IR alignment metadata and Mixed Tensor Store
+  metadata
+- Runtime Layout Conversion Gate Readiness is ready and Runtime Layout
+  Conversion Gate Promotion Policy is accepted with enforcement by Runtime
+  Evidence Gate
 - Runtime Backend Equivalence Portfolio passes across the systolic, vector, and
   mixed accelerator proof slices
 - Runtime Backend Equivalence Portfolio binding passes, proving the aggregate

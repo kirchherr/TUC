@@ -52,21 +52,21 @@ transition between `score_projection` and `reduce_scores` in the
 
 ## Matrix Inventory
 
-Runtime Evidence Matrix v0 inventories this report as
+Runtime Evidence Matrix v0 requires this report as
 `runtime_layout_conversion_evidence_mixed` on the
-`runtime_mixed_backend_equivalence` graph. It is optional review evidence for
-now: the mixed graph's required artifact kinds remain `backend_equivalence`,
-`runtime_planning_explanation`, and `runtime_hs_ir_plan_alignment` until layout
-conversion evidence is stable enough to become gate-required evidence.
+`runtime_mixed_backend_equivalence` graph. The mixed graph's required artifact
+kinds are now `backend_equivalence`, `runtime_planning_explanation`,
+`runtime_hs_ir_plan_alignment`, and `runtime_layout_conversion_evidence`.
 
 [Runtime Layout Conversion Gate Readiness](RUNTIME_LAYOUT_CONVERSION_GATE_READINESS.md)
-now records that the current promotion prerequisites are ready. The final
-readiness blocker is satisfied by
+records that the current promotion prerequisites are ready. The final readiness
+blocker is satisfied by
 [Runtime Layout Conversion Digest Binding](RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING.md),
 which connects the layout-conversion metadata digest to HS-IR alignment and
 Tensor Store record metadata for the mixed slice. The separate
 [Runtime Layout Conversion Gate Promotion Policy](RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY.md)
-records that the evidence is promotion-ready while enforcement remains disabled.
+records that the evidence is promotion-ready and enforced by Runtime Evidence
+Gate for this graph-scoped slice.
 
 ## What It Proves
 

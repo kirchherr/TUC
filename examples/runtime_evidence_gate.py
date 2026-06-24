@@ -7,11 +7,20 @@ from examples.runtime_execution_receipt import (
 )
 from examples.runtime_hs_ir_plan_alignment import build_alignment_report
 from examples.runtime_input_manifest import build_input_manifest_report
+from examples.runtime_layout_conversion_evidence import (
+    build_current_runtime_layout_conversion_evidence_report,
+)
+from examples.runtime_layout_conversion_gate_readiness import (
+    build_current_runtime_layout_conversion_gate_readiness_report,
+)
 from examples.runtime_memory_planning_gate import (
     build_gate_report as build_memory_planning_gate_report,
 )
 from examples.runtime_mixed_backend_equivalence import (
     build_mixed_backend_equivalence_report,
+)
+from examples.runtime_mixed_tensor_store_evidence import (
+    build_mixed_tensor_store_evidence_report,
 )
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
@@ -59,6 +68,24 @@ from tuc import (
     build_runtime_execution_evidence_bundle_report,
     build_runtime_execution_output_closure_report,
     run_runtime_executor_conformance,
+)
+from tuc.runtime.layout_conversion_digest_binding import (
+    RuntimeLayoutConversionDigestBindingReport,
+    assert_runtime_layout_conversion_digest_binding,
+    build_runtime_layout_conversion_digest_binding_report,
+)
+from tuc.runtime.layout_conversion_evidence import (
+    RuntimeLayoutConversionEvidenceReport,
+    assert_runtime_layout_conversion_evidence,
+)
+from tuc.runtime.layout_conversion_gate_promotion_policy import (
+    RuntimeLayoutConversionGatePromotionPolicyReport,
+    assert_runtime_layout_conversion_gate_promotion_policy,
+    build_runtime_layout_conversion_gate_promotion_policy_report,
+)
+from tuc.runtime.layout_conversion_gate_readiness import (
+    RuntimeLayoutConversionGateReadinessReport,
+    assert_runtime_layout_conversion_gate_readiness,
 )
 
 SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID = "source_intent_return_mlp"
@@ -116,15 +143,20 @@ RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID = (
 RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID = (
     "runtime_hs_ir_plan_alignment_mixed"
 )
+RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID = (
+    "runtime_layout_conversion_evidence_mixed"
+)
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS = (
     "backend_equivalence",
     "runtime_planning_explanation",
     "runtime_hs_ir_plan_alignment",
+    "runtime_layout_conversion_evidence",
 )
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS = (
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
+    RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID,
 )
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "mixed_accelerators"
@@ -269,6 +301,19 @@ def build_gate_report(
         RuntimePlanningExplanationReport | None
     ) = None,
     runtime_hs_ir_plan_alignment_report: RuntimeHsIrPlanAlignmentReport | None = None,
+    runtime_layout_conversion_evidence_report: (
+        RuntimeLayoutConversionEvidenceReport | None
+    ) = None,
+    mixed_tensor_store_report: RuntimeTensorStoreEvidenceReport | None = None,
+    runtime_layout_conversion_digest_binding_report: (
+        RuntimeLayoutConversionDigestBindingReport | None
+    ) = None,
+    runtime_layout_conversion_gate_readiness_report: (
+        RuntimeLayoutConversionGateReadinessReport | None
+    ) = None,
+    runtime_layout_conversion_gate_promotion_policy_report: (
+        RuntimeLayoutConversionGatePromotionPolicyReport | None
+    ) = None,
     backend_equivalence_portfolio_report: (
         RuntimeBackendEquivalencePortfolioReport | None
     ) = None,
@@ -335,6 +380,41 @@ def build_gate_report(
         build_alignment_report()
         if runtime_hs_ir_plan_alignment_report is None
         else runtime_hs_ir_plan_alignment_report
+    )
+    runtime_layout_conversion_evidence = (
+        build_current_runtime_layout_conversion_evidence_report()
+        if runtime_layout_conversion_evidence_report is None
+        else runtime_layout_conversion_evidence_report
+    )
+    mixed_tensor_store = (
+        build_mixed_tensor_store_evidence_report()
+        if mixed_tensor_store_report is None
+        else mixed_tensor_store_report
+    )
+    runtime_layout_conversion_digest_binding = (
+        build_runtime_layout_conversion_digest_binding_report(
+            runtime_layout_conversion_evidence,
+            runtime_hs_ir_plan_alignment,
+            mixed_tensor_store,
+        )
+        if runtime_layout_conversion_digest_binding_report is None
+        else runtime_layout_conversion_digest_binding_report
+    )
+    runtime_layout_conversion_gate_readiness = (
+        build_current_runtime_layout_conversion_gate_readiness_report(
+            source_evidence=runtime_layout_conversion_evidence,
+            matrix_report=matrix,
+            digest_binding_report=runtime_layout_conversion_digest_binding,
+        )
+        if runtime_layout_conversion_gate_readiness_report is None
+        else runtime_layout_conversion_gate_readiness_report
+    )
+    runtime_layout_conversion_gate_promotion_policy = (
+        build_runtime_layout_conversion_gate_promotion_policy_report(
+            runtime_layout_conversion_gate_readiness,
+        )
+        if runtime_layout_conversion_gate_promotion_policy_report is None
+        else runtime_layout_conversion_gate_promotion_policy_report
     )
     backend_equivalence_portfolio = (
         build_runtime_backend_equivalence_portfolio_report(
@@ -504,6 +584,37 @@ def build_gate_report(
         matrix,
         runtime_hs_ir_plan_alignment,
     )
+    _assert_runtime_layout_conversion_evidence_passed(
+        runtime_layout_conversion_evidence,
+    )
+    _assert_runtime_layout_conversion_evidence_bound(
+        runtime_layout_conversion_evidence,
+        mixed_backend_equivalence,
+        mixed_runtime_planning_explanation,
+        runtime_hs_ir_plan_alignment,
+    )
+    _assert_runtime_layout_conversion_evidence_matrix_covered(
+        matrix,
+        runtime_layout_conversion_evidence,
+    )
+    _assert_mixed_tensor_store_passed(mixed_tensor_store)
+    _assert_runtime_layout_conversion_digest_binding_passed(
+        runtime_layout_conversion_digest_binding,
+    )
+    _assert_runtime_layout_conversion_digest_binding_bound(
+        runtime_layout_conversion_digest_binding,
+        runtime_layout_conversion_evidence,
+        runtime_hs_ir_plan_alignment,
+        mixed_tensor_store,
+    )
+    _assert_runtime_layout_conversion_gate_readiness_passed(
+        runtime_layout_conversion_gate_readiness,
+    )
+    _assert_runtime_layout_conversion_promotion_policy_bound(
+        runtime_layout_conversion_gate_promotion_policy,
+        runtime_layout_conversion_gate_readiness,
+        runtime_layout_conversion_digest_binding,
+    )
     _assert_backend_equivalence_portfolio_passed(
         backend_equivalence_portfolio,
         (
@@ -572,6 +683,10 @@ def build_gate_report(
         mixed_backend_equivalence,
         mixed_runtime_planning_explanation,
         runtime_hs_ir_plan_alignment,
+        runtime_layout_conversion_evidence,
+        runtime_layout_conversion_digest_binding,
+        runtime_layout_conversion_gate_readiness,
+        runtime_layout_conversion_gate_promotion_policy,
         backend_equivalence_portfolio,
         backend_equivalence_portfolio_policy,
         gate_matrix_coverage,
@@ -998,6 +1113,247 @@ def _assert_runtime_hs_ir_plan_alignment_matrix_covered(
         )
 
 
+def _assert_runtime_layout_conversion_evidence_passed(
+    report: RuntimeLayoutConversionEvidenceReport,
+) -> None:
+    try:
+        assert_runtime_layout_conversion_evidence(report)
+    except (AssertionError, TypeError, ValueError) as exc:
+        raise RuntimeEvidenceGateError(
+            f"runtime layout conversion evidence failed: {exc}"
+        ) from exc
+    if report.graph_name != RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: graph_name_mismatch"
+        )
+    if len(report.conversions) < 1 or report.total_planned_bytes < 1:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: conversions_missing"
+        )
+    if report.raw_value_policy != "omitted_by_policy":
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: raw_value_policy_mismatch"
+        )
+    if report.execution_policy != "does_not_execute_conversions":
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: execution_policy_mismatch"
+        )
+
+
+def _assert_runtime_layout_conversion_evidence_bound(
+    report: RuntimeLayoutConversionEvidenceReport,
+    mixed_equivalence: RuntimeBackendEquivalenceReport,
+    mixed_planning: RuntimePlanningExplanationReport,
+    hs_ir_alignment: RuntimeHsIrPlanAlignmentReport,
+) -> None:
+    if report.graph_name != mixed_equivalence.graph_name:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: equivalence_graph_mismatch"
+        )
+    if report.graph_name != mixed_planning.graph_name:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: planning_graph_mismatch"
+        )
+    if report.graph_name != hs_ir_alignment.graph_name:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: hs_ir_graph_mismatch"
+        )
+    if len(report.conversions) != mixed_planning.layout_conversion_count:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: planning_count_mismatch"
+        )
+    if report.total_planned_bytes != mixed_planning.total_layout_conversion_bytes:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: planning_bytes_mismatch"
+        )
+    if len(report.conversions) != hs_ir_alignment.partition_layout_conversion_count:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: hs_ir_count_mismatch"
+        )
+    if report.total_planned_bytes != hs_ir_alignment.partition_total_layout_conversion_bytes:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence binding failed: hs_ir_bytes_mismatch"
+        )
+
+
+def _assert_runtime_layout_conversion_evidence_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+    report: RuntimeLayoutConversionEvidenceReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(matrix, report.graph_name)
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence matrix coverage failed: graph missing"
+        )
+    if graph.graph_family != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence matrix coverage failed: "
+            "graph_family_mismatch"
+        )
+    if graph.source_boundary != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence matrix coverage failed: "
+            "source_boundary_mismatch"
+        )
+    if graph.required_artifact_kinds != RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence matrix coverage failed: "
+            "required_artifacts_mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence matrix coverage failed: "
+            "runtime evidence incomplete"
+        )
+    artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind in RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS
+    )
+    if artifact_ids != RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion evidence matrix coverage failed: "
+            "artifact_id_mismatch"
+        )
+
+
+def _assert_mixed_tensor_store_passed(
+    report: RuntimeTensorStoreEvidenceReport,
+) -> None:
+    if not isinstance(report, RuntimeTensorStoreEvidenceReport):
+        raise RuntimeEvidenceGateError(
+            "runtime mixed tensor store evidence failed: not a report object"
+        )
+    if report.graph_name != RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID:
+        raise RuntimeEvidenceGateError(
+            "runtime mixed tensor store evidence binding failed: graph_name_mismatch"
+        )
+    if report.issues:
+        issues = ",".join(
+            f"{issue.tensor_name}:{issue.issue_code}" for issue in report.issues
+        )
+        raise RuntimeEvidenceGateError(
+            f"runtime mixed tensor store evidence failed: {issues}"
+        )
+    if report.raw_value_policy != "omitted_by_policy":
+        raise RuntimeEvidenceGateError(
+            "runtime mixed tensor store evidence binding failed: "
+            "raw_value_policy_mismatch"
+        )
+
+
+def _assert_runtime_layout_conversion_digest_binding_passed(
+    report: RuntimeLayoutConversionDigestBindingReport,
+) -> None:
+    try:
+        assert_runtime_layout_conversion_digest_binding(report)
+    except (AssertionError, TypeError, ValueError) as exc:
+        raise RuntimeEvidenceGateError(
+            f"runtime layout conversion digest binding failed: {exc}"
+        ) from exc
+    if report.graph_name != RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion digest binding failed: graph_name_mismatch"
+        )
+    if report.source_layout_conversion_count < 1 or len(report.bindings) < 1:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion digest binding failed: bindings_missing"
+        )
+    if report.raw_value_policy != "omitted_by_policy":
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion digest binding failed: raw_value_policy_mismatch"
+        )
+
+
+def _assert_runtime_layout_conversion_digest_binding_bound(
+    binding: RuntimeLayoutConversionDigestBindingReport,
+    layout_conversion: RuntimeLayoutConversionEvidenceReport,
+    hs_ir_alignment: RuntimeHsIrPlanAlignmentReport,
+    mixed_tensor_store: RuntimeTensorStoreEvidenceReport,
+) -> None:
+    expected = {
+        "graph_name": layout_conversion.graph_name,
+        "source_hs_ir_graph_name": hs_ir_alignment.graph_name,
+        "source_tensor_store_graph_name": mixed_tensor_store.graph_name,
+        "source_layout_conversion_passed": layout_conversion.passed,
+        "source_layout_conversion_issue_count": len(layout_conversion.issues),
+        "source_layout_conversion_count": len(layout_conversion.conversions),
+        "source_layout_conversion_total_planned_bytes": (
+            layout_conversion.total_planned_bytes
+        ),
+        "source_layout_conversion_metadata_digest": (
+            layout_conversion.conversion_metadata_digest
+        ),
+        "source_partition_plan_digest": layout_conversion.source_partition_plan_digest,
+        "source_hs_ir_alignment_passed": hs_ir_alignment.passed,
+        "source_hs_ir_issue_count": len(hs_ir_alignment.issues),
+        "source_hs_ir_step_count": hs_ir_alignment.step_count,
+        "source_hs_ir_layout_conversion_count": (
+            hs_ir_alignment.partition_layout_conversion_count
+        ),
+        "source_hs_ir_total_layout_conversion_bytes": (
+            hs_ir_alignment.partition_total_layout_conversion_bytes
+        ),
+        "source_hs_ir_alignment_metadata_digest": (
+            hs_ir_alignment.alignment_metadata_digest
+        ),
+        "source_tensor_store_passed": mixed_tensor_store.passed,
+        "source_tensor_store_issue_count": len(mixed_tensor_store.issues),
+        "source_tensor_store_record_count": len(mixed_tensor_store.records),
+        "source_tensor_store_record_metadata_digest": (
+            mixed_tensor_store.record_metadata_digest
+        ),
+    }
+    for field_name, expected_value in expected.items():
+        if getattr(binding, field_name) != expected_value:
+            raise RuntimeEvidenceGateError(
+                "runtime layout conversion digest binding failed: "
+                f"{field_name}_mismatch"
+            )
+
+
+def _assert_runtime_layout_conversion_gate_readiness_passed(
+    report: RuntimeLayoutConversionGateReadinessReport,
+) -> None:
+    try:
+        assert_runtime_layout_conversion_gate_readiness(report)
+    except (AssertionError, TypeError, ValueError) as exc:
+        raise RuntimeEvidenceGateError(
+            f"runtime layout conversion gate readiness failed: {exc}"
+        ) from exc
+
+
+def _assert_runtime_layout_conversion_promotion_policy_bound(
+    policy: RuntimeLayoutConversionGatePromotionPolicyReport,
+    readiness: RuntimeLayoutConversionGateReadinessReport,
+    digest_binding: RuntimeLayoutConversionDigestBindingReport,
+) -> None:
+    try:
+        assert_runtime_layout_conversion_gate_promotion_policy(policy)
+    except (AssertionError, TypeError, ValueError) as exc:
+        raise RuntimeEvidenceGateError(
+            f"runtime layout conversion promotion policy failed: {exc}"
+        ) from exc
+    expected = {
+        "target_graph_id": RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
+        "target_artifact_kind": "runtime_layout_conversion_evidence",
+        "target_artifact_id": RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID,
+        "source_readiness_ready": readiness.ready,
+        "source_readiness_status": readiness.readiness_status,
+        "source_readiness_metadata_digest": readiness.readiness_metadata_digest,
+        "source_readiness_target_gate_status": readiness.target_gate_status,
+        "source_digest_binding_artifact_id": digest_binding.artifact_id,
+        "required_gate_change": (
+            "add_layout_conversion_evidence_to_mixed_graph_required_kinds"
+        ),
+        "raw_value_policy": "omitted_by_policy",
+    }
+    for field_name, expected_value in expected.items():
+        if getattr(policy, field_name) != expected_value:
+            raise RuntimeEvidenceGateError(
+                "runtime layout conversion promotion policy failed: "
+                f"{field_name}_mismatch"
+            )
 def _assert_backend_equivalence_portfolio_passed(
     report: RuntimeBackendEquivalencePortfolioReport,
     expected_reports: tuple[RuntimeBackendEquivalenceReport, ...],
@@ -1724,6 +2080,12 @@ def _render_gate_report(
     mixed_backend_equivalence: RuntimeBackendEquivalenceReport,
     mixed_runtime_planning_explanation: RuntimePlanningExplanationReport,
     runtime_hs_ir_plan_alignment: RuntimeHsIrPlanAlignmentReport,
+    runtime_layout_conversion_evidence: RuntimeLayoutConversionEvidenceReport,
+    runtime_layout_conversion_digest_binding: RuntimeLayoutConversionDigestBindingReport,
+    runtime_layout_conversion_gate_readiness: RuntimeLayoutConversionGateReadinessReport,
+    runtime_layout_conversion_gate_promotion_policy: (
+        RuntimeLayoutConversionGatePromotionPolicyReport
+    ),
     backend_equivalence_portfolio: RuntimeBackendEquivalencePortfolioReport,
     backend_equivalence_portfolio_policy: (
         RuntimeBackendEquivalencePortfolioPolicyReport
@@ -1862,6 +2224,34 @@ def _render_gate_report(
         "  runtime_hs_ir_plan_alignment_raw_value_policy = "
         f'"{runtime_hs_ir_plan_alignment.raw_value_policy}"'
     )
+    lines.append('  runtime_layout_conversion_evidence = "passed"')
+    lines.append('  runtime_layout_conversion_evidence_binding = "verified"')
+    lines.append('  runtime_layout_conversion_evidence_matrix = "covered"')
+    lines.append(
+        "  runtime_layout_conversion_evidence_matrix_artifact = "
+        f'"{RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID}"'
+    )
+    lines.append(
+        "  runtime_layout_conversion_count = "
+        f'"{len(runtime_layout_conversion_evidence.conversions)}"'
+    )
+    lines.append(
+        "  runtime_layout_conversion_planned_bytes = "
+        f'"{runtime_layout_conversion_evidence.total_planned_bytes}"'
+    )
+    lines.append('  runtime_layout_conversion_digest_binding = "passed"')
+    lines.append('  runtime_layout_conversion_digest_binding_consistency = "verified"')
+    lines.append(
+        "  runtime_layout_conversion_digest_binding_rows = "
+        f'"{len(runtime_layout_conversion_digest_binding.bindings)}"'
+    )
+    lines.append('  runtime_layout_conversion_gate_readiness = "ready"')
+    lines.append('  runtime_layout_conversion_promotion_policy = "accepted"')
+    lines.append(
+        "  runtime_layout_conversion_promotion_enforcement_status = "
+        f'"{runtime_layout_conversion_gate_promotion_policy.enforcement_status}"'
+    )
+    lines.append('  runtime_layout_conversion_gate_enforcement = "enabled"')
     lines.append('  runtime_backend_equivalence_portfolio = "passed"')
     lines.append('  runtime_backend_equivalence_portfolio_binding = "verified"')
     lines.append(

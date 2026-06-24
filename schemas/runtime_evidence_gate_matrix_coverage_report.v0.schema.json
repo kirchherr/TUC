@@ -154,6 +154,7 @@
               "backend_equivalence_portfolio",
               "backend_equivalence_portfolio_policy",
               "runtime_hs_ir_plan_alignment",
+              "runtime_layout_conversion_evidence",
               "runtime_buffer_lifetime",
               "runtime_allocation_plan",
               "runtime_memory_budget",

@@ -49,10 +49,9 @@ hardware-independent interface into capability-driven runtime planning.
   `schemas/runtime_layout_conversion_evidence_report.v0.schema.json`, with
   deterministic golden evidence at
   `tests/golden/runtime_layout_conversion_evidence/current_report.json`.
-- Runtime Evidence Matrix now inventories Runtime Layout Conversion Evidence as
-  optional `runtime_layout_conversion_evidence_mixed` review evidence for the
-  mixed backend-equivalence graph, without making it a Runtime Evidence Gate
-  requirement yet.
+- Runtime Evidence Matrix now requires Runtime Layout Conversion Evidence as
+  `runtime_layout_conversion_evidence_mixed` gate evidence for the mixed
+  backend-equivalence graph.
 - [Runtime Layout Conversion Gate Readiness](RUNTIME_LAYOUT_CONVERSION_GATE_READINESS.md)
   records the exact promotion prerequisites for making layout-conversion
   evidence gate-required, with schema at
@@ -67,7 +66,7 @@ hardware-independent interface into capability-driven runtime planning.
 - Runtime Layout Conversion Gate Readiness now verifies the exact Matrix graph,
   artifact kind, and `runtime_layout_conversion_evidence_mixed` artifact ID for
   the target evidence, clearing the `gate_exact_artifact_binding` blocker
-  without making layout-conversion evidence gate-required yet.
+  before gate enforcement was activated.
 - [Runtime Layout Conversion Digest Binding](RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING.md)
   now binds Runtime Layout Conversion Evidence to Runtime HS-IR Plan Alignment
   and Runtime Tensor Store Evidence with schema at
@@ -76,15 +75,19 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/runtime_layout_conversion_digest_binding/current_report.json`,
   clearing the `hs_ir_and_tensor_store_digest_binding` readiness blocker.
 - Runtime Layout Conversion Gate Readiness is now `ready` with all seven checks
-  passed, while `runtime_layout_conversion_evidence` remains optional Runtime
-  Evidence Matrix inventory until a separate maintainer policy change promotes
-  it to Runtime Evidence Gate-required status.
+  passed, and `runtime_layout_conversion_evidence` is now Runtime Evidence
+  Gate-required for the mixed backend-equivalence graph.
 - [Runtime Layout Conversion Gate Promotion Policy](RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY.md)
   records the graph-scoped promotion candidate with schema at
   `schemas/runtime_layout_conversion_gate_promotion_policy_report.v0.schema.json`,
   deterministic golden evidence at
   `tests/golden/runtime_layout_conversion_gate_promotion_policy/current_report.json`,
-  `promotion_ready: true`, and `enforcement_status: not_enforced`.
+  `promotion_ready: true`, and
+  `enforcement_status: enforced_by_runtime_evidence_gate`.
+- Runtime Evidence Gate now enforces Layout Conversion Evidence for
+  `runtime_mixed_backend_equivalence`, binding the report to Mixed Backend
+  Equivalence, Mixed Planning Explanation, HS-IR Plan Alignment,
+  Mixed Tensor Store Evidence, Digest Binding, and Promotion Policy metadata.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding
@@ -1383,11 +1386,10 @@ Current focus:
   contribution.
 - Plugin lifecycle RFC and sandboxing model before any executable backend
   discovery, artifact execution, or native plugin ABI.
-- Runtime Layout Conversion Evidence now exists as optional data-only Matrix
-  inventory with a ready Gate Readiness report and a graph-scoped Gate
-  Promotion Policy. It should become required Runtime Evidence Matrix or
-  Runtime Evidence Gate evidence only through a separate enforcement change
-  that updates required artifact kinds and gate checks.
+- Runtime Layout Conversion Evidence is now graph-scoped required Runtime
+  Evidence Matrix and Runtime Evidence Gate evidence for
+  `runtime_mixed_backend_equivalence`, backed by Gate Readiness, Digest
+  Binding, and Gate Promotion Policy artifacts.
 
 ## Runtime Allocation Reconciliation
 

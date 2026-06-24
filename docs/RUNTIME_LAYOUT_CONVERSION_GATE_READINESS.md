@@ -5,7 +5,7 @@ Runtime Layout Conversion Gate Readiness v0 records whether
 Runtime Evidence Gate evidence.
 
 The current answer is **ready**. TUC has two stable layout-conversion evidence
-slices, optional Runtime Evidence Matrix inventory, exact Matrix/artifact
+slices, Runtime Evidence Matrix required inventory, exact Matrix/artifact
 binding for the target evidence, and HS-IR/Tensor Store digest binding for the
 mixed layout transition.
 
@@ -29,7 +29,7 @@ mixed layout transition.
 - Target graph: `runtime_mixed_backend_equivalence`
 - Target artifact kind: `runtime_layout_conversion_evidence`
 - Target artifact ID: `runtime_layout_conversion_evidence_mixed`
-- Target gate status: `optional_matrix_inventory_not_gate_required`
+- Target gate status: `runtime_evidence_gate_required`
 
 ## Required Checks
 
@@ -38,7 +38,7 @@ The report evaluates:
 - `layout_conversion_evidence_report_passes`
 - `layout_conversion_schema_and_golden_stable`
 - `layout_conversion_negative_tests_present`
-- `runtime_evidence_matrix_optional_inventory`
+- `runtime_evidence_matrix_required_inventory`
 - `second_independent_layout_conversion_slice`
 - `gate_exact_artifact_binding`
 - `hs_ir_and_tensor_store_digest_binding`
@@ -60,11 +60,9 @@ code, benchmark samples, or plugin entrypoints.
 
 ## Promotion Rule
 
-Layout Conversion Evidence can now be proposed for Runtime Evidence
-Gate-required status, but this document does not activate that gate. Promotion
-requires a separate maintainer policy change that updates Runtime Evidence
-Matrix requirements and Runtime Evidence Gate enforcement.
+Layout Conversion Evidence has been promoted to Runtime Evidence Gate-required
+status for `runtime_mixed_backend_equivalence`.
 
 [Runtime Layout Conversion Gate Promotion Policy](RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY.md)
 records the current policy state as `promotion_ready: true` and
-`enforcement_status: not_enforced`.
+`enforcement_status: enforced_by_runtime_evidence_gate`.

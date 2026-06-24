@@ -10,8 +10,8 @@ Add a data-only promotion policy report for deciding whether the ready Runtime
 Layout Conversion Evidence can be proposed as Runtime Evidence Gate-required
 evidence.
 
-This RFC does not activate the gate. It records that the current evidence is
-ready for a separate gate-enforcement change.
+This RFC records the promotion decision. RFC 0216 activates the corresponding
+Runtime Evidence Gate requirement.
 
 ## Motivation
 
@@ -25,7 +25,7 @@ can distinguish:
 
 - evidence maturity;
 - policy scope;
-- actual Runtime Evidence Gate activation.
+- actual Runtime Evidence Gate activation status.
 
 ## Goals
 
@@ -33,14 +33,11 @@ can distinguish:
 - Keep promotion scope limited to the current mixed backend-equivalence graph.
 - Bind the policy to the readiness metadata digest.
 - Require the expected digest-binding artifact ID.
-- State that enforcement remains disabled until a separate gate-requirement
-  change is accepted.
+- State the current Runtime Evidence Gate enforcement status.
 - Keep the artifact data-only and free of execution surfaces.
 
 ## Non-Goals
 
-- Modify Runtime Evidence Matrix required artifact kinds.
-- Modify Runtime Evidence Gate enforcement.
 - Execute layout converters, generated code, backend plugins, kernels, streams,
   or device APIs.
 - Prove physical memory residency.
@@ -73,16 +70,16 @@ The current policy ID is
 - The target artifact ID must be `runtime_layout_conversion_evidence_mixed`.
 - Source readiness must be `ready`.
 - Source readiness target gate status must remain
-  `optional_matrix_inventory_not_gate_required`.
+  `runtime_evidence_gate_required`.
 - The digest-binding artifact ID must be
   `runtime_layout_conversion_digest_binding_mixed`.
-- Enforcement status must remain `not_enforced` in this report.
+- Enforcement status must be `enforced_by_runtime_evidence_gate`.
 - Issues must be derived from report fields.
 
 ## Compatibility
 
-This is additive. It does not change Runtime Evidence Matrix requirements or
-Runtime Evidence Gate behavior.
+This policy is additive. The actual Runtime Evidence Matrix and Runtime
+Evidence Gate activation is specified by RFC 0216.
 
 ## Testing
 
@@ -95,6 +92,4 @@ The v0 implementation adds:
 
 ## Open Questions
 
-- Should the next gate-enforcement change apply only to the mixed graph first?
-- Should TUC define a general per-graph evidence-promotion registry before the
-  first enforcement change?
+- Should future enforcement promotions use a generic per-graph policy registry?

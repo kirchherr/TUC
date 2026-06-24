@@ -31,14 +31,14 @@ RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_TARGET_GRAPH_ID = (
     "runtime_mixed_backend_equivalence"
 )
 RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_TARGET_GATE_STATUS = (
-    "optional_matrix_inventory_not_gate_required"
+    "runtime_evidence_gate_required"
 )
 RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_STATUSES = ("passed", "blocked")
 RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_REQUIRED_CHECKS = (
     "layout_conversion_evidence_report_passes",
     "layout_conversion_schema_and_golden_stable",
     "layout_conversion_negative_tests_present",
-    "runtime_evidence_matrix_optional_inventory",
+    "runtime_evidence_matrix_required_inventory",
     "second_independent_layout_conversion_slice",
     "gate_exact_artifact_binding",
     "hs_ir_and_tensor_store_digest_binding",

@@ -79,7 +79,7 @@ def test_runtime_layout_conversion_gate_promotion_policy_passes() -> None:
     assert report.source_readiness_ready is True
     assert report.source_readiness_status == "ready"
     assert report.source_readiness_target_gate_status == (
-        "optional_matrix_inventory_not_gate_required"
+        "runtime_evidence_gate_required"
     )
     assert report.source_digest_binding_artifact_id == (
         RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING_ARTIFACT_ID
@@ -111,7 +111,7 @@ def test_runtime_layout_conversion_gate_promotion_policy_example_runs() -> None:
         completed.stdout
     )
     assert '"promotion_ready": true' in completed.stdout
-    assert '"enforcement_status": "not_enforced"' in completed.stdout
+    assert '"enforcement_status": "enforced_by_runtime_evidence_gate"' in completed.stdout
     assert "runtime_handle" not in completed.stdout
     assert "memory_address" not in completed.stdout
     assert "raw_tensor_value" not in completed.stdout

@@ -1468,6 +1468,7 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     "backend_equivalence",
                     "runtime_planning_explanation",
                     "runtime_hs_ir_plan_alignment",
+                    "runtime_layout_conversion_evidence",
                 ),
             ),
             RuntimeEvidenceGraph(

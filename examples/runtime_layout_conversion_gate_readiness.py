@@ -105,7 +105,7 @@ def build_current_runtime_layout_conversion_gate_readiness_report(
             detail="negative_tests_cover_malformed_inputs",
         ),
         RuntimeLayoutConversionGateReadinessCheck(
-            check_name="runtime_evidence_matrix_optional_inventory",
+            check_name="runtime_evidence_matrix_required_inventory",
             status="passed" if matrix_inventory_ready else "blocked",
             evidence_id=(
                 RUNTIME_LAYOUT_CONVERSION_GATE_READINESS_TARGET_ARTIFACT_ID
@@ -113,9 +113,9 @@ def build_current_runtime_layout_conversion_gate_readiness_report(
                 else "missing_runtime_evidence_matrix_inventory"
             ),
             detail=(
-                "matrix_inventory_optional"
+                "matrix_inventory_required"
                 if matrix_inventory_ready
-                else "missing_matrix_inventory"
+                else "missing_matrix_required_inventory"
             ),
         ),
         RuntimeLayoutConversionGateReadinessCheck(

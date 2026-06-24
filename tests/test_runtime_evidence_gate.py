@@ -15,6 +15,7 @@ from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
+    RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_MEMORY_PLANNING_GRAPH_ID,
     RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS,
     RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS,
@@ -33,8 +34,17 @@ from examples.runtime_execution_receipt import (
 )
 from examples.runtime_hs_ir_plan_alignment import build_alignment_report
 from examples.runtime_input_manifest import build_input_manifest_report
+from examples.runtime_layout_conversion_digest_binding import (
+    build_current_runtime_layout_conversion_digest_binding_report,
+)
+from examples.runtime_layout_conversion_evidence import (
+    build_current_runtime_layout_conversion_evidence_report,
+)
 from examples.runtime_mixed_backend_equivalence import (
     build_mixed_backend_equivalence_report,
+)
+from examples.runtime_mixed_tensor_store_evidence import (
+    build_mixed_tensor_store_evidence_report,
 )
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
@@ -192,6 +202,24 @@ def test_runtime_evidence_gate_example_runs() -> None:
         'runtime_hs_ir_plan_alignment_backend_sequence = '
         '"systolic-sim,vector-sim,vector-sim,vector-sim"'
     ) in completed.stdout
+    assert 'runtime_layout_conversion_evidence = "passed"' in completed.stdout
+    assert 'runtime_layout_conversion_evidence_binding = "verified"' in completed.stdout
+    assert 'runtime_layout_conversion_evidence_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_layout_conversion_evidence_matrix_artifact = "
+        f'"{RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_layout_conversion_count = "1"' in completed.stdout
+    assert 'runtime_layout_conversion_planned_bytes = "24"' in completed.stdout
+    assert 'runtime_layout_conversion_digest_binding = "passed"' in completed.stdout
+    assert (
+        'runtime_layout_conversion_digest_binding_consistency = "verified"'
+        in completed.stdout
+    )
+    assert 'runtime_layout_conversion_digest_binding_rows = "1"' in completed.stdout
+    assert 'runtime_layout_conversion_gate_readiness = "ready"' in completed.stdout
+    assert 'runtime_layout_conversion_promotion_policy = "accepted"' in completed.stdout
+    assert 'runtime_layout_conversion_gate_enforcement = "enabled"' in completed.stdout
     assert 'runtime_backend_equivalence_portfolio = "passed"' in completed.stdout
     assert (
         'runtime_backend_equivalence_portfolio_binding = "verified"'
@@ -609,6 +637,47 @@ def test_runtime_evidence_gate_rejects_unbound_hs_ir_plan_alignment() -> None:
         match="HS-IR plan alignment binding",
     ):
         build_gate_report(runtime_hs_ir_plan_alignment_report=unbound_alignment)
+
+
+def test_runtime_evidence_gate_rejects_unbound_layout_conversion_evidence() -> None:
+    report = build_current_runtime_layout_conversion_evidence_report()
+    unbound = replace(report, graph_name="runtime_other_backend_equivalence")
+
+    assert unbound.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="layout conversion evidence binding",
+    ):
+        build_gate_report(runtime_layout_conversion_evidence_report=unbound)
+
+
+def test_runtime_evidence_gate_rejects_unbound_layout_conversion_digest_binding() -> None:
+    report = build_current_runtime_layout_conversion_digest_binding_report()
+    forged = replace(
+        report,
+        source_layout_conversion_metadata_digest=(
+            "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        ),
+    )
+
+    assert forged.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="layout conversion digest binding failed",
+    ):
+        build_gate_report(runtime_layout_conversion_digest_binding_report=forged)
+
+
+def test_runtime_evidence_gate_rejects_unbound_mixed_tensor_store() -> None:
+    report = build_mixed_tensor_store_evidence_report()
+    unbound = replace(report, graph_name="runtime_other_backend_equivalence")
+
+    assert unbound.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed tensor store evidence binding",
+    ):
+        build_gate_report(mixed_tensor_store_report=unbound)
 
 
 def test_runtime_evidence_gate_rejects_missing_backend_equivalence_matrix_graph() -> None:

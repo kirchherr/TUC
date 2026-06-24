@@ -32,11 +32,11 @@ RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY_ARTIFACT_STATUS = "review_eviden
 RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY_ID = (
     "runtime_layout_conversion_gate_promotion_policy_mixed"
 )
-RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY_STATUS = "accepted_candidate_policy"
+RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY_STATUS = "accepted_enforced_policy"
 RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_SCOPE = "single_graph_candidate"
-RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_ENFORCEMENT_STATUS = "not_enforced"
+RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_ENFORCEMENT_STATUS = "enforced_by_runtime_evidence_gate"
 RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_NEXT_ACTION = (
-    "separate_runtime_evidence_gate_requirement_change"
+    "monitor_runtime_evidence_gate_layout_conversion_requirement"
 )
 RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_REQUIRED_GATE_CHANGE = (
     "add_layout_conversion_evidence_to_mixed_graph_required_kinds"
