@@ -38,20 +38,21 @@ def test_backend_plugin_lifecycle_policy_blocks_plugins_by_default() -> None:
 
     assert report.policy_enforced
     assert not report.ready_to_enable_plugins
-    assert report.missing_requirement_count == 5
+    assert report.missing_requirement_count == 4
     assert not report.plugin_discovery_enabled
     assert not report.artifact_execution_enabled
     assert not report.native_plugin_abi_enabled
     assert tuple(item.requirement_id for item in report.requirements) == (
         BACKEND_PLUGIN_LIFECYCLE_REQUIRED_REQUIREMENTS
     )
-    assert tuple(item.status for item in report.requirements[:4]) == (
+    assert tuple(item.status for item in report.requirements[:5]) == (
+        "satisfied",
         "satisfied",
         "satisfied",
         "satisfied",
         "satisfied",
     )
-    assert {item.status for item in report.requirements[4:]} == {"missing"}
+    assert {item.status for item in report.requirements[5:]} == {"missing"}
 
 
 def test_backend_plugin_lifecycle_policy_assertion_passes() -> None:
@@ -158,7 +159,7 @@ def test_backend_plugin_lifecycle_policy_example_matches_golden() -> None:
     loaded = json.loads(completed.stdout)
     assert loaded["policy_enforced"] is True
     assert loaded["ready_to_enable_plugins"] is False
-    assert loaded["missing_requirement_count"] == 5
+    assert loaded["missing_requirement_count"] == 4
 
 
 def test_backend_plugin_lifecycle_policy_dump_matches_golden() -> None:
@@ -246,7 +247,7 @@ def test_backend_plugin_lifecycle_policy_golden_matches_schema_shape() -> None:
     assert golden["policy_enforced"] is True
     assert golden["ready_to_enable_plugins"] is False
     assert golden["requirement_count"] == len(golden["requirements"]) == 9
-    assert golden["missing_requirement_count"] == 5
+    assert golden["missing_requirement_count"] == 4
     assert golden["policy_issues"] == []
 
 

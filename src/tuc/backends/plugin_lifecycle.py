@@ -6,6 +6,10 @@ import json
 import re
 from dataclasses import dataclass
 
+from tuc.backends.sandbox_model import (
+    BACKEND_PLUGIN_SANDBOX_MODEL_CONTRACT,
+    BACKEND_PLUGIN_SANDBOX_MODEL_STATUS,
+)
 from tuc.runtime.executor import RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
 
 BACKEND_PLUGIN_LIFECYCLE_POLICY_REPORT_SCHEMA_VERSION = (
@@ -17,7 +21,7 @@ BACKEND_PLUGIN_LIFECYCLE_POLICY_CONTRACT = (
 BACKEND_PLUGIN_LIFECYCLE_POLICY_ID = "backend_plugin_lifecycle_policy_v0"
 BACKEND_PLUGIN_LIFECYCLE_POLICY_STATUS = "accepted_blocking_policy"
 BACKEND_PLUGIN_LIFECYCLE_EXECUTION_STATUS = "external_plugins_blocked"
-BACKEND_PLUGIN_LIFECYCLE_SANDBOX_STATUS = "required_not_approved"
+BACKEND_PLUGIN_LIFECYCLE_SANDBOX_STATUS = BACKEND_PLUGIN_SANDBOX_MODEL_STATUS
 BACKEND_PLUGIN_LIFECYCLE_REQUIRED_REQUIREMENTS = (
     "capability_manifest_claim_review",
     "backend_author_evidence_gate",
@@ -310,8 +314,8 @@ def _current_lifecycle_requirements() -> tuple[BackendPluginLifecycleRequirement
         ),
         BackendPluginLifecycleRequirement(
             requirement_id="sandbox_model",
-            status="missing",
-            evidence_id="not_approved",
+            status="satisfied",
+            evidence_id=BACKEND_PLUGIN_SANDBOX_MODEL_CONTRACT,
             required_before="generated_artifact_execution",
         ),
         BackendPluginLifecycleRequirement(

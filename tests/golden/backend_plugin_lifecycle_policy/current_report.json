@@ -11,7 +11,7 @@
     "subprocess_execution"
   ],
   "execution_status": "external_plugins_blocked",
-  "missing_requirement_count": 5,
+  "missing_requirement_count": 4,
   "native_plugin_abi_enabled": false,
   "plugin_discovery_enabled": false,
   "policy_contract": "backend_plugin_lifecycle_policy.blocking.v0",
@@ -47,10 +47,10 @@
       "status": "satisfied"
     },
     {
-      "evidence_id": "not_approved",
+      "evidence_id": "backend_plugin_sandbox_model.data_only.v0",
       "required_before": "generated_artifact_execution",
       "requirement_id": "sandbox_model",
-      "status": "missing"
+      "status": "satisfied"
     },
     {
       "evidence_id": "not_approved",
@@ -77,6 +77,6 @@
       "status": "missing"
     }
   ],
-  "sandbox_model_status": "required_not_approved",
+  "sandbox_model_status": "accepted_data_only_model",
   "schema_version": "tuc.backend_plugin_lifecycle_policy_report.v0"
 }

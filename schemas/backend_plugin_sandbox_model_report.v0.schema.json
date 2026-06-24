@@ -1,0 +1,323 @@
+{
+  "$id": "https://tuc.dev/schemas/backend_plugin_sandbox_model_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "control_count": {
+      "const": 12
+    },
+    "controls": {
+      "items": false,
+      "maxItems": 12,
+      "minItems": 12,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/explicit_opt_in_enablement_control"
+        },
+        {
+          "$ref": "#/$defs/capability_manifest_pre_review_control"
+        },
+        {
+          "$ref": "#/$defs/content_digest_artifact_binding_control"
+        },
+        {
+          "$ref": "#/$defs/no_compile_time_plugin_execution_control"
+        },
+        {
+          "$ref": "#/$defs/deny_host_path_access_control"
+        },
+        {
+          "$ref": "#/$defs/deny_environment_secret_access_control"
+        },
+        {
+          "$ref": "#/$defs/deny_network_access_control"
+        },
+        {
+          "$ref": "#/$defs/deny_device_access_by_default_control"
+        },
+        {
+          "$ref": "#/$defs/deny_dynamic_library_loading_by_default_control"
+        },
+        {
+          "$ref": "#/$defs/bounded_resource_budget_control"
+        },
+        {
+          "$ref": "#/$defs/content_addressed_cache_scope_control"
+        },
+        {
+          "$ref": "#/$defs/metadata_only_diagnostics_control"
+        }
+      ],
+      "type": "array"
+    },
+    "execution_allowed": {
+      "const": false
+    },
+    "execution_permission": {
+      "const": "not_granted"
+    },
+    "isolation_strategy": {
+      "const": "separate_worker_process_or_container_required"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "model_ready": {
+      "const": true
+    },
+    "sandbox_contract": {
+      "const": "backend_plugin_sandbox_model.data_only.v0"
+    },
+    "sandbox_model_id": {
+      "const": "backend_plugin_sandbox_model_v0"
+    },
+    "sandbox_model_status": {
+      "const": "accepted_data_only_model"
+    },
+    "schema_version": {
+      "const": "tuc.backend_plugin_sandbox_model_report.v0"
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "control_count",
+    "controls",
+    "execution_allowed",
+    "execution_permission",
+    "isolation_strategy",
+    "issues",
+    "model_ready",
+    "sandbox_contract",
+    "sandbox_model_id",
+    "sandbox_model_status",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "bounded_resource_budget_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "bounded_resource_budget"
+        }
+      }
+    },
+    "capability_manifest_pre_review_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "capability_manifest_pre_review"
+        }
+      }
+    },
+    "content_addressed_cache_scope_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "content_addressed_cache_scope"
+        }
+      }
+    },
+    "content_digest_artifact_binding_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "content_digest_artifact_binding"
+        }
+      }
+    },
+    "control": {
+      "additionalProperties": false,
+      "properties": {
+        "control_id": {
+          "$ref": "#/$defs/control_id"
+        },
+        "protects_surface": {
+          "$ref": "#/$defs/report_text"
+        },
+        "status": {
+          "const": "required"
+        }
+      },
+      "required": [
+        "control_id",
+        "protects_surface",
+        "status"
+      ],
+      "type": "object"
+    },
+    "control_id": {
+      "enum": [
+        "bounded_resource_budget",
+        "capability_manifest_pre_review",
+        "content_addressed_cache_scope",
+        "content_digest_artifact_binding",
+        "deny_device_access_by_default",
+        "deny_dynamic_library_loading_by_default",
+        "deny_environment_secret_access",
+        "deny_host_path_access",
+        "deny_network_access",
+        "explicit_opt_in_enablement",
+        "metadata_only_diagnostics",
+        "no_compile_time_plugin_execution"
+      ],
+      "type": "string"
+    },
+    "deny_device_access_by_default_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "deny_device_access_by_default"
+        }
+      }
+    },
+    "deny_dynamic_library_loading_by_default_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "deny_dynamic_library_loading_by_default"
+        }
+      }
+    },
+    "deny_environment_secret_access_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "deny_environment_secret_access"
+        }
+      }
+    },
+    "deny_host_path_access_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "deny_host_path_access"
+        }
+      }
+    },
+    "deny_network_access_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "deny_network_access"
+        }
+      }
+    },
+    "explicit_opt_in_enablement_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "explicit_opt_in_enablement"
+        }
+      }
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/issue_code"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "issue_code": {
+      "enum": [
+        "execution_permission_granted",
+        "missing_required_control",
+        "sandbox_control_not_required",
+        "sandbox_model_status_invalid"
+      ],
+      "type": "string"
+    },
+    "metadata_only_diagnostics_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "metadata_only_diagnostics"
+        }
+      }
+    },
+    "no_compile_time_plugin_execution_control": {
+      "$ref": "#/$defs/control",
+      "properties": {
+        "control_id": {
+          "const": "no_compile_time_plugin_execution"
+        }
+      }
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

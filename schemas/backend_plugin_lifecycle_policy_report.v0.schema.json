@@ -113,7 +113,7 @@
       "type": "array"
     },
     "sandbox_model_status": {
-      "const": "required_not_approved"
+      "const": "accepted_data_only_model"
     },
     "schema_version": {
       "const": "tuc.backend_plugin_lifecycle_policy_report.v0"
@@ -326,7 +326,7 @@
           "const": "sandbox_model"
         },
         "status": {
-          "const": "missing"
+          "const": "satisfied"
         }
       }
     },

@@ -32,7 +32,7 @@ The current policy is an accepted blocking policy. It keeps:
 - generated artifact execution disabled;
 - native plugin ABI loading disabled;
 - external plugin execution blocked;
-- sandbox model status `required_not_approved`.
+- sandbox model status `accepted_data_only_model` after RFC 0218.
 
 The policy records nine requirements before executable backend plugins can be
 proposed for enablement:
@@ -47,8 +47,9 @@ proposed for enablement:
 - fuzzing and negative-test evidence;
 - maintainer approval.
 
-The first four are currently satisfied by existing review surfaces. The last
-five remain missing by design.
+The first five are currently satisfied by existing review surfaces after RFC
+0218. Artifact provenance, resource-budget evidence, fuzzing or negative-test
+evidence, and maintainer approval remain missing by design.
 
 ## Security Boundary
 
