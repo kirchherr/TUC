@@ -79,6 +79,12 @@ hardware-independent interface into capability-driven runtime planning.
   passed, while `runtime_layout_conversion_evidence` remains optional Runtime
   Evidence Matrix inventory until a separate maintainer policy change promotes
   it to Runtime Evidence Gate-required status.
+- [Runtime Layout Conversion Gate Promotion Policy](RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY.md)
+  records the graph-scoped promotion candidate with schema at
+  `schemas/runtime_layout_conversion_gate_promotion_policy_report.v0.schema.json`,
+  deterministic golden evidence at
+  `tests/golden/runtime_layout_conversion_gate_promotion_policy/current_report.json`,
+  `promotion_ready: true`, and `enforcement_status: not_enforced`.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding
@@ -1378,9 +1384,10 @@ Current focus:
 - Plugin lifecycle RFC and sandboxing model before any executable backend
   discovery, artifact execution, or native plugin ABI.
 - Runtime Layout Conversion Evidence now exists as optional data-only Matrix
-  inventory with a ready Gate Readiness report. It should become required
-  Runtime Evidence Matrix or Runtime Evidence Gate evidence only through a
-  separate policy change that binds the ready report to gate enforcement.
+  inventory with a ready Gate Readiness report and a graph-scoped Gate
+  Promotion Policy. It should become required Runtime Evidence Matrix or
+  Runtime Evidence Gate evidence only through a separate enforcement change
+  that updates required artifact kinds and gate checks.
 
 ## Runtime Allocation Reconciliation
 

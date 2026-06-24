@@ -1,0 +1,209 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_layout_conversion_gate_promotion_policy_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "enforcement_status": {
+      "const": "not_enforced"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 16,
+      "type": "array"
+    },
+    "next_action": {
+      "const": "separate_runtime_evidence_gate_requirement_change"
+    },
+    "policy_complete": {
+      "type": "boolean"
+    },
+    "policy_contract": {
+      "const": "runtime_layout_conversion_gate_promotion_policy.data_only.v0"
+    },
+    "policy_id": {
+      "const": "runtime_layout_conversion_gate_promotion_policy_mixed"
+    },
+    "policy_metadata_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "policy_status": {
+      "const": "accepted_candidate_policy"
+    },
+    "promotion_ready": {
+      "type": "boolean"
+    },
+    "promotion_scope": {
+      "const": "single_graph_candidate"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "required_gate_change": {
+      "const": "add_layout_conversion_evidence_to_mixed_graph_required_kinds"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_layout_conversion_gate_promotion_policy_report.v0"
+    },
+    "source_digest_binding_artifact_id": {
+      "const": "runtime_layout_conversion_digest_binding_mixed"
+    },
+    "source_readiness_contract": {
+      "const": "runtime_layout_conversion_gate_readiness.data_only.v0"
+    },
+    "source_readiness_metadata_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "source_readiness_ready": {
+      "type": "boolean"
+    },
+    "source_readiness_schema_version": {
+      "const": "tuc.runtime_layout_conversion_gate_readiness_report.v0"
+    },
+    "source_readiness_status": {
+      "enum": [
+        "ready",
+        "blocked"
+      ]
+    },
+    "source_readiness_target_gate_status": {
+      "const": "optional_matrix_inventory_not_gate_required"
+    },
+    "target_artifact_id": {
+      "const": "runtime_layout_conversion_evidence_mixed"
+    },
+    "target_artifact_kind": {
+      "const": "runtime_layout_conversion_evidence"
+    },
+    "target_graph_id": {
+      "const": "runtime_mixed_backend_equivalence"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "enforcement_status",
+    "issues",
+    "next_action",
+    "policy_complete",
+    "policy_contract",
+    "policy_id",
+    "policy_metadata_digest",
+    "policy_status",
+    "promotion_ready",
+    "promotion_scope",
+    "raw_value_policy",
+    "required_gate_change",
+    "schema_version",
+    "source_digest_binding_artifact_id",
+    "source_readiness_contract",
+    "source_readiness_metadata_digest",
+    "source_readiness_ready",
+    "source_readiness_schema_version",
+    "source_readiness_status",
+    "source_readiness_target_gate_status",
+    "target_artifact_id",
+    "target_artifact_kind",
+    "target_graph_id"
+  ],
+  "type": "object",
+  "$defs": {
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "allocation_handle",
+          "backend_artifact",
+          "callable",
+          "command",
+          "command_line",
+          "device_id",
+          "device_pointer",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "memory_address",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "pointer",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "tensor_values",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

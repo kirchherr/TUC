@@ -21,6 +21,10 @@ mixed layout transition.
   `schemas/runtime_layout_conversion_digest_binding_report.v0.schema.json`
 - Digest-binding RFC:
   `rfcs/0214-runtime-layout-conversion-digest-binding.md`
+- Promotion-policy schema:
+  `schemas/runtime_layout_conversion_gate_promotion_policy_report.v0.schema.json`
+- Promotion-policy RFC:
+  `rfcs/0215-runtime-layout-conversion-gate-promotion-policy.md`
 - Contract: `runtime_layout_conversion_gate_readiness.data_only.v0`
 - Target graph: `runtime_mixed_backend_equivalence`
 - Target artifact kind: `runtime_layout_conversion_evidence`
@@ -60,3 +64,7 @@ Layout Conversion Evidence can now be proposed for Runtime Evidence
 Gate-required status, but this document does not activate that gate. Promotion
 requires a separate maintainer policy change that updates Runtime Evidence
 Matrix requirements and Runtime Evidence Gate enforcement.
+
+[Runtime Layout Conversion Gate Promotion Policy](RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY.md)
+records the current policy state as `promotion_ready: true` and
+`enforcement_status: not_enforced`.

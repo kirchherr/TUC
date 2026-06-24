@@ -25,6 +25,8 @@ physical device residency.
   `schemas/runtime_layout_conversion_gate_readiness_report.v0.schema.json`
 - Digest-binding schema:
   `schemas/runtime_layout_conversion_digest_binding_report.v0.schema.json`
+- Promotion-policy schema:
+  `schemas/runtime_layout_conversion_gate_promotion_policy_report.v0.schema.json`
 
 ## What It Records
 
@@ -62,7 +64,9 @@ now records that the current promotion prerequisites are ready. The final
 readiness blocker is satisfied by
 [Runtime Layout Conversion Digest Binding](RUNTIME_LAYOUT_CONVERSION_DIGEST_BINDING.md),
 which connects the layout-conversion metadata digest to HS-IR alignment and
-Tensor Store record metadata for the mixed slice.
+Tensor Store record metadata for the mixed slice. The separate
+[Runtime Layout Conversion Gate Promotion Policy](RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY.md)
+records that the evidence is promotion-ready while enforcement remains disabled.
 
 ## What It Proves
 
