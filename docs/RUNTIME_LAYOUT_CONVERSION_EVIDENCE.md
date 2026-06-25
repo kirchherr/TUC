@@ -27,6 +27,9 @@ physical device residency.
   `schemas/runtime_layout_conversion_digest_binding_report.v0.schema.json`
 - Promotion-policy schema:
   `schemas/runtime_layout_conversion_gate_promotion_policy_report.v0.schema.json`
+- Trace-index schema:
+  `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`
+- Trace-index example: `examples/runtime_layout_conversion_trace_index.py`
 
 ## What It Records
 
@@ -66,13 +69,16 @@ which connects the layout-conversion metadata digest to HS-IR alignment and
 Tensor Store record metadata for the mixed slice. The separate
 [Runtime Layout Conversion Gate Promotion Policy](RUNTIME_LAYOUT_CONVERSION_GATE_PROMOTION_POLICY.md)
 records that the evidence is promotion-ready and enforced by Runtime Evidence
-Gate for this graph-scoped slice.
+Gate for this graph-scoped slice. [Runtime Layout Conversion Trace Index](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
+binds the same planned conversion to producer and consumer Runtime Execution
+Trace step indexes without materializing a converter step.
 
 ## What It Proves
 
 - layout transitions are visible in review artifacts instead of hidden inside a
   backend;
 - transition records are bound to an accepted `PartitionPlan` digest;
+- trace-index evidence binds transitions to producer and consumer runtime steps;
 - producer, consumer, source layout, target layout, and byte count agree with
   the compute graph and plan;
 - the report remains metadata-only and value-free.

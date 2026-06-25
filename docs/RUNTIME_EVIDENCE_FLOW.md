@@ -160,6 +160,14 @@ residency. See
 [RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md](RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md)
 and `examples/runtime_layout_conversion_evidence.py`.
 
+`Runtime Layout Conversion Trace Index` links those planned conversion records
+to concrete producer and consumer `RuntimeExecutionTrace` step indexes. It keeps
+layout-conversion review aligned with execution order while preserving the
+`conversion_not_materialized_as_runtime_step` boundary. See
+[RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md),
+`schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`, and
+`examples/runtime_layout_conversion_trace_index.py`.
+
 `Runtime Evidence Replay Verifier` replays serialized Runtime Execution Evidence
 Bundle and Runtime Execution Output Closure reports by metadata digest only. See
 [RUNTIME_EVIDENCE_REPLAY_VERIFIER.md](RUNTIME_EVIDENCE_REPLAY_VERIFIER.md) and

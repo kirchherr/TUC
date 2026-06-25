@@ -95,6 +95,13 @@ hardware-independent interface into capability-driven runtime planning.
   `runtime_mixed_backend_equivalence`, binding the report to Mixed Backend
   Equivalence, Mixed Planning Explanation, HS-IR Plan Alignment,
   Mixed Tensor Store Evidence, Digest Binding, and Promotion Policy metadata.
+- [Runtime Layout Conversion Trace Index](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
+  now binds the mixed slice's planned `blocked -> row_major` conversion to
+  producer and consumer Runtime Execution Trace step indexes, with schema at
+  `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`, example
+  `examples/runtime_layout_conversion_trace_index.py`, and deterministic golden
+  evidence at
+  `tests/golden/runtime_layout_conversion_trace_index/current_report.json`.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding
