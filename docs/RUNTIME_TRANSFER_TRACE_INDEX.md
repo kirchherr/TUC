@@ -14,6 +14,10 @@ handle, accessed a device, or measured real transfer latency.
 - Example: `examples/runtime_transfer_trace_index.py`
 - Golden:
   `tests/golden/runtime_transfer_trace_index/current_report.json`
+- Replay verifier:
+  `examples/runtime_transfer_trace_replay_verifier.py`
+- Replay verifier schema:
+  `schemas/runtime_transfer_trace_replay_verifier_report.v0.schema.json`
 - Contract: `runtime_transfer_trace_index.data_only.v0`
 - Scope: `planned_transfer_trace_alignment_only`
 - Trace materialization policy:
@@ -73,6 +77,15 @@ proof slice.
 - allocation handles, stream behavior, memory addresses, or device pointers;
 - native performance, bandwidth, cache behavior, or vendor-library parity;
 - tensor contents or tensor-value digests.
+
+## Replay Verification
+
+[Runtime Transfer Trace Replay Verifier](RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md)
+checks serialized Transfer Evidence and Transfer Trace Index reports by metadata
+digest. It verifies evidence-report binding, partition-plan binding,
+transfer-count binding, transfer-metadata replay, and the
+`transfer_not_materialized_as_runtime_step` boundary without rerunning runtime
+execution.
 
 ## Security Boundary
 

@@ -26,6 +26,7 @@ execute_graph
   -> Runtime Backend Equivalence
   -> Runtime Transfer Evidence
   -> Runtime Transfer Trace Index
+  -> Runtime Transfer Trace Replay Verifier
   -> Runtime Layout Conversion Evidence
   -> Runtime Layout Conversion Trace Index
   -> Runtime Layout Conversion Trace Replay Verifier
@@ -175,6 +176,14 @@ requires it for the systolic backend-equivalence proof slice. See
 [RUNTIME_TRANSFER_TRACE_INDEX.md](RUNTIME_TRANSFER_TRACE_INDEX.md),
 `schemas/runtime_transfer_trace_index_report.v0.schema.json`, and
 `examples/runtime_transfer_trace_index.py`.
+
+`Runtime Transfer Trace Replay Verifier` replay-checks serialized Transfer
+Evidence and Transfer Trace Index reports by metadata digest only. It binds the
+planned transfer metadata to the trace-index projection while preserving the
+`transfer_not_materialized_as_runtime_step` boundary. See
+[RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md](RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md),
+`schemas/runtime_transfer_trace_replay_verifier_report.v0.schema.json`, and
+`examples/runtime_transfer_trace_replay_verifier.py`.
 
 `Runtime Layout Conversion Evidence` is the current optional bridge between
 planned layout-conversion edges and reviewer-facing layout-transition evidence.

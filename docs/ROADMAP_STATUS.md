@@ -113,6 +113,13 @@ hardware-independent interface into capability-driven runtime planning.
   `runtime_mixed_backend_equivalence`, binding the report to Mixed Backend
   Equivalence, Mixed Planning Explanation, HS-IR Plan Alignment,
   Mixed Tensor Store Evidence, Digest Binding, and Promotion Policy metadata.
+- [Runtime Transfer Trace Replay Verifier](RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md)
+  replay-checks serialized Transfer Evidence and Trace Index reports by metadata
+  digest, with schema at
+  `schemas/runtime_transfer_trace_replay_verifier_report.v0.schema.json`, example
+  `examples/runtime_transfer_trace_replay_verifier.py`, and deterministic
+  golden evidence at
+  `tests/golden/runtime_transfer_trace_replay_verifier/current_report.json`.
 - [Runtime Layout Conversion Trace Index](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
   now binds the mixed slice's planned `blocked -> row_major` conversion to
   producer and consumer Runtime Execution Trace step indexes, with schema at

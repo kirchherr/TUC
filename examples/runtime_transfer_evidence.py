@@ -1,6 +1,6 @@
 """Emit Runtime Transfer Evidence v0."""
 
-from examples.proof_of_systolic_execution import build_graph
+from examples.runtime_backend_equivalence import build_graph
 from tuc import SystolicArraySimulatorBackend, compile_graph
 from tuc.runtime.transfer_evidence import (
     RuntimeTransferEvidenceReport,

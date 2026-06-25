@@ -101,6 +101,7 @@ Required artifacts:
 - `examples/runtime_hs_ir_plan_alignment.py`
 - `examples/runtime_transfer_evidence.py`
 - `examples/runtime_transfer_trace_index.py`
+- `examples/runtime_transfer_trace_replay_verifier.py`
 - `examples/runtime_layout_conversion_trace_index.py`
 - `examples/runtime_layout_conversion_trace_replay_verifier.py`
 - `examples/runtime_backend_equivalence_layout_binding.py`
@@ -118,6 +119,7 @@ Required artifacts:
 - `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`
 - `tests/golden/runtime_transfer_evidence/current_report.json`
 - `tests/golden/runtime_transfer_trace_index/current_report.json`
+- `tests/golden/runtime_transfer_trace_replay_verifier/current_report.json`
 - `tests/golden/runtime_layout_conversion_trace_index/current_report.json`
 - `tests/golden/runtime_layout_conversion_trace_replay_verifier/current_report.json`
 - `tests/golden/runtime_backend_equivalence_layout_binding/current_report.json`
@@ -132,11 +134,13 @@ Required artifacts:
 - `docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md`
 - `docs/RUNTIME_TRANSFER_EVIDENCE.md`
 - `docs/RUNTIME_TRANSFER_TRACE_INDEX.md`
+- `docs/RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md`
 - `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md`
 - `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md`
 - `docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md`
 - `schemas/runtime_transfer_evidence_report.v0.schema.json`
 - `schemas/runtime_transfer_trace_index_report.v0.schema.json`
+- `schemas/runtime_transfer_trace_replay_verifier_report.v0.schema.json`
 - `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`
 - `schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`
 - `schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json`
@@ -263,6 +267,10 @@ Completed evidence:
   residency, runtime handles, raw values, and native performance claims blocked;
   it is now required by Runtime Evidence Matrix and Runtime Evidence Gate for
   the systolic backend-equivalence proof slice.
+- Runtime Transfer Trace Replay Verifier v0
+  (`examples/runtime_transfer_trace_replay_verifier.py`) replay-checks
+  serialized Transfer Evidence and Trace Index reports by metadata digest
+  without re-running runtime execution or materializing transfer steps.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

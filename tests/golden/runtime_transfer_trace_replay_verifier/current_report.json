@@ -1,0 +1,80 @@
+{
+  "artifact_status": "review_verification",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "check_count": 6,
+  "checks": [
+    {
+      "check_id": "graph_name_match",
+      "expected": "runtime_backend_equivalence",
+      "observed": "runtime_backend_equivalence",
+      "row_status": "verified",
+      "subject": "runtime_transfer_trace_index"
+    },
+    {
+      "check_id": "transfer_evidence_digest_replayed",
+      "expected": "sha256:c3c905b3de3cbc8ba94de1d1df81d541f67694ed7192f7ff456b1efbc8b4d711",
+      "observed": "sha256:c3c905b3de3cbc8ba94de1d1df81d541f67694ed7192f7ff456b1efbc8b4d711",
+      "row_status": "verified",
+      "subject": "runtime_transfer_evidence"
+    },
+    {
+      "check_id": "partition_plan_digest_bound",
+      "expected": "sha256:7434b13995b92ab97bdefcf3dae71eb57fa7d070b11da36611cc02ce87ef379e",
+      "observed": "sha256:7434b13995b92ab97bdefcf3dae71eb57fa7d070b11da36611cc02ce87ef379e",
+      "row_status": "verified",
+      "subject": "runtime_transfer_trace_index"
+    },
+    {
+      "check_id": "transfer_count_bound",
+      "expected": "1",
+      "observed": "1",
+      "row_status": "verified",
+      "subject": "runtime_transfer_trace_index"
+    },
+    {
+      "check_id": "transfer_metadata_digest_replayed",
+      "expected": "sha256:43eeadba07d95d00606943ee44ea0c2865932cd38de6df7d7e2c8525f95846fb",
+      "observed": "sha256:43eeadba07d95d00606943ee44ea0c2865932cd38de6df7d7e2c8525f95846fb",
+      "row_status": "verified",
+      "subject": "runtime_transfer_trace_index"
+    },
+    {
+      "check_id": "trace_materialization_policy_bound",
+      "expected": "transfer_not_materialized_as_runtime_step",
+      "observed": "transfer_not_materialized_as_runtime_step",
+      "row_status": "verified",
+      "subject": "runtime_transfer_trace_index"
+    }
+  ],
+  "execution_policy": "does_not_execute_transfers",
+  "graph_name": "runtime_backend_equivalence",
+  "input_policy": "serialized_json_reports_only",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "reexecution_policy": "runtime_reexecution_not_required",
+  "replay_contract": "runtime_transfer_trace_replay_verifier.review.v0",
+  "replay_metadata_digest": "sha256:68af97839ee43b1690a934d3c73e87492a4d95385da37b6aa778fa132123a6cc",
+  "replay_mode": "metadata_digest_replay_only",
+  "required_inputs": [
+    "runtime_transfer_evidence",
+    "runtime_transfer_trace_index"
+  ],
+  "schema_version": "tuc.runtime_transfer_trace_replay_verifier_report.v0",
+  "source_partition_plan_digest": "sha256:7434b13995b92ab97bdefcf3dae71eb57fa7d070b11da36611cc02ce87ef379e",
+  "source_transfer_evidence_digest": "sha256:c3c905b3de3cbc8ba94de1d1df81d541f67694ed7192f7ff456b1efbc8b4d711",
+  "trace_index_transfer_metadata_digest": "sha256:43eeadba07d95d00606943ee44ea0c2865932cd38de6df7d7e2c8525f95846fb",
+  "trace_materialization_policy": "transfer_not_materialized_as_runtime_step",
+  "transfer_evidence_report_digest": "sha256:c3c905b3de3cbc8ba94de1d1df81d541f67694ed7192f7ff456b1efbc8b4d711",
+  "transfer_metadata_digest": "sha256:43eeadba07d95d00606943ee44ea0c2865932cd38de6df7d7e2c8525f95846fb",
+  "transfer_trace_index_report_digest": "sha256:ac78842cb68e8f3c6fdc13d078c4a31f833b43db36026d54904d2ad2987c44ea"
+}

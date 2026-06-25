@@ -28,6 +28,7 @@ The canonical example is:
 ```bash
 python examples/runtime_transfer_evidence.py
 python examples/runtime_transfer_trace_index.py
+python examples/runtime_transfer_trace_replay_verifier.py
 ```
 
 The deterministic golden reports are:
@@ -35,6 +36,7 @@ The deterministic golden reports are:
 ```text
 tests/golden/runtime_transfer_evidence/current_report.json
 tests/golden/runtime_transfer_trace_index/current_report.json
+tests/golden/runtime_transfer_trace_replay_verifier/current_report.json
 ```
 
 The current proof slice records the planned `device_sram -> host_ram` transfer
@@ -49,6 +51,11 @@ the `transfer_not_materialized_as_runtime_step` boundary. Runtime Evidence
 Matrix and Runtime Evidence Gate require that index as
 `runtime_transfer_trace_index_systolic` for the systolic backend-equivalence
 proof slice.
+
+[Runtime Transfer Trace Replay Verifier](RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md)
+checks serialized Transfer Evidence and Transfer Trace Index reports by metadata
+digest, with schema `schemas/runtime_transfer_trace_replay_verifier_report.v0.schema.json`,
+while preserving the same no-transfer-execution and metadata-only boundary.
 
 ## Security Boundary
 

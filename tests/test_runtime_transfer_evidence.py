@@ -9,7 +9,7 @@ from typing import Any
 
 import pytest
 
-from examples.proof_of_systolic_execution import build_graph
+from examples.runtime_backend_equivalence import build_graph
 from examples.runtime_transfer_evidence import (
     build_current_runtime_transfer_evidence_report,
 )
@@ -59,8 +59,8 @@ def test_runtime_transfer_evidence_report_passes() -> None:
     record = report.transfers[0]
     assert record.transfer_id == "runtime_transfer_0000"
     assert record.tensor_name == "projection"
-    assert record.source_operation == "systolic_projection"
-    assert record.target_operation == "host_activation"
+    assert record.source_operation == "projection"
+    assert record.target_operation == "activation"
     assert record.from_backend == "systolic-sim"
     assert record.to_backend == "reference-cpu"
     assert record.from_memory_domain is MemoryDomainKind.DEVICE_SRAM
@@ -69,8 +69,8 @@ def test_runtime_transfer_evidence_report_passes() -> None:
     assert record.to_layout is LayoutKind.ROW_MAJOR
     assert record.planned_bytes == 16
     assert record.cost_model == "prototype_transfer_cost_profile"
-    assert record.source_value_record_id == "systolic_projection:projection"
-    assert record.consumer_input_id == "host_activation:projection"
+    assert record.source_value_record_id == "projection:projection"
+    assert record.consumer_input_id == "activation:projection"
     assert record.transfer_status == RUNTIME_TRANSFER_STATUS
     assert assert_runtime_transfer_evidence(report) is report
 
@@ -126,8 +126,8 @@ def test_runtime_transfer_evidence_rejects_forbidden_surface_names() -> None:
         RuntimeTransferEvidenceRecord(
             transfer_id="runtime_handle",
             tensor_name="projection",
-            source_operation="systolic_projection",
-            target_operation="host_activation",
+            source_operation="projection",
+            target_operation="activation",
             from_backend="systolic-sim",
             to_backend="reference-cpu",
             from_memory_domain=MemoryDomainKind.DEVICE_SRAM,
@@ -138,14 +138,14 @@ def test_runtime_transfer_evidence_rejects_forbidden_surface_names() -> None:
             estimated_latency_ns=20001.0,
             estimated_energy_pj=1600.0,
             cost_model="prototype_transfer_cost_profile",
-            source_value_record_id="systolic_projection:projection",
-            consumer_input_id="host_activation:projection",
+            source_value_record_id="projection:projection",
+            consumer_input_id="activation:projection",
         )
 
 
 def test_runtime_transfer_evidence_requires_derived_issues() -> None:
     report = build_current_runtime_transfer_evidence_report()
-    duplicate = replace(report.transfers[0], consumer_input_id="host_activation:duplicate")
+    duplicate = replace(report.transfers[0], consumer_input_id="activation:duplicate")
 
     with pytest.raises(ValueError, match="issues must be derived"):
         RuntimeTransferEvidenceReport(
@@ -158,7 +158,7 @@ def test_runtime_transfer_evidence_requires_derived_issues() -> None:
 
 def test_assert_runtime_transfer_evidence_raises_on_issues() -> None:
     report = build_current_runtime_transfer_evidence_report()
-    duplicate = replace(report.transfers[0], consumer_input_id="host_activation:duplicate")
+    duplicate = replace(report.transfers[0], consumer_input_id="activation:duplicate")
     failed = RuntimeTransferEvidenceReport(
         graph_name=report.graph_name,
         source_partition_plan_digest=report.source_partition_plan_digest,
