@@ -66,6 +66,10 @@ mixed candidate trace-step count evaluated by the gate invocation. Runtime
 Evidence Gate Matrix Coverage also audits the exact
 `runtime_layout_conversion_trace_index_mixed` artifact ID.
 
+`examples/runtime_layout_conversion_trace_replay_verifier.py` provides a
+serialized metadata replay check for this boundary, with schema
+`schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`.
+
 ## What It Proves
 
 - the planned layout transition is aligned to an observed producer-consumer

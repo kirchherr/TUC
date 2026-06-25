@@ -107,6 +107,13 @@ hardware-independent interface into capability-driven runtime planning.
   `runtime_mixed_backend_equivalence`, binding the trace index to the same graph,
   partition-plan digest, layout-conversion evidence digest, conversion count,
   mixed candidate trace-step count, and exact Matrix artifact ID.
+- Runtime Layout Conversion Trace Replay Verifier v0 replay-checks serialized
+  Layout Conversion Evidence and Trace Index reports by metadata digest, with
+  schema at
+  `schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`,
+  example `examples/runtime_layout_conversion_trace_replay_verifier.py`, and
+  deterministic golden evidence at
+  `tests/golden/runtime_layout_conversion_trace_replay_verifier/current_report.json`.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding

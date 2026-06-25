@@ -150,6 +150,9 @@ Current runtime surfaces:
   transition evidence to concrete producer and consumer Runtime Execution Trace
   steps without materializing a converter step, now required by Runtime Evidence
   Matrix and Runtime Evidence Gate for the mixed backend-equivalence proof slice.
+- Runtime Layout Conversion Trace Replay Verifier v0 replay-checking serialized
+  Layout Conversion Evidence and Trace Index reports by metadata digest without
+  re-running runtime execution or materializing converter steps.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
@@ -187,6 +190,7 @@ examples/runtime_allocation_receipt.py
 examples/runtime_allocation_reconciliation.py
 examples/runtime_memory_planning_gate.py
 examples/runtime_layout_conversion_trace_index.py
+examples/runtime_layout_conversion_trace_replay_verifier.py
 ```
 
 Key docs:
@@ -209,6 +213,7 @@ Key docs:
 - [Runtime Planning Explanation](docs/RUNTIME_PLANNING_EXPLANATION.md)
 - [Runtime Layout Conversion Evidence](docs/RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md)
 - [Runtime Layout Conversion Trace Index](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
+- [Runtime Layout Conversion Trace Replay Verifier](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -235,6 +240,7 @@ schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json
 schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json
 schemas/runtime_planning_explanation_report.v0.schema.json
 schemas/runtime_layout_conversion_trace_index_report.v0.schema.json
+schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json

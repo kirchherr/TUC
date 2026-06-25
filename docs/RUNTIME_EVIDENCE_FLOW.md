@@ -168,6 +168,12 @@ layout-conversion review aligned with execution order while preserving the
 `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`, and
 `examples/runtime_layout_conversion_trace_index.py`.
 
+`Runtime Layout Conversion Trace Replay Verifier` replay-checks serialized
+Layout Conversion Evidence and Trace Index reports by metadata digest only. See
+[RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md](RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md),
+`schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`, and
+`examples/runtime_layout_conversion_trace_replay_verifier.py`.
+
 `Runtime Evidence Replay Verifier` replays serialized Runtime Execution Evidence
 Bundle and Runtime Execution Output Closure reports by metadata digest only. See
 [RUNTIME_EVIDENCE_REPLAY_VERIFIER.md](RUNTIME_EVIDENCE_REPLAY_VERIFIER.md) and

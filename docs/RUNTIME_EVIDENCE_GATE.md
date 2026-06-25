@@ -11,7 +11,9 @@ Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
 Runtime Execution Output Closure evidence, Runtime Memory Planning Gate evidence,
 plus Source Intent Runtime Returns evidence for the frontend return boundary.
 The CI runtime evidence path also runs `examples/runtime_evidence_replay_verifier.py`
-as a companion replay check over serialized Bundle and Output Closure reports.
+as a companion replay check over serialized Bundle and Output Closure reports,
+and `examples/runtime_layout_conversion_trace_replay_verifier.py` as a companion
+replay check over serialized Layout Conversion Evidence and Trace Index reports.
 Source Intent Runtime Returns must also be bound to the curated
 Runtime Evidence Matrix graph that inventories the same frontend-originated
 fixture.
@@ -249,6 +251,12 @@ Runtime Evidence Replay Verifier schema:
 
 ```text
 schemas/runtime_evidence_replay_verifier_report.v0.schema.json
+```
+
+Runtime Layout Conversion Trace Replay Verifier schema:
+
+```text
+schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json
 ```
 
 Runtime Backend Equivalence schema:
