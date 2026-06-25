@@ -38,8 +38,9 @@ A graph is runtime-evidence complete only when it has:
 Additional evidence, such as `proof_report_golden`, `frontend_intake_golden`,
 `source_intent_return_semantics`, `source_intent_runtime_returns`,
 `backend_equivalence`, `backend_equivalence_portfolio`,
-`backend_equivalence_portfolio_policy`, `runtime_hs_ir_plan_alignment`, and
-`runtime_layout_conversion_evidence`, can be listed without changing default
+`backend_equivalence_portfolio_policy`, `runtime_hs_ir_plan_alignment`,
+`runtime_layout_conversion_evidence`, and
+`runtime_layout_conversion_trace_index`, can be listed without changing default
 full-runtime completeness.
 
 Each graph records its own `required_artifact_kinds`. Standard runtime proof
@@ -47,8 +48,9 @@ graphs use the full required list above. Backend-equivalence fixtures use the
 scoped requirement `backend_equivalence`, because their review artifact is a
 data-only equivalence report rather than a full proof-report/readiness/trace
 bundle. The mixed backend-equivalence fixture additionally requires
-`runtime_hs_ir_plan_alignment` and `runtime_layout_conversion_evidence`,
-because its HS-IR backend/layout decisions and planned layout transitions must
+`runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`, and
+`runtime_layout_conversion_trace_index`, because its HS-IR backend/layout
+decisions, planned layout transitions, and producer-consumer trace indexes must
 be bound to the accepted plan and observed trace before the mixed accelerator
 slice counts as gate evidence.
 The backend-equivalence portfolio uses the scoped requirement
@@ -84,7 +86,10 @@ slice.
 [Runtime Layout Conversion Evidence](RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md)
 report at `schemas/runtime_layout_conversion_evidence_report.v0.schema.json`.
 It is Runtime Evidence Gate-required Matrix evidence for the mixed
-backend-equivalence fixture.
+backend-equivalence fixture. `runtime_layout_conversion_trace_index` is backed
+by the schema-versioned [Runtime Layout Conversion Trace Index](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
+report at `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json` and is
+required as `runtime_layout_conversion_trace_index_mixed` for the same fixture.
 `execution_receipt` is backed by the schema-versioned
 [Runtime Execution Receipt](RUNTIME_EXECUTION_RECEIPT.md) report at
 `schemas/runtime_execution_receipt_report.v0.schema.json`.
@@ -116,8 +121,9 @@ The current matrix is complete across every accepted graph fixture:
 - `runtime_backend_equivalence`, `runtime_vector_backend_equivalence`, and
   `runtime_mixed_backend_equivalence` are complete under their scoped
   backend-equivalence evidence requirements. The mixed fixture also requires
-  `runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`, and
-  `runtime_layout_conversion_evidence` evidence.
+  `runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`,
+  `runtime_layout_conversion_evidence`, and
+  `runtime_layout_conversion_trace_index` evidence.
 - `runtime_backend_equivalence_portfolio` is complete under its scoped
   `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` evidence requirements, inventorying
@@ -138,12 +144,14 @@ to remain present with the `runtime_backend_equivalence` source boundary and
 count as passing gate evidence; the gate binds each checked equivalence report
 to its matrix graph by graph ID and exact artifact ID. The mixed
 backend-equivalence graph must additionally keep the
-`runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`, and
-`runtime_layout_conversion_evidence` artifact kinds with exact
-`runtime_planning_explanation_mixed`, `runtime_hs_ir_plan_alignment_mixed`, and
-`runtime_layout_conversion_evidence_mixed` artifact IDs before its planning
-explanation, HS-IR alignment, and layout-conversion reports can count as
-passing gate evidence.
+`runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`,
+`runtime_layout_conversion_evidence`, and
+`runtime_layout_conversion_trace_index` artifact kinds with exact
+`runtime_planning_explanation_mixed`, `runtime_hs_ir_plan_alignment_mixed`,
+`runtime_layout_conversion_evidence_mixed`, and
+`runtime_layout_conversion_trace_index_mixed` artifact IDs before its planning
+explanation, HS-IR alignment, layout-conversion, and trace-index reports can
+count as passing gate evidence.
 Separately, the gate also requires the `runtime_backend_equivalence_portfolio`
 graph to remain present with the
 `runtime_backend_equivalence` source boundary and
@@ -161,8 +169,9 @@ remain present with the `source_intent_metadata` source boundary and the
 kinds before Source Intent Runtime Returns can count as passing gate evidence.
 
 [Runtime Evidence Gate Matrix Coverage](RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
-serializes the gate-required backend-equivalence, HS-IR alignment, and
-portfolio Matrix bindings as a deterministic JSON audit, so reviewers can
+serializes the gate-required backend-equivalence, HS-IR alignment,
+layout-conversion, trace-index, and portfolio Matrix bindings as a
+deterministic JSON audit, so reviewers can
 inspect the exact graph and artifact IDs that the gate accepts.
 
 ## Security Boundary

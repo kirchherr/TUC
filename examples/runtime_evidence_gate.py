@@ -1,5 +1,7 @@
 """Run the CI-facing Runtime Evidence Gate."""
 
+from hashlib import sha256
+
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
 from examples.runtime_execution_receipt import (
     build_execution_receipt_evidence_reports,
@@ -12,6 +14,9 @@ from examples.runtime_layout_conversion_evidence import (
 )
 from examples.runtime_layout_conversion_gate_readiness import (
     build_current_runtime_layout_conversion_gate_readiness_report,
+)
+from examples.runtime_layout_conversion_trace_index import (
+    build_current_runtime_layout_conversion_trace_index_report,
 )
 from examples.runtime_memory_planning_gate import (
     build_gate_report as build_memory_planning_gate_report,
@@ -43,6 +48,7 @@ from tuc import (
     RuntimeBackendEquivalencePortfolioReport,
     RuntimeBackendEquivalencePortfolioSlice,
     RuntimeBackendEquivalenceReport,
+    RuntimeBackendEquivalenceRun,
     RuntimeEvidenceGateMatrixBinding,
     RuntimeEvidenceGateMatrixCoverageReport,
     RuntimeEvidenceGraph,
@@ -77,6 +83,7 @@ from tuc.runtime.layout_conversion_digest_binding import (
 from tuc.runtime.layout_conversion_evidence import (
     RuntimeLayoutConversionEvidenceReport,
     assert_runtime_layout_conversion_evidence,
+    dump_runtime_layout_conversion_evidence_report,
 )
 from tuc.runtime.layout_conversion_gate_promotion_policy import (
     RuntimeLayoutConversionGatePromotionPolicyReport,
@@ -86,6 +93,10 @@ from tuc.runtime.layout_conversion_gate_promotion_policy import (
 from tuc.runtime.layout_conversion_gate_readiness import (
     RuntimeLayoutConversionGateReadinessReport,
     assert_runtime_layout_conversion_gate_readiness,
+)
+from tuc.runtime.layout_conversion_trace_index import (
+    RuntimeLayoutConversionTraceIndexReport,
+    assert_runtime_layout_conversion_trace_index,
 )
 
 SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID = "source_intent_return_mlp"
@@ -146,17 +157,22 @@ RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID = (
 RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID = (
     "runtime_layout_conversion_evidence_mixed"
 )
+RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID = (
+    "runtime_layout_conversion_trace_index_mixed"
+)
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS = (
     "backend_equivalence",
     "runtime_planning_explanation",
     "runtime_hs_ir_plan_alignment",
     "runtime_layout_conversion_evidence",
+    "runtime_layout_conversion_trace_index",
 )
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS = (
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
     RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID,
 )
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
 RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "mixed_accelerators"
@@ -304,6 +320,9 @@ def build_gate_report(
     runtime_layout_conversion_evidence_report: (
         RuntimeLayoutConversionEvidenceReport | None
     ) = None,
+    runtime_layout_conversion_trace_index_report: (
+        RuntimeLayoutConversionTraceIndexReport | None
+    ) = None,
     mixed_tensor_store_report: RuntimeTensorStoreEvidenceReport | None = None,
     runtime_layout_conversion_digest_binding_report: (
         RuntimeLayoutConversionDigestBindingReport | None
@@ -385,6 +404,11 @@ def build_gate_report(
         build_current_runtime_layout_conversion_evidence_report()
         if runtime_layout_conversion_evidence_report is None
         else runtime_layout_conversion_evidence_report
+    )
+    runtime_layout_conversion_trace_index = (
+        build_current_runtime_layout_conversion_trace_index_report()
+        if runtime_layout_conversion_trace_index_report is None
+        else runtime_layout_conversion_trace_index_report
     )
     mixed_tensor_store = (
         build_mixed_tensor_store_evidence_report()
@@ -597,6 +621,18 @@ def build_gate_report(
         matrix,
         runtime_layout_conversion_evidence,
     )
+    _assert_runtime_layout_conversion_trace_index_passed(
+        runtime_layout_conversion_trace_index,
+    )
+    _assert_runtime_layout_conversion_trace_index_bound(
+        runtime_layout_conversion_trace_index,
+        runtime_layout_conversion_evidence,
+        mixed_backend_equivalence,
+    )
+    _assert_runtime_layout_conversion_trace_index_matrix_covered(
+        matrix,
+        runtime_layout_conversion_trace_index,
+    )
     _assert_mixed_tensor_store_passed(mixed_tensor_store)
     _assert_runtime_layout_conversion_digest_binding_passed(
         runtime_layout_conversion_digest_binding,
@@ -684,6 +720,7 @@ def build_gate_report(
         mixed_runtime_planning_explanation,
         runtime_hs_ir_plan_alignment,
         runtime_layout_conversion_evidence,
+        runtime_layout_conversion_trace_index,
         runtime_layout_conversion_digest_binding,
         runtime_layout_conversion_gate_readiness,
         runtime_layout_conversion_gate_promotion_policy,
@@ -1213,6 +1250,137 @@ def _assert_runtime_layout_conversion_evidence_matrix_covered(
     if artifact_ids != RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS:
         raise RuntimeEvidenceGateError(
             "runtime layout conversion evidence matrix coverage failed: "
+            "artifact_id_mismatch"
+        )
+
+
+def _assert_runtime_layout_conversion_trace_index_passed(
+    report: RuntimeLayoutConversionTraceIndexReport,
+) -> None:
+    try:
+        assert_runtime_layout_conversion_trace_index(report)
+    except (AssertionError, TypeError, ValueError) as exc:
+        raise RuntimeEvidenceGateError(
+            f"runtime layout conversion trace index failed: {exc}"
+        ) from exc
+    if report.graph_name != RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: graph_name_mismatch"
+        )
+    if report.conversion_count < 1 or report.trace_step_count < 1:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: records_missing"
+        )
+    if report.raw_value_policy != "omitted_by_policy":
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "raw_value_policy_mismatch"
+        )
+    if report.execution_policy != "does_not_execute_conversions":
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "execution_policy_mismatch"
+        )
+    if report.trace_materialization_policy != (
+        "conversion_not_materialized_as_runtime_step"
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "trace_materialization_policy_mismatch"
+        )
+
+
+def _assert_runtime_layout_conversion_trace_index_bound(
+    trace_index: RuntimeLayoutConversionTraceIndexReport,
+    layout_conversion: RuntimeLayoutConversionEvidenceReport,
+    mixed_equivalence: RuntimeBackendEquivalenceReport,
+) -> None:
+    if trace_index.graph_name != layout_conversion.graph_name:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "layout_conversion_graph_mismatch"
+        )
+    if trace_index.graph_name != mixed_equivalence.graph_name:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "equivalence_graph_mismatch"
+        )
+    if trace_index.conversion_count != len(layout_conversion.conversions):
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "conversion_count_mismatch"
+        )
+    if (
+        trace_index.source_partition_plan_digest
+        != layout_conversion.source_partition_plan_digest
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "partition_plan_digest_mismatch"
+        )
+    expected_evidence_digest = _digest_text(
+        dump_runtime_layout_conversion_evidence_report(layout_conversion)
+    )
+    if (
+        trace_index.source_layout_conversion_evidence_digest
+        != expected_evidence_digest
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "source_evidence_digest_mismatch"
+        )
+    candidate_run = _runtime_backend_equivalence_run(
+        mixed_equivalence,
+        RUNTIME_MIXED_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID,
+    )
+    if trace_index.trace_step_count != candidate_run.trace_step_count:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index binding failed: "
+            "trace_step_count_mismatch"
+        )
+
+
+def _assert_runtime_layout_conversion_trace_index_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+    report: RuntimeLayoutConversionTraceIndexReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(matrix, report.graph_name)
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index matrix coverage failed: graph missing"
+        )
+    if graph.graph_family != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index matrix coverage failed: "
+            "graph_family_mismatch"
+        )
+    if graph.source_boundary != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index matrix coverage failed: "
+            "source_boundary_mismatch"
+        )
+    if (
+        graph.required_artifact_kinds
+        != RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index matrix coverage failed: "
+            "required_artifacts_mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index matrix coverage failed: "
+            "runtime evidence incomplete"
+        )
+    artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind
+        in RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS
+    )
+    if artifact_ids != RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS:
+        raise RuntimeEvidenceGateError(
+            "runtime layout conversion trace index matrix coverage failed: "
             "artifact_id_mismatch"
         )
 
@@ -2061,6 +2229,22 @@ def _assert_source_intent_runtime_returns_matrix_covered(
         )
 
 
+def _runtime_backend_equivalence_run(
+    report: RuntimeBackendEquivalenceReport,
+    run_id: str,
+) -> RuntimeBackendEquivalenceRun:
+    for run in report.runs:
+        if run.run_id == run_id:
+            return run
+    raise RuntimeEvidenceGateError(
+        f"runtime backend equivalence run missing: {run_id}"
+    )
+
+
+def _digest_text(text: str) -> str:
+    return f"sha256:{sha256(text.encode('utf-8')).hexdigest()}"
+
+
 def _find_runtime_evidence_graph(
     matrix: RuntimeEvidenceMatrixReport,
     graph_id: str,
@@ -2081,6 +2265,7 @@ def _render_gate_report(
     mixed_runtime_planning_explanation: RuntimePlanningExplanationReport,
     runtime_hs_ir_plan_alignment: RuntimeHsIrPlanAlignmentReport,
     runtime_layout_conversion_evidence: RuntimeLayoutConversionEvidenceReport,
+    runtime_layout_conversion_trace_index: RuntimeLayoutConversionTraceIndexReport,
     runtime_layout_conversion_digest_binding: RuntimeLayoutConversionDigestBindingReport,
     runtime_layout_conversion_gate_readiness: RuntimeLayoutConversionGateReadinessReport,
     runtime_layout_conversion_gate_promotion_policy: (
@@ -2238,6 +2423,25 @@ def _render_gate_report(
     lines.append(
         "  runtime_layout_conversion_planned_bytes = "
         f'"{runtime_layout_conversion_evidence.total_planned_bytes}"'
+    )
+    lines.append('  runtime_layout_conversion_trace_index = "passed"')
+    lines.append('  runtime_layout_conversion_trace_index_binding = "verified"')
+    lines.append('  runtime_layout_conversion_trace_index_matrix = "covered"')
+    lines.append(
+        "  runtime_layout_conversion_trace_index_matrix_artifact = "
+        f'"{RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID}"'
+    )
+    lines.append(
+        "  runtime_layout_conversion_trace_index_records = "
+        f'"{runtime_layout_conversion_trace_index.conversion_count}"'
+    )
+    lines.append(
+        "  runtime_layout_conversion_trace_index_trace_steps = "
+        f'"{runtime_layout_conversion_trace_index.trace_step_count}"'
+    )
+    lines.append(
+        "  runtime_layout_conversion_trace_index_materialization = "
+        f'"{runtime_layout_conversion_trace_index.trace_materialization_policy}"'
     )
     lines.append('  runtime_layout_conversion_digest_binding = "passed"')
     lines.append('  runtime_layout_conversion_digest_binding_consistency = "verified"')

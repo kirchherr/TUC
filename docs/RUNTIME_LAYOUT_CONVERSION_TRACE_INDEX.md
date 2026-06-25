@@ -52,6 +52,20 @@ normalize step 1
   consumes projection
 ```
 
+## Matrix And Gate Binding
+
+The current Runtime Evidence Matrix requires this report as
+`runtime_layout_conversion_trace_index_mixed` on the
+`runtime_mixed_backend_equivalence` graph, alongside Backend Equivalence,
+Runtime Planning Explanation, Runtime HS-IR Plan Alignment, and Runtime Layout
+Conversion Evidence.
+
+Runtime Evidence Gate accepts the report only when it is bound to the same graph,
+partition-plan digest, layout-conversion evidence digest, conversion count, and
+mixed candidate trace-step count evaluated by the gate invocation. Runtime
+Evidence Gate Matrix Coverage also audits the exact
+`runtime_layout_conversion_trace_index_mixed` artifact ID.
+
 ## What It Proves
 
 - the planned layout transition is aligned to an observed producer-consumer

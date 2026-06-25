@@ -148,7 +148,8 @@ Current runtime surfaces:
   Evidence Gate for the systolic and mixed backend-equivalence slices.
 - Runtime Layout Conversion Trace Index v0 binding planned `blocked -> row_major`
   transition evidence to concrete producer and consumer Runtime Execution Trace
-  steps without materializing a converter step.
+  steps without materializing a converter step, now required by Runtime Evidence
+  Matrix and Runtime Evidence Gate for the mixed backend-equivalence proof slice.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 

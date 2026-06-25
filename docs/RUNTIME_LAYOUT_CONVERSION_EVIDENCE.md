@@ -59,7 +59,8 @@ Runtime Evidence Matrix v0 requires this report as
 `runtime_layout_conversion_evidence_mixed` on the
 `runtime_mixed_backend_equivalence` graph. The mixed graph's required artifact
 kinds are now `backend_equivalence`, `runtime_planning_explanation`,
-`runtime_hs_ir_plan_alignment`, and `runtime_layout_conversion_evidence`.
+`runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`, and
+`runtime_layout_conversion_trace_index`.
 
 [Runtime Layout Conversion Gate Readiness](RUNTIME_LAYOUT_CONVERSION_GATE_READINESS.md)
 records that the current promotion prerequisites are ready. The final readiness

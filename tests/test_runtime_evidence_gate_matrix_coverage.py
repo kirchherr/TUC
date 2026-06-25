@@ -83,6 +83,7 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
         "runtime_planning_explanation",
         "runtime_hs_ir_plan_alignment",
         "runtime_layout_conversion_evidence",
+        "runtime_layout_conversion_trace_index",
     )
     assert mixed.expected_artifact_ids == (
         RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS
@@ -139,6 +140,7 @@ def test_runtime_evidence_gate_matrix_coverage_example_runs() -> None:
     assert "runtime_planning_explanation_mixed" in completed.stdout
     assert "runtime_hs_ir_plan_alignment_mixed" in completed.stdout
     assert "runtime_layout_conversion_evidence_mixed" in completed.stdout
+    assert "runtime_layout_conversion_trace_index_mixed" in completed.stdout
     assert "runtime_backend_equivalence_portfolio_policy" in completed.stdout
     assert "runtime_buffer_lifetime_current" in completed.stdout
     assert "runtime_allocation_request_manifest_current" in completed.stdout
@@ -189,6 +191,7 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_artifact_id() -> No
         "runtime_planning_explanation_mixed",
         "runtime_hs_ir_plan_alignment_mixed",
         "runtime_layout_conversion_evidence_mixed",
+        "runtime_layout_conversion_trace_index_mixed",
     )
 
 
@@ -337,6 +340,7 @@ def test_runtime_evidence_gate_matrix_coverage_schema_matches_contract() -> None
     assert "runtime_planning_explanation" in required_kind_enum
     assert "runtime_memory_budget" in required_kind_enum
     assert "runtime_layout_conversion_evidence" in required_kind_enum
+    assert "runtime_layout_conversion_trace_index" in required_kind_enum
     assert "runtime_allocation_request_manifest" in required_kind_enum
     assert "runtime_memory_planning" in schema["$defs"]["binding"][
         "properties"

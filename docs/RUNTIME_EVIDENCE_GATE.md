@@ -4,7 +4,7 @@ Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
 Evidence, Runtime Backend Equivalence and Backend Equivalence Portfolio
 evidence, Runtime Planning Explanation evidence, Runtime HS-IR Plan Alignment
-evidence, Runtime Input Manifest
+evidence, Runtime Layout Conversion Trace Index evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
@@ -27,6 +27,7 @@ It runs:
 - `build_mixed_backend_equivalence_report()`
 - `examples/runtime_hs_ir_plan_alignment.py`
 - `examples/runtime_layout_conversion_evidence.py`
+- `examples/runtime_layout_conversion_trace_index.py`
 - `examples/runtime_mixed_tensor_store_evidence.py`
 - `examples/runtime_layout_conversion_digest_binding.py`
 - `examples/runtime_layout_conversion_gate_readiness.py`
@@ -54,8 +55,8 @@ The gate passes only when:
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
   entries, with the systolic and mixed entries requiring
   `runtime_planning_explanation`, and the mixed entry also requiring
-  `runtime_hs_ir_plan_alignment` and `runtime_layout_conversion_evidence`, plus
-  exact artifact-ID bindings
+  `runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`, and
+  `runtime_layout_conversion_trace_index`, plus exact artifact-ID bindings
 - the Runtime Evidence Matrix includes the backend-equivalence portfolio graph
   entry with scoped `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` requirements and exact artifact-ID
@@ -64,7 +65,7 @@ The gate passes only when:
   on the mixed backend-equivalence graph with exact artifact-ID binding
 - Runtime Evidence Gate Matrix Coverage passes, proving the exact
   backend-equivalence, runtime-planning-explanation, HS-IR alignment,
-  layout-conversion, portfolio, and memory-planning Matrix graph/artifact
+  layout-conversion, trace-index, portfolio, and memory-planning Matrix graph/artifact
   bindings are present in one deterministic audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
@@ -128,6 +129,15 @@ The gate passes only when:
 - Runtime Layout Conversion Evidence matrix coverage passes, proving the report
   is required by the Runtime Evidence Matrix with the exact
   `runtime_layout_conversion_evidence_mixed` artifact ID
+- Runtime Layout Conversion Trace Index passes for the mixed accelerator proof
+  slice
+- Runtime Layout Conversion Trace Index binding passes, proving the trace index
+  is tied to the same graph, partition-plan digest, layout-conversion evidence
+  digest, conversion count, and mixed candidate trace-step count evaluated by
+  this gate invocation
+- Runtime Layout Conversion Trace Index matrix coverage passes, proving the
+  report is required by the Runtime Evidence Matrix with the exact
+  `runtime_layout_conversion_trace_index_mixed` artifact ID
 - Runtime Layout Conversion Digest Binding passes, proving the layout-conversion
   metadata digest is bound to HS-IR alignment metadata and Mixed Tensor Store
   metadata
@@ -271,6 +281,12 @@ Runtime Planning Explanation schema:
 schemas/runtime_planning_explanation_report.v0.schema.json
 ```
 
+Runtime Layout Conversion Trace Index schema:
+
+```text
+schemas/runtime_layout_conversion_trace_index_report.v0.schema.json
+```
+
 Runtime Evidence Gate Matrix Coverage schema:
 
 ```text
@@ -352,6 +368,12 @@ It composes bounded in-repository checks:
 - a bounded Runtime HS-IR Plan Alignment matrix lookup that verifies graph
   family, source boundary, required artifact kinds, completeness, and exact
   `runtime_hs_ir_plan_alignment` artifact coverage
+- data-only Runtime Layout Conversion Trace Index metadata binding planned
+  conversion evidence to producer and consumer trace-step indexes without
+  materializing a converter step
+- bounded Runtime Layout Conversion Trace Index checks that compare graph name,
+  conversion count, partition-plan digest, source evidence digest, trace-step
+  count, raw-value policy, execution policy, and Matrix artifact binding
 - data-only Runtime Backend Equivalence Portfolio metadata aggregating the
   systolic, vector, and mixed accelerator equivalence slices with raw tensor
   values omitted by policy

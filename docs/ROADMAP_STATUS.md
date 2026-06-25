@@ -102,6 +102,11 @@ hardware-independent interface into capability-driven runtime planning.
   `examples/runtime_layout_conversion_trace_index.py`, and deterministic golden
   evidence at
   `tests/golden/runtime_layout_conversion_trace_index/current_report.json`.
+- Runtime Evidence Matrix and Runtime Evidence Gate now require
+  `runtime_layout_conversion_trace_index_mixed` for
+  `runtime_mixed_backend_equivalence`, binding the trace index to the same graph,
+  partition-plan digest, layout-conversion evidence digest, conversion count,
+  mixed candidate trace-step count, and exact Matrix artifact ID.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding

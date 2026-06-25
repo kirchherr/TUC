@@ -16,6 +16,7 @@ from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
     RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID,
     RUNTIME_MEMORY_PLANNING_GRAPH_ID,
     RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS,
     RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS,
@@ -39,6 +40,9 @@ from examples.runtime_layout_conversion_digest_binding import (
 )
 from examples.runtime_layout_conversion_evidence import (
     build_current_runtime_layout_conversion_evidence_report,
+)
+from examples.runtime_layout_conversion_trace_index import (
+    build_current_runtime_layout_conversion_trace_index_report,
 )
 from examples.runtime_mixed_backend_equivalence import (
     build_mixed_backend_equivalence_report,
@@ -211,6 +215,17 @@ def test_runtime_evidence_gate_example_runs() -> None:
     ) in completed.stdout
     assert 'runtime_layout_conversion_count = "1"' in completed.stdout
     assert 'runtime_layout_conversion_planned_bytes = "24"' in completed.stdout
+    assert 'runtime_layout_conversion_trace_index = "passed"' in completed.stdout
+    assert (
+        "runtime_layout_conversion_trace_index_matrix_artifact = "
+        f'"{RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_layout_conversion_trace_index_records = "1"' in completed.stdout
+    assert 'runtime_layout_conversion_trace_index_trace_steps = "4"' in completed.stdout
+    assert (
+        'runtime_layout_conversion_trace_index_materialization = "'
+        'conversion_not_materialized_as_runtime_step"'
+    ) in completed.stdout
     assert 'runtime_layout_conversion_digest_binding = "passed"' in completed.stdout
     assert (
         'runtime_layout_conversion_digest_binding_consistency = "verified"'
@@ -649,6 +664,23 @@ def test_runtime_evidence_gate_rejects_unbound_layout_conversion_evidence() -> N
         match="layout conversion evidence binding",
     ):
         build_gate_report(runtime_layout_conversion_evidence_report=unbound)
+
+
+def test_runtime_evidence_gate_rejects_unbound_layout_conversion_trace_index() -> None:
+    report = build_current_runtime_layout_conversion_trace_index_report()
+    forged = replace(
+        report,
+        source_layout_conversion_evidence_digest=(
+            "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        ),
+    )
+
+    assert forged.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="layout conversion trace index binding failed",
+    ):
+        build_gate_report(runtime_layout_conversion_trace_index_report=forged)
 
 
 def test_runtime_evidence_gate_rejects_unbound_layout_conversion_digest_binding() -> None:
