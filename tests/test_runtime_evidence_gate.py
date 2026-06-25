@@ -15,6 +15,7 @@ from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
+    RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING_MATRIX_ARTIFACT_ID,
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
     RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID,
@@ -27,6 +28,7 @@ from examples.runtime_evidence_gate import (
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
     RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID,
+    RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER_MATRIX_ARTIFACT_ID,
     RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
     RuntimeEvidenceGateError,
@@ -170,6 +172,23 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert (
         'runtime_transfer_trace_index_materialization = "'
         'transfer_not_materialized_as_runtime_step"'
+    ) in completed.stdout
+    assert 'runtime_transfer_trace_replay_verifier = "passed"' in completed.stdout
+    assert 'runtime_transfer_trace_replay_binding = "verified"' in completed.stdout
+    assert 'runtime_transfer_trace_replay_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_transfer_trace_replay_matrix_artifact = "
+        f'"{RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_transfer_trace_replay_checks = "6"' in completed.stdout
+    assert 'runtime_backend_equivalence_transfer_binding = "passed"' in completed.stdout
+    assert (
+        "runtime_backend_equivalence_transfer_binding_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_backend_equivalence_transfer_binding_checks = "8"' in completed.stdout
+    assert (
+        'runtime_backend_equivalence_transfer_binding_candidate_backends = "2"'
     ) in completed.stdout
     assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_vector_backend_equivalence_binding = "verified"' in completed.stdout

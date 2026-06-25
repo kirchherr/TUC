@@ -127,6 +127,11 @@ hardware-independent interface into capability-driven runtime planning.
   `examples/runtime_backend_equivalence_transfer_binding.py`, and deterministic
   golden evidence at
   `tests/golden/runtime_backend_equivalence_transfer_binding/current_report.json`.
+- Runtime Evidence Matrix and Runtime Evidence Gate now require both
+  `runtime_transfer_trace_replay_verifier_systolic` and
+  `runtime_backend_equivalence_transfer_binding_systolic` for
+  `runtime_backend_equivalence`, closing the graph-scoped chain from systolic
+  terminal-output equivalence to transfer-boundary replay evidence.
 - [Runtime Layout Conversion Trace Index](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
   now binds the mixed slice's planned `blocked -> row_major` conversion to
   producer and consumer Runtime Execution Trace step indexes, with schema at

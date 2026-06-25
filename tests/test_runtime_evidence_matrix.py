@@ -50,6 +50,8 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
         "backend_equivalence",
         "runtime_planning_explanation",
         "runtime_transfer_trace_index",
+        "runtime_transfer_trace_replay_verifier",
+        "runtime_backend_equivalence_transfer_binding",
     )
     assert graphs["runtime_vector_backend_equivalence"].required_artifact_kinds == (
         "backend_equivalence",
@@ -91,6 +93,14 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     )
     assert (
         "runtime_transfer_trace_index"
+        in graphs["runtime_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_transfer_trace_replay_verifier"
+        in graphs["runtime_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_backend_equivalence_transfer_binding"
         in graphs["runtime_backend_equivalence"].present_artifact_kinds
     )
     assert (
@@ -191,6 +201,8 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert '"backend_equivalence"' in completed.stdout
     assert '"runtime_planning_explanation"' in completed.stdout
     assert '"runtime_transfer_trace_index"' in completed.stdout
+    assert '"runtime_transfer_trace_replay_verifier"' in completed.stdout
+    assert '"runtime_backend_equivalence_transfer_binding"' in completed.stdout
     assert '"runtime_hs_ir_plan_alignment"' in completed.stdout
     assert '"runtime_layout_conversion_evidence"' in completed.stdout
     assert '"runtime_layout_conversion_trace_index"' in completed.stdout

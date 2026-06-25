@@ -8,7 +8,9 @@
       "expected_artifact_ids": [
         "runtime_backend_equivalence_systolic",
         "runtime_planning_explanation_systolic",
-        "runtime_transfer_trace_index_systolic"
+        "runtime_transfer_trace_index_systolic",
+        "runtime_transfer_trace_replay_verifier_systolic",
+        "runtime_backend_equivalence_transfer_binding_systolic"
       ],
       "graph_family": "backend_equivalence",
       "graph_id": "runtime_backend_equivalence",
@@ -16,12 +18,16 @@
       "observed_artifact_ids": [
         "runtime_backend_equivalence_systolic",
         "runtime_planning_explanation_systolic",
-        "runtime_transfer_trace_index_systolic"
+        "runtime_transfer_trace_index_systolic",
+        "runtime_transfer_trace_replay_verifier_systolic",
+        "runtime_backend_equivalence_transfer_binding_systolic"
       ],
       "required_artifact_kinds": [
         "backend_equivalence",
         "runtime_planning_explanation",
-        "runtime_transfer_trace_index"
+        "runtime_transfer_trace_index",
+        "runtime_transfer_trace_replay_verifier",
+        "runtime_backend_equivalence_transfer_binding"
       ],
       "source_boundary": "runtime_backend_equivalence"
     },

@@ -274,12 +274,15 @@ Completed evidence:
 - Runtime Transfer Trace Replay Verifier v0
   (`examples/runtime_transfer_trace_replay_verifier.py`) replay-checks
   serialized Transfer Evidence and Trace Index reports by metadata digest
-  without re-running runtime execution or materializing transfer steps.
+  without re-running runtime execution or materializing transfer steps; it is
+  now required by Runtime Evidence Matrix and Runtime Evidence Gate for the
+  systolic backend-equivalence proof slice.
 - Runtime Backend Equivalence Transfer Binding v0
   (`examples/runtime_backend_equivalence_transfer_binding.py`) binds the
   systolic backend-equivalence report to verified transfer trace replay by
   metadata digest, so terminal-output equivalence and transfer-boundary
-  evidence cannot drift apart for the systolic proof slice.
+  evidence cannot drift apart; it is now required by Runtime Evidence Matrix
+  and Runtime Evidence Gate for the systolic proof slice.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

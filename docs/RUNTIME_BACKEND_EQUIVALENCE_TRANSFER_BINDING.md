@@ -38,6 +38,13 @@ Its deterministic golden report is:
 tests/golden/runtime_backend_equivalence_transfer_binding/current_report.json
 ```
 
+## Gate Integration
+
+Runtime Evidence Matrix and Runtime Evidence Gate now require this report as
+`runtime_backend_equivalence_transfer_binding_systolic` for the
+`runtime_backend_equivalence` graph, together with
+`runtime_transfer_trace_replay_verifier_systolic`.
+
 ## Checks
 
 The report binds:

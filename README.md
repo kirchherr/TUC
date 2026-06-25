@@ -155,10 +155,12 @@ Current runtime surfaces:
   Runtime Evidence Gate for the systolic backend-equivalence proof slice.
 - Runtime Transfer Trace Replay Verifier v0 replay-checking serialized Transfer
   Evidence and Transfer Trace Index reports by metadata digest without rerunning
-  runtime execution or materializing transfer steps.
+  runtime execution or materializing transfer steps, now required by Runtime
+  Evidence Matrix and Runtime Evidence Gate for the systolic proof slice.
 - Runtime Backend Equivalence Transfer Binding v0 binding systolic backend
   equivalence to verified transfer trace replay by metadata digest, proving the
-  same graph carries both terminal semantics and transfer-boundary evidence.
+  same graph carries both terminal semantics and transfer-boundary evidence;
+  now required by Runtime Evidence Matrix and Runtime Evidence Gate.
 - Runtime Layout Conversion Trace Index v0 binding planned `blocked -> row_major`
   transition evidence to concrete producer and consumer Runtime Execution Trace
   steps without materializing a converter step, now required by Runtime Evidence

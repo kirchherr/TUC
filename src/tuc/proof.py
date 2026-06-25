@@ -312,6 +312,8 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "backend_equivalence",
     "runtime_planning_explanation",
     "runtime_transfer_trace_index",
+    "runtime_transfer_trace_replay_verifier",
+    "runtime_backend_equivalence_transfer_binding",
     "backend_equivalence_portfolio",
     "backend_equivalence_portfolio_policy",
     "runtime_hs_ir_plan_alignment",
@@ -1432,11 +1434,21 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "runtime_transfer_trace_index",
                         "runtime_transfer_trace_index_systolic",
                     ),
+                    _runtime_evidence_artifact(
+                        "runtime_transfer_trace_replay_verifier",
+                        "runtime_transfer_trace_replay_verifier_systolic",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_backend_equivalence_transfer_binding",
+                        "runtime_backend_equivalence_transfer_binding_systolic",
+                    ),
                 ),
                 required_artifact_kinds=(
                     "backend_equivalence",
                     "runtime_planning_explanation",
                     "runtime_transfer_trace_index",
+                    "runtime_transfer_trace_replay_verifier",
+                    "runtime_backend_equivalence_transfer_binding",
                 ),
             ),
             RuntimeEvidenceGraph(

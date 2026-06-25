@@ -83,6 +83,8 @@
         "backend_equivalence",
         "runtime_planning_explanation",
         "runtime_transfer_trace_index",
+        "runtime_transfer_trace_replay_verifier",
+        "runtime_backend_equivalence_transfer_binding",
         "backend_equivalence_portfolio",
         "backend_equivalence_portfolio_policy",
         "runtime_hs_ir_plan_alignment",

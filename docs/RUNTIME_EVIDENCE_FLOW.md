@@ -115,6 +115,11 @@ movement bytes. Runtime Evidence Gate binds it to both the systolic fallback
 backend-equivalence candidate plan and the mixed no-fallback accelerator
 candidate plan by exact Matrix artifact IDs.
 
+`Runtime Transfer Trace Replay Verifier` and `Runtime Backend Equivalence
+Transfer Binding` are required for the systolic backend-equivalence graph. They
+prove, by metadata digest only, that terminal-output equivalence and the planned
+transfer boundary evidence were reviewed together.
+
 ## What Is Never Serialized
 
 Runtime evidence does not serialize:

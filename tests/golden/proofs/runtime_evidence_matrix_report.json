@@ -613,6 +613,16 @@
           "artifact_id": "runtime_transfer_trace_index_systolic",
           "artifact_kind": "runtime_transfer_trace_index",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "runtime_transfer_trace_replay_verifier_systolic",
+          "artifact_kind": "runtime_transfer_trace_replay_verifier",
+          "artifact_status": "present"
+        },
+        {
+          "artifact_id": "runtime_backend_equivalence_transfer_binding_systolic",
+          "artifact_kind": "runtime_backend_equivalence_transfer_binding",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "backend_equivalence",
@@ -621,7 +631,9 @@
       "required_artifact_kinds": [
         "backend_equivalence",
         "runtime_planning_explanation",
-        "runtime_transfer_trace_index"
+        "runtime_transfer_trace_index",
+        "runtime_transfer_trace_replay_verifier",
+        "runtime_backend_equivalence_transfer_binding"
       ],
       "runtime_evidence_complete": true,
       "source_boundary": "runtime_backend_equivalence"

@@ -88,6 +88,8 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "backend_equivalence",
         "runtime_planning_explanation",
         "runtime_transfer_trace_index",
+        "runtime_transfer_trace_replay_verifier",
+        "runtime_backend_equivalence_transfer_binding",
     ]
     assert graphs["runtime_vector_backend_equivalence"]["required_artifact_kinds"] == [
         "backend_equivalence"
@@ -101,6 +103,16 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "runtime_layout_conversion_trace_replay_verifier",
         "runtime_backend_equivalence_layout_binding",
     ]
+    assert {
+        artifact["artifact_kind"]
+        for artifact in graphs["runtime_backend_equivalence"]["artifacts"]
+    } == {
+        "backend_equivalence",
+        "runtime_planning_explanation",
+        "runtime_transfer_trace_index",
+        "runtime_transfer_trace_replay_verifier",
+        "runtime_backend_equivalence_transfer_binding",
+    }
     assert {
         artifact["artifact_kind"]
         for artifact in graphs["runtime_mixed_backend_equivalence"]["artifacts"]

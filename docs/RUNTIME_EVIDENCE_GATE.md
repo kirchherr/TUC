@@ -4,8 +4,9 @@ Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
 Evidence, Runtime Backend Equivalence and Backend Equivalence Portfolio
 evidence, Runtime Planning Explanation evidence, Runtime Transfer Trace Index
-evidence, Runtime HS-IR Plan Alignment evidence, Runtime Layout Conversion
-Trace Index evidence, Runtime Input Manifest
+evidence, Runtime Transfer Trace Replay Verifier evidence, Runtime Backend
+Equivalence Transfer Binding evidence, Runtime HS-IR Plan Alignment evidence,
+Runtime Layout Conversion Trace Index evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
@@ -13,7 +14,11 @@ Runtime Execution Output Closure evidence, Runtime Memory Planning Gate evidence
 plus Source Intent Runtime Returns evidence for the frontend return boundary.
 The CI runtime evidence path also runs `examples/runtime_evidence_replay_verifier.py`
 as a companion replay check over serialized Bundle and Output Closure reports,
-and `examples/runtime_layout_conversion_trace_replay_verifier.py` as a companion
+and `examples/runtime_transfer_trace_replay_verifier.py` as a companion replay
+check over serialized Transfer Evidence and Trace Index reports,
+`examples/runtime_backend_equivalence_transfer_binding.py` as a companion binding
+check over serialized Systolic Backend Equivalence and Transfer Trace Replay reports,
+`examples/runtime_layout_conversion_trace_replay_verifier.py` as a companion
 replay check over serialized Layout Conversion Evidence and Trace Index reports,
 and `examples/runtime_backend_equivalence_layout_binding.py` as a companion
 binding check over serialized Mixed Backend Equivalence and Layout Trace Replay reports.
@@ -28,6 +33,8 @@ It runs:
 - `build_backend_equivalence_report()`
 - `examples/runtime_planning_explanation.py`
 - `examples/runtime_transfer_trace_index.py`
+- `examples/runtime_transfer_trace_replay_verifier.py`
+- `examples/runtime_backend_equivalence_transfer_binding.py`
 - `examples/runtime_mixed_planning_explanation.py`
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
@@ -61,8 +68,10 @@ The gate passes only when:
 
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
-  entries, with the systolic entry requiring `runtime_planning_explanation`
-  and `runtime_transfer_trace_index`, and the mixed entry requiring
+  entries, with the systolic entry requiring `runtime_planning_explanation`,
+  `runtime_transfer_trace_index`,
+  `runtime_transfer_trace_replay_verifier`, and
+  `runtime_backend_equivalence_transfer_binding`, and the mixed entry requiring
   `runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`,
   `runtime_layout_conversion_evidence`,
   `runtime_layout_conversion_trace_index`,
@@ -76,8 +85,9 @@ The gate passes only when:
   on the mixed backend-equivalence graph with exact artifact-ID binding
 - Runtime Evidence Gate Matrix Coverage passes, proving the exact
   backend-equivalence, runtime-planning-explanation, transfer trace-index,
-  HS-IR alignment, layout-conversion, trace-index, portfolio, and
-  memory-planning Matrix graph/artifact bindings are present in one
+  transfer replay, transfer binding, HS-IR alignment, layout-conversion,
+  trace-index, portfolio, and memory-planning Matrix graph/artifact bindings
+  are present in one
   deterministic audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
@@ -103,6 +113,23 @@ The gate passes only when:
 - Runtime Transfer Trace Index matrix coverage passes, proving the index is
   inventoried by the Runtime Evidence Matrix with the exact
   `runtime_transfer_trace_index_systolic` artifact ID
+- Runtime Transfer Trace Replay Verifier passes for the same systolic proof
+  slice
+- Runtime Transfer Trace Replay Verifier binding passes, proving the serialized
+  Transfer Evidence and Trace Index reports replay by metadata digest for the
+  same graph and policies evaluated by this gate
+- Runtime Transfer Trace Replay Verifier matrix coverage passes, proving the
+  report is required by the Runtime Evidence Matrix with the exact
+  `runtime_transfer_trace_replay_verifier_systolic` artifact ID
+- Runtime Backend Equivalence Transfer Binding passes for the systolic proof
+  slice
+- Runtime Backend Equivalence Transfer Binding binding passes, proving the
+  systolic Backend Equivalence report is bound to verified transfer trace
+  replay by metadata digest, graph name, raw-value policy, and candidate
+  backend boundary diversity
+- Runtime Backend Equivalence Transfer Binding matrix coverage passes, proving
+  the report is required by the Runtime Evidence Matrix with the exact
+  `runtime_backend_equivalence_transfer_binding_systolic` artifact ID
 - Runtime Vector Backend Equivalence passes for the `reference_cpu` baseline
   run and the `vector_sim` candidate run
 - Runtime Vector Backend Equivalence binding passes, proving the checked report
