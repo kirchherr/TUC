@@ -146,6 +146,9 @@ Current runtime surfaces:
   sequence, fallback/no-fallback placement, candidate-score visibility, and
   movement accounting, now bound into Runtime Evidence Matrix and Runtime
   Evidence Gate for the systolic and mixed backend-equivalence slices.
+- Runtime Transfer Evidence v0 for planned cross-domain runtime transfers as
+  data-only review evidence with deterministic planning-cost estimates and no
+  device-residency or native-performance claim.
 - Runtime Layout Conversion Trace Index v0 binding planned `blocked -> row_major`
   transition evidence to concrete producer and consumer Runtime Execution Trace
   steps without materializing a converter step, now required by Runtime Evidence
@@ -182,6 +185,7 @@ examples/proof_of_backend_equivalence.py
 examples/runtime_hs_ir_plan_alignment.py
 examples/runtime_planning_explanation.py
 examples/runtime_mixed_planning_explanation.py
+examples/runtime_transfer_evidence.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
 examples/source_intent_runtime_returns.py
@@ -215,6 +219,7 @@ Key docs:
 - [Runtime Evidence Gate Matrix Coverage](docs/RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
 - [Runtime HS-IR Plan Alignment](docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md)
 - [Runtime Planning Explanation](docs/RUNTIME_PLANNING_EXPLANATION.md)
+- [Runtime Transfer Evidence](docs/RUNTIME_TRANSFER_EVIDENCE.md)
 - [Runtime Layout Conversion Evidence](docs/RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md)
 - [Runtime Layout Conversion Trace Index](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
 - [Runtime Layout Conversion Trace Replay Verifier](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md)
@@ -244,6 +249,7 @@ schemas/runtime_backend_equivalence_portfolio_policy_report.v0.schema.json
 schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json
 schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json
 schemas/runtime_planning_explanation_report.v0.schema.json
+schemas/runtime_transfer_evidence_report.v0.schema.json
 schemas/runtime_layout_conversion_trace_index_report.v0.schema.json
 schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json
 schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json

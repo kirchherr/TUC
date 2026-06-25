@@ -1,0 +1,50 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "cost_claim_status": "planning_estimate_not_measurement",
+  "evidence_contract": "runtime_transfer_evidence.data_only.v0",
+  "execution_policy": "does_not_execute_transfers",
+  "graph_name": "proof_of_systolic_execution",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "residency_claim_status": "not_physical_residency_evidence",
+  "schema_version": "tuc.runtime_transfer_evidence_report.v0",
+  "source_partition_plan_digest": "sha256:a495b72fbb6f8ed5cecb4e0a446bab21a0a65e81c202698f73c92e7c3172968f",
+  "total_estimated_energy_pj": 1600.0,
+  "total_estimated_latency_ns": 20001.0,
+  "total_planned_bytes": 16,
+  "transfer_count": 1,
+  "transfer_metadata_digest": "sha256:bfd239018838aa482a0144ec7297fffb074a3421f0d5094fd4a4454c4cdaf76d",
+  "transfer_scope": "planned_logical_transfer_only",
+  "transfers": [
+    {
+      "consumer_input_id": "host_activation:projection",
+      "cost_model": "prototype_transfer_cost_profile",
+      "estimated_energy_pj": 1600.0,
+      "estimated_latency_ns": 20001.0,
+      "from_backend": "systolic-sim",
+      "from_layout": "blocked",
+      "from_memory_domain": "device_sram",
+      "planned_bytes": 16,
+      "source_operation": "systolic_projection",
+      "source_value_record_id": "systolic_projection:projection",
+      "target_operation": "host_activation",
+      "tensor_name": "projection",
+      "to_backend": "reference-cpu",
+      "to_layout": "row_major",
+      "to_memory_domain": "host_ram",
+      "transfer_id": "runtime_transfer_0000",
+      "transfer_status": "planned"
+    }
+  ]
+}

@@ -24,6 +24,7 @@ execute_graph
   -> Runtime Execution Output Closure
   -> Runtime Evidence Replay Verifier
   -> Runtime Backend Equivalence
+  -> Runtime Transfer Evidence
   -> Runtime Layout Conversion Evidence
   -> Runtime Layout Conversion Trace Index
   -> Runtime Layout Conversion Trace Replay Verifier
@@ -155,6 +156,15 @@ the accepted plan or trace visible as deterministic JSON.
 partition decisions and reviewer-facing planning rationale. It makes fallback
 and movement accounting visible before richer planning behavior can count as
 gated evidence.
+
+`Runtime Transfer Evidence` records planned cross-domain transfer edges from
+accepted `PartitionPlan` data as deterministic review evidence. It keeps
+transfer bytes and planning-cost estimates visible while preserving the
+`planning_estimate_not_measurement` and
+`not_physical_residency_evidence` boundaries. See
+[RUNTIME_TRANSFER_EVIDENCE.md](RUNTIME_TRANSFER_EVIDENCE.md),
+`schemas/runtime_transfer_evidence_report.v0.schema.json`, and
+`examples/runtime_transfer_evidence.py`.
 
 `Runtime Layout Conversion Evidence` is the current optional bridge between
 planned layout-conversion edges and reviewer-facing layout-transition evidence.

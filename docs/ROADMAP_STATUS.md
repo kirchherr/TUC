@@ -46,6 +46,14 @@ hardware-independent interface into capability-driven runtime planning.
   `tests/golden/proofs/proof_of_backend_equivalence.json`, binding the mixed
   `reference-cpu` versus `systolic-sim + vector-sim` equivalence report by
   digest without serializing tensor values or claiming native execution.
+- [Runtime Transfer Evidence](RUNTIME_TRANSFER_EVIDENCE.md) records the current
+  planned `device_sram -> host_ram` transfer from the systolic simulator proof
+  as data-only evidence, with schema at
+  `schemas/runtime_transfer_evidence_report.v0.schema.json`, example
+  `examples/runtime_transfer_evidence.py`, and deterministic golden evidence at
+  `tests/golden/runtime_transfer_evidence/current_report.json`. Transfer cost
+  fields are deterministic planning estimates, not hardware measurements or
+  native performance evidence.
 - [RFC 0212: Runtime Layout Conversion Evidence](../rfcs/0212-runtime-layout-conversion-evidence.md)
   defines the next optional data-only proof boundary for explicit planned layout
   transitions before any native converter, allocation handle, or real residency

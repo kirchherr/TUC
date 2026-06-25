@@ -99,6 +99,7 @@ Required artifacts:
 - `examples/runtime_vector_backend_equivalence.py`
 - `examples/runtime_mixed_backend_equivalence.py`
 - `examples/runtime_hs_ir_plan_alignment.py`
+- `examples/runtime_transfer_evidence.py`
 - `examples/runtime_layout_conversion_trace_index.py`
 - `examples/runtime_layout_conversion_trace_replay_verifier.py`
 - `examples/runtime_backend_equivalence_layout_binding.py`
@@ -114,6 +115,7 @@ Required artifacts:
 - `tests/golden/runtime_backend_equivalence/portfolio_report.json`
 - `tests/golden/runtime_backend_equivalence/portfolio_policy_report.json`
 - `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`
+- `tests/golden/runtime_transfer_evidence/current_report.json`
 - `tests/golden/runtime_layout_conversion_trace_index/current_report.json`
 - `tests/golden/runtime_layout_conversion_trace_replay_verifier/current_report.json`
 - `tests/golden/runtime_backend_equivalence_layout_binding/current_report.json`
@@ -126,9 +128,11 @@ Required artifacts:
 - `docs/RUNTIME_EXECUTOR.md`
 - `docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md`
 - `docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md`
+- `docs/RUNTIME_TRANSFER_EVIDENCE.md`
 - `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md`
 - `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md`
 - `docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md`
+- `schemas/runtime_transfer_evidence_report.v0.schema.json`
 - `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`
 - `schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`
 - `schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json`
@@ -244,6 +248,11 @@ Completed evidence:
   replay-checks serialized Runtime Execution Evidence Bundle and Runtime
   Execution Output Closure reports by metadata digest without re-running source,
   JIT, plugins, devices, or backend artifacts.
+- Runtime Transfer Evidence v0 (`examples/runtime_transfer_evidence.py`)
+  records the planned `device_sram -> host_ram` transfer from the systolic
+  simulator proof as data-only evidence with deterministic planning-cost
+  estimates while keeping device residency, runtime handles, raw values, and
+  native performance claims blocked.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata
@@ -565,6 +574,9 @@ Completed evidence:
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
   cross-domain transfer bytes.
+- Runtime Transfer Evidence records planned cross-domain transfer edges as
+  data-only planning evidence before any real transfer execution, memory
+  residency, or hardware timing claim is accepted.
 - Runtime HS-IR Plan Alignment proves the current mixed accelerator HS-IR,
   runtime plan, and trusted execution trace agree on backend sequence,
   produced layouts, and layout-conversion accounting.

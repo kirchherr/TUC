@@ -55,6 +55,8 @@ jobs:
         run: python examples/runtime_allocation_reconciliation.py
       - name: Runtime memory planning gate
         run: python examples/runtime_memory_planning_gate.py
+      - name: Runtime transfer evidence
+        run: python examples/runtime_transfer_evidence.py
       - name: Runtime layout conversion trace index
         run: python examples/runtime_layout_conversion_trace_index.py
       - name: Runtime layout conversion trace replay verifier
