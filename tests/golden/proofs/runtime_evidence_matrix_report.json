@@ -608,6 +608,11 @@
           "artifact_id": "runtime_planning_explanation_systolic",
           "artifact_kind": "runtime_planning_explanation",
           "artifact_status": "present"
+        },
+        {
+          "artifact_id": "runtime_transfer_trace_index_systolic",
+          "artifact_kind": "runtime_transfer_trace_index",
+          "artifact_status": "present"
         }
       ],
       "graph_family": "backend_equivalence",
@@ -615,7 +620,8 @@
       "missing_required_artifact_kinds": [],
       "required_artifact_kinds": [
         "backend_equivalence",
-        "runtime_planning_explanation"
+        "runtime_planning_explanation",
+        "runtime_transfer_trace_index"
       ],
       "runtime_evidence_complete": true,
       "source_boundary": "runtime_backend_equivalence"

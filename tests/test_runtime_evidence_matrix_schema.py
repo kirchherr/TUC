@@ -87,6 +87,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
     assert graphs["runtime_backend_equivalence"]["required_artifact_kinds"] == [
         "backend_equivalence",
         "runtime_planning_explanation",
+        "runtime_transfer_trace_index",
     ]
     assert graphs["runtime_vector_backend_equivalence"]["required_artifact_kinds"] == [
         "backend_equivalence"

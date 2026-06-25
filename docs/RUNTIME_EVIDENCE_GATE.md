@@ -3,8 +3,9 @@
 Runtime Evidence Gate v0 is the CI-facing check that combines the current
 runtime evidence inventory, trusted executor conformance, Runtime Tensor Store
 Evidence, Runtime Backend Equivalence and Backend Equivalence Portfolio
-evidence, Runtime Planning Explanation evidence, Runtime HS-IR Plan Alignment
-evidence, Runtime Layout Conversion Trace Index evidence, Runtime Input Manifest
+evidence, Runtime Planning Explanation evidence, Runtime Transfer Trace Index
+evidence, Runtime HS-IR Plan Alignment evidence, Runtime Layout Conversion
+Trace Index evidence, Runtime Input Manifest
 evidence, Runtime Output Manifest evidence, Runtime Output Contract evidence,
 Runtime Public Output Bundle evidence, Runtime Reference Correctness evidence,
 Runtime Execution Receipt evidence, Runtime Execution Evidence Bundle evidence,
@@ -26,6 +27,7 @@ It runs:
 - `run_runtime_executor_conformance()`
 - `build_backend_equivalence_report()`
 - `examples/runtime_planning_explanation.py`
+- `examples/runtime_transfer_trace_index.py`
 - `examples/runtime_mixed_planning_explanation.py`
 - `build_vector_backend_equivalence_report()`
 - `build_mixed_backend_equivalence_report()`
@@ -59,9 +61,10 @@ The gate passes only when:
 
 - the Runtime Evidence Matrix is complete across accepted graph fixtures
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
-  entries, with the systolic and mixed entries requiring
-  `runtime_planning_explanation`, and the mixed entry also requiring
-  `runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`,
+  entries, with the systolic entry requiring `runtime_planning_explanation`
+  and `runtime_transfer_trace_index`, and the mixed entry requiring
+  `runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`,
+  `runtime_layout_conversion_evidence`,
   `runtime_layout_conversion_trace_index`,
   `runtime_layout_conversion_trace_replay_verifier`, and
   `runtime_backend_equivalence_layout_binding`, plus exact artifact-ID bindings
@@ -72,9 +75,10 @@ The gate passes only when:
 - the Runtime Evidence Matrix includes `runtime_hs_ir_plan_alignment` evidence
   on the mixed backend-equivalence graph with exact artifact-ID binding
 - Runtime Evidence Gate Matrix Coverage passes, proving the exact
-  backend-equivalence, runtime-planning-explanation, HS-IR alignment,
-  layout-conversion, trace-index, portfolio, and memory-planning Matrix graph/artifact
-  bindings are present in one deterministic audit report
+  backend-equivalence, runtime-planning-explanation, transfer trace-index,
+  HS-IR alignment, layout-conversion, trace-index, portfolio, and
+  memory-planning Matrix graph/artifact bindings are present in one
+  deterministic audit report
 - Runtime Executor Conformance passes for the fixed trusted executor registry
 - Runtime Backend Equivalence passes for the `reference_cpu` baseline run and
   the `systolic_sim` candidate run
@@ -92,6 +96,13 @@ The gate passes only when:
 - Runtime Planning Explanation matrix coverage passes, proving the explanation
   report is inventoried by the Runtime Evidence Matrix with the exact
   `runtime_planning_explanation_systolic` artifact ID
+- Runtime Transfer Trace Index passes for the same systolic candidate plan
+- Runtime Transfer Trace Index binding passes, proving the checked index is
+  tied to the same graph, transfer count, planned transfer bytes, backend pair,
+  and candidate trace-step count evaluated by this gate invocation
+- Runtime Transfer Trace Index matrix coverage passes, proving the index is
+  inventoried by the Runtime Evidence Matrix with the exact
+  `runtime_transfer_trace_index_systolic` artifact ID
 - Runtime Vector Backend Equivalence passes for the `reference_cpu` baseline
   run and the `vector_sim` candidate run
 - Runtime Vector Backend Equivalence binding passes, proving the checked report
@@ -319,6 +330,12 @@ Runtime Planning Explanation schema:
 schemas/runtime_planning_explanation_report.v0.schema.json
 ```
 
+Runtime Transfer Trace Index schema:
+
+```text
+schemas/runtime_transfer_trace_index_report.v0.schema.json
+```
+
 Runtime Layout Conversion Trace Index schema:
 
 ```text
@@ -372,6 +389,12 @@ It composes bounded in-repository checks:
 - data-only Runtime Planning Explanation metadata explaining the accepted
   systolic and mixed candidate plans with backend sequence, fallback or
   no-fallback placement, candidate-score visibility, and movement bytes
+- data-only Runtime Transfer Trace Index metadata binding the systolic
+  backend-equivalence planned transfer edge to producer and consumer trace-step
+  indexes without materializing a transfer step
+- bounded Runtime Transfer Trace Index checks that compare graph name, transfer
+  count, planned transfer bytes, producer/consumer backend pair, trace-step
+  count, raw-value policy, execution policy, and Matrix artifact binding
 - bounded Runtime Planning Explanation binding checks that compare graph ID,
   candidate backend sequence, operation count, fallback/no-fallback visibility,
   candidate-score visibility, and movement visibility against Backend
@@ -379,6 +402,9 @@ It composes bounded in-repository checks:
 - bounded Runtime Planning Explanation matrix lookups that verify graph
   family, source boundary, required artifact kinds, completeness, and exact
   `runtime_planning_explanation` artifact coverage
+- bounded Runtime Transfer Trace Index matrix lookups that verify graph family,
+  source boundary, required artifact kinds, completeness, and exact
+  `runtime_transfer_trace_index` artifact coverage
 - data-only Runtime Vector Backend Equivalence metadata comparing the expected
   `reference_cpu` and `vector_sim` trusted execution placements with raw tensor
   values omitted by policy

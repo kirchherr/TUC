@@ -26,6 +26,7 @@ from examples.runtime_evidence_gate import (
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
     RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
+    RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID,
     RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
     RuntimeEvidenceGateError,
@@ -62,6 +63,9 @@ from examples.runtime_planning_explanation import (
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
+from examples.runtime_transfer_trace_index import (
+    build_current_runtime_transfer_trace_index_report,
+)
 from examples.runtime_vector_backend_equivalence import (
     build_vector_backend_equivalence_report,
 )
@@ -107,6 +111,10 @@ from tuc import (
     build_runtime_execution_receipt_report,
 )
 from tuc.ir import OperationKind
+from tuc.runtime.transfer_trace_index import (
+    RuntimeTransferTraceIndexIssue,
+    RuntimeTransferTraceIndexReport,
+)
 
 _GOLDEN = Path("tests/golden/proofs/runtime_evidence_gate.txt")
 
@@ -149,6 +157,20 @@ def test_runtime_evidence_gate_example_runs() -> None:
         'runtime_planning_explanation_selection_kinds = "fallback,preferred_for"'
     ) in completed.stdout
     assert 'runtime_planning_explanation_movement_bytes = "32"' in completed.stdout
+    assert 'runtime_transfer_trace_index = "passed"' in completed.stdout
+    assert 'runtime_transfer_trace_index_binding = "verified"' in completed.stdout
+    assert 'runtime_transfer_trace_index_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_transfer_trace_index_matrix_artifact = "
+        f'"{RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_transfer_trace_index_records = "1"' in completed.stdout
+    assert 'runtime_transfer_trace_index_trace_steps = "2"' in completed.stdout
+    assert 'runtime_transfer_trace_index_planned_bytes = "16"' in completed.stdout
+    assert (
+        'runtime_transfer_trace_index_materialization = "'
+        'transfer_not_materialized_as_runtime_step"'
+    ) in completed.stdout
     assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_vector_backend_equivalence_binding = "verified"' in completed.stdout
     assert 'runtime_vector_backend_equivalence_matrix = "covered"' in completed.stdout
@@ -424,6 +446,73 @@ def test_runtime_evidence_gate_rejects_wrong_runtime_planning_matrix_artifact_id
         match="planning explanation matrix coverage",
     ):
         build_gate_report(matrix_report=mismatched_planning_explanation)
+
+
+def test_runtime_evidence_gate_rejects_failed_runtime_transfer_trace_index() -> None:
+    report = build_current_runtime_transfer_trace_index_report()
+    failed_report = RuntimeTransferTraceIndexReport(
+        graph_name=report.graph_name,
+        source_partition_plan_digest=report.source_partition_plan_digest,
+        source_transfer_evidence_digest=report.source_transfer_evidence_digest,
+        execution_trace_digest=report.execution_trace_digest,
+        trace_step_count=report.trace_step_count,
+        records=(report.records[0], report.records[0]),
+        issues=(
+            RuntimeTransferTraceIndexIssue(
+                subject="runtime_transfer_0000",
+                issue_code="duplicate_transfer_id",
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="transfer trace index failed",
+    ):
+        build_gate_report(runtime_transfer_trace_index_report=failed_report)
+
+
+def test_runtime_evidence_gate_rejects_unbound_runtime_transfer_trace_index() -> None:
+    report = build_current_runtime_transfer_trace_index_report()
+    unbound = replace(report, graph_name="runtime_other_backend_equivalence")
+
+    assert unbound.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="transfer trace index binding",
+    ):
+        build_gate_report(runtime_transfer_trace_index_report=unbound)
+
+
+def test_runtime_evidence_gate_rejects_wrong_runtime_transfer_trace_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_transfer_trace = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_transfer_trace_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_transfer_trace_index_other",
+                    )
+                    if artifact.artifact_kind == "runtime_transfer_trace_index"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_transfer_trace.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="transfer trace index matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_transfer_trace)
 
 
 def test_runtime_evidence_gate_rejects_failed_vector_backend_equivalence() -> None:

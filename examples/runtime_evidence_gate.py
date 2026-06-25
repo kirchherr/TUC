@@ -36,6 +36,9 @@ from examples.runtime_planning_explanation import (
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
+from examples.runtime_transfer_trace_index import (
+    build_current_runtime_transfer_trace_index_report,
+)
 from examples.runtime_vector_backend_equivalence import (
     build_vector_backend_equivalence_report,
 )
@@ -111,6 +114,10 @@ from tuc.runtime.layout_conversion_trace_replay_verifier import (
     build_runtime_layout_conversion_trace_replay_verifier_report,
     dump_runtime_layout_conversion_trace_replay_verifier_report,
 )
+from tuc.runtime.transfer_trace_index import (
+    RuntimeTransferTraceIndexReport,
+    assert_runtime_transfer_trace_index,
+)
 
 SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID = "source_intent_return_mlp"
 SOURCE_INTENT_RUNTIME_RETURNS_SOURCE_BOUNDARY = "source_intent_metadata"
@@ -127,13 +134,16 @@ RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID = "runtime_backend_equivalence_sy
 RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID = (
     "runtime_planning_explanation_systolic"
 )
+RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID = "runtime_transfer_trace_index_systolic"
 RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS = (
     "backend_equivalence",
     "runtime_planning_explanation",
+    "runtime_transfer_trace_index",
 )
 RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS = (
     RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
+    RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID,
 )
 RUNTIME_BACKEND_EQUIVALENCE_BASELINE_RUN_ID = "reference_cpu"
 RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID = "systolic_sim"
@@ -314,6 +324,7 @@ def build_gate_report(
     conformance_report: RuntimeExecutorConformanceReport | None = None,
     backend_equivalence_report: RuntimeBackendEquivalenceReport | None = None,
     runtime_planning_explanation_report: (RuntimePlanningExplanationReport | None) = None,
+    runtime_transfer_trace_index_report: RuntimeTransferTraceIndexReport | None = None,
     vector_backend_equivalence_report: (RuntimeBackendEquivalenceReport | None) = None,
     mixed_backend_equivalence_report: RuntimeBackendEquivalenceReport | None = None,
     mixed_runtime_planning_explanation_report: (RuntimePlanningExplanationReport | None) = None,
@@ -374,6 +385,11 @@ def build_gate_report(
         build_backend_equivalence_runtime_planning_explanation_report()
         if runtime_planning_explanation_report is None
         else runtime_planning_explanation_report
+    )
+    runtime_transfer_trace_index = (
+        build_current_runtime_transfer_trace_index_report()
+        if runtime_transfer_trace_index_report is None
+        else runtime_transfer_trace_index_report
     )
     vector_backend_equivalence = (
         build_vector_backend_equivalence_report()
@@ -543,6 +559,16 @@ def build_gate_report(
     _assert_runtime_planning_explanation_matrix_covered(
         matrix,
         runtime_planning_explanation,
+    )
+    _assert_runtime_transfer_trace_index_passed(runtime_transfer_trace_index)
+    _assert_runtime_transfer_trace_index_bound(
+        runtime_transfer_trace_index,
+        runtime_planning_explanation,
+        backend_equivalence,
+    )
+    _assert_runtime_transfer_trace_index_matrix_covered(
+        matrix,
+        runtime_transfer_trace_index,
     )
     _assert_backend_equivalence_passed(
         vector_backend_equivalence,
@@ -742,6 +768,7 @@ def build_gate_report(
         conformance,
         backend_equivalence,
         runtime_planning_explanation,
+        runtime_transfer_trace_index,
         vector_backend_equivalence,
         mixed_backend_equivalence,
         mixed_runtime_planning_explanation,
@@ -939,11 +966,128 @@ def _assert_runtime_planning_explanation_matrix_covered(
     artifact_ids = tuple(
         artifact.artifact_id
         for artifact in graph.artifacts
-        if artifact.artifact_kind in RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS
+        if artifact.artifact_kind == "runtime_planning_explanation"
     )
-    if artifact_ids != RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS:
+    if artifact_ids != (RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,):
         raise RuntimeEvidenceGateError(
             "runtime planning explanation matrix coverage failed: artifact_id_mismatch"
+        )
+
+
+def _assert_runtime_transfer_trace_index_passed(
+    report: RuntimeTransferTraceIndexReport,
+) -> None:
+    try:
+        assert_runtime_transfer_trace_index(report)
+    except (AssertionError, TypeError, ValueError) as exc:
+        raise RuntimeEvidenceGateError(f"runtime transfer trace index failed: {exc}") from exc
+    if report.graph_name != RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: graph_name_mismatch"
+        )
+    if report.transfer_count < 1 or report.trace_step_count < 1:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: records_missing"
+        )
+    if report.raw_value_policy != "omitted_by_policy":
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: raw_value_policy_mismatch"
+        )
+    if report.execution_policy != "does_not_execute_transfers":
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: execution_policy_mismatch"
+        )
+    if report.trace_materialization_policy != "transfer_not_materialized_as_runtime_step":
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: trace_materialization_policy_mismatch"
+        )
+    if report.cost_claim_status != "planning_estimate_not_measurement":
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: cost_claim_status_mismatch"
+        )
+    if report.residency_claim_status != "not_physical_residency_evidence":
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: residency_claim_status_mismatch"
+        )
+
+
+def _assert_runtime_transfer_trace_index_bound(
+    trace_index: RuntimeTransferTraceIndexReport,
+    planning_explanation: RuntimePlanningExplanationReport,
+    backend_equivalence: RuntimeBackendEquivalenceReport,
+) -> None:
+    if trace_index.graph_name != planning_explanation.graph_name:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: planning_graph_mismatch"
+        )
+    if trace_index.graph_name != backend_equivalence.graph_name:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: equivalence_graph_mismatch"
+        )
+    if trace_index.transfer_count != planning_explanation.transfer_edge_count:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: transfer_count_mismatch"
+        )
+    if trace_index.total_planned_bytes != planning_explanation.total_transfer_bytes:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: transfer_bytes_mismatch"
+        )
+    candidate_run = _runtime_backend_equivalence_run(
+        backend_equivalence,
+        RUNTIME_BACKEND_EQUIVALENCE_CANDIDATE_RUN_ID,
+    )
+    if trace_index.trace_step_count != candidate_run.trace_step_count:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index binding failed: trace_step_count_mismatch"
+        )
+    if trace_index.transfer_count == 1 and len(candidate_run.planned_backend_sequence) == 2:
+        record = trace_index.records[0]
+        transfer_backend_pair = (
+            record.producer_planned_backend,
+            record.consumer_planned_backend,
+        )
+        if transfer_backend_pair != candidate_run.planned_backend_sequence:
+            raise RuntimeEvidenceGateError(
+                "runtime transfer trace index binding failed: transfer_backend_mismatch"
+            )
+
+
+def _assert_runtime_transfer_trace_index_matrix_covered(
+    matrix: RuntimeEvidenceMatrixReport,
+    report: RuntimeTransferTraceIndexReport,
+) -> None:
+    graph = _find_runtime_evidence_graph(matrix, report.graph_name)
+    if graph is None:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index matrix coverage failed: graph missing"
+        )
+    if graph.graph_family != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_GRAPH_FAMILY:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index matrix coverage failed: graph_family_mismatch"
+        )
+    if graph.source_boundary != RUNTIME_BACKEND_EQUIVALENCE_MATRIX_SOURCE_BOUNDARY:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index matrix coverage failed: source_boundary_mismatch"
+        )
+    if (
+        graph.required_artifact_kinds
+        != RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS
+    ):
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index matrix coverage failed: required_artifacts_mismatch"
+        )
+    if not graph.runtime_evidence_complete:
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index matrix coverage failed: runtime evidence incomplete"
+        )
+    artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind == "runtime_transfer_trace_index"
+    )
+    if artifact_ids != (RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID,):
+        raise RuntimeEvidenceGateError(
+            "runtime transfer trace index matrix coverage failed: artifact_id_mismatch"
         )
 
 
@@ -2261,6 +2405,7 @@ def _render_gate_report(
     conformance: RuntimeExecutorConformanceReport,
     backend_equivalence: RuntimeBackendEquivalenceReport,
     runtime_planning_explanation: RuntimePlanningExplanationReport,
+    runtime_transfer_trace_index: RuntimeTransferTraceIndexReport,
     vector_backend_equivalence: RuntimeBackendEquivalenceReport,
     mixed_backend_equivalence: RuntimeBackendEquivalenceReport,
     mixed_runtime_planning_explanation: RuntimePlanningExplanationReport,
@@ -2332,6 +2477,29 @@ def _render_gate_report(
     lines.append(
         "  runtime_planning_explanation_movement_bytes = "
         f'"{runtime_planning_explanation.total_data_movement_bytes}"'
+    )
+    lines.append('  runtime_transfer_trace_index = "passed"')
+    lines.append('  runtime_transfer_trace_index_binding = "verified"')
+    lines.append('  runtime_transfer_trace_index_matrix = "covered"')
+    lines.append(
+        "  runtime_transfer_trace_index_matrix_artifact = "
+        f'"{RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID}"'
+    )
+    lines.append(
+        "  runtime_transfer_trace_index_records = "
+        f'"{runtime_transfer_trace_index.transfer_count}"'
+    )
+    lines.append(
+        "  runtime_transfer_trace_index_trace_steps = "
+        f'"{runtime_transfer_trace_index.trace_step_count}"'
+    )
+    lines.append(
+        "  runtime_transfer_trace_index_planned_bytes = "
+        f'"{runtime_transfer_trace_index.total_planned_bytes}"'
+    )
+    lines.append(
+        "  runtime_transfer_trace_index_materialization = "
+        f'"{runtime_transfer_trace_index.trace_materialization_policy}"'
     )
     lines.append('  runtime_vector_backend_equivalence = "passed"')
     lines.append('  runtime_vector_backend_equivalence_binding = "verified"')

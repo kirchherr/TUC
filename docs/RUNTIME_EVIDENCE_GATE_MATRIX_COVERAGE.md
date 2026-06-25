@@ -9,9 +9,9 @@ It answers a narrow review question:
 ```text
 Does the current Runtime Evidence Matrix still point at the exact evidence
 artifacts that Runtime Evidence Gate accepts for backend-equivalence,
-runtime-planning explanation, HS-IR alignment, layout-conversion evidence,
-layout-conversion trace-index evidence, portfolio coverage, and memory-planning
-coverage?
+runtime-planning explanation, transfer trace-index evidence, HS-IR alignment,
+layout-conversion evidence, layout-conversion trace-index evidence, portfolio
+coverage, and memory-planning coverage?
 ```
 
 ## Contract
@@ -37,9 +37,10 @@ The current audit covers five gate-required Matrix bindings:
 - `runtime_backend_equivalence_portfolio_matrix`
 - `runtime_memory_planning_matrix`
 
-The systolic backend-equivalence binding requires both
-`runtime_backend_equivalence_systolic` and
-`runtime_planning_explanation_systolic`. The mixed backend-equivalence binding
+The systolic backend-equivalence binding requires
+`runtime_backend_equivalence_systolic`,
+`runtime_planning_explanation_systolic`, and
+`runtime_transfer_trace_index_systolic`. The mixed backend-equivalence binding
 requires `runtime_backend_equivalence_mixed`,
 `runtime_planning_explanation_mixed`,
 `runtime_hs_ir_plan_alignment_mixed`, `runtime_layout_conversion_evidence_mixed`, and

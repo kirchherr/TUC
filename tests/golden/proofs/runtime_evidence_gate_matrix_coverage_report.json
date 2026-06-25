@@ -7,18 +7,21 @@
       "coverage_status": "covered",
       "expected_artifact_ids": [
         "runtime_backend_equivalence_systolic",
-        "runtime_planning_explanation_systolic"
+        "runtime_planning_explanation_systolic",
+        "runtime_transfer_trace_index_systolic"
       ],
       "graph_family": "backend_equivalence",
       "graph_id": "runtime_backend_equivalence",
       "issues": [],
       "observed_artifact_ids": [
         "runtime_backend_equivalence_systolic",
-        "runtime_planning_explanation_systolic"
+        "runtime_planning_explanation_systolic",
+        "runtime_transfer_trace_index_systolic"
       ],
       "required_artifact_kinds": [
         "backend_equivalence",
-        "runtime_planning_explanation"
+        "runtime_planning_explanation",
+        "runtime_transfer_trace_index"
       ],
       "source_boundary": "runtime_backend_equivalence"
     },

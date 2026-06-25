@@ -123,6 +123,7 @@ def test_runtime_evidence_gate_matrix_coverage_example_runs() -> None:
     assert '"binding_count": 5' in completed.stdout
     assert "runtime_backend_equivalence_systolic" in completed.stdout
     assert "runtime_planning_explanation_systolic" in completed.stdout
+    assert "runtime_transfer_trace_index_systolic" in completed.stdout
     assert "runtime_planning_explanation_mixed" in completed.stdout
     assert "runtime_hs_ir_plan_alignment_mixed" in completed.stdout
     assert "runtime_layout_conversion_evidence_mixed" in completed.stdout
@@ -321,6 +322,7 @@ def test_runtime_evidence_gate_matrix_coverage_schema_matches_contract() -> None
         "items"
     ]["enum"]
     assert "runtime_planning_explanation" in required_kind_enum
+    assert "runtime_transfer_trace_index" in required_kind_enum
     assert "runtime_memory_budget" in required_kind_enum
     assert "runtime_layout_conversion_evidence" in required_kind_enum
     assert "runtime_layout_conversion_trace_index" in required_kind_enum

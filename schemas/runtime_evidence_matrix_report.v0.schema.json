@@ -82,6 +82,7 @@
         "execution_receipt",
         "backend_equivalence",
         "runtime_planning_explanation",
+        "runtime_transfer_trace_index",
         "backend_equivalence_portfolio",
         "backend_equivalence_portfolio_policy",
         "runtime_hs_ir_plan_alignment",

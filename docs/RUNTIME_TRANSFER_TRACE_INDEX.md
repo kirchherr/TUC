@@ -38,10 +38,10 @@ For each planned transfer, the trace index records:
 - planned byte count and deterministic planning-cost estimates;
 - source transfer status and trace alignment status.
 
-The current golden indexes the systolic proof slice:
+The current golden indexes the systolic backend-equivalence candidate slice:
 
 ```text
-systolic_projection step 0
+projection step 0
   systolic-sim / blocked / device_sram
   produces projection
 
@@ -49,10 +49,14 @@ planned transfer
   projection device_sram -> host_ram
   transfer_not_materialized_as_runtime_step
 
-host_activation step 1
+activation step 1
   reference-cpu / row_major / host_ram
   consumes projection
 ```
+
+Runtime Evidence Matrix and Runtime Evidence Gate now require this index as
+`runtime_transfer_trace_index_systolic` for the systolic backend-equivalence
+proof slice.
 
 ## What It Proves
 

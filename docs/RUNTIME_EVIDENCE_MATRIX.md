@@ -39,7 +39,7 @@ Additional evidence, such as `proof_report_golden`, `frontend_intake_golden`,
 `source_intent_return_semantics`, `source_intent_runtime_returns`,
 `backend_equivalence`, `backend_equivalence_portfolio`,
 `backend_equivalence_portfolio_policy`, `runtime_hs_ir_plan_alignment`,
-`runtime_layout_conversion_evidence`, and
+`runtime_transfer_trace_index`, `runtime_layout_conversion_evidence`, and
 `runtime_layout_conversion_trace_index`, can be listed without changing default
 full-runtime completeness.
 
@@ -47,7 +47,11 @@ Each graph records its own `required_artifact_kinds`. Standard runtime proof
 graphs use the full required list above. Backend-equivalence fixtures use the
 scoped requirement `backend_equivalence`, because their review artifact is a
 data-only equivalence report rather than a full proof-report/readiness/trace
-bundle. The mixed backend-equivalence fixture additionally requires
+bundle. The systolic backend-equivalence fixture additionally requires
+`runtime_planning_explanation` and `runtime_transfer_trace_index`, because its
+fallback plan and planned transfer edge must be bound to the accepted plan and
+observed trace before the slice counts as gate evidence. The mixed
+backend-equivalence fixture additionally requires
 `runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`, and
 `runtime_layout_conversion_trace_index`, because its HS-IR backend/layout
 decisions, planned layout transitions, and producer-consumer trace indexes must
@@ -86,6 +90,10 @@ slice.
 [Runtime Layout Conversion Evidence](RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md)
 report at `schemas/runtime_layout_conversion_evidence_report.v0.schema.json`.
 It is Runtime Evidence Gate-required Matrix evidence for the mixed
+backend-equivalence fixture. `runtime_transfer_trace_index` is backed by the
+schema-versioned [Runtime Transfer Trace Index](RUNTIME_TRANSFER_TRACE_INDEX.md)
+report at `schemas/runtime_transfer_trace_index_report.v0.schema.json` and is
+required as `runtime_transfer_trace_index_systolic` for the systolic
 backend-equivalence fixture. `runtime_layout_conversion_trace_index` is backed
 by the schema-versioned [Runtime Layout Conversion Trace Index](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
 report at `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json` and is
@@ -120,9 +128,10 @@ The current matrix is complete across every accepted graph fixture:
   Returns evidence.
 - `runtime_backend_equivalence`, `runtime_vector_backend_equivalence`, and
   `runtime_mixed_backend_equivalence` are complete under their scoped
-  backend-equivalence evidence requirements. The mixed fixture also requires
-  `runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`,
-  `runtime_layout_conversion_evidence`, and
+  backend-equivalence evidence requirements. The systolic fixture also requires
+  `runtime_planning_explanation` and `runtime_transfer_trace_index` evidence.
+  The mixed fixture also requires `runtime_planning_explanation`,
+  `runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`, and
   `runtime_layout_conversion_trace_index` evidence.
 - `runtime_backend_equivalence_portfolio` is complete under its scoped
   `backend_equivalence_portfolio` and
@@ -142,8 +151,13 @@ merge evidence. It also requires the three backend-equivalence graph entries
 to remain present with the `runtime_backend_equivalence` source boundary and
 `backend_equivalence` artifact kind before backend-equivalence reports can
 count as passing gate evidence; the gate binds each checked equivalence report
-to its matrix graph by graph ID and exact artifact ID. The mixed
+to its matrix graph by graph ID and exact artifact ID. The systolic
 backend-equivalence graph must additionally keep the
+`runtime_planning_explanation` and `runtime_transfer_trace_index` artifact
+kinds with exact `runtime_planning_explanation_systolic` and
+`runtime_transfer_trace_index_systolic` artifact IDs before its planning
+explanation and transfer trace-index reports can count as passing gate
+evidence. The mixed backend-equivalence graph must additionally keep the
 `runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`,
 `runtime_layout_conversion_evidence`, and
 `runtime_layout_conversion_trace_index` artifact kinds with exact
@@ -169,10 +183,10 @@ remain present with the `source_intent_metadata` source boundary and the
 kinds before Source Intent Runtime Returns can count as passing gate evidence.
 
 [Runtime Evidence Gate Matrix Coverage](RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
-serializes the gate-required backend-equivalence, HS-IR alignment,
-layout-conversion, trace-index, and portfolio Matrix bindings as a
-deterministic JSON audit, so reviewers can
-inspect the exact graph and artifact IDs that the gate accepts.
+serializes the gate-required backend-equivalence, transfer trace-index, HS-IR
+alignment, layout-conversion, trace-index, and portfolio Matrix bindings as a
+deterministic JSON audit, so reviewers can inspect the exact graph and artifact
+IDs that the gate accepts.
 
 ## Security Boundary
 

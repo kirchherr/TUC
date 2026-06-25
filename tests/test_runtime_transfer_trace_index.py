@@ -9,7 +9,7 @@ from typing import Any
 
 import pytest
 
-from examples.proof_of_systolic_execution import build_graph, proof_inputs
+from examples.runtime_backend_equivalence import build_graph, proof_inputs
 from examples.runtime_transfer_trace_index import (
     build_current_runtime_transfer_trace_index_report,
 )
@@ -62,8 +62,8 @@ def test_runtime_transfer_trace_index_report_passes() -> None:
     record = report.records[0]
     assert record.transfer_id == "runtime_transfer_0000"
     assert record.tensor_name == "projection"
-    assert record.producer_operation == "systolic_projection"
-    assert record.consumer_operation == "host_activation"
+    assert record.producer_operation == "projection"
+    assert record.consumer_operation == "activation"
     assert record.producer_operation_kind == "matmul"
     assert record.consumer_operation_kind == "elementwise"
     assert record.producer_step_index == 0
@@ -80,8 +80,8 @@ def test_runtime_transfer_trace_index_report_passes() -> None:
     assert record.to_layout is LayoutKind.ROW_MAJOR
     assert record.planned_bytes == 16
     assert record.cost_model == "prototype_transfer_cost_profile"
-    assert record.source_value_record_id == "systolic_projection:projection"
-    assert record.consumer_input_id == "host_activation:projection"
+    assert record.source_value_record_id == "projection:projection"
+    assert record.consumer_input_id == "activation:projection"
     assert record.source_transfer_status == "planned"
     assert record.trace_record_status == RUNTIME_TRANSFER_TRACE_RECORD_STATUS
     assert record.trace_alignment_status == RUNTIME_TRANSFER_TRACE_ALIGNMENT_STATUS
@@ -147,8 +147,8 @@ def test_runtime_transfer_trace_index_rejects_forbidden_surface_names() -> None:
         RuntimeTransferTraceIndexRecord(
             transfer_id="runtime_handle",
             tensor_name="projection",
-            producer_operation="systolic_projection",
-            consumer_operation="host_activation",
+            producer_operation="projection",
+            consumer_operation="activation",
             producer_operation_kind="matmul",
             consumer_operation_kind="elementwise",
             producer_step_index=0,
@@ -167,14 +167,14 @@ def test_runtime_transfer_trace_index_rejects_forbidden_surface_names() -> None:
             estimated_latency_ns=20001.0,
             estimated_energy_pj=1600.0,
             cost_model="prototype_transfer_cost_profile",
-            source_value_record_id="systolic_projection:projection",
-            consumer_input_id="host_activation:projection",
+            source_value_record_id="projection:projection",
+            consumer_input_id="activation:projection",
         )
 
 
 def test_runtime_transfer_trace_index_requires_derived_issues() -> None:
     report = build_current_runtime_transfer_trace_index_report()
-    duplicate = replace(report.records[0], consumer_input_id="host_activation:duplicate")
+    duplicate = replace(report.records[0], consumer_input_id="activation:duplicate")
 
     with pytest.raises(ValueError, match="issues must be derived"):
         RuntimeTransferTraceIndexReport(
@@ -190,7 +190,7 @@ def test_runtime_transfer_trace_index_requires_derived_issues() -> None:
 
 def test_assert_runtime_transfer_trace_index_raises_on_issues() -> None:
     report = build_current_runtime_transfer_trace_index_report()
-    duplicate = replace(report.records[0], consumer_input_id="host_activation:duplicate")
+    duplicate = replace(report.records[0], consumer_input_id="activation:duplicate")
     failed = RuntimeTransferTraceIndexReport(
         graph_name=report.graph_name,
         source_partition_plan_digest=report.source_partition_plan_digest,

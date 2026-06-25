@@ -254,14 +254,15 @@ Completed evidence:
   JIT, plugins, devices, or backend artifacts.
 - Runtime Transfer Evidence v0 (`examples/runtime_transfer_evidence.py`)
   records the planned `device_sram -> host_ram` transfer from the systolic
-  simulator proof as data-only evidence with deterministic planning-cost
-  estimates while keeping device residency, runtime handles, raw values, and
-  native performance claims blocked.
+  backend-equivalence candidate as data-only evidence with deterministic
+  planning-cost estimates while keeping device residency, runtime handles, raw
+  values, and native performance claims blocked.
 - Runtime Transfer Trace Index v0 (`examples/runtime_transfer_trace_index.py`)
   binds that planned transfer to producer and consumer runtime trace steps,
   proving trace-order alignment while keeping real transfer execution,
-  residency, runtime handles, raw values, and native performance claims
-  blocked.
+  residency, runtime handles, raw values, and native performance claims blocked;
+  it is now required by Runtime Evidence Matrix and Runtime Evidence Gate for
+  the systolic backend-equivalence proof slice.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

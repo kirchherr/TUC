@@ -170,7 +170,8 @@ transfer bytes and planning-cost estimates visible while preserving the
 `Runtime Transfer Trace Index` links those planned transfer records to
 concrete producer and consumer `RuntimeExecutionTrace` step indexes. It keeps
 transfer review aligned with execution order while preserving the
-`transfer_not_materialized_as_runtime_step` boundary. See
+`transfer_not_materialized_as_runtime_step` boundary. Runtime Evidence Gate
+requires it for the systolic backend-equivalence proof slice. See
 [RUNTIME_TRANSFER_TRACE_INDEX.md](RUNTIME_TRANSFER_TRACE_INDEX.md),
 `schemas/runtime_transfer_trace_index_report.v0.schema.json`, and
 `examples/runtime_transfer_trace_index.py`.

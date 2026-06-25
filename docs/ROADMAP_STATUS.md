@@ -55,13 +55,15 @@ hardware-independent interface into capability-driven runtime planning.
   fields are deterministic planning estimates, not hardware measurements or
   native performance evidence.
 - [Runtime Transfer Trace Index](RUNTIME_TRANSFER_TRACE_INDEX.md) binds that
-  planned transfer to concrete producer and consumer Runtime Execution Trace
-  steps, with schema at
+  planned backend-equivalence transfer to concrete producer and consumer
+  Runtime Execution Trace steps, with schema at
   `schemas/runtime_transfer_trace_index_report.v0.schema.json`, example
   `examples/runtime_transfer_trace_index.py`, and deterministic golden evidence
   at `tests/golden/runtime_transfer_trace_index/current_report.json`. The
-  index preserves the `transfer_not_materialized_as_runtime_step` boundary and
-  keeps residency, handles, raw values, and native performance claims blocked.
+  index is required by Runtime Evidence Matrix and Runtime Evidence Gate for
+  the systolic backend-equivalence proof slice while preserving the
+  `transfer_not_materialized_as_runtime_step` boundary and keeping residency,
+  handles, raw values, and native performance claims blocked.
 - [RFC 0212: Runtime Layout Conversion Evidence](../rfcs/0212-runtime-layout-conversion-evidence.md)
   defines the next optional data-only proof boundary for explicit planned layout
   transitions before any native converter, allocation handle, or real residency

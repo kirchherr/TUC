@@ -1,6 +1,6 @@
 """Emit Runtime Transfer Trace Index v0."""
 
-from examples.proof_of_systolic_execution import build_graph, proof_inputs
+from examples.runtime_backend_equivalence import build_graph, proof_inputs
 from tuc import SystolicArraySimulatorBackend, compile_graph
 from tuc.runtime.executor import execute_graph
 from tuc.runtime.transfer_evidence import build_runtime_transfer_evidence_report
