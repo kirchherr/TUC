@@ -47,6 +47,10 @@ This is still not physical transfer execution, device-residency evidence, or a
 performance claim. It is a digest-bound review check for the planned transfer
 trace boundary.
 
+The next consumer is Runtime Backend Equivalence Transfer Binding, which binds
+this verifier to the systolic Backend Equivalence report by metadata digest. See
+[RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING.md](RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING.md).
+
 ## Security Boundary
 
 The verifier must not accept source text, raw tensor values, tensor-value

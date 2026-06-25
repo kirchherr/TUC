@@ -156,6 +156,9 @@ Current runtime surfaces:
 - Runtime Transfer Trace Replay Verifier v0 replay-checking serialized Transfer
   Evidence and Transfer Trace Index reports by metadata digest without rerunning
   runtime execution or materializing transfer steps.
+- Runtime Backend Equivalence Transfer Binding v0 binding systolic backend
+  equivalence to verified transfer trace replay by metadata digest, proving the
+  same graph carries both terminal semantics and transfer-boundary evidence.
 - Runtime Layout Conversion Trace Index v0 binding planned `blocked -> row_major`
   transition evidence to concrete producer and consumer Runtime Execution Trace
   steps without materializing a converter step, now required by Runtime Evidence
@@ -195,6 +198,7 @@ examples/runtime_mixed_planning_explanation.py
 examples/runtime_transfer_evidence.py
 examples/runtime_transfer_trace_index.py
 examples/runtime_transfer_trace_replay_verifier.py
+examples/runtime_backend_equivalence_transfer_binding.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
 examples/source_intent_runtime_returns.py
@@ -231,6 +235,7 @@ Key docs:
 - [Runtime Transfer Evidence](docs/RUNTIME_TRANSFER_EVIDENCE.md)
 - [Runtime Transfer Trace Index](docs/RUNTIME_TRANSFER_TRACE_INDEX.md)
 - [Runtime Transfer Trace Replay Verifier](docs/RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md)
+- [Runtime Backend Equivalence Transfer Binding](docs/RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING.md)
 - [Runtime Layout Conversion Evidence](docs/RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md)
 - [Runtime Layout Conversion Trace Index](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
 - [Runtime Layout Conversion Trace Replay Verifier](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md)
@@ -263,6 +268,7 @@ schemas/runtime_planning_explanation_report.v0.schema.json
 schemas/runtime_transfer_evidence_report.v0.schema.json
 schemas/runtime_transfer_trace_index_report.v0.schema.json
 schemas/runtime_transfer_trace_replay_verifier_report.v0.schema.json
+schemas/runtime_backend_equivalence_transfer_binding_report.v0.schema.json
 schemas/runtime_layout_conversion_trace_index_report.v0.schema.json
 schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json
 schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json

@@ -120,6 +120,13 @@ hardware-independent interface into capability-driven runtime planning.
   `examples/runtime_transfer_trace_replay_verifier.py`, and deterministic
   golden evidence at
   `tests/golden/runtime_transfer_trace_replay_verifier/current_report.json`.
+- [Runtime Backend Equivalence Transfer Binding](RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING.md)
+  binds systolic Runtime Backend Equivalence to verified transfer trace replay
+  by metadata digest, with schema at
+  `schemas/runtime_backend_equivalence_transfer_binding_report.v0.schema.json`, example
+  `examples/runtime_backend_equivalence_transfer_binding.py`, and deterministic
+  golden evidence at
+  `tests/golden/runtime_backend_equivalence_transfer_binding/current_report.json`.
 - [Runtime Layout Conversion Trace Index](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
   now binds the mixed slice's planned `blocked -> row_major` conversion to
   producer and consumer Runtime Execution Trace step indexes, with schema at

@@ -102,6 +102,7 @@ Required artifacts:
 - `examples/runtime_transfer_evidence.py`
 - `examples/runtime_transfer_trace_index.py`
 - `examples/runtime_transfer_trace_replay_verifier.py`
+- `examples/runtime_backend_equivalence_transfer_binding.py`
 - `examples/runtime_layout_conversion_trace_index.py`
 - `examples/runtime_layout_conversion_trace_replay_verifier.py`
 - `examples/runtime_backend_equivalence_layout_binding.py`
@@ -120,6 +121,7 @@ Required artifacts:
 - `tests/golden/runtime_transfer_evidence/current_report.json`
 - `tests/golden/runtime_transfer_trace_index/current_report.json`
 - `tests/golden/runtime_transfer_trace_replay_verifier/current_report.json`
+- `tests/golden/runtime_backend_equivalence_transfer_binding/current_report.json`
 - `tests/golden/runtime_layout_conversion_trace_index/current_report.json`
 - `tests/golden/runtime_layout_conversion_trace_replay_verifier/current_report.json`
 - `tests/golden/runtime_backend_equivalence_layout_binding/current_report.json`
@@ -135,12 +137,14 @@ Required artifacts:
 - `docs/RUNTIME_TRANSFER_EVIDENCE.md`
 - `docs/RUNTIME_TRANSFER_TRACE_INDEX.md`
 - `docs/RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md`
+- `docs/RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING.md`
 - `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md`
 - `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md`
 - `docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md`
 - `schemas/runtime_transfer_evidence_report.v0.schema.json`
 - `schemas/runtime_transfer_trace_index_report.v0.schema.json`
 - `schemas/runtime_transfer_trace_replay_verifier_report.v0.schema.json`
+- `schemas/runtime_backend_equivalence_transfer_binding_report.v0.schema.json`
 - `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`
 - `schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`
 - `schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json`
@@ -271,6 +275,11 @@ Completed evidence:
   (`examples/runtime_transfer_trace_replay_verifier.py`) replay-checks
   serialized Transfer Evidence and Trace Index reports by metadata digest
   without re-running runtime execution or materializing transfer steps.
+- Runtime Backend Equivalence Transfer Binding v0
+  (`examples/runtime_backend_equivalence_transfer_binding.py`) binds the
+  systolic backend-equivalence report to verified transfer trace replay by
+  metadata digest, so terminal-output equivalence and transfer-boundary
+  evidence cannot drift apart for the systolic proof slice.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

@@ -100,10 +100,10 @@ The comparison may inspect runtime arrays inside the trusted in-process Runtime
 Executor boundary, but only shape, dtype, tolerance, status, backend sequence,
 and metadata digests are serialized.
 
-The layout binding is also metadata only. It accepts serialized JSON reports,
+The transfer binding and layout binding are also metadata only. It accepts serialized JSON reports,
 checks schema-versioned contracts, graph equality, raw-value policy, digest
-bindings, candidate backend diversity, and layout replay check count. It does
-not execute reports, materialize layout conversions, resolve handles, discover
+bindings, candidate backend diversity, and transfer/layout replay check counts. It does
+not execute reports, materialize transfers or layout conversions, resolve handles, discover
 backends, load plugins, access devices, or serialize raw values.
 
 The portfolio is also metadata only. It does not execute reports, resolve
@@ -120,3 +120,16 @@ values. It aggregates already-produced report metadata under bounded schemas.
   `systolic-sim` plus `vector-sim` placement.
 - Future backend classes should add similar equivalence fixtures before any
   stronger performance or portability claims are made.
+
+## Transfer Binding Companion
+
+Runtime Backend Equivalence Transfer Binding v0 binds the systolic fixture to
+Runtime Transfer Trace Replay Verifier evidence by metadata digest.
+
+- Schema: `schemas/runtime_backend_equivalence_transfer_binding_report.v0.schema.json`
+- Example: `examples/runtime_backend_equivalence_transfer_binding.py`
+- Golden: `tests/golden/runtime_backend_equivalence_transfer_binding/current_report.json`
+- Contract: `runtime_backend_equivalence_transfer_binding.data_only.v0`
+
+It remains metadata-only and does not execute reports, materialize transfers,
+resolve handles, access devices, or serialize raw tensor values.
