@@ -27,17 +27,25 @@ The canonical example is:
 
 ```bash
 python examples/runtime_transfer_evidence.py
+python examples/runtime_transfer_trace_index.py
 ```
 
-Its deterministic golden report is:
+The deterministic golden reports are:
 
 ```text
 tests/golden/runtime_transfer_evidence/current_report.json
+tests/golden/runtime_transfer_trace_index/current_report.json
 ```
 
 The current proof slice records the planned `device_sram -> host_ram` transfer
 from the systolic simulator proof without serializing tensor values or runtime
 handles.
+
+[Runtime Transfer Trace Index](RUNTIME_TRANSFER_TRACE_INDEX.md) binds the same
+planned transfer evidence to concrete producer and consumer
+`RuntimeExecutionTrace` steps, with schema
+`schemas/runtime_transfer_trace_index_report.v0.schema.json`, while preserving
+the `transfer_not_materialized_as_runtime_step` boundary.
 
 ## Security Boundary
 

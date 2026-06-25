@@ -25,6 +25,7 @@ execute_graph
   -> Runtime Evidence Replay Verifier
   -> Runtime Backend Equivalence
   -> Runtime Transfer Evidence
+  -> Runtime Transfer Trace Index
   -> Runtime Layout Conversion Evidence
   -> Runtime Layout Conversion Trace Index
   -> Runtime Layout Conversion Trace Replay Verifier
@@ -165,6 +166,14 @@ transfer bytes and planning-cost estimates visible while preserving the
 [RUNTIME_TRANSFER_EVIDENCE.md](RUNTIME_TRANSFER_EVIDENCE.md),
 `schemas/runtime_transfer_evidence_report.v0.schema.json`, and
 `examples/runtime_transfer_evidence.py`.
+
+`Runtime Transfer Trace Index` links those planned transfer records to
+concrete producer and consumer `RuntimeExecutionTrace` step indexes. It keeps
+transfer review aligned with execution order while preserving the
+`transfer_not_materialized_as_runtime_step` boundary. See
+[RUNTIME_TRANSFER_TRACE_INDEX.md](RUNTIME_TRANSFER_TRACE_INDEX.md),
+`schemas/runtime_transfer_trace_index_report.v0.schema.json`, and
+`examples/runtime_transfer_trace_index.py`.
 
 `Runtime Layout Conversion Evidence` is the current optional bridge between
 planned layout-conversion edges and reviewer-facing layout-transition evidence.
