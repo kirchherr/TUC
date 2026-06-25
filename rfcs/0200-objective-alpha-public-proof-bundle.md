@@ -6,8 +6,9 @@ Status: Accepted
 
 Add a digest-only public proof bundle for Objective Alpha. The bundle connects
 proof execution, runtime evidence matrix, runtime evidence gate, Runtime
-Execution Output Closure, Runtime Memory Planning Gate evidence, and research
-onboarding evidence into one deterministic JSON artifact.
+Execution Output Closure, Runtime Transfer Trace Replay Verifier, Runtime
+Backend Equivalence Transfer Binding, Runtime Memory Planning Gate evidence,
+and research onboarding evidence into one deterministic JSON artifact.
 
 ## Motivation
 

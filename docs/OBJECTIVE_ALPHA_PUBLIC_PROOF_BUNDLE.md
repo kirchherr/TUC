@@ -15,6 +15,8 @@ The bundle links these trusted in-repository evidence entry points:
 - `python examples/runtime_evidence_matrix.py`
 - `python examples/runtime_evidence_gate.py`
 - `python examples/runtime_execution_output_closure.py`
+- `python examples/runtime_transfer_trace_replay_verifier.py`
+- `python examples/runtime_backend_equivalence_transfer_binding.py`
 - `python examples/runtime_memory_planning_gate.py`
 - `python examples/research_onboarding_evidence.py`
 
@@ -32,9 +34,10 @@ backend execution, device access, or generated-artifact execution.
 ## Security Boundary
 
 The example runs only trusted in-repository proof/evidence builders, including
-Runtime Execution Output Closure and Runtime Memory Planning Gate as separate
-digest-only entries. The bundle model accepts only fixed evidence IDs, fixed
-entry points, fixed artifact kinds,
+Runtime Execution Output Closure, Runtime Transfer Trace Replay Verifier,
+Runtime Backend Equivalence Transfer Binding, and Runtime Memory Planning Gate
+as separate digest-only entries. The bundle model accepts only fixed evidence
+IDs, fixed entry points, fixed artifact kinds,
 passed status, digest-only raw output policy, and SHA-256 digests.
 
 Schema and fixtures:
@@ -43,4 +46,5 @@ Schema and fixtures:
 - Golden: `tests/golden/proofs/objective_alpha_public_proof_bundle.json`
 - Example: `examples/objective_alpha_public_proof_bundle.py`
 - Tests: `tests/test_objective_alpha_public_proof_bundle.py`
-- Decision: `rfcs/0206-objective-alpha-public-output-closure-entry.md`
+- Decisions: `rfcs/0206-objective-alpha-public-output-closure-entry.md`,
+  `rfcs/0226-objective-alpha-transfer-evidence-entries.md`

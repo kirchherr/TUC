@@ -6,6 +6,9 @@ from hashlib import sha256
 
 from examples.proof_of_execution import render_proof_report, run_proof
 from examples.research_onboarding_evidence import build_report as build_onboarding_report
+from examples.runtime_backend_equivalence_transfer_binding import (
+    build_report as build_backend_equivalence_transfer_binding_report,
+)
 from examples.runtime_evidence_gate import build_gate_report
 from examples.runtime_evidence_matrix import build_report as build_matrix_report
 from examples.runtime_execution_output_closure import (
@@ -13,6 +16,9 @@ from examples.runtime_execution_output_closure import (
 )
 from examples.runtime_memory_planning_gate import (
     build_gate_report as build_memory_planning_gate_report,
+)
+from examples.runtime_transfer_trace_replay_verifier import (
+    build_report as build_transfer_trace_replay_verifier_report,
 )
 from tuc import (
     ObjectiveAlphaPublicEvidenceEntry,
@@ -32,6 +38,10 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
     matrix_output = build_matrix_report()
     gate_output = build_gate_report()
     output_closure_output = build_output_closure_report()
+    transfer_trace_replay_output = build_transfer_trace_replay_verifier_report()
+    backend_equivalence_transfer_binding_output = (
+        build_backend_equivalence_transfer_binding_report()
+    )
     memory_planning_gate_output = build_memory_planning_gate_report()
     onboarding_output = build_onboarding_report()
     return build_objective_alpha_public_proof_bundle(
@@ -59,6 +69,18 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
                 entry_point="python examples/runtime_execution_output_closure.py",
                 artifact_kind="schema_versioned_output_closure_report",
                 metadata_digest=_digest_text(output_closure_output),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="runtime_transfer_trace_replay_verifier",
+                entry_point="python examples/runtime_transfer_trace_replay_verifier.py",
+                artifact_kind="schema_versioned_transfer_trace_replay_verifier_report",
+                metadata_digest=_digest_text(transfer_trace_replay_output),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="runtime_backend_equivalence_transfer_binding",
+                entry_point="python examples/runtime_backend_equivalence_transfer_binding.py",
+                artifact_kind="schema_versioned_backend_equivalence_transfer_binding_report",
+                metadata_digest=_digest_text(backend_equivalence_transfer_binding_output),
             ),
             ObjectiveAlphaPublicEvidenceEntry(
                 evidence_id="runtime_memory_planning_gate",

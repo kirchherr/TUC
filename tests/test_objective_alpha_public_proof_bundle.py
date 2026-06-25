@@ -56,6 +56,9 @@ def test_objective_alpha_public_bundle_binds_expected_evidence() -> None:
     assert [entry["artifact_kind"] for entry in payload["evidence_entries"]] == list(
         OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ARTIFACT_KINDS
     )
+    evidence_ids = [entry["evidence_id"] for entry in payload["evidence_entries"]]
+    assert "runtime_transfer_trace_replay_verifier" in evidence_ids
+    assert "runtime_backend_equivalence_transfer_binding" in evidence_ids
     assert len(str(payload["bundle_metadata_digest"])) == 64
 
 
@@ -154,7 +157,8 @@ def test_objective_alpha_public_bundle_schema_matches_contract() -> None:
     assert schema["properties"]["native_performance_claim"]["const"] is False
     assert schema["properties"]["broad_source_parser_claim"]["const"] is False
     assert schema["properties"]["vendor_replacement_claim"]["const"] is False
-    assert schema["properties"]["evidence_entries"]["maxItems"] == 6
+    assert schema["properties"]["evidence_entries"]["minItems"] == 8
+    assert schema["properties"]["evidence_entries"]["maxItems"] == 8
 
 
 def test_objective_alpha_public_bundle_schema_fails_closed() -> None:
