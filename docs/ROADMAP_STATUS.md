@@ -114,6 +114,18 @@ hardware-independent interface into capability-driven runtime planning.
   example `examples/runtime_layout_conversion_trace_replay_verifier.py`, and
   deterministic golden evidence at
   `tests/golden/runtime_layout_conversion_trace_replay_verifier/current_report.json`.
+- [Runtime Backend Equivalence Layout Binding](RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md)
+  binds mixed Runtime Backend Equivalence to verified layout trace replay by
+  metadata digest, with schema at
+  `schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json`,
+  example `examples/runtime_backend_equivalence_layout_binding.py`, and
+  deterministic golden evidence at
+  `tests/golden/runtime_backend_equivalence_layout_binding/current_report.json`.
+- Runtime Evidence Matrix and Runtime Evidence Gate now require both
+  `runtime_layout_conversion_trace_replay_verifier_mixed` and
+  `runtime_backend_equivalence_layout_binding_mixed` for
+  `runtime_mixed_backend_equivalence`, closing the graph-scoped chain from
+  mixed terminal-output equivalence to layout-transition replay evidence.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
   Execution Output Closure, Runtime Memory Planning Gate, and onboarding

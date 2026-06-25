@@ -316,6 +316,8 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "runtime_hs_ir_plan_alignment",
     "runtime_layout_conversion_evidence",
     "runtime_layout_conversion_trace_index",
+    "runtime_layout_conversion_trace_replay_verifier",
+    "runtime_backend_equivalence_layout_binding",
     "runtime_buffer_lifetime",
     "runtime_allocation_plan",
     "runtime_memory_budget",
@@ -1468,6 +1470,14 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                         "runtime_layout_conversion_trace_index",
                         "runtime_layout_conversion_trace_index_mixed",
                     ),
+                    _runtime_evidence_artifact(
+                        "runtime_layout_conversion_trace_replay_verifier",
+                        "runtime_layout_conversion_trace_replay_verifier_mixed",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_backend_equivalence_layout_binding",
+                        "runtime_backend_equivalence_layout_binding_mixed",
+                    ),
                 ),
                 required_artifact_kinds=(
                     "backend_equivalence",
@@ -1475,6 +1485,8 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     "runtime_hs_ir_plan_alignment",
                     "runtime_layout_conversion_evidence",
                     "runtime_layout_conversion_trace_index",
+                    "runtime_layout_conversion_trace_replay_verifier",
+                    "runtime_backend_equivalence_layout_binding",
                 ),
             ),
             RuntimeEvidenceGraph(

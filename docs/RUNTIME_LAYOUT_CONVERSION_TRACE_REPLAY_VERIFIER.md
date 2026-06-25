@@ -43,6 +43,10 @@ invocation. This verifier makes the same layout-conversion trace boundary
 reviewable from serialized metadata, just like Runtime Evidence Replay Verifier
 does for execution bundle and output closure evidence.
 
+The next consumer is Runtime Backend Equivalence Layout Binding, which binds
+this verifier to the mixed Backend Equivalence report by metadata digest. See
+[RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md](RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md).
+
 ## Security Boundary
 
 The verifier must not accept source text, raw tensor values, tensor-value

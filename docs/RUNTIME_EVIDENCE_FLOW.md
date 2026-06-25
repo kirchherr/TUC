@@ -24,6 +24,10 @@ execute_graph
   -> Runtime Execution Output Closure
   -> Runtime Evidence Replay Verifier
   -> Runtime Backend Equivalence
+  -> Runtime Layout Conversion Evidence
+  -> Runtime Layout Conversion Trace Index
+  -> Runtime Layout Conversion Trace Replay Verifier
+  -> Runtime Backend Equivalence Layout Binding
   -> Runtime Planning Explanation
   -> Runtime Evidence Gate
 ```
@@ -173,6 +177,14 @@ Layout Conversion Evidence and Trace Index reports by metadata digest only. See
 [RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md](RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md),
 `schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`, and
 `examples/runtime_layout_conversion_trace_replay_verifier.py`.
+
+`Runtime Backend Equivalence Layout Binding` binds the mixed Runtime Backend
+Equivalence report to the verified Layout Conversion Trace Replay Verifier by
+metadata digest. It makes the mixed proof slice carry both terminal-output
+semantics and layout-transition evidence for the same graph. See
+[RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md](RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md),
+`schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json`, and
+`examples/runtime_backend_equivalence_layout_binding.py`.
 
 `Runtime Evidence Replay Verifier` replays serialized Runtime Execution Evidence
 Bundle and Runtime Execution Output Closure reports by metadata digest only. See

@@ -59,6 +59,8 @@ jobs:
         run: python examples/runtime_layout_conversion_trace_index.py
       - name: Runtime layout conversion trace replay verifier
         run: python examples/runtime_layout_conversion_trace_replay_verifier.py
+      - name: Runtime backend equivalence layout binding
+        run: python examples/runtime_backend_equivalence_layout_binding.py
       - name: Proof of backend equivalence
         run: python examples/proof_of_backend_equivalence.py
       - name: Backend author evidence gate

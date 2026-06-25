@@ -101,6 +101,7 @@ Required artifacts:
 - `examples/runtime_hs_ir_plan_alignment.py`
 - `examples/runtime_layout_conversion_trace_index.py`
 - `examples/runtime_layout_conversion_trace_replay_verifier.py`
+- `examples/runtime_backend_equivalence_layout_binding.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
@@ -115,6 +116,7 @@ Required artifacts:
 - `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`
 - `tests/golden/runtime_layout_conversion_trace_index/current_report.json`
 - `tests/golden/runtime_layout_conversion_trace_replay_verifier/current_report.json`
+- `tests/golden/runtime_backend_equivalence_layout_binding/current_report.json`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -126,8 +128,10 @@ Required artifacts:
 - `docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md`
 - `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md`
 - `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md`
+- `docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md`
 - `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`
 - `schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`
+- `schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json`
 
 Completed evidence:
 
@@ -244,6 +248,11 @@ Completed evidence:
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata
   digest without re-running runtime execution or materializing converter steps.
+- Runtime Backend Equivalence Layout Binding v0
+  (`examples/runtime_backend_equivalence_layout_binding.py`) binds the mixed
+  backend-equivalence report to verified layout trace replay by metadata digest,
+  so terminal-output equivalence and layout-transition evidence cannot drift
+  apart for the mixed accelerator proof slice.
 - Runtime HS-IR Plan Alignment binds HS-IR backend/layout decisions to the
   accepted `PartitionPlan` and observed `RuntimeExecutionTrace` for the mixed
   accelerator proof slice without serializing tensor values or adding

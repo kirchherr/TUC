@@ -17,9 +17,13 @@ keeping tensor values out of serialized evidence.
 - Report schema: `schemas/runtime_backend_equivalence_report.v0.schema.json`
 - Portfolio schema:
   `schemas/runtime_backend_equivalence_portfolio_report.v0.schema.json`
+- Layout binding schema:
+  `schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json`
 - Report schema version: `tuc.runtime_backend_equivalence_report.v0`
 - Evidence contract: `runtime_backend_equivalence.data_only.v0`
 - Portfolio contract: `runtime_backend_equivalence_portfolio.data_only.v0`
+- Layout binding contract:
+  `runtime_backend_equivalence_layout_binding.data_only.v0`
 - Executor contract: `runtime_executor.trusted_backend.v0`
 - Trusted executor registry: `trusted_runtime_executor_registry.v0`
 - Raw value policy: `omitted_by_policy`
@@ -50,6 +54,7 @@ The deterministic example is:
 python examples/runtime_backend_equivalence.py
 python examples/runtime_vector_backend_equivalence.py
 python examples/runtime_mixed_backend_equivalence.py
+python examples/runtime_backend_equivalence_layout_binding.py
 python examples/runtime_backend_equivalence_portfolio.py
 python examples/proof_of_backend_equivalence.py
 ```
@@ -60,6 +65,7 @@ Their golden evidence is:
 tests/golden/runtime_backend_equivalence/current_report.json
 tests/golden/runtime_backend_equivalence/vector_sim_report.json
 tests/golden/runtime_backend_equivalence/mixed_accelerators.json
+tests/golden/runtime_backend_equivalence_layout_binding/current_report.json
 tests/golden/runtime_backend_equivalence/portfolio_report.json
 tests/golden/proofs/proof_of_backend_equivalence.json
 ```
@@ -70,6 +76,12 @@ binds the primary fixture to the expected `reference_cpu` baseline and
 `reference_cpu` baseline and `vector_sim` candidate placement, and binds the
 mixed fixture to the expected `reference_cpu` baseline and `mixed_accelerators`
 candidate placement.
+
+Runtime Backend Equivalence Layout Binding v0 binds the mixed fixture to the
+Runtime Layout Conversion Trace Replay Verifier report by metadata digest. This
+keeps the mixed `systolic-sim + vector-sim` proof slice honest: the same graph
+must carry both matched terminal-output semantics and verified layout-transition
+evidence before Runtime Evidence Gate accepts the mixed slice.
 
 Runtime Backend Equivalence Portfolio v0 aggregates those three fixtures into
 one backend-diversity review artifact. The portfolio records each slice's graph,
@@ -87,6 +99,12 @@ backend artifacts.
 The comparison may inspect runtime arrays inside the trusted in-process Runtime
 Executor boundary, but only shape, dtype, tolerance, status, backend sequence,
 and metadata digests are serialized.
+
+The layout binding is also metadata only. It accepts serialized JSON reports,
+checks schema-versioned contracts, graph equality, raw-value policy, digest
+bindings, candidate backend diversity, and layout replay check count. It does
+not execute reports, materialize layout conversions, resolve handles, discover
+backends, load plugins, access devices, or serialize raw values.
 
 The portfolio is also metadata only. It does not execute reports, resolve
 artifact IDs, discover backends, load plugins, access devices, or serialize raw

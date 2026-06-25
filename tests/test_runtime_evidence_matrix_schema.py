@@ -21,9 +21,7 @@ def test_runtime_evidence_matrix_schema_matches_runtime_contract() -> None:
     schema = _load_schema()
 
     assert schema["$schema"] == "https://json-schema.org/draft/2020-12/schema"
-    assert schema["$id"].endswith(
-        "/schemas/runtime_evidence_matrix_report.v0.schema.json"
-    )
+    assert schema["$id"].endswith("/schemas/runtime_evidence_matrix_report.v0.schema.json")
     assert schema["additionalProperties"] is False
     assert schema["properties"]["schema_version"]["const"] == (
         RUNTIME_EVIDENCE_MATRIX_REPORT_SCHEMA_VERSION
@@ -31,21 +29,15 @@ def test_runtime_evidence_matrix_schema_matches_runtime_contract() -> None:
     assert schema["properties"]["artifact_status"]["const"] == (
         RUNTIME_EVIDENCE_MATRIX_ARTIFACT_STATUS
     )
-    assert schema["properties"]["evidence_contract"]["const"] == (
-        RUNTIME_EVIDENCE_MATRIX_CONTRACT
-    )
+    assert schema["properties"]["evidence_contract"]["const"] == (RUNTIME_EVIDENCE_MATRIX_CONTRACT)
     assert schema["properties"]["graphs"]["maxItems"] == 64
     assert schema["$defs"]["graph"]["properties"]["artifacts"]["maxItems"] == 32
-    assert schema["$defs"]["artifact_kind"]["enum"] == list(
-        RUNTIME_EVIDENCE_ARTIFACT_KINDS
-    )
+    assert schema["$defs"]["artifact_kind"]["enum"] == list(RUNTIME_EVIDENCE_ARTIFACT_KINDS)
     assert schema["$defs"]["graph"]["properties"]["source_boundary"]["enum"] == list(
         RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES
     )
     assert "required_artifact_kinds" in schema["$defs"]["graph"]["required"]
-    assert schema["$defs"]["graph"]["properties"]["required_artifact_kinds"][
-        "minItems"
-    ] == 1
+    assert schema["$defs"]["graph"]["properties"]["required_artifact_kinds"]["minItems"] == 1
 
 
 def test_runtime_evidence_matrix_schema_fails_closed() -> None:
@@ -68,9 +60,7 @@ def test_runtime_evidence_matrix_schema_fails_closed() -> None:
         assert forbidden not in schema["$defs"]["artifact"]["properties"]
     assert "python_source" in schema["$defs"]["report_text"]["not"]["enum"]
     assert "plugin_entrypoint" in schema["$defs"]["report_text"]["not"]["enum"]
-    assert schema["$defs"]["report_text"]["pattern"] == (
-        "^[A-Za-z][A-Za-z0-9_.-]*$"
-    )
+    assert schema["$defs"]["report_text"]["pattern"] == ("^[A-Za-z][A-Za-z0-9_.-]*$")
 
 
 def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
@@ -81,9 +71,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
     assert golden["schema_version"] == RUNTIME_EVIDENCE_MATRIX_REPORT_SCHEMA_VERSION
     assert golden["artifact_status"] == RUNTIME_EVIDENCE_MATRIX_ARTIFACT_STATUS
     assert golden["evidence_contract"] == RUNTIME_EVIDENCE_MATRIX_CONTRACT
-    assert golden["required_artifact_kinds"] == list(
-        RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
-    )
+    assert golden["required_artifact_kinds"] == list(RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS)
     assert golden["runtime_evidence_matrix_complete"] is True
     assert golden["graph_count"] == len(golden["graphs"]) == 12
     assert golden["issues"] == []
@@ -91,8 +79,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
     graphs = {graph["graph_id"]: graph for graph in golden["graphs"]}
     assert graphs["source_intent_return_mlp"]["runtime_evidence_complete"] is True
     assert {
-        artifact["artifact_kind"]
-        for artifact in graphs["source_intent_return_mlp"]["artifacts"]
+        artifact["artifact_kind"] for artifact in graphs["source_intent_return_mlp"]["artifacts"]
     } >= {
         "source_intent_return_semantics",
         "source_intent_runtime_returns",
@@ -110,6 +97,8 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "runtime_hs_ir_plan_alignment",
         "runtime_layout_conversion_evidence",
         "runtime_layout_conversion_trace_index",
+        "runtime_layout_conversion_trace_replay_verifier",
+        "runtime_backend_equivalence_layout_binding",
     ]
     assert {
         artifact["artifact_kind"]
@@ -120,10 +109,10 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "runtime_hs_ir_plan_alignment",
         "runtime_layout_conversion_evidence",
         "runtime_layout_conversion_trace_index",
+        "runtime_layout_conversion_trace_replay_verifier",
+        "runtime_backend_equivalence_layout_binding",
     }
-    assert graphs["runtime_backend_equivalence_portfolio"][
-        "required_artifact_kinds"
-    ] == [
+    assert graphs["runtime_backend_equivalence_portfolio"]["required_artifact_kinds"] == [
         "backend_equivalence_portfolio",
         "backend_equivalence_portfolio_policy",
     ]
@@ -144,8 +133,7 @@ def test_runtime_evidence_matrix_golden_matches_schema_shape() -> None:
         "backend_equivalence_portfolio_policy",
     }
     assert {
-        artifact["artifact_kind"]
-        for artifact in graphs["runtime_memory_planning"]["artifacts"]
+        artifact["artifact_kind"] for artifact in graphs["runtime_memory_planning"]["artifacts"]
     } == {
         "runtime_buffer_lifetime",
         "runtime_allocation_plan",

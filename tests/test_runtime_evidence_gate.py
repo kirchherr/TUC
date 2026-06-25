@@ -10,6 +10,7 @@ import pytest
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
 from examples.runtime_evidence_gate import (
     RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING_MATRIX_ARTIFACT_ID,
     RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
     RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
@@ -17,6 +18,7 @@ from examples.runtime_evidence_gate import (
     RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
     RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID,
     RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID,
+    RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER_MATRIX_ARTIFACT_ID,
     RUNTIME_MEMORY_PLANNING_GRAPH_ID,
     RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS,
     RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS,
@@ -141,57 +143,39 @@ def test_runtime_evidence_gate_example_runs() -> None:
         f'"{RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID}"'
     ) in completed.stdout
     assert (
-        'runtime_planning_explanation_backend_sequence = '
-        '"systolic-sim,reference-cpu"'
+        'runtime_planning_explanation_backend_sequence = "systolic-sim,reference-cpu"'
     ) in completed.stdout
     assert (
-        'runtime_planning_explanation_selection_kinds = '
-        '"fallback,preferred_for"'
+        'runtime_planning_explanation_selection_kinds = "fallback,preferred_for"'
     ) in completed.stdout
     assert 'runtime_planning_explanation_movement_bytes = "32"' in completed.stdout
     assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
-    assert (
-        'runtime_vector_backend_equivalence_binding = "verified"'
-        in completed.stdout
-    )
-    assert (
-        'runtime_vector_backend_equivalence_matrix = "covered"'
-        in completed.stdout
-    )
+    assert 'runtime_vector_backend_equivalence_binding = "verified"' in completed.stdout
+    assert 'runtime_vector_backend_equivalence_matrix = "covered"' in completed.stdout
     assert (
         "runtime_vector_backend_equivalence_matrix_artifact = "
         f'"{RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
     ) in completed.stdout
     assert 'runtime_mixed_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_mixed_backend_equivalence_binding = "verified"' in completed.stdout
-    assert (
-        'runtime_mixed_backend_equivalence_matrix = "covered"'
-        in completed.stdout
-    )
+    assert 'runtime_mixed_backend_equivalence_matrix = "covered"' in completed.stdout
     assert (
         "runtime_mixed_backend_equivalence_matrix_artifact = "
         f'"{RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
     ) in completed.stdout
     assert 'runtime_mixed_planning_explanation = "passed"' in completed.stdout
-    assert (
-        'runtime_mixed_planning_explanation_binding = "verified"'
-        in completed.stdout
-    )
-    assert (
-        'runtime_mixed_planning_explanation_matrix = "covered"'
-        in completed.stdout
-    )
+    assert 'runtime_mixed_planning_explanation_binding = "verified"' in completed.stdout
+    assert 'runtime_mixed_planning_explanation_matrix = "covered"' in completed.stdout
     assert (
         "runtime_mixed_planning_explanation_matrix_artifact = "
         f'"{RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID}"'
     ) in completed.stdout
     assert (
-        'runtime_mixed_planning_explanation_backend_sequence = '
+        "runtime_mixed_planning_explanation_backend_sequence = "
         '"systolic-sim,vector-sim,vector-sim,vector-sim"'
     ) in completed.stdout
     assert (
-        'runtime_mixed_planning_explanation_selection_kinds = '
-        '"preferred_for"'
+        'runtime_mixed_planning_explanation_selection_kinds = "preferred_for"'
     ) in completed.stdout
     assert 'runtime_mixed_planning_explanation_movement_bytes = "24"' in completed.stdout
     assert 'runtime_hs_ir_plan_alignment = "passed"' in completed.stdout
@@ -203,7 +187,7 @@ def test_runtime_evidence_gate_example_runs() -> None:
     ) in completed.stdout
     assert 'runtime_hs_ir_plan_alignment_steps = "4"' in completed.stdout
     assert (
-        'runtime_hs_ir_plan_alignment_backend_sequence = '
+        "runtime_hs_ir_plan_alignment_backend_sequence = "
         '"systolic-sim,vector-sim,vector-sim,vector-sim"'
     ) in completed.stdout
     assert 'runtime_layout_conversion_evidence = "passed"' in completed.stdout
@@ -226,40 +210,38 @@ def test_runtime_evidence_gate_example_runs() -> None:
         'runtime_layout_conversion_trace_index_materialization = "'
         'conversion_not_materialized_as_runtime_step"'
     ) in completed.stdout
-    assert 'runtime_layout_conversion_digest_binding = "passed"' in completed.stdout
+    assert 'runtime_layout_conversion_trace_replay_verifier = "passed"' in completed.stdout
+    assert 'runtime_layout_conversion_trace_replay_binding = "verified"' in completed.stdout
     assert (
-        'runtime_layout_conversion_digest_binding_consistency = "verified"'
-        in completed.stdout
-    )
+        "runtime_layout_conversion_trace_replay_matrix_artifact = "
+        f'"{RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_layout_conversion_trace_replay_checks = "6"' in completed.stdout
+    assert 'runtime_backend_equivalence_layout_binding = "passed"' in completed.stdout
+    assert (
+        "runtime_backend_equivalence_layout_binding_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_backend_equivalence_layout_binding_checks = "8"' in completed.stdout
+    assert 'runtime_backend_equivalence_layout_binding_candidate_backends = "2"' in completed.stdout
+    assert 'runtime_layout_conversion_digest_binding = "passed"' in completed.stdout
+    assert 'runtime_layout_conversion_digest_binding_consistency = "verified"' in completed.stdout
     assert 'runtime_layout_conversion_digest_binding_rows = "1"' in completed.stdout
     assert 'runtime_layout_conversion_gate_readiness = "ready"' in completed.stdout
     assert 'runtime_layout_conversion_promotion_policy = "accepted"' in completed.stdout
     assert 'runtime_layout_conversion_gate_enforcement = "enabled"' in completed.stdout
     assert 'runtime_backend_equivalence_portfolio = "passed"' in completed.stdout
+    assert 'runtime_backend_equivalence_portfolio_binding = "verified"' in completed.stdout
     assert (
-        'runtime_backend_equivalence_portfolio_binding = "verified"'
-        in completed.stdout
-    )
-    assert (
-        'runtime_backend_equivalence_portfolio_backend_families = '
-        '"systolic-sim,vector-sim"'
+        'runtime_backend_equivalence_portfolio_backend_families = "systolic-sim,vector-sim"'
     ) in completed.stdout
-    assert (
-        'runtime_backend_equivalence_portfolio_matrix = "covered"'
-        in completed.stdout
-    )
+    assert 'runtime_backend_equivalence_portfolio_matrix = "covered"' in completed.stdout
     assert (
         "runtime_backend_equivalence_portfolio_matrix_artifacts = "
         f'"{",".join(RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS)}"'
     ) in completed.stdout
-    assert (
-        'runtime_backend_equivalence_portfolio_policy = "accepted"'
-        in completed.stdout
-    )
-    assert (
-        'runtime_backend_equivalence_portfolio_policy_binding = "verified"'
-        in completed.stdout
-    )
+    assert 'runtime_backend_equivalence_portfolio_policy = "accepted"' in completed.stdout
+    assert 'runtime_backend_equivalence_portfolio_policy_binding = "verified"' in completed.stdout
     assert 'runtime_memory_planning_gate = "passed"' in completed.stdout
     assert 'runtime_memory_planning_matrix = "covered"' in completed.stdout
     assert (
@@ -1030,10 +1012,10 @@ def test_runtime_evidence_gate_rejects_wrong_backend_portfolio_matrix_artifact_i
 def test_runtime_evidence_gate_rejects_failed_runtime_memory_planning_gate() -> None:
     failed_gate = (
         "runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {\n"
-        "  buffer_lifetime = \"passed\"\n"
-        "  allocation_plan = \"passed\"\n"
-        "  memory_budget = \"passed\"\n"
-        "  status = \"WARN\"\n"
+        '  buffer_lifetime = "passed"\n'
+        '  allocation_plan = "passed"\n'
+        '  memory_budget = "passed"\n'
+        '  status = "WARN"\n'
         "}\n"
     )
 
@@ -1049,9 +1031,7 @@ def test_runtime_evidence_gate_rejects_missing_memory_planning_matrix_graph() ->
     without_memory_planning = build_runtime_evidence_matrix_report(
         "runtime_evidence_gate_missing_memory_planning_graph",
         tuple(
-            graph
-            for graph in report.graphs
-            if graph.graph_id != RUNTIME_MEMORY_PLANNING_GRAPH_ID
+            graph for graph in report.graphs if graph.graph_id != RUNTIME_MEMORY_PLANNING_GRAPH_ID
         ),
     )
 
@@ -1373,12 +1353,8 @@ def test_runtime_evidence_gate_rejects_failed_execution_output_closure() -> None
     )
     failed_report = RuntimeExecutionOutputClosureReport(
         graph_name=report.graph_name,
-        source_output_contract_schema_version=(
-            report.source_output_contract_schema_version
-        ),
-        source_output_contract_metadata_digest=(
-            report.source_output_contract_metadata_digest
-        ),
+        source_output_contract_schema_version=(report.source_output_contract_schema_version),
+        source_output_contract_metadata_digest=(report.source_output_contract_metadata_digest),
         source_output_contract_item_count=report.source_output_contract_item_count,
         source_output_contract_passed=report.source_output_contract_passed,
         source_public_output_bundle_schema_version=(
@@ -1387,16 +1363,10 @@ def test_runtime_evidence_gate_rejects_failed_execution_output_closure() -> None
         source_public_output_bundle_metadata_digest=(
             report.source_public_output_bundle_metadata_digest
         ),
-        source_public_output_bundle_item_count=(
-            report.source_public_output_bundle_item_count
-        ),
+        source_public_output_bundle_item_count=(report.source_public_output_bundle_item_count),
         source_public_output_bundle_passed=report.source_public_output_bundle_passed,
-        source_execution_receipt_schema_version=(
-            report.source_execution_receipt_schema_version
-        ),
-        source_execution_receipt_metadata_digest=(
-            report.source_execution_receipt_metadata_digest
-        ),
+        source_execution_receipt_schema_version=(report.source_execution_receipt_schema_version),
+        source_execution_receipt_metadata_digest=(report.source_execution_receipt_metadata_digest),
         source_execution_receipt_passed=report.source_execution_receipt_passed,
         source_execution_evidence_bundle_schema_version=(
             report.source_execution_evidence_bundle_schema_version
@@ -1404,9 +1374,7 @@ def test_runtime_evidence_gate_rejects_failed_execution_output_closure() -> None
         source_execution_evidence_bundle_metadata_digest=(
             report.source_execution_evidence_bundle_metadata_digest
         ),
-        source_execution_evidence_bundle_passed=(
-            report.source_execution_evidence_bundle_passed
-        ),
+        source_execution_evidence_bundle_passed=(report.source_execution_evidence_bundle_passed),
         source_bundle_execution_receipt_metadata_digest=(
             report.source_bundle_execution_receipt_metadata_digest
         ),

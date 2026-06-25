@@ -36,21 +36,15 @@ from tuc import (
     runtime_evidence_gate_matrix_coverage_report_to_dict,
 )
 
-GOLDEN_PATH = Path(
-    "tests/golden/proofs/runtime_evidence_gate_matrix_coverage_report.json"
-)
-SCHEMA_PATH = Path(
-    "schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json"
-)
+GOLDEN_PATH = Path("tests/golden/proofs/runtime_evidence_gate_matrix_coverage_report.json")
+SCHEMA_PATH = Path("schemas/runtime_evidence_gate_matrix_coverage_report.v0.schema.json")
 
 
 def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
     report = build_gate_matrix_coverage_report()
 
     assert report.coverage_contract == RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_CONTRACT
-    assert report.artifact_status == (
-        RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ARTIFACT_STATUS
-    )
+    assert report.artifact_status == (RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ARTIFACT_STATUS)
     assert report.matrix_complete
     assert report.coverage_passed
     assert report.binding_count == 5
@@ -63,9 +57,9 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
         "runtime_backend_equivalence_portfolio_matrix",
         "runtime_memory_planning_matrix",
     )
-    systolic = {
-        binding.binding_id: binding for binding in report.bindings
-    }["runtime_backend_equivalence_matrix"]
+    systolic = {binding.binding_id: binding for binding in report.bindings}[
+        "runtime_backend_equivalence_matrix"
+    ]
     assert systolic.required_artifact_kinds == (
         RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_REQUIRED_ARTIFACTS
     )
@@ -75,34 +69,26 @@ def test_runtime_evidence_gate_matrix_coverage_matches_current_gate() -> None:
     assert systolic.observed_artifact_ids == (
         RUNTIME_BACKEND_EQUIVALENCE_SYSTOLIC_MATRIX_ARTIFACT_IDS
     )
-    mixed = {
-        binding.binding_id: binding for binding in report.bindings
-    }["runtime_mixed_backend_equivalence_matrix"]
+    mixed = {binding.binding_id: binding for binding in report.bindings}[
+        "runtime_mixed_backend_equivalence_matrix"
+    ]
     assert mixed.required_artifact_kinds == (
         "backend_equivalence",
         "runtime_planning_explanation",
         "runtime_hs_ir_plan_alignment",
         "runtime_layout_conversion_evidence",
         "runtime_layout_conversion_trace_index",
+        "runtime_layout_conversion_trace_replay_verifier",
+        "runtime_backend_equivalence_layout_binding",
     )
-    assert mixed.expected_artifact_ids == (
-        RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS
-    )
-    assert mixed.observed_artifact_ids == (
-        RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS
-    )
-    memory = {
-        binding.binding_id: binding for binding in report.bindings
-    }["runtime_memory_planning_matrix"]
-    assert memory.required_artifact_kinds == (
-        RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS
-    )
-    assert memory.expected_artifact_ids == (
-        RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS
-    )
-    assert memory.observed_artifact_ids == (
-        RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS
-    )
+    assert mixed.expected_artifact_ids == (RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS)
+    assert mixed.observed_artifact_ids == (RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_IDS)
+    memory = {binding.binding_id: binding for binding in report.bindings}[
+        "runtime_memory_planning_matrix"
+    ]
+    assert memory.required_artifact_kinds == (RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS)
+    assert memory.expected_artifact_ids == (RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS)
+    assert memory.observed_artifact_ids == (RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS)
     assert tuple(runtime_evidence_gate_matrix_coverage_report_to_dict(report)) == (
         "artifact_status",
         "binding_count",
@@ -141,6 +127,8 @@ def test_runtime_evidence_gate_matrix_coverage_example_runs() -> None:
     assert "runtime_hs_ir_plan_alignment_mixed" in completed.stdout
     assert "runtime_layout_conversion_evidence_mixed" in completed.stdout
     assert "runtime_layout_conversion_trace_index_mixed" in completed.stdout
+    assert "runtime_layout_conversion_trace_replay_verifier_mixed" in completed.stdout
+    assert "runtime_backend_equivalence_layout_binding_mixed" in completed.stdout
     assert "runtime_backend_equivalence_portfolio_policy" in completed.stdout
     assert "runtime_buffer_lifetime_current" in completed.stdout
     assert "runtime_allocation_request_manifest_current" in completed.stdout
@@ -179,12 +167,10 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_artifact_id() -> No
     )
 
     assert not report.coverage_passed
-    assert report.issues == (
-        "runtime_mixed_backend_equivalence_matrix.artifact_id_mismatch",
-    )
-    mixed = {
-        binding.binding_id: binding for binding in report.bindings
-    }["runtime_mixed_backend_equivalence_matrix"]
+    assert report.issues == ("runtime_mixed_backend_equivalence_matrix.artifact_id_mismatch",)
+    mixed = {binding.binding_id: binding for binding in report.bindings}[
+        "runtime_mixed_backend_equivalence_matrix"
+    ]
     assert mixed.coverage_status == "failed"
     assert mixed.observed_artifact_ids == (
         "runtime_backend_equivalence_other",
@@ -192,6 +178,8 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_artifact_id() -> No
         "runtime_hs_ir_plan_alignment_mixed",
         "runtime_layout_conversion_evidence_mixed",
         "runtime_layout_conversion_trace_index_mixed",
+        "runtime_layout_conversion_trace_replay_verifier_mixed",
+        "runtime_backend_equivalence_layout_binding_mixed",
     )
 
 
@@ -225,9 +213,7 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_wrong_memory_artifact_id(
     )
 
     assert not report.coverage_passed
-    assert report.issues == (
-        "runtime_memory_planning_matrix.artifact_id_mismatch",
-    )
+    assert report.issues == ("runtime_memory_planning_matrix.artifact_id_mismatch",)
 
 
 def test_runtime_evidence_gate_matrix_coverage_rejects_missing_portfolio_graph() -> None:
@@ -248,9 +234,7 @@ def test_runtime_evidence_gate_matrix_coverage_rejects_missing_portfolio_graph()
     )
 
     assert not report.coverage_passed
-    assert report.issues == (
-        "runtime_backend_equivalence_portfolio_matrix.graph_missing",
-    )
+    assert report.issues == ("runtime_backend_equivalence_portfolio_matrix.graph_missing",)
 
 
 def test_runtime_evidence_gate_matrix_coverage_rejects_duplicate_binding_id() -> None:
@@ -331,20 +315,22 @@ def test_runtime_evidence_gate_matrix_coverage_schema_matches_contract() -> None
         list(RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_STATUSES)
     )
     assert [
-        item["const"]
-        for item in schema["properties"]["blocked_execution_surfaces"]["prefixItems"]
+        item["const"] for item in schema["properties"]["blocked_execution_surfaces"]["prefixItems"]
     ] == list(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)
-    required_kind_enum = schema["$defs"]["binding"]["properties"][
-        "required_artifact_kinds"
-    ]["items"]["enum"]
+    required_kind_enum = schema["$defs"]["binding"]["properties"]["required_artifact_kinds"][
+        "items"
+    ]["enum"]
     assert "runtime_planning_explanation" in required_kind_enum
     assert "runtime_memory_budget" in required_kind_enum
     assert "runtime_layout_conversion_evidence" in required_kind_enum
     assert "runtime_layout_conversion_trace_index" in required_kind_enum
+    assert "runtime_layout_conversion_trace_replay_verifier" in required_kind_enum
+    assert "runtime_backend_equivalence_layout_binding" in required_kind_enum
     assert "runtime_allocation_request_manifest" in required_kind_enum
-    assert "runtime_memory_planning" in schema["$defs"]["binding"][
-        "properties"
-    ]["source_boundary"]["enum"]
+    assert (
+        "runtime_memory_planning"
+        in schema["$defs"]["binding"]["properties"]["source_boundary"]["enum"]
+    )
 
 
 def test_runtime_evidence_gate_matrix_coverage_schema_fails_closed() -> None:
@@ -377,20 +363,14 @@ def test_runtime_evidence_gate_matrix_coverage_golden_matches_schema() -> None:
     golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
 
     assert sorted(golden) == sorted(schema["required"])
-    assert golden["schema_version"] == (
-        RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_REPORT_SCHEMA_VERSION
-    )
-    assert golden["artifact_status"] == (
-        RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ARTIFACT_STATUS
-    )
+    assert golden["schema_version"] == (RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_REPORT_SCHEMA_VERSION)
+    assert golden["artifact_status"] == (RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ARTIFACT_STATUS)
     assert golden["coverage_contract"] == RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_CONTRACT
     assert golden["coverage_passed"] is True
     assert golden["matrix_complete"] is True
     assert golden["binding_count"] == len(golden["bindings"]) == 5
     assert golden["issues"] == []
-    assert golden["blocked_execution_surfaces"] == list(
-        RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
-    )
+    assert golden["blocked_execution_surfaces"] == list(RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES)
 
 
 def test_runtime_evidence_gate_matrix_coverage_schema_is_referenced() -> None:

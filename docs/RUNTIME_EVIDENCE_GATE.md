@@ -13,7 +13,9 @@ plus Source Intent Runtime Returns evidence for the frontend return boundary.
 The CI runtime evidence path also runs `examples/runtime_evidence_replay_verifier.py`
 as a companion replay check over serialized Bundle and Output Closure reports,
 and `examples/runtime_layout_conversion_trace_replay_verifier.py` as a companion
-replay check over serialized Layout Conversion Evidence and Trace Index reports.
+replay check over serialized Layout Conversion Evidence and Trace Index reports,
+and `examples/runtime_backend_equivalence_layout_binding.py` as a companion
+binding check over serialized Mixed Backend Equivalence and Layout Trace Replay reports.
 Source Intent Runtime Returns must also be bound to the curated
 Runtime Evidence Matrix graph that inventories the same frontend-originated
 fixture.
@@ -30,6 +32,8 @@ It runs:
 - `examples/runtime_hs_ir_plan_alignment.py`
 - `examples/runtime_layout_conversion_evidence.py`
 - `examples/runtime_layout_conversion_trace_index.py`
+- `examples/runtime_layout_conversion_trace_replay_verifier.py`
+- `examples/runtime_backend_equivalence_layout_binding.py`
 - `examples/runtime_mixed_tensor_store_evidence.py`
 - `examples/runtime_layout_conversion_digest_binding.py`
 - `examples/runtime_layout_conversion_gate_readiness.py`
@@ -57,8 +61,10 @@ The gate passes only when:
 - the Runtime Evidence Matrix includes the three backend-equivalence graph
   entries, with the systolic and mixed entries requiring
   `runtime_planning_explanation`, and the mixed entry also requiring
-  `runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`, and
-  `runtime_layout_conversion_trace_index`, plus exact artifact-ID bindings
+  `runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`,
+  `runtime_layout_conversion_trace_index`,
+  `runtime_layout_conversion_trace_replay_verifier`, and
+  `runtime_backend_equivalence_layout_binding`, plus exact artifact-ID bindings
 - the Runtime Evidence Matrix includes the backend-equivalence portfolio graph
   entry with scoped `backend_equivalence_portfolio` and
   `backend_equivalence_portfolio_policy` requirements and exact artifact-ID
@@ -140,6 +146,23 @@ The gate passes only when:
 - Runtime Layout Conversion Trace Index matrix coverage passes, proving the
   report is required by the Runtime Evidence Matrix with the exact
   `runtime_layout_conversion_trace_index_mixed` artifact ID
+- Runtime Layout Conversion Trace Replay Verifier passes for the mixed
+  accelerator proof slice
+- Runtime Layout Conversion Trace Replay Verifier binding passes, proving the
+  serialized Layout Conversion Evidence and Trace Index reports replay by
+  metadata digest for the same graph and policies evaluated by this gate
+- Runtime Layout Conversion Trace Replay Verifier matrix coverage passes,
+  proving the report is required by the Runtime Evidence Matrix with the exact
+  `runtime_layout_conversion_trace_replay_verifier_mixed` artifact ID
+- Runtime Backend Equivalence Layout Binding passes for the mixed accelerator
+  proof slice
+- Runtime Backend Equivalence Layout Binding binding passes, proving the mixed
+  Backend Equivalence report is bound to verified layout trace replay by
+  metadata digest, graph name, raw-value policy, and mixed candidate backend
+  diversity
+- Runtime Backend Equivalence Layout Binding matrix coverage passes, proving
+  the report is required by the Runtime Evidence Matrix with the exact
+  `runtime_backend_equivalence_layout_binding_mixed` artifact ID
 - Runtime Layout Conversion Digest Binding passes, proving the layout-conversion
   metadata digest is bound to HS-IR alignment metadata and Mixed Tensor Store
   metadata
@@ -258,6 +281,13 @@ Runtime Layout Conversion Trace Replay Verifier schema:
 ```text
 schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json
 ```
+
+Runtime Backend Equivalence Layout Binding schema:
+
+```text
+schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json
+```
+
 
 Runtime Backend Equivalence schema:
 
