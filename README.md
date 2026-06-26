@@ -79,9 +79,9 @@ python examples/objective_alpha_public_proof_bundle.py
 
 See [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
 It directly exposes Proof Of Backend Equivalence plus output-closure,
-transfer-boundary, and layout-transition bindings as digest-only public
-entries, so reviewers can inspect backend placement semantics without
-unpacking gate internals.
+transfer-boundary, layout-transition, and allocation-reconciliation bindings
+as digest-only public entries, so reviewers can inspect backend placement and
+memory-planning semantics without unpacking gate internals.
 
 ## Runtime Execution
 

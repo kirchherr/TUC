@@ -27,6 +27,7 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS = (
     "runtime_backend_equivalence_transfer_binding",
     "runtime_layout_conversion_trace_replay_verifier",
     "runtime_backend_equivalence_layout_binding",
+    "runtime_allocation_reconciliation",
     "runtime_memory_planning_gate",
     "research_onboarding_evidence",
 )
@@ -40,6 +41,7 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_POINTS = (
     "python examples/runtime_backend_equivalence_transfer_binding.py",
     "python examples/runtime_layout_conversion_trace_replay_verifier.py",
     "python examples/runtime_backend_equivalence_layout_binding.py",
+    "python examples/runtime_allocation_reconciliation.py",
     "python examples/runtime_memory_planning_gate.py",
     "python examples/research_onboarding_evidence.py",
 )
@@ -53,6 +55,7 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ARTIFACT_KINDS = (
     "schema_versioned_backend_equivalence_transfer_binding_report",
     "schema_versioned_layout_conversion_trace_replay_verifier_report",
     "schema_versioned_backend_equivalence_layout_binding_report",
+    "schema_versioned_allocation_reconciliation_report",
     "deterministic_memory_planning_gate_output",
     "schema_versioned_onboarding_report",
 )

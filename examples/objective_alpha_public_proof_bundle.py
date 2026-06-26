@@ -9,6 +9,9 @@ from examples.proof_of_backend_equivalence import (
 )
 from examples.proof_of_execution import render_proof_report, run_proof
 from examples.research_onboarding_evidence import build_report as build_onboarding_report
+from examples.runtime_allocation_reconciliation import (
+    build_current_runtime_allocation_reconciliation_report,
+)
 from examples.runtime_backend_equivalence_layout_binding import (
     build_report as build_backend_equivalence_layout_binding_report,
 )
@@ -34,6 +37,7 @@ from tuc import (
     ObjectiveAlphaPublicProofBundle,
     build_objective_alpha_public_proof_bundle,
     dump_objective_alpha_public_proof_bundle,
+    dump_runtime_allocation_reconciliation_report,
 )
 
 
@@ -57,6 +61,9 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
     )
     backend_equivalence_layout_binding_output = (
         build_backend_equivalence_layout_binding_report()
+    )
+    allocation_reconciliation_output = dump_runtime_allocation_reconciliation_report(
+        build_current_runtime_allocation_reconciliation_report()
     )
     memory_planning_gate_output = build_memory_planning_gate_report()
     onboarding_output = build_onboarding_report()
@@ -115,6 +122,12 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
                 entry_point="python examples/runtime_backend_equivalence_layout_binding.py",
                 artifact_kind="schema_versioned_backend_equivalence_layout_binding_report",
                 metadata_digest=_digest_text(backend_equivalence_layout_binding_output),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="runtime_allocation_reconciliation",
+                entry_point="python examples/runtime_allocation_reconciliation.py",
+                artifact_kind="schema_versioned_allocation_reconciliation_report",
+                metadata_digest=_digest_text(allocation_reconciliation_output),
             ),
             ObjectiveAlphaPublicEvidenceEntry(
                 evidence_id="runtime_memory_planning_gate",

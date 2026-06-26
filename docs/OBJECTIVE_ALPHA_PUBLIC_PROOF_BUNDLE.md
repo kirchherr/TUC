@@ -20,6 +20,7 @@ The bundle links these trusted in-repository evidence entry points:
 - `python examples/runtime_backend_equivalence_transfer_binding.py`
 - `python examples/runtime_layout_conversion_trace_replay_verifier.py`
 - `python examples/runtime_backend_equivalence_layout_binding.py`
+- `python examples/runtime_allocation_reconciliation.py`
 - `python examples/runtime_memory_planning_gate.py`
 - `python examples/research_onboarding_evidence.py`
 
@@ -38,9 +39,9 @@ backend execution, device access, or generated-artifact execution.
 
 The example runs only trusted in-repository proof/evidence builders, including
 Proof Of Backend Equivalence, Runtime Execution Output Closure, transfer
-trace replay and binding, layout trace replay and binding, and Runtime Memory
-Planning Gate as separate digest-only entries. The bundle model accepts only
-fixed evidence
+trace replay and binding, layout trace replay and binding, allocation
+reconciliation, and Runtime Memory Planning Gate as separate digest-only
+entries. The bundle model accepts only fixed evidence
 IDs, fixed entry points, fixed artifact kinds,
 passed status, digest-only raw output policy, and SHA-256 digests.
 
@@ -55,4 +56,5 @@ Schema and fixtures:
   `rfcs/0225-runtime-layout-conversion-trace-index.md`,
   `rfcs/0226-objective-alpha-transfer-evidence-entries.md`,
   `rfcs/0227-objective-alpha-backend-equivalence-proof-entry.md`,
-  `rfcs/0228-objective-alpha-layout-evidence-entries.md`
+  `rfcs/0228-objective-alpha-layout-evidence-entries.md`,
+  `rfcs/0229-objective-alpha-allocation-reconciliation-entry.md`

@@ -62,6 +62,7 @@ def test_objective_alpha_public_bundle_binds_expected_evidence() -> None:
     assert "runtime_backend_equivalence_transfer_binding" in evidence_ids
     assert "runtime_layout_conversion_trace_replay_verifier" in evidence_ids
     assert "runtime_backend_equivalence_layout_binding" in evidence_ids
+    assert "runtime_allocation_reconciliation" in evidence_ids
     assert len(str(payload["bundle_metadata_digest"])) == 64
 
 
@@ -160,8 +161,8 @@ def test_objective_alpha_public_bundle_schema_matches_contract() -> None:
     assert schema["properties"]["native_performance_claim"]["const"] is False
     assert schema["properties"]["broad_source_parser_claim"]["const"] is False
     assert schema["properties"]["vendor_replacement_claim"]["const"] is False
-    assert schema["properties"]["evidence_entries"]["minItems"] == 11
-    assert schema["properties"]["evidence_entries"]["maxItems"] == 11
+    assert schema["properties"]["evidence_entries"]["minItems"] == 12
+    assert schema["properties"]["evidence_entries"]["maxItems"] == 12
 
 
 def test_objective_alpha_public_bundle_schema_fails_closed() -> None:
