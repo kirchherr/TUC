@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from hashlib import sha256
 
+from examples.proof_of_backend_equivalence import (
+    build_report as build_backend_equivalence_proof_report,
+)
 from examples.proof_of_execution import render_proof_report, run_proof
 from examples.research_onboarding_evidence import build_report as build_onboarding_report
 from examples.runtime_backend_equivalence_transfer_binding import (
@@ -37,6 +40,7 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
     proof_output = render_proof_report(proof) + "\n"
     matrix_output = build_matrix_report()
     gate_output = build_gate_report()
+    backend_equivalence_proof_output = build_backend_equivalence_proof_report()
     output_closure_output = build_output_closure_report()
     transfer_trace_replay_output = build_transfer_trace_replay_verifier_report()
     backend_equivalence_transfer_binding_output = (
@@ -63,6 +67,12 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
                 entry_point="python examples/runtime_evidence_gate.py",
                 artifact_kind="deterministic_gate_output",
                 metadata_digest=_digest_text(gate_output),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="proof_of_backend_equivalence",
+                entry_point="python examples/proof_of_backend_equivalence.py",
+                artifact_kind="schema_versioned_backend_equivalence_proof_report",
+                metadata_digest=_digest_text(backend_equivalence_proof_output),
             ),
             ObjectiveAlphaPublicEvidenceEntry(
                 evidence_id="runtime_execution_output_closure",

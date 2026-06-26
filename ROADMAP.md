@@ -283,10 +283,11 @@ Completed evidence:
   metadata digest, so terminal-output equivalence and transfer-boundary
   evidence cannot drift apart; it is now required by Runtime Evidence Matrix
   and Runtime Evidence Gate for the systolic proof slice.
-- Objective Alpha Public Proof Bundle now exposes both Runtime Transfer Trace
-  Replay Verifier and Runtime Backend Equivalence Transfer Binding as fixed
-  digest-only public entries, so reviewers can inspect the transfer-boundary
-  proof chain without unpacking Runtime Evidence Gate internals.
+- Objective Alpha Public Proof Bundle now exposes Proof Of Backend Equivalence,
+  Runtime Transfer Trace Replay Verifier, and Runtime Backend Equivalence
+  Transfer Binding as fixed digest-only public entries, so reviewers can inspect
+  mixed backend-placement semantics and transfer-boundary proof chains without
+  unpacking Runtime Evidence Gate internals.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

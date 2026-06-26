@@ -21,7 +21,7 @@
   "broad_source_parser_claim": false,
   "bundle_contract": "objective_alpha.public_proof_bundle.v0",
   "bundle_id": "objective_alpha_public_proof_bundle",
-  "bundle_metadata_digest": "10dd37490d9dd8f3936de93926d2316fe49ad871c98d42db41faed23c19f6a1a",
+  "bundle_metadata_digest": "3ab4426373bafb0d5c3f6256f0f72aa0717f612d11a77a6865c683f4ce1e0335",
   "claim_status": "correctness_and_inspectability_only",
   "evidence_entries": [
     {
@@ -45,6 +45,14 @@
       "entry_point": "python examples/runtime_evidence_gate.py",
       "evidence_id": "runtime_evidence_gate",
       "metadata_digest": "6708ec922e1d6135ded12ee5528a07f5900160f1e01949c44effcc6758ef9387",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_backend_equivalence_proof_report",
+      "entry_point": "python examples/proof_of_backend_equivalence.py",
+      "evidence_id": "proof_of_backend_equivalence",
+      "metadata_digest": "4408873a80c1306a7f15cad3fd6b0d84161f4e833bca232fb6d90b8dc3df1dc0",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },

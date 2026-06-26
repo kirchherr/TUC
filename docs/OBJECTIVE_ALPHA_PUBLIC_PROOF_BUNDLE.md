@@ -14,6 +14,7 @@ The bundle links these trusted in-repository evidence entry points:
 - `python examples/proof_of_execution.py`
 - `python examples/runtime_evidence_matrix.py`
 - `python examples/runtime_evidence_gate.py`
+- `python examples/proof_of_backend_equivalence.py`
 - `python examples/runtime_execution_output_closure.py`
 - `python examples/runtime_transfer_trace_replay_verifier.py`
 - `python examples/runtime_backend_equivalence_transfer_binding.py`
@@ -34,9 +35,10 @@ backend execution, device access, or generated-artifact execution.
 ## Security Boundary
 
 The example runs only trusted in-repository proof/evidence builders, including
-Runtime Execution Output Closure, Runtime Transfer Trace Replay Verifier,
-Runtime Backend Equivalence Transfer Binding, and Runtime Memory Planning Gate
-as separate digest-only entries. The bundle model accepts only fixed evidence
+Proof Of Backend Equivalence, Runtime Execution Output Closure, Runtime
+Transfer Trace Replay Verifier, Runtime Backend Equivalence Transfer Binding,
+and Runtime Memory Planning Gate as separate digest-only entries. The bundle
+model accepts only fixed evidence
 IDs, fixed entry points, fixed artifact kinds,
 passed status, digest-only raw output policy, and SHA-256 digests.
 
@@ -47,4 +49,6 @@ Schema and fixtures:
 - Example: `examples/objective_alpha_public_proof_bundle.py`
 - Tests: `tests/test_objective_alpha_public_proof_bundle.py`
 - Decisions: `rfcs/0206-objective-alpha-public-output-closure-entry.md`,
-  `rfcs/0226-objective-alpha-transfer-evidence-entries.md`
+  `rfcs/0224-proof-of-backend-equivalence-entrypoint.md`,
+  `rfcs/0226-objective-alpha-transfer-evidence-entries.md`,
+  `rfcs/0227-objective-alpha-backend-equivalence-proof-entry.md`

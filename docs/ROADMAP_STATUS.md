@@ -164,10 +164,11 @@ hardware-independent interface into capability-driven runtime planning.
   `runtime_mixed_backend_equivalence`, closing the graph-scoped chain from
   mixed terminal-output equivalence to layout-transition replay evidence.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
-  binds proof execution, runtime evidence matrix, runtime evidence gate, Runtime
-  Execution Output Closure, Runtime Transfer Trace Replay Verifier, Runtime
-  Backend Equivalence Transfer Binding, Runtime Memory Planning Gate, and
-  onboarding evidence as one digest-only review artifact.
+  binds proof execution, runtime evidence matrix, runtime evidence gate, Proof
+  Of Backend Equivalence, Runtime Execution Output Closure, Runtime Transfer
+  Trace Replay Verifier, Runtime Backend Equivalence Transfer Binding, Runtime
+  Memory Planning Gate, and onboarding evidence as one digest-only review
+  artifact.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
 - Golden runtime-plan dump for proof-of-abstraction placement and transfer
