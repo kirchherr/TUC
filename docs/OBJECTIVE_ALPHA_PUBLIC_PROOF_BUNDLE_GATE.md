@@ -37,6 +37,10 @@ Alpha's 16-entry public proof surface a deliberate review boundary.
 - Golden:
   `tests/golden/proofs/objective_alpha_public_proof_bundle_gate_report.json`
 - Source bundle: `examples/objective_alpha_public_proof_bundle.py`
+- Extension policy: `docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md`
+- Extension policy example: `examples/objective_alpha_evidence_extension_policy.py`
+- Extension policy schema:
+  `schemas/objective_alpha_evidence_extension_policy_report.v0.schema.json`
 - Decision: `rfcs/0230-objective-alpha-public-proof-bundle-gate.md`
 
 ## Security Boundary
@@ -58,4 +62,7 @@ samples, or raw benchmark output.
 
 This gate is not an additional numeric correctness proof. It is a stable review
 surface that keeps the public Objective Alpha proof bundle from drifting while
-the project keeps adding evidence below it.
+the project keeps adding evidence below it. The follow-on
+[Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
+records how future evidence may grow without changing that fixed 16-entry
+entrypoint by accident.

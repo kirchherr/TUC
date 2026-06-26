@@ -290,6 +290,10 @@ Completed evidence:
   public entries, with the
   [Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
   keeping the top-level review surface fixed and claim-safe.
+- [Objective Alpha Evidence Extension Policy](docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
+  keeps the now-full 16-entry public proof bundle stable and blocks future
+  public evidence growth without a deliberate RFC, separate public evidence
+  catalog, or successor objective.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

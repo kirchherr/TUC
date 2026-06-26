@@ -9,9 +9,7 @@ from hashlib import sha256
 
 from tuc.runtime import RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
 
-OBJECTIVE_ALPHA_PUBLIC_BUNDLE_SCHEMA_VERSION = (
-    "tuc.objective_alpha_public_proof_bundle.v0"
-)
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_SCHEMA_VERSION = "tuc.objective_alpha_public_proof_bundle.v0"
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_CONTRACT = "objective_alpha.public_proof_bundle.v0"
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ARTIFACT_STATUS = "review_evidence"
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_CLAIM_STATUS = "correctness_and_inspectability_only"
@@ -139,9 +137,7 @@ class ObjectiveAlphaPublicProofBundle:
     claim_status: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_CLAIM_STATUS
     raw_output_policy: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY
     blocked_claims: tuple[str, ...] = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS
-    blocked_execution_surfaces: tuple[str, ...] = (
-        RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
-    )
+    blocked_execution_surfaces: tuple[str, ...] = RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
     native_performance_claim: bool = False
     broad_source_parser_claim: bool = False
     vendor_replacement_claim: bool = False
@@ -179,9 +175,7 @@ class ObjectiveAlphaPublicProofBundle:
                 "blocked_claims": self.blocked_claims,
                 "blocked_execution_surfaces": self.blocked_execution_surfaces,
                 "bundle_id": self.bundle_id,
-                "evidence_entries": tuple(
-                    _entry_to_dict(entry) for entry in self.evidence_entries
-                ),
+                "evidence_entries": tuple(_entry_to_dict(entry) for entry in self.evidence_entries),
                 "raw_output_policy": self.raw_output_policy,
             }
         )
@@ -325,7 +319,6 @@ def _metadata_digest(payload: object) -> str:
     return sha256(serialized.encode("utf-8")).hexdigest()
 
 
-
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_SCHEMA_VERSION = (
     "tuc.objective_alpha_public_proof_bundle_gate_report.v0"
 )
@@ -383,9 +376,7 @@ class ObjectiveAlphaPublicProofBundleGateReport:
     gate_contract: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_CONTRACT
     artifact_status: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ARTIFACT_STATUS
     digest_policy: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_DIGEST_POLICY
-    required_invariants: tuple[str, ...] = (
-        OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS
-    )
+    required_invariants: tuple[str, ...] = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS
 
     def __post_init__(self) -> None:
         _validate_bundle_text(self.gate_id, "objective alpha bundle gate_id")
@@ -560,6 +551,252 @@ def dump_objective_alpha_public_proof_bundle_gate_report(
     return f"{text}\n"
 
 
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_SCHEMA_VERSION = (
+    "tuc.objective_alpha_evidence_extension_policy_report.v0"
+)
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_CONTRACT = (
+    "objective_alpha.evidence_extension_policy.data_only.v0"
+)
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID = "objective_alpha_evidence_extension_policy"
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ARTIFACT_STATUS = "review_policy"
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_STATUS_PASS = "PASS"
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_STATUS_FAIL = "FAIL"
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_DIGEST_POLICY = "sha256_hex_only"
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_KIND = "digest_only_source_free_review_evidence"
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_SURFACE = (
+    "separate_public_evidence_catalog_or_successor_objective_required"
+)
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GROWTH_STATUS = "blocked_without_rfc"
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_NEXT_DECISION = (
+    "define_extension_catalog_or_successor_objective_before_new_public_entries"
+)
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS = (
+    "schema_versioned_extension_artifacts",
+    "sha256_metadata_digests",
+    "source_free_public_reports",
+    "digest_only_public_links",
+    "no_execution_handles",
+    "no_device_access",
+    "no_generated_artifact_execution",
+    "no_native_performance_claim",
+)
+OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_BLOCKED_CHANGES = (
+    "increase_public_bundle_capacity_without_rfc",
+    "replace_public_bundle_entries_without_rfc",
+    "add_source_buffers_to_public_artifacts",
+    "add_tensor_values_to_public_artifacts",
+    "authorize_execution_handles",
+    "authorize_device_access",
+    "authorize_generated_artifact_execution",
+    "claim_native_performance",
+)
+MAX_OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ISSUES = 32
+MAX_OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_REPORT_BYTES = 32 * 1024
+
+
+@dataclass(frozen=True)
+class ObjectiveAlphaEvidenceExtensionPolicyReport:
+    """Data-only policy for growing Objective Alpha evidence after bundle capacity."""
+
+    stable_entrypoint: str
+    stable_entry_capacity: int
+    stable_entry_count: int
+    stable_bundle_metadata_digest: str
+    stable_gate_contract: str
+    issues: tuple[str, ...]
+    schema_version: str = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_SCHEMA_VERSION
+    policy_id: str = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID
+    policy_contract: str = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_CONTRACT
+    artifact_status: str = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ARTIFACT_STATUS
+    digest_policy: str = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_DIGEST_POLICY
+    extension_policy: str = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_KIND
+    extension_surface: str = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_SURFACE
+    public_bundle_growth_status: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GROWTH_STATUS
+    next_required_decision: str = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_NEXT_DECISION
+    required_controls: tuple[str, ...] = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS
+    blocked_changes: tuple[str, ...] = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_BLOCKED_CHANGES
+    blocked_claims: tuple[str, ...] = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS
+    blocked_execution_surfaces: tuple[str, ...] = RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+
+    def __post_init__(self) -> None:
+        _validate_bundle_text(self.policy_id, "objective alpha extension policy_id")
+        _validate_bundle_text(
+            self.policy_contract,
+            "objective alpha extension policy_contract",
+        )
+        _validate_bundle_text(
+            self.artifact_status,
+            "objective alpha extension artifact_status",
+        )
+        _validate_bundle_text(self.digest_policy, "objective alpha extension digest_policy")
+        _validate_bundle_text(
+            self.extension_policy,
+            "objective alpha extension policy",
+        )
+        _validate_bundle_text(
+            self.extension_surface,
+            "objective alpha extension surface",
+        )
+        _validate_bundle_text(
+            self.public_bundle_growth_status,
+            "objective alpha public bundle growth_status",
+        )
+        _validate_bundle_text(
+            self.next_required_decision,
+            "objective alpha extension next_required_decision",
+        )
+        _validate_bundle_text(
+            self.stable_entrypoint,
+            "objective alpha extension stable_entrypoint",
+        )
+        _validate_digest(
+            self.stable_bundle_metadata_digest,
+            "objective alpha extension stable bundle digest",
+        )
+        _validate_bundle_text(
+            self.stable_gate_contract,
+            "objective alpha extension stable gate contract",
+        )
+        if self.schema_version != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_SCHEMA_VERSION:
+            raise ValueError("objective alpha extension policy schema mismatch")
+        if self.policy_id != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID:
+            raise ValueError("objective alpha extension policy id mismatch")
+        if self.policy_contract != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_CONTRACT:
+            raise ValueError("objective alpha extension policy contract mismatch")
+        if self.artifact_status != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ARTIFACT_STATUS:
+            raise ValueError("objective alpha extension policy artifact status mismatch")
+        if self.digest_policy != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_DIGEST_POLICY:
+            raise ValueError("objective alpha extension policy digest policy mismatch")
+        if self.extension_policy != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_KIND:
+            raise ValueError("objective alpha extension policy kind mismatch")
+        if self.extension_surface != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_SURFACE:
+            raise ValueError("objective alpha extension surface mismatch")
+        if self.public_bundle_growth_status != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GROWTH_STATUS:
+            raise ValueError("objective alpha public bundle growth status mismatch")
+        if self.next_required_decision != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_NEXT_DECISION:
+            raise ValueError("objective alpha extension next decision mismatch")
+        if self.required_controls != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS:
+            raise ValueError("objective alpha extension controls changed")
+        if self.blocked_changes != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_BLOCKED_CHANGES:
+            raise ValueError("objective alpha extension blocked changes changed")
+        if self.blocked_claims != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS:
+            raise ValueError("objective alpha extension blocked claims changed")
+        if self.blocked_execution_surfaces != RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES:
+            raise ValueError("objective alpha extension blocked surfaces changed")
+        if self.stable_entrypoint != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ID:
+            raise ValueError("objective alpha extension stable entrypoint mismatch")
+        if self.stable_entry_capacity != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES:
+            raise ValueError("objective alpha extension stable capacity changed")
+        if self.stable_entry_count != self.stable_entry_capacity:
+            raise ValueError("objective alpha extension stable bundle is not full")
+        if self.stable_gate_contract != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_CONTRACT:
+            raise ValueError("objective alpha extension stable gate contract mismatch")
+        _validate_extension_policy_tuple(self.required_controls, "required_control")
+        _validate_extension_policy_tuple(self.blocked_changes, "blocked_change")
+        _validate_gate_tuple(self.blocked_claims, "blocked_claim")
+        _validate_gate_tuple(self.blocked_execution_surfaces, "blocked_execution_surface")
+        _validate_extension_policy_tuple(self.issues, "issue")
+        if len(self.issues) > MAX_OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ISSUES:
+            raise ValueError("objective alpha extension policy issue count exceeds limit")
+
+    @property
+    def policy_passed(self) -> bool:
+        """Return whether the extension policy gate has no issues."""
+
+        return not self.issues
+
+    @property
+    def policy_status(self) -> str:
+        """Return the stable policy status token."""
+
+        return (
+            OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_STATUS_PASS
+            if self.policy_passed
+            else OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_STATUS_FAIL
+        )
+
+
+class ObjectiveAlphaEvidenceExtensionPolicyError(ValueError):
+    """Raised when Objective Alpha evidence extension policy validation fails."""
+
+
+def build_objective_alpha_evidence_extension_policy_report(
+    gate_report: ObjectiveAlphaPublicProofBundleGateReport,
+) -> ObjectiveAlphaEvidenceExtensionPolicyReport:
+    """Build the policy for future Objective Alpha public evidence growth."""
+
+    if not isinstance(gate_report, ObjectiveAlphaPublicProofBundleGateReport):
+        raise TypeError("expected ObjectiveAlphaPublicProofBundleGateReport")
+    if not gate_report.gate_passed:
+        raise ObjectiveAlphaEvidenceExtensionPolicyError(
+            "objective alpha public proof bundle gate must pass first"
+        )
+    return ObjectiveAlphaEvidenceExtensionPolicyReport(
+        stable_entrypoint=gate_report.bundle_id,
+        stable_entry_capacity=gate_report.entry_capacity,
+        stable_entry_count=gate_report.entry_count,
+        stable_bundle_metadata_digest=gate_report.bundle_metadata_digest,
+        stable_gate_contract=gate_report.gate_contract,
+        issues=(),
+    )
+
+
+def objective_alpha_evidence_extension_policy_report_to_dict(
+    report: ObjectiveAlphaEvidenceExtensionPolicyReport,
+) -> dict[str, object]:
+    """Return a stable JSON-compatible evidence extension policy report."""
+
+    if not isinstance(report, ObjectiveAlphaEvidenceExtensionPolicyReport):
+        raise TypeError("expected ObjectiveAlphaEvidenceExtensionPolicyReport")
+    return {
+        "artifact_status": report.artifact_status,
+        "blocked_changes": list(report.blocked_changes),
+        "blocked_claims": list(report.blocked_claims),
+        "blocked_execution_surfaces": list(report.blocked_execution_surfaces),
+        "digest_policy": report.digest_policy,
+        "extension_policy": report.extension_policy,
+        "extension_surface": report.extension_surface,
+        "issues": list(report.issues),
+        "next_required_decision": report.next_required_decision,
+        "policy_contract": report.policy_contract,
+        "policy_id": report.policy_id,
+        "policy_passed": report.policy_passed,
+        "policy_status": report.policy_status,
+        "public_bundle_growth_status": report.public_bundle_growth_status,
+        "required_controls": list(report.required_controls),
+        "schema_version": report.schema_version,
+        "stable_bundle_metadata_digest": report.stable_bundle_metadata_digest,
+        "stable_entry_capacity": report.stable_entry_capacity,
+        "stable_entry_count": report.stable_entry_count,
+        "stable_entrypoint": report.stable_entrypoint,
+        "stable_gate_contract": report.stable_gate_contract,
+    }
+
+
+def dump_objective_alpha_evidence_extension_policy_report(
+    report: ObjectiveAlphaEvidenceExtensionPolicyReport,
+) -> str:
+    """Serialize an Objective Alpha evidence extension policy report."""
+
+    text = json.dumps(
+        objective_alpha_evidence_extension_policy_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > (MAX_OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_REPORT_BYTES):
+        raise ObjectiveAlphaEvidenceExtensionPolicyError(
+            "objective alpha evidence extension policy report exceeds size limit"
+        )
+    return f"{text}\n"
+
+
+def _validate_extension_policy_tuple(values: tuple[str, ...], field_name: str) -> None:
+    if type(values) is not tuple:
+        raise TypeError(f"objective alpha extension {field_name} values must be tuple")
+    for value in values:
+        _validate_gate_blocked_name(value, f"objective alpha extension {field_name}")
+
+
 def _validate_gate_tuple(values: tuple[str, ...], field_name: str) -> None:
     if type(values) is not tuple:
         raise TypeError(f"objective alpha bundle gate {field_name} values must be tuple")
@@ -585,6 +822,7 @@ def _validate_gate_blocked_name(value: str, field_name: str) -> None:
     if ".." in value or "\\" in value or "://" in value:
         raise ValueError(f"{field_name} contains unsafe path or URL syntax")
 
+
 __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ARTIFACT_STATUS",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS",
@@ -606,16 +844,35 @@ __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_FAIL",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_PASS",
     "MAX_OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ISSUES",
+    "MAX_OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ISSUES",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_BLOCKED_CHANGES",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_NEXT_DECISION",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ARTIFACT_STATUS",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_CONTRACT",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_DIGEST_POLICY",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_KIND",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_SCHEMA_VERSION",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_STATUS_FAIL",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_STATUS_PASS",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS",
+    "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_SURFACE",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GROWTH_STATUS",
+    "ObjectiveAlphaEvidenceExtensionPolicyError",
+    "ObjectiveAlphaEvidenceExtensionPolicyReport",
     "ObjectiveAlphaPublicEvidenceEntry",
     "ObjectiveAlphaPublicProofBundle",
     "ObjectiveAlphaPublicProofBundleError",
     "ObjectiveAlphaPublicProofBundleGateError",
     "ObjectiveAlphaPublicProofBundleGateReport",
     "assert_objective_alpha_public_proof_bundle",
+    "build_objective_alpha_evidence_extension_policy_report",
     "build_objective_alpha_public_proof_bundle",
     "build_objective_alpha_public_proof_bundle_gate_report",
+    "dump_objective_alpha_evidence_extension_policy_report",
     "dump_objective_alpha_public_proof_bundle",
     "dump_objective_alpha_public_proof_bundle_gate_report",
+    "objective_alpha_evidence_extension_policy_report_to_dict",
     "objective_alpha_public_proof_bundle_gate_report_to_dict",
     "objective_alpha_public_proof_bundle_to_dict",
 ]

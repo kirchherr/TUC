@@ -1,0 +1,57 @@
+{
+  "artifact_status": "review_policy",
+  "blocked_changes": [
+    "increase_public_bundle_capacity_without_rfc",
+    "replace_public_bundle_entries_without_rfc",
+    "add_source_buffers_to_public_artifacts",
+    "add_tensor_values_to_public_artifacts",
+    "authorize_execution_handles",
+    "authorize_device_access",
+    "authorize_generated_artifact_execution",
+    "claim_native_performance"
+  ],
+  "blocked_claims": [
+    "native_performance_parity",
+    "vendor_compiler_replacement",
+    "broad_source_code_parsing",
+    "arbitrary_third_party_backend_execution",
+    "device_access",
+    "generated_artifact_execution"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "digest_policy": "sha256_hex_only",
+  "extension_policy": "digest_only_source_free_review_evidence",
+  "extension_surface": "separate_public_evidence_catalog_or_successor_objective_required",
+  "issues": [],
+  "next_required_decision": "define_extension_catalog_or_successor_objective_before_new_public_entries",
+  "policy_contract": "objective_alpha.evidence_extension_policy.data_only.v0",
+  "policy_id": "objective_alpha_evidence_extension_policy",
+  "policy_passed": true,
+  "policy_status": "PASS",
+  "public_bundle_growth_status": "blocked_without_rfc",
+  "required_controls": [
+    "schema_versioned_extension_artifacts",
+    "sha256_metadata_digests",
+    "source_free_public_reports",
+    "digest_only_public_links",
+    "no_execution_handles",
+    "no_device_access",
+    "no_generated_artifact_execution",
+    "no_native_performance_claim"
+  ],
+  "schema_version": "tuc.objective_alpha_evidence_extension_policy_report.v0",
+  "stable_bundle_metadata_digest": "a163bccd01c6f2f9dd03fa9f0340f4c33e9d0e19b46ef520f2dc647aa2b5ed07",
+  "stable_entry_capacity": 16,
+  "stable_entry_count": 16,
+  "stable_entrypoint": "objective_alpha_public_proof_bundle",
+  "stable_gate_contract": "objective_alpha.public_proof_bundle_gate.data_only.v0"
+}

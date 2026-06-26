@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/objective_alpha_evidence_extension_policy_report.v0.schema.json",
+  "title": "TUC Objective Alpha Evidence Extension Policy Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "blocked_changes",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "digest_policy",
+    "extension_policy",
+    "extension_surface",
+    "issues",
+    "next_required_decision",
+    "policy_contract",
+    "policy_id",
+    "policy_passed",
+    "policy_status",
+    "public_bundle_growth_status",
+    "required_controls",
+    "schema_version",
+    "stable_bundle_metadata_digest",
+    "stable_entry_capacity",
+    "stable_entry_count",
+    "stable_entrypoint",
+    "stable_gate_contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.objective_alpha_evidence_extension_policy_report.v0"
+    },
+    "policy_id": {
+      "const": "objective_alpha_evidence_extension_policy"
+    },
+    "policy_contract": {
+      "const": "objective_alpha.evidence_extension_policy.data_only.v0"
+    },
+    "artifact_status": {
+      "const": "review_policy"
+    },
+    "policy_passed": {
+      "const": true
+    },
+    "policy_status": {
+      "const": "PASS"
+    },
+    "stable_entrypoint": {
+      "const": "objective_alpha_public_proof_bundle"
+    },
+    "stable_entry_capacity": {
+      "const": 16
+    },
+    "stable_entry_count": {
+      "const": 16
+    },
+    "stable_bundle_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "stable_gate_contract": {
+      "const": "objective_alpha.public_proof_bundle_gate.data_only.v0"
+    },
+    "digest_policy": {
+      "const": "sha256_hex_only"
+    },
+    "extension_policy": {
+      "const": "digest_only_source_free_review_evidence"
+    },
+    "extension_surface": {
+      "const": "separate_public_evidence_catalog_or_successor_objective_required"
+    },
+    "public_bundle_growth_status": {
+      "const": "blocked_without_rfc"
+    },
+    "next_required_decision": {
+      "const": "define_extension_catalog_or_successor_objective_before_new_public_entries"
+    },
+    "required_controls": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "prefixItems": [
+        { "const": "schema_versioned_extension_artifacts" },
+        { "const": "sha256_metadata_digests" },
+        { "const": "source_free_public_reports" },
+        { "const": "digest_only_public_links" },
+        { "const": "no_execution_handles" },
+        { "const": "no_device_access" },
+        { "const": "no_generated_artifact_execution" },
+        { "const": "no_native_performance_claim" }
+      ]
+    },
+    "blocked_changes": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "prefixItems": [
+        { "const": "increase_public_bundle_capacity_without_rfc" },
+        { "const": "replace_public_bundle_entries_without_rfc" },
+        { "const": "add_source_buffers_to_public_artifacts" },
+        { "const": "add_tensor_values_to_public_artifacts" },
+        { "const": "authorize_execution_handles" },
+        { "const": "authorize_device_access" },
+        { "const": "authorize_generated_artifact_execution" },
+        { "const": "claim_native_performance" }
+      ]
+    },
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        { "const": "native_performance_parity" },
+        { "const": "vendor_compiler_replacement" },
+        { "const": "broad_source_code_parsing" },
+        { "const": "arbitrary_third_party_backend_execution" },
+        { "const": "device_access" },
+        { "const": "generated_artifact_execution" }
+      ]
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "prefixItems": [
+        { "const": "backend_plugin_discovery" },
+        { "const": "device_access" },
+        { "const": "dynamic_import" },
+        { "const": "dynamic_library_loading" },
+        { "const": "generated_artifact_execution" },
+        { "const": "jit_execution" },
+        { "const": "network_access" },
+        { "const": "subprocess_execution" }
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 32,
+      "items": { "$ref": "#/$defs/report_text" }
+    }
+  },
+  "$defs": {
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/ -]*$",
+      "maxLength": 256,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "subprocess",
+          "tensor_value"
+        ]
+      }
+    }
+  }
+}

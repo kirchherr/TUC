@@ -30,7 +30,8 @@ The bundle links these trusted in-repository evidence entry points:
 
 Each entry is represented by a SHA-256 digest. The bundle also emits its fixed
 `entry_count` and `entry_capacity`; Objective Alpha is currently full at 16
-public entries, so future additions require an explicit bundle-capacity decision.
+public entries, so future additions require an explicit bundle-capacity decision
+or the [Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md).
 The bundle does not embed raw proof output, tensor values, timing samples,
 source text, backend artifacts, or host paths.
 
@@ -60,6 +61,10 @@ Schema and fixtures:
 - Tests: `tests/test_objective_alpha_public_proof_bundle.py`
 - Gate: [Objective Alpha Public Proof Bundle Gate](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
 - Gate doc: `docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md`
+- Extension policy: [Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
+- Extension policy doc: `docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md`
+- Extension policy schema: `schemas/objective_alpha_evidence_extension_policy_report.v0.schema.json`
+- Extension policy example: `examples/objective_alpha_evidence_extension_policy.py`
 - Gate schema: `schemas/objective_alpha_public_proof_bundle_gate_report.v0.schema.json`
 - Gate example: `examples/objective_alpha_public_proof_bundle_gate.py`
 - Decisions: `rfcs/0206-objective-alpha-public-output-closure-entry.md`,
