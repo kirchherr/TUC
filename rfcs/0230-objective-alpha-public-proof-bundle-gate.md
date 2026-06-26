@@ -38,6 +38,8 @@ The gate emits only bounded metadata:
 - fixed artifact kinds;
 - entry and digest counts;
 - digest policy;
+- direct transfer-trace-index and layout-conversion-trace-index public-entry
+  invariants;
 - blocked claims and execution surfaces;
 - non-claim booleans;
 - derived pass/fail status.
@@ -56,6 +58,8 @@ The schema is fail-closed with `additionalProperties: false` for every object.
 ## Consequences
 
 - The public proof bundle gains a direct CI/review guardrail.
+- Transfer and layout trace indexes stay reviewable as explicit public entries,
+  not just as indirect prerequisites of replay or binding reports.
 - Future bundle changes must update the gate schema, golden, docs, and tests.
 - Native execution, broad source parsing, vendor replacement, device access, and
 generated-artifact execution remain blocked claims.

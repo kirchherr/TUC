@@ -90,8 +90,8 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 9,
-      "maxItems": 9,
+      "minItems": 11,
+      "maxItems": 11,
       "prefixItems": [
         { "const": "fixed_evidence_ids" },
         { "const": "fixed_entry_points" },
@@ -99,6 +99,8 @@
         { "const": "passed_entries_only" },
         { "const": "digest_only_raw_output_policy" },
         { "const": "sha256_metadata_digests" },
+        { "const": "direct_transfer_trace_index_public_entry" },
+        { "const": "direct_layout_conversion_trace_index_public_entry" },
         { "const": "blocked_native_performance_claim" },
         { "const": "blocked_vendor_replacement_claim" },
         { "const": "blocked_broad_source_parser_claim" }

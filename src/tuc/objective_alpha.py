@@ -336,6 +336,8 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS = (
     "passed_entries_only",
     "digest_only_raw_output_policy",
     "sha256_metadata_digests",
+    "direct_transfer_trace_index_public_entry",
+    "direct_layout_conversion_trace_index_public_entry",
     "blocked_native_performance_claim",
     "blocked_vendor_replacement_claim",
     "blocked_broad_source_parser_claim",

@@ -17,6 +17,11 @@ fixed evidence entries, fixed entry points, fixed artifact kinds, digest-only ra
 output policy, and blocked non-claims?
 ```
 
+The fixed invariants also make Runtime Transfer Trace Index and Runtime Layout
+Conversion Trace Index explicit public bundle entries, so reviewers can see that
+trace-order and layout-transition evidence remain directly exposed rather than
+only implied by replay or binding reports.
+
 ## Contract
 
 - Report schema:
@@ -35,8 +40,8 @@ output policy, and blocked non-claims?
 
 The gate validates an in-memory trusted bundle model and emits only bounded
 metadata: bundle digest, entry count, entry IDs, entry points, artifact kinds,
-claim flags, blocked claims, blocked execution surfaces, and derived issue
-status.
+required invariants, claim flags, blocked claims, blocked execution surfaces,
+and derived issue status.
 
 It does not execute bundle entry point strings, resolve paths, discover plugins,
 access devices, run JIT code, spawn subprocesses, touch the network, load dynamic

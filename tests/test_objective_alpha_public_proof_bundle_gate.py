@@ -66,6 +66,10 @@ def test_objective_alpha_public_proof_bundle_gate_passes() -> None:
     assert payload["required_invariants"] == list(
         OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS
     )
+    assert "direct_transfer_trace_index_public_entry" in payload["required_invariants"]
+    assert "direct_layout_conversion_trace_index_public_entry" in payload[
+        "required_invariants"
+    ]
     assert payload["native_performance_claim"] is False
     assert payload["broad_source_parser_claim"] is False
     assert payload["vendor_replacement_claim"] is False
@@ -152,6 +156,10 @@ def test_objective_alpha_public_proof_bundle_gate_schema_matches_contract() -> N
     assert [
         item["const"] for item in schema["properties"]["artifact_kinds"]["prefixItems"]
     ] == list(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ARTIFACT_KINDS)
+    required_invariant_items = schema["properties"]["required_invariants"]["prefixItems"]
+    assert [item["const"] for item in required_invariant_items] == list(
+        OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS
+    )
 
 
 def test_objective_alpha_public_proof_bundle_gate_schema_fails_closed() -> None:
