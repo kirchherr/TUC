@@ -20,6 +20,7 @@ Compute intent
   -> Runtime Evidence Bundle
   -> Runtime Replay Verifier
   -> Backend Equivalence
+  -> Transfer and Layout Trace Evidence
   -> Evidence Gate
 ```
 
@@ -84,6 +85,20 @@ tests/golden/frontend/source_to_intent_research_kernel_ingress_backend_equivalen
 tests/golden/frontend/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.json
 ```
 
+Transfer and layout-boundary evidence:
+
+Runtime Transfer Trace Index and Runtime Layout Conversion Trace Index artifacts
+show where planned movement and `blocked -> row_major` layout conversion align
+to producer and consumer runtime trace steps.
+
+```text
+tests/golden/runtime_transfer_trace_index/current_report.json
+tests/golden/runtime_transfer_trace_replay_verifier/current_report.json
+tests/golden/runtime_layout_conversion_trace_index/current_report.json
+tests/golden/runtime_layout_conversion_trace_replay_verifier/current_report.json
+tests/golden/runtime_backend_equivalence_layout_binding/current_report.json
+```
+
 Kernel Ingress research proof evidence:
 
 ```text
@@ -101,6 +116,9 @@ tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_replay_ve
 - Public review artifacts omit raw tensor values by policy.
 - A neutral `reference-cpu` baseline can be compared with capability-selected
   trusted simulator placements such as `linear-sim` and `vector-sim`.
+- Planned transfer and `blocked -> row_major` layout-conversion boundaries are
+  linked to producer and consumer runtime trace steps without materializing
+  transfer or converter steps.
 - Evidence gates bind report digests, schema versions, artifact IDs, backend
   sequences, output contracts, and raw-value omission policy.
 - Kernel Ingress research cases can be reviewed through Source Intent and
@@ -115,7 +133,8 @@ tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_replay_ve
 - It does not approve arbitrary source-code parsing or execution of
   `@triton.jit`.
 - It does not prove real device residency, physical memory placement, stream
-  behavior, or allocation handles.
+  behavior, layout-converter execution, transfer execution, or allocation
+  handles.
 - It does not authorize plugin discovery, dynamic imports, dynamic libraries,
   generated-code execution, subprocesses, network access, or device access.
 
@@ -124,8 +143,8 @@ tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_replay_ve
 All public evidence in this walkthrough is metadata-only. Source, IR, manifest,
 runtime, and evidence inputs remain untrusted unless they pass the relevant
 schema, conformance, and gate checks. Unsupported operations, unknown layouts,
-unexpected backend claims, raw-value leakage, and implicit executable surfaces
-must fail closed.
+unexpected backend claims, raw-value leakage, implicit layout conversions, and
+implicit executable surfaces must fail closed.
 
 The walkthrough is therefore a research proof path, not a shortcut around the
 secure compiler boundary.

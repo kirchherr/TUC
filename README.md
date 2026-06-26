@@ -151,7 +151,7 @@ Current runtime surfaces:
 - Runtime Transfer Evidence v0 for planned cross-domain runtime transfers as
   data-only review evidence with deterministic planning-cost estimates and no
   device-residency or native-performance claim.
-- Runtime Transfer Trace Index v0 binding planned cross-domain transfers to
+- Runtime Transfer Trace Index v0 binds planned cross-domain transfers to
   concrete producer and consumer Runtime Execution Trace steps without
   materializing a transfer step, now required by Runtime Evidence Matrix and
   Runtime Evidence Gate for the systolic backend-equivalence proof slice.
@@ -163,7 +163,7 @@ Current runtime surfaces:
   equivalence to verified transfer trace replay by metadata digest, proving the
   same graph carries both terminal semantics and transfer-boundary evidence;
   now required by Runtime Evidence Matrix and Runtime Evidence Gate.
-- Runtime Layout Conversion Trace Index v0 binding planned `blocked -> row_major`
+- Runtime Layout Conversion Trace Index v0 binds planned `blocked -> row_major`
   transition evidence to concrete producer and consumer Runtime Execution Trace
   steps without materializing a converter step, now required by Runtime Evidence
   Matrix and Runtime Evidence Gate for the mixed backend-equivalence proof slice.
