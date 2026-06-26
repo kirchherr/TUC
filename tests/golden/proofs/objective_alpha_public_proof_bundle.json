@@ -21,7 +21,7 @@
   "broad_source_parser_claim": false,
   "bundle_contract": "objective_alpha.public_proof_bundle.v0",
   "bundle_id": "objective_alpha_public_proof_bundle",
-  "bundle_metadata_digest": "3ab4426373bafb0d5c3f6256f0f72aa0717f612d11a77a6865c683f4ce1e0335",
+  "bundle_metadata_digest": "182cad9e564bc5b0730c24068bbc9e2f7765474ec2cf696a83e3a39b637183b2",
   "claim_status": "correctness_and_inspectability_only",
   "evidence_entries": [
     {
@@ -77,6 +77,22 @@
       "entry_point": "python examples/runtime_backend_equivalence_transfer_binding.py",
       "evidence_id": "runtime_backend_equivalence_transfer_binding",
       "metadata_digest": "6f855268bd99a74c8d2fe0b4c977e49c950fd4e5a2c559536ba3f2a902f45f34",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_layout_conversion_trace_replay_verifier_report",
+      "entry_point": "python examples/runtime_layout_conversion_trace_replay_verifier.py",
+      "evidence_id": "runtime_layout_conversion_trace_replay_verifier",
+      "metadata_digest": "36ecb2d0f2f1236777dd6764c14d002833f86db28d414a51190cd27e90e05285",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_backend_equivalence_layout_binding_report",
+      "entry_point": "python examples/runtime_backend_equivalence_layout_binding.py",
+      "evidence_id": "runtime_backend_equivalence_layout_binding",
+      "metadata_digest": "6005eb4524dbeadf9647ef7c1a8523ea53d4ecc2d1626cca32286d718a11f5bf",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },

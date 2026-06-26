@@ -78,11 +78,10 @@ python examples/objective_alpha_public_proof_bundle.py
 ```
 
 See [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
-It directly exposes Proof Of Backend Equivalence, Runtime Execution Output
-Closure, Runtime Transfer Trace Replay Verifier, and Runtime Backend Equivalence
-Transfer Binding as digest-only public entries, so reviewers can inspect backend
-placement semantics and transfer-boundary proof chains without unpacking gate
-internals.
+It directly exposes Proof Of Backend Equivalence plus output-closure,
+transfer-boundary, and layout-transition bindings as digest-only public
+entries, so reviewers can inspect backend placement semantics without
+unpacking gate internals.
 
 ## Runtime Execution
 
