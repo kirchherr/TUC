@@ -46,4 +46,5 @@ entry point metadata.
 
 Objective Alpha now has a single public proof bundle for reviewer orientation.
 Future changes to the first public proof path must update the bundle, schema,
-golden, tests, documentation, and roadmap status together.
+golden, tests, documentation, roadmap status, and the separate
+`examples/objective_alpha_public_proof_bundle_gate.py` review gate together.

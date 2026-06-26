@@ -311,6 +311,254 @@ def _metadata_digest(payload: object) -> str:
     return sha256(serialized.encode("utf-8")).hexdigest()
 
 
+
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_SCHEMA_VERSION = (
+    "tuc.objective_alpha_public_proof_bundle_gate_report.v0"
+)
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_CONTRACT = (
+    "objective_alpha.public_proof_bundle_gate.data_only.v0"
+)
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ID = "objective_alpha_public_proof_bundle_gate"
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ARTIFACT_STATUS = "review_evidence"
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_PASS = "PASS"
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_FAIL = "FAIL"
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_DIGEST_POLICY = "sha256_hex_only"
+OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS = (
+    "fixed_evidence_ids",
+    "fixed_entry_points",
+    "fixed_artifact_kinds",
+    "passed_entries_only",
+    "digest_only_raw_output_policy",
+    "sha256_metadata_digests",
+    "blocked_native_performance_claim",
+    "blocked_vendor_replacement_claim",
+    "blocked_broad_source_parser_claim",
+)
+MAX_OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ISSUES = 32
+MAX_OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REPORT_BYTES = 64 * 1024
+
+
+@dataclass(frozen=True)
+class ObjectiveAlphaPublicProofBundleGateReport:
+    """Data-only gate report for the Objective Alpha public proof bundle."""
+
+    bundle_id: str
+    bundle_contract: str
+    bundle_claim_status: str
+    bundle_raw_output_policy: str
+    bundle_metadata_digest: str
+    entry_count: int
+    entry_digest_count: int
+    evidence_ids: tuple[str, ...]
+    entry_points: tuple[str, ...]
+    artifact_kinds: tuple[str, ...]
+    blocked_claims: tuple[str, ...]
+    blocked_execution_surfaces: tuple[str, ...]
+    native_performance_claim: bool
+    broad_source_parser_claim: bool
+    vendor_replacement_claim: bool
+    issues: tuple[str, ...]
+    schema_version: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_SCHEMA_VERSION
+    gate_id: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ID
+    gate_contract: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_CONTRACT
+    artifact_status: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ARTIFACT_STATUS
+    digest_policy: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_DIGEST_POLICY
+    required_invariants: tuple[str, ...] = (
+        OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS
+    )
+
+    def __post_init__(self) -> None:
+        _validate_bundle_text(self.gate_id, "objective alpha bundle gate_id")
+        _validate_bundle_text(self.gate_contract, "objective alpha bundle gate_contract")
+        _validate_bundle_text(self.artifact_status, "objective alpha bundle gate status")
+        _validate_bundle_text(self.digest_policy, "objective alpha bundle digest_policy")
+        _validate_bundle_text(self.bundle_id, "objective alpha bundle gate bundle_id")
+        _validate_bundle_text(
+            self.bundle_contract,
+            "objective alpha bundle gate bundle_contract",
+        )
+        _validate_bundle_text(
+            self.bundle_claim_status,
+            "objective alpha bundle gate claim_status",
+        )
+        _validate_bundle_text(
+            self.bundle_raw_output_policy,
+            "objective alpha bundle gate raw_output_policy",
+        )
+        _validate_digest(self.bundle_metadata_digest, "objective alpha bundle digest")
+        if self.schema_version != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_SCHEMA_VERSION:
+            raise ValueError("objective alpha bundle gate schema mismatch")
+        if self.gate_id != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ID:
+            raise ValueError("objective alpha bundle gate id mismatch")
+        if self.gate_contract != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_CONTRACT:
+            raise ValueError("objective alpha bundle gate contract mismatch")
+        if self.artifact_status != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ARTIFACT_STATUS:
+            raise ValueError("objective alpha bundle gate artifact status mismatch")
+        if self.digest_policy != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_DIGEST_POLICY:
+            raise ValueError("objective alpha bundle gate digest policy mismatch")
+        if self.required_invariants != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS:
+            raise ValueError("objective alpha bundle gate invariants changed")
+        _validate_gate_tuple(self.evidence_ids, "evidence_id")
+        _validate_gate_tuple(self.entry_points, "entry_point")
+        _validate_gate_tuple(self.artifact_kinds, "artifact_kind")
+        _validate_gate_tuple(self.blocked_claims, "blocked_claim")
+        _validate_gate_tuple(self.blocked_execution_surfaces, "blocked_execution_surface")
+        _validate_gate_tuple(self.issues, "issue")
+        if self.entry_count != len(self.evidence_ids):
+            raise ValueError("objective alpha bundle gate entry count mismatch")
+        if self.entry_digest_count != self.entry_count:
+            raise ValueError("objective alpha bundle gate digest count mismatch")
+        if len(self.entry_points) != self.entry_count:
+            raise ValueError("objective alpha bundle gate entry point count mismatch")
+        if len(self.artifact_kinds) != self.entry_count:
+            raise ValueError("objective alpha bundle gate artifact kind count mismatch")
+        if self.evidence_ids != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS:
+            raise ValueError("objective alpha bundle gate evidence ids changed")
+        if self.entry_points != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_POINTS:
+            raise ValueError("objective alpha bundle gate entry points changed")
+        if self.artifact_kinds != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ARTIFACT_KINDS:
+            raise ValueError("objective alpha bundle gate artifact kinds changed")
+        if self.blocked_claims != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS:
+            raise ValueError("objective alpha bundle gate blocked claims changed")
+        if self.blocked_execution_surfaces != RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES:
+            raise ValueError("objective alpha bundle gate blocked surfaces changed")
+        if len(self.issues) > MAX_OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ISSUES:
+            raise ValueError("objective alpha bundle gate issue count exceeds limit")
+
+    @property
+    def gate_passed(self) -> bool:
+        """Return whether all public bundle gate checks passed."""
+
+        return not self.issues
+
+    @property
+    def gate_status(self) -> str:
+        """Return the stable gate status token."""
+
+        return (
+            OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_PASS
+            if self.gate_passed
+            else OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_FAIL
+        )
+
+
+class ObjectiveAlphaPublicProofBundleGateError(ValueError):
+    """Raised when the Objective Alpha public proof bundle gate fails."""
+
+
+def build_objective_alpha_public_proof_bundle_gate_report(
+    bundle: ObjectiveAlphaPublicProofBundle,
+) -> ObjectiveAlphaPublicProofBundleGateReport:
+    """Return a data-only gate report for a public proof bundle."""
+
+    if not isinstance(bundle, ObjectiveAlphaPublicProofBundle):
+        raise TypeError("expected ObjectiveAlphaPublicProofBundle")
+    try:
+        assert_objective_alpha_public_proof_bundle(bundle)
+    except (TypeError, ValueError) as exc:
+        raise ObjectiveAlphaPublicProofBundleGateError(
+            "objective alpha public proof bundle did not pass validation"
+        ) from exc
+    entries = bundle.evidence_entries
+    return ObjectiveAlphaPublicProofBundleGateReport(
+        bundle_id=bundle.bundle_id,
+        bundle_contract=bundle.bundle_contract,
+        bundle_claim_status=bundle.claim_status,
+        bundle_raw_output_policy=bundle.raw_output_policy,
+        bundle_metadata_digest=bundle.bundle_metadata_digest,
+        entry_count=len(entries),
+        entry_digest_count=sum(
+            1 for entry in entries if _DIGEST_RE.fullmatch(entry.metadata_digest)
+        ),
+        evidence_ids=tuple(entry.evidence_id for entry in entries),
+        entry_points=tuple(entry.entry_point for entry in entries),
+        artifact_kinds=tuple(entry.artifact_kind for entry in entries),
+        blocked_claims=bundle.blocked_claims,
+        blocked_execution_surfaces=bundle.blocked_execution_surfaces,
+        native_performance_claim=bundle.native_performance_claim,
+        broad_source_parser_claim=bundle.broad_source_parser_claim,
+        vendor_replacement_claim=bundle.vendor_replacement_claim,
+        issues=(),
+    )
+
+
+def objective_alpha_public_proof_bundle_gate_report_to_dict(
+    report: ObjectiveAlphaPublicProofBundleGateReport,
+) -> dict[str, object]:
+    """Return a stable JSON-compatible public proof bundle gate report."""
+
+    if not isinstance(report, ObjectiveAlphaPublicProofBundleGateReport):
+        raise TypeError("expected ObjectiveAlphaPublicProofBundleGateReport")
+    return {
+        "artifact_kinds": list(report.artifact_kinds),
+        "artifact_status": report.artifact_status,
+        "blocked_claims": list(report.blocked_claims),
+        "blocked_execution_surfaces": list(report.blocked_execution_surfaces),
+        "broad_source_parser_claim": report.broad_source_parser_claim,
+        "bundle_claim_status": report.bundle_claim_status,
+        "bundle_contract": report.bundle_contract,
+        "bundle_id": report.bundle_id,
+        "bundle_metadata_digest": report.bundle_metadata_digest,
+        "bundle_raw_output_policy": report.bundle_raw_output_policy,
+        "digest_policy": report.digest_policy,
+        "entry_count": report.entry_count,
+        "entry_digest_count": report.entry_digest_count,
+        "entry_points": list(report.entry_points),
+        "evidence_ids": list(report.evidence_ids),
+        "gate_contract": report.gate_contract,
+        "gate_id": report.gate_id,
+        "gate_passed": report.gate_passed,
+        "gate_status": report.gate_status,
+        "issues": list(report.issues),
+        "native_performance_claim": report.native_performance_claim,
+        "required_invariants": list(report.required_invariants),
+        "schema_version": report.schema_version,
+        "vendor_replacement_claim": report.vendor_replacement_claim,
+    }
+
+
+def dump_objective_alpha_public_proof_bundle_gate_report(
+    report: ObjectiveAlphaPublicProofBundleGateReport,
+) -> str:
+    """Serialize an Objective Alpha public proof bundle gate report."""
+
+    text = json.dumps(
+        objective_alpha_public_proof_bundle_gate_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REPORT_BYTES:
+        raise ObjectiveAlphaPublicProofBundleGateError(
+            "objective alpha public proof bundle gate report exceeds size limit"
+        )
+    return f"{text}\n"
+
+
+def _validate_gate_tuple(values: tuple[str, ...], field_name: str) -> None:
+    if type(values) is not tuple:
+        raise TypeError(f"objective alpha bundle gate {field_name} values must be tuple")
+    for value in values:
+        if field_name in {"blocked_claim", "blocked_execution_surface"}:
+            _validate_gate_blocked_name(
+                value,
+                f"objective alpha bundle gate {field_name}",
+            )
+        else:
+            _validate_bundle_text(value, f"objective alpha bundle gate {field_name}")
+
+
+def _validate_gate_blocked_name(value: str, field_name: str) -> None:
+    if not isinstance(value, str):
+        raise TypeError(f"{field_name} must be a string")
+    if not value:
+        raise ValueError(f"{field_name} must not be empty")
+    if len(value.encode("utf-8")) > OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_FIELD_BYTES:
+        raise ValueError(f"{field_name} exceeds size limit")
+    if not _BUNDLE_TEXT_RE.fullmatch(value):
+        raise ValueError(f"{field_name} contains unsupported characters")
+    if ".." in value or "\\" in value or "://" in value:
+        raise ValueError(f"{field_name} contains unsafe path or URL syntax")
+
 __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ARTIFACT_STATUS",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS",
@@ -322,11 +570,25 @@ __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ID",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_SCHEMA_VERSION",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ARTIFACT_STATUS",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_CONTRACT",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_DIGEST_POLICY",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ID",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_SCHEMA_VERSION",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_FAIL",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_PASS",
+    "MAX_OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ISSUES",
     "ObjectiveAlphaPublicEvidenceEntry",
     "ObjectiveAlphaPublicProofBundle",
     "ObjectiveAlphaPublicProofBundleError",
+    "ObjectiveAlphaPublicProofBundleGateError",
+    "ObjectiveAlphaPublicProofBundleGateReport",
     "assert_objective_alpha_public_proof_bundle",
     "build_objective_alpha_public_proof_bundle",
+    "build_objective_alpha_public_proof_bundle_gate_report",
     "dump_objective_alpha_public_proof_bundle",
+    "dump_objective_alpha_public_proof_bundle_gate_report",
+    "objective_alpha_public_proof_bundle_gate_report_to_dict",
     "objective_alpha_public_proof_bundle_to_dict",
 ]

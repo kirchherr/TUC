@@ -51,6 +51,10 @@ Schema and fixtures:
 - Golden: `tests/golden/proofs/objective_alpha_public_proof_bundle.json`
 - Example: `examples/objective_alpha_public_proof_bundle.py`
 - Tests: `tests/test_objective_alpha_public_proof_bundle.py`
+- Gate: [Objective Alpha Public Proof Bundle Gate](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
+- Gate doc: `docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md`
+- Gate schema: `schemas/objective_alpha_public_proof_bundle_gate_report.v0.schema.json`
+- Gate example: `examples/objective_alpha_public_proof_bundle_gate.py`
 - Decisions: `rfcs/0206-objective-alpha-public-output-closure-entry.md`,
   `rfcs/0224-proof-of-backend-equivalence-entrypoint.md`,
   `rfcs/0225-runtime-layout-conversion-trace-index.md`,

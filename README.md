@@ -80,8 +80,9 @@ python examples/objective_alpha_public_proof_bundle.py
 See [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
 It directly exposes Proof Of Backend Equivalence plus output-closure,
 transfer-boundary, layout-transition, and allocation-reconciliation bindings
-as digest-only public entries, so reviewers can inspect backend placement and
-memory-planning semantics without unpacking gate internals.
+as digest-only public entries, with an
+[Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
+to keep the top-level review surface fixed and claim-safe.
 
 ## Runtime Execution
 
@@ -221,6 +222,7 @@ Key docs:
 
 - [Runtime Executor](docs/RUNTIME_EXECUTOR.md)
 - [Runtime Evidence Flow](docs/RUNTIME_EVIDENCE_FLOW.md)
+- [Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
 - [Runtime Tensor Store](docs/RUNTIME_TENSOR_STORE.md)
 - [Runtime Tensor Store Evidence](docs/RUNTIME_TENSOR_STORE_EVIDENCE.md)
 - [Runtime Input Manifest](docs/RUNTIME_INPUT_MANIFEST.md)

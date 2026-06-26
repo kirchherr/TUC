@@ -285,9 +285,9 @@ Completed evidence:
   and Runtime Evidence Gate for the systolic proof slice.
 - Objective Alpha Public Proof Bundle now exposes Proof Of Backend Equivalence,
   transfer-boundary replay and binding, layout-transition replay and binding,
-  and allocation reconciliation as fixed digest-only public entries, so
-  reviewers can inspect mixed backend-placement and memory-planning semantics
-  without unpacking Runtime Evidence Gate internals.
+  and allocation reconciliation as fixed digest-only public entries, with the
+  [Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
+  keeping the top-level review surface fixed and claim-safe.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata
