@@ -25,6 +25,8 @@ The bundle links these trusted in-repository evidence entry points:
 - `python examples/runtime_allocation_reconciliation.py`
 - `python examples/runtime_memory_planning_gate.py`
 - `python examples/research_onboarding_evidence.py`
+- `python examples/source_to_intent_research_proof_bundle.py`
+- `python examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 
 Each entry is represented by a SHA-256 digest. The bundle does not embed raw
 proof output, tensor values, timing samples, source text, backend artifacts, or
@@ -42,9 +44,10 @@ backend execution, device access, or generated-artifact execution.
 The example runs only trusted in-repository proof/evidence builders, including
 Proof Of Backend Equivalence, Runtime Execution Output Closure, transfer trace
 index, replay, and binding, layout trace index, replay, and binding,
-allocation reconciliation, and Runtime Memory Planning Gate as separate
-digest-only entries. The bundle model accepts only fixed evidence
-IDs, fixed entry points, fixed artifact kinds,
+allocation reconciliation, Runtime Memory Planning Gate, Source-To-Intent
+Research Proof Bundle, and Kernel Ingress Evidence Gate as separate digest-only
+entries. The bundle model accepts only fixed evidence IDs, fixed entry points,
+fixed artifact kinds,
 passed status, digest-only raw output policy, and SHA-256 digests.
 
 Schema and fixtures:
@@ -63,4 +66,5 @@ Schema and fixtures:
   `rfcs/0226-objective-alpha-transfer-evidence-entries.md`,
   `rfcs/0227-objective-alpha-backend-equivalence-proof-entry.md`,
   `rfcs/0228-objective-alpha-layout-evidence-entries.md`,
-  `rfcs/0229-objective-alpha-allocation-reconciliation-entry.md`
+  `rfcs/0229-objective-alpha-allocation-reconciliation-entry.md`,
+  `rfcs/0231-objective-alpha-source-ingress-public-entries.md`

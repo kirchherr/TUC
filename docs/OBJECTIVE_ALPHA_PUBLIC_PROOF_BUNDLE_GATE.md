@@ -17,10 +17,12 @@ fixed evidence entries, fixed entry points, fixed artifact kinds, digest-only ra
 output policy, and blocked non-claims?
 ```
 
-The fixed invariants also make Runtime Transfer Trace Index and Runtime Layout
-Conversion Trace Index explicit public bundle entries, so reviewers can see that
-trace-order and layout-transition evidence remain directly exposed rather than
-only implied by replay or binding reports.
+The fixed invariants also make Runtime Transfer Trace Index, Runtime Layout
+Conversion Trace Index, Source-To-Intent Research Proof Bundle, and Kernel
+Ingress Evidence Gate explicit public bundle entries, so reviewers can see that
+trace-order, layout-transition, and controlled source-ingress evidence remain
+directly exposed rather than only implied by replay, binding, or onboarding
+reports.
 
 ## Contract
 

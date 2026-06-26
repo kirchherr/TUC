@@ -69,10 +69,10 @@
       "pattern": "^[a-f0-9]{64}$"
     },
     "entry_count": {
-      "const": 14
+      "const": 16
     },
     "entry_digest_count": {
-      "const": 14
+      "const": 16
     },
     "native_performance_claim": {
       "const": false
@@ -90,8 +90,8 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 11,
-      "maxItems": 11,
+      "minItems": 13,
+      "maxItems": 13,
       "prefixItems": [
         { "const": "fixed_evidence_ids" },
         { "const": "fixed_entry_points" },
@@ -101,6 +101,8 @@
         { "const": "sha256_metadata_digests" },
         { "const": "direct_transfer_trace_index_public_entry" },
         { "const": "direct_layout_conversion_trace_index_public_entry" },
+        { "const": "direct_source_to_intent_research_public_entry" },
+        { "const": "direct_kernel_ingress_evidence_gate_public_entry" },
         { "const": "blocked_native_performance_claim" },
         { "const": "blocked_vendor_replacement_claim" },
         { "const": "blocked_broad_source_parser_claim" }
@@ -136,8 +138,8 @@
     },
     "evidence_ids": {
       "type": "array",
-      "minItems": 14,
-      "maxItems": 14,
+      "minItems": 16,
+      "maxItems": 16,
       "prefixItems": [
         { "const": "proof_of_execution" },
         { "const": "runtime_evidence_matrix" },
@@ -152,13 +154,15 @@
         { "const": "runtime_backend_equivalence_layout_binding" },
         { "const": "runtime_allocation_reconciliation" },
         { "const": "runtime_memory_planning_gate" },
-        { "const": "research_onboarding_evidence" }
+        { "const": "research_onboarding_evidence" },
+        { "const": "source_to_intent_research_proof_bundle" },
+        { "const": "source_to_intent_research_kernel_ingress_evidence_gate" }
       ]
     },
     "entry_points": {
       "type": "array",
-      "minItems": 14,
-      "maxItems": 14,
+      "minItems": 16,
+      "maxItems": 16,
       "prefixItems": [
         { "const": "python examples/proof_of_execution.py" },
         { "const": "python examples/runtime_evidence_matrix.py" },
@@ -173,13 +177,15 @@
         { "const": "python examples/runtime_backend_equivalence_layout_binding.py" },
         { "const": "python examples/runtime_allocation_reconciliation.py" },
         { "const": "python examples/runtime_memory_planning_gate.py" },
-        { "const": "python examples/research_onboarding_evidence.py" }
+        { "const": "python examples/research_onboarding_evidence.py" },
+        { "const": "python examples/source_to_intent_research_proof_bundle.py" },
+        { "const": "python examples/source_to_intent_research_kernel_ingress_evidence_gate.py" }
       ]
     },
     "artifact_kinds": {
       "type": "array",
-      "minItems": 14,
-      "maxItems": 14,
+      "minItems": 16,
+      "maxItems": 16,
       "prefixItems": [
         { "const": "deterministic_proof_output" },
         { "const": "schema_versioned_matrix_report" },
@@ -194,7 +200,9 @@
         { "const": "schema_versioned_backend_equivalence_layout_binding_report" },
         { "const": "schema_versioned_allocation_reconciliation_report" },
         { "const": "deterministic_memory_planning_gate_output" },
-        { "const": "schema_versioned_onboarding_report" }
+        { "const": "schema_versioned_onboarding_report" },
+        { "const": "schema_versioned_source_to_intent_research_proof_bundle_report" },
+        { "const": "deterministic_source_to_intent_kernel_ingress_evidence_gate_output" }
       ]
     }
   },

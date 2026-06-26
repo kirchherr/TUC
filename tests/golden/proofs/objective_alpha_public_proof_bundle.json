@@ -21,7 +21,7 @@
   "broad_source_parser_claim": false,
   "bundle_contract": "objective_alpha.public_proof_bundle.v0",
   "bundle_id": "objective_alpha_public_proof_bundle",
-  "bundle_metadata_digest": "63e33ce11ea82cd61e819b23cfbab714c16ff854700107aad2f1420a881811b6",
+  "bundle_metadata_digest": "a163bccd01c6f2f9dd03fa9f0340f4c33e9d0e19b46ef520f2dc647aa2b5ed07",
   "claim_status": "correctness_and_inspectability_only",
   "evidence_entries": [
     {
@@ -133,6 +133,22 @@
       "entry_point": "python examples/research_onboarding_evidence.py",
       "evidence_id": "research_onboarding_evidence",
       "metadata_digest": "878f56330a092a8c9393e30fc6406db601702fc4c332a36971f3cd6c23bc527c",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_source_to_intent_research_proof_bundle_report",
+      "entry_point": "python examples/source_to_intent_research_proof_bundle.py",
+      "evidence_id": "source_to_intent_research_proof_bundle",
+      "metadata_digest": "3318008f2544249c3478536ffff35ab1dad895340d72cb42d756e674e87bfd01",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "deterministic_source_to_intent_kernel_ingress_evidence_gate_output",
+      "entry_point": "python examples/source_to_intent_research_kernel_ingress_evidence_gate.py",
+      "evidence_id": "source_to_intent_research_kernel_ingress_evidence_gate",
+      "metadata_digest": "66e9be3aca0866829805ce57ce261863dc743a3fe7d5ecc526d302f66848555f",
       "raw_output_policy": "digest_only",
       "status": "passed"
     }

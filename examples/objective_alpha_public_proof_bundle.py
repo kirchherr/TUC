@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import lru_cache
 from hashlib import sha256
 
 from examples.proof_of_backend_equivalence import (
@@ -38,6 +39,12 @@ from examples.runtime_transfer_trace_index import (
 from examples.runtime_transfer_trace_replay_verifier import (
     build_report as build_transfer_trace_replay_verifier_report,
 )
+from examples.source_to_intent_research_kernel_ingress_evidence_gate import (
+    build_gate_report as build_kernel_ingress_evidence_gate_report,
+)
+from examples.source_to_intent_research_proof_bundle import (
+    build_report as build_source_to_intent_research_proof_bundle_report,
+)
 from tuc import (
     ObjectiveAlphaPublicEvidenceEntry,
     ObjectiveAlphaPublicProofBundle,
@@ -47,6 +54,7 @@ from tuc import (
 )
 
 
+@lru_cache(maxsize=1)
 def build_bundle() -> ObjectiveAlphaPublicProofBundle:
     """Build the current Objective Alpha public proof bundle."""
 
@@ -75,6 +83,10 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
     )
     memory_planning_gate_output = build_memory_planning_gate_report()
     onboarding_output = build_onboarding_report()
+    source_to_intent_research_proof_bundle_output = (
+        build_source_to_intent_research_proof_bundle_report()
+    )
+    kernel_ingress_evidence_gate_output = build_kernel_ingress_evidence_gate_report()
     return build_objective_alpha_public_proof_bundle(
         (
             ObjectiveAlphaPublicEvidenceEntry(
@@ -160,6 +172,27 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
                 entry_point="python examples/research_onboarding_evidence.py",
                 artifact_kind="schema_versioned_onboarding_report",
                 metadata_digest=_digest_text(onboarding_output),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="source_to_intent_research_proof_bundle",
+                entry_point="python examples/source_to_intent_research_proof_bundle.py",
+                artifact_kind=(
+                    "schema_versioned_source_to_intent_research_proof_bundle_report"
+                ),
+                metadata_digest=_digest_text(
+                    source_to_intent_research_proof_bundle_output
+                ),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="source_to_intent_research_kernel_ingress_evidence_gate",
+                entry_point=(
+                    "python "
+                    "examples/source_to_intent_research_kernel_ingress_evidence_gate.py"
+                ),
+                artifact_kind=(
+                    "deterministic_source_to_intent_kernel_ingress_evidence_gate_output"
+                ),
+                metadata_digest=_digest_text(kernel_ingress_evidence_gate_output),
             ),
         )
     )

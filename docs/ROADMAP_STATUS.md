@@ -167,9 +167,10 @@ hardware-independent interface into capability-driven runtime planning.
   binds proof execution, runtime evidence matrix, runtime evidence gate, Proof
   Of Backend Equivalence, Runtime Execution Output Closure, transfer-boundary
   trace index, replay, and binding, layout-transition trace index, replay, and
-  binding, allocation reconciliation, Runtime Memory Planning Gate, and
-  onboarding evidence as one digest-only review artifact.
-- [Objective Alpha Public Proof Bundle Gate](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md) emits `examples/objective_alpha_public_proof_bundle_gate.py` with schema `schemas/objective_alpha_public_proof_bundle_gate_report.v0.schema.json`, proving the public bundle keeps fixed evidence IDs, fixed entry points, fixed artifact kinds, direct transfer/layout trace-index public entries, digest-only policy, and blocked non-claims; canonical doc path: `docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md`.
+  binding, allocation reconciliation, Runtime Memory Planning Gate, onboarding
+  evidence, Source-To-Intent Research Proof Bundle, and Kernel Ingress Evidence
+  Gate as one digest-only review artifact.
+- [Objective Alpha Public Proof Bundle Gate](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md) emits `examples/objective_alpha_public_proof_bundle_gate.py` with schema `schemas/objective_alpha_public_proof_bundle_gate_report.v0.schema.json`, proving the public bundle keeps fixed evidence IDs, fixed entry points, fixed artifact kinds, direct transfer/layout trace-index public entries, direct Source-To-Intent/Kernel Ingress public entries, digest-only policy, and blocked non-claims; canonical doc path: `docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md`.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
 - Golden runtime-plan dump for proof-of-abstraction placement and transfer

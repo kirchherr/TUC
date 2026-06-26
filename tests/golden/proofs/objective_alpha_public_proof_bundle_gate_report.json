@@ -13,7 +13,9 @@
     "schema_versioned_backend_equivalence_layout_binding_report",
     "schema_versioned_allocation_reconciliation_report",
     "deterministic_memory_planning_gate_output",
-    "schema_versioned_onboarding_report"
+    "schema_versioned_onboarding_report",
+    "schema_versioned_source_to_intent_research_proof_bundle_report",
+    "deterministic_source_to_intent_kernel_ingress_evidence_gate_output"
   ],
   "artifact_status": "review_evidence",
   "blocked_claims": [
@@ -38,11 +40,11 @@
   "bundle_claim_status": "correctness_and_inspectability_only",
   "bundle_contract": "objective_alpha.public_proof_bundle.v0",
   "bundle_id": "objective_alpha_public_proof_bundle",
-  "bundle_metadata_digest": "63e33ce11ea82cd61e819b23cfbab714c16ff854700107aad2f1420a881811b6",
+  "bundle_metadata_digest": "a163bccd01c6f2f9dd03fa9f0340f4c33e9d0e19b46ef520f2dc647aa2b5ed07",
   "bundle_raw_output_policy": "digest_only",
   "digest_policy": "sha256_hex_only",
-  "entry_count": 14,
-  "entry_digest_count": 14,
+  "entry_count": 16,
+  "entry_digest_count": 16,
   "entry_points": [
     "python examples/proof_of_execution.py",
     "python examples/runtime_evidence_matrix.py",
@@ -57,7 +59,9 @@
     "python examples/runtime_backend_equivalence_layout_binding.py",
     "python examples/runtime_allocation_reconciliation.py",
     "python examples/runtime_memory_planning_gate.py",
-    "python examples/research_onboarding_evidence.py"
+    "python examples/research_onboarding_evidence.py",
+    "python examples/source_to_intent_research_proof_bundle.py",
+    "python examples/source_to_intent_research_kernel_ingress_evidence_gate.py"
   ],
   "evidence_ids": [
     "proof_of_execution",
@@ -73,7 +77,9 @@
     "runtime_backend_equivalence_layout_binding",
     "runtime_allocation_reconciliation",
     "runtime_memory_planning_gate",
-    "research_onboarding_evidence"
+    "research_onboarding_evidence",
+    "source_to_intent_research_proof_bundle",
+    "source_to_intent_research_kernel_ingress_evidence_gate"
   ],
   "gate_contract": "objective_alpha.public_proof_bundle_gate.data_only.v0",
   "gate_id": "objective_alpha_public_proof_bundle_gate",
@@ -90,6 +96,8 @@
     "sha256_metadata_digests",
     "direct_transfer_trace_index_public_entry",
     "direct_layout_conversion_trace_index_public_entry",
+    "direct_source_to_intent_research_public_entry",
+    "direct_kernel_ingress_evidence_gate_public_entry",
     "blocked_native_performance_claim",
     "blocked_vendor_replacement_claim",
     "blocked_broad_source_parser_claim"

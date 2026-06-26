@@ -32,6 +32,8 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS = (
     "runtime_allocation_reconciliation",
     "runtime_memory_planning_gate",
     "research_onboarding_evidence",
+    "source_to_intent_research_proof_bundle",
+    "source_to_intent_research_kernel_ingress_evidence_gate",
 )
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_POINTS = (
     "python examples/proof_of_execution.py",
@@ -48,6 +50,8 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_POINTS = (
     "python examples/runtime_allocation_reconciliation.py",
     "python examples/runtime_memory_planning_gate.py",
     "python examples/research_onboarding_evidence.py",
+    "python examples/source_to_intent_research_proof_bundle.py",
+    "python examples/source_to_intent_research_kernel_ingress_evidence_gate.py",
 )
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ARTIFACT_KINDS = (
     "deterministic_proof_output",
@@ -64,6 +68,8 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ARTIFACT_KINDS = (
     "schema_versioned_allocation_reconciliation_report",
     "deterministic_memory_planning_gate_output",
     "schema_versioned_onboarding_report",
+    "schema_versioned_source_to_intent_research_proof_bundle_report",
+    "deterministic_source_to_intent_kernel_ingress_evidence_gate_output",
 )
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS = (
     "native_performance_parity",
@@ -338,6 +344,8 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS = (
     "sha256_metadata_digests",
     "direct_transfer_trace_index_public_entry",
     "direct_layout_conversion_trace_index_public_entry",
+    "direct_source_to_intent_research_public_entry",
+    "direct_kernel_ingress_evidence_gate_public_entry",
     "blocked_native_performance_claim",
     "blocked_vendor_replacement_claim",
     "blocked_broad_source_parser_claim",
