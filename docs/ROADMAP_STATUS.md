@@ -166,9 +166,9 @@ hardware-independent interface into capability-driven runtime planning.
 - [Objective Alpha Public Proof Bundle](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md)
   binds proof execution, runtime evidence matrix, runtime evidence gate, Proof
   Of Backend Equivalence, Runtime Execution Output Closure, transfer-boundary
-  replay and binding, layout-transition replay and binding, allocation
-  reconciliation, Runtime Memory Planning Gate, and onboarding evidence as one
-  digest-only review artifact.
+  trace index, replay, and binding, layout-transition trace index, replay, and
+  binding, allocation reconciliation, Runtime Memory Planning Gate, and
+  onboarding evidence as one digest-only review artifact.
 - [Objective Alpha Public Proof Bundle Gate](OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md) emits `examples/objective_alpha_public_proof_bundle_gate.py` with schema `schemas/objective_alpha_public_proof_bundle_gate_report.v0.schema.json`, proving the public bundle keeps fixed evidence IDs, fixed entry points, fixed artifact kinds, digest-only policy, and blocked non-claims; canonical doc path: `docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md`.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.

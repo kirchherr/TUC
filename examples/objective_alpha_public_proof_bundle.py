@@ -23,11 +23,17 @@ from examples.runtime_evidence_matrix import build_report as build_matrix_report
 from examples.runtime_execution_output_closure import (
     build_report as build_output_closure_report,
 )
+from examples.runtime_layout_conversion_trace_index import (
+    build_report as build_layout_conversion_trace_index_report,
+)
 from examples.runtime_layout_conversion_trace_replay_verifier import (
     build_report as build_layout_conversion_trace_replay_verifier_report,
 )
 from examples.runtime_memory_planning_gate import (
     build_gate_report as build_memory_planning_gate_report,
+)
+from examples.runtime_transfer_trace_index import (
+    build_report as build_transfer_trace_index_report,
 )
 from examples.runtime_transfer_trace_replay_verifier import (
     build_report as build_transfer_trace_replay_verifier_report,
@@ -52,10 +58,12 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
     gate_output = build_gate_report()
     backend_equivalence_proof_output = build_backend_equivalence_proof_report()
     output_closure_output = build_output_closure_report()
+    transfer_trace_index_output = build_transfer_trace_index_report()
     transfer_trace_replay_output = build_transfer_trace_replay_verifier_report()
     backend_equivalence_transfer_binding_output = (
         build_backend_equivalence_transfer_binding_report()
     )
+    layout_conversion_trace_index_output = build_layout_conversion_trace_index_report()
     layout_conversion_trace_replay_output = (
         build_layout_conversion_trace_replay_verifier_report()
     )
@@ -100,6 +108,12 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
                 metadata_digest=_digest_text(output_closure_output),
             ),
             ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="runtime_transfer_trace_index",
+                entry_point="python examples/runtime_transfer_trace_index.py",
+                artifact_kind="schema_versioned_transfer_trace_index_report",
+                metadata_digest=_digest_text(transfer_trace_index_output),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
                 evidence_id="runtime_transfer_trace_replay_verifier",
                 entry_point="python examples/runtime_transfer_trace_replay_verifier.py",
                 artifact_kind="schema_versioned_transfer_trace_replay_verifier_report",
@@ -110,6 +124,12 @@ def build_bundle() -> ObjectiveAlphaPublicProofBundle:
                 entry_point="python examples/runtime_backend_equivalence_transfer_binding.py",
                 artifact_kind="schema_versioned_backend_equivalence_transfer_binding_report",
                 metadata_digest=_digest_text(backend_equivalence_transfer_binding_output),
+            ),
+            ObjectiveAlphaPublicEvidenceEntry(
+                evidence_id="runtime_layout_conversion_trace_index",
+                entry_point="python examples/runtime_layout_conversion_trace_index.py",
+                artifact_kind="schema_versioned_layout_conversion_trace_index_report",
+                metadata_digest=_digest_text(layout_conversion_trace_index_output),
             ),
             ObjectiveAlphaPublicEvidenceEntry(
                 evidence_id="runtime_layout_conversion_trace_replay_verifier",

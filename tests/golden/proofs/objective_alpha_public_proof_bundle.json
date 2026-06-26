@@ -21,7 +21,7 @@
   "broad_source_parser_claim": false,
   "bundle_contract": "objective_alpha.public_proof_bundle.v0",
   "bundle_id": "objective_alpha_public_proof_bundle",
-  "bundle_metadata_digest": "77fab3c2dc54099fc07ba53aa173b5cdd23c4a8b267bac23f2e021f0078b278a",
+  "bundle_metadata_digest": "63e33ce11ea82cd61e819b23cfbab714c16ff854700107aad2f1420a881811b6",
   "claim_status": "correctness_and_inspectability_only",
   "evidence_entries": [
     {
@@ -65,6 +65,14 @@
       "status": "passed"
     },
     {
+      "artifact_kind": "schema_versioned_transfer_trace_index_report",
+      "entry_point": "python examples/runtime_transfer_trace_index.py",
+      "evidence_id": "runtime_transfer_trace_index",
+      "metadata_digest": "ac78842cb68e8f3c6fdc13d078c4a31f833b43db36026d54904d2ad2987c44ea",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
       "artifact_kind": "schema_versioned_transfer_trace_replay_verifier_report",
       "entry_point": "python examples/runtime_transfer_trace_replay_verifier.py",
       "evidence_id": "runtime_transfer_trace_replay_verifier",
@@ -77,6 +85,14 @@
       "entry_point": "python examples/runtime_backend_equivalence_transfer_binding.py",
       "evidence_id": "runtime_backend_equivalence_transfer_binding",
       "metadata_digest": "6f855268bd99a74c8d2fe0b4c977e49c950fd4e5a2c559536ba3f2a902f45f34",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_layout_conversion_trace_index_report",
+      "entry_point": "python examples/runtime_layout_conversion_trace_index.py",
+      "evidence_id": "runtime_layout_conversion_trace_index",
+      "metadata_digest": "855477f6ba581cdb5782cbb64b27237c1b7b7e5b3504e49b3bac2743ee6e11ba",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },

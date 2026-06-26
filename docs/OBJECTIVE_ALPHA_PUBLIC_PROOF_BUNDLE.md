@@ -16,8 +16,10 @@ The bundle links these trusted in-repository evidence entry points:
 - `python examples/runtime_evidence_gate.py`
 - `python examples/proof_of_backend_equivalence.py`
 - `python examples/runtime_execution_output_closure.py`
+- `python examples/runtime_transfer_trace_index.py`
 - `python examples/runtime_transfer_trace_replay_verifier.py`
 - `python examples/runtime_backend_equivalence_transfer_binding.py`
+- `python examples/runtime_layout_conversion_trace_index.py`
 - `python examples/runtime_layout_conversion_trace_replay_verifier.py`
 - `python examples/runtime_backend_equivalence_layout_binding.py`
 - `python examples/runtime_allocation_reconciliation.py`
@@ -38,10 +40,10 @@ backend execution, device access, or generated-artifact execution.
 ## Security Boundary
 
 The example runs only trusted in-repository proof/evidence builders, including
-Proof Of Backend Equivalence, Runtime Execution Output Closure, transfer
-trace replay and binding, layout trace replay and binding, allocation
-reconciliation, and Runtime Memory Planning Gate as separate digest-only
-entries. The bundle model accepts only fixed evidence
+Proof Of Backend Equivalence, Runtime Execution Output Closure, transfer trace
+index, replay, and binding, layout trace index, replay, and binding,
+allocation reconciliation, and Runtime Memory Planning Gate as separate
+digest-only entries. The bundle model accepts only fixed evidence
 IDs, fixed entry points, fixed artifact kinds,
 passed status, digest-only raw output policy, and SHA-256 digests.
 

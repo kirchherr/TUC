@@ -6,10 +6,10 @@ Status: Accepted
 
 Add a digest-only public proof bundle for Objective Alpha. The bundle connects
 proof execution, runtime evidence matrix, runtime evidence gate, Proof Of
-Backend Equivalence, Runtime Execution Output Closure, transfer-boundary
-replay and binding, layout-transition replay and binding, allocation
-reconciliation, Runtime Memory Planning Gate evidence, and research onboarding
-evidence into one deterministic JSON artifact.
+Backend Equivalence, Runtime Execution Output Closure, transfer-boundary trace
+index, replay, and binding, layout-transition trace index, replay, and binding,
+allocation reconciliation, Runtime Memory Planning Gate evidence, and research
+onboarding evidence into one deterministic JSON artifact.
 
 ## Motivation
 
@@ -37,10 +37,10 @@ discover plugins, access devices, ingest benchmark output, load dynamic
 libraries, execute generated artifacts, or publish raw tensor values.
 
 The example runs trusted in-repository evidence builders, including Proof Of
-Backend Equivalence, Runtime Execution Output Closure, transfer trace replay
-and binding, layout trace replay and binding, allocation reconciliation, and
-Runtime Memory Planning Gate, and records only SHA-256 digests plus fixed
-entry point metadata.
+Backend Equivalence, Runtime Execution Output Closure, transfer trace index,
+replay, and binding, layout trace index, replay, and binding, allocation
+reconciliation, and Runtime Memory Planning Gate, and records only SHA-256
+digests plus fixed entry point metadata.
 
 ## Consequences
 

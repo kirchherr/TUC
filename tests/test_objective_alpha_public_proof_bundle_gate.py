@@ -91,7 +91,7 @@ def test_objective_alpha_public_proof_bundle_gate_example_runs() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
     assert "objective_alpha.public_proof_bundle_gate.data_only.v0" in completed.stdout
     assert '"gate_passed": true' in completed.stdout
-    assert '"entry_count": 12' in completed.stdout
+    assert '"entry_count": 14' in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "runtime_handle" not in completed.stdout
     assert "host_path" not in completed.stdout

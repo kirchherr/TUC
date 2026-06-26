@@ -284,8 +284,9 @@ Completed evidence:
   evidence cannot drift apart; it is now required by Runtime Evidence Matrix
   and Runtime Evidence Gate for the systolic proof slice.
 - Objective Alpha Public Proof Bundle now exposes Proof Of Backend Equivalence,
-  transfer-boundary replay and binding, layout-transition replay and binding,
-  and allocation reconciliation as fixed digest-only public entries, with the
+  transfer-boundary trace index, replay, and binding, layout-transition trace
+  index, replay, and binding, and allocation reconciliation as fixed
+  digest-only public entries, with the
   [Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
   keeping the top-level review surface fixed and claim-safe.
 - Runtime Layout Conversion Trace Replay Verifier v0

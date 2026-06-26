@@ -6,8 +6,8 @@
 
 ## Summary
 
-Expose layout-transition replay and backend-equivalence layout binding as fixed
-digest-only entries in the Objective Alpha Public Proof Bundle.
+Expose layout-transition trace index, replay, and backend-equivalence layout
+binding as fixed digest-only entries in the Objective Alpha Public Proof Bundle.
 
 This RFC does not add runtime layout converters, execute backend plugins, access
 devices, materialize transfer or layout-conversion steps, serialize tensor
@@ -23,7 +23,12 @@ terminal semantics and layout-transition replay evidence are bound together.
 
 ## Decision
 
-Add two fixed bundle entries:
+Add three fixed bundle entries:
+
+- Evidence ID: `runtime_layout_conversion_trace_index`
+- Entry point: `python examples/runtime_layout_conversion_trace_index.py`
+- Artifact kind: `schema_versioned_layout_conversion_trace_index_report`
+- Raw output policy: `digest_only`
 
 - Evidence ID: `runtime_layout_conversion_trace_replay_verifier`
 - Entry point: `python examples/runtime_layout_conversion_trace_replay_verifier.py`
@@ -54,9 +59,10 @@ The schema keeps fixed entry IDs, fixed entry points, fixed artifact kinds,
 
 ## Consequences
 
-- Layout transitions become visible in the top-level Objective Alpha review
-  artifact without opening a native converter surface.
+- Layout trace indexes, replay checks, and bindings become visible in the
+  top-level Objective Alpha review artifact without opening a native converter
+  surface.
 - The public proof path now binds backend-equivalence semantics to both transfer
-  and layout replay evidence by digest.
+  and layout trace-index/replay evidence by digest.
 - Physical device residency, native layout conversion, broad source parsing, and
   native performance remain blocked claims.
