@@ -244,6 +244,10 @@ def test_kernel_ingress_evidence_gate_contract_rejects_drift() -> None:
 def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
     gate_path = "examples/source_to_intent_research_kernel_ingress_evidence_gate.py"
     doc_path = "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md"
+    replay_verifier_index_path = (
+        "examples/"
+        "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py"
+    )
 
     for path in (
         Path(".github/workflows/ci.yml"),
@@ -324,3 +328,11 @@ def test_kernel_ingress_evidence_gate_is_documented_and_in_ci() -> None:
         Path("rfcs/0172-source-to-intent-research-kernel-ingress-evidence-gate.md"),
     ):
         assert doc_path in path.read_text(encoding="utf-8")
+
+    focused_gate_doc = Path(
+        "docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md"
+    ).read_text(encoding="utf-8")
+    assert replay_verifier_index_path in focused_gate_doc
+    assert "Kernel Ingress Runtime Replay Verifier Index evidence" in focused_gate_doc
+    assert "runtime replay verifier index" in focused_gate_doc
+    assert "Follow-Up Evidence" not in focused_gate_doc

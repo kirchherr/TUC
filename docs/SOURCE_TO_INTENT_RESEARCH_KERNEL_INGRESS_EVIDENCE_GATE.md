@@ -24,6 +24,8 @@ production parsing.
   `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
 - Runtime Output Closure Index input:
   `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
+- Runtime Replay Verifier Index input:
+  `examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
 - Backend Equivalence input:
   `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 - Backend Equivalence Shape Profiles input:
@@ -49,6 +51,7 @@ The gate validates and binds:
 - Kernel Ingress Runtime Step Trace evidence;
 - Kernel Ingress Runtime Evidence Bundle Index evidence;
 - Kernel Ingress Runtime Output Closure Index evidence;
+- Kernel Ingress Runtime Replay Verifier Index evidence;
 - Kernel Ingress Backend Equivalence evidence;
 - Kernel Ingress Backend Equivalence Shape Profiles evidence;
 - Kernel Ingress Runtime Coverage Policy evidence;
@@ -82,6 +85,11 @@ The gate also binds four backend-equivalence comparisons from a
 `reference-cpu` baseline to capability-selected trusted simulator placements,
 without serializing output values.
 
+The gate also binds four Runtime Replay Verifier Index cases. Each case proves
+that the runtime evidence bundle and output-closure reports can be replay-
+verified from serialized, source-free metadata before the Kernel Ingress Proof
+Bundle can pass.
+
 The gate also binds eight backend-equivalence shape-profile comparisons across
 `base` and `alternate` declared tensor shape profiles, including
 reference-correctness digests for both baseline and candidate placements.
@@ -96,6 +104,7 @@ runtime matrix
 runtime step trace
 runtime evidence bundle index
 runtime output closure index
+runtime replay verifier index
 backend equivalence
 backend equivalence shape profiles
 runtime coverage policy
@@ -115,8 +124,3 @@ research capability claim
 Future Kernel Ingress syntax changes must update this gate before the expanded
 syntax can count as accepted research scope, and must update the Research
 Capability Claim before the high-level supported claim can expand.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py
