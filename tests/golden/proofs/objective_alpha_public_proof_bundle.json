@@ -23,6 +23,8 @@
   "bundle_id": "objective_alpha_public_proof_bundle",
   "bundle_metadata_digest": "a163bccd01c6f2f9dd03fa9f0340f4c33e9d0e19b46ef520f2dc647aa2b5ed07",
   "claim_status": "correctness_and_inspectability_only",
+  "entry_capacity": 16,
+  "entry_count": 16,
   "evidence_entries": [
     {
       "artifact_kind": "deterministic_proof_output",

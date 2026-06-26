@@ -52,6 +52,7 @@ a bounded research slice.
 - The public Objective Alpha entrypoint now connects runtime/backend evidence to
   controlled Source-To-Intent and Kernel Ingress research evidence.
 - The bundle reaches its current fixed 16-entry cap.
+- The bundle and gate emit the fixed entry capacity as review metadata.
 - Future additions need a deliberate bundle-capacity decision rather than
   silent public entry growth.
 - Broad source parsing, native performance, vendor replacement, arbitrary

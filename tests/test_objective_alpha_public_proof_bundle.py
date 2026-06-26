@@ -16,6 +16,7 @@ from tuc import (
     OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS,
     OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_POINTS,
     OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ID,
+    OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES,
     OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY,
     OBJECTIVE_ALPHA_PUBLIC_BUNDLE_SCHEMA_VERSION,
     ObjectiveAlphaPublicEvidenceEntry,
@@ -40,6 +41,9 @@ def test_objective_alpha_public_bundle_binds_expected_evidence() -> None:
     assert payload["artifact_status"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ARTIFACT_STATUS
     assert payload["claim_status"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_CLAIM_STATUS
     assert payload["raw_output_policy"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY
+    assert payload["entry_capacity"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES
+    assert payload["entry_count"] == len(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS)
+    assert payload["entry_count"] == payload["entry_capacity"]
     assert payload["blocked_claims"] == list(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS)
     assert payload["blocked_execution_surfaces"] == list(
         RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
@@ -92,6 +96,24 @@ def test_objective_alpha_public_bundle_rejects_entry_order_drift() -> None:
     entries = (bundle.evidence_entries[1], bundle.evidence_entries[0], *bundle.evidence_entries[2:])
 
     with pytest.raises(ObjectiveAlphaPublicProofBundleError, match="evidence ids changed"):
+        ObjectiveAlphaPublicProofBundle(
+            bundle_id=OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ID,
+            evidence_entries=entries,
+        )
+
+
+def test_objective_alpha_public_bundle_rejects_capacity_overflow() -> None:
+    entries = tuple(
+        ObjectiveAlphaPublicEvidenceEntry(
+            evidence_id=f"proof_{index}",
+            entry_point=f"python examples/proof_{index}.py",
+            artifact_kind="deterministic_proof_output",
+            metadata_digest="a" * 64,
+        )
+        for index in range(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES + 1)
+    )
+
+    with pytest.raises(ObjectiveAlphaPublicProofBundleError, match="too many"):
         ObjectiveAlphaPublicProofBundle(
             bundle_id=OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ID,
             evidence_entries=entries,
@@ -161,6 +183,12 @@ def test_objective_alpha_public_bundle_schema_matches_contract() -> None:
     )
     assert schema["properties"]["raw_output_policy"]["const"] == (
         OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY
+    )
+    assert schema["properties"]["entry_capacity"]["const"] == (
+        OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES
+    )
+    assert schema["properties"]["entry_count"]["const"] == len(
+        OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS
     )
     assert schema["properties"]["native_performance_claim"]["const"] is False
     assert schema["properties"]["broad_source_parser_claim"]["const"] is False

@@ -217,6 +217,8 @@ def objective_alpha_public_proof_bundle_to_dict(
         "bundle_id": bundle.bundle_id,
         "bundle_metadata_digest": bundle.bundle_metadata_digest,
         "claim_status": bundle.claim_status,
+        "entry_capacity": OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES,
+        "entry_count": len(bundle.evidence_entries),
         "evidence_entries": [_entry_to_dict(entry) for entry in bundle.evidence_entries],
         "native_performance_claim": bundle.native_performance_claim,
         "raw_output_policy": bundle.raw_output_policy,
@@ -339,6 +341,7 @@ OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS = (
     "fixed_evidence_ids",
     "fixed_entry_points",
     "fixed_artifact_kinds",
+    "fixed_public_entry_capacity",
     "passed_entries_only",
     "digest_only_raw_output_policy",
     "sha256_metadata_digests",
@@ -364,6 +367,7 @@ class ObjectiveAlphaPublicProofBundleGateReport:
     bundle_raw_output_policy: str
     bundle_metadata_digest: str
     entry_count: int
+    entry_capacity: int
     entry_digest_count: int
     evidence_ids: tuple[str, ...]
     entry_points: tuple[str, ...]
@@ -422,6 +426,10 @@ class ObjectiveAlphaPublicProofBundleGateReport:
         _validate_gate_tuple(self.issues, "issue")
         if self.entry_count != len(self.evidence_ids):
             raise ValueError("objective alpha bundle gate entry count mismatch")
+        if self.entry_capacity != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES:
+            raise ValueError("objective alpha bundle gate entry capacity changed")
+        if self.entry_count != self.entry_capacity:
+            raise ValueError("objective alpha bundle gate entry capacity mismatch")
         if self.entry_digest_count != self.entry_count:
             raise ValueError("objective alpha bundle gate digest count mismatch")
         if len(self.entry_points) != self.entry_count:
@@ -483,6 +491,7 @@ def build_objective_alpha_public_proof_bundle_gate_report(
         bundle_raw_output_policy=bundle.raw_output_policy,
         bundle_metadata_digest=bundle.bundle_metadata_digest,
         entry_count=len(entries),
+        entry_capacity=OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES,
         entry_digest_count=sum(
             1 for entry in entries if _DIGEST_RE.fullmatch(entry.metadata_digest)
         ),
@@ -517,6 +526,7 @@ def objective_alpha_public_proof_bundle_gate_report_to_dict(
         "bundle_metadata_digest": report.bundle_metadata_digest,
         "bundle_raw_output_policy": report.bundle_raw_output_policy,
         "digest_policy": report.digest_policy,
+        "entry_capacity": report.entry_capacity,
         "entry_count": report.entry_count,
         "entry_digest_count": report.entry_digest_count,
         "entry_points": list(report.entry_points),
@@ -584,6 +594,7 @@ __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_POINTS",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ID",
+    "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_SCHEMA_VERSION",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ARTIFACT_STATUS",

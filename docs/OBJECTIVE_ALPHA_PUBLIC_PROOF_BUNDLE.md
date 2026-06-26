@@ -28,9 +28,11 @@ The bundle links these trusted in-repository evidence entry points:
 - `python examples/source_to_intent_research_proof_bundle.py`
 - `python examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
 
-Each entry is represented by a SHA-256 digest. The bundle does not embed raw
-proof output, tensor values, timing samples, source text, backend artifacts, or
-host paths.
+Each entry is represented by a SHA-256 digest. The bundle also emits its fixed
+`entry_count` and `entry_capacity`; Objective Alpha is currently full at 16
+public entries, so future additions require an explicit bundle-capacity decision.
+The bundle does not embed raw proof output, tensor values, timing samples,
+source text, backend artifacts, or host paths.
 
 ## Non-Claims
 

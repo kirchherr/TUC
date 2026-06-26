@@ -13,6 +13,8 @@
     "bundle_id",
     "bundle_metadata_digest",
     "claim_status",
+    "entry_capacity",
+    "entry_count",
     "evidence_entries",
     "native_performance_claim",
     "raw_output_policy",
@@ -50,6 +52,12 @@
     "bundle_metadata_digest": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
+    },
+    "entry_capacity": {
+      "const": 16
+    },
+    "entry_count": {
+      "const": 16
     },
     "blocked_claims": {
       "type": "array",

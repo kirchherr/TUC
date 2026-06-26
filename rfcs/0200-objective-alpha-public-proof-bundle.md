@@ -41,8 +41,8 @@ The example runs trusted in-repository evidence builders, including Proof Of
 Backend Equivalence, Runtime Execution Output Closure, transfer trace index,
 replay, and binding, layout trace index, replay, and binding, allocation
 reconciliation, Runtime Memory Planning Gate, Source-To-Intent Research Proof
-Bundle, and Kernel Ingress Evidence Gate, and records only SHA-256 digests plus
-fixed entry point metadata.
+Bundle, and Kernel Ingress Evidence Gate, and records only SHA-256 digests,
+fixed entry point metadata, and fixed entry capacity metadata.
 
 ## Consequences
 

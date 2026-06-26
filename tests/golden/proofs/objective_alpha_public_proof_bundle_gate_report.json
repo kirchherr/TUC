@@ -43,6 +43,7 @@
   "bundle_metadata_digest": "a163bccd01c6f2f9dd03fa9f0340f4c33e9d0e19b46ef520f2dc647aa2b5ed07",
   "bundle_raw_output_policy": "digest_only",
   "digest_policy": "sha256_hex_only",
+  "entry_capacity": 16,
   "entry_count": 16,
   "entry_digest_count": 16,
   "entry_points": [
@@ -91,6 +92,7 @@
     "fixed_evidence_ids",
     "fixed_entry_points",
     "fixed_artifact_kinds",
+    "fixed_public_entry_capacity",
     "passed_entries_only",
     "digest_only_raw_output_policy",
     "sha256_metadata_digests",

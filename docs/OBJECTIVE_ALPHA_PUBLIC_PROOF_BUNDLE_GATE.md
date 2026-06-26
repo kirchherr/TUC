@@ -22,7 +22,8 @@ Conversion Trace Index, Source-To-Intent Research Proof Bundle, and Kernel
 Ingress Evidence Gate explicit public bundle entries, so reviewers can see that
 trace-order, layout-transition, and controlled source-ingress evidence remain
 directly exposed rather than only implied by replay, binding, or onboarding
-reports.
+reports. The gate also exposes fixed public entry capacity, making Objective
+Alpha's 16-entry public proof surface a deliberate review boundary.
 
 ## Contract
 

@@ -54,7 +54,9 @@ def test_objective_alpha_public_proof_bundle_gate_passes() -> None:
     assert payload["bundle_claim_status"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_CLAIM_STATUS
     assert payload["bundle_raw_output_policy"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY
     assert payload["digest_policy"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_DIGEST_POLICY
+    assert payload["entry_capacity"] == len(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS)
     assert payload["entry_count"] == len(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS)
+    assert payload["entry_count"] == payload["entry_capacity"]
     assert payload["entry_digest_count"] == len(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS)
     assert payload["evidence_ids"] == list(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS)
     assert payload["entry_points"] == list(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_POINTS)
@@ -66,6 +68,7 @@ def test_objective_alpha_public_proof_bundle_gate_passes() -> None:
     assert payload["required_invariants"] == list(
         OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_REQUIRED_INVARIANTS
     )
+    assert "fixed_public_entry_capacity" in payload["required_invariants"]
     assert "direct_transfer_trace_index_public_entry" in payload["required_invariants"]
     assert "direct_layout_conversion_trace_index_public_entry" in payload[
         "required_invariants"
@@ -144,6 +147,9 @@ def test_objective_alpha_public_proof_bundle_gate_schema_matches_contract() -> N
         OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ARTIFACT_STATUS
     )
     assert schema["properties"]["bundle_id"]["const"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ID
+    assert schema["properties"]["entry_capacity"]["const"] == len(
+        OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS
+    )
     assert schema["properties"]["entry_count"]["const"] == len(
         OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS
     )
@@ -197,6 +203,7 @@ def test_objective_alpha_public_proof_bundle_gate_golden_matches_schema() -> Non
     assert golden["schema_version"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_SCHEMA_VERSION
     assert golden["gate_passed"] is True
     assert golden["gate_status"] == OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_PASS
+    assert golden["entry_capacity"] == len(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS)
     assert golden["entry_count"] == len(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS)
     assert golden["entry_digest_count"] == len(OBJECTIVE_ALPHA_PUBLIC_BUNDLE_EXPECTED_ENTRY_IDS)
     assert golden["issues"] == []

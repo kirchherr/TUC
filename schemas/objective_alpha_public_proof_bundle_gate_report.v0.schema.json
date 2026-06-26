@@ -16,6 +16,7 @@
     "bundle_metadata_digest",
     "bundle_raw_output_policy",
     "digest_policy",
+    "entry_capacity",
     "entry_count",
     "entry_digest_count",
     "entry_points",
@@ -68,6 +69,9 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "entry_capacity": {
+      "const": 16
+    },
     "entry_count": {
       "const": 16
     },
@@ -90,12 +94,13 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 13,
-      "maxItems": 13,
+      "minItems": 14,
+      "maxItems": 14,
       "prefixItems": [
         { "const": "fixed_evidence_ids" },
         { "const": "fixed_entry_points" },
         { "const": "fixed_artifact_kinds" },
+        { "const": "fixed_public_entry_capacity" },
         { "const": "passed_entries_only" },
         { "const": "digest_only_raw_output_policy" },
         { "const": "sha256_metadata_digests" },
