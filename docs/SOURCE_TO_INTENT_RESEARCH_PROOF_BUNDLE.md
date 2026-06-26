@@ -60,6 +60,10 @@ Kernel Ingress Runtime Output Closure Index companion path, included through
 the Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
 `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
 
+Kernel Ingress Runtime Replay Verifier Index companion path, included through
+the Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
+`examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
+
 Kernel Ingress Backend Equivalence companion path, included through the Kernel
 Ingress Proof Bundle and focused Kernel Ingress Evidence Gate:
 `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
@@ -144,6 +148,8 @@ kernel ingress proof bundle
   includes kernel ingress runtime matrix
   includes kernel ingress runtime step trace
   includes kernel ingress runtime evidence bundle index
+  includes kernel ingress runtime output closure index
+  includes kernel ingress runtime replay verifier index
   includes kernel ingress backend equivalence
   includes kernel ingress backend equivalence shape profiles
   includes kernel ingress runtime coverage policy
@@ -160,8 +166,3 @@ research capability claim
 
 Future parser-scope changes must update the underlying evidence before the
 bundle can remain valid.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

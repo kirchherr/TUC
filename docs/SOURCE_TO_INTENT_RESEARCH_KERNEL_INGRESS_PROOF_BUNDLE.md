@@ -36,6 +36,7 @@ The bundle records SHA-256 digests for:
 - Source-To-Intent Research Kernel Ingress Runtime Step Trace
 - Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index
 - Source-To-Intent Research Kernel Ingress Runtime Output Closure Index
+- Source-To-Intent Research Kernel Ingress Runtime Replay Verifier Index
 - Source-To-Intent Research Kernel Ingress Backend Equivalence
 - Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
@@ -52,6 +53,9 @@ emitting the bundle.
 The current accepted Kernel Ingress fixture set is `matmul_elementwise`,
 `softmax_reduction`, `matmul_reduction`, and `mvp_pipeline`.
 
+Kernel Ingress artifact path:
+`examples/source_to_intent_research_kernel_ingress.py`
+
 Kernel Ingress Runtime Matrix artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
 
@@ -63,6 +67,9 @@ Kernel Ingress Runtime Evidence Bundle Index artifact path:
 
 Kernel Ingress Runtime Output Closure Index artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
+
+Kernel Ingress Runtime Replay Verifier Index artifact path:
+`examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
 
 Kernel Ingress Backend Equivalence artifact path:
 `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
@@ -81,6 +88,15 @@ Kernel Ingress Boundary Budget artifact path:
 
 Kernel Ingress Rejection Coverage artifact path:
 `examples/source_to_intent_research_kernel_ingress_rejection_coverage.py`
+
+Kernel Ingress Diagnostics artifact path:
+`examples/source_to_intent_research_kernel_ingress_diagnostics.py`
+
+Kernel Ingress Conformance Gate artifact path:
+`examples/source_to_intent_research_kernel_ingress_conformance_gate.py`
+
+Kernel Ingress Idiom Alignment artifact path:
+`examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`
 
 ## Blocked Claims
 
@@ -112,6 +128,7 @@ kernel ingress runtime matrix
 kernel ingress runtime step trace
 kernel ingress runtime evidence bundle index
 kernel ingress runtime output closure index
+kernel ingress runtime replay verifier index
 kernel ingress backend equivalence
 kernel ingress backend equivalence shape profiles
 kernel ingress runtime coverage policy
@@ -133,8 +150,3 @@ can expand.
 
 The focused Kernel Ingress Evidence Gate validates this bundle against the
 artifact digests evaluated in the same invocation.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

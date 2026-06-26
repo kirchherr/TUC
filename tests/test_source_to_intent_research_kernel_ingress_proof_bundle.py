@@ -218,3 +218,30 @@ def test_kernel_ingress_proof_bundle_is_documented_and_in_ci() -> None:
         Path("rfcs/0169-source-to-intent-research-kernel-ingress-proof-bundle.md"),
     ):
         assert doc_path in path.read_text(encoding="utf-8")
+
+
+def test_kernel_ingress_proof_bundle_review_docs_list_required_artifacts() -> None:
+    report = build_kernel_ingress_proof_bundle_report()
+    required_artifacts = report["required_artifacts"]
+    assert isinstance(required_artifacts, list)
+    required_paths = [f"examples/{artifact_id}.py" for artifact_id in required_artifacts]
+
+    for path in (
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_PROOF_BUNDLE.md"),
+    ):
+        text = path.read_text(encoding="utf-8")
+        for artifact_path in required_paths:
+            assert artifact_path in text
+        assert "Follow-Up Evidence" not in text
+
+    for path in (
+        Path("rfcs/0169-source-to-intent-research-kernel-ingress-proof-bundle.md"),
+        Path("rfcs/0172-source-to-intent-research-kernel-ingress-evidence-gate.md"),
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index"
+            in text
+        )
+        assert "Follow-Up Evidence" not in text
