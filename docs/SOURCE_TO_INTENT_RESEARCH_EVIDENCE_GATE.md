@@ -46,6 +46,10 @@ text as compiler input.
   `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
 - Kernel ingress runtime output closure index docs:
   [Source-To-Intent Research Kernel Ingress Runtime Output Closure Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md)
+- Kernel ingress runtime replay verifier index example:
+  `examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
+- Kernel ingress runtime replay verifier index docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Replay Verifier Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_REPLAY_VERIFIER_INDEX.md)
 - Kernel ingress backend equivalence example:
   `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 - Kernel ingress backend equivalence docs:
@@ -113,8 +117,9 @@ The gate binds:
 - Source-To-Intent Research Kernel Ingress Evidence Gate
 
 Kernel Ingress Runtime Matrix, Kernel Ingress Runtime Step Trace, Kernel
-Ingress Runtime Evidence Bundle Index, Kernel Ingress Runtime Output Closure Index, Kernel Ingress Backend Equivalence,
-Kernel Ingress Backend Equivalence Shape Profiles, Kernel Ingress Runtime
+Ingress Runtime Evidence Bundle Index, Kernel Ingress Runtime Output Closure
+Index, Kernel Ingress Runtime Replay Verifier Index, Kernel Ingress Backend
+Equivalence, Kernel Ingress Backend Equivalence Shape Profiles, Kernel Ingress Runtime
 Coverage Policy, Kernel Ingress Runtime Backend Alignment, Kernel Ingress
 Boundary Budget, and Kernel Ingress Rejection Coverage are bound through the
 Kernel Ingress Proof Bundle and focused Kernel Ingress Evidence Gate.
@@ -167,14 +172,16 @@ The gate passes only when:
   accepted.
 - Research Kernel Ingress Proof Bundle validates the Kernel Ingress E2E,
   runtime-matrix, runtime-step-trace, runtime-evidence-bundle-index,
+  runtime-output-closure-index, runtime-replay-verifier-index,
   runtime-backend-equivalence, runtime-backend-equivalence-shape-profiles,
   runtime-coverage-policy, runtime-backend-alignment, boundary-budget,
   rejection-coverage, diagnostics, conformance, and idiom-alignment artifacts
   before its digest is accepted.
 - Research Kernel Ingress Evidence Gate validates the focused Kernel Ingress
   proof slice, Runtime Matrix, Runtime Step Trace, Runtime Evidence Bundle
-  Index, Backend Equivalence, Backend Equivalence Shape Profiles, Runtime
-  Coverage Policy, Runtime Backend Alignment, and exact Proof Bundle digest
+  Index, Runtime Output Closure Index, Runtime Replay Verifier Index,
+  Backend Equivalence, Backend Equivalence Shape Profiles, Runtime Coverage
+  Policy, Runtime Backend Alignment, and exact Proof Bundle digest
   bindings before its digest is accepted.
 - Diagnostics covers the whitelisted rejected source cases.
 - Parser status remains `research_explicit_only`.
@@ -227,6 +234,8 @@ Research Kernel Ingress Proof Bundle
     includes Research Kernel Ingress Runtime Matrix
     includes Research Kernel Ingress Runtime Step Trace
     includes Research Kernel Ingress Runtime Evidence Bundle Index
+    includes Research Kernel Ingress Runtime Output Closure Index
+    includes Research Kernel Ingress Runtime Replay Verifier Index
     includes Research Kernel Ingress Backend Equivalence
     includes Research Kernel Ingress Backend Equivalence Shape Profiles
     includes Research Kernel Ingress Runtime Coverage Policy
@@ -245,14 +254,10 @@ the execution bridge contract, Kernel Ingress evidence, Kernel Ingress Idiom
 Alignment evidence, Kernel Ingress Boundary Budget evidence, Kernel Ingress
 Rejection Coverage evidence, Kernel Ingress Runtime Matrix evidence, Kernel
 Ingress Runtime Step Trace evidence, Kernel Ingress Runtime Evidence Bundle
-Index evidence, Kernel Ingress Backend Equivalence evidence, Kernel Ingress
-Backend Equivalence Shape Profiles evidence, Kernel Ingress Runtime Coverage
+Index evidence, Kernel Ingress Runtime Output Closure Index evidence, Kernel
+Ingress Runtime Replay Verifier Index evidence, Kernel Ingress Backend
+Equivalence evidence, Kernel Ingress Backend Equivalence Shape Profiles evidence, Kernel Ingress Runtime Coverage
 Policy evidence, Kernel Ingress Runtime Backend Alignment evidence, Kernel
 Ingress Proof Bundle evidence, Kernel Ingress Evidence Gate evidence, this
 gate, and the Research Capability Claim before the expanded syntax can count
 as accepted research parser scope.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

@@ -36,6 +36,7 @@ The index is bound into:
 
 - `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
 - `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
+- `examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
 - `examples/source_to_intent_research_capability_claim.py`
 - `.github/workflows/ci.yml`
 
@@ -56,11 +57,7 @@ loading, generated-artifact execution, network access, or subprocess execution.
 Kernel Ingress evidence now proves not only that accepted research cases can
 reach trusted runtime execution and standard Runtime Execution Evidence Bundles,
 but also that their public runtime-output boundary is closed by Runtime
-Execution Output Closure. This strengthens the bounded Universal Compute
-research claim without claiming CUDA replacement, native performance parity, or
-general source parser completeness.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py
+Execution Output Closure and replay-checkable through the Runtime Replay
+Verifier Index. This strengthens the bounded Universal Compute research claim
+without claiming CUDA replacement, native performance parity, or general source
+parser completeness.

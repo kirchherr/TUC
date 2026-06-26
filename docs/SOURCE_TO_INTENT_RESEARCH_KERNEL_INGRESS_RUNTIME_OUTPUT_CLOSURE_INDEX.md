@@ -31,6 +31,8 @@ It does not add syntax, approve general Triton source ingestion, execute
   `examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
 - Kernel Ingress Evidence Gate binding:
   `examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
+- Runtime Replay Verifier Index consumer:
+  `examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
 - Capability Claim binding:
   `examples/source_to_intent_research_capability_claim.py`
 - CI entry: `.github/workflows/ci.yml`
@@ -81,6 +83,8 @@ Runtime Execution Output Closure
     ->
 runtime output closure index
     ->
+runtime replay verifier index
+    ->
 kernel ingress proof bundle
     ->
 kernel ingress evidence gate
@@ -91,8 +95,3 @@ capability claim
 Future accepted Kernel Ingress cases must produce closed Runtime Execution
 Output Closure evidence before they can strengthen the bounded Universal
 Compute research claim.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

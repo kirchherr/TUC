@@ -47,6 +47,10 @@ files, access devices, or discover plugins.
   `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
 - Runtime output closure index docs:
   [Source-To-Intent Research Kernel Ingress Runtime Output Closure Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md)
+- Runtime replay verifier index companion:
+  `examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
+- Runtime replay verifier index docs:
+  [Source-To-Intent Research Kernel Ingress Runtime Replay Verifier Index](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_REPLAY_VERIFIER_INDEX.md)
 - Runtime coverage policy companion:
   `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
 - Runtime coverage policy docs:
@@ -201,7 +205,8 @@ to diagnostic workload-scope review data for future performance proposals while
 keeping native performance claims blocked.
 
 The companion Kernel Ingress Proof Bundle gives reviewers a digest-only index
-for the Kernel Ingress E2E, runtime-matrix, runtime-backend-equivalence,
+for the Kernel Ingress E2E, runtime-matrix, runtime-output-closure,
+runtime-replay-verifier, runtime-backend-equivalence,
 runtime-backend-equivalence shape-profile, runtime-coverage-policy,
 runtime-backend-alignment, boundary-budget, rejection-coverage, diagnostics,
 conformance, and idiom-alignment artifacts.
@@ -220,10 +225,3 @@ This is a credible research step toward the roadmap's first real Triton kernel
 ingestion path. It proves that a realistic module-shaped source buffer can feed
 the existing safe source-to-runtime slice, while default source parser intake
 remains blocked.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py
-
-- Runtime Replay Verifier Index doc: docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_REPLAY_VERIFIER_INDEX.md

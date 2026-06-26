@@ -13,6 +13,7 @@
   - `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
+  - `examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
   - `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
   - `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
   - `examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
@@ -26,8 +27,8 @@
 TUC now has a practical Kernel Ingress research slice that carries the current
 MVP operation families through one accepted module-shaped `mvp_pipeline` kernel
 and binds it to runtime matrix, coverage policy, backend alignment, proof
-bundle, evidence gate, runtime-output-closure, backend-equivalence, and backend-equivalence
-shape-profile artifacts.
+bundle, evidence gate, runtime-output-closure, runtime-replay-verifier,
+backend-equivalence, and backend-equivalence shape-profile artifacts.
 
 That is useful, but reviewers still need one explicit answer to the strategic
 question: what does this prove, and what does it not prove?
@@ -42,8 +43,9 @@ The report:
 - validates the global proof bundle and global evidence gate;
 - validates the focused Kernel Ingress proof bundle and evidence gate;
 - validates runtime matrix, runtime evidence bundle index, runtime output
-  closure index, runtime backend equivalence, runtime backend equivalence shape
-  profiles, runtime coverage policy, and runtime backend alignment;
+  closure index, runtime replay verifier index, runtime backend equivalence,
+  runtime backend equivalence shape profiles, runtime coverage policy, and
+  runtime backend alignment;
 - records the supported claim
   `bounded_universal_compute_research_slice`;
 - records the scope
@@ -77,8 +79,3 @@ without inflating it into a production compiler or performance claim.
 
 Future claim expansion must add lower-level evidence first, then update this
 report, its schema, golden, tests, docs, and CI binding.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py

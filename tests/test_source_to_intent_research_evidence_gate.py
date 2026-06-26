@@ -297,3 +297,27 @@ def test_source_to_intent_research_evidence_gate_is_documented_and_in_ci() -> No
         Path("rfcs/0159-source-to-intent-research-evidence-gate.md"),
     ):
         assert doc_path in path.read_text(encoding="utf-8")
+
+
+def test_source_to_intent_research_evidence_gate_docs_include_bound_replay_index() -> None:
+    replay_path = (
+        "examples/"
+        "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py"
+    )
+    replay_doc = "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_REPLAY_VERIFIER_INDEX.md"
+
+    for path in (
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md"),
+        Path(
+            "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md"
+        ),
+        Path("rfcs/0209-source-to-intent-research-kernel-ingress-runtime-output-closure-index.md"),
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert replay_path in text
+        assert "Follow-Up Evidence" not in text
+
+    evidence_gate_doc = Path("docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md")
+    assert replay_doc in evidence_gate_doc.read_text(encoding="utf-8")

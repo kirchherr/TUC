@@ -236,3 +236,19 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
         Path("rfcs/0178-source-to-intent-research-capability-claim.md"),
     ):
         assert doc_path in path.read_text(encoding="utf-8")
+
+
+def test_source_to_intent_research_capability_claim_docs_list_evidence_inputs() -> None:
+    report = build_research_capability_claim_report()
+    evidence = report["evidence"]
+    assert isinstance(evidence, list)
+    evidence_paths = [f"examples/{item['artifact_id']}.py" for item in evidence]
+
+    for path in (
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM.md"),
+        Path("rfcs/0178-source-to-intent-research-capability-claim.md"),
+    ):
+        text = path.read_text(encoding="utf-8")
+        for evidence_path in evidence_paths:
+            assert evidence_path in text
+        assert "Follow-Up Evidence" not in text

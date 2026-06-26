@@ -60,6 +60,7 @@ The claim report records SHA-256 digests for:
 - Source-To-Intent Research Kernel Ingress Runtime Step Trace
 - Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index
 - Source-To-Intent Research Kernel Ingress Runtime Output Closure Index
+- Source-To-Intent Research Kernel Ingress Runtime Replay Verifier Index
 - Source-To-Intent Research Kernel Ingress Backend Equivalence
 - Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
@@ -67,6 +68,21 @@ The claim report records SHA-256 digests for:
 
 It validates structured JSON contracts before accepting the digest, and checks
 the text gates for required pass/fail bindings.
+
+Source-To-Intent Research Proof Bundle artifact path:
+`examples/source_to_intent_research_proof_bundle.py`
+
+Source-To-Intent Research Evidence Gate artifact path:
+`examples/source_to_intent_research_evidence_gate.py`
+
+Kernel Ingress Proof Bundle artifact path:
+`examples/source_to_intent_research_kernel_ingress_proof_bundle.py`
+
+Kernel Ingress Evidence Gate artifact path:
+`examples/source_to_intent_research_kernel_ingress_evidence_gate.py`
+
+Kernel Ingress Runtime Matrix artifact path:
+`examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`
 
 Kernel Ingress Runtime Step Trace artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`
@@ -77,11 +93,20 @@ Kernel Ingress Runtime Evidence Bundle Index artifact path:
 Kernel Ingress Runtime Output Closure Index artifact path:
 `examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`
 
+Kernel Ingress Runtime Replay Verifier Index artifact path:
+`examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`
+
 Kernel Ingress Backend Equivalence artifact path:
 `examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`
 
 Kernel Ingress Backend Equivalence Shape Profiles artifact path:
 `examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`
+
+Kernel Ingress Runtime Coverage Policy artifact path:
+`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`
+
+Kernel Ingress Runtime Backend Alignment artifact path:
+`examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`
 
 ## Acceptance Checks
 
@@ -97,6 +122,8 @@ The report passes only when:
   for the combined `mvp_pipeline` case;
 - the runtime output closure index closes public output metadata for the
   combined `mvp_pipeline` case;
+- the runtime replay verifier index replay-checks serialized runtime evidence
+  and output closure reports for the combined `mvp_pipeline` case;
 - backend equivalence preserves terminal output metadata between a
   `reference-cpu` baseline and capability-selected trusted simulator
   placement for the combined `mvp_pipeline` case;
@@ -162,6 +189,7 @@ runtime matrix
 runtime step trace
 runtime evidence bundle index
 runtime output closure index
+runtime replay verifier index
 backend equivalence
 backend equivalence shape profiles
 runtime coverage policy
@@ -175,8 +203,3 @@ capability claim gate
 Future parser, runtime, backend, or performance claims must add evidence below
 this report before the supported claim scope can expand, and must update the
 gate before the expanded claim can merge.
-
-
-## Follow-Up Evidence
-
-- Runtime Replay Verifier Index: examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py
