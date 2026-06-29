@@ -33,6 +33,7 @@
     "issues",
     "required_controls",
     "required_invariants",
+    "runtime_backend_equivalence_portfolio_metadata_digest",
     "schema_version",
     "stable_entry_capacity",
     "stable_entry_count",
@@ -95,59 +96,68 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "runtime_backend_equivalence_portfolio_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "catalog_entry_capacity": {
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 1
+      "const": 2
     },
     "catalog_entry_digest_count": {
-      "const": 1
+      "const": 2
     },
     "catalog_evidence_ids": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 1,
+      "minItems": 2,
+      "maxItems": 2,
       "prefixItems": [
-        { "const": "objective_alpha_evidence_extension_policy" }
+        { "const": "objective_alpha_evidence_extension_policy" },
+        { "const": "runtime_backend_equivalence_portfolio" }
       ]
     },
     "catalog_entry_points": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 1,
+      "minItems": 2,
+      "maxItems": 2,
       "prefixItems": [
-        { "const": "python examples/objective_alpha_evidence_extension_policy.py" }
+        { "const": "python examples/objective_alpha_evidence_extension_policy.py" },
+        { "const": "python examples/runtime_backend_equivalence_portfolio.py" }
       ]
     },
     "catalog_artifact_kinds": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 1,
+      "minItems": 2,
+      "maxItems": 2,
       "prefixItems": [
-        { "const": "schema_versioned_extension_policy_report" }
+        { "const": "schema_versioned_extension_policy_report" },
+        { "const": "schema_versioned_backend_equivalence_portfolio_report" }
       ]
     },
     "catalog_extension_tiers": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 1,
+      "minItems": 2,
+      "maxItems": 2,
       "prefixItems": [
-        { "const": "governance" }
+        { "const": "governance" },
+        { "const": "runtime_proof" }
       ]
     },
     "catalog_raw_output_policies": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 1,
+      "minItems": 2,
+      "maxItems": 2,
       "prefixItems": [
+        { "const": "digest_only" },
         { "const": "digest_only" }
       ]
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 12,
-      "maxItems": 12,
+      "minItems": 14,
+      "maxItems": 14,
       "prefixItems": [
         { "const": "catalog_report_passed" },
         { "const": "catalog_metadata_digest_bound" },
@@ -155,7 +165,9 @@
         { "const": "stable_public_bundle_full" },
         { "const": "extension_policy_contract_bound" },
         { "const": "extension_policy_digest_entry_bound" },
-        { "const": "fixed_initial_catalog_entry" },
+        { "const": "backend_equivalence_portfolio_digest_entry_bound" },
+        { "const": "first_non_governance_runtime_proof_entry_bound" },
+        { "const": "fixed_initial_catalog_entries" },
         { "const": "append_only_rfc_bound_growth_policy" },
         { "const": "digest_only_catalog_entries" },
         { "const": "source_free_public_reports" },

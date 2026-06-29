@@ -27,12 +27,17 @@ tests/golden/proofs/objective_alpha_public_evidence_catalog.json
 The catalog proves that Objective Alpha has a stable extension surface after the
 public proof bundle reached `entry_count: 16` and `entry_capacity: 16`.
 
-The initial catalog entry binds the
-[Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
-by SHA-256 metadata digest. Future catalog entries must be added through an RFC
-and must remain schema-versioned, digest-only, source-free in public reports,
-and free of execution handles, device access, generated-artifact execution, and
-native performance claims.
+The catalog currently binds two entries by SHA-256 metadata digest:
+
+- the initial governance entry for the
+  [Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md);
+- the first non-governance `runtime_proof` entry for
+  [Runtime Backend Equivalence Portfolio](RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md).
+
+Future catalog entries must be added through an RFC and must remain
+schema-versioned, digest-only, source-free in public reports, and free of
+execution handles, device access, generated-artifact execution, and native
+performance claims.
 
 The [Objective Alpha Public Evidence Catalog Admission Gate](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
 machine-checks those admission rules. Canonical doc path:
@@ -54,7 +59,9 @@ main proof path harder to audit.
 - Admission gate example: `examples/objective_alpha_public_evidence_catalog_admission_gate.py`
 - Admission gate schema:
   `schemas/objective_alpha_public_evidence_catalog_admission_gate_report.v0.schema.json`
-- Decision: `rfcs/0233-objective-alpha-public-evidence-catalog.md`
+- Initial catalog decision: `rfcs/0233-objective-alpha-public-evidence-catalog.md`
+- First runtime-proof entry decision:
+  `rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md`
 
 ## Security Boundary
 

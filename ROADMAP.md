@@ -295,9 +295,10 @@ Completed evidence:
   public evidence growth without a deliberate RFC, separate public evidence
   catalog, or successor objective.
 - [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
-  provides that separate digest-only, RFC-bound growth surface, initially
-  binding the extension policy by metadata digest without adding entries to the
-  fixed Objective Alpha Public Proof Bundle.
+  provides that separate digest-only, RFC-bound growth surface, binding the
+  extension policy and first Runtime Backend Equivalence Portfolio
+  `runtime_proof` entry by metadata digest without adding entries to the fixed
+  Objective Alpha Public Proof Bundle.
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
   machine-checks that catalog admission remains append-only, RFC-bound,
   digest-only, source-free, and free of new execution surfaces.

@@ -31,7 +31,8 @@ still passes the fixed v0 admission rules:
 - the catalog metadata digest is bound into the gate;
 - the fixed Objective Alpha Public Proof Bundle remains the stable full anchor;
 - the Extension Policy contract and digest are bound;
-- the initial catalog entry is fixed;
+- the Runtime Backend Equivalence Portfolio digest is bound;
+- the initial governance entry and first runtime-proof entry are fixed;
 - catalog growth is append-only and RFC-bound;
 - catalog entries remain digest-only and source-free;
 - blocked claims and blocked execution surfaces are preserved.
@@ -55,5 +56,7 @@ output.
 - Golden:
   `tests/golden/proofs/objective_alpha_public_evidence_catalog_admission_gate.json`
 - Tests: `tests/test_objective_alpha_public_evidence_catalog_admission_gate.py`
-- Decision:
+- Gate decision:
   `rfcs/0234-objective-alpha-public-evidence-catalog-admission-gate.md`
+- First runtime-proof entry decision:
+  `rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md`

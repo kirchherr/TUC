@@ -13,6 +13,9 @@ from examples.objective_alpha_evidence_extension_policy import (
     build_report_object as build_extension_policy_report_object,
 )
 from examples.objective_alpha_public_evidence_catalog import build_report, build_report_object
+from examples.runtime_backend_equivalence_portfolio import (
+    build_backend_equivalence_portfolio_report,
+)
 from tuc.objective_alpha import (
     MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ISSUES,
     OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_BLOCKED_CHANGES,
@@ -41,7 +44,11 @@ from tuc.objective_alpha import (
     dump_objective_alpha_public_evidence_catalog_report,
     objective_alpha_public_evidence_catalog_report_to_dict,
 )
-from tuc.runtime import RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+from tuc.runtime import (
+    RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
+    RuntimeBackendEquivalencePortfolioIssue,
+    RuntimeBackendEquivalencePortfolioReport,
+)
 
 SCHEMA_PATH = Path("schemas/objective_alpha_public_evidence_catalog_report.v0.schema.json")
 GOLDEN_PATH = Path("tests/golden/proofs/objective_alpha_public_evidence_catalog.json")
@@ -97,9 +104,16 @@ def test_objective_alpha_public_evidence_catalog_passes() -> None:
         payload["catalog_entries"][0]["metadata_digest"]
         == payload["extension_policy_metadata_digest"]
     )
+    assert (
+        payload["catalog_entries"][1]["metadata_digest"]
+        == payload["runtime_backend_equivalence_portfolio_metadata_digest"]
+    )
+    assert payload["catalog_entries"][1]["evidence_id"] == ("runtime_backend_equivalence_portfolio")
+    assert payload["catalog_entries"][1]["extension_tier"] == "runtime_proof"
     assert payload["issues"] == []
     assert len(str(payload["stable_bundle_metadata_digest"])) == 64
     assert len(str(payload["extension_policy_metadata_digest"])) == 64
+    assert len(str(payload["runtime_backend_equivalence_portfolio_metadata_digest"])) == 64
     assert len(str(payload["catalog_metadata_digest"])) == 64
 
 
@@ -121,7 +135,8 @@ def test_objective_alpha_public_evidence_catalog_example_runs() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
     assert "objective_alpha.public_evidence_catalog.data_only.v0" in completed.stdout
     assert '"catalog_passed": true' in completed.stdout
-    assert '"catalog_entry_count": 1' in completed.stdout
+    assert '"catalog_entry_count": 2' in completed.stdout
+    assert "runtime_backend_equivalence_portfolio" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "source_text" not in completed.stdout
     assert "host_path" not in completed.stdout
@@ -131,7 +146,15 @@ def test_objective_alpha_public_evidence_catalog_example_runs() -> None:
 
 def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
     with pytest.raises(TypeError, match="ObjectiveAlphaEvidenceExtensionPolicyReport"):
-        build_objective_alpha_public_evidence_catalog_report(object())  # type: ignore[arg-type]
+        build_objective_alpha_public_evidence_catalog_report(
+            object(),  # type: ignore[arg-type]
+            build_backend_equivalence_portfolio_report(),
+        )
+    with pytest.raises(TypeError, match="RuntimeBackendEquivalencePortfolioReport"):
+        build_objective_alpha_public_evidence_catalog_report(
+            build_extension_policy_report_object(),
+            object(),  # type: ignore[arg-type]
+        )
 
 
 def test_objective_alpha_public_evidence_catalog_rejects_failed_policy() -> None:
@@ -139,7 +162,31 @@ def test_objective_alpha_public_evidence_catalog_rejects_failed_policy() -> None
     failed_policy = replace(policy_report, issues=("extension_policy_issue",))
 
     with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="policy must pass"):
-        build_objective_alpha_public_evidence_catalog_report(failed_policy)
+        build_objective_alpha_public_evidence_catalog_report(
+            failed_policy,
+            build_backend_equivalence_portfolio_report(),
+        )
+
+
+def test_objective_alpha_public_evidence_catalog_rejects_failed_portfolio() -> None:
+    portfolio_report = build_backend_equivalence_portfolio_report()
+    failed_slice = replace(portfolio_report.slices[0], passed=False)
+    failed_portfolio = RuntimeBackendEquivalencePortfolioReport(
+        portfolio_id=portfolio_report.portfolio_id,
+        slices=(failed_slice, *portfolio_report.slices[1:]),
+        issues=(
+            RuntimeBackendEquivalencePortfolioIssue(
+                slice_id=failed_slice.slice_id,
+                issue_code="equivalence_report_failed",
+            ),
+        ),
+    )
+
+    with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="portfolio must pass"):
+        build_objective_alpha_public_evidence_catalog_report(
+            build_extension_policy_report_object(),
+            failed_portfolio,
+        )
 
 
 def test_objective_alpha_public_evidence_catalog_rejects_entry_drift() -> None:
@@ -160,8 +207,11 @@ def test_objective_alpha_public_evidence_catalog_rejects_entry_drift() -> None:
 def test_objective_alpha_public_evidence_catalog_rejects_policy_digest_drift() -> None:
     report = build_report_object()
 
-    with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="policy digest mismatch"):
+    with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="metadata digest mismatch"):
         replace(report, extension_policy_metadata_digest="a" * 64)
+
+    with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="metadata digest mismatch"):
+        replace(report, runtime_backend_equivalence_portfolio_metadata_digest="b" * 64)
 
 
 def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> None:
@@ -194,8 +244,15 @@ def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> No
     assert [
         item["const"] for item in schema["properties"]["required_controls"]["prefixItems"]
     ] == list(OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS)
-    entry_schema = schema["properties"]["catalog_entries"]["prefixItems"][0]
-    assert entry_schema["additionalProperties"] is False
+    catalog_entry_schemas = schema["properties"]["catalog_entries"]["prefixItems"]
+    assert len(catalog_entry_schemas) == len(
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS
+    )
+    assert catalog_entry_schemas[0]["additionalProperties"] is False
+    assert catalog_entry_schemas[1]["additionalProperties"] is False
+    assert catalog_entry_schemas[1]["properties"]["evidence_id"]["const"] == (
+        "runtime_backend_equivalence_portfolio"
+    )
 
 
 def test_objective_alpha_public_evidence_catalog_schema_fails_closed() -> None:
@@ -245,6 +302,7 @@ def test_objective_alpha_public_evidence_catalog_docs_are_linked() -> None:
         Path("docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md"),
         Path("docs/ROADMAP_STATUS.md"),
         Path("rfcs/0233-objective-alpha-public-evidence-catalog.md"),
+        Path("rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert schema_path in text or path.name in {"README.md", "ROADMAP.md"}

@@ -38,12 +38,21 @@
       "metadata_digest": "4f918c51fe83ec1a1799317cd892027f46a19b5c3fe552227cb6ab8b901fd2cb",
       "raw_output_policy": "digest_only",
       "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_backend_equivalence_portfolio_report",
+      "entry_point": "python examples/runtime_backend_equivalence_portfolio.py",
+      "evidence_id": "runtime_backend_equivalence_portfolio",
+      "extension_tier": "runtime_proof",
+      "metadata_digest": "46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
     }
   ],
   "catalog_entry_capacity": 32,
-  "catalog_entry_count": 1,
+  "catalog_entry_count": 2,
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "2e996c478b82dcb4af313647337a33488022c117fb74d48b92f83017a73f520d",
+  "catalog_metadata_digest": "7439418e764adf0f3c3ae5994c5b5a155cacbbe5357747bcc69d4094815beedb",
   "catalog_passed": true,
   "catalog_scope": "objective_alpha_extensions_after_public_bundle_capacity",
   "catalog_status": "PASS",
@@ -72,6 +81,7 @@
     "blocked_execution_surfaces_preserved",
     "blocked_claims_preserved"
   ],
+  "runtime_backend_equivalence_portfolio_metadata_digest": "46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
   "schema_version": "tuc.objective_alpha_public_evidence_catalog_report.v0",
   "stable_bundle_metadata_digest": "a163bccd01c6f2f9dd03fa9f0340f4c33e9d0e19b46ef520f2dc647aa2b5ed07",
   "stable_entry_capacity": 16,

@@ -25,6 +25,7 @@
     "issues",
     "required_controls",
     "required_invariants",
+    "runtime_backend_equivalence_portfolio_metadata_digest",
     "schema_version",
     "stable_bundle_metadata_digest",
     "stable_entry_capacity",
@@ -79,6 +80,10 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "runtime_backend_equivalence_portfolio_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "catalog_metadata_digest": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
@@ -87,12 +92,12 @@
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 1
+      "const": 2
     },
     "catalog_entries": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 1,
+      "minItems": 2,
+      "maxItems": 2,
       "prefixItems": [
         {
           "type": "object",
@@ -118,6 +123,43 @@
             },
             "extension_tier": {
               "const": "governance"
+            },
+            "metadata_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "raw_output_policy": {
+              "const": "digest_only"
+            },
+            "status": {
+              "const": "passed"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_kind",
+            "entry_point",
+            "evidence_id",
+            "extension_tier",
+            "metadata_digest",
+            "raw_output_policy",
+            "status"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "runtime_backend_equivalence_portfolio"
+            },
+            "entry_point": {
+              "const": "python examples/runtime_backend_equivalence_portfolio.py"
+            },
+            "artifact_kind": {
+              "const": "schema_versioned_backend_equivalence_portfolio_report"
+            },
+            "extension_tier": {
+              "const": "runtime_proof"
             },
             "metadata_digest": {
               "type": "string",

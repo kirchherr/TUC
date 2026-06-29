@@ -7,7 +7,12 @@ import re
 from dataclasses import dataclass
 from hashlib import sha256
 
-from tuc.runtime import RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+from tuc.runtime import (
+    RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
+    RuntimeBackendEquivalencePortfolioReport,
+    assert_runtime_backend_equivalence_portfolio,
+    dump_runtime_backend_equivalence_portfolio_report,
+)
 
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_SCHEMA_VERSION = "tuc.objective_alpha_public_proof_bundle.v0"
 OBJECTIVE_ALPHA_PUBLIC_BUNDLE_CONTRACT = "objective_alpha.public_proof_bundle.v0"
@@ -808,14 +813,20 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE = (
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES = 32
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS = (
     OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID,
+    "runtime_backend_equivalence_portfolio",
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS = (
     "python examples/objective_alpha_evidence_extension_policy.py",
+    "python examples/runtime_backend_equivalence_portfolio.py",
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS = (
     "schema_versioned_extension_policy_report",
+    "schema_versioned_backend_equivalence_portfolio_report",
 )
-OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS = ("governance",)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS = (
+    "governance",
+    "runtime_proof",
+)
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS = (
     "stable_public_bundle_anchor",
     "passing_extension_policy_anchor",
@@ -869,6 +880,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
     stable_bundle_metadata_digest: str
     extension_policy_contract: str
     extension_policy_metadata_digest: str
+    runtime_backend_equivalence_portfolio_metadata_digest: str
     catalog_entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...]
     issues: tuple[str, ...]
     schema_version: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION
@@ -907,6 +919,10 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             self.extension_policy_metadata_digest,
             "objective alpha catalog extension policy digest",
         )
+        _validate_digest(
+            self.runtime_backend_equivalence_portfolio_metadata_digest,
+            "objective alpha catalog backend equivalence portfolio digest",
+        )
         if self.schema_version != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION:
             raise ValueError("objective alpha catalog schema mismatch")
         if self.catalog_id != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID:
@@ -941,7 +957,13 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             raise ValueError("objective alpha catalog stable bundle is not full")
         if self.extension_policy_contract != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_CONTRACT:
             raise ValueError("objective alpha catalog policy contract mismatch")
-        _validate_catalog_entries(self.catalog_entries, self.extension_policy_metadata_digest)
+        _validate_catalog_entries(
+            self.catalog_entries,
+            (
+                self.extension_policy_metadata_digest,
+                self.runtime_backend_equivalence_portfolio_metadata_digest,
+            ),
+        )
         _validate_extension_policy_tuple(self.required_invariants, "required_invariant")
         _validate_extension_policy_tuple(self.required_controls, "required_control")
         _validate_extension_policy_tuple(self.blocked_changes, "blocked_change")
@@ -985,6 +1007,9 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 "catalog_id": self.catalog_id,
                 "extension_policy_metadata_digest": self.extension_policy_metadata_digest,
                 "growth_policy": self.growth_policy,
+                "runtime_backend_equivalence_portfolio_metadata_digest": (
+                    self.runtime_backend_equivalence_portfolio_metadata_digest
+                ),
                 "stable_bundle_metadata_digest": self.stable_bundle_metadata_digest,
             }
         )
@@ -996,17 +1021,33 @@ class ObjectiveAlphaPublicEvidenceCatalogError(ValueError):
 
 def build_objective_alpha_public_evidence_catalog_report(
     policy_report: ObjectiveAlphaEvidenceExtensionPolicyReport,
+    runtime_backend_equivalence_portfolio_report: RuntimeBackendEquivalencePortfolioReport,
 ) -> ObjectiveAlphaPublicEvidenceCatalogReport:
     """Build the catalog for evidence beyond the fixed Objective Alpha bundle."""
 
     if not isinstance(policy_report, ObjectiveAlphaEvidenceExtensionPolicyReport):
         raise TypeError("expected ObjectiveAlphaEvidenceExtensionPolicyReport")
+    if not isinstance(
+        runtime_backend_equivalence_portfolio_report,
+        RuntimeBackendEquivalencePortfolioReport,
+    ):
+        raise TypeError("expected RuntimeBackendEquivalencePortfolioReport")
     if not policy_report.policy_passed:
         raise ObjectiveAlphaPublicEvidenceCatalogError(
             "objective alpha evidence extension policy must pass first"
         )
+    try:
+        assert_runtime_backend_equivalence_portfolio(runtime_backend_equivalence_portfolio_report)
+    except AssertionError as exc:
+        raise ObjectiveAlphaPublicEvidenceCatalogError(
+            "runtime backend equivalence portfolio must pass first"
+        ) from exc
     policy_output = dump_objective_alpha_evidence_extension_policy_report(policy_report)
     policy_digest = sha256(policy_output.encode("utf-8")).hexdigest()
+    portfolio_output = dump_runtime_backend_equivalence_portfolio_report(
+        runtime_backend_equivalence_portfolio_report
+    )
+    portfolio_digest = sha256(portfolio_output.encode("utf-8")).hexdigest()
     return ObjectiveAlphaPublicEvidenceCatalogReport(
         stable_entrypoint=policy_report.stable_entrypoint,
         stable_entry_capacity=policy_report.stable_entry_capacity,
@@ -1014,6 +1055,7 @@ def build_objective_alpha_public_evidence_catalog_report(
         stable_bundle_metadata_digest=policy_report.stable_bundle_metadata_digest,
         extension_policy_contract=policy_report.policy_contract,
         extension_policy_metadata_digest=policy_digest,
+        runtime_backend_equivalence_portfolio_metadata_digest=portfolio_digest,
         catalog_entries=(
             ObjectiveAlphaPublicEvidenceCatalogEntry(
                 evidence_id=OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID,
@@ -1021,6 +1063,13 @@ def build_objective_alpha_public_evidence_catalog_report(
                 artifact_kind="schema_versioned_extension_policy_report",
                 metadata_digest=policy_digest,
                 extension_tier="governance",
+            ),
+            ObjectiveAlphaPublicEvidenceCatalogEntry(
+                evidence_id="runtime_backend_equivalence_portfolio",
+                entry_point="python examples/runtime_backend_equivalence_portfolio.py",
+                artifact_kind="schema_versioned_backend_equivalence_portfolio_report",
+                metadata_digest=portfolio_digest,
+                extension_tier="runtime_proof",
             ),
         ),
         issues=(),
@@ -1055,6 +1104,9 @@ def objective_alpha_public_evidence_catalog_report_to_dict(
         "issues": list(report.issues),
         "required_controls": list(report.required_controls),
         "required_invariants": list(report.required_invariants),
+        "runtime_backend_equivalence_portfolio_metadata_digest": (
+            report.runtime_backend_equivalence_portfolio_metadata_digest
+        ),
         "schema_version": report.schema_version,
         "stable_bundle_metadata_digest": report.stable_bundle_metadata_digest,
         "stable_entry_capacity": report.stable_entry_capacity,
@@ -1096,7 +1148,7 @@ def _catalog_entry_to_dict(
 
 def _validate_catalog_entries(
     entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...],
-    extension_policy_metadata_digest: str,
+    expected_metadata_digests: tuple[str, ...],
 ) -> None:
     if len(entries) > OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES:
         raise ObjectiveAlphaPublicEvidenceCatalogError("too many catalog entries")
@@ -1115,8 +1167,12 @@ def _validate_catalog_entries(
         raise ObjectiveAlphaPublicEvidenceCatalogError("catalog artifact kinds changed")
     if extension_tiers != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS:
         raise ObjectiveAlphaPublicEvidenceCatalogError("catalog extension tiers changed")
-    if metadata_digests != (extension_policy_metadata_digest,):
-        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog policy digest mismatch")
+    if metadata_digests != expected_metadata_digests:
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog metadata digest mismatch")
+    if len(set(evidence_ids)) != len(evidence_ids):
+        raise ObjectiveAlphaPublicEvidenceCatalogError("duplicate catalog evidence id")
+    if len(set(entry_points)) != len(entry_points):
+        raise ObjectiveAlphaPublicEvidenceCatalogError("duplicate catalog entry point")
     for entry in entries:
         if entry.status != "passed":
             raise ObjectiveAlphaPublicEvidenceCatalogError("catalog entry did not pass")
@@ -1144,7 +1200,9 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS = (
     "stable_public_bundle_full",
     "extension_policy_contract_bound",
     "extension_policy_digest_entry_bound",
-    "fixed_initial_catalog_entry",
+    "backend_equivalence_portfolio_digest_entry_bound",
+    "first_non_governance_runtime_proof_entry_bound",
+    "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",
     "digest_only_catalog_entries",
     "source_free_public_reports",
@@ -1170,6 +1228,7 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
     stable_entry_count: int
     extension_policy_contract: str
     extension_policy_metadata_digest: str
+    runtime_backend_equivalence_portfolio_metadata_digest: str
     catalog_entry_capacity: int
     catalog_entry_count: int
     catalog_entry_digest_count: int
@@ -1226,6 +1285,10 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
         _validate_digest(
             self.extension_policy_metadata_digest,
             "objective alpha catalog gate extension policy digest",
+        )
+        _validate_digest(
+            self.runtime_backend_equivalence_portfolio_metadata_digest,
+            "objective alpha catalog gate backend equivalence portfolio digest",
         )
         if self.schema_version != (
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_SCHEMA_VERSION
@@ -1296,7 +1359,10 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS
         ):
             raise ValueError("objective alpha catalog admission gate extension tiers changed")
-        if self.catalog_raw_output_policies != (OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY,):
+        if (
+            self.catalog_raw_output_policies
+            != (OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY,) * self.catalog_entry_count
+        ):
             raise ValueError("objective alpha catalog admission gate raw output policy changed")
         _validate_extension_policy_tuple(self.required_invariants, "required_invariant")
         _validate_extension_policy_tuple(self.required_controls, "required_control")
@@ -1365,6 +1431,9 @@ def build_objective_alpha_public_evidence_catalog_admission_gate_report(
         stable_entry_count=catalog_report.stable_entry_count,
         extension_policy_contract=catalog_report.extension_policy_contract,
         extension_policy_metadata_digest=catalog_report.extension_policy_metadata_digest,
+        runtime_backend_equivalence_portfolio_metadata_digest=(
+            catalog_report.runtime_backend_equivalence_portfolio_metadata_digest
+        ),
         catalog_entry_capacity=catalog_report.catalog_entry_capacity,
         catalog_entry_count=catalog_report.catalog_entry_count,
         catalog_entry_digest_count=sum(
@@ -1419,6 +1488,9 @@ def objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
         "issues": list(report.issues),
         "required_controls": list(report.required_controls),
         "required_invariants": list(report.required_invariants),
+        "runtime_backend_equivalence_portfolio_metadata_digest": (
+            report.runtime_backend_equivalence_portfolio_metadata_digest
+        ),
         "schema_version": report.schema_version,
         "stable_entry_capacity": report.stable_entry_capacity,
         "stable_entry_count": report.stable_entry_count,
