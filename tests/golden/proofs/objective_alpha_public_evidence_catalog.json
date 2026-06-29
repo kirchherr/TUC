@@ -1,0 +1,80 @@
+{
+  "artifact_status": "review_evidence_catalog",
+  "blocked_changes": [
+    "increase_public_bundle_capacity_without_rfc",
+    "replace_public_bundle_entries_without_rfc",
+    "add_source_buffers_to_public_artifacts",
+    "add_tensor_values_to_public_artifacts",
+    "authorize_execution_handles",
+    "authorize_device_access",
+    "authorize_generated_artifact_execution",
+    "claim_native_performance"
+  ],
+  "blocked_claims": [
+    "native_performance_parity",
+    "vendor_compiler_replacement",
+    "broad_source_code_parsing",
+    "arbitrary_third_party_backend_execution",
+    "device_access",
+    "generated_artifact_execution"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "catalog_contract": "objective_alpha.public_evidence_catalog.data_only.v0",
+  "catalog_entries": [
+    {
+      "artifact_kind": "schema_versioned_extension_policy_report",
+      "entry_point": "python examples/objective_alpha_evidence_extension_policy.py",
+      "evidence_id": "objective_alpha_evidence_extension_policy",
+      "extension_tier": "governance",
+      "metadata_digest": "4f918c51fe83ec1a1799317cd892027f46a19b5c3fe552227cb6ab8b901fd2cb",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    }
+  ],
+  "catalog_entry_capacity": 32,
+  "catalog_entry_count": 1,
+  "catalog_id": "objective_alpha_public_evidence_catalog",
+  "catalog_metadata_digest": "2e996c478b82dcb4af313647337a33488022c117fb74d48b92f83017a73f520d",
+  "catalog_passed": true,
+  "catalog_scope": "objective_alpha_extensions_after_public_bundle_capacity",
+  "catalog_status": "PASS",
+  "digest_policy": "sha256_hex_only",
+  "extension_policy_contract": "objective_alpha.evidence_extension_policy.data_only.v0",
+  "extension_policy_metadata_digest": "4f918c51fe83ec1a1799317cd892027f46a19b5c3fe552227cb6ab8b901fd2cb",
+  "growth_policy": "append_only_rfc_bound",
+  "issues": [],
+  "required_controls": [
+    "schema_versioned_extension_artifacts",
+    "sha256_metadata_digests",
+    "source_free_public_reports",
+    "digest_only_public_links",
+    "no_execution_handles",
+    "no_device_access",
+    "no_generated_artifact_execution",
+    "no_native_performance_claim"
+  ],
+  "required_invariants": [
+    "stable_public_bundle_anchor",
+    "passing_extension_policy_anchor",
+    "fixed_initial_catalog_entries",
+    "append_only_rfc_bound_growth",
+    "digest_only_catalog_entries",
+    "source_free_public_reports",
+    "blocked_execution_surfaces_preserved",
+    "blocked_claims_preserved"
+  ],
+  "schema_version": "tuc.objective_alpha_public_evidence_catalog_report.v0",
+  "stable_bundle_metadata_digest": "a163bccd01c6f2f9dd03fa9f0340f4c33e9d0e19b46ef520f2dc647aa2b5ed07",
+  "stable_entry_capacity": 16,
+  "stable_entry_count": 16,
+  "stable_entrypoint": "objective_alpha_public_proof_bundle"
+}

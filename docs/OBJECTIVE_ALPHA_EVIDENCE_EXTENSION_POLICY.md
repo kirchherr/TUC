@@ -29,6 +29,13 @@ stable entrypoint with `entry_capacity: 16` and `entry_count: 16`, and that new
 public evidence must not be appended to that bundle without a deliberate RFC or
 a separate public evidence catalog/successor objective.
 
+That separate catalog now exists as
+[Objective Alpha Public Evidence Catalog](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md),
+with example `examples/objective_alpha_public_evidence_catalog.py`, schema
+`schemas/objective_alpha_public_evidence_catalog_report.v0.schema.json`, and
+golden `tests/golden/proofs/objective_alpha_public_evidence_catalog.json`.
+Canonical doc path: `docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md`.
+
 This keeps the first reviewer path small while allowing TUC to continue adding
 research evidence behind a controlled extension surface.
 

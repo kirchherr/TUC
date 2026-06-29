@@ -87,7 +87,9 @@ entries, with an
 to keep the top-level review surface fixed and claim-safe. The follow-on
 [Objective Alpha Evidence Extension Policy](docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
 keeps future evidence growth out of the fixed 16-entry public bundle unless a
-new RFC or successor evidence catalog deliberately opens that path.
+new RFC or successor evidence catalog deliberately opens that path. The
+[Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
+now provides that separate digest-only growth surface.
 
 ## Runtime Execution
 
@@ -229,6 +231,7 @@ Key docs:
 - [Runtime Evidence Flow](docs/RUNTIME_EVIDENCE_FLOW.md)
 - [Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
 - [Objective Alpha Evidence Extension Policy](docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
+- [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
 - [Runtime Tensor Store](docs/RUNTIME_TENSOR_STORE.md)
 - [Runtime Tensor Store Evidence](docs/RUNTIME_TENSOR_STORE_EVIDENCE.md)
 - [Runtime Input Manifest](docs/RUNTIME_INPUT_MANIFEST.md)

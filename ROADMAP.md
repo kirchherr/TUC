@@ -294,6 +294,10 @@ Completed evidence:
   keeps the now-full 16-entry public proof bundle stable and blocks future
   public evidence growth without a deliberate RFC, separate public evidence
   catalog, or successor objective.
+- [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
+  provides that separate digest-only, RFC-bound growth surface, initially
+  binding the extension policy by metadata digest without adding entries to the
+  fixed Objective Alpha Public Proof Bundle.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

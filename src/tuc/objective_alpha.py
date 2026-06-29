@@ -790,6 +790,340 @@ def dump_objective_alpha_evidence_extension_policy_report(
     return f"{text}\n"
 
 
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION = (
+    "tuc.objective_alpha_public_evidence_catalog_report.v0"
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_CONTRACT = (
+    "objective_alpha.public_evidence_catalog.data_only.v0"
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID = "objective_alpha_public_evidence_catalog"
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ARTIFACT_STATUS = "review_evidence_catalog"
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_PASS = "PASS"
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_FAIL = "FAIL"
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_DIGEST_POLICY = "sha256_hex_only"
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY = "append_only_rfc_bound"
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE = (
+    "objective_alpha_extensions_after_public_bundle_capacity"
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES = 32
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS = (
+    OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID,
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS = (
+    "python examples/objective_alpha_evidence_extension_policy.py",
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS = (
+    "schema_versioned_extension_policy_report",
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS = ("governance",)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS = (
+    "stable_public_bundle_anchor",
+    "passing_extension_policy_anchor",
+    "fixed_initial_catalog_entries",
+    "append_only_rfc_bound_growth",
+    "digest_only_catalog_entries",
+    "source_free_public_reports",
+    "blocked_execution_surfaces_preserved",
+    "blocked_claims_preserved",
+)
+MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ISSUES = 32
+MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REPORT_BYTES = 64 * 1024
+
+
+@dataclass(frozen=True)
+class ObjectiveAlphaPublicEvidenceCatalogEntry:
+    """Digest-only entry in the Objective Alpha public evidence catalog."""
+
+    evidence_id: str
+    entry_point: str
+    artifact_kind: str
+    metadata_digest: str
+    extension_tier: str
+    status: str = "passed"
+    raw_output_policy: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY
+
+    def __post_init__(self) -> None:
+        _validate_bundle_text(self.evidence_id, "objective alpha catalog evidence_id")
+        _validate_bundle_text(self.entry_point, "objective alpha catalog entry_point")
+        _validate_bundle_text(self.artifact_kind, "objective alpha catalog artifact_kind")
+        _validate_bundle_text(self.extension_tier, "objective alpha catalog extension_tier")
+        _validate_bundle_text(self.status, "objective alpha catalog status")
+        _validate_bundle_text(
+            self.raw_output_policy,
+            "objective alpha catalog raw_output_policy",
+        )
+        _validate_digest(self.metadata_digest, "objective alpha catalog metadata_digest")
+        if self.status != "passed":
+            raise ValueError("objective alpha catalog entries must be passed")
+        if self.raw_output_policy != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY:
+            raise ValueError("objective alpha public evidence catalog must be digest-only")
+
+
+@dataclass(frozen=True)
+class ObjectiveAlphaPublicEvidenceCatalogReport:
+    """Data-only catalog for Objective Alpha evidence beyond the fixed bundle."""
+
+    stable_entrypoint: str
+    stable_entry_capacity: int
+    stable_entry_count: int
+    stable_bundle_metadata_digest: str
+    extension_policy_contract: str
+    extension_policy_metadata_digest: str
+    catalog_entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...]
+    issues: tuple[str, ...]
+    schema_version: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION
+    catalog_id: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID
+    catalog_contract: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_CONTRACT
+    artifact_status: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ARTIFACT_STATUS
+    digest_policy: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_DIGEST_POLICY
+    growth_policy: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY
+    catalog_scope: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE
+    catalog_entry_capacity: int = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES
+    required_invariants: tuple[str, ...] = (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS
+    )
+    required_controls: tuple[str, ...] = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS
+    blocked_changes: tuple[str, ...] = OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_BLOCKED_CHANGES
+    blocked_claims: tuple[str, ...] = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS
+    blocked_execution_surfaces: tuple[str, ...] = RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+
+    def __post_init__(self) -> None:
+        _validate_bundle_text(self.catalog_id, "objective alpha catalog_id")
+        _validate_bundle_text(self.catalog_contract, "objective alpha catalog_contract")
+        _validate_bundle_text(self.artifact_status, "objective alpha catalog artifact_status")
+        _validate_bundle_text(self.digest_policy, "objective alpha catalog digest_policy")
+        _validate_bundle_text(self.growth_policy, "objective alpha catalog growth_policy")
+        _validate_bundle_text(self.catalog_scope, "objective alpha catalog scope")
+        _validate_bundle_text(self.stable_entrypoint, "objective alpha catalog stable_entrypoint")
+        _validate_digest(
+            self.stable_bundle_metadata_digest,
+            "objective alpha catalog stable bundle digest",
+        )
+        _validate_bundle_text(
+            self.extension_policy_contract,
+            "objective alpha catalog extension_policy_contract",
+        )
+        _validate_digest(
+            self.extension_policy_metadata_digest,
+            "objective alpha catalog extension policy digest",
+        )
+        if self.schema_version != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION:
+            raise ValueError("objective alpha catalog schema mismatch")
+        if self.catalog_id != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID:
+            raise ValueError("objective alpha catalog id mismatch")
+        if self.catalog_contract != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_CONTRACT:
+            raise ValueError("objective alpha catalog contract mismatch")
+        if self.artifact_status != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ARTIFACT_STATUS:
+            raise ValueError("objective alpha catalog artifact status mismatch")
+        if self.digest_policy != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_DIGEST_POLICY:
+            raise ValueError("objective alpha catalog digest policy mismatch")
+        if self.growth_policy != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY:
+            raise ValueError("objective alpha catalog growth policy mismatch")
+        if self.catalog_scope != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE:
+            raise ValueError("objective alpha catalog scope mismatch")
+        if self.catalog_entry_capacity != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES:
+            raise ValueError("objective alpha catalog entry capacity changed")
+        if self.required_invariants != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS:
+            raise ValueError("objective alpha catalog invariants changed")
+        if self.required_controls != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS:
+            raise ValueError("objective alpha catalog controls changed")
+        if self.blocked_changes != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_BLOCKED_CHANGES:
+            raise ValueError("objective alpha catalog blocked changes changed")
+        if self.blocked_claims != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_BLOCKED_CLAIMS:
+            raise ValueError("objective alpha catalog blocked claims changed")
+        if self.blocked_execution_surfaces != RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES:
+            raise ValueError("objective alpha catalog blocked surfaces changed")
+        if self.stable_entrypoint != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_ID:
+            raise ValueError("objective alpha catalog stable entrypoint mismatch")
+        if self.stable_entry_capacity != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_ENTRIES:
+            raise ValueError("objective alpha catalog stable capacity changed")
+        if self.stable_entry_count != self.stable_entry_capacity:
+            raise ValueError("objective alpha catalog stable bundle is not full")
+        if self.extension_policy_contract != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_CONTRACT:
+            raise ValueError("objective alpha catalog policy contract mismatch")
+        _validate_catalog_entries(self.catalog_entries, self.extension_policy_metadata_digest)
+        _validate_extension_policy_tuple(self.required_invariants, "required_invariant")
+        _validate_extension_policy_tuple(self.required_controls, "required_control")
+        _validate_extension_policy_tuple(self.blocked_changes, "blocked_change")
+        _validate_gate_tuple(self.blocked_claims, "blocked_claim")
+        _validate_gate_tuple(self.blocked_execution_surfaces, "blocked_execution_surface")
+        _validate_extension_policy_tuple(self.issues, "issue")
+        if len(self.issues) > MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ISSUES:
+            raise ValueError("objective alpha catalog issue count exceeds limit")
+
+    @property
+    def catalog_entry_count(self) -> int:
+        """Return the number of current catalog entries."""
+
+        return len(self.catalog_entries)
+
+    @property
+    def catalog_passed(self) -> bool:
+        """Return whether the catalog validation has no issues."""
+
+        return not self.issues
+
+    @property
+    def catalog_status(self) -> str:
+        """Return the stable catalog status token."""
+
+        return (
+            OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_PASS
+            if self.catalog_passed
+            else OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_FAIL
+        )
+
+    @property
+    def catalog_metadata_digest(self) -> str:
+        """Return a stable digest for the catalog contract and evidence links."""
+
+        return _metadata_digest(
+            {
+                "catalog_entries": tuple(
+                    _catalog_entry_to_dict(entry) for entry in self.catalog_entries
+                ),
+                "catalog_id": self.catalog_id,
+                "extension_policy_metadata_digest": self.extension_policy_metadata_digest,
+                "growth_policy": self.growth_policy,
+                "stable_bundle_metadata_digest": self.stable_bundle_metadata_digest,
+            }
+        )
+
+
+class ObjectiveAlphaPublicEvidenceCatalogError(ValueError):
+    """Raised when Objective Alpha public evidence catalog validation fails."""
+
+
+def build_objective_alpha_public_evidence_catalog_report(
+    policy_report: ObjectiveAlphaEvidenceExtensionPolicyReport,
+) -> ObjectiveAlphaPublicEvidenceCatalogReport:
+    """Build the catalog for evidence beyond the fixed Objective Alpha bundle."""
+
+    if not isinstance(policy_report, ObjectiveAlphaEvidenceExtensionPolicyReport):
+        raise TypeError("expected ObjectiveAlphaEvidenceExtensionPolicyReport")
+    if not policy_report.policy_passed:
+        raise ObjectiveAlphaPublicEvidenceCatalogError(
+            "objective alpha evidence extension policy must pass first"
+        )
+    policy_output = dump_objective_alpha_evidence_extension_policy_report(policy_report)
+    policy_digest = sha256(policy_output.encode("utf-8")).hexdigest()
+    return ObjectiveAlphaPublicEvidenceCatalogReport(
+        stable_entrypoint=policy_report.stable_entrypoint,
+        stable_entry_capacity=policy_report.stable_entry_capacity,
+        stable_entry_count=policy_report.stable_entry_count,
+        stable_bundle_metadata_digest=policy_report.stable_bundle_metadata_digest,
+        extension_policy_contract=policy_report.policy_contract,
+        extension_policy_metadata_digest=policy_digest,
+        catalog_entries=(
+            ObjectiveAlphaPublicEvidenceCatalogEntry(
+                evidence_id=OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID,
+                entry_point="python examples/objective_alpha_evidence_extension_policy.py",
+                artifact_kind="schema_versioned_extension_policy_report",
+                metadata_digest=policy_digest,
+                extension_tier="governance",
+            ),
+        ),
+        issues=(),
+    )
+
+
+def objective_alpha_public_evidence_catalog_report_to_dict(
+    report: ObjectiveAlphaPublicEvidenceCatalogReport,
+) -> dict[str, object]:
+    """Return a stable JSON-compatible public evidence catalog report."""
+
+    if not isinstance(report, ObjectiveAlphaPublicEvidenceCatalogReport):
+        raise TypeError("expected ObjectiveAlphaPublicEvidenceCatalogReport")
+    return {
+        "artifact_status": report.artifact_status,
+        "blocked_changes": list(report.blocked_changes),
+        "blocked_claims": list(report.blocked_claims),
+        "blocked_execution_surfaces": list(report.blocked_execution_surfaces),
+        "catalog_contract": report.catalog_contract,
+        "catalog_entries": [_catalog_entry_to_dict(entry) for entry in report.catalog_entries],
+        "catalog_entry_capacity": report.catalog_entry_capacity,
+        "catalog_entry_count": report.catalog_entry_count,
+        "catalog_id": report.catalog_id,
+        "catalog_metadata_digest": report.catalog_metadata_digest,
+        "catalog_passed": report.catalog_passed,
+        "catalog_scope": report.catalog_scope,
+        "catalog_status": report.catalog_status,
+        "digest_policy": report.digest_policy,
+        "extension_policy_contract": report.extension_policy_contract,
+        "extension_policy_metadata_digest": report.extension_policy_metadata_digest,
+        "growth_policy": report.growth_policy,
+        "issues": list(report.issues),
+        "required_controls": list(report.required_controls),
+        "required_invariants": list(report.required_invariants),
+        "schema_version": report.schema_version,
+        "stable_bundle_metadata_digest": report.stable_bundle_metadata_digest,
+        "stable_entry_capacity": report.stable_entry_capacity,
+        "stable_entry_count": report.stable_entry_count,
+        "stable_entrypoint": report.stable_entrypoint,
+    }
+
+
+def dump_objective_alpha_public_evidence_catalog_report(
+    report: ObjectiveAlphaPublicEvidenceCatalogReport,
+) -> str:
+    """Serialize an Objective Alpha public evidence catalog report."""
+
+    text = json.dumps(
+        objective_alpha_public_evidence_catalog_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REPORT_BYTES:
+        raise ObjectiveAlphaPublicEvidenceCatalogError(
+            "objective alpha public evidence catalog report exceeds size limit"
+        )
+    return f"{text}\n"
+
+
+def _catalog_entry_to_dict(
+    entry: ObjectiveAlphaPublicEvidenceCatalogEntry,
+) -> dict[str, str]:
+    return {
+        "artifact_kind": entry.artifact_kind,
+        "entry_point": entry.entry_point,
+        "evidence_id": entry.evidence_id,
+        "extension_tier": entry.extension_tier,
+        "metadata_digest": entry.metadata_digest,
+        "raw_output_policy": entry.raw_output_policy,
+        "status": entry.status,
+    }
+
+
+def _validate_catalog_entries(
+    entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...],
+    extension_policy_metadata_digest: str,
+) -> None:
+    if len(entries) > OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES:
+        raise ObjectiveAlphaPublicEvidenceCatalogError("too many catalog entries")
+    if not entries:
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog entries are required")
+    evidence_ids = tuple(entry.evidence_id for entry in entries)
+    entry_points = tuple(entry.entry_point for entry in entries)
+    artifact_kinds = tuple(entry.artifact_kind for entry in entries)
+    extension_tiers = tuple(entry.extension_tier for entry in entries)
+    metadata_digests = tuple(entry.metadata_digest for entry in entries)
+    if evidence_ids != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS:
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog evidence ids changed")
+    if entry_points != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS:
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog entry points changed")
+    if artifact_kinds != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS:
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog artifact kinds changed")
+    if extension_tiers != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS:
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog extension tiers changed")
+    if metadata_digests != (extension_policy_metadata_digest,):
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog policy digest mismatch")
+    for entry in entries:
+        if entry.status != "passed":
+            raise ObjectiveAlphaPublicEvidenceCatalogError("catalog entry did not pass")
+        if entry.raw_output_policy != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY:
+            raise ObjectiveAlphaPublicEvidenceCatalogError("catalog entry is not digest-only")
+
+
 def _validate_extension_policy_tuple(values: tuple[str, ...], field_name: str) -> None:
     if type(values) is not tuple:
         raise TypeError(f"objective alpha extension {field_name} values must be tuple")
@@ -844,6 +1178,22 @@ __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_FAIL",
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_STATUS_PASS",
     "MAX_OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GATE_ISSUES",
+    "MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ISSUES",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ARTIFACT_STATUS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_CONTRACT",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_DIGEST_POLICY",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_FAIL",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_PASS",
     "MAX_OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ISSUES",
     "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_BLOCKED_CHANGES",
     "OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_NEXT_DECISION",
@@ -860,6 +1210,9 @@ __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_BUNDLE_GROWTH_STATUS",
     "ObjectiveAlphaEvidenceExtensionPolicyError",
     "ObjectiveAlphaEvidenceExtensionPolicyReport",
+    "ObjectiveAlphaPublicEvidenceCatalogEntry",
+    "ObjectiveAlphaPublicEvidenceCatalogError",
+    "ObjectiveAlphaPublicEvidenceCatalogReport",
     "ObjectiveAlphaPublicEvidenceEntry",
     "ObjectiveAlphaPublicProofBundle",
     "ObjectiveAlphaPublicProofBundleError",
@@ -867,12 +1220,15 @@ __all__ = [
     "ObjectiveAlphaPublicProofBundleGateReport",
     "assert_objective_alpha_public_proof_bundle",
     "build_objective_alpha_evidence_extension_policy_report",
+    "build_objective_alpha_public_evidence_catalog_report",
     "build_objective_alpha_public_proof_bundle",
     "build_objective_alpha_public_proof_bundle_gate_report",
     "dump_objective_alpha_evidence_extension_policy_report",
+    "dump_objective_alpha_public_evidence_catalog_report",
     "dump_objective_alpha_public_proof_bundle",
     "dump_objective_alpha_public_proof_bundle_gate_report",
     "objective_alpha_evidence_extension_policy_report_to_dict",
+    "objective_alpha_public_evidence_catalog_report_to_dict",
     "objective_alpha_public_proof_bundle_gate_report_to_dict",
     "objective_alpha_public_proof_bundle_to_dict",
 ]
