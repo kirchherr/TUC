@@ -27,10 +27,14 @@ from tuc.objective_alpha import (
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ARTIFACT_STATUS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_CONTRACT,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_DIGEST_POLICY,
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ENTRY_ADMISSION_PATTERN_CONTRACT,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS,
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_DIGEST_SOURCES,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS,
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS,
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_RAW_OUTPUT_POLICIES,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES,
@@ -39,6 +43,7 @@ from tuc.objective_alpha import (
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_PASS,
     ObjectiveAlphaPublicEvidenceCatalogEntry,
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec,
     ObjectiveAlphaPublicEvidenceCatalogError,
     build_objective_alpha_public_evidence_catalog_report,
     dump_objective_alpha_public_evidence_catalog_report,
@@ -115,6 +120,76 @@ def test_objective_alpha_public_evidence_catalog_passes() -> None:
     assert len(str(payload["extension_policy_metadata_digest"])) == 64
     assert len(str(payload["runtime_backend_equivalence_portfolio_metadata_digest"])) == 64
     assert len(str(payload["catalog_metadata_digest"])) == 64
+
+
+def test_objective_alpha_public_evidence_catalog_entry_admission_pattern_drives_contract() -> None:
+    specs = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS
+
+    assert OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ENTRY_ADMISSION_PATTERN_CONTRACT == (
+        "objective_alpha.public_evidence_catalog_entry_admission_pattern.data_only.v0"
+    )
+    assert tuple(spec.evidence_id for spec in specs) == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS
+    )
+    assert tuple(spec.entry_point for spec in specs) == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS
+    )
+    assert tuple(spec.artifact_kind for spec in specs) == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS
+    )
+    assert tuple(spec.extension_tier for spec in specs) == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS
+    )
+    assert tuple(spec.digest_source for spec in specs) == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_DIGEST_SOURCES
+    )
+    assert tuple(spec.raw_output_policy for spec in specs) == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_RAW_OUTPUT_POLICIES
+    )
+    assert OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_DIGEST_SOURCES == (
+        "objective_alpha_evidence_extension_policy_report",
+        "runtime_backend_equivalence_portfolio_report",
+    )
+    assert len(set(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS)) == len(specs)
+    assert len(set(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS)) == len(specs)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("evidence_id", "source_text"),
+        ("entry_point", "../unsafe"),
+        ("artifact_kind", "raw_tensor_value"),
+        ("digest_source", "runtime_handle"),
+    ),
+)
+def test_objective_alpha_public_evidence_catalog_entry_admission_spec_rejects_unsafe_text(
+    field: str,
+    value: str,
+) -> None:
+    kwargs = {
+        "evidence_id": "safe_evidence",
+        "entry_point": "python examples/safe.py",
+        "artifact_kind": "schema_versioned_safe_report",
+        "extension_tier": "runtime_proof",
+        "digest_source": "safe_report",
+    }
+    kwargs[field] = value
+
+    with pytest.raises(ValueError):
+        ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(**kwargs)
+
+
+def test_objective_alpha_public_evidence_catalog_entry_admission_spec_rejects_raw_policy() -> None:
+    with pytest.raises(ValueError, match="digest-only"):
+        ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+            evidence_id="safe_evidence",
+            entry_point="python examples/safe.py",
+            artifact_kind="schema_versioned_safe_report",
+            extension_tier="runtime_proof",
+            digest_source="safe_report",
+            raw_output_policy="metadata_only",
+        )
 
 
 def test_objective_alpha_public_evidence_catalog_dump_matches_golden() -> None:
@@ -201,7 +276,7 @@ def test_objective_alpha_public_evidence_catalog_rejects_entry_drift() -> None:
     )
 
     with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="evidence ids changed"):
-        replace(report, catalog_entries=(drifted_entry,))
+        replace(report, catalog_entries=(drifted_entry, report.catalog_entries[1]))
 
 
 def test_objective_alpha_public_evidence_catalog_rejects_policy_digest_drift() -> None:
@@ -303,6 +378,7 @@ def test_objective_alpha_public_evidence_catalog_docs_are_linked() -> None:
         Path("docs/ROADMAP_STATUS.md"),
         Path("rfcs/0233-objective-alpha-public-evidence-catalog.md"),
         Path("rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md"),
+        Path("rfcs/0236-objective-alpha-catalog-entry-admission-pattern.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert schema_path in text or path.name in {"README.md", "ROADMAP.md"}

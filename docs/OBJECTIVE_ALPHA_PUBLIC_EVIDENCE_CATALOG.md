@@ -43,6 +43,22 @@ The [Objective Alpha Public Evidence Catalog Admission Gate](OBJECTIVE_ALPHA_PUB
 machine-checks those admission rules. Canonical doc path:
 `docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md`.
 
+## Entry Admission Pattern
+
+Catalog entries are admitted through a typed, data-only admission pattern before
+they become public catalog rows. The pattern is the internal source of truth for
+current catalog evidence IDs, entry points, artifact kinds, extension tiers,
+digest source labels, and raw-output policies.
+
+This keeps the catalog and the admission gate aligned without executing entry
+points or resolving filesystem paths. The only accepted raw-output policy is
+`digest_only`; unsafe fragments such as source text, raw tensor values, runtime
+handles, host paths, device identifiers, backend artifacts, generated code,
+dynamic libraries, plugin entrypoints, and raw benchmark output are rejected at
+spec construction time.
+
+The pattern is governed by
+`rfcs/0236-objective-alpha-catalog-entry-admission-pattern.md`.
 ## Why This Exists
 
 The public proof bundle is the first reviewer entrypoint. The catalog is the

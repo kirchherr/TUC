@@ -102,9 +102,73 @@ _FORBIDDEN_BUNDLE_TEXT = (
     "raw_benchmark_output",
     "raw_tensor_value",
     "raw_timing_samples",
+    "runtime_handle",
     "source_text",
     "subprocess",
 )
+
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ENTRY_ADMISSION_PATTERN_CONTRACT = (
+    "objective_alpha.public_evidence_catalog_entry_admission_pattern.data_only.v0"
+)
+
+
+@dataclass(frozen=True)
+class ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec:
+    """One source-of-truth admission spec for a public evidence catalog entry."""
+
+    evidence_id: str
+    entry_point: str
+    artifact_kind: str
+    extension_tier: str
+    digest_source: str
+    raw_output_policy: str = OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY
+
+    def __post_init__(self) -> None:
+        _validate_catalog_admission_spec_text(self.evidence_id, "catalog spec evidence_id")
+        _validate_catalog_admission_spec_text(self.entry_point, "catalog spec entry_point")
+        _validate_catalog_admission_spec_text(self.artifact_kind, "catalog spec artifact_kind")
+        _validate_catalog_admission_spec_text(self.extension_tier, "catalog spec extension_tier")
+        _validate_catalog_admission_spec_text(self.digest_source, "catalog spec digest_source")
+        _validate_catalog_admission_spec_text(
+            self.raw_output_policy,
+            "catalog spec raw_output_policy",
+        )
+        if self.raw_output_policy != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY:
+            raise ValueError("catalog admission specs must stay digest-only")
+
+
+def _validate_catalog_admission_spec_text(value: str, field_name: str) -> None:
+    if not isinstance(value, str):
+        raise TypeError(f"{field_name} must be a string")
+    if not value:
+        raise ValueError(f"{field_name} must not be empty")
+    if len(value.encode("utf-8")) > OBJECTIVE_ALPHA_PUBLIC_BUNDLE_MAX_FIELD_BYTES:
+        raise ValueError(f"{field_name} exceeds size limit")
+    if not _BUNDLE_TEXT_RE.fullmatch(value):
+        raise ValueError(f"{field_name} contains unsupported characters")
+    lowered = value.lower()
+    for fragment in _FORBIDDEN_BUNDLE_TEXT:
+        if fragment in lowered:
+            raise ValueError(f"{field_name} contains forbidden fragment: {fragment}")
+
+
+def _catalog_admission_spec_values(
+    specs: tuple[ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec, ...],
+    field_name: str,
+) -> tuple[str, ...]:
+    if field_name == "evidence_id":
+        return tuple(spec.evidence_id for spec in specs)
+    if field_name == "entry_point":
+        return tuple(spec.entry_point for spec in specs)
+    if field_name == "artifact_kind":
+        return tuple(spec.artifact_kind for spec in specs)
+    if field_name == "extension_tier":
+        return tuple(spec.extension_tier for spec in specs)
+    if field_name == "digest_source":
+        return tuple(spec.digest_source for spec in specs)
+    if field_name == "raw_output_policy":
+        return tuple(spec.raw_output_policy for spec in specs)
+    raise ValueError(f"unknown catalog admission spec field: {field_name}")
 
 
 @dataclass(frozen=True)
@@ -811,21 +875,49 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE = (
     "objective_alpha_extensions_after_public_bundle_capacity"
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES = 32
-OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS = (
-    OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID,
-    "runtime_backend_equivalence_portfolio",
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS = (
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+        evidence_id=OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID,
+        entry_point="python examples/objective_alpha_evidence_extension_policy.py",
+        artifact_kind="schema_versioned_extension_policy_report",
+        extension_tier="governance",
+        digest_source="objective_alpha_evidence_extension_policy_report",
+    ),
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+        evidence_id="runtime_backend_equivalence_portfolio",
+        entry_point="python examples/runtime_backend_equivalence_portfolio.py",
+        artifact_kind="schema_versioned_backend_equivalence_portfolio_report",
+        extension_tier="runtime_proof",
+        digest_source="runtime_backend_equivalence_portfolio_report",
+    ),
 )
-OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS = (
-    "python examples/objective_alpha_evidence_extension_policy.py",
-    "python examples/runtime_backend_equivalence_portfolio.py",
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS = _catalog_admission_spec_values(
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
+    "evidence_id",
 )
-OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS = (
-    "schema_versioned_extension_policy_report",
-    "schema_versioned_backend_equivalence_portfolio_report",
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS = _catalog_admission_spec_values(
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
+    "entry_point",
 )
-OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS = (
-    "governance",
-    "runtime_proof",
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS = _catalog_admission_spec_values(
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
+    "artifact_kind",
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS = _catalog_admission_spec_values(
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
+    "extension_tier",
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_DIGEST_SOURCES = (
+    _catalog_admission_spec_values(
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
+        "digest_source",
+    )
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_RAW_OUTPUT_POLICIES = (
+    _catalog_admission_spec_values(
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
+        "raw_output_policy",
+    )
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS = (
     "stable_public_bundle_anchor",
@@ -868,6 +960,28 @@ class ObjectiveAlphaPublicEvidenceCatalogEntry:
             raise ValueError("objective alpha catalog entries must be passed")
         if self.raw_output_policy != OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY:
             raise ValueError("objective alpha public evidence catalog must be digest-only")
+
+
+def _catalog_entries_from_admission_specs(
+    metadata_digests: tuple[str, ...],
+) -> tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...]:
+    if len(metadata_digests) != len(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS):
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog digest source count mismatch")
+    return tuple(
+        ObjectiveAlphaPublicEvidenceCatalogEntry(
+            evidence_id=spec.evidence_id,
+            entry_point=spec.entry_point,
+            artifact_kind=spec.artifact_kind,
+            metadata_digest=metadata_digest,
+            extension_tier=spec.extension_tier,
+            raw_output_policy=spec.raw_output_policy,
+        )
+        for spec, metadata_digest in zip(
+            OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
+            metadata_digests,
+            strict=True,
+        )
+    )
 
 
 @dataclass(frozen=True)
@@ -1056,22 +1170,7 @@ def build_objective_alpha_public_evidence_catalog_report(
         extension_policy_contract=policy_report.policy_contract,
         extension_policy_metadata_digest=policy_digest,
         runtime_backend_equivalence_portfolio_metadata_digest=portfolio_digest,
-        catalog_entries=(
-            ObjectiveAlphaPublicEvidenceCatalogEntry(
-                evidence_id=OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY_ID,
-                entry_point="python examples/objective_alpha_evidence_extension_policy.py",
-                artifact_kind="schema_versioned_extension_policy_report",
-                metadata_digest=policy_digest,
-                extension_tier="governance",
-            ),
-            ObjectiveAlphaPublicEvidenceCatalogEntry(
-                evidence_id="runtime_backend_equivalence_portfolio",
-                entry_point="python examples/runtime_backend_equivalence_portfolio.py",
-                artifact_kind="schema_versioned_backend_equivalence_portfolio_report",
-                metadata_digest=portfolio_digest,
-                extension_tier="runtime_proof",
-            ),
-        ),
+        catalog_entries=_catalog_entries_from_admission_specs((policy_digest, portfolio_digest)),
         issues=(),
     )
 
@@ -1154,6 +1253,12 @@ def _validate_catalog_entries(
         raise ObjectiveAlphaPublicEvidenceCatalogError("too many catalog entries")
     if not entries:
         raise ObjectiveAlphaPublicEvidenceCatalogError("catalog entries are required")
+    if len(entries) != len(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS):
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog entry spec count mismatch")
+    if len(expected_metadata_digests) != len(
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS
+    ):
+        raise ObjectiveAlphaPublicEvidenceCatalogError("catalog digest source count mismatch")
     evidence_ids = tuple(entry.evidence_id for entry in entries)
     entry_points = tuple(entry.entry_point for entry in entries)
     artifact_kinds = tuple(entry.artifact_kind for entry in entries)
@@ -1359,9 +1464,8 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS
         ):
             raise ValueError("objective alpha catalog admission gate extension tiers changed")
-        if (
-            self.catalog_raw_output_policies
-            != (OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY,) * self.catalog_entry_count
+        if self.catalog_raw_output_policies != (
+            OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_RAW_OUTPUT_POLICIES
         ):
             raise ValueError("objective alpha catalog admission gate raw output policy changed")
         _validate_extension_policy_tuple(self.required_invariants, "required_invariant")
@@ -1584,10 +1688,14 @@ __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ARTIFACT_STATUS",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_CONTRACT",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_DIGEST_POLICY",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ENTRY_ADMISSION_PATTERN_CONTRACT",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ARTIFACT_KINDS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_DIGEST_SOURCES",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_RAW_OUTPUT_POLICIES",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES",
@@ -1615,6 +1723,7 @@ __all__ = [
     "ObjectiveAlphaPublicEvidenceCatalogAdmissionGateError",
     "ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport",
     "ObjectiveAlphaPublicEvidenceCatalogEntry",
+    "ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec",
     "ObjectiveAlphaPublicEvidenceCatalogError",
     "ObjectiveAlphaPublicEvidenceCatalogReport",
     "ObjectiveAlphaPublicEvidenceEntry",
