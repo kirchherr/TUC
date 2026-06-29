@@ -298,6 +298,9 @@ Completed evidence:
   provides that separate digest-only, RFC-bound growth surface, initially
   binding the extension policy by metadata digest without adding entries to the
   fixed Objective Alpha Public Proof Bundle.
+- [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
+  machine-checks that catalog admission remains append-only, RFC-bound,
+  digest-only, source-free, and free of new execution surfaces.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

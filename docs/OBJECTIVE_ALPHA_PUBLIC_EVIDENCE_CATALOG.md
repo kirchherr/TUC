@@ -34,6 +34,10 @@ and must remain schema-versioned, digest-only, source-free in public reports,
 and free of execution handles, device access, generated-artifact execution, and
 native performance claims.
 
+The [Objective Alpha Public Evidence Catalog Admission Gate](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
+machine-checks those admission rules. Canonical doc path:
+`docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md`.
+
 ## Why This Exists
 
 The public proof bundle is the first reviewer entrypoint. The catalog is the
@@ -46,6 +50,10 @@ main proof path harder to audit.
 - Schema: `schemas/objective_alpha_public_evidence_catalog_report.v0.schema.json`
 - Golden: `tests/golden/proofs/objective_alpha_public_evidence_catalog.json`
 - Tests: `tests/test_objective_alpha_public_evidence_catalog.py`
+- Admission gate: [Objective Alpha Public Evidence Catalog Admission Gate](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
+- Admission gate example: `examples/objective_alpha_public_evidence_catalog_admission_gate.py`
+- Admission gate schema:
+  `schemas/objective_alpha_public_evidence_catalog_admission_gate_report.v0.schema.json`
 - Decision: `rfcs/0233-objective-alpha-public-evidence-catalog.md`
 
 ## Security Boundary

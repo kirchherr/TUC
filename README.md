@@ -89,7 +89,9 @@ to keep the top-level review surface fixed and claim-safe. The follow-on
 keeps future evidence growth out of the fixed 16-entry public bundle unless a
 new RFC or successor evidence catalog deliberately opens that path. The
 [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
-now provides that separate digest-only growth surface.
+now provides that separate digest-only growth surface, with an
+[Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
+checking append-only, RFC-bound, digest-only admission rules.
 
 ## Runtime Execution
 
@@ -232,6 +234,7 @@ Key docs:
 - [Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
 - [Objective Alpha Evidence Extension Policy](docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
 - [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
+- [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
 - [Runtime Tensor Store](docs/RUNTIME_TENSOR_STORE.md)
 - [Runtime Tensor Store Evidence](docs/RUNTIME_TENSOR_STORE_EVIDENCE.md)
 - [Runtime Input Manifest](docs/RUNTIME_INPUT_MANIFEST.md)
