@@ -95,8 +95,9 @@ checking append-only, RFC-bound, digest-only admission rules. A typed catalog
 entry admission pattern now derives the catalog's expected IDs, entry points,
 artifact kinds, extension tiers, digest sources, and raw-output policies from
 reviewed data-only specs. Its first non-governance catalog entry binds the
-Runtime Backend Equivalence Portfolio as `runtime_proof` evidence without
-expanding the fixed public bundle.
+Runtime Backend Equivalence Portfolio as `runtime_proof` evidence, and its
+first `frontend_runtime_proof` entry binds the Source-To-Intent Kernel Ingress
+Proof Bundle without expanding the fixed public bundle.
 
 ## Runtime Execution
 

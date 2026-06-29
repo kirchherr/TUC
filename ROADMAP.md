@@ -306,6 +306,10 @@ Completed evidence:
   catalog's expected IDs, entry points, artifact kinds, extension tiers, digest
   sources, and raw-output policies from typed data-only specs, reducing drift in
   future catalog additions without adding execution or source-ingress surfaces.
+- Objective Alpha Public Evidence Catalog now binds the Source-To-Intent Kernel
+  Ingress Proof Bundle as its first `frontend_runtime_proof` entry, connecting
+  realistic source-intent ingress evidence to the public Universal Compute proof
+  surface by digest only.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

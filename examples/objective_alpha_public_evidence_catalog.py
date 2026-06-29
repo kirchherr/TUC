@@ -8,6 +8,9 @@ from examples.objective_alpha_evidence_extension_policy import (
 from examples.runtime_backend_equivalence_portfolio import (
     build_backend_equivalence_portfolio_report,
 )
+from examples.source_to_intent_research_kernel_ingress_proof_bundle import (
+    build_report as build_kernel_ingress_proof_bundle_report,
+)
 from tuc.objective_alpha import (
     ObjectiveAlphaPublicEvidenceCatalogReport,
     build_objective_alpha_public_evidence_catalog_report,
@@ -21,6 +24,7 @@ def build_report_object() -> ObjectiveAlphaPublicEvidenceCatalogReport:
     return build_objective_alpha_public_evidence_catalog_report(
         build_extension_policy_report_object(),
         build_backend_equivalence_portfolio_report(),
+        build_kernel_ingress_proof_bundle_report(),
     )
 
 

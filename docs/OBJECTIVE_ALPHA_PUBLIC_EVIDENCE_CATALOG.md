@@ -27,12 +27,14 @@ tests/golden/proofs/objective_alpha_public_evidence_catalog.json
 The catalog proves that Objective Alpha has a stable extension surface after the
 public proof bundle reached `entry_count: 16` and `entry_capacity: 16`.
 
-The catalog currently binds two entries by SHA-256 metadata digest:
+The catalog currently binds three entries by SHA-256 metadata digest:
 
 - the initial governance entry for the
   [Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md);
 - the first non-governance `runtime_proof` entry for
-  [Runtime Backend Equivalence Portfolio](RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md).
+  [Runtime Backend Equivalence Portfolio](RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md);
+- a `frontend_runtime_proof` entry for
+  [Source-To-Intent Research Kernel Ingress Proof Bundle](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md).
 
 Future catalog entries must be added through an RFC and must remain
 schema-versioned, digest-only, source-free in public reports, and free of
@@ -59,6 +61,7 @@ spec construction time.
 
 The pattern is governed by
 `rfcs/0236-objective-alpha-catalog-entry-admission-pattern.md`.
+
 ## Why This Exists
 
 The public proof bundle is the first reviewer entrypoint. The catalog is the
@@ -78,6 +81,8 @@ main proof path harder to audit.
 - Initial catalog decision: `rfcs/0233-objective-alpha-public-evidence-catalog.md`
 - First runtime-proof entry decision:
   `rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md`
+- Kernel Ingress Proof Bundle catalog-entry decision:
+  `rfcs/0237-objective-alpha-kernel-ingress-proof-bundle-catalog-entry.md`
 
 ## Security Boundary
 

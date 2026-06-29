@@ -890,6 +890,13 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS = (
         extension_tier="runtime_proof",
         digest_source="runtime_backend_equivalence_portfolio_report",
     ),
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+        evidence_id="source_to_intent_research_kernel_ingress_proof_bundle",
+        entry_point="python examples/source_to_intent_research_kernel_ingress_proof_bundle.py",
+        artifact_kind="schema_versioned_source_to_intent_kernel_ingress_proof_bundle_report",
+        extension_tier="frontend_runtime_proof",
+        digest_source="source_to_intent_research_kernel_ingress_proof_bundle_report",
+    ),
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS = _catalog_admission_spec_values(
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
@@ -930,6 +937,7 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS = (
     "blocked_claims_preserved",
 )
 MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ISSUES = 32
+MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_INPUT_REPORT_BYTES = 64 * 1024
 MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REPORT_BYTES = 64 * 1024
 
 
@@ -995,6 +1003,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
     extension_policy_contract: str
     extension_policy_metadata_digest: str
     runtime_backend_equivalence_portfolio_metadata_digest: str
+    source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest: str
     catalog_entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...]
     issues: tuple[str, ...]
     schema_version: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION
@@ -1037,6 +1046,10 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             self.runtime_backend_equivalence_portfolio_metadata_digest,
             "objective alpha catalog backend equivalence portfolio digest",
         )
+        _validate_digest(
+            self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest,
+            "objective alpha catalog source to intent kernel ingress proof bundle digest",
+        )
         if self.schema_version != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION:
             raise ValueError("objective alpha catalog schema mismatch")
         if self.catalog_id != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID:
@@ -1076,6 +1089,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             (
                 self.extension_policy_metadata_digest,
                 self.runtime_backend_equivalence_portfolio_metadata_digest,
+                self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest,
             ),
         )
         _validate_extension_policy_tuple(self.required_invariants, "required_invariant")
@@ -1124,6 +1138,9 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 "runtime_backend_equivalence_portfolio_metadata_digest": (
                     self.runtime_backend_equivalence_portfolio_metadata_digest
                 ),
+                "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": (
+                    self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest
+                ),
                 "stable_bundle_metadata_digest": self.stable_bundle_metadata_digest,
             }
         )
@@ -1133,9 +1150,32 @@ class ObjectiveAlphaPublicEvidenceCatalogError(ValueError):
     """Raised when Objective Alpha public evidence catalog validation fails."""
 
 
+def _catalog_metadata_digest_from_serialized_report(
+    serialized_report: str,
+    field_name: str,
+) -> str:
+    if not isinstance(serialized_report, str):
+        raise TypeError(f"{field_name} must be a serialized report string")
+    if not serialized_report:
+        raise ObjectiveAlphaPublicEvidenceCatalogError(f"{field_name} must not be empty")
+    if (
+        len(serialized_report.encode("utf-8"))
+        > MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_INPUT_REPORT_BYTES
+    ):
+        raise ObjectiveAlphaPublicEvidenceCatalogError(f"{field_name} exceeds size limit")
+    lowered = serialized_report.lower()
+    for fragment in _FORBIDDEN_BUNDLE_TEXT:
+        if fragment in lowered:
+            raise ObjectiveAlphaPublicEvidenceCatalogError(
+                f"{field_name} contains forbidden fragment: {fragment}"
+            )
+    return sha256(serialized_report.encode("utf-8")).hexdigest()
+
+
 def build_objective_alpha_public_evidence_catalog_report(
     policy_report: ObjectiveAlphaEvidenceExtensionPolicyReport,
     runtime_backend_equivalence_portfolio_report: RuntimeBackendEquivalencePortfolioReport,
+    source_to_intent_research_kernel_ingress_proof_bundle_report: str,
 ) -> ObjectiveAlphaPublicEvidenceCatalogReport:
     """Build the catalog for evidence beyond the fixed Objective Alpha bundle."""
 
@@ -1162,6 +1202,10 @@ def build_objective_alpha_public_evidence_catalog_report(
         runtime_backend_equivalence_portfolio_report
     )
     portfolio_digest = sha256(portfolio_output.encode("utf-8")).hexdigest()
+    kernel_ingress_proof_bundle_digest = _catalog_metadata_digest_from_serialized_report(
+        source_to_intent_research_kernel_ingress_proof_bundle_report,
+        "source to intent kernel ingress proof bundle report",
+    )
     return ObjectiveAlphaPublicEvidenceCatalogReport(
         stable_entrypoint=policy_report.stable_entrypoint,
         stable_entry_capacity=policy_report.stable_entry_capacity,
@@ -1170,7 +1214,12 @@ def build_objective_alpha_public_evidence_catalog_report(
         extension_policy_contract=policy_report.policy_contract,
         extension_policy_metadata_digest=policy_digest,
         runtime_backend_equivalence_portfolio_metadata_digest=portfolio_digest,
-        catalog_entries=_catalog_entries_from_admission_specs((policy_digest, portfolio_digest)),
+        source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest=(
+            kernel_ingress_proof_bundle_digest
+        ),
+        catalog_entries=_catalog_entries_from_admission_specs(
+            (policy_digest, portfolio_digest, kernel_ingress_proof_bundle_digest)
+        ),
         issues=(),
     )
 
@@ -1205,6 +1254,9 @@ def objective_alpha_public_evidence_catalog_report_to_dict(
         "required_invariants": list(report.required_invariants),
         "runtime_backend_equivalence_portfolio_metadata_digest": (
             report.runtime_backend_equivalence_portfolio_metadata_digest
+        ),
+        "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": (
+            report.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest
         ),
         "schema_version": report.schema_version,
         "stable_bundle_metadata_digest": report.stable_bundle_metadata_digest,
@@ -1307,6 +1359,7 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS = (
     "extension_policy_digest_entry_bound",
     "backend_equivalence_portfolio_digest_entry_bound",
     "first_non_governance_runtime_proof_entry_bound",
+    "kernel_ingress_proof_bundle_digest_entry_bound",
     "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",
     "digest_only_catalog_entries",
@@ -1334,6 +1387,7 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
     extension_policy_contract: str
     extension_policy_metadata_digest: str
     runtime_backend_equivalence_portfolio_metadata_digest: str
+    source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest: str
     catalog_entry_capacity: int
     catalog_entry_count: int
     catalog_entry_digest_count: int
@@ -1394,6 +1448,10 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
         _validate_digest(
             self.runtime_backend_equivalence_portfolio_metadata_digest,
             "objective alpha catalog gate backend equivalence portfolio digest",
+        )
+        _validate_digest(
+            self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest,
+            "objective alpha catalog gate source to intent kernel ingress proof bundle digest",
         )
         if self.schema_version != (
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_SCHEMA_VERSION
@@ -1538,6 +1596,9 @@ def build_objective_alpha_public_evidence_catalog_admission_gate_report(
         runtime_backend_equivalence_portfolio_metadata_digest=(
             catalog_report.runtime_backend_equivalence_portfolio_metadata_digest
         ),
+        source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest=(
+            catalog_report.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest
+        ),
         catalog_entry_capacity=catalog_report.catalog_entry_capacity,
         catalog_entry_count=catalog_report.catalog_entry_count,
         catalog_entry_digest_count=sum(
@@ -1594,6 +1655,9 @@ def objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
         "required_invariants": list(report.required_invariants),
         "runtime_backend_equivalence_portfolio_metadata_digest": (
             report.runtime_backend_equivalence_portfolio_metadata_digest
+        ),
+        "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": (
+            report.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest
         ),
         "schema_version": report.schema_version,
         "stable_entry_capacity": report.stable_entry_capacity,

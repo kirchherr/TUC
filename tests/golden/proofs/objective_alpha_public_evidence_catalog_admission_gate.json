@@ -30,29 +30,34 @@
   ],
   "catalog_artifact_kinds": [
     "schema_versioned_extension_policy_report",
-    "schema_versioned_backend_equivalence_portfolio_report"
+    "schema_versioned_backend_equivalence_portfolio_report",
+    "schema_versioned_source_to_intent_kernel_ingress_proof_bundle_report"
   ],
   "catalog_contract": "objective_alpha.public_evidence_catalog.data_only.v0",
   "catalog_digest_policy": "sha256_hex_only",
   "catalog_entry_capacity": 32,
-  "catalog_entry_count": 2,
-  "catalog_entry_digest_count": 2,
+  "catalog_entry_count": 3,
+  "catalog_entry_digest_count": 3,
   "catalog_entry_points": [
     "python examples/objective_alpha_evidence_extension_policy.py",
-    "python examples/runtime_backend_equivalence_portfolio.py"
+    "python examples/runtime_backend_equivalence_portfolio.py",
+    "python examples/source_to_intent_research_kernel_ingress_proof_bundle.py"
   ],
   "catalog_evidence_ids": [
     "objective_alpha_evidence_extension_policy",
-    "runtime_backend_equivalence_portfolio"
+    "runtime_backend_equivalence_portfolio",
+    "source_to_intent_research_kernel_ingress_proof_bundle"
   ],
   "catalog_extension_tiers": [
     "governance",
-    "runtime_proof"
+    "runtime_proof",
+    "frontend_runtime_proof"
   ],
   "catalog_growth_policy": "append_only_rfc_bound",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "7439418e764adf0f3c3ae5994c5b5a155cacbbe5357747bcc69d4094815beedb",
+  "catalog_metadata_digest": "32244c61bd1b8c0ab1849da97fc277147c8e76d94733ba6300ccfd282d20330c",
   "catalog_raw_output_policies": [
+    "digest_only",
     "digest_only",
     "digest_only"
   ],
@@ -84,6 +89,7 @@
     "extension_policy_digest_entry_bound",
     "backend_equivalence_portfolio_digest_entry_bound",
     "first_non_governance_runtime_proof_entry_bound",
+    "kernel_ingress_proof_bundle_digest_entry_bound",
     "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",
     "digest_only_catalog_entries",
@@ -93,6 +99,7 @@
   ],
   "runtime_backend_equivalence_portfolio_metadata_digest": "46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
   "schema_version": "tuc.objective_alpha_public_evidence_catalog_admission_gate_report.v0",
+  "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": "672d8ed88120a6acaac36523b8eb73f7780c4aec0586e8d23a0d04c94aa1da25",
   "stable_entry_capacity": 16,
   "stable_entry_count": 16,
   "stable_entrypoint": "objective_alpha_public_proof_bundle"

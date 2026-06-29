@@ -26,6 +26,7 @@
     "required_controls",
     "required_invariants",
     "runtime_backend_equivalence_portfolio_metadata_digest",
+    "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest",
     "schema_version",
     "stable_bundle_metadata_digest",
     "stable_entry_capacity",
@@ -84,6 +85,10 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "catalog_metadata_digest": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
@@ -92,12 +97,12 @@
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 2
+      "const": 3
     },
     "catalog_entries": {
       "type": "array",
-      "minItems": 2,
-      "maxItems": 2,
+      "minItems": 3,
+      "maxItems": 3,
       "prefixItems": [
         {
           "type": "object",
@@ -160,6 +165,43 @@
             },
             "extension_tier": {
               "const": "runtime_proof"
+            },
+            "metadata_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "raw_output_policy": {
+              "const": "digest_only"
+            },
+            "status": {
+              "const": "passed"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_kind",
+            "entry_point",
+            "evidence_id",
+            "extension_tier",
+            "metadata_digest",
+            "raw_output_policy",
+            "status"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "source_to_intent_research_kernel_ingress_proof_bundle"
+            },
+            "entry_point": {
+              "const": "python examples/source_to_intent_research_kernel_ingress_proof_bundle.py"
+            },
+            "artifact_kind": {
+              "const": "schema_versioned_source_to_intent_kernel_ingress_proof_bundle_report"
+            },
+            "extension_tier": {
+              "const": "frontend_runtime_proof"
             },
             "metadata_digest": {
               "type": "string",
