@@ -60,9 +60,16 @@
   ],
   "catalog_entry_capacity": 32,
   "catalog_entry_count": 3,
+  "catalog_extension_tier_coverage_status": "complete",
   "catalog_id": "objective_alpha_public_evidence_catalog",
   "catalog_metadata_digest": "32244c61bd1b8c0ab1849da97fc277147c8e76d94733ba6300ccfd282d20330c",
+  "catalog_missing_extension_tiers": [],
   "catalog_passed": true,
+  "catalog_required_extension_tiers": [
+    "governance",
+    "runtime_proof",
+    "frontend_runtime_proof"
+  ],
   "catalog_scope": "objective_alpha_extensions_after_public_bundle_capacity",
   "catalog_status": "PASS",
   "digest_policy": "sha256_hex_only",

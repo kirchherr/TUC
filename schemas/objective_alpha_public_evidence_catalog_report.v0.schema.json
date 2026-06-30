@@ -13,7 +13,10 @@
     "catalog_entries",
     "catalog_entry_capacity",
     "catalog_entry_count",
+    "catalog_extension_tier_coverage_status",
     "catalog_id",
+    "catalog_missing_extension_tiers",
+    "catalog_required_extension_tiers",
     "catalog_metadata_digest",
     "catalog_passed",
     "catalog_scope",
@@ -98,6 +101,23 @@
     },
     "catalog_entry_count": {
       "const": 3
+    },
+    "catalog_required_extension_tiers": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        { "const": "governance" },
+        { "const": "runtime_proof" },
+        { "const": "frontend_runtime_proof" }
+      ]
+    },
+    "catalog_missing_extension_tiers": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "catalog_extension_tier_coverage_status": {
+      "const": "complete"
     },
     "catalog_entries": {
       "type": "array",

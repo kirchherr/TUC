@@ -310,6 +310,10 @@ Completed evidence:
   Ingress Proof Bundle as its first `frontend_runtime_proof` entry, connecting
   realistic source-intent ingress evidence to the public Universal Compute proof
   surface by digest only.
+- Objective Alpha Public Evidence Catalog Extension-Tier Coverage now emits and
+  gates required coverage for `governance`, `runtime_proof`, and
+  `frontend_runtime_proof`, making the current public proof-role balance
+  machine-reviewable.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

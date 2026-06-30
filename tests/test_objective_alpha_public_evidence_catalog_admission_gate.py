@@ -38,9 +38,11 @@ from tuc.objective_alpha import (
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS,
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES,
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE,
     ObjectiveAlphaPublicEvidenceCatalogAdmissionGateError,
     build_objective_alpha_public_evidence_catalog_admission_gate_report,
@@ -103,6 +105,14 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_passes() -> None
     )
     assert payload["catalog_extension_tiers"] == list(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS
+    )
+    assert payload["catalog_required_extension_tiers"] == list(
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS
+    )
+    assert payload["catalog_missing_extension_tiers"] == []
+    assert (
+        payload["catalog_extension_tier_coverage_status"]
+        == OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS
     )
     assert payload["catalog_raw_output_policies"] == [
         OBJECTIVE_ALPHA_PUBLIC_BUNDLE_RAW_OUTPUT_POLICY
@@ -201,6 +211,12 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_rejects_drift() 
     with pytest.raises(ValueError, match="growth policy mismatch"):
         replace(report, catalog_growth_policy="freeform_growth")
 
+    with pytest.raises(ValueError, match="extension tier coverage incomplete"):
+        replace(report, catalog_missing_extension_tiers=("frontend_runtime_proof",))
+
+    with pytest.raises(ValueError, match="coverage status mismatch"):
+        replace(report, catalog_extension_tier_coverage_status="incomplete")
+
 
 def test_objective_alpha_public_evidence_catalog_admission_gate_schema_matches_contract() -> None:
     schema = _load_schema()
@@ -231,6 +247,14 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_schema_matches_c
     assert [
         item["const"] for item in schema["properties"]["required_invariants"]["prefixItems"]
     ] == list(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS)
+    assert [
+        item["const"]
+        for item in schema["properties"]["catalog_required_extension_tiers"]["prefixItems"]
+    ] == list(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS)
+    assert schema["properties"]["catalog_missing_extension_tiers"]["maxItems"] == 0
+    assert schema["properties"]["catalog_extension_tier_coverage_status"]["const"] == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS
+    )
     assert [
         item["const"] for item in schema["properties"]["catalog_evidence_ids"]["prefixItems"]
     ] == list(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS)
@@ -272,6 +296,13 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_golden_matches_s
     assert golden["catalog_entry_count"] == len(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS
     )
+    assert golden["catalog_required_extension_tiers"] == list(
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS
+    )
+    assert golden["catalog_missing_extension_tiers"] == []
+    assert golden["catalog_extension_tier_coverage_status"] == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS
+    )
     assert golden["issues"] == []
 
 
@@ -289,6 +320,7 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_docs_are_linked(
         Path("docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md"),
         Path("docs/ROADMAP_STATUS.md"),
         Path("rfcs/0234-objective-alpha-public-evidence-catalog-admission-gate.md"),
+        Path("rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert schema_path in text or path.name in {"README.md", "ROADMAP.md"}

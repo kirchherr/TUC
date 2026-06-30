@@ -18,10 +18,13 @@
     "catalog_entry_points",
     "catalog_evidence_ids",
     "catalog_extension_tiers",
+    "catalog_extension_tier_coverage_status",
     "catalog_growth_policy",
     "catalog_id",
     "catalog_metadata_digest",
+    "catalog_missing_extension_tiers",
     "catalog_raw_output_policies",
+    "catalog_required_extension_tiers",
     "catalog_scope",
     "digest_policy",
     "extension_policy_contract",
@@ -154,6 +157,23 @@
         { "const": "frontend_runtime_proof" }
       ]
     },
+    "catalog_required_extension_tiers": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        { "const": "governance" },
+        { "const": "runtime_proof" },
+        { "const": "frontend_runtime_proof" }
+      ]
+    },
+    "catalog_missing_extension_tiers": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "catalog_extension_tier_coverage_status": {
+      "const": "complete"
+    },
     "catalog_raw_output_policies": {
       "type": "array",
       "minItems": 3,
@@ -166,8 +186,8 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 15,
-      "maxItems": 15,
+      "minItems": 16,
+      "maxItems": 16,
       "prefixItems": [
         { "const": "catalog_report_passed" },
         { "const": "catalog_metadata_digest_bound" },
@@ -178,6 +198,7 @@
         { "const": "backend_equivalence_portfolio_digest_entry_bound" },
         { "const": "first_non_governance_runtime_proof_entry_bound" },
         { "const": "kernel_ingress_proof_bundle_digest_entry_bound" },
+        { "const": "catalog_extension_tier_coverage_complete" },
         { "const": "fixed_initial_catalog_entries" },
         { "const": "append_only_rfc_bound_growth_policy" },
         { "const": "digest_only_catalog_entries" },

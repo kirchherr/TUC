@@ -35,6 +35,8 @@ still passes the fixed v0 admission rules:
 - the Source-To-Intent Kernel Ingress Proof Bundle digest is bound;
 - the initial governance entry, first runtime-proof entry, and first
   frontend-runtime-proof entry are fixed;
+- required extension-tier coverage is complete for `governance`,
+  `runtime_proof`, and `frontend_runtime_proof`;
 - catalog growth is append-only and RFC-bound;
 - catalog entries remain digest-only and source-free;
 - blocked claims and blocked execution surfaces are preserved.
@@ -64,3 +66,5 @@ output.
   `rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md`
 - First frontend-runtime-proof entry decision:
   `rfcs/0237-objective-alpha-kernel-ingress-proof-bundle-catalog-entry.md`
+- Catalog extension-tier coverage decision:
+  `rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md`

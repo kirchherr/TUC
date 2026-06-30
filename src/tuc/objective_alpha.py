@@ -914,6 +914,12 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS = _catalog_admi
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
     "extension_tier",
 )
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS = (
+    "governance",
+    "runtime_proof",
+    "frontend_runtime_proof",
+)
+OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS = "complete"
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_DIGEST_SOURCES = (
     _catalog_admission_spec_values(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
@@ -1092,6 +1098,8 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest,
             ),
         )
+        if self.catalog_missing_extension_tiers:
+            raise ValueError("objective alpha catalog extension tier coverage incomplete")
         _validate_extension_policy_tuple(self.required_invariants, "required_invariant")
         _validate_extension_policy_tuple(self.required_controls, "required_control")
         _validate_extension_policy_tuple(self.blocked_changes, "blocked_change")
@@ -1122,6 +1130,24 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             if self.catalog_passed
             else OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_FAIL
         )
+
+    @property
+    def catalog_required_extension_tiers(self) -> tuple[str, ...]:
+        """Return the extension-tier roles that must be represented."""
+
+        return OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS
+
+    @property
+    def catalog_missing_extension_tiers(self) -> tuple[str, ...]:
+        """Return required extension-tier roles not represented by catalog entries."""
+
+        return _missing_catalog_extension_tiers(self.catalog_entries)
+
+    @property
+    def catalog_extension_tier_coverage_status(self) -> str:
+        """Return the stable extension-tier coverage status token."""
+
+        return OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS
 
     @property
     def catalog_metadata_digest(self) -> str:
@@ -1243,6 +1269,9 @@ def objective_alpha_public_evidence_catalog_report_to_dict(
         "catalog_id": report.catalog_id,
         "catalog_metadata_digest": report.catalog_metadata_digest,
         "catalog_passed": report.catalog_passed,
+        "catalog_extension_tier_coverage_status": (report.catalog_extension_tier_coverage_status),
+        "catalog_missing_extension_tiers": list(report.catalog_missing_extension_tiers),
+        "catalog_required_extension_tiers": list(report.catalog_required_extension_tiers),
         "catalog_scope": report.catalog_scope,
         "catalog_status": report.catalog_status,
         "digest_policy": report.digest_policy,
@@ -1337,6 +1366,17 @@ def _validate_catalog_entries(
             raise ObjectiveAlphaPublicEvidenceCatalogError("catalog entry is not digest-only")
 
 
+def _missing_catalog_extension_tiers(
+    entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...],
+) -> tuple[str, ...]:
+    observed = {entry.extension_tier for entry in entries}
+    return tuple(
+        extension_tier
+        for extension_tier in OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS
+        if extension_tier not in observed
+    )
+
+
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_SCHEMA_VERSION = (
     "tuc.objective_alpha_public_evidence_catalog_admission_gate_report.v0"
 )
@@ -1360,6 +1400,7 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS = (
     "backend_equivalence_portfolio_digest_entry_bound",
     "first_non_governance_runtime_proof_entry_bound",
     "kernel_ingress_proof_bundle_digest_entry_bound",
+    "catalog_extension_tier_coverage_complete",
     "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",
     "digest_only_catalog_entries",
@@ -1395,6 +1436,9 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
     catalog_entry_points: tuple[str, ...]
     catalog_artifact_kinds: tuple[str, ...]
     catalog_extension_tiers: tuple[str, ...]
+    catalog_required_extension_tiers: tuple[str, ...]
+    catalog_missing_extension_tiers: tuple[str, ...]
+    catalog_extension_tier_coverage_status: str
     catalog_raw_output_policies: tuple[str, ...]
     required_controls: tuple[str, ...]
     blocked_changes: tuple[str, ...]
@@ -1522,6 +1566,22 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS
         ):
             raise ValueError("objective alpha catalog admission gate extension tiers changed")
+        if self.catalog_required_extension_tiers != (
+            OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS
+        ):
+            raise ValueError(
+                "objective alpha catalog admission gate required extension tiers changed"
+            )
+        if self.catalog_missing_extension_tiers:
+            raise ValueError(
+                "objective alpha catalog admission gate extension tier coverage incomplete"
+            )
+        if self.catalog_extension_tier_coverage_status != (
+            OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS
+        ):
+            raise ValueError(
+                "objective alpha catalog admission gate extension tier coverage status mismatch"
+            )
         if self.catalog_raw_output_policies != (
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_RAW_OUTPUT_POLICIES
         ):
@@ -1535,6 +1595,18 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
         _validate_gate_tuple(self.catalog_entry_points, "catalog_entry_point")
         _validate_gate_tuple(self.catalog_artifact_kinds, "catalog_artifact_kind")
         _validate_gate_tuple(self.catalog_extension_tiers, "catalog_extension_tier")
+        _validate_gate_tuple(
+            self.catalog_required_extension_tiers,
+            "catalog_required_extension_tier",
+        )
+        _validate_gate_tuple(
+            self.catalog_missing_extension_tiers,
+            "catalog_missing_extension_tier",
+        )
+        _validate_bundle_text(
+            self.catalog_extension_tier_coverage_status,
+            "objective alpha catalog admission gate extension tier coverage status",
+        )
         _validate_gate_tuple(self.catalog_raw_output_policies, "catalog_raw_output_policy")
         _validate_extension_policy_tuple(self.issues, "issue")
         if self.required_controls != OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS:
@@ -1608,6 +1680,11 @@ def build_objective_alpha_public_evidence_catalog_admission_gate_report(
         catalog_entry_points=tuple(entry.entry_point for entry in entries),
         catalog_artifact_kinds=tuple(entry.artifact_kind for entry in entries),
         catalog_extension_tiers=tuple(entry.extension_tier for entry in entries),
+        catalog_required_extension_tiers=catalog_report.catalog_required_extension_tiers,
+        catalog_missing_extension_tiers=catalog_report.catalog_missing_extension_tiers,
+        catalog_extension_tier_coverage_status=(
+            catalog_report.catalog_extension_tier_coverage_status
+        ),
         catalog_raw_output_policies=tuple(entry.raw_output_policy for entry in entries),
         required_controls=catalog_report.required_controls,
         blocked_changes=catalog_report.blocked_changes,
@@ -1637,11 +1714,14 @@ def objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
         "catalog_entry_digest_count": report.catalog_entry_digest_count,
         "catalog_entry_points": list(report.catalog_entry_points),
         "catalog_evidence_ids": list(report.catalog_evidence_ids),
+        "catalog_extension_tier_coverage_status": (report.catalog_extension_tier_coverage_status),
         "catalog_extension_tiers": list(report.catalog_extension_tiers),
         "catalog_growth_policy": report.catalog_growth_policy,
         "catalog_id": report.catalog_id,
         "catalog_metadata_digest": report.catalog_metadata_digest,
+        "catalog_missing_extension_tiers": list(report.catalog_missing_extension_tiers),
         "catalog_raw_output_policies": list(report.catalog_raw_output_policies),
+        "catalog_required_extension_tiers": list(report.catalog_required_extension_tiers),
         "catalog_scope": report.catalog_scope,
         "digest_policy": report.digest_policy,
         "extension_policy_contract": report.extension_policy_contract,
@@ -1759,10 +1839,12 @@ __all__ = [
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_RAW_OUTPUT_POLICIES",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES",
+    "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION",
     "OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE",

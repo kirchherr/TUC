@@ -94,10 +94,14 @@ now provides that separate digest-only growth surface, with an
 checking append-only, RFC-bound, digest-only admission rules. A typed catalog
 entry admission pattern now derives the catalog's expected IDs, entry points,
 artifact kinds, extension tiers, digest sources, and raw-output policies from
-reviewed data-only specs. Its first non-governance catalog entry binds the
-Runtime Backend Equivalence Portfolio as `runtime_proof` evidence, and its
-first `frontend_runtime_proof` entry binds the Source-To-Intent Kernel Ingress
-Proof Bundle without expanding the fixed public bundle.
+reviewed data-only specs. The catalog now also emits required extension-tier
+coverage evidence for `governance`, `runtime_proof`, and
+`frontend_runtime_proof`, so reviewers can see that Objective Alpha covers the
+current governance, backend-equivalence, and source-ingress proof roles. Its
+first non-governance catalog entry binds the Runtime Backend Equivalence
+Portfolio as `runtime_proof` evidence, and its first `frontend_runtime_proof`
+entry binds the Source-To-Intent Kernel Ingress Proof Bundle without expanding
+the fixed public bundle.
 
 ## Runtime Execution
 

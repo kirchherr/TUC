@@ -38,9 +38,11 @@ from tuc.objective_alpha import (
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_EXTENSION_TIERS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_RAW_OUTPUT_POLICIES,
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_GROWTH_POLICY,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_MAX_ENTRIES,
+    OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE,
@@ -87,6 +89,14 @@ def test_objective_alpha_public_evidence_catalog_passes() -> None:
     )
     assert payload["required_invariants"] == list(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS
+    )
+    assert payload["catalog_required_extension_tiers"] == list(
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS
+    )
+    assert payload["catalog_missing_extension_tiers"] == []
+    assert (
+        payload["catalog_extension_tier_coverage_status"]
+        == OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS
     )
     assert payload["required_controls"] == list(
         OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS
@@ -350,6 +360,14 @@ def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> No
         item["const"] for item in schema["properties"]["required_invariants"]["prefixItems"]
     ] == list(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_INVARIANTS)
     assert [
+        item["const"]
+        for item in schema["properties"]["catalog_required_extension_tiers"]["prefixItems"]
+    ] == list(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS)
+    assert schema["properties"]["catalog_missing_extension_tiers"]["maxItems"] == 0
+    assert schema["properties"]["catalog_extension_tier_coverage_status"]["const"] == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS
+    )
+    assert [
         item["const"] for item in schema["properties"]["required_controls"]["prefixItems"]
     ] == list(OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_REQUIRED_CONTROLS)
     assert (
@@ -405,6 +423,13 @@ def test_objective_alpha_public_evidence_catalog_golden_matches_schema() -> None
     assert golden["catalog_entry_count"] == len(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS
     )
+    assert golden["catalog_required_extension_tiers"] == list(
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS
+    )
+    assert golden["catalog_missing_extension_tiers"] == []
+    assert golden["catalog_extension_tier_coverage_status"] == (
+        OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS
+    )
     assert golden["issues"] == []
 
 
@@ -423,6 +448,7 @@ def test_objective_alpha_public_evidence_catalog_docs_are_linked() -> None:
         Path("rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md"),
         Path("rfcs/0236-objective-alpha-catalog-entry-admission-pattern.md"),
         Path("rfcs/0237-objective-alpha-kernel-ingress-proof-bundle-catalog-entry.md"),
+        Path("rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert schema_path in text or path.name in {"README.md", "ROADMAP.md"}

@@ -41,6 +41,12 @@ schema-versioned, digest-only, source-free in public reports, and free of
 execution handles, device access, generated-artifact execution, and native
 performance claims.
 
+The catalog now emits machine-readable extension-tier coverage evidence:
+`catalog_required_extension_tiers`, `catalog_missing_extension_tiers`, and
+`catalog_extension_tier_coverage_status`. The current required set is
+`governance`, `runtime_proof`, and `frontend_runtime_proof`; the status must be
+`complete` and the missing-tier list must be empty.
+
 The [Objective Alpha Public Evidence Catalog Admission Gate](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
 machine-checks those admission rules. Canonical doc path:
 `docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md`.
@@ -83,6 +89,8 @@ main proof path harder to audit.
   `rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md`
 - Kernel Ingress Proof Bundle catalog-entry decision:
   `rfcs/0237-objective-alpha-kernel-ingress-proof-bundle-catalog-entry.md`
+- Catalog extension-tier coverage decision:
+  `rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md`
 
 ## Security Boundary
 

@@ -48,6 +48,7 @@
     "runtime_backend_equivalence_portfolio",
     "source_to_intent_research_kernel_ingress_proof_bundle"
   ],
+  "catalog_extension_tier_coverage_status": "complete",
   "catalog_extension_tiers": [
     "governance",
     "runtime_proof",
@@ -56,10 +57,16 @@
   "catalog_growth_policy": "append_only_rfc_bound",
   "catalog_id": "objective_alpha_public_evidence_catalog",
   "catalog_metadata_digest": "32244c61bd1b8c0ab1849da97fc277147c8e76d94733ba6300ccfd282d20330c",
+  "catalog_missing_extension_tiers": [],
   "catalog_raw_output_policies": [
     "digest_only",
     "digest_only",
     "digest_only"
+  ],
+  "catalog_required_extension_tiers": [
+    "governance",
+    "runtime_proof",
+    "frontend_runtime_proof"
   ],
   "catalog_scope": "objective_alpha_extensions_after_public_bundle_capacity",
   "digest_policy": "sha256_hex_only",
@@ -90,6 +97,7 @@
     "backend_equivalence_portfolio_digest_entry_bound",
     "first_non_governance_runtime_proof_entry_bound",
     "kernel_ingress_proof_bundle_digest_entry_bound",
+    "catalog_extension_tier_coverage_complete",
     "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",
     "digest_only_catalog_entries",
