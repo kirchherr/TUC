@@ -8,6 +8,9 @@ from pathlib import Path
 import pytest
 
 from examples.source_to_intent_research_capability_claim import (
+    SOURCE_TO_INTENT_RESEARCH_CAPABILITY_REQUIRED_EVIDENCE_IDS,
+)
+from examples.source_to_intent_research_capability_claim import (
     build_report as build_capability_claim_report,
 )
 from examples.source_to_intent_research_capability_claim_gate import (
@@ -39,6 +42,12 @@ def test_source_to_intent_research_capability_claim_gate_matches_golden() -> Non
     assert 'combined_pipeline = "matmul->softmax->reduction->elementwise"' in report
     assert 'trusted_runtime_backends = "linear-sim,vector-sim"' in report
     assert 'evidence_count = "13"' in report
+    assert (
+        'evidence_ids = "'
+        + ",".join(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_REQUIRED_EVIDENCE_IDS)
+        + '"'
+        in report
+    )
     assert 'status = "PASS"' in report
 
 
@@ -117,6 +126,19 @@ def test_source_to_intent_research_capability_claim_gate_contract_rejects_drift(
         assert_capability_claim_gate_report_contract('status = "PASS"\n')
 
 
+def test_capability_claim_gate_contract_rejects_evidence_id_drift() -> None:
+    report = build_gate_report().replace(
+        "source_to_intent_research_evidence_gate",
+        "source_to_intent_research_missing_gate",
+    )
+
+    with pytest.raises(
+        SourceToIntentResearchCapabilityClaimGateError,
+        match="required binding missing",
+    ):
+        assert_capability_claim_gate_report_contract(report)
+
+
 def test_source_to_intent_research_capability_claim_gate_is_documented_and_in_ci() -> None:
     gate_path = "examples/source_to_intent_research_capability_claim_gate.py"
     doc_path = "SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE.md"
@@ -129,6 +151,7 @@ def test_source_to_intent_research_capability_claim_gate_is_documented_and_in_ci
         Path("docs/SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE.md"),
         Path("rfcs/0179-source-to-intent-research-capability-claim-gate.md"),
+        Path("rfcs/0239-source-to-intent-capability-claim-gate-evidence-id-binding.md"),
     ):
         assert gate_path in path.read_text(encoding="utf-8")
 
@@ -136,5 +159,6 @@ def test_source_to_intent_research_capability_claim_gate_is_documented_and_in_ci
         Path("README.md"),
         Path("docs/SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM.md"),
         Path("rfcs/0179-source-to-intent-research-capability-claim-gate.md"),
+        Path("rfcs/0239-source-to-intent-capability-claim-gate-evidence-id-binding.md"),
     ):
         assert doc_path in path.read_text(encoding="utf-8")

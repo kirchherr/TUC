@@ -15,6 +15,7 @@ try:
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_STATUS,
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_FORBIDDEN_FRAGMENTS,
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_OPERATION_PATH,
+        SOURCE_TO_INTENT_RESEARCH_CAPABILITY_REQUIRED_EVIDENCE_IDS,
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_SUPPORTED_CLAIMS,
         assert_research_capability_claim_report_contract,
     )
@@ -30,6 +31,7 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_STATUS,
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_FORBIDDEN_FRAGMENTS,
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_OPERATION_PATH,
+        SOURCE_TO_INTENT_RESEARCH_CAPABILITY_REQUIRED_EVIDENCE_IDS,
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_SUPPORTED_CLAIMS,
         assert_research_capability_claim_report_contract,
     )
@@ -102,6 +104,11 @@ def assert_capability_claim_gate_report_contract(text: object) -> None:
         ),
         '  trusted_runtime_backends = "linear-sim,vector-sim"',
         '  evidence_count = "13"',
+        (
+            '  evidence_ids = "'
+            + ",".join(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_REQUIRED_EVIDENCE_IDS)
+            + '"'
+        ),
         (
             '  supported_claims = "'
             + ",".join(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_SUPPORTED_CLAIMS)
@@ -194,6 +201,11 @@ def _render_gate_report(
         ),
         f'  evidence_count = "{claim["evidence_count"]}"',
         (
+            '  evidence_ids = "'
+            + ",".join(_claim_evidence_ids(claim["evidence"]))
+            + '"'
+        ),
+        (
             '  supported_claims = "'
             + ",".join(_string_list(claim["supported_claims"]))
             + '"'
@@ -210,6 +222,30 @@ def _render_gate_report(
         "}",
     ]
     return "\n".join(lines) + "\n"
+
+
+def _claim_evidence_ids(value: object) -> list[str]:
+    if not isinstance(value, list):
+        raise SourceToIntentResearchCapabilityClaimGateError(
+            "capability claim gate failed: evidence id binding missing"
+        )
+    evidence_ids: list[str] = []
+    for item in value:
+        if not isinstance(item, Mapping):
+            raise SourceToIntentResearchCapabilityClaimGateError(
+                "capability claim gate failed: evidence id binding missing"
+            )
+        artifact_id = item.get("artifact_id")
+        if not isinstance(artifact_id, str):
+            raise SourceToIntentResearchCapabilityClaimGateError(
+                "capability claim gate failed: evidence id binding missing"
+            )
+        evidence_ids.append(artifact_id)
+    if tuple(evidence_ids) != SOURCE_TO_INTENT_RESEARCH_CAPABILITY_REQUIRED_EVIDENCE_IDS:
+        raise SourceToIntentResearchCapabilityClaimGateError(
+            "capability claim gate failed: evidence id binding drift"
+        )
+    return evidence_ids
 
 
 def _string_list(value: object) -> list[str]:

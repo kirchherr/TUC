@@ -33,8 +33,8 @@ The gate:
 - compares the supplied report digest with the freshly built current report;
 - emits a source-free text gate with claim ID, claim scope, claim status,
   accepted kernel count, runtime case count, backend-equivalence shape-profile
-  case count, trusted runtime backends, supported claims, blocked claims,
-  parser status, and artifact policy;
+  case count, trusted runtime backends, exact evidence IDs, supported claims,
+  blocked claims, parser status, and artifact policy;
 - fails closed on source leakage, invalid JSON, contract drift, claim expansion,
   or evidence digest drift;
 - runs in CI after the capability claim report.
@@ -45,8 +45,8 @@ The gate does not parse source text, import modules from user code, execute
 Triton, run runtime backends, access devices, discover plugins, emit generated
 artifacts, or read host paths.
 
-The gate output is source-free and records only identifiers, counts, blocked
-claim names, and one SHA-256 digest.
+The gate output is source-free and records only identifiers, exact evidence IDs,
+counts, blocked claim names, and one SHA-256 digest.
 
 ## Consequences
 

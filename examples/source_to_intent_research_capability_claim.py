@@ -367,6 +367,9 @@ _REQUIRED_EVIDENCE = (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_BACKEND_ALIGNMENT_CONTRACT,
     ),
 )
+SOURCE_TO_INTENT_RESEARCH_CAPABILITY_REQUIRED_EVIDENCE_IDS = tuple(
+    artifact_id for artifact_id, _artifact_kind, _contract in _REQUIRED_EVIDENCE
+)
 
 
 def build_research_capability_claim_report() -> dict[str, object]:

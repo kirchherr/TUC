@@ -19,6 +19,8 @@ text gate that can be checked in CI and reviewed in pull requests.
 - Tests:
   `tests/test_source_to_intent_research_capability_claim_gate.py`
 - CI entry: `.github/workflows/ci.yml`
+- Evidence-ID binding decision:
+  `rfcs/0239-source-to-intent-capability-claim-gate-evidence-id-binding.md`
 
 ## What It Gates
 
@@ -34,7 +36,9 @@ The gate passes only when the capability claim report:
 - still records four backend-equivalence cases against `reference-cpu`;
 - still records eight backend-equivalence shape-profile cases;
 - still records trusted runtime backends `linear-sim` and `vector-sim`;
-- still records eleven bound evidence artifacts;
+- still records thirteen bound evidence artifacts;
+- still exposes the exact evidence ID list in the gate output, not only the
+  evidence count;
 - still blocks production parser, native performance, hardware certification,
   arbitrary backend execution, general Triton ingestion, and vendor compiler
   replacement claims.
@@ -49,8 +53,9 @@ The gate consumes only an already-rendered JSON claim report. It does not parse
 source text, import Triton modules, execute source, run backends, access
 devices, discover plugins, emit artifacts, or read host paths.
 
-The gate output is source-free and contains only stable identifiers, counts,
-claim boundaries, blocked claim names, and one SHA-256 digest.
+The gate output is source-free and contains only stable identifiers, exact
+evidence IDs, counts, claim boundaries, blocked claim names, and one SHA-256
+digest.
 
 ## Review Meaning
 

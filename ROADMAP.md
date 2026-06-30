@@ -718,8 +718,9 @@ Deliverables:
   compiler replacement claims blocked.
 - Source-To-Intent Research Capability Claim Gate
   (`examples/source_to_intent_research_capability_claim_gate.py`) binding that
-  high-level claim into CI and failing closed on claim drift, evidence digest
-  drift, source leakage, or unreviewed claim expansion.
+  high-level claim into CI, exposing the exact thirteen evidence IDs, and
+  failing closed on claim drift, evidence digest drift, source leakage, or
+  unreviewed claim expansion.
 - Source-To-Intent Research Source Runtime Smoke proving accepted source buffers
   can run end-to-end through Preflight, parser, Source Intent, runtime, and
   reference correctness.

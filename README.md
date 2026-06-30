@@ -352,7 +352,8 @@ Current frontend surfaces:
   production parser, native performance, hardware certification, arbitrary
   backend execution, and vendor compiler replacement claims.
 - Source-To-Intent Research Capability Claim Gate binding that high-level
-  claim into CI as source-free text evidence.
+  claim into CI as source-free text evidence, including the exact thirteen
+  evidence IDs that support the bounded research claim.
 - Source-To-Intent Research Source Runtime Smoke proving accepted source
   buffers can run end-to-end through the controlled research path.
 - Source-To-Intent Research Kernel Ingress proving realistic Triton

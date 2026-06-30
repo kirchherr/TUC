@@ -66,8 +66,9 @@ The claim report records SHA-256 digests for:
 - Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
 - Source-To-Intent Research Kernel Ingress Runtime Backend Alignment
 
-It validates structured JSON contracts before accepting the digest, and checks
-the text gates for required pass/fail bindings.
+It validates structured JSON contracts before accepting the digest, checks the
+text gates for required pass/fail bindings, and the CI gate renders the exact
+thirteen evidence IDs so reviewers do not have to trust a count alone.
 
 Source-To-Intent Research Proof Bundle artifact path:
 `examples/source_to_intent_research_proof_bundle.py`
