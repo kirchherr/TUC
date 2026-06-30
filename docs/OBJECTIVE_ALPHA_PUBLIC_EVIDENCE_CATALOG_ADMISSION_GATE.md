@@ -33,10 +33,11 @@ still passes the fixed v0 admission rules:
 - the Extension Policy contract and digest are bound;
 - the Runtime Backend Equivalence Portfolio digest is bound;
 - the Source-To-Intent Kernel Ingress Proof Bundle digest is bound;
-- the initial governance entry, first runtime-proof entry, and first
-  frontend-runtime-proof entry are fixed;
+- the Source-To-Intent Research Capability Claim Gate digest is bound;
+- the initial governance entry, first runtime-proof entry,
+  frontend-runtime-proof entry, and claim-boundary entry are fixed;
 - required extension-tier coverage is complete for `governance`,
-  `runtime_proof`, and `frontend_runtime_proof`;
+  `runtime_proof`, `frontend_runtime_proof`, and `claim_boundary`;
 - catalog growth is append-only and RFC-bound;
 - catalog entries remain digest-only and source-free;
 - blocked claims and blocked execution surfaces are preserved.
@@ -68,3 +69,5 @@ output.
   `rfcs/0237-objective-alpha-kernel-ingress-proof-bundle-catalog-entry.md`
 - Catalog extension-tier coverage decision:
   `rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md`
+- Capability Claim Gate catalog-entry decision:
+  `rfcs/0240-objective-alpha-capability-claim-gate-catalog-entry.md`

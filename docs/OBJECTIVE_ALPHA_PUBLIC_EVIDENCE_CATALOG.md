@@ -27,14 +27,16 @@ tests/golden/proofs/objective_alpha_public_evidence_catalog.json
 The catalog proves that Objective Alpha has a stable extension surface after the
 public proof bundle reached `entry_count: 16` and `entry_capacity: 16`.
 
-The catalog currently binds three entries by SHA-256 metadata digest:
+The catalog currently binds four entries by SHA-256 metadata digest:
 
 - the initial governance entry for the
   [Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md);
 - the first non-governance `runtime_proof` entry for
   [Runtime Backend Equivalence Portfolio](RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md);
 - a `frontend_runtime_proof` entry for
-  [Source-To-Intent Research Kernel Ingress Proof Bundle](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md).
+  [Source-To-Intent Research Kernel Ingress Proof Bundle](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md);
+- a `claim_boundary` entry for the
+  [Source-To-Intent Research Capability Claim Gate](SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE.md).
 
 Future catalog entries must be added through an RFC and must remain
 schema-versioned, digest-only, source-free in public reports, and free of
@@ -44,8 +46,9 @@ performance claims.
 The catalog now emits machine-readable extension-tier coverage evidence:
 `catalog_required_extension_tiers`, `catalog_missing_extension_tiers`, and
 `catalog_extension_tier_coverage_status`. The current required set is
-`governance`, `runtime_proof`, and `frontend_runtime_proof`; the status must be
-`complete` and the missing-tier list must be empty.
+`governance`, `runtime_proof`, `frontend_runtime_proof`, and
+`claim_boundary`; the status must be `complete` and the missing-tier list must
+be empty.
 
 The [Objective Alpha Public Evidence Catalog Admission Gate](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
 machine-checks those admission rules. Canonical doc path:
@@ -91,6 +94,8 @@ main proof path harder to audit.
   `rfcs/0237-objective-alpha-kernel-ingress-proof-bundle-catalog-entry.md`
 - Catalog extension-tier coverage decision:
   `rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md`
+- Capability Claim Gate catalog-entry decision:
+  `rfcs/0240-objective-alpha-capability-claim-gate-catalog-entry.md`
 
 ## Security Boundary
 

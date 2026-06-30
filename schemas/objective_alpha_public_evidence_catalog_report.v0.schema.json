@@ -30,6 +30,7 @@
     "required_invariants",
     "runtime_backend_equivalence_portfolio_metadata_digest",
     "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest",
+    "source_to_intent_research_capability_claim_gate_metadata_digest",
     "schema_version",
     "stable_bundle_metadata_digest",
     "stable_entry_capacity",
@@ -92,6 +93,10 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "source_to_intent_research_capability_claim_gate_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "catalog_metadata_digest": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
@@ -100,16 +105,17 @@
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 3
+      "const": 4
     },
     "catalog_required_extension_tiers": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 4,
+      "maxItems": 4,
       "prefixItems": [
         { "const": "governance" },
         { "const": "runtime_proof" },
-        { "const": "frontend_runtime_proof" }
+        { "const": "frontend_runtime_proof" },
+        { "const": "claim_boundary" }
       ]
     },
     "catalog_missing_extension_tiers": {
@@ -121,8 +127,8 @@
     },
     "catalog_entries": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 4,
+      "maxItems": 4,
       "prefixItems": [
         {
           "type": "object",
@@ -222,6 +228,43 @@
             },
             "extension_tier": {
               "const": "frontend_runtime_proof"
+            },
+            "metadata_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "raw_output_policy": {
+              "const": "digest_only"
+            },
+            "status": {
+              "const": "passed"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_kind",
+            "entry_point",
+            "evidence_id",
+            "extension_tier",
+            "metadata_digest",
+            "raw_output_policy",
+            "status"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "source_to_intent_research_capability_claim_gate"
+            },
+            "entry_point": {
+              "const": "python examples/source_to_intent_research_capability_claim_gate.py"
+            },
+            "artifact_kind": {
+              "const": "deterministic_source_to_intent_research_capability_claim_gate_output"
+            },
+            "extension_tier": {
+              "const": "claim_boundary"
             },
             "metadata_digest": {
               "type": "string",

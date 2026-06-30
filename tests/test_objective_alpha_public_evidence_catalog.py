@@ -16,6 +16,9 @@ from examples.objective_alpha_public_evidence_catalog import build_report, build
 from examples.runtime_backend_equivalence_portfolio import (
     build_backend_equivalence_portfolio_report,
 )
+from examples.source_to_intent_research_capability_claim_gate import (
+    build_gate_report as build_capability_claim_gate_report,
+)
 from examples.source_to_intent_research_kernel_ingress_proof_bundle import (
     build_report as build_kernel_ingress_proof_bundle_report,
 )
@@ -130,18 +133,30 @@ def test_objective_alpha_public_evidence_catalog_passes() -> None:
         payload["catalog_entries"][2]["metadata_digest"]
         == payload["source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest"]
     )
+    assert (
+        payload["catalog_entries"][3]["metadata_digest"]
+        == payload["source_to_intent_research_capability_claim_gate_metadata_digest"]
+    )
     assert payload["catalog_entries"][1]["evidence_id"] == ("runtime_backend_equivalence_portfolio")
     assert payload["catalog_entries"][1]["extension_tier"] == "runtime_proof"
     assert payload["catalog_entries"][2]["evidence_id"] == (
         "source_to_intent_research_kernel_ingress_proof_bundle"
     )
     assert payload["catalog_entries"][2]["extension_tier"] == "frontend_runtime_proof"
+    assert payload["catalog_entries"][3]["evidence_id"] == (
+        "source_to_intent_research_capability_claim_gate"
+    )
+    assert payload["catalog_entries"][3]["extension_tier"] == "claim_boundary"
     assert payload["issues"] == []
     assert len(str(payload["stable_bundle_metadata_digest"])) == 64
     assert len(str(payload["extension_policy_metadata_digest"])) == 64
     assert len(str(payload["runtime_backend_equivalence_portfolio_metadata_digest"])) == 64
     assert (
         len(str(payload["source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest"]))
+        == 64
+    )
+    assert (
+        len(str(payload["source_to_intent_research_capability_claim_gate_metadata_digest"]))
         == 64
     )
     assert len(str(payload["catalog_metadata_digest"])) == 64
@@ -175,6 +190,7 @@ def test_objective_alpha_public_evidence_catalog_entry_admission_pattern_drives_
         "objective_alpha_evidence_extension_policy_report",
         "runtime_backend_equivalence_portfolio_report",
         "source_to_intent_research_kernel_ingress_proof_bundle_report",
+        "source_to_intent_research_capability_claim_gate_report",
     )
     assert len(set(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS)) == len(specs)
     assert len(set(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS)) == len(specs)
@@ -236,9 +252,10 @@ def test_objective_alpha_public_evidence_catalog_example_runs() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
     assert "objective_alpha.public_evidence_catalog.data_only.v0" in completed.stdout
     assert '"catalog_passed": true' in completed.stdout
-    assert '"catalog_entry_count": 3' in completed.stdout
+    assert '"catalog_entry_count": 4' in completed.stdout
     assert "runtime_backend_equivalence_portfolio" in completed.stdout
     assert "source_to_intent_research_kernel_ingress_proof_bundle" in completed.stdout
+    assert "source_to_intent_research_capability_claim_gate" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "source_text" not in completed.stdout
     assert "host_path" not in completed.stdout
@@ -252,17 +269,27 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
             object(),  # type: ignore[arg-type]
             build_backend_equivalence_portfolio_report(),
             build_kernel_ingress_proof_bundle_report(),
+            build_capability_claim_gate_report(),
         )
     with pytest.raises(TypeError, match="RuntimeBackendEquivalencePortfolioReport"):
         build_objective_alpha_public_evidence_catalog_report(
             build_extension_policy_report_object(),
             object(),  # type: ignore[arg-type]
             build_kernel_ingress_proof_bundle_report(),
+            build_capability_claim_gate_report(),
         )
     with pytest.raises(TypeError, match="serialized report string"):
         build_objective_alpha_public_evidence_catalog_report(
             build_extension_policy_report_object(),
             build_backend_equivalence_portfolio_report(),
+            object(),  # type: ignore[arg-type]
+            build_capability_claim_gate_report(),
+        )
+    with pytest.raises(TypeError, match="serialized report string"):
+        build_objective_alpha_public_evidence_catalog_report(
+            build_extension_policy_report_object(),
+            build_backend_equivalence_portfolio_report(),
+            build_kernel_ingress_proof_bundle_report(),
             object(),  # type: ignore[arg-type]
         )
 
@@ -276,6 +303,7 @@ def test_objective_alpha_public_evidence_catalog_rejects_failed_policy() -> None
             failed_policy,
             build_backend_equivalence_portfolio_report(),
             build_kernel_ingress_proof_bundle_report(),
+            build_capability_claim_gate_report(),
         )
 
 
@@ -298,6 +326,7 @@ def test_objective_alpha_public_evidence_catalog_rejects_failed_portfolio() -> N
             build_extension_policy_report_object(),
             failed_portfolio,
             build_kernel_ingress_proof_bundle_report(),
+            build_capability_claim_gate_report(),
         )
 
 
@@ -329,6 +358,12 @@ def test_objective_alpha_public_evidence_catalog_rejects_policy_digest_drift() -
         replace(
             report,
             source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest="c" * 64,
+        )
+
+    with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="metadata digest mismatch"):
+        replace(
+            report,
+            source_to_intent_research_capability_claim_gate_metadata_digest="d" * 64,
         )
 
 
@@ -376,6 +411,12 @@ def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> No
         ]["pattern"]
         == "^[a-f0-9]{64}$"
     )
+    assert (
+        schema["properties"][
+            "source_to_intent_research_capability_claim_gate_metadata_digest"
+        ]["pattern"]
+        == "^[a-f0-9]{64}$"
+    )
     catalog_entry_schemas = schema["properties"]["catalog_entries"]["prefixItems"]
     assert len(catalog_entry_schemas) == len(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS
@@ -383,11 +424,15 @@ def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> No
     assert catalog_entry_schemas[0]["additionalProperties"] is False
     assert catalog_entry_schemas[1]["additionalProperties"] is False
     assert catalog_entry_schemas[2]["additionalProperties"] is False
+    assert catalog_entry_schemas[3]["additionalProperties"] is False
     assert catalog_entry_schemas[1]["properties"]["evidence_id"]["const"] == (
         "runtime_backend_equivalence_portfolio"
     )
     assert catalog_entry_schemas[2]["properties"]["evidence_id"]["const"] == (
         "source_to_intent_research_kernel_ingress_proof_bundle"
+    )
+    assert catalog_entry_schemas[3]["properties"]["evidence_id"]["const"] == (
+        "source_to_intent_research_capability_claim_gate"
     )
 
 
@@ -449,6 +494,7 @@ def test_objective_alpha_public_evidence_catalog_docs_are_linked() -> None:
         Path("rfcs/0236-objective-alpha-catalog-entry-admission-pattern.md"),
         Path("rfcs/0237-objective-alpha-kernel-ingress-proof-bundle-catalog-entry.md"),
         Path("rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md"),
+        Path("rfcs/0240-objective-alpha-capability-claim-gate-catalog-entry.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert schema_path in text or path.name in {"README.md", "ROADMAP.md"}

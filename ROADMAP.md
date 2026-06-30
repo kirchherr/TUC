@@ -296,9 +296,11 @@ Completed evidence:
   catalog, or successor objective.
 - [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
   provides that separate digest-only, RFC-bound growth surface, binding the
-  extension policy and first Runtime Backend Equivalence Portfolio
-  `runtime_proof` entry by metadata digest without adding entries to the fixed
-  Objective Alpha Public Proof Bundle.
+  extension policy, first Runtime Backend Equivalence Portfolio `runtime_proof`
+  entry, first Source-To-Intent Kernel Ingress `frontend_runtime_proof` entry,
+  and Source-To-Intent Capability Claim Gate `claim_boundary` entry by metadata
+  digest without adding entries to the fixed Objective Alpha Public Proof
+  Bundle.
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
   machine-checks that catalog admission remains append-only, RFC-bound,
   digest-only, source-free, and free of new execution surfaces.
@@ -311,9 +313,9 @@ Completed evidence:
   realistic source-intent ingress evidence to the public Universal Compute proof
   surface by digest only.
 - Objective Alpha Public Evidence Catalog Extension-Tier Coverage now emits and
-  gates required coverage for `governance`, `runtime_proof`, and
-  `frontend_runtime_proof`, making the current public proof-role balance
-  machine-reviewable.
+  gates required coverage for `governance`, `runtime_proof`,
+  `frontend_runtime_proof`, and `claim_boundary`, making the current public
+  proof-role balance machine-reviewable.
 - Runtime Layout Conversion Trace Replay Verifier v0
   (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
   serialized Layout Conversion Evidence and Trace Index reports by metadata

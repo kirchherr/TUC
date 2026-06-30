@@ -95,13 +95,15 @@ checking append-only, RFC-bound, digest-only admission rules. A typed catalog
 entry admission pattern now derives the catalog's expected IDs, entry points,
 artifact kinds, extension tiers, digest sources, and raw-output policies from
 reviewed data-only specs. The catalog now also emits required extension-tier
-coverage evidence for `governance`, `runtime_proof`, and
-`frontend_runtime_proof`, so reviewers can see that Objective Alpha covers the
-current governance, backend-equivalence, and source-ingress proof roles. Its
-first non-governance catalog entry binds the Runtime Backend Equivalence
-Portfolio as `runtime_proof` evidence, and its first `frontend_runtime_proof`
-entry binds the Source-To-Intent Kernel Ingress Proof Bundle without expanding
-the fixed public bundle.
+coverage evidence for `governance`, `runtime_proof`,
+`frontend_runtime_proof`, and `claim_boundary`, so reviewers can see that
+Objective Alpha covers the current governance, backend-equivalence,
+source-ingress, and claim-boundary proof roles. Its first non-governance
+catalog entry binds the Runtime Backend Equivalence Portfolio as
+`runtime_proof` evidence, its first `frontend_runtime_proof` entry binds the
+Source-To-Intent Kernel Ingress Proof Bundle, and its `claim_boundary` entry
+binds the Source-To-Intent Research Capability Claim Gate without expanding the
+fixed public bundle.
 
 ## Runtime Execution
 
