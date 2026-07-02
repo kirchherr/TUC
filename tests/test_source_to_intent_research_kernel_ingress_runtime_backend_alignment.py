@@ -72,13 +72,8 @@ def test_kernel_ingress_runtime_backend_alignment_report_shape() -> None:
             "supported_operation_families": ["elementwise", "reduction", "softmax"],
         },
     ]
-    assert [case["status"] for case in report["case_alignments"]] == [
-        "aligned",
-        "aligned",
-        "aligned",
-        "aligned",
-    ]
-    assert report["case_alignments"][3]["backend_sequence"] == [
+    assert [case["status"] for case in report["case_alignments"]] == ["aligned"] * 5
+    assert report["case_alignments"][4]["backend_sequence"] == [
         "linear-sim",
         "vector-sim",
         "vector-sim",

@@ -122,7 +122,7 @@ _SCOPE_KEYS = frozenset(
 )
 _OPERATION_FAMILY_ORDER = ("elementwise", "matmul", "reduction", "softmax")
 _EXPECTED_PROFILE_IDS = ("base", "alternate")
-_EXPECTED_SCOPE_COUNT = 20
+_EXPECTED_SCOPE_COUNT = 24
 
 
 def build_kernel_ingress_workload_scope_report() -> dict[str, object]:
@@ -224,7 +224,7 @@ def assert_kernel_ingress_workload_scope_report_contract(report: object) -> None
         ),
         "claim": SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_WORKLOAD_SCOPE_CLAIM,
         "claim_boundary": PERFORMANCE_PROOF_BOUNDARY_CONTRACT,
-        "case_count": 8,
+        "case_count": 10,
         "issues": ["native_performance_claim_blocked"],
         "native_performance_claim": False,
         "operation_families": list(_OPERATION_FAMILY_ORDER),

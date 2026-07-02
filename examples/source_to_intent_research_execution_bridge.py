@@ -407,6 +407,18 @@ def _inputs_for(source_name: str) -> dict[str, FloatArray]:
                 dtype=np.float64,
             )
         }
+    if source_name == "research_softmax_elementwise":
+        return {
+            "x": np.array(
+                [
+                    [-3.0, -1.0, 0.0, 2.0, 1.0, 0.5, -0.5, 3.0],
+                    [1.5, -2.5, 0.25, 0.75, -1.25, 2.25, -0.75, 1.0],
+                    [0.0, 0.5, 1.0, 1.5, 2.0, -0.5, -1.0, -1.5],
+                    [3.0, 2.0, 1.0, 0.0, -1.0, -2.0, -3.0, 0.5],
+                ],
+                dtype=np.float64,
+            )
+        }
     if source_name == "research_matmul_reduction":
         return {
             "a": np.array(
@@ -470,6 +482,9 @@ def _references_for(
     if source_name == "research_softmax_reduction":
         normalized = reference_softmax(inputs["x"], axis=1)
         return {"row_sum": reference_reduction_sum(normalized, axis=1)}
+    if source_name == "research_softmax_elementwise":
+        normalized = reference_softmax(inputs["x"], axis=1)
+        return {"activated": reference_elementwise(normalized)}
     if source_name == "research_matmul_reduction":
         projection = reference_matmul(inputs["a"], inputs["b"])
         return {"column_sum": reference_reduction_sum(projection, axis=1)}

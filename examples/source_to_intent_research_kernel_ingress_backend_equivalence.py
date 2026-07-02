@@ -171,6 +171,15 @@ _EXPECTED_CASES = {
         "terminal_outputs": ["column_sum"],
         "trace_step_count": 2,
     },
+    "research_module_softmax_elementwise": {
+        "baseline_backend_sequence": ["reference-cpu", "reference-cpu"],
+        "candidate_backend_sequence": ["vector-sim", "vector-sim"],
+        "graph_name": "research_softmax_elementwise",
+        "kernel_name": "softmax_elementwise",
+        "operation_families": ["elementwise", "softmax"],
+        "terminal_outputs": ["activated"],
+        "trace_step_count": 2,
+    },
     "research_module_mvp_pipeline": {
         "baseline_backend_sequence": [
             "reference-cpu",

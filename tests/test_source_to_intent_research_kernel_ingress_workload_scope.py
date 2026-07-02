@@ -46,10 +46,10 @@ def test_kernel_ingress_workload_scope_report_shape() -> None:
     assert report["status"] == "PASS"
     assert report["native_performance_claim"] is False
     assert report["performance_claim_status"] == "blocked"
-    assert report["case_count"] == 8
+    assert report["case_count"] == 10
     assert report["profile_count"] == 2
     assert report["profile_ids"] == ["base", "alternate"]
-    assert report["scope_count"] == 20
+    assert report["scope_count"] == 24
     assert report["workload_scope_ready"] is True
     assert report["issues"] == ["native_performance_claim_blocked"]
 
@@ -102,8 +102,8 @@ def test_kernel_ingress_workload_scope_report_shape() -> None:
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("scope_count", 19, "scope_count"),
-        ("case_count", 7, "case_count"),
+        ("scope_count", 23, "scope_count"),
+        ("case_count", 9, "case_count"),
         ("native_performance_claim", True, "native_performance_claim"),
         ("raw_source", "@triton.jit", "top-level report"),
     ],
@@ -148,7 +148,7 @@ def test_kernel_ingress_workload_scope_example_runs() -> None:
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"status": "PASS"' in completed.stdout
-    assert '"scope_count": 20' in completed.stdout
+    assert '"scope_count": 24' in completed.stdout
     assert '"workload_scope_ready": true' in completed.stdout
     assert '"native_performance_claim": false' in completed.stdout
     assert "source_evidence_digest" in completed.stdout
@@ -178,7 +178,7 @@ def test_kernel_ingress_workload_scope_schema_declares_contract() -> None:
     assert schema["properties"]["claim_boundary"]["const"] == (
         PERFORMANCE_PROOF_BOUNDARY_CONTRACT
     )
-    assert schema["properties"]["scope_count"]["const"] == 20
+    assert schema["properties"]["scope_count"]["const"] == 24
     assert schema["$defs"]["workload_scope"]["additionalProperties"] is False
     assert "source_evidence_digest" in schema["required"]
 

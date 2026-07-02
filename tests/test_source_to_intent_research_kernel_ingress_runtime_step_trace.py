@@ -40,8 +40,8 @@ def test_kernel_ingress_runtime_step_trace_report_shape() -> None:
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_CONTRACT
     )
     assert report["status"] == "PASS"
-    assert report["case_count"] == 4
-    mvp_case = report["cases"][3]
+    assert report["case_count"] == 5
+    mvp_case = report["cases"][4]
     assert mvp_case["case_id"] == "research_module_mvp_pipeline"
     assert mvp_case["backend_sequence"] == [
         "linear-sim",
@@ -74,7 +74,7 @@ def test_kernel_ingress_runtime_step_trace_report_shape() -> None:
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("case_count", 3, "case_count"),
+        ("case_count", 4, "case_count"),
         ("runtime_step_trace_contract", "other", "runtime_step_trace_contract"),
         ("raw_source", "@triton.jit", "top-level report"),
     ],
@@ -95,8 +95,8 @@ def test_kernel_ingress_runtime_step_trace_contract_rejects_case_drift() -> None
     report = build_kernel_ingress_runtime_step_trace_report()
     cases = report["cases"]
     assert isinstance(cases, list)
-    assert isinstance(cases[3], dict)
-    cases[3]["operation_path"] = ["matmul", "elementwise"]
+    assert isinstance(cases[4], dict)
+    cases[4]["operation_path"] = ["matmul", "elementwise"]
 
     with pytest.raises(ValueError, match="operation_path drift"):
         assert_kernel_ingress_runtime_step_trace_report_contract(report)
@@ -106,8 +106,8 @@ def test_kernel_ingress_runtime_step_trace_contract_rejects_step_drift() -> None
     report = build_kernel_ingress_runtime_step_trace_report()
     cases = report["cases"]
     assert isinstance(cases, list)
-    assert isinstance(cases[3], dict)
-    steps = cases[3]["steps"]
+    assert isinstance(cases[4], dict)
+    steps = cases[4]["steps"]
     assert isinstance(steps, list)
     assert isinstance(steps[1], dict)
     steps[1]["executor_backend"] = "linear-sim"

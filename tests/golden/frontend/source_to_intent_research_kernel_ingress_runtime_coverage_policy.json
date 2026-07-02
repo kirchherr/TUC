@@ -54,6 +54,23 @@
     },
     {
       "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "status": "covered",
+      "terminal_outputs": [
+        "activated"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
         "linear-sim",
         "vector-sim",
         "vector-sim",
@@ -81,7 +98,7 @@
     "vector-sim->vector-sim",
     "linear-sim->vector-sim->vector-sim->vector-sim"
   ],
-  "observed_case_count": 4,
+  "observed_case_count": 5,
   "observed_operation_families": [
     "elementwise",
     "matmul",
@@ -92,6 +109,7 @@
     "activated",
     "row_sum",
     "column_sum",
+    "activated",
     "stable"
   ],
   "parser_status": "research_explicit_only",
@@ -104,7 +122,7 @@
     "vector-sim->vector-sim",
     "linear-sim->vector-sim->vector-sim->vector-sim"
   ],
-  "required_case_count": 4,
+  "required_case_count": 5,
   "required_digest_fields": [
     "runtime_plan_digest",
     "execution_trace_digest",
@@ -120,16 +138,18 @@
     "activated",
     "row_sum",
     "column_sum",
+    "activated",
     "stable"
   ],
   "required_trace_step_count_per_case": {
     "research_module_matmul_elementwise": 2,
     "research_module_matmul_reduction": 2,
     "research_module_mvp_pipeline": 4,
+    "research_module_softmax_elementwise": 2,
     "research_module_softmax_reduction": 2
   },
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+  "runtime_matrix_digest": "sha256:ecb91b9de5dc9558b12dc71ea2bd55c7f5c34174f054172bb37ce38ace6eb367",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_coverage_policy_report.v0",
   "source_boundary": "triton_module_source_buffer_to_runtime_via_research_kernel_ingress",
   "status": "PASS",

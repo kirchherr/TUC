@@ -505,7 +505,7 @@ def assert_research_capability_claim_report_contract(report: object) -> None:
         raise ValueError("source-to-intent research capability claim must be object")
     _assert_exact_keys("top-level report", report, _TOP_LEVEL_KEYS)
     expected_values = {
-        "accepted_kernel_count": 4,
+        "accepted_kernel_count": 5,
         "accepted_operation_families": ["elementwise", "matmul", "reduction", "softmax"],
         "artifact_policy": SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_ARTIFACT_POLICY,
         "blocked_claims": list(SOURCE_TO_INTENT_RESEARCH_CAPABILITY_BLOCKED_CLAIMS),
@@ -518,8 +518,8 @@ def assert_research_capability_claim_report_contract(report: object) -> None:
         "combined_pipeline_operation_path": list(
             SOURCE_TO_INTENT_RESEARCH_CAPABILITY_OPERATION_PATH
         ),
-        "backend_equivalence_case_count": 4,
-        "backend_equivalence_shape_profile_case_count": 8,
+        "backend_equivalence_case_count": 5,
+        "backend_equivalence_shape_profile_case_count": 10,
         "baseline_runtime_backend": "reference-cpu",
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "evidence_count": len(_REQUIRED_EVIDENCE),
@@ -527,7 +527,7 @@ def assert_research_capability_claim_report_contract(report: object) -> None:
             SOURCE_TO_INTENT_RESEARCH_CAPABILITY_ACCEPTANCE_CHECKS
         ),
         "parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
-        "runtime_case_count": 4,
+        "runtime_case_count": 5,
         "schema_version": (
             SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_REPORT_SCHEMA_VERSION
         ),

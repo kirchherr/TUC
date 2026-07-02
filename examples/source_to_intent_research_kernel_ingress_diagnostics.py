@@ -6,6 +6,7 @@ from examples.source_to_intent_research_kernel_ingress import (
     REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE,
     REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
     REALISTIC_MVP_PIPELINE_MODULE_SOURCE,
+    REALISTIC_SOFTMAX_ELEMENTWISE_MODULE_SOURCE,
     REALISTIC_SOFTMAX_REDUCTION_MODULE_SOURCE,
 )
 from tuc.frontend import (
@@ -45,6 +46,7 @@ def build_source_to_intent_research_kernel_ingress_diagnostic_cases() -> (
     matmul_reduction_shapes = {"a": (4, 8), "b": (8, 2), "y": (4,)}
     mvp_pipeline_shapes = {"a": (4, 8), "b": (8, 4), "y": (4,)}
     softmax_shapes = {"x": (4, 8), "y": (4,)}
+    softmax_elementwise_shapes = {"x": (4, 8), "y": (4, 8)}
     return (
         SourceToIntentResearchKernelIngressDiagnosticCase(
             case_id="accepted_module_matmul_elementwise",
@@ -69,6 +71,14 @@ def build_source_to_intent_research_kernel_ingress_diagnostic_cases() -> (
             source_name="research_matmul_reduction",
             kernel_name="matmul_reduction",
             tensor_shapes=matmul_reduction_shapes,
+        ),
+        SourceToIntentResearchKernelIngressDiagnosticCase(
+            case_id="accepted_module_softmax_elementwise",
+            expectation="accepted",
+            module_source=REALISTIC_SOFTMAX_ELEMENTWISE_MODULE_SOURCE,
+            source_name="research_softmax_elementwise",
+            kernel_name="softmax_elementwise",
+            tensor_shapes=softmax_elementwise_shapes,
         ),
         SourceToIntentResearchKernelIngressDiagnosticCase(
             case_id="accepted_module_mvp_pipeline",

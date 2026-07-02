@@ -330,7 +330,7 @@ def _assert_kernel_ingress_diagnostics_payload(report: object) -> None:
     if not isinstance(report, Mapping):
         raise ValueError("kernel ingress rejection coverage diagnostics must be object")
     expected_values = {
-        "accepted_case_count": 4,
+        "accepted_case_count": 5,
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "diagnostics_contract": (
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT

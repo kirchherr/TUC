@@ -1,5 +1,5 @@
 {
-  "accepted_case_count": 4,
+  "accepted_case_count": 5,
   "blocked_claims": [
     "general_triton_source_ingestion",
     "native_performance_claim",
@@ -78,6 +78,21 @@
       "outcome": "accepted",
       "rejection_reason": "",
       "source_name": "research_matmul_reduction"
+    },
+    {
+      "case_id": "accepted_module_softmax_elementwise",
+      "expectation": "accepted",
+      "ingress_report_digest": "sha256:a7faae1d41037e868cfd09580738a1285c1a5d1cddcdb379df462bb903211b95",
+      "kernel_name": "softmax_elementwise",
+      "module_bytes": 220,
+      "module_digest": "sha256:47880aa48401a979fb09bf64accbc9ea65b91fabb51b545ef29782e828f93af2",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "outcome": "accepted",
+      "rejection_reason": "",
+      "source_name": "research_softmax_elementwise"
     },
     {
       "case_id": "accepted_module_mvp_pipeline",

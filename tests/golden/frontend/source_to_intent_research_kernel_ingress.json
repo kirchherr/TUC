@@ -5,7 +5,7 @@
     "native_performance_claim",
     "production_parser"
   ],
-  "case_count": 4,
+  "case_count": 5,
   "cases": [
     {
       "backend_sequence": [
@@ -94,6 +94,36 @@
       "source_intent_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614",
       "terminal_outputs": [
         "column_sum"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_elementwise",
+      "compiler_decision_digest": "sha256:27efef0dd53a9b6cffc9c3dc6917e78cb22c8cdb44985467322f3bd87ece2af2",
+      "execution_trace_digest": "sha256:7db25b1ad8cf0e3a06933c846fb6fc1b89fd9625c39abcf319037ac90ca12a63",
+      "extracted_kernel_digest": "sha256:659951e43feab650cb475d30989d294f6a18a4e6a3433efafe8613a85eec3876",
+      "hac_ir_digest": "sha256:6528c2ac894ad23910d8647f89067b47fa7495aa6d9b36e74c2e140f1d0115ab",
+      "ingress_report_digest": "sha256:b134cad1d4fae478cceee2689de21a3f00485fa19ad6ac8387ec40a2f87cc834",
+      "kernel_name": "softmax_elementwise",
+      "metadata_intake_digest": "sha256:bafe2938752443a0cb149597ed0c7763c798700f37a60ed1bd39d869987a0d22",
+      "metadata_report_digest": "sha256:2e973f4c7ac702bb7fe2ace6307479b33dcf9f3231ccdc02f4843ab5c1671992",
+      "module_digest": "sha256:47880aa48401a979fb09bf64accbc9ea65b91fabb51b545ef29782e828f93af2",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "parser_report_digest": "sha256:992c24b1daa0abbaeee2b6268d672491d7606ab01c527c5e359b4af9a2265efc",
+      "plain_data_digest": "sha256:7c9ba0d6dd26fa88741097815ae5b1d9054e7d5a333b714ec61d58db9312b4fe",
+      "readiness_digest": "sha256:bfd77581be396ac19a5f26439e48e84500410cf6f9f66f2740aac4d8765616cc",
+      "reference_correctness_digest": "sha256:07b1233579b3936be504af62e7f05752065874d8cba3e40f0e5639046f81242e",
+      "runtime_plan_digest": "sha256:21b424bb8a0002756d15e259fae7311fde7732326eab3c402f5fb3e1d4f618c7",
+      "source_intent_digest": "sha256:7c9ba0d6dd26fa88741097815ae5b1d9054e7d5a333b714ec61d58db9312b4fe",
+      "terminal_outputs": [
+        "activated"
       ],
       "trace_step_count": 2
     },

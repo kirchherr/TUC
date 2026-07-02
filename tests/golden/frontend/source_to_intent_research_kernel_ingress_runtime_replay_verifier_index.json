@@ -10,7 +10,7 @@
     "network_access",
     "subprocess_execution"
   ],
-  "case_count": 4,
+  "case_count": 5,
   "cases": [
     {
       "backend_sequence": [
@@ -110,6 +110,38 @@
     },
     {
       "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:7c1eca768a457010ff2996d4ca8e76ca54b8f599dad908fab722c22de6dbab88",
+      "bundle_report_digest": "sha256:9c4bdf8b7878796d1cf3cf5877b8b3012a33704ef9b53e7218be385b96b48956",
+      "case_id": "research_module_softmax_elementwise",
+      "execution_receipt_digest": "sha256:43a010316b363892a091151730924bfff884f89b60fd08a6fe74e541022b5e45",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_path": [
+        "softmax",
+        "elementwise"
+      ],
+      "output_closure_metadata_digest": "sha256:123602d1718288f59f71c04095edb6cb4b31d67b3c7a482e865bb12954edb9c4",
+      "output_closure_report_digest": "sha256:2a063e514d81ad3f96b18b6849cee3824e4d984c0abe5defd1e6923ff147c5af",
+      "output_contract_metadata_digest": "sha256:b65991e2e6309c28bf0806bdb1639805a255b178d1dfb5a08dde96e9b0d64c23",
+      "passed": true,
+      "public_output_bundle_digest": "sha256:091512a300d483edab62a9c0d79b9fab8a2fe3b1ccc48fa2a1c31b4715a14507",
+      "raw_value_policy": "omitted_by_policy",
+      "replay_check_count": 8,
+      "replay_contract": "runtime_evidence_replay_verifier.review.v0",
+      "replay_metadata_digest": "sha256:59c0f5de75969883b70600f9568bc419b94772b32fa6f867f63965a5d8c326c7",
+      "replay_mode": "metadata_digest_replay_only",
+      "replay_report_digest": "sha256:0e4b86930a90fbe59dc781db80aa7250781059621339a5ebdf3b197736ea7225",
+      "status": "runtime_replay_verifier_bound",
+      "step_count": 2,
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "backend_sequence": [
         "linear-sim",
         "vector-sim",
         "vector-sim",
@@ -151,7 +183,7 @@
   "input_policy": "serialized_json_reports_only",
   "output_closure_contract": "runtime_execution_output_closure.data_only.v0",
   "output_closure_index_contract": "source_to_intent_research_kernel_ingress_runtime_output_closure_index.review.v0",
-  "output_closure_index_digest": "sha256:73abf91139be952f2637ac104db019cc6d2f8ff4a8f7b0da6a11d973749abf0b",
+  "output_closure_index_digest": "sha256:eb181c07883bc53f267f997801b4685d78e8ffad8a875bad25f6403237c297d6",
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",
@@ -166,11 +198,11 @@
   "replay_verifier_schema_version": "tuc.runtime_evidence_replay_verifier_report.v0",
   "runtime_evidence_bundle_contract": "runtime_execution_evidence_bundle.data_only.v0",
   "runtime_evidence_bundle_index_contract": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0",
-  "runtime_evidence_bundle_index_digest": "sha256:0e7392b6b0cdcb2536610fd4035eece30e8099e8f3aa942773e42cab33d10b01",
+  "runtime_evidence_bundle_index_digest": "sha256:738cc349be1c940b1b818a42aefd6e11ba677a20df1499656dd8de2a57899ac0",
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+  "runtime_matrix_digest": "sha256:ecb91b9de5dc9558b12dc71ea2bd55c7f5c34174f054172bb37ce38ace6eb367",
   "runtime_step_trace_contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
-  "runtime_step_trace_digest": "sha256:683ddbc7ad82543ca2537ffbf6cc03874a497a6a2712e4c9b2d8c537705ed4ff",
+  "runtime_step_trace_digest": "sha256:0bbfe74ffac5de228b7e7d1c6722a191fe18ce2a0249aef7a8e01be566b7a5cf",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_replay_verifier_index_report.v0",
   "source_boundary": "kernel_ingress_runtime_to_replay_verifier_index",
   "status": "PASS",

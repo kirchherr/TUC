@@ -133,6 +133,15 @@ _REQUIRED_CASES = (
         "trace_step_count": 2,
     },
     {
+        "backend_sequence": ["vector-sim", "vector-sim"],
+        "case_id": "research_module_softmax_elementwise",
+        "kernel_name": "softmax_elementwise",
+        "operation_families": ["elementwise", "softmax"],
+        "status": "covered",
+        "terminal_outputs": ["activated"],
+        "trace_step_count": 2,
+    },
+    {
         "backend_sequence": ["linear-sim", "vector-sim", "vector-sim", "vector-sim"],
         "case_id": "research_module_mvp_pipeline",
         "kernel_name": "mvp_pipeline",
@@ -148,7 +157,7 @@ _REQUIRED_BACKEND_SEQUENCES = (
     "linear-sim->vector-sim->vector-sim->vector-sim",
 )
 _REQUIRED_OPERATION_FAMILIES = ("elementwise", "matmul", "reduction", "softmax")
-_REQUIRED_TERMINAL_OUTPUTS = ("activated", "row_sum", "column_sum", "stable")
+_REQUIRED_TERMINAL_OUTPUTS = ("activated", "row_sum", "column_sum", "activated", "stable")
 _REQUIRED_DIGEST_FIELDS = (
     "runtime_plan_digest",
     "execution_trace_digest",

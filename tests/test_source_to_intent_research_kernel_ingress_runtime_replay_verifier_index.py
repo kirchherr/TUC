@@ -56,8 +56,8 @@ def test_kernel_ingress_runtime_replay_verifier_index_report_shape() -> None:
         RUNTIME_EVIDENCE_REPLAY_VERIFIER_REEXECUTION_POLICY
     )
     assert report["status"] == "PASS"
-    assert report["case_count"] == 4
-    mvp_case = report["cases"][3]
+    assert report["case_count"] == 5
+    mvp_case = report["cases"][4]
     assert mvp_case["case_id"] == "research_module_mvp_pipeline"
     assert mvp_case["graph_name"] == "research_mvp_pipeline"
     assert mvp_case["operation_path"] == [
@@ -76,7 +76,7 @@ def test_kernel_ingress_runtime_replay_verifier_index_report_shape() -> None:
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("case_count", 3, "case_count"),
+        ("case_count", 4, "case_count"),
         ("replay_verifier_contract", "other", "replay_verifier_contract"),
         ("raw_source", "@triton.jit", "top-level report"),
     ],
@@ -97,8 +97,8 @@ def test_kernel_ingress_runtime_replay_verifier_index_rejects_case_drift() -> No
     report = build_kernel_ingress_runtime_replay_verifier_index_report()
     cases = report["cases"]
     assert isinstance(cases, list)
-    assert isinstance(cases[3], dict)
-    cases[3]["replay_check_count"] = 7
+    assert isinstance(cases[4], dict)
+    cases[4]["replay_check_count"] = 7
 
     with pytest.raises(ValueError, match="replay_check_count drift"):
         assert_kernel_ingress_runtime_replay_verifier_index_report_contract(report)

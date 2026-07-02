@@ -7,7 +7,7 @@
     "dynamic_shape_performance_claim",
     "planner_benefit_claim"
   ],
-  "case_count": 8,
+  "case_count": 10,
   "claim": "shape_profile_evidence_bounds_future_performance_workload_scope",
   "claim_boundary": "performance_proof_boundary.blocking.v0",
   "issues": [
@@ -27,7 +27,7 @@
     "alternate"
   ],
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_workload_scope_report.v0",
-  "scope_count": 20,
+  "scope_count": 24,
   "scopes": [
     {
       "correctness_reference_id": "kernel_ingress_reference_correctness",
@@ -141,6 +141,42 @@
       "correctness_reference_id": "kernel_ingress_reference_correctness",
       "dtype_policy_id": "float64_reference",
       "operation_family": "elementwise",
+      "problem_size_max": 32,
+      "problem_size_min": 32,
+      "scope_id": "kernel_ingress_softmax_elementwise_base_elementwise",
+      "shape_profile_id": "kernel_ingress_softmax_elementwise_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "softmax",
+      "problem_size_max": 32,
+      "problem_size_min": 32,
+      "scope_id": "kernel_ingress_softmax_elementwise_base_softmax",
+      "shape_profile_id": "kernel_ingress_softmax_elementwise_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "elementwise",
+      "problem_size_max": 15,
+      "problem_size_min": 15,
+      "scope_id": "kernel_ingress_softmax_elementwise_alternate_elementwise",
+      "shape_profile_id": "kernel_ingress_softmax_elementwise_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "softmax",
+      "problem_size_max": 15,
+      "problem_size_min": 15,
+      "scope_id": "kernel_ingress_softmax_elementwise_alternate_softmax",
+      "shape_profile_id": "kernel_ingress_softmax_elementwise_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "elementwise",
       "problem_size_max": 4,
       "problem_size_min": 4,
       "scope_id": "kernel_ingress_mvp_pipeline_base_elementwise",
@@ -212,7 +248,7 @@
   ],
   "source_boundary": "kernel_ingress_shape_profile_evidence_to_workload_scope_review",
   "source_evidence_contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
-  "source_evidence_digest": "sha256:1050dfd17ca2ef4d78e956910f9d3ae39e777c7b819728568aa597c0c0bb4613",
+  "source_evidence_digest": "sha256:7ec396a324d58d9e4eb05830a26731e6092d9fbc36ed05f317b6ead03147ae28",
   "source_schema_version": "tuc.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles_report.v0",
   "status": "PASS",
   "trusted_runtime_backends": [
@@ -221,7 +257,7 @@
     "vector-sim"
   ],
   "workload_scope_artifact_status": "diagnostic_only",
-  "workload_scope_digest": "sha256:e8086da06b399dc2b0fb4b8f07440a89d64a96bd577bfdd3f4d67b15a79dfddc",
+  "workload_scope_digest": "sha256:15426f76acb66ed68280abf1eef87fc7a9df4aa705248a6f0a78cb772d0ae5d3",
   "workload_scope_ready": true,
   "workload_scope_schema_version": "tuc.workload_scope_report.v0"
 }

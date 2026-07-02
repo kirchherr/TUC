@@ -111,12 +111,14 @@ _EXPECTED_SOURCE_NAMES = (
     "research_matmul_elementwise",
     "research_softmax_reduction",
     "research_matmul_reduction",
+    "research_softmax_elementwise",
     "research_mvp_pipeline",
 )
 _EXPECTED_KERNEL_NAMES = (
     "matmul_elementwise",
     "softmax_reduction",
     "matmul_reduction",
+    "softmax_elementwise",
     "mvp_pipeline",
 )
 _EXPECTED_REJECTION_CASES = {

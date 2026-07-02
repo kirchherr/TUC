@@ -33,7 +33,7 @@
   ],
   "properties": {
     "accepted_kernel_count": {
-      "const": 4
+      "const": 5
     },
     "accepted_operation_families": {
       "$ref": "#/$defs/operation_families"
@@ -83,10 +83,10 @@
       "const": "supported_for_current_research_scope"
     },
     "backend_equivalence_case_count": {
-      "const": 4
+      "const": 5
     },
     "backend_equivalence_shape_profile_case_count": {
-      "const": 8
+      "const": 10
     },
     "baseline_runtime_backend": {
       "const": "reference-cpu"
@@ -179,7 +179,7 @@
       "const": "research_explicit_only"
     },
     "runtime_case_count": {
-      "const": 4
+      "const": 5
     },
     "schema_version": {
       "const": "tuc.source_to_intent_research_capability_claim_report.v0"

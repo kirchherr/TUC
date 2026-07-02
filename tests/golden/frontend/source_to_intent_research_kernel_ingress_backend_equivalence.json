@@ -19,7 +19,7 @@
     "vector-sim->vector-sim",
     "linear-sim->vector-sim->vector-sim->vector-sim"
   ],
-  "case_count": 4,
+  "case_count": 5,
   "cases": [
     {
       "baseline_backend_sequence": [
@@ -117,6 +117,37 @@
     {
       "baseline_backend_sequence": [
         "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_softmax_elementwise",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:133f14cc7e242027a31d827f32d68c6eef3ca5d1da27ea1fd127e19e4757c978",
+      "equivalence_report_digest": "sha256:8dc148c7c9342e45168845a93436ecab097eb30fe4f172a797ca7dbe67b0843c",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_bound",
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
         "reference-cpu",
         "reference-cpu",
         "reference-cpu"
@@ -152,14 +183,14 @@
       ]
     }
   ],
-  "comparison_count": 4,
+  "comparison_count": 5,
   "default_parser_status": "default_parser_blocked",
   "equivalence_claim": "same_source_intent_preserves_public_outputs_across_backend_placements",
   "equivalence_contract": "runtime_backend_equivalence.data_only.v0",
   "executor_contract": "runtime_executor.trusted_backend.v0",
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
   "kernel_ingress_backend_equivalence_contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
-  "kernel_ingress_digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
+  "kernel_ingress_digest": "sha256:37e3908582971511d784103074ef77490457bc54b96586add1479eb84195c520",
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",

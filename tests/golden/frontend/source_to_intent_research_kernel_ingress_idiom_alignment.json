@@ -1,5 +1,5 @@
 {
-  "accepted_source_count": 4,
+  "accepted_source_count": 5,
   "alignment_contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
   "artifact_policy": "metadata_only_values_omitted",
   "blocked_execution_surfaces": [
@@ -56,6 +56,19 @@
       "status": "covered"
     },
     {
+      "case_id": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "matched_idioms": [
+        "metadata_elementwise_activation",
+        "metadata_softmax_axis"
+      ],
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "status": "covered"
+    },
+    {
       "case_id": "research_mvp_pipeline",
       "kernel_name": "mvp_pipeline",
       "matched_idioms": [
@@ -87,13 +100,14 @@
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
   "input_policy": "accepted_kernel_ingress_results_only",
   "kernel_ingress_conformance_gate_contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
-  "kernel_ingress_conformance_gate_digest": "sha256:beab626459c90e6776fb58bf21428694f26a90bdb656343a1ad81f436d724142",
+  "kernel_ingress_conformance_gate_digest": "sha256:2eb76bb53e517e7cbc7dd547b90c41c4fd969216e3579d734c8c2e1dbd5e0e96",
   "kernel_ingress_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
-  "kernel_ingress_digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
+  "kernel_ingress_digest": "sha256:37e3908582971511d784103074ef77490457bc54b96586add1479eb84195c520",
   "kernel_names": [
     "matmul_elementwise",
     "softmax_reduction",
     "matmul_reduction",
+    "softmax_elementwise",
     "mvp_pipeline"
   ],
   "parser_status": "research_explicit_only",
@@ -103,6 +117,7 @@
     "research_matmul_elementwise",
     "research_softmax_reduction",
     "research_matmul_reduction",
+    "research_softmax_elementwise",
     "research_mvp_pipeline"
   ],
   "status": "PASS",

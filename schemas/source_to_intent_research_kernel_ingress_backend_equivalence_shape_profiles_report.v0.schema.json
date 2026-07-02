@@ -46,7 +46,7 @@
       "maxItems": 2
     },
     "blocked_execution_surfaces": {"$ref": "#/$defs/blocked_execution_surfaces"},
-    "case_count": {"const": 8},
+    "case_count": {"const": 10},
     "cases": {
       "type": "array",
       "items": {"$ref": "#/$defs/case"},
@@ -64,7 +64,7 @@
       "minItems": 3,
       "maxItems": 3
     },
-    "comparison_count": {"const": 8},
+    "comparison_count": {"const": 10},
     "default_parser_status": {"const": "default_parser_blocked"},
     "equivalence_claim": {
       "const": "same_source_intent_preserves_public_outputs_across_backend_placements_and_shape_profiles"

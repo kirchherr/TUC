@@ -97,6 +97,16 @@ def matmul_reduction(a, b, y):
     tl.store(y, column_sum)
 """
 
+REALISTIC_SOFTMAX_ELEMENTWISE_MODULE_SOURCE = """import triton
+import triton.language as tl
+
+@triton.jit
+def softmax_elementwise(x, y):
+    normalized = tl.softmax(x, axis=1)
+    activated = tl.where(normalized > 0.0, normalized, normalized)
+    tl.store(y, activated)
+"""
+
 REALISTIC_MVP_PIPELINE_MODULE_SOURCE = """import triton
 import triton.language as tl
 
@@ -190,6 +200,12 @@ _MODULE_CASES = (
         REALISTIC_MATMUL_REDUCTION_MODULE_SOURCE,
     ),
     (
+        "research_module_softmax_elementwise",
+        "research_softmax_elementwise",
+        "softmax_elementwise",
+        REALISTIC_SOFTMAX_ELEMENTWISE_MODULE_SOURCE,
+    ),
+    (
         "research_module_mvp_pipeline",
         "research_mvp_pipeline",
         "mvp_pipeline",
@@ -213,6 +229,12 @@ _EXPECTED_CASE_SUMMARIES = {
         "backend_sequence": ["linear-sim", "vector-sim"],
         "operation_families": ["matmul", "reduction"],
         "terminal_outputs": ["column_sum"],
+        "trace_step_count": 2,
+    },
+    "research_module_softmax_elementwise": {
+        "backend_sequence": ["vector-sim", "vector-sim"],
+        "operation_families": ["elementwise", "softmax"],
+        "terminal_outputs": ["activated"],
         "trace_step_count": 2,
     },
     "research_module_mvp_pipeline": {
@@ -377,6 +399,8 @@ def _tensor_shapes_for(source_name: str) -> dict[str, tuple[int, ...]]:
         return {"x": (4, 8), "y": (4,)}
     if source_name == "research_matmul_reduction":
         return {"a": (4, 8), "b": (8, 2), "y": (4,)}
+    if source_name == "research_softmax_elementwise":
+        return {"x": (4, 8), "y": (4, 8)}
     if source_name == "research_mvp_pipeline":
         return {"a": (4, 8), "b": (8, 4), "y": (4,)}
     raise ValueError("unsupported source-to-intent research kernel ingress source")

@@ -357,12 +357,14 @@ _ACCEPTED_SOURCE_NAMES = (
     "research_matmul_elementwise",
     "research_softmax_reduction",
     "research_matmul_reduction",
+    "research_softmax_elementwise",
     "research_mvp_pipeline",
 )
 _ACCEPTED_KERNEL_NAMES = (
     "matmul_elementwise",
     "softmax_reduction",
     "matmul_reduction",
+    "softmax_elementwise",
     "mvp_pipeline",
 )
 _COVERED_OPERATION_FAMILIES = (
@@ -622,7 +624,7 @@ def _assert_kernel_ingress_diagnostics_contract(report: object) -> None:
     if not isinstance(report, Mapping):
         raise ValueError("kernel ingress proof bundle diagnostics must be object")
     expected_values = {
-        "accepted_case_count": 4,
+        "accepted_case_count": 5,
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "diagnostics_contract": (
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT
@@ -643,7 +645,7 @@ def _assert_kernel_ingress_diagnostics_contract(report: object) -> None:
         if report.get(key) != expected:
             raise ValueError(f"kernel ingress proof bundle diagnostics {key} drift")
     cases = report.get("cases")
-    if not isinstance(cases, list) or len(cases) != 9:
+    if not isinstance(cases, list) or len(cases) != 10:
         raise ValueError("kernel ingress proof bundle diagnostics cases drift")
     accepted = [case for case in cases if case.get("outcome") == "accepted"]
     if [case.get("source_name") for case in accepted] != list(_ACCEPTED_SOURCE_NAMES):
@@ -661,11 +663,11 @@ def _assert_kernel_ingress_conformance_bound(text: str) -> None:
         (
             'ingress_sources = "research_matmul_elementwise,'
             'research_softmax_reduction,research_matmul_reduction,'
-            'research_mvp_pipeline"'
+            'research_softmax_elementwise,research_mvp_pipeline"'
         ),
         (
             'kernel_names = "matmul_elementwise,softmax_reduction,'
-            'matmul_reduction,mvp_pipeline"'
+            'matmul_reduction,softmax_elementwise,mvp_pipeline"'
         ),
         'status = "PASS"',
     )

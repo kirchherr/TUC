@@ -36,10 +36,10 @@ def test_source_to_intent_research_capability_claim_report_shape() -> None:
     assert report["status"] == "PASS"
     assert report["claim_id"] == "bounded_universal_compute_research_slice"
     assert report["claim_status"] == "supported_for_current_research_scope"
-    assert report["accepted_kernel_count"] == 4
-    assert report["runtime_case_count"] == 4
-    assert report["backend_equivalence_case_count"] == 4
-    assert report["backend_equivalence_shape_profile_case_count"] == 8
+    assert report["accepted_kernel_count"] == 5
+    assert report["runtime_case_count"] == 5
+    assert report["backend_equivalence_case_count"] == 5
+    assert report["backend_equivalence_shape_profile_case_count"] == 10
     assert report["baseline_runtime_backend"] == "reference-cpu"
     assert report["combined_pipeline_kernel"] == "mvp_pipeline"
     assert report["combined_pipeline_operation_path"] == [
@@ -151,12 +151,12 @@ def test_source_to_intent_research_capability_claim_schema_declares_contract() -
     assert schema["properties"]["claim_contract"]["const"] == (
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_CONTRACT
     )
-    assert schema["properties"]["accepted_kernel_count"]["const"] == 4
-    assert schema["properties"]["runtime_case_count"]["const"] == 4
-    assert schema["properties"]["backend_equivalence_case_count"]["const"] == 4
+    assert schema["properties"]["accepted_kernel_count"]["const"] == 5
+    assert schema["properties"]["runtime_case_count"]["const"] == 5
+    assert schema["properties"]["backend_equivalence_case_count"]["const"] == 5
     assert schema["properties"]["backend_equivalence_shape_profile_case_count"][
         "const"
-    ] == 8
+    ] == 10
     assert schema["properties"]["baseline_runtime_backend"]["const"] == "reference-cpu"
     assert schema["properties"]["evidence_count"]["const"] == 13
     assert schema["$defs"]["evidence"]["additionalProperties"] is False

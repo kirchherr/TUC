@@ -36,8 +36,8 @@ def test_source_to_intent_research_capability_claim_gate_matches_golden() -> Non
     assert 'capability_claim = "passed"' in report
     assert 'claim_id = "bounded_universal_compute_research_slice"' in report
     assert 'claim_status = "supported_for_current_research_scope"' in report
-    assert 'backend_equivalence_case_count = "4"' in report
-    assert 'backend_equivalence_shape_profile_case_count = "8"' in report
+    assert 'backend_equivalence_case_count = "5"' in report
+    assert 'backend_equivalence_shape_profile_case_count = "10"' in report
     assert 'baseline_runtime_backend = "reference-cpu"' in report
     assert 'combined_pipeline = "matmul->softmax->reduction->elementwise"' in report
     assert 'trusted_runtime_backends = "linear-sim,vector-sim"' in report

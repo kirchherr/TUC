@@ -159,6 +159,13 @@ _EXPECTED_CASES = {
         "step_names": ["projection", "column_sum"],
         "terminal_outputs": ["column_sum"],
     },
+    "research_module_softmax_elementwise": {
+        "backend_sequence": ["vector-sim", "vector-sim"],
+        "kernel_name": "softmax_elementwise",
+        "operation_path": ["softmax", "elementwise"],
+        "step_names": ["normalized", "activated"],
+        "terminal_outputs": ["activated"],
+    },
     "research_module_mvp_pipeline": {
         "backend_sequence": ["linear-sim", "vector-sim", "vector-sim", "vector-sim"],
         "kernel_name": "mvp_pipeline",

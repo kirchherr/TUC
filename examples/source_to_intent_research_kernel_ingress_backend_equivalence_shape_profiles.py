@@ -183,12 +183,14 @@ _SHAPE_PROFILES: dict[str, dict[str, ShapeMap]] = {
     "base": {
         "research_matmul_elementwise": {"a": (4, 8), "b": (8, 2), "y": (4, 2)},
         "research_softmax_reduction": {"x": (4, 8), "y": (4,)},
+        "research_softmax_elementwise": {"x": (4, 8), "y": (4, 8)},
         "research_matmul_reduction": {"a": (4, 8), "b": (8, 2), "y": (4,)},
         "research_mvp_pipeline": {"a": (4, 8), "b": (8, 4), "y": (4,)},
     },
     "alternate": {
         "research_matmul_elementwise": {"a": (3, 5), "b": (5, 4), "y": (3, 4)},
         "research_softmax_reduction": {"x": (3, 5), "y": (3,)},
+        "research_softmax_elementwise": {"x": (3, 5), "y": (3, 5)},
         "research_matmul_reduction": {"a": (3, 5), "b": (5, 4), "y": (3,)},
         "research_mvp_pipeline": {"a": (3, 5), "b": (5, 3), "y": (3,)},
     },
@@ -219,6 +221,15 @@ _EXPECTED_CASES = {
         "kernel_name": "matmul_reduction",
         "operation_families": ["matmul", "reduction"],
         "terminal_outputs": ["column_sum"],
+        "trace_step_count": 2,
+    },
+    "research_module_softmax_elementwise": {
+        "baseline_backend_sequence": ["reference-cpu", "reference-cpu"],
+        "candidate_backend_sequence": ["vector-sim", "vector-sim"],
+        "graph_name": "research_softmax_elementwise",
+        "kernel_name": "softmax_elementwise",
+        "operation_families": ["elementwise", "softmax"],
+        "terminal_outputs": ["activated"],
         "trace_step_count": 2,
     },
     "research_module_mvp_pipeline": {
@@ -599,6 +610,8 @@ def _inputs_for_profile(
             "a": _finite_array(tensor_shapes["a"], offset=1.0),
             "b": _finite_array(tensor_shapes["b"], offset=-2.0),
         }
+    if source_name == "research_softmax_elementwise":
+        return {"x": _finite_array(tensor_shapes["x"], offset=0.5)}
     if source_name == "research_softmax_reduction":
         return {"x": _finite_array(tensor_shapes["x"], offset=0.5)}
     raise ValueError("unsupported kernel ingress backend equivalence source")
@@ -614,6 +627,9 @@ def _references_for(
     if source_name == "research_softmax_reduction":
         normalized = reference_softmax(inputs["x"], axis=1)
         return {"row_sum": reference_reduction_sum(normalized, axis=1)}
+    if source_name == "research_softmax_elementwise":
+        normalized = reference_softmax(inputs["x"], axis=1)
+        return {"activated": reference_elementwise(normalized)}
     if source_name == "research_matmul_reduction":
         projection = reference_matmul(inputs["a"], inputs["b"])
         return {"column_sum": reference_reduction_sum(projection, axis=1)}

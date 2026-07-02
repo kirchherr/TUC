@@ -138,6 +138,14 @@ _EXPECTED_CASE_SUMMARIES = {
         "matched_idioms": ["metadata_matmul_projection", "metadata_reduction_axis"],
         "operation_families": ["matmul", "reduction"],
     },
+    "research_softmax_elementwise": {
+        "kernel_name": "softmax_elementwise",
+        "matched_idioms": [
+            "metadata_elementwise_activation",
+            "metadata_softmax_axis",
+        ],
+        "operation_families": ["elementwise", "softmax"],
+    },
     "research_mvp_pipeline": {
         "kernel_name": "mvp_pipeline",
         "matched_idioms": [

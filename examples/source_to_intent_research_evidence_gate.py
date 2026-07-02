@@ -522,11 +522,11 @@ def _assert_kernel_ingress_conformance_bound(text: str) -> None:
         (
             'ingress_sources = "research_matmul_elementwise,'
             'research_softmax_reduction,research_matmul_reduction,'
-            'research_mvp_pipeline"'
+            'research_softmax_elementwise,research_mvp_pipeline"'
         ),
         (
             'kernel_names = "matmul_elementwise,softmax_reduction,'
-            'matmul_reduction,mvp_pipeline"'
+            'matmul_reduction,softmax_elementwise,mvp_pipeline"'
         ),
         'status = "PASS"',
     )

@@ -51,7 +51,7 @@
     },
     "claim": {"const": "shape_profile_evidence_bounds_future_performance_workload_scope"},
     "claim_boundary": {"const": "performance_proof_boundary.blocking.v0"},
-    "case_count": {"const": 8},
+    "case_count": {"const": 10},
     "issues": {
       "type": "array",
       "prefixItems": [
@@ -89,7 +89,7 @@
     "schema_version": {
       "const": "tuc.source_to_intent_research_kernel_ingress_workload_scope_report.v0"
     },
-    "scope_count": {"const": 20},
+    "scope_count": {"const": 24},
     "scopes": {
       "type": "array",
       "items": {"$ref": "#/$defs/workload_scope"},

@@ -10,7 +10,7 @@
     "network_access",
     "subprocess_execution"
   ],
-  "case_count": 4,
+  "case_count": 5,
   "cases": [
     {
       "backend_sequence": [
@@ -215,6 +215,73 @@
     },
     {
       "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_elementwise",
+      "execution_trace_digest": "sha256:7db25b1ad8cf0e3a06933c846fb6fc1b89fd9625c39abcf319037ac90ca12a63",
+      "kernel_name": "softmax_elementwise",
+      "operation_path": [
+        "softmax",
+        "elementwise"
+      ],
+      "runtime_plan_digest": "sha256:21b424bb8a0002756d15e259fae7311fde7732326eab3c402f5fb3e1d4f618c7",
+      "status": "traced",
+      "step_count": 2,
+      "steps": [
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "x"
+          ],
+          "operation_kind": "softmax",
+          "operation_name": "normalized",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4,
+              8
+            ]
+          ],
+          "output_tensors": [
+            "normalized"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 0
+        },
+        {
+          "executor_backend": "vector-sim",
+          "input_tensors": [
+            "normalized"
+          ],
+          "operation_kind": "elementwise",
+          "operation_name": "activated",
+          "output_dtypes": [
+            "float64"
+          ],
+          "output_shapes": [
+            [
+              4,
+              8
+            ]
+          ],
+          "output_tensors": [
+            "activated"
+          ],
+          "planned_backend": "vector-sim",
+          "status": "executed",
+          "step_index": 1
+        }
+      ],
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "backend_sequence": [
         "linear-sim",
         "vector-sim",
         "vector-sim",
@@ -333,12 +400,12 @@
   "default_parser_status": "default_parser_blocked",
   "executor_contract": "runtime_executor.trusted_backend.v0",
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
-  "kernel_ingress_digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
+  "kernel_ingress_digest": "sha256:37e3908582971511d784103074ef77490457bc54b96586add1479eb84195c520",
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+  "runtime_matrix_digest": "sha256:ecb91b9de5dc9558b12dc71ea2bd55c7f5c34174f054172bb37ce38ace6eb367",
   "runtime_step_trace_contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_step_trace_report.v0",
   "source_boundary": "kernel_ingress_runtime_execution_trace_metadata",

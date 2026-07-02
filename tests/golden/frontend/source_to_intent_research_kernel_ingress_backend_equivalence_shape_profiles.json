@@ -19,7 +19,7 @@
     "vector-sim->vector-sim",
     "linear-sim->vector-sim->vector-sim->vector-sim"
   ],
-  "case_count": 8,
+  "case_count": 10,
   "cases": [
     {
       "baseline_backend_sequence": [
@@ -312,6 +312,98 @@
     {
       "baseline_backend_sequence": [
         "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:07b1233579b3936be504af62e7f05752065874d8cba3e40f0e5639046f81242e",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:07b1233579b3936be504af62e7f05752065874d8cba3e40f0e5639046f81242e",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_softmax_elementwise",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:133f14cc7e242027a31d827f32d68c6eef3ca5d1da27ea1fd127e19e4757c978",
+      "declared_tensor_shapes": {
+        "x": [
+          4,
+          8
+        ],
+        "y": [
+          4,
+          8
+        ]
+      },
+      "equivalence_report_digest": "sha256:8dc148c7c9342e45168845a93436ecab097eb30fe4f172a797ca7dbe67b0843c",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_softmax_elementwise:base",
+      "profile_id": "base",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:0fe0a155cb4ed924b24715dca79930ea89a5be4f3ecf35aa3c58553f08a8901e",
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:1b9d5f60cfe8fba957dcc8a55630778d904f16b37550f6aba882c397dc1c36fc",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:1b9d5f60cfe8fba957dcc8a55630778d904f16b37550f6aba882c397dc1c36fc",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_softmax_elementwise",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:0faf178085ac21b93d109ab49e47454a8755c253b0945f2336343490d5445d2f",
+      "declared_tensor_shapes": {
+        "x": [
+          3,
+          5
+        ],
+        "y": [
+          3,
+          5
+        ]
+      },
+      "equivalence_report_digest": "sha256:db5f85945f3eb4194e55c8473fc57eb03fc26b2c19c8b62fb876f2693b4375ef",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_softmax_elementwise:alternate",
+      "profile_id": "alternate",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:7f9bb07874790100a56c693a68d8dfe49856760fa4e9938289a628b753b6775d",
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
         "reference-cpu",
         "reference-cpu",
         "reference-cpu"
@@ -420,16 +512,16 @@
       ]
     }
   ],
-  "comparison_count": 8,
+  "comparison_count": 10,
   "default_parser_status": "default_parser_blocked",
   "equivalence_claim": "same_source_intent_preserves_public_outputs_across_backend_placements_and_shape_profiles",
   "equivalence_contract": "runtime_backend_equivalence.data_only.v0",
   "executor_contract": "runtime_executor.trusted_backend.v0",
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
   "kernel_ingress_backend_equivalence_contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
-  "kernel_ingress_backend_equivalence_digest": "sha256:71b8c0c7aac1a03e693a0cfd3d1602e06838a559c72ff7cfe264b5c62eb61ed6",
+  "kernel_ingress_backend_equivalence_digest": "sha256:370e95228e734dd9fccb6ed62ef181cd7d17de730a768b82744677f80361ac6e",
   "kernel_ingress_backend_equivalence_shape_profiles_contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
-  "kernel_ingress_digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
+  "kernel_ingress_digest": "sha256:37e3908582971511d784103074ef77490457bc54b96586add1479eb84195c520",
   "parser_status": "research_explicit_only",
   "profile_count": 2,
   "profile_ids": [

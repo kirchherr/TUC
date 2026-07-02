@@ -10,7 +10,7 @@
     "network_access",
     "subprocess_execution"
   ],
-  "case_count": 4,
+  "case_count": 5,
   "cases": [
     {
       "backend_sequence": [
@@ -143,6 +143,49 @@
     },
     {
       "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:7c1eca768a457010ff2996d4ca8e76ca54b8f599dad908fab722c22de6dbab88",
+      "bundle_report_digest": "sha256:9c4bdf8b7878796d1cf3cf5877b8b3012a33704ef9b53e7218be385b96b48956",
+      "case_id": "research_module_softmax_elementwise",
+      "execution_receipt_digest": "sha256:43a010316b363892a091151730924bfff884f89b60fd08a6fe74e541022b5e45",
+      "execution_receipt_link_count": 6,
+      "execution_trace_digest": "sha256:7db25b1ad8cf0e3a06933c846fb6fc1b89fd9625c39abcf319037ac90ca12a63",
+      "graph_name": "research_softmax_elementwise",
+      "input_count": 1,
+      "input_manifest_digest": "sha256:ded732fdbc284c4f1b75bbc23469645500b2027a7df247883875dda53e788ec2",
+      "kernel_name": "softmax_elementwise",
+      "operation_path": [
+        "softmax",
+        "elementwise"
+      ],
+      "output_count": 1,
+      "output_manifest_digest": "sha256:bbe5d774327a05b851a997be5d7078a0fce7b7322f38f79b50e4b30bb3628ff7",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "reference_comparison_count": 1,
+      "reference_correctness_digest": "sha256:07b1233579b3936be504af62e7f05752065874d8cba3e40f0e5639046f81242e",
+      "runtime_plan_digest": "sha256:21b424bb8a0002756d15e259fae7311fde7732326eab3c402f5fb3e1d4f618c7",
+      "standard_bundle_sections": [
+        "tensor_store_evidence",
+        "input_manifest",
+        "output_manifest",
+        "output_contract",
+        "public_output_bundle",
+        "reference_correctness",
+        "execution_receipt"
+      ],
+      "status": "standard_runtime_evidence_bound",
+      "step_count": 2,
+      "tensor_store_digest": "sha256:2ab95d2c3954867408677196ebc9c863f1b80c68a37aaae0c0484bedc9b10c5e",
+      "tensor_store_record_count": 3,
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "backend_sequence": [
         "linear-sim",
         "vector-sim",
         "vector-sim",
@@ -207,9 +250,9 @@
     "execution_receipt"
   ],
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+  "runtime_matrix_digest": "sha256:ecb91b9de5dc9558b12dc71ea2bd55c7f5c34174f054172bb37ce38ace6eb367",
   "runtime_step_trace_contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
-  "runtime_step_trace_digest": "sha256:683ddbc7ad82543ca2537ffbf6cc03874a497a6a2712e4c9b2d8c537705ed4ff",
+  "runtime_step_trace_digest": "sha256:0bbfe74ffac5de228b7e7d1c6722a191fe18ce2a0249aef7a8e01be566b7a5cf",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index_report.v0",
   "source_boundary": "kernel_ingress_runtime_to_standard_execution_evidence_bundle_index",
   "status": "PASS",

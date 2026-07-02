@@ -1,5 +1,5 @@
 {
-  "accepted_kernel_count": 4,
+  "accepted_kernel_count": 5,
   "accepted_operation_families": [
     "elementwise",
     "matmul",
@@ -7,8 +7,8 @@
     "softmax"
   ],
   "artifact_policy": "digest_only_source_free",
-  "backend_equivalence_case_count": 4,
-  "backend_equivalence_shape_profile_case_count": 8,
+  "backend_equivalence_case_count": 5,
+  "backend_equivalence_shape_profile_case_count": 10,
   "baseline_runtime_backend": "reference-cpu",
   "blocked_claims": [
     "arbitrary_backend_execution",
@@ -36,91 +36,91 @@
       "artifact_id": "source_to_intent_research_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_proof_bundle.review.v0",
-      "digest": "sha256:3318008f2544249c3478536ffff35ab1dad895340d72cb42d756e674e87bfd01",
+      "digest": "sha256:17e8071067468997e77d31879fc3a13a855cff182c1774c70fb535adb7160c2d",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:1c9161c98b7fa7116d9f68b79b116fe045bd053db9cad00c55138880d60206f5",
+      "digest": "sha256:84685898af7ec674c8b8279304fed32f135938ec4668e22b18fecd3daad33fc3",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:672d8ed88120a6acaac36523b8eb73f7780c4aec0586e8d23a0d04c94aa1da25",
+      "digest": "sha256:f9e85f61f652b48ad66cc35508ded2636749a4b3ecb2ee045fc3fbb2cc6d3cc1",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:66e9be3aca0866829805ce57ce261863dc743a3fe7d5ecc526d302f66848555f",
+      "digest": "sha256:d89f269bc2b5cdf430facf8f7624315caa0b8b24c5c152c7c55241572f9c4ea7",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_matrix",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-      "digest": "sha256:c3fb04b24a4ceafe8e35360b624d45875b5d105b77020b9ac4dc4a4a3718a056",
+      "digest": "sha256:ecb91b9de5dc9558b12dc71ea2bd55c7f5c34174f054172bb37ce38ace6eb367",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_step_trace",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
-      "digest": "sha256:683ddbc7ad82543ca2537ffbf6cc03874a497a6a2712e4c9b2d8c537705ed4ff",
+      "digest": "sha256:0bbfe74ffac5de228b7e7d1c6722a191fe18ce2a0249aef7a8e01be566b7a5cf",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0",
-      "digest": "sha256:0e7392b6b0cdcb2536610fd4035eece30e8099e8f3aa942773e42cab33d10b01",
+      "digest": "sha256:738cc349be1c940b1b818a42aefd6e11ba677a20df1499656dd8de2a57899ac0",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_output_closure_index.review.v0",
-      "digest": "sha256:73abf91139be952f2637ac104db019cc6d2f8ff4a8f7b0da6a11d973749abf0b",
+      "digest": "sha256:eb181c07883bc53f267f997801b4685d78e8ffad8a875bad25f6403237c297d6",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.review.v0",
-      "digest": "sha256:533f1d1c205e974ddc17da5632b023271304c928af143085e98a68ae83c68226",
+      "digest": "sha256:4a8824c10ae8216d0caa3a0605fa3ed3134ac009d72afc56a515666804f373d8",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
-      "digest": "sha256:71b8c0c7aac1a03e693a0cfd3d1602e06838a559c72ff7cfe264b5c62eb61ed6",
+      "digest": "sha256:370e95228e734dd9fccb6ed62ef181cd7d17de730a768b82744677f80361ac6e",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
-      "digest": "sha256:1050dfd17ca2ef4d78e956910f9d3ae39e777c7b819728568aa597c0c0bb4613",
+      "digest": "sha256:7ec396a324d58d9e4eb05830a26731e6092d9fbc36ed05f317b6ead03147ae28",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
-      "digest": "sha256:77bcedac7278e1c668d4ebe569e63f83e490af90d40bbafe4df3fd2b954013e6",
+      "digest": "sha256:e11d2f21ce1ed1df2cd765a6bf9ad2de02e416dd1b35b4b1c8d9a4e837f7dd75",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_backend_alignment.trusted_executor.v0",
-      "digest": "sha256:746cb44a3d1634ed3d3d8993371c05930de1ec5794bff27f7097470ffb2ddd87",
+      "digest": "sha256:a0af8abf7d1d93ce7298a9857fbc575fd7c2b7f0725f62c740a0b7b5d45c1625",
       "status": "accepted"
     }
   ],
@@ -141,7 +141,7 @@
     "runtime_backend_alignment_uses_trusted_executors"
   ],
   "parser_status": "research_explicit_only",
-  "runtime_case_count": 4,
+  "runtime_case_count": 5,
   "schema_version": "tuc.source_to_intent_research_capability_claim_report.v0",
   "status": "PASS",
   "supported_claims": [

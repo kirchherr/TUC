@@ -46,8 +46,8 @@ def test_kernel_ingress_backend_equivalence_shape_profiles_report_shape() -> Non
     assert report["status"] == "PASS"
     assert report["profile_count"] == 2
     assert report["profile_ids"] == ["base", "alternate"]
-    assert report["case_count"] == 8
-    assert report["comparison_count"] == 8
+    assert report["case_count"] == 10
+    assert report["comparison_count"] == 10
     assert report["baseline_backend_sequences"] == [
         "reference-cpu->reference-cpu",
         "reference-cpu->reference-cpu->reference-cpu->reference-cpu",
@@ -58,7 +58,7 @@ def test_kernel_ingress_backend_equivalence_shape_profiles_report_shape() -> Non
         "linear-sim->vector-sim->vector-sim->vector-sim",
     ]
 
-    mvp_alternate = report["cases"][7]
+    mvp_alternate = report["cases"][9]
     assert mvp_alternate["profile_case_id"] == (
         "research_module_mvp_pipeline:alternate"
     )
@@ -91,7 +91,7 @@ def test_kernel_ingress_backend_equivalence_shape_profiles_report_shape() -> Non
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("case_count", 7, "case_count"),
+        ("case_count", 9, "case_count"),
         ("comparison_count", 7, "comparison_count"),
         ("profile_count", 1, "profile_count"),
         (
@@ -161,7 +161,7 @@ def test_kernel_ingress_backend_equivalence_shape_profiles_example_runs() -> Non
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"status": "PASS"' in completed.stdout
     assert '"profile_count": 2' in completed.stdout
-    assert '"case_count": 8' in completed.stdout
+    assert '"case_count": 10' in completed.stdout
     assert '"tensor_shape_digest"' in completed.stdout
     assert '"baseline_reference_correctness_digest"' in completed.stdout
     assert '"candidate_reference_correctness_digest"' in completed.stdout
@@ -192,7 +192,7 @@ def test_kernel_ingress_backend_equivalence_shape_profiles_schema_declares_contr
     assert schema["properties"]["equivalence_contract"]["const"] == (
         RUNTIME_BACKEND_EQUIVALENCE_CONTRACT
     )
-    assert schema["properties"]["case_count"]["const"] == 8
+    assert schema["properties"]["case_count"]["const"] == 10
     assert schema["properties"]["profile_count"]["const"] == 2
     assert schema["$defs"]["case"]["additionalProperties"] is False
     assert "tensor_shape_digest" in schema["$defs"]["case"]["required"]

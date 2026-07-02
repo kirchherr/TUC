@@ -92,10 +92,10 @@ def assert_capability_claim_gate_report_contract(text: object) -> None:
         f'  claim_id = "{SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_ID}"',
         f'  claim_scope = "{SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_SCOPE}"',
         f'  claim_status = "{SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_STATUS}"',
-        '  accepted_kernel_count = "4"',
-        '  runtime_case_count = "4"',
-        '  backend_equivalence_case_count = "4"',
-        '  backend_equivalence_shape_profile_case_count = "8"',
+        '  accepted_kernel_count = "5"',
+        '  runtime_case_count = "5"',
+        '  backend_equivalence_case_count = "5"',
+        '  backend_equivalence_shape_profile_case_count = "10"',
         '  baseline_runtime_backend = "reference-cpu"',
         (
             '  combined_pipeline = "'

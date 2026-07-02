@@ -38,8 +38,8 @@ def test_kernel_ingress_backend_equivalence_report_shape() -> None:
     )
     assert report["equivalence_contract"] == RUNTIME_BACKEND_EQUIVALENCE_CONTRACT
     assert report["status"] == "PASS"
-    assert report["case_count"] == 4
-    assert report["comparison_count"] == 4
+    assert report["case_count"] == 5
+    assert report["comparison_count"] == 5
     assert report["baseline_backend_sequences"] == [
         "reference-cpu->reference-cpu",
         "reference-cpu->reference-cpu->reference-cpu->reference-cpu",
@@ -55,7 +55,7 @@ def test_kernel_ingress_backend_equivalence_report_shape() -> None:
         "vector-sim",
     ]
 
-    mvp_case = report["cases"][3]
+    mvp_case = report["cases"][4]
     assert mvp_case["case_id"] == "research_module_mvp_pipeline"
     assert mvp_case["graph_name"] == "research_mvp_pipeline"
     assert mvp_case["baseline_backend_sequence"] == [
@@ -80,7 +80,7 @@ def test_kernel_ingress_backend_equivalence_report_shape() -> None:
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("case_count", 3, "case_count"),
+        ("case_count", 4, "case_count"),
         ("comparison_count", 3, "comparison_count"),
         (
             "kernel_ingress_backend_equivalence_contract",
@@ -106,8 +106,8 @@ def test_kernel_ingress_backend_equivalence_rejects_case_drift() -> None:
     report = build_kernel_ingress_backend_equivalence_report()
     cases = report["cases"]
     assert isinstance(cases, list)
-    assert isinstance(cases[3], dict)
-    cases[3]["candidate_backend_sequence"] = ["vector-sim", "vector-sim"]
+    assert isinstance(cases[4], dict)
+    cases[4]["candidate_backend_sequence"] = ["vector-sim", "vector-sim"]
 
     with pytest.raises(ValueError, match="candidate_backend_sequence drift"):
         assert_kernel_ingress_backend_equivalence_report_contract(report)

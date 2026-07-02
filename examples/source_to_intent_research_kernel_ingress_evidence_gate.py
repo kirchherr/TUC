@@ -206,12 +206,14 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_ACCEPTED_SOURCES = (
     "research_matmul_elementwise",
     "research_softmax_reduction",
     "research_matmul_reduction",
+    "research_softmax_elementwise",
     "research_mvp_pipeline",
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_ACCEPTED_KERNELS = (
     "matmul_elementwise",
     "softmax_reduction",
     "matmul_reduction",
+    "softmax_elementwise",
     "mvp_pipeline",
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE_OPERATION_FAMILIES = (
@@ -481,11 +483,11 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         (
             '  accepted_sources = "research_matmul_elementwise,'
             'research_softmax_reduction,research_matmul_reduction,'
-            'research_mvp_pipeline"'
+            'research_softmax_elementwise,research_mvp_pipeline"'
         ),
         (
             '  accepted_kernels = "matmul_elementwise,softmax_reduction,'
-            'matmul_reduction,mvp_pipeline"'
+            'matmul_reduction,softmax_elementwise,mvp_pipeline"'
         ),
         '  covered_operation_families = "elementwise,matmul,reduction,softmax"',
         (
@@ -495,25 +497,25 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
         ),
         '  trusted_executor_registry = "trusted_runtime_executor_registry.v0"',
         '  trusted_runtime_backends = "linear-sim,vector-sim"',
-        '  runtime_case_count = "4"',
-        '  runtime_step_trace_cases = "4"',
-        '  runtime_evidence_bundle_cases = "4"',
-        '  runtime_output_closure_cases = "4"',
+        '  runtime_case_count = "5"',
+        '  runtime_step_trace_cases = "5"',
+        '  runtime_evidence_bundle_cases = "5"',
+        '  runtime_output_closure_cases = "5"',
         '  runtime_output_closure_check_count = "2"',
         (
             '  output_closure_contract = '
             '"runtime_execution_output_closure.data_only.v0"'
         ),
-        '  runtime_replay_verifier_cases = "4"',
+        '  runtime_replay_verifier_cases = "5"',
         '  runtime_replay_verifier_check_count = "8"',
         (
             '  replay_verifier_contract = '
             '"runtime_evidence_replay_verifier.review.v0"'
         ),
-        '  runtime_backend_equivalence_cases = "4"',
-        '  backend_equivalence_comparisons = "4"',
-        '  runtime_backend_equivalence_shape_profile_cases = "8"',
-        '  backend_equivalence_shape_profile_comparisons = "8"',
+        '  runtime_backend_equivalence_cases = "5"',
+        '  backend_equivalence_comparisons = "5"',
+        '  runtime_backend_equivalence_shape_profile_cases = "10"',
+        '  backend_equivalence_shape_profile_comparisons = "10"',
         '  shape_profile_ids = "base,alternate"',
         (
             '  baseline_backend_sequences = "reference-cpu->reference-cpu,'
@@ -738,7 +740,7 @@ def _assert_rejection_coverage_bound(text: str) -> Mapping[str, object]:
 def _assert_diagnostics_bound(text: str) -> Mapping[str, object]:
     report = _load_json_report(text, "diagnostics")
     expected_values = {
-        "accepted_case_count": 4,
+        "accepted_case_count": 5,
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "diagnostics_contract": (
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT
@@ -771,11 +773,11 @@ def _assert_conformance_gate_bound(text: str) -> None:
         (
             'ingress_sources = "research_matmul_elementwise,'
             'research_softmax_reduction,research_matmul_reduction,'
-            'research_mvp_pipeline"'
+            'research_softmax_elementwise,research_mvp_pipeline"'
         ),
         (
             'kernel_names = "matmul_elementwise,softmax_reduction,'
-            'matmul_reduction,mvp_pipeline"'
+            'matmul_reduction,softmax_elementwise,mvp_pipeline"'
         ),
         'status = "PASS"',
     )

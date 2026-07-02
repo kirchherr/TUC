@@ -171,7 +171,7 @@ def test_kernel_ingress_e2e_report_shape() -> None:
     )
     assert report["e2e_contract"] == SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_E2E_CONTRACT
     assert report["status"] == "PASS"
-    assert report["case_count"] == 4
+    assert report["case_count"] == 5
     assert report["source_boundary"] == (
         "triton_module_source_buffer_to_runtime_via_research_kernel_ingress"
     )
@@ -179,18 +179,20 @@ def test_kernel_ingress_e2e_report_shape() -> None:
         "research_module_matmul_elementwise",
         "research_module_softmax_reduction",
         "research_module_matmul_reduction",
+        "research_module_softmax_elementwise",
         "research_module_mvp_pipeline",
     ]
     assert report["cases"][0]["backend_sequence"] == ["linear-sim", "vector-sim"]
     assert report["cases"][1]["backend_sequence"] == ["vector-sim", "vector-sim"]
     assert report["cases"][2]["backend_sequence"] == ["linear-sim", "vector-sim"]
-    assert report["cases"][3]["backend_sequence"] == [
+    assert report["cases"][3]["backend_sequence"] == ["vector-sim", "vector-sim"]
+    assert report["cases"][4]["backend_sequence"] == [
         "linear-sim",
         "vector-sim",
         "vector-sim",
         "vector-sim",
     ]
-    assert report["cases"][3]["trace_step_count"] == 4
+    assert report["cases"][4]["trace_step_count"] == 4
 
 
 @pytest.mark.parametrize(

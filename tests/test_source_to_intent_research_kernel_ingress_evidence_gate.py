@@ -50,19 +50,19 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     )
     assert 'trusted_executor_registry = "trusted_runtime_executor_registry.v0"' in report
     assert 'trusted_runtime_backends = "linear-sim,vector-sim"' in report
-    assert 'runtime_case_count = "4"' in report
-    assert 'runtime_step_trace_cases = "4"' in report
-    assert 'runtime_evidence_bundle_cases = "4"' in report
-    assert 'runtime_output_closure_cases = "4"' in report
+    assert 'runtime_case_count = "5"' in report
+    assert 'runtime_step_trace_cases = "5"' in report
+    assert 'runtime_evidence_bundle_cases = "5"' in report
+    assert 'runtime_output_closure_cases = "5"' in report
     assert 'runtime_output_closure_check_count = "2"' in report
     assert 'output_closure_contract = "runtime_execution_output_closure.data_only.v0"' in report
-    assert 'runtime_replay_verifier_cases = "4"' in report
+    assert 'runtime_replay_verifier_cases = "5"' in report
     assert 'runtime_replay_verifier_check_count = "8"' in report
     assert 'replay_verifier_contract = "runtime_evidence_replay_verifier.review.v0"' in report
-    assert 'runtime_backend_equivalence_cases = "4"' in report
-    assert 'backend_equivalence_comparisons = "4"' in report
-    assert 'runtime_backend_equivalence_shape_profile_cases = "8"' in report
-    assert 'backend_equivalence_shape_profile_comparisons = "8"' in report
+    assert 'runtime_backend_equivalence_cases = "5"' in report
+    assert 'backend_equivalence_comparisons = "5"' in report
+    assert 'runtime_backend_equivalence_shape_profile_cases = "10"' in report
+    assert 'backend_equivalence_shape_profile_comparisons = "10"' in report
     assert 'shape_profile_ids = "base,alternate"' in report
     assert (
         'baseline_backend_sequences = "reference-cpu->reference-cpu,'
@@ -216,10 +216,10 @@ def test_kernel_ingress_evidence_gate_rejects_source_leakage() -> None:
     leaky_conformance = (
         'source_intent_frontend_conformance = "passed"\n'
         'ingress_sources = "research_matmul_elementwise,'
-        'research_softmax_reduction,research_matmul_reduction,'
+        'research_softmax_reduction,research_matmul_reduction,research_softmax_elementwise,'
         'research_mvp_pipeline"\n'
         'kernel_names = "matmul_elementwise,softmax_reduction,'
-        'matmul_reduction,mvp_pipeline"\n'
+        'matmul_reduction,softmax_elementwise,mvp_pipeline"\n'
         'status = "PASS"\n'
         "@triton.jit\n"
     )
