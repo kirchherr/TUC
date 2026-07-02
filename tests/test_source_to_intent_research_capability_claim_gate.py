@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from functools import lru_cache
 from pathlib import Path
 
 import pytest
@@ -25,8 +26,22 @@ GOLDEN_PATH = Path(
 )
 
 
+@lru_cache(maxsize=1)
+def _cached_capability_claim_text() -> str:
+    return build_capability_claim_report()
+
+
+@lru_cache(maxsize=1)
+def _cached_gate_report() -> str:
+    return build_gate_report(capability_claim_text=_cached_capability_claim_text())
+
+
+def _fresh_claim() -> dict[str, object]:
+    return json.loads(_cached_capability_claim_text())
+
+
 def test_source_to_intent_research_capability_claim_gate_matches_golden() -> None:
-    report = build_gate_report()
+    report = _cached_gate_report()
 
     assert report == GOLDEN_PATH.read_text(encoding="utf-8")
     assert (
@@ -71,7 +86,7 @@ def test_source_to_intent_research_capability_claim_gate_example_runs() -> None:
 
 
 def test_source_to_intent_research_capability_claim_gate_rejects_status_drift() -> None:
-    claim = json.loads(build_capability_claim_report())
+    claim = _fresh_claim()
     claim["status"] = "WARN"
 
     with pytest.raises(
@@ -82,7 +97,7 @@ def test_source_to_intent_research_capability_claim_gate_rejects_status_drift() 
 
 
 def test_source_to_intent_research_capability_claim_gate_rejects_digest_drift() -> None:
-    claim = json.loads(build_capability_claim_report())
+    claim = _fresh_claim()
     evidence = claim["evidence"]
     assert isinstance(evidence, list)
     assert isinstance(evidence[0], dict)
@@ -96,7 +111,7 @@ def test_source_to_intent_research_capability_claim_gate_rejects_digest_drift() 
 
 
 def test_source_to_intent_research_capability_claim_gate_rejects_claim_expansion() -> None:
-    claim = json.loads(build_capability_claim_report())
+    claim = _fresh_claim()
     claim["blocked_claims"] = [
         item
         for item in claim["blocked_claims"]
@@ -115,7 +130,7 @@ def test_source_to_intent_research_capability_claim_gate_rejects_source_leakage(
         SourceToIntentResearchCapabilityClaimGateError,
         match="forbidden source fragment",
     ):
-        build_gate_report(capability_claim_text=build_capability_claim_report() + "tl.dot")
+        build_gate_report(capability_claim_text=_cached_capability_claim_text() + "tl.dot")
 
 
 def test_source_to_intent_research_capability_claim_gate_contract_rejects_drift() -> None:
@@ -127,7 +142,7 @@ def test_source_to_intent_research_capability_claim_gate_contract_rejects_drift(
 
 
 def test_capability_claim_gate_contract_rejects_evidence_id_drift() -> None:
-    report = build_gate_report().replace(
+    report = _cached_gate_report().replace(
         "source_to_intent_research_evidence_gate",
         "source_to_intent_research_missing_gate",
     )

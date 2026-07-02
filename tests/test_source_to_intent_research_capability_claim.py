@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from functools import lru_cache
 from pathlib import Path
 
 import pytest
@@ -23,8 +24,17 @@ SCHEMA_PATH = Path(
 )
 
 
+@lru_cache(maxsize=1)
+def _cached_report_text() -> str:
+    return build_report()
+
+
+def _fresh_report() -> dict[str, object]:
+    return json.loads(_cached_report_text())
+
+
 def test_source_to_intent_research_capability_claim_report_shape() -> None:
-    report = build_research_capability_claim_report()
+    report = _fresh_report()
     assert_research_capability_claim_report_contract(report)
 
     assert report["schema_version"] == (
@@ -88,7 +98,7 @@ def test_source_to_intent_research_capability_claim_rejects_drift(
     tamper_value: object,
     error: str,
 ) -> None:
-    report = build_research_capability_claim_report()
+    report = _fresh_report()
     report[tamper_key] = tamper_value
 
     with pytest.raises(ValueError, match=error):
@@ -96,7 +106,7 @@ def test_source_to_intent_research_capability_claim_rejects_drift(
 
 
 def test_source_to_intent_research_capability_claim_rejects_evidence_drift() -> None:
-    report = build_research_capability_claim_report()
+    report = _fresh_report()
     evidence = report["evidence"]
     assert isinstance(evidence, list)
     assert isinstance(evidence[0], dict)
@@ -107,7 +117,7 @@ def test_source_to_intent_research_capability_claim_rejects_evidence_drift() -> 
 
 
 def test_source_to_intent_research_capability_claim_rejects_source_leakage() -> None:
-    report = build_research_capability_claim_report()
+    report = _fresh_report()
     evidence = report["evidence"]
     assert isinstance(evidence, list)
     assert isinstance(evidence[0], dict)
@@ -118,7 +128,7 @@ def test_source_to_intent_research_capability_claim_rejects_source_leakage() -> 
 
 
 def test_source_to_intent_research_capability_claim_matches_golden() -> None:
-    assert build_report() == GOLDEN_PATH.read_text(encoding="utf-8")
+    assert _cached_report_text() == GOLDEN_PATH.read_text(encoding="utf-8")
 
 
 def test_source_to_intent_research_capability_claim_example_runs() -> None:
@@ -239,7 +249,7 @@ def test_source_to_intent_research_capability_claim_is_documented_and_in_ci() ->
 
 
 def test_source_to_intent_research_capability_claim_docs_list_evidence_inputs() -> None:
-    report = build_research_capability_claim_report()
+    report = _fresh_report()
     evidence = report["evidence"]
     assert isinstance(evidence, list)
     evidence_paths = [f"examples/{item['artifact_id']}.py" for item in evidence]
