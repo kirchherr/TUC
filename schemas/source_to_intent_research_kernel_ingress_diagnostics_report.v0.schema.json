@@ -38,8 +38,8 @@
     },
     "blocked_compiler_outputs": {
       "type": "array",
-      "minItems": 8,
-      "maxItems": 8,
+      "minItems": 7,
+      "maxItems": 7,
       "items": {"$ref": "#/$defs/report_text"}
     },
     "blocked_execution_surfaces": {
@@ -50,8 +50,8 @@
     },
     "cases": {
       "type": "array",
-      "minItems": 9,
-      "maxItems": 9,
+      "minItems": 10,
+      "maxItems": 10,
       "items": {"$ref": "#/$defs/case"}
     },
     "default_parser_status": {"const": "default_parser_blocked"},

@@ -93,8 +93,8 @@
     "scopes": {
       "type": "array",
       "items": {"$ref": "#/$defs/workload_scope"},
-      "minItems": 20,
-      "maxItems": 20
+      "minItems": 24,
+      "maxItems": 24
     },
     "source_boundary": {
       "const": "kernel_ingress_shape_profile_evidence_to_workload_scope_review"

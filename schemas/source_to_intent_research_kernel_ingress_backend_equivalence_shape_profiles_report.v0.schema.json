@@ -50,8 +50,8 @@
     "cases": {
       "type": "array",
       "items": {"$ref": "#/$defs/case"},
-      "minItems": 8,
-      "maxItems": 8
+      "minItems": 10,
+      "maxItems": 10
     },
     "candidate_backend_sequences": {
       "type": "array",
