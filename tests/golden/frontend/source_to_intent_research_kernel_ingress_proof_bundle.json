@@ -90,14 +90,14 @@
       "artifact_id": "source_to_intent_research_kernel_ingress_boundary_budget",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
-      "digest": "sha256:dc44f46f11aa5d86b55949b86004d18337ee334cb6807df367478e833c77b082",
+      "digest": "sha256:94cb99e0373dc542021ecda323212b0f51318fa69b0a05997627a0097e3674f5",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_rejection_coverage",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0",
-      "digest": "sha256:9ca3abadecaa94972697e76d31dfd227e10d8d0645c23a42b23ab9bd096c87f7",
+      "digest": "sha256:988323334e2fbddc01342a8f40768252eebcb0923cb9400ddd3aedd84fea5b9a",
       "status": "accepted"
     },
     {

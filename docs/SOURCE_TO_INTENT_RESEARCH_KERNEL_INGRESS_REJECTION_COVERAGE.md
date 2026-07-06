@@ -30,8 +30,8 @@ The report proves:
 - Kernel Ingress Diagnostics covers unsupported imports, import-from
   statements, multiple kernel functions, top-level side effects, and target
   kernel-name mismatches;
-- Kernel Ingress Boundary Budget covers module byte-budget and line-budget
-  overflow rejections;
+- Kernel Ingress Boundary Budget covers module byte-budget, line-budget,
+  AST-node-budget, and AST-depth-budget overflow rejections;
 - all current rejection reasons are represented in one deterministic coverage
   matrix;
 - the coverage matrix binds to the exact diagnostics and boundary-budget report

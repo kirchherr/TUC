@@ -34,7 +34,7 @@ def test_kernel_ingress_rejection_coverage_report_shape() -> None:
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_REJECTION_COVERAGE_CONTRACT
     )
     assert report["status"] == "PASS"
-    assert report["covered_rejection_count"] == 7
+    assert report["covered_rejection_count"] == 9
     assert report["required_coverage_sources"] == ["diagnostics", "boundary_budget"]
     assert report["diagnostics_rejection_reasons"] == [
         "import_from_statement",
@@ -46,6 +46,8 @@ def test_kernel_ingress_rejection_coverage_report_shape() -> None:
     assert report["budget_rejection_reasons"] == [
         "module_byte_budget",
         "module_line_budget",
+        "module_ast_node_budget",
+        "module_ast_depth_budget",
     ]
     assert [item["case_id"] for item in report["coverage_matrix"]] == [
         "reject_unsupported_import",
@@ -55,6 +57,8 @@ def test_kernel_ingress_rejection_coverage_report_shape() -> None:
         "reject_kernel_name_mismatch",
         "module_byte_budget",
         "module_line_budget",
+        "module_ast_node_budget",
+        "module_ast_depth_budget",
     ]
 
 
@@ -62,7 +66,7 @@ def test_kernel_ingress_rejection_coverage_report_shape() -> None:
     ("tamper_key", "tamper_value", "error"),
     [
         ("status", "WARN", "status"),
-        ("covered_rejection_count", 6, "covered_rejection_count"),
+        ("covered_rejection_count", 8, "covered_rejection_count"),
         ("coverage_policy", "best_effort", "coverage_policy"),
         ("raw_source", "def kernel(): pass", "top-level report"),
     ],
@@ -107,7 +111,7 @@ def test_kernel_ingress_rejection_coverage_example_runs() -> None:
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"status": "PASS"' in completed.stdout
-    assert '"covered_rejection_count": 7' in completed.stdout
+    assert '"covered_rejection_count": 9' in completed.stdout
     assert '"boundary_budget"' in completed.stdout
     assert '"diagnostics"' in completed.stdout
     assert "@triton.jit" not in completed.stdout
@@ -126,7 +130,7 @@ def test_kernel_ingress_rejection_coverage_schema_declares_contract() -> None:
     assert schema["properties"]["coverage_contract"]["const"] == (
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_REJECTION_COVERAGE_CONTRACT
     )
-    assert schema["properties"]["covered_rejection_count"]["const"] == 7
+    assert schema["properties"]["covered_rejection_count"]["const"] == 9
     assert schema["$defs"]["coverage_item"]["additionalProperties"] is False
 
 

@@ -31,7 +31,7 @@ Add Source-To-Intent Research Kernel Ingress Rejection Coverage v0.
 The report:
 
 - records all current Diagnostics rejection IDs;
-- records Boundary Budget byte and line overflow rejection IDs;
+- records Boundary Budget byte, line, AST-node, and AST-depth overflow rejection IDs;
 - creates a deterministic coverage matrix over both sources;
 - binds to the Diagnostics and Boundary Budget report digests;
 - binds into the Kernel Ingress Proof Bundle.

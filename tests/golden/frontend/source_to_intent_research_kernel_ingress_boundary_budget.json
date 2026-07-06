@@ -115,7 +115,7 @@
   ],
   "boundary_contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
   "budget_policy": "fail_closed_before_extraction_or_lowering",
-  "budget_rejection_case_count": 2,
+  "budget_rejection_case_count": 4,
   "budget_rejection_cases": [
     {
       "case_id": "module_byte_budget",
@@ -129,6 +129,20 @@
       "limit": 2048,
       "observed": 2049,
       "reason_fragment": "module source line budget exceeded",
+      "status": "rejected"
+    },
+    {
+      "case_id": "module_ast_node_budget",
+      "limit": 8192,
+      "observed": 8193,
+      "reason_fragment": "module AST node budget exceeded",
+      "status": "rejected"
+    },
+    {
+      "case_id": "module_ast_depth_budget",
+      "limit": 64,
+      "observed": 65,
+      "reason_fragment": "module AST depth budget exceeded",
       "status": "rejected"
     }
   ],

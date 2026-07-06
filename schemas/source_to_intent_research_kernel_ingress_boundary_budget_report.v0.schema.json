@@ -53,7 +53,7 @@
       "const": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0"
     },
     "budget_policy": {"const": "fail_closed_before_extraction_or_lowering"},
-    "budget_rejection_case_count": {"const": 2},
+    "budget_rejection_case_count": {"const": 4},
     "budget_rejection_cases": {
       "type": "array",
       "prefixItems": [
@@ -80,10 +80,34 @@
             "reason_fragment": {"const": "module source line budget exceeded"},
             "status": {"const": "rejected"}
           }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["case_id", "limit", "observed", "reason_fragment", "status"],
+          "properties": {
+            "case_id": {"const": "module_ast_node_budget"},
+            "limit": {"const": 8192},
+            "observed": {"const": 8193},
+            "reason_fragment": {"const": "module AST node budget exceeded"},
+            "status": {"const": "rejected"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["case_id", "limit", "observed", "reason_fragment", "status"],
+          "properties": {
+            "case_id": {"const": "module_ast_depth_budget"},
+            "limit": {"const": 64},
+            "observed": {"const": 65},
+            "reason_fragment": {"const": "module AST depth budget exceeded"},
+            "status": {"const": "rejected"}
+          }
         }
       ],
-      "minItems": 2,
-      "maxItems": 2
+      "minItems": 4,
+      "maxItems": 4
     },
     "default_parser_status": {"const": "default_parser_blocked"},
     "diagnostics_budget_limits": {

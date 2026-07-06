@@ -132,6 +132,16 @@ _EXPECTED_REJECTION_CASES = {
         "observed": MAX_TRITON_SOURCE_LINES + 1,
         "reason_fragment": "module source line budget exceeded",
     },
+    "module_ast_node_budget": {
+        "limit": MAX_TRITON_SOURCE_AST_NODES,
+        "observed": MAX_TRITON_SOURCE_AST_NODES + 1,
+        "reason_fragment": "module AST node budget exceeded",
+    },
+    "module_ast_depth_budget": {
+        "limit": MAX_TRITON_SOURCE_AST_DEPTH,
+        "observed": MAX_TRITON_SOURCE_AST_DEPTH + 1,
+        "reason_fragment": "module AST depth budget exceeded",
+    },
 }
 
 
@@ -150,6 +160,14 @@ def build_kernel_ingress_boundary_budget_report() -> dict[str, object]:
         _build_budget_rejection_case(
             "module_line_budget",
             "\n".join("x" for _ in range(MAX_TRITON_SOURCE_LINES + 1)),
+        ),
+        _build_budget_rejection_case(
+            "module_ast_node_budget",
+            _module_ast_node_budget_source(),
+        ),
+        _build_budget_rejection_case(
+            "module_ast_depth_budget",
+            _module_ast_depth_budget_source(),
         ),
     ]
     report: dict[str, object] = {
@@ -329,6 +347,32 @@ def _build_budget_rejection_case(case_id: str, module_source: str) -> dict[str, 
         "reason_fragment": expected["reason_fragment"],
         "status": "rejected",
     }
+
+
+def _module_ast_node_budget_source() -> str:
+    oversized_tuple = ",".join("0" for _ in range(MAX_TRITON_SOURCE_AST_NODES + 1))
+    return (
+        "import triton\n"
+        "import triton.language as tl\n"
+        "\n"
+        "@triton.jit\n"
+        "def budget_kernel(x):\n"
+        f"    y = ({oversized_tuple})\n"
+    )
+
+
+def _module_ast_depth_budget_source() -> str:
+    nested_literal = "0"
+    for _ in range(MAX_TRITON_SOURCE_AST_DEPTH + 1):
+        nested_literal = f"[{nested_literal}]"
+    return (
+        "import triton\n"
+        "import triton.language as tl\n"
+        "\n"
+        "@triton.jit\n"
+        "def budget_kernel(x):\n"
+        f"    y = {nested_literal}\n"
+    )
 
 
 def _assert_observations(value: object) -> None:

@@ -30,8 +30,8 @@ The report:
 - records ingress byte, line, AST-node, and AST-depth limits;
 - records diagnostics case, module, and report limits;
 - records accepted module observations without raw source;
-- proves byte-budget and line-budget overflow reject before extraction or
-  lowering;
+- proves byte-budget, line-budget, AST-node-budget, and AST-depth-budget
+  overflow reject before extraction or lowering;
 - feeds those budget rejection IDs into the Kernel Ingress Rejection Coverage
   matrix;
 - binds into the Kernel Ingress Proof Bundle.

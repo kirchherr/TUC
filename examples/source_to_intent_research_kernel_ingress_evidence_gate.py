@@ -534,13 +534,16 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
             '  required_runtime_digest_fields = "runtime_plan_digest,'
             'execution_trace_digest,reference_correctness_digest"'
         ),
-        '  covered_rejections = "7"',
+        '  covered_rejections = "9"',
         (
             '  diagnostics_rejection_reasons = "import_from_statement,'
             'kernel_name_mismatch,multiple_kernel_functions,'
             'top_level_side_effect,unsupported_import"'
         ),
-        '  budget_rejection_reasons = "module_byte_budget,module_line_budget"',
+        (
+            '  budget_rejection_reasons = "module_byte_budget,module_line_budget,'
+            'module_ast_node_budget,module_ast_depth_budget"'
+        ),
         f'  parser_status = "{SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS}"',
         (
             f'  default_parser_status = "'

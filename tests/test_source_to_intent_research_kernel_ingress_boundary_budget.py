@@ -14,7 +14,12 @@ from examples.source_to_intent_research_kernel_ingress_boundary_budget import (
     build_kernel_ingress_boundary_budget_report,
     build_report,
 )
-from tuc.frontend import MAX_TRITON_SOURCE_BYTES, MAX_TRITON_SOURCE_LINES
+from tuc.frontend import (
+    MAX_TRITON_SOURCE_AST_DEPTH,
+    MAX_TRITON_SOURCE_AST_NODES,
+    MAX_TRITON_SOURCE_BYTES,
+    MAX_TRITON_SOURCE_LINES,
+)
 
 GOLDEN_PATH = Path(
     "tests/golden/frontend/source_to_intent_research_kernel_ingress_boundary_budget.json"
@@ -36,12 +41,20 @@ def test_kernel_ingress_boundary_budget_report_shape() -> None:
     )
     assert report["status"] == "PASS"
     assert report["accepted_case_count"] == 5
-    assert report["budget_rejection_case_count"] == 2
+    assert report["budget_rejection_case_count"] == 4
     assert report["ingress_budget_limits"]["module_bytes"] == MAX_TRITON_SOURCE_BYTES
     assert report["ingress_budget_limits"]["module_lines"] == MAX_TRITON_SOURCE_LINES
+    assert report["ingress_budget_limits"]["module_ast_nodes"] == (
+        MAX_TRITON_SOURCE_AST_NODES
+    )
+    assert report["ingress_budget_limits"]["module_ast_depth"] == (
+        MAX_TRITON_SOURCE_AST_DEPTH
+    )
     assert [case["case_id"] for case in report["budget_rejection_cases"]] == [
         "module_byte_budget",
         "module_line_budget",
+        "module_ast_node_budget",
+        "module_ast_depth_budget",
     ]
 
 
@@ -96,6 +109,8 @@ def test_kernel_ingress_boundary_budget_example_runs() -> None:
     assert '"status": "PASS"' in completed.stdout
     assert '"module_byte_budget"' in completed.stdout
     assert '"module_line_budget"' in completed.stdout
+    assert '"module_ast_node_budget"' in completed.stdout
+    assert '"module_ast_depth_budget"' in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "import triton" not in completed.stdout
     assert "tl.dot" not in completed.stdout
@@ -115,6 +130,7 @@ def test_kernel_ingress_boundary_budget_schema_declares_contract() -> None:
     assert schema["properties"]["ingress_budget_limits"]["properties"][
         "module_bytes"
     ]["const"] == MAX_TRITON_SOURCE_BYTES
+    assert schema["properties"]["budget_rejection_case_count"]["const"] == 4
     assert schema["$defs"]["observation"]["additionalProperties"] is False
 
 

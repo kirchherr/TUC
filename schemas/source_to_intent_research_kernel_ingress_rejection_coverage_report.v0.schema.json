@@ -51,10 +51,12 @@
       "type": "array",
       "prefixItems": [
         {"const": "module_byte_budget"},
-        {"const": "module_line_budget"}
+        {"const": "module_line_budget"},
+        {"const": "module_ast_node_budget"},
+        {"const": "module_ast_depth_budget"}
       ],
-      "minItems": 2,
-      "maxItems": 2,
+      "minItems": 4,
+      "maxItems": 4,
       "uniqueItems": true
     },
     "coverage_contract": {
@@ -83,15 +85,21 @@
         },
         {
           "$ref": "#/$defs/module_line_budget"
+        },
+        {
+          "$ref": "#/$defs/module_ast_node_budget"
+        },
+        {
+          "$ref": "#/$defs/module_ast_depth_budget"
         }
       ],
-      "minItems": 7,
-      "maxItems": 7
+      "minItems": 9,
+      "maxItems": 9
     },
     "coverage_policy": {
       "const": "all_current_rejections_are_source_free_and_fail_closed"
     },
-    "covered_rejection_count": {"const": 7},
+    "covered_rejection_count": {"const": 9},
     "default_parser_status": {"const": "default_parser_blocked"},
     "diagnostics_contract": {
       "const": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0"
@@ -193,6 +201,24 @@
         "case_id": {"const": "module_line_budget"},
         "coverage_source": {"const": "boundary_budget"},
         "reason_id": {"const": "module_line_budget"},
+        "status": {"const": "covered"}
+      }
+    },
+    "module_ast_node_budget": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "module_ast_node_budget"},
+        "coverage_source": {"const": "boundary_budget"},
+        "reason_id": {"const": "module_ast_node_budget"},
+        "status": {"const": "covered"}
+      }
+    },
+    "module_ast_depth_budget": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "module_ast_depth_budget"},
+        "coverage_source": {"const": "boundary_budget"},
+        "reason_id": {"const": "module_ast_depth_budget"},
         "status": {"const": "covered"}
       }
     },

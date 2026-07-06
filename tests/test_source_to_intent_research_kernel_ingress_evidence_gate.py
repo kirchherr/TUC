@@ -42,7 +42,12 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'conformance_gate = "passed"' in report
     assert 'idiom_alignment = "passed"' in report
     assert 'proof_bundle = "passed"' in report
-    assert 'covered_rejections = "7"' in report
+    assert 'covered_rejections = "9"' in report
+    assert (
+        'budget_rejection_reasons = "module_byte_budget,module_line_budget,'
+        'module_ast_node_budget,module_ast_depth_budget"'
+        in report
+    )
     assert (
         'backend_sequences = "linear-sim->vector-sim,vector-sim->vector-sim,'
         'linear-sim->vector-sim->vector-sim->vector-sim"'

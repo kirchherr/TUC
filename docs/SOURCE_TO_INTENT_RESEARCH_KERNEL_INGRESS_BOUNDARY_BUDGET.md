@@ -32,9 +32,12 @@ The report proves:
 - accepted module-shaped fixtures stay within byte, line, AST-node, and
   AST-depth limits;
 - the accepted observation set covers `matmul_elementwise`,
-  `softmax_reduction`, `matmul_reduction`, and `mvp_pipeline`;
+  `softmax_reduction`, `matmul_reduction`, `softmax_elementwise`, and
+  `mvp_pipeline`;
 - module byte-budget overflow is rejected before extraction or lowering;
 - module line-budget overflow is rejected before extraction or lowering;
+- module AST-node-budget overflow is rejected before extraction or lowering;
+- module AST-depth-budget overflow is rejected before extraction or lowering;
 - diagnostics case, module, and report budgets are visible to reviewers;
 - raw source text, Source Intent payloads, tensor values, compiler artifacts,
   backend artifacts, and runtime values remain omitted.

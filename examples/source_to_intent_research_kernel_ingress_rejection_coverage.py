@@ -147,6 +147,18 @@ _EXPECTED_BUDGET_COVERAGE = (
         "reason_id": "module_line_budget",
         "status": "covered",
     },
+    {
+        "case_id": "module_ast_node_budget",
+        "coverage_source": "boundary_budget",
+        "reason_id": "module_ast_node_budget",
+        "status": "covered",
+    },
+    {
+        "case_id": "module_ast_depth_budget",
+        "coverage_source": "boundary_budget",
+        "reason_id": "module_ast_depth_budget",
+        "status": "covered",
+    },
 )
 _EXPECTED_COVERAGE_MATRIX = _EXPECTED_DIAGNOSTIC_COVERAGE + _EXPECTED_BUDGET_COVERAGE
 _EXPECTED_BUDGET_REJECTION_REASONS = tuple(

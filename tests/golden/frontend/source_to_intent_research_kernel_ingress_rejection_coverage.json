@@ -29,10 +29,12 @@
     "triton_jit_execution"
   ],
   "boundary_budget_contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
-  "boundary_budget_digest": "sha256:dc44f46f11aa5d86b55949b86004d18337ee334cb6807df367478e833c77b082",
+  "boundary_budget_digest": "sha256:94cb99e0373dc542021ecda323212b0f51318fa69b0a05997627a0097e3674f5",
   "budget_rejection_reasons": [
     "module_byte_budget",
-    "module_line_budget"
+    "module_line_budget",
+    "module_ast_node_budget",
+    "module_ast_depth_budget"
   ],
   "coverage_contract": "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0",
   "coverage_matrix": [
@@ -77,10 +79,22 @@
       "coverage_source": "boundary_budget",
       "reason_id": "module_line_budget",
       "status": "covered"
+    },
+    {
+      "case_id": "module_ast_node_budget",
+      "coverage_source": "boundary_budget",
+      "reason_id": "module_ast_node_budget",
+      "status": "covered"
+    },
+    {
+      "case_id": "module_ast_depth_budget",
+      "coverage_source": "boundary_budget",
+      "reason_id": "module_ast_depth_budget",
+      "status": "covered"
     }
   ],
   "coverage_policy": "all_current_rejections_are_source_free_and_fail_closed",
-  "covered_rejection_count": 7,
+  "covered_rejection_count": 9,
   "default_parser_status": "default_parser_blocked",
   "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
   "diagnostics_digest": "sha256:0f857c127bde110f40c807fc2536149e408ad1068c714d1307735510318baf1a",
