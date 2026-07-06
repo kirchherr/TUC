@@ -136,6 +136,42 @@
       "source_name": "reject_import_from_statement"
     },
     {
+      "case_id": "reject_missing_triton_jit_decorator",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 194,
+      "module_digest": "sha256:55094ecd434f5fdf4457144cca19e2e1f9386c06ad3000c31fc4dc6b0b79fe78",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "missing_triton_jit_decorator",
+      "source_name": "reject_missing_triton_jit_decorator"
+    },
+    {
+      "case_id": "reject_decorator_call",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 219,
+      "module_digest": "sha256:a3dd3e800438a0238e2af52803dd33cad29976dd96f3f48e0e9aadbfee07f90a",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "decorator_call",
+      "source_name": "reject_decorator_call"
+    },
+    {
+      "case_id": "reject_unsupported_decorator",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 210,
+      "module_digest": "sha256:78c9e22cac80f665b181785c6ad91381e68a1cb9ef40a90bab02884cf0fe6dc0",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "unsupported_decorator",
+      "source_name": "reject_unsupported_decorator"
+    },
+    {
       "case_id": "reject_multiple_kernel_functions",
       "expectation": "rejected",
       "ingress_report_digest": "",
@@ -181,12 +217,15 @@
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",
-  "rejected_case_count": 5,
+  "rejected_case_count": 8,
   "rejection_reasons": [
+    "decorator_call",
     "import_from_statement",
     "kernel_name_mismatch",
+    "missing_triton_jit_decorator",
     "multiple_kernel_functions",
     "top_level_side_effect",
+    "unsupported_decorator",
     "unsupported_import"
   ],
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_diagnostics_report.v0"

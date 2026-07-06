@@ -37,10 +37,13 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CASE_EXPECTATIONS = frozens
     {"accepted", "rejected"}
 )
 SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS = {
+    "decorator_call": "forbids decorator calls",
     "import_from_statement": "forbids import-from statements",
     "kernel_name_mismatch": "target kernel name mismatch",
+    "missing_triton_jit_decorator": "requires one @triton.jit decorator",
     "multiple_kernel_functions": "exactly one top-level kernel function",
     "top_level_side_effect": "supports only imports and one kernel function",
+    "unsupported_decorator": "requires @triton.jit decorator data",
     "unsupported_import": "supports only import triton",
 }
 MAX_SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CASES = 32

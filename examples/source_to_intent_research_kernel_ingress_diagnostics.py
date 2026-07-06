@@ -22,6 +22,17 @@ REJECT_IMPORT_FROM_MODULE_SOURCE = REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.re
     "import triton.language as tl",
     "from triton import language as tl",
 )
+REJECT_MISSING_TRITON_JIT_DECORATOR_MODULE_SOURCE = (
+    REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace("@triton.jit\n", "")
+)
+REJECT_DECORATOR_CALL_MODULE_SOURCE = REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
+    "@triton.jit",
+    "@triton.jit(num_warps=4)",
+)
+REJECT_UNSUPPORTED_DECORATOR_MODULE_SOURCE = REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
+    "@triton.jit",
+    "@not_triton.jit",
+)
 REJECT_MULTIPLE_KERNEL_FUNCTIONS_MODULE_SOURCE = (
     REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE
     + "\n@triton.jit\n"
@@ -105,6 +116,33 @@ def build_source_to_intent_research_kernel_ingress_diagnostic_cases() -> (
             kernel_name="matmul_elementwise",
             tensor_shapes=matmul_shapes,
             expected_rejection_reason="import_from_statement",
+        ),
+        SourceToIntentResearchKernelIngressDiagnosticCase(
+            case_id="reject_missing_triton_jit_decorator",
+            expectation="rejected",
+            module_source=REJECT_MISSING_TRITON_JIT_DECORATOR_MODULE_SOURCE,
+            source_name="reject_missing_triton_jit_decorator",
+            kernel_name="matmul_elementwise",
+            tensor_shapes=matmul_shapes,
+            expected_rejection_reason="missing_triton_jit_decorator",
+        ),
+        SourceToIntentResearchKernelIngressDiagnosticCase(
+            case_id="reject_decorator_call",
+            expectation="rejected",
+            module_source=REJECT_DECORATOR_CALL_MODULE_SOURCE,
+            source_name="reject_decorator_call",
+            kernel_name="matmul_elementwise",
+            tensor_shapes=matmul_shapes,
+            expected_rejection_reason="decorator_call",
+        ),
+        SourceToIntentResearchKernelIngressDiagnosticCase(
+            case_id="reject_unsupported_decorator",
+            expectation="rejected",
+            module_source=REJECT_UNSUPPORTED_DECORATOR_MODULE_SOURCE,
+            source_name="reject_unsupported_decorator",
+            kernel_name="matmul_elementwise",
+            tensor_shapes=matmul_shapes,
+            expected_rejection_reason="unsupported_decorator",
         ),
         SourceToIntentResearchKernelIngressDiagnosticCase(
             case_id="reject_multiple_kernel_functions",

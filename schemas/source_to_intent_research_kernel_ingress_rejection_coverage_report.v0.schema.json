@@ -72,6 +72,15 @@
           "$ref": "#/$defs/reject_import_from_statement"
         },
         {
+          "$ref": "#/$defs/reject_missing_triton_jit_decorator"
+        },
+        {
+          "$ref": "#/$defs/reject_decorator_call"
+        },
+        {
+          "$ref": "#/$defs/reject_unsupported_decorator"
+        },
+        {
           "$ref": "#/$defs/reject_multiple_kernel_functions"
         },
         {
@@ -93,13 +102,13 @@
           "$ref": "#/$defs/module_ast_depth_budget"
         }
       ],
-      "minItems": 9,
-      "maxItems": 9
+      "minItems": 12,
+      "maxItems": 12
     },
     "coverage_policy": {
       "const": "all_current_rejections_are_source_free_and_fail_closed"
     },
-    "covered_rejection_count": {"const": 9},
+    "covered_rejection_count": {"const": 12},
     "default_parser_status": {"const": "default_parser_blocked"},
     "diagnostics_contract": {
       "const": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0"
@@ -108,14 +117,17 @@
     "diagnostics_rejection_reasons": {
       "type": "array",
       "prefixItems": [
+        {"const": "decorator_call"},
         {"const": "import_from_statement"},
         {"const": "kernel_name_mismatch"},
+        {"const": "missing_triton_jit_decorator"},
         {"const": "multiple_kernel_functions"},
         {"const": "top_level_side_effect"},
+        {"const": "unsupported_decorator"},
         {"const": "unsupported_import"}
       ],
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 8,
+      "maxItems": 8,
       "uniqueItems": true
     },
     "frontend_ingress_contract": {
@@ -156,6 +168,33 @@
         "case_id": {"const": "reject_import_from_statement"},
         "coverage_source": {"const": "diagnostics"},
         "reason_id": {"const": "import_from_statement"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_missing_triton_jit_decorator": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_missing_triton_jit_decorator"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "missing_triton_jit_decorator"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_decorator_call": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_decorator_call"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "decorator_call"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_unsupported_decorator": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_unsupported_decorator"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "unsupported_decorator"},
         "status": {"const": "covered"}
       }
     },

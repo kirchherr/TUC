@@ -48,10 +48,12 @@ The v0 ingress accepts exactly:
 - `import triton`
 - `import triton.language as tl`
 - one explicitly selected top-level kernel function
+- exactly one plain `@triton.jit` decorator on that function
 
 It rejects import execution, import-from syntax, top-level assignments, multiple
-functions, target-kernel mismatches, unsupported imports, and all downstream
-parser rejections.
+functions, missing decorators, decorator calls, unsupported decorators,
+target-kernel mismatches, unsupported imports, and all downstream parser
+rejections.
 
 The ingress emits metadata-only evidence:
 

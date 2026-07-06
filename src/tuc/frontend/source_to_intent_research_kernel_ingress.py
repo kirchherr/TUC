@@ -370,7 +370,24 @@ def _validate_module_shape(
         raise SourceToIntentResearchKernelIngressError(
             "kernel ingress target kernel name mismatch"
         )
+    _validate_triton_jit_decorator(function)
     return tuple(imports), function
+
+
+def _validate_triton_jit_decorator(function: ast.FunctionDef) -> None:
+    if len(function.decorator_list) != 1:
+        raise SourceToIntentResearchKernelIngressError(
+            "kernel ingress requires one @triton.jit decorator"
+        )
+    decorator = function.decorator_list[0]
+    if isinstance(decorator, ast.Call):
+        raise SourceToIntentResearchKernelIngressError(
+            "kernel ingress forbids decorator calls"
+        )
+    if _expression_name(decorator) != "triton.jit":
+        raise SourceToIntentResearchKernelIngressError(
+            "kernel ingress requires @triton.jit decorator data"
+        )
 
 
 def _validate_import(statement: ast.Import) -> str:
@@ -403,6 +420,17 @@ def _extract_function_source(module_source: str, function: ast.FunctionDef) -> s
     if not extracted.strip():
         raise SourceToIntentResearchKernelIngressError("kernel source extraction failed")
     return extracted
+
+
+def _expression_name(node: ast.AST) -> str | None:
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        base = _expression_name(node.value)
+        if base is None:
+            return None
+        return f"{base}.{node.attr}"
+    return None
 
 
 def _source_bytes(source: str) -> int:

@@ -137,6 +137,22 @@ def test_kernel_ingress_frontend_extracts_mvp_pipeline_module_source() -> None:
             ),
             "forbids import-from statements",
         ),
+        (
+            REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace("@triton.jit\n", ""),
+            "requires one @triton.jit decorator",
+        ),
+        (
+            REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
+                "@triton.jit", "@triton.jit(num_warps=4)"
+            ),
+            "forbids decorator calls",
+        ),
+        (
+            REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
+                "@triton.jit", "@not_triton.jit"
+            ),
+            "requires @triton.jit decorator data",
+        ),
     ],
 )
 def test_kernel_ingress_rejects_unsupported_module_surfaces(

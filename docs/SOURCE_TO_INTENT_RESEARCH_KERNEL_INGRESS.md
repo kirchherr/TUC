@@ -8,7 +8,7 @@ It accepts a caller-provided module source buffer shaped like:
 ```text
 allowed Triton import prelude
     ->
-one @triton.jit kernel function
+one plain @triton.jit kernel function
 ```
 
 The module is parsed as bounded AST data only. TUC does not import the module,
@@ -114,6 +114,7 @@ The v0 ingress accepts exactly:
 - `import triton`
 - `import triton.language as tl`
 - one top-level kernel function selected by explicit `kernel_name`
+- exactly one plain `@triton.jit` decorator on that function
 
 The extracted function source then re-enters the existing execution-free
 Triton Source Preflight and explicit Source-To-Intent Research Parser path.
@@ -123,6 +124,7 @@ Current accepted kernels are:
 - `matmul_elementwise`
 - `softmax_reduction`
 - `matmul_reduction`
+- `softmax_elementwise`
 - `mvp_pipeline`
 
 ## Proof Path

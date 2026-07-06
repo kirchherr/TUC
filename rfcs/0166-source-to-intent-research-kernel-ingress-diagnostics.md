@@ -30,8 +30,14 @@ The diagnostics report records source-free evidence for:
 
 - accepted module-shaped `matmul -> elementwise`
 - accepted module-shaped `softmax -> reduction`
+- accepted module-shaped `matmul -> reduction`
+- accepted module-shaped `softmax -> elementwise`
+- accepted module-shaped MVP pipeline
 - unsupported imports
 - import-from statements
+- missing `@triton.jit` decorators
+- decorator calls
+- unsupported decorators
 - multiple top-level kernel functions
 - top-level side effects
 - kernel name mismatch

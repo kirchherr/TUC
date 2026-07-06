@@ -51,6 +51,24 @@
       "status": "covered"
     },
     {
+      "case_id": "reject_missing_triton_jit_decorator",
+      "coverage_source": "diagnostics",
+      "reason_id": "missing_triton_jit_decorator",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_decorator_call",
+      "coverage_source": "diagnostics",
+      "reason_id": "decorator_call",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_unsupported_decorator",
+      "coverage_source": "diagnostics",
+      "reason_id": "unsupported_decorator",
+      "status": "covered"
+    },
+    {
       "case_id": "reject_multiple_kernel_functions",
       "coverage_source": "diagnostics",
       "reason_id": "multiple_kernel_functions",
@@ -94,15 +112,18 @@
     }
   ],
   "coverage_policy": "all_current_rejections_are_source_free_and_fail_closed",
-  "covered_rejection_count": 9,
+  "covered_rejection_count": 12,
   "default_parser_status": "default_parser_blocked",
   "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
-  "diagnostics_digest": "sha256:0f857c127bde110f40c807fc2536149e408ad1068c714d1307735510318baf1a",
+  "diagnostics_digest": "sha256:69bc7934296b1bad29198edfdb065382d6394c643d6f502ac519728a4b08a738",
   "diagnostics_rejection_reasons": [
+    "decorator_call",
     "import_from_statement",
     "kernel_name_mismatch",
+    "missing_triton_jit_decorator",
     "multiple_kernel_functions",
     "top_level_side_effect",
+    "unsupported_decorator",
     "unsupported_import"
   ],
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",

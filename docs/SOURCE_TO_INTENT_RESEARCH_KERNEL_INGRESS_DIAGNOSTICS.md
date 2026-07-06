@@ -35,6 +35,7 @@ accepted research scope.
 - `accepted_module_matmul_elementwise`
 - `accepted_module_softmax_reduction`
 - `accepted_module_matmul_reduction`
+- `accepted_module_softmax_elementwise`
 - `accepted_module_mvp_pipeline`
 
 Accepted cases record module digest, operation families, and Kernel Ingress
@@ -47,6 +48,9 @@ The v0 diagnostics report requires these source-free rejection reason IDs:
 
 - `unsupported_import`
 - `import_from_statement`
+- `missing_triton_jit_decorator`
+- `decorator_call`
+- `unsupported_decorator`
 - `multiple_kernel_functions`
 - `top_level_side_effect`
 - `kernel_name_mismatch`

@@ -50,8 +50,8 @@
     },
     "cases": {
       "type": "array",
-      "minItems": 10,
-      "maxItems": 10,
+      "minItems": 13,
+      "maxItems": 13,
       "items": {"$ref": "#/$defs/case"}
     },
     "default_parser_status": {"const": "default_parser_blocked"},
@@ -69,18 +69,21 @@
     "parser_status": {"const": "research_explicit_only"},
     "raw_source_policy": {"const": "omitted_by_policy"},
     "raw_value_policy": {"const": "omitted_by_policy"},
-    "rejected_case_count": {"const": 5},
+    "rejected_case_count": {"const": 8},
     "rejection_reasons": {
       "type": "array",
       "prefixItems": [
+        {"const": "decorator_call"},
         {"const": "import_from_statement"},
         {"const": "kernel_name_mismatch"},
+        {"const": "missing_triton_jit_decorator"},
         {"const": "multiple_kernel_functions"},
         {"const": "top_level_side_effect"},
+        {"const": "unsupported_decorator"},
         {"const": "unsupported_import"}
       ],
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 8,
+      "maxItems": 8,
       "uniqueItems": true
     },
     "schema_version": {
@@ -133,10 +136,13 @@
             {"const": ""},
             {
               "enum": [
+                "decorator_call",
                 "import_from_statement",
                 "kernel_name_mismatch",
+                "missing_triton_jit_decorator",
                 "multiple_kernel_functions",
                 "top_level_side_effect",
+                "unsupported_decorator",
                 "unsupported_import"
               ]
             }

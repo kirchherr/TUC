@@ -51,7 +51,7 @@ def test_kernel_ingress_diagnostics_tracks_accepted_and_rejected_cases() -> None
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RAW_VALUE_POLICY
     )
     assert report.accepted_case_count == 5
-    assert report.rejected_case_count == 5
+    assert report.rejected_case_count == 8
     assert report.rejection_reasons == tuple(
         sorted(SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS)
     )
@@ -63,6 +63,9 @@ def test_kernel_ingress_diagnostics_tracks_accepted_and_rejected_cases() -> None
         "accepted_module_mvp_pipeline",
         "reject_unsupported_import",
         "reject_import_from_statement",
+        "reject_missing_triton_jit_decorator",
+        "reject_decorator_call",
+        "reject_unsupported_decorator",
         "reject_multiple_kernel_functions",
         "reject_top_level_side_effect",
         "reject_kernel_name_mismatch",
