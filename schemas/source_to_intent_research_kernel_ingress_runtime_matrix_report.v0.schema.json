@@ -36,12 +36,12 @@
       "minItems": 3,
       "maxItems": 3
     },
-    "case_count": {"const": 4},
+    "case_count": {"const": 5},
     "cases": {
       "type": "array",
       "items": {"$ref": "#/$defs/case"},
-      "minItems": 4,
-      "maxItems": 4
+      "minItems": 5,
+      "maxItems": 5
     },
     "covered_operation_families": {
       "type": "array",
@@ -103,6 +103,7 @@
             "research_module_matmul_elementwise",
             "research_module_softmax_reduction",
             "research_module_matmul_reduction",
+            "research_module_softmax_elementwise",
             "research_module_mvp_pipeline"
           ]
         },
@@ -112,6 +113,7 @@
             "matmul_elementwise",
             "softmax_reduction",
             "matmul_reduction",
+            "softmax_elementwise",
             "mvp_pipeline"
           ]
         },

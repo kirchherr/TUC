@@ -266,6 +266,54 @@
             "backend_sequence": {
               "type": "array",
               "prefixItems": [
+                {"const": "vector-sim"},
+                {"const": "vector-sim"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "case_id": {"const": "research_module_softmax_elementwise"},
+            "kernel_name": {"const": "softmax_elementwise"},
+            "operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "status": {"const": "aligned"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_sequence",
+            "case_id",
+            "kernel_name",
+            "operation_families",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_sequence": {
+              "type": "array",
+              "prefixItems": [
                 {"const": "linear-sim"},
                 {"const": "vector-sim"},
                 {"const": "vector-sim"},
@@ -306,8 +354,8 @@
         }
       ],
       "items": false,
-      "minItems": 4,
-      "maxItems": 4
+      "minItems": 5,
+      "maxItems": 5
     },
     "observed_backend_names": {"$ref": "#/$defs/backend_names"},
     "required_backend_names": {"$ref": "#/$defs/backend_names"},

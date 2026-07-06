@@ -32,7 +32,7 @@
     "unsupported_operation_families"
   ],
   "properties": {
-    "accepted_source_count": {"const": 4},
+    "accepted_source_count": {"const": 5},
     "alignment_contract": {
       "const": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0"
     },
@@ -45,8 +45,8 @@
     },
     "cases": {
       "type": "array",
-      "minItems": 4,
-      "maxItems": 4,
+      "minItems": 5,
+      "maxItems": 5,
       "items": {"$ref": "#/$defs/case"}
     },
     "coverage_contract": {"const": "triton_idiom_coverage.execution_free.v0"},
@@ -87,10 +87,11 @@
         {"const": "matmul_elementwise"},
         {"const": "softmax_reduction"},
         {"const": "matmul_reduction"},
+        {"const": "softmax_elementwise"},
         {"const": "mvp_pipeline"}
       ],
-      "minItems": 4,
-      "maxItems": 4
+      "minItems": 5,
+      "maxItems": 5
     },
     "parser_status": {"const": "research_explicit_only"},
     "schema_version": {
@@ -105,10 +106,11 @@
         {"const": "research_matmul_elementwise"},
         {"const": "research_softmax_reduction"},
         {"const": "research_matmul_reduction"},
+        {"const": "research_softmax_elementwise"},
         {"const": "research_mvp_pipeline"}
       ],
-      "minItems": 4,
-      "maxItems": 4
+      "minItems": 5,
+      "maxItems": 5
     },
     "status": {"const": "PASS"},
     "unsupported_operation_families": {
@@ -133,6 +135,7 @@
             "research_matmul_elementwise",
             "research_softmax_reduction",
             "research_matmul_reduction",
+            "research_softmax_elementwise",
             "research_mvp_pipeline"
           ]
         },
@@ -141,6 +144,7 @@
             "matmul_elementwise",
             "softmax_reduction",
             "matmul_reduction",
+            "softmax_elementwise",
             "mvp_pipeline"
           ]
         },

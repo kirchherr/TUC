@@ -37,11 +37,14 @@
           "const": "matmul_reduction"
         },
         {
+          "const": "softmax_elementwise"
+        },
+        {
           "const": "mvp_pipeline"
         }
       ],
-      "minItems": 4,
-      "maxItems": 4
+      "minItems": 5,
+      "maxItems": 5
     },
     "accepted_source_names": {
       "type": "array",
@@ -56,11 +59,14 @@
           "const": "research_matmul_reduction"
         },
         {
+          "const": "research_softmax_elementwise"
+        },
+        {
           "const": "research_mvp_pipeline"
         }
       ],
-      "minItems": 4,
-      "maxItems": 4
+      "minItems": 5,
+      "maxItems": 5
     },
     "artifact_count": {
       "const": 15
