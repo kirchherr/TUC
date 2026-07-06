@@ -25,11 +25,12 @@ artifacts, or native performance claims.
 
 ## Evidence Scope
 
-The report covers the four accepted Kernel Ingress cases:
+The report covers the five accepted Kernel Ingress cases:
 
 - `research_module_matmul_elementwise`
 - `research_module_softmax_reduction`
 - `research_module_matmul_reduction`
+- `research_module_softmax_elementwise`
 - `research_module_mvp_pipeline`
 
 For each case, the portfolio reconstructs the bounded Kernel Ingress graph,

@@ -20,7 +20,7 @@ planner-overhead report for the accepted Kernel Ingress MVP pipeline graph.
 That was enough to show the phase-separation contract exists, but it kept the
 evidence narrow.
 
-TUC now has four accepted Kernel Ingress cases. Planner-overhead evidence
+TUC now has five accepted Kernel Ingress cases. Planner-overhead evidence
 should show that the same phase contract survives across that accepted
 portfolio without turning unstable duration values into repository goldens.
 

@@ -28,7 +28,7 @@ def test_planner_overhead_portfolio_report_shape() -> None:
     assert report["portfolio_contract"] == PLANNER_OVERHEAD_PORTFOLIO_CONTRACT
     assert report["planner_overhead_schema_version"] == PLANNER_OVERHEAD_REPORT_SCHEMA_VERSION
     assert report["status"] == "PASS"
-    assert report["case_count"] == 4
+    assert report["case_count"] == 5
     assert report["covered_operation_families"] == [
         "elementwise",
         "matmul",
@@ -39,6 +39,7 @@ def test_planner_overhead_portfolio_report_shape() -> None:
         "research_module_matmul_elementwise",
         "research_module_softmax_reduction",
         "research_module_matmul_reduction",
+        "research_module_softmax_elementwise",
         "research_module_mvp_pipeline",
     ]
     assert {case["measured_compiler_phase_count"] for case in report["cases"]} == {5}
@@ -113,7 +114,7 @@ def test_planner_overhead_portfolio_schema_declares_contract() -> None:
     assert schema["properties"]["planner_overhead_schema_version"]["const"] == (
         PLANNER_OVERHEAD_REPORT_SCHEMA_VERSION
     )
-    assert schema["properties"]["case_count"]["const"] == 4
+    assert schema["properties"]["case_count"]["const"] == 5
     assert schema["$defs"]["case"]["additionalProperties"] is False
     assert "raw_timing_policy" in schema["required"]
 

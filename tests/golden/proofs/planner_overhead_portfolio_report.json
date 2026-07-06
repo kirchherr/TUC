@@ -1,7 +1,7 @@
 {
   "artifact_status": "diagnostic_only",
   "break_even_status": "not_established",
-  "case_count": 4,
+  "case_count": 5,
   "cases": [
     {
       "backend_sequence": [
@@ -134,6 +134,49 @@
     },
     {
       "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "break_even_status": "not_established",
+      "case_id": "research_module_softmax_elementwise",
+      "execution_time_status": "not_measured",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "measured_compiler_phase_count": 5,
+      "native_performance_claim": false,
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "phase_contract": [
+        "graph_construction",
+        "frontend_intake",
+        "tlir_module_construction",
+        "tlir_to_hac_lowering",
+        "runtime_planning",
+        "backend_selection_report",
+        "hs_ir_generation",
+        "execution"
+      ],
+      "planner_overhead_hidden_in_execution_time": false,
+      "source_name": "research_softmax_elementwise",
+      "status": "planner_overhead_bound",
+      "timing_policy": "measured_compiler_phase_durations_omitted_for_deterministic_evidence",
+      "unmeasured_issues": [
+        "graph_construction_not_measured",
+        "frontend_intake_not_measured",
+        "execution_time_not_measured",
+        "break_even_not_established"
+      ],
+      "unmeasured_phase_count": 3,
+      "unmeasured_phases": [
+        "graph_construction",
+        "frontend_intake",
+        "execution"
+      ]
+    },
+    {
+      "backend_sequence": [
         "linear-sim",
         "vector-sim",
         "vector-sim",
@@ -190,7 +233,7 @@
   "e2e_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
   "execution_time_status": "not_measured",
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
-  "kernel_ingress_digest": "sha256:7db663e20ffc5979f62c6472dc4eae968707bdafea6a3e33a40e05abad14875d",
+  "kernel_ingress_digest": "sha256:37e3908582971511d784103074ef77490457bc54b96586add1479eb84195c520",
   "native_performance_claim": false,
   "parser_status": "research_explicit_only",
   "planner_overhead_contract": "tuc.planner_overhead_report.v0",
