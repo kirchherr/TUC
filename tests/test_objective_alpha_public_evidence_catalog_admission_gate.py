@@ -4,6 +4,7 @@ import json
 import subprocess
 import sys
 from dataclasses import replace
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -11,10 +12,6 @@ import pytest
 
 from examples.objective_alpha_public_evidence_catalog import (
     build_report_object as build_public_evidence_catalog_report_object,
-)
-from examples.objective_alpha_public_evidence_catalog_admission_gate import (
-    build_report,
-    build_report_object,
 )
 from tuc.objective_alpha import (
     MAX_OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_ISSUES,
@@ -45,6 +42,8 @@ from tuc.objective_alpha import (
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE,
     ObjectiveAlphaPublicEvidenceCatalogAdmissionGateError,
+    ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport,
+    ObjectiveAlphaPublicEvidenceCatalogReport,
     build_objective_alpha_public_evidence_catalog_admission_gate_report,
     dump_objective_alpha_public_evidence_catalog_admission_gate_report,
     objective_alpha_public_evidence_catalog_admission_gate_report_to_dict,
@@ -59,9 +58,34 @@ GOLDEN_PATH = Path(
 )
 
 
+@lru_cache(maxsize=1)
+def _cached_catalog_report() -> ObjectiveAlphaPublicEvidenceCatalogReport:
+    return build_public_evidence_catalog_report_object()
+
+
+@lru_cache(maxsize=1)
+def _cached_admission_report() -> ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
+    return build_objective_alpha_public_evidence_catalog_admission_gate_report(
+        _cached_catalog_report()
+    )
+
+
+@lru_cache(maxsize=1)
+def _cached_admission_text() -> str:
+    return dump_objective_alpha_public_evidence_catalog_admission_gate_report(
+        _cached_admission_report()
+    )
+
+
+def _fresh_admission_payload() -> dict[str, object]:
+    return objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
+        _cached_admission_report()
+    )
+
+
 def test_objective_alpha_public_evidence_catalog_admission_gate_passes() -> None:
-    report = build_report_object()
-    payload = objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(report)
+    report = _cached_admission_report()
+    payload = _fresh_admission_payload()
 
     assert report.gate_passed is True
     assert report.gate_status == OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_STATUS_PASS
@@ -155,11 +179,7 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_passes() -> None
 def test_objective_alpha_public_evidence_catalog_admission_gate_dump_matches_golden() -> None:
     expected = GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
 
-    assert (
-        dump_objective_alpha_public_evidence_catalog_admission_gate_report(build_report_object())
-        == expected
-    )
-    assert build_report() == expected
+    assert _cached_admission_text() == expected
 
 
 def test_objective_alpha_public_evidence_catalog_admission_gate_example_runs() -> None:
@@ -192,7 +212,7 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_rejects_wrong_ty
 
 
 def test_objective_alpha_public_evidence_catalog_admission_gate_rejects_failed_catalog() -> None:
-    catalog_report = build_public_evidence_catalog_report_object()
+    catalog_report = _cached_catalog_report()
     failed_catalog = replace(catalog_report, issues=("catalog_issue",))
 
     with pytest.raises(
@@ -203,7 +223,7 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_rejects_failed_c
 
 
 def test_objective_alpha_public_evidence_catalog_admission_gate_rejects_drift() -> None:
-    report = build_report_object()
+    report = _cached_admission_report()
 
     with pytest.raises(ValueError, match="evidence ids changed"):
         replace(
@@ -229,9 +249,7 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_rejects_drift() 
 
 def test_objective_alpha_public_evidence_catalog_admission_gate_schema_matches_contract() -> None:
     schema = _load_schema()
-    payload = objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
-        build_report_object()
-    )
+    payload = _fresh_admission_payload()
 
     assert sorted(payload) == sorted(schema["required"])
     assert schema["additionalProperties"] is False

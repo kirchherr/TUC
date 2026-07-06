@@ -4,6 +4,7 @@ import json
 import subprocess
 import sys
 from dataclasses import replace
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -12,7 +13,7 @@ import pytest
 from examples.objective_alpha_evidence_extension_policy import (
     build_report_object as build_extension_policy_report_object,
 )
-from examples.objective_alpha_public_evidence_catalog import build_report, build_report_object
+from examples.objective_alpha_public_evidence_catalog import build_report_object
 from examples.runtime_backend_equivalence_portfolio import (
     build_backend_equivalence_portfolio_report,
 )
@@ -50,9 +51,11 @@ from tuc.objective_alpha import (
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCOPE,
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_PASS,
+    ObjectiveAlphaEvidenceExtensionPolicyReport,
     ObjectiveAlphaPublicEvidenceCatalogEntry,
     ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec,
     ObjectiveAlphaPublicEvidenceCatalogError,
+    ObjectiveAlphaPublicEvidenceCatalogReport,
     build_objective_alpha_public_evidence_catalog_report,
     dump_objective_alpha_public_evidence_catalog_report,
     objective_alpha_public_evidence_catalog_report_to_dict,
@@ -67,9 +70,43 @@ SCHEMA_PATH = Path("schemas/objective_alpha_public_evidence_catalog_report.v0.sc
 GOLDEN_PATH = Path("tests/golden/proofs/objective_alpha_public_evidence_catalog.json")
 
 
+@lru_cache(maxsize=1)
+def _cached_extension_policy_report() -> ObjectiveAlphaEvidenceExtensionPolicyReport:
+    return build_extension_policy_report_object()
+
+
+@lru_cache(maxsize=1)
+def _cached_backend_equivalence_portfolio_report() -> RuntimeBackendEquivalencePortfolioReport:
+    return build_backend_equivalence_portfolio_report()
+
+
+@lru_cache(maxsize=1)
+def _cached_kernel_ingress_proof_bundle_report() -> str:
+    return build_kernel_ingress_proof_bundle_report()
+
+
+@lru_cache(maxsize=1)
+def _cached_capability_claim_gate_report() -> str:
+    return build_capability_claim_gate_report()
+
+
+@lru_cache(maxsize=1)
+def _cached_catalog_report() -> ObjectiveAlphaPublicEvidenceCatalogReport:
+    return build_report_object()
+
+
+@lru_cache(maxsize=1)
+def _cached_catalog_text() -> str:
+    return dump_objective_alpha_public_evidence_catalog_report(_cached_catalog_report())
+
+
+def _fresh_catalog_payload() -> dict[str, object]:
+    return objective_alpha_public_evidence_catalog_report_to_dict(_cached_catalog_report())
+
+
 def test_objective_alpha_public_evidence_catalog_passes() -> None:
-    report = build_report_object()
-    payload = objective_alpha_public_evidence_catalog_report_to_dict(report)
+    report = _cached_catalog_report()
+    payload = _fresh_catalog_payload()
 
     assert report.catalog_passed is True
     assert report.catalog_status == OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_STATUS_PASS
@@ -237,8 +274,7 @@ def test_objective_alpha_public_evidence_catalog_entry_admission_spec_rejects_ra
 def test_objective_alpha_public_evidence_catalog_dump_matches_golden() -> None:
     expected = GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
 
-    assert dump_objective_alpha_public_evidence_catalog_report(build_report_object()) == expected
-    assert build_report() == expected
+    assert _cached_catalog_text() == expected
 
 
 def test_objective_alpha_public_evidence_catalog_example_runs() -> None:
@@ -267,48 +303,48 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
     with pytest.raises(TypeError, match="ObjectiveAlphaEvidenceExtensionPolicyReport"):
         build_objective_alpha_public_evidence_catalog_report(
             object(),  # type: ignore[arg-type]
-            build_backend_equivalence_portfolio_report(),
-            build_kernel_ingress_proof_bundle_report(),
-            build_capability_claim_gate_report(),
+            _cached_backend_equivalence_portfolio_report(),
+            _cached_kernel_ingress_proof_bundle_report(),
+            _cached_capability_claim_gate_report(),
         )
     with pytest.raises(TypeError, match="RuntimeBackendEquivalencePortfolioReport"):
         build_objective_alpha_public_evidence_catalog_report(
-            build_extension_policy_report_object(),
+            _cached_extension_policy_report(),
             object(),  # type: ignore[arg-type]
-            build_kernel_ingress_proof_bundle_report(),
-            build_capability_claim_gate_report(),
+            _cached_kernel_ingress_proof_bundle_report(),
+            _cached_capability_claim_gate_report(),
         )
     with pytest.raises(TypeError, match="serialized report string"):
         build_objective_alpha_public_evidence_catalog_report(
-            build_extension_policy_report_object(),
-            build_backend_equivalence_portfolio_report(),
+            _cached_extension_policy_report(),
+            _cached_backend_equivalence_portfolio_report(),
             object(),  # type: ignore[arg-type]
-            build_capability_claim_gate_report(),
+            _cached_capability_claim_gate_report(),
         )
     with pytest.raises(TypeError, match="serialized report string"):
         build_objective_alpha_public_evidence_catalog_report(
-            build_extension_policy_report_object(),
-            build_backend_equivalence_portfolio_report(),
-            build_kernel_ingress_proof_bundle_report(),
+            _cached_extension_policy_report(),
+            _cached_backend_equivalence_portfolio_report(),
+            _cached_kernel_ingress_proof_bundle_report(),
             object(),  # type: ignore[arg-type]
         )
 
 
 def test_objective_alpha_public_evidence_catalog_rejects_failed_policy() -> None:
-    policy_report = build_extension_policy_report_object()
+    policy_report = _cached_extension_policy_report()
     failed_policy = replace(policy_report, issues=("extension_policy_issue",))
 
     with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="policy must pass"):
         build_objective_alpha_public_evidence_catalog_report(
             failed_policy,
-            build_backend_equivalence_portfolio_report(),
-            build_kernel_ingress_proof_bundle_report(),
-            build_capability_claim_gate_report(),
+            _cached_backend_equivalence_portfolio_report(),
+            _cached_kernel_ingress_proof_bundle_report(),
+            _cached_capability_claim_gate_report(),
         )
 
 
 def test_objective_alpha_public_evidence_catalog_rejects_failed_portfolio() -> None:
-    portfolio_report = build_backend_equivalence_portfolio_report()
+    portfolio_report = _cached_backend_equivalence_portfolio_report()
     failed_slice = replace(portfolio_report.slices[0], passed=False)
     failed_portfolio = RuntimeBackendEquivalencePortfolioReport(
         portfolio_id=portfolio_report.portfolio_id,
@@ -323,15 +359,15 @@ def test_objective_alpha_public_evidence_catalog_rejects_failed_portfolio() -> N
 
     with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="portfolio must pass"):
         build_objective_alpha_public_evidence_catalog_report(
-            build_extension_policy_report_object(),
+            _cached_extension_policy_report(),
             failed_portfolio,
-            build_kernel_ingress_proof_bundle_report(),
-            build_capability_claim_gate_report(),
+            _cached_kernel_ingress_proof_bundle_report(),
+            _cached_capability_claim_gate_report(),
         )
 
 
 def test_objective_alpha_public_evidence_catalog_rejects_entry_drift() -> None:
-    report = build_report_object()
+    report = _cached_catalog_report()
     entry = report.catalog_entries[0]
     drifted_entry = ObjectiveAlphaPublicEvidenceCatalogEntry(
         evidence_id="unexpected_extension_policy",
@@ -346,7 +382,7 @@ def test_objective_alpha_public_evidence_catalog_rejects_entry_drift() -> None:
 
 
 def test_objective_alpha_public_evidence_catalog_rejects_policy_digest_drift() -> None:
-    report = build_report_object()
+    report = _cached_catalog_report()
 
     with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="metadata digest mismatch"):
         replace(report, extension_policy_metadata_digest="a" * 64)
@@ -369,7 +405,7 @@ def test_objective_alpha_public_evidence_catalog_rejects_policy_digest_drift() -
 
 def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> None:
     schema = _load_schema()
-    payload = objective_alpha_public_evidence_catalog_report_to_dict(build_report_object())
+    payload = _fresh_catalog_payload()
 
     assert sorted(payload) == sorted(schema["required"])
     assert schema["additionalProperties"] is False
