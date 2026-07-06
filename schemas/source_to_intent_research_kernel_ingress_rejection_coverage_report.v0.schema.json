@@ -72,6 +72,9 @@
           "$ref": "#/$defs/reject_import_from_statement"
         },
         {
+          "$ref": "#/$defs/reject_import_after_kernel_function"
+        },
+        {
           "$ref": "#/$defs/reject_missing_triton_jit_decorator"
         },
         {
@@ -102,13 +105,13 @@
           "$ref": "#/$defs/module_ast_depth_budget"
         }
       ],
-      "minItems": 12,
-      "maxItems": 12
+      "minItems": 13,
+      "maxItems": 13
     },
     "coverage_policy": {
       "const": "all_current_rejections_are_source_free_and_fail_closed"
     },
-    "covered_rejection_count": {"const": 12},
+    "covered_rejection_count": {"const": 13},
     "default_parser_status": {"const": "default_parser_blocked"},
     "diagnostics_contract": {
       "const": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0"
@@ -118,6 +121,7 @@
       "type": "array",
       "prefixItems": [
         {"const": "decorator_call"},
+        {"const": "import_after_kernel_function"},
         {"const": "import_from_statement"},
         {"const": "kernel_name_mismatch"},
         {"const": "missing_triton_jit_decorator"},
@@ -126,8 +130,8 @@
         {"const": "unsupported_decorator"},
         {"const": "unsupported_import"}
       ],
-      "minItems": 8,
-      "maxItems": 8,
+      "minItems": 9,
+      "maxItems": 9,
       "uniqueItems": true
     },
     "frontend_ingress_contract": {
@@ -168,6 +172,15 @@
         "case_id": {"const": "reject_import_from_statement"},
         "coverage_source": {"const": "diagnostics"},
         "reason_id": {"const": "import_from_statement"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_import_after_kernel_function": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_import_after_kernel_function"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "import_after_kernel_function"},
         "status": {"const": "covered"}
       }
     },

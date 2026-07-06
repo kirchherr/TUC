@@ -1198,8 +1198,9 @@ Current slice:
   `schemas/source_to_intent_research_kernel_ingress_rejection_coverage_report.v0.schema.json`,
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_kernel_ingress_rejection_coverage.json`,
-  diagnostics plus boundary-budget rejection coverage, and binding through the
-  Kernel Ingress Proof Bundle.
+  diagnostics plus boundary-budget rejection coverage, including fail-closed
+  import-preamble drift coverage, and binding through the Kernel Ingress Proof
+  Bundle.
 - Source-To-Intent Research Kernel Ingress Conformance Gate at
   `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`,
   with deterministic golden evidence at
@@ -1216,7 +1217,8 @@ Current slice:
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_kernel_ingress_diagnostics_report.json`,
   and digest binding through Source-To-Intent Research Evidence Gate and Proof
-  Bundle for accepted/rejected module-shaped source diagnostics.
+  Bundle for accepted/rejected module-shaped source diagnostics, including
+  imports-after-kernel rejection evidence.
 - Source-To-Intent Research Kernel Ingress Idiom Alignment at
   `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`,
   with schema at

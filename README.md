@@ -359,10 +359,11 @@ Current frontend surfaces:
 - Source-To-Intent Research Source Runtime Smoke proving accepted source
   buffers can run end-to-end through the controlled research path.
 - Source-To-Intent Research Kernel Ingress proving realistic Triton
-  module-shaped source buffers can be validated, extracted, and executed
-  through the same controlled research path, currently across
-  `matmul_elementwise`, `softmax_reduction`, `matmul_reduction`, and the
-  combined `mvp_pipeline` slice.
+  module-shaped source buffers with a fixed import prelude and one plain
+  `@triton.jit` kernel can be validated, extracted, and executed through the
+  same controlled research path, currently across
+  `matmul_elementwise`, `softmax_reduction`, `matmul_reduction`,
+  `softmax_elementwise`, and the combined `mvp_pipeline` slice.
 - Source-To-Intent Research Kernel Ingress Runtime Matrix making accepted
   module-shaped runtime coverage explicit by backend sequence, terminal output,
   trace-step count, and runtime evidence digest.
@@ -380,7 +381,8 @@ Current frontend surfaces:
   module-shaped inputs stay within resource limits and budget overflow rejects
   before extraction or lowering.
 - Source-To-Intent Research Kernel Ingress Rejection Coverage proving current
-  diagnostics and budget rejection surfaces are source-free and complete.
+  diagnostics and budget rejection surfaces are source-free and complete,
+  including import-preamble drift.
 - Source-To-Intent Research Kernel Ingress Conformance Gate proving Kernel
   Ingress outputs pass the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Kernel Ingress Diagnostics proving accepted and

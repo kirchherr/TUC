@@ -113,6 +113,7 @@ The v0 ingress accepts exactly:
 
 - `import triton`
 - `import triton.language as tl`
+- both imports as a prelude before the kernel function
 - one top-level kernel function selected by explicit `kernel_name`
 - exactly one plain `@triton.jit` decorator on that function
 

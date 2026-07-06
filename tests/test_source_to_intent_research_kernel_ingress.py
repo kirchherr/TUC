@@ -133,6 +133,14 @@ def test_kernel_ingress_frontend_extracts_mvp_pipeline_module_source() -> None:
         ),
         (
             REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
+                "import triton\nimport triton.language as tl\n\n",
+                "import triton\n\n",
+            )
+            + "\nimport triton.language as tl\n",
+            "requires import prelude before kernel function",
+        ),
+        (
+            REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
                 "import triton.language as tl", "from triton import language as tl"
             ),
             "forbids import-from statements",

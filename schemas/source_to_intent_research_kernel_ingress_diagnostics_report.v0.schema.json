@@ -50,8 +50,8 @@
     },
     "cases": {
       "type": "array",
-      "minItems": 13,
-      "maxItems": 13,
+      "minItems": 14,
+      "maxItems": 14,
       "items": {"$ref": "#/$defs/case"}
     },
     "default_parser_status": {"const": "default_parser_blocked"},
@@ -69,11 +69,12 @@
     "parser_status": {"const": "research_explicit_only"},
     "raw_source_policy": {"const": "omitted_by_policy"},
     "raw_value_policy": {"const": "omitted_by_policy"},
-    "rejected_case_count": {"const": 8},
+    "rejected_case_count": {"const": 9},
     "rejection_reasons": {
       "type": "array",
       "prefixItems": [
         {"const": "decorator_call"},
+        {"const": "import_after_kernel_function"},
         {"const": "import_from_statement"},
         {"const": "kernel_name_mismatch"},
         {"const": "missing_triton_jit_decorator"},
@@ -82,8 +83,8 @@
         {"const": "unsupported_decorator"},
         {"const": "unsupported_import"}
       ],
-      "minItems": 8,
-      "maxItems": 8,
+      "minItems": 9,
+      "maxItems": 9,
       "uniqueItems": true
     },
     "schema_version": {
@@ -137,6 +138,7 @@
             {
               "enum": [
                 "decorator_call",
+                "import_after_kernel_function",
                 "import_from_statement",
                 "kernel_name_mismatch",
                 "missing_triton_jit_decorator",

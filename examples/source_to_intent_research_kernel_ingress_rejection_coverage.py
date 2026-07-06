@@ -116,6 +116,12 @@ _EXPECTED_DIAGNOSTIC_COVERAGE = (
         "status": "covered",
     },
     {
+        "case_id": "reject_import_after_kernel_function",
+        "coverage_source": "diagnostics",
+        "reason_id": "import_after_kernel_function",
+        "status": "covered",
+    },
+    {
         "case_id": "reject_missing_triton_jit_decorator",
         "coverage_source": "diagnostics",
         "reason_id": "missing_triton_jit_decorator",

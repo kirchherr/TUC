@@ -36,28 +36,28 @@
       "artifact_id": "source_to_intent_research_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_proof_bundle.review.v0",
-      "digest": "sha256:a0e3d6b5562d2c79ea77dda8cffade17f5ce6ec84ffe4f15aa8b1ec1f0e80523",
+      "digest": "sha256:4347656fc465495d127d70fe9d245302c1c36bc0cad6ab9809f9406be035e85f",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:04354fb3d769e96e1e04dfbde40599f0ac537f995e0b3fddb5052aaf6db9e315",
+      "digest": "sha256:ea45d5017b2267e2b4b80331effc2ffcdde2f7deda5be5e9d3fca4927b88fba4",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:b0cde915700f10b828e7cdaab8058cac4f91ce517ee68a864fed359a3870df66",
+      "digest": "sha256:25acf33962091a46fb3f71d80b9ff8d70b2307637c9ec7a817cc3853074c78f3",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:381ef219c50f6b722ecbfed3a07a7bc12e5c785edea9afbb5903fe34c368fb01",
+      "digest": "sha256:b5cdead1cb47a9af4d87b2587cba3db742da21d04750d5a7f1ba8c052bfda7ad",
       "status": "accepted"
     },
     {

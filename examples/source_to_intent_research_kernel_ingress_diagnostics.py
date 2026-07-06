@@ -22,6 +22,13 @@ REJECT_IMPORT_FROM_MODULE_SOURCE = REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.re
     "import triton.language as tl",
     "from triton import language as tl",
 )
+REJECT_IMPORT_AFTER_KERNEL_FUNCTION_MODULE_SOURCE = (
+    REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
+        "import triton\nimport triton.language as tl\n\n",
+        "import triton\n\n",
+    )
+    + "\nimport triton.language as tl\n"
+)
 REJECT_MISSING_TRITON_JIT_DECORATOR_MODULE_SOURCE = (
     REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace("@triton.jit\n", "")
 )
@@ -116,6 +123,15 @@ def build_source_to_intent_research_kernel_ingress_diagnostic_cases() -> (
             kernel_name="matmul_elementwise",
             tensor_shapes=matmul_shapes,
             expected_rejection_reason="import_from_statement",
+        ),
+        SourceToIntentResearchKernelIngressDiagnosticCase(
+            case_id="reject_import_after_kernel_function",
+            expectation="rejected",
+            module_source=REJECT_IMPORT_AFTER_KERNEL_FUNCTION_MODULE_SOURCE,
+            source_name="reject_import_after_kernel_function",
+            kernel_name="matmul_elementwise",
+            tensor_shapes=matmul_shapes,
+            expected_rejection_reason="import_after_kernel_function",
         ),
         SourceToIntentResearchKernelIngressDiagnosticCase(
             case_id="reject_missing_triton_jit_decorator",

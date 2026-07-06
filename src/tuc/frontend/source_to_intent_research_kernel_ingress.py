@@ -340,14 +340,20 @@ def _validate_module_shape(
 ) -> tuple[tuple[str, ...], ast.FunctionDef]:
     imports: list[str] = []
     functions: list[ast.FunctionDef] = []
+    seen_function = False
     for statement in tree.body:
         if isinstance(statement, ast.Import):
+            if seen_function:
+                raise SourceToIntentResearchKernelIngressError(
+                    "kernel ingress requires import prelude before kernel function"
+                )
             imports.append(_validate_import(statement))
         elif isinstance(statement, ast.ImportFrom):
             raise SourceToIntentResearchKernelIngressError(
                 "kernel ingress forbids import-from statements"
             )
         elif isinstance(statement, ast.FunctionDef):
+            seen_function = True
             functions.append(statement)
         else:
             raise SourceToIntentResearchKernelIngressError(

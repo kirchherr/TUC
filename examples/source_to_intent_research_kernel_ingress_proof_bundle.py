@@ -633,7 +633,7 @@ def _assert_kernel_ingress_diagnostics_contract(report: object) -> None:
         "parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
         "raw_source_policy": SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RAW_SOURCE_POLICY,
         "raw_value_policy": SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RAW_VALUE_POLICY,
-        "rejected_case_count": 8,
+        "rejected_case_count": 9,
         "rejection_reasons": sorted(
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS
         ),
@@ -645,7 +645,7 @@ def _assert_kernel_ingress_diagnostics_contract(report: object) -> None:
         if report.get(key) != expected:
             raise ValueError(f"kernel ingress proof bundle diagnostics {key} drift")
     cases = report.get("cases")
-    if not isinstance(cases, list) or len(cases) != 13:
+    if not isinstance(cases, list) or len(cases) != 14:
         raise ValueError("kernel ingress proof bundle diagnostics cases drift")
     accepted = [case for case in cases if case.get("outcome") == "accepted"]
     if [case.get("source_name") for case in accepted] != list(_ACCEPTED_SOURCE_NAMES):

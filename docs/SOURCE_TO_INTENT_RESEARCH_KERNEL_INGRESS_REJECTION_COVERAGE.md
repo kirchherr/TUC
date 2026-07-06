@@ -28,7 +28,8 @@ general Triton ingestion.
 The report proves:
 
 - Kernel Ingress Diagnostics covers unsupported imports, import-from
-  statements, missing `@triton.jit`, decorator calls, unsupported decorators,
+  statements, imports after the kernel function, missing `@triton.jit`,
+  decorator calls, unsupported decorators,
   multiple kernel functions, top-level side effects, and target kernel-name
   mismatches;
 - Kernel Ingress Boundary Budget covers module byte-budget, line-budget,

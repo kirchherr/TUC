@@ -35,6 +35,7 @@ The diagnostics report records source-free evidence for:
 - accepted module-shaped MVP pipeline
 - unsupported imports
 - import-from statements
+- imports after the selected kernel function
 - missing `@triton.jit` decorators
 - decorator calls
 - unsupported decorators

@@ -136,6 +136,18 @@
       "source_name": "reject_import_from_statement"
     },
     {
+      "case_id": "reject_import_after_kernel_function",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 207,
+      "module_digest": "sha256:2545df9ae9a0361ab210d119610e5f8fde53b4c5ebf8fe3b7766216246a8c41c",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "import_after_kernel_function",
+      "source_name": "reject_import_after_kernel_function"
+    },
+    {
       "case_id": "reject_missing_triton_jit_decorator",
       "expectation": "rejected",
       "ingress_report_digest": "",
@@ -217,9 +229,10 @@
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",
-  "rejected_case_count": 8,
+  "rejected_case_count": 9,
   "rejection_reasons": [
     "decorator_call",
+    "import_after_kernel_function",
     "import_from_statement",
     "kernel_name_mismatch",
     "missing_triton_jit_decorator",

@@ -534,10 +534,10 @@ def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:
             '  required_runtime_digest_fields = "runtime_plan_digest,'
             'execution_trace_digest,reference_correctness_digest"'
         ),
-        '  covered_rejections = "12"',
+        '  covered_rejections = "13"',
         (
             '  diagnostics_rejection_reasons = "decorator_call,'
-            'import_from_statement,kernel_name_mismatch,'
+            'import_after_kernel_function,import_from_statement,kernel_name_mismatch,'
             'missing_triton_jit_decorator,multiple_kernel_functions,'
             'top_level_side_effect,unsupported_decorator,unsupported_import"'
         ),
@@ -753,7 +753,7 @@ def _assert_diagnostics_bound(text: str) -> Mapping[str, object]:
         "parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
         "raw_source_policy": SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RAW_SOURCE_POLICY,
         "raw_value_policy": SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RAW_VALUE_POLICY,
-        "rejected_case_count": 8,
+        "rejected_case_count": 9,
         "rejection_reasons": sorted(
             SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS
         ),

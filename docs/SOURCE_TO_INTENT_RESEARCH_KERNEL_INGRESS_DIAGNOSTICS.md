@@ -48,6 +48,7 @@ The v0 diagnostics report requires these source-free rejection reason IDs:
 
 - `unsupported_import`
 - `import_from_statement`
+- `import_after_kernel_function`
 - `missing_triton_jit_decorator`
 - `decorator_call`
 - `unsupported_decorator`
