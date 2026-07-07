@@ -79,3 +79,17 @@ Future plugin discovery may only move beyond this gate after a separate
 implementation RFC defines a manifest-only allowlist, import isolation,
 entrypoint mediation, resource limits, provenance, negative tests, and
 maintainer approval.
+
+## Next Surface Gate
+
+[Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md) is the
+next dedicated Real Triton Integration surface gate. Its canonical doc path is
+`docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md`, its entry point is
+`examples/triton_jit_execution_sandbox_gate.py`, and its schema is
+`schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`.
+
+That gate keeps Triton JIT execution, kernel launch, generated artifact
+execution, device access, kernel-cache access, backend binary emission,
+frontend package import, Python import, plugin discovery, network access,
+subprocess execution, and dynamic library loading blocked while defining the
+sandbox requirements for future review.

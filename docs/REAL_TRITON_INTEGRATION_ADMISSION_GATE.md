@@ -38,6 +38,10 @@ gate IDs, counts, and fixed `false` execution flags.
 - Third surface gate schema:
   `schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`
 - Third surface gate example: `examples/plugin_discovery_allowlist_gate.py`
+- Fourth surface gate: `docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md`
+- Fourth surface gate schema:
+  `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`
+- Fourth surface gate example: `examples/triton_jit_execution_sandbox_gate.py`
 
 ## Meaning
 
@@ -118,3 +122,17 @@ from plugin code.
 
 Entry point: `examples/plugin_discovery_allowlist_gate.py`.
 Schema: `schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`.
+
+## Fourth Surface Gate
+
+[Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md) is the
+fourth dedicated gate for one of the blocked surfaces listed here. It binds this
+admission gate, Source Ingestion Quarantine, Package Import Sandbox, and Plugin
+Discovery Allowlist evidence by digest while keeping
+`triton_jit_execution = false`, `kernel_launch = false`, and preventing
+generated artifact execution, device access, kernel-cache access, backend
+binary emission, package import, Python import, plugin discovery, network
+access, subprocesses, and dynamic libraries.
+
+Entry point: `examples/triton_jit_execution_sandbox_gate.py`.
+Schema: `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`.

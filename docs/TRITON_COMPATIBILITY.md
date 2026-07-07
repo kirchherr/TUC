@@ -24,6 +24,7 @@ compatibility on day one.
 | Source Ingestion Quarantine Gate | L0 | First dedicated Real Triton Integration surface gate for `direct_source_ingestion`; it binds admission, parser-gate, preflight, and threat-model evidence by digest while source-to-ComputeGraph, source-to-HAC-IR, source-to-runtime-plan, import, JIT, and generated-artifact execution remain blocked. Schema: `schemas/source_ingestion_quarantine_gate_report.v0.schema.json`; example: `examples/source_ingestion_quarantine_gate.py`; doc: `docs/SOURCE_INGESTION_QUARANTINE_GATE.md`. |
 | Package Import Sandbox Gate | L0 | Dedicated Real Triton Integration surface gate for `frontend_package_import`; it binds admission, external frontend conformance, source-ingestion quarantine, and sandbox-model evidence by digest while Python import, package code execution, entrypoint discovery, network, filesystem, environment, subprocess, dynamic-library, plugin discovery, and Source Intent from import remain blocked. Schema: `schemas/package_import_sandbox_gate_report.v0.schema.json`; example: `examples/package_import_sandbox_gate.py`; doc: `docs/PACKAGE_IMPORT_SANDBOX_GATE.md`. |
 | Plugin Discovery Allowlist Gate | L0 | Dedicated Real Triton Integration surface gate for `plugin_discovery`; it binds admission, external frontend conformance, package-import sandbox, and allowlist-model evidence by digest while plugin discovery, entrypoint discovery, registry scans, filesystem scans, frontend package import, Python import, plugin code execution, network, subprocess, dynamic-library, device access, and capability claims from code remain blocked. Schema: `schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`; example: `examples/plugin_discovery_allowlist_gate.py`; doc: `docs/PLUGIN_DISCOVERY_ALLOWLIST_GATE.md`. |
+| Triton JIT Execution Sandbox Gate | L0 | Dedicated Real Triton Integration surface gate for `triton_jit_execution`; it binds admission, source-ingestion quarantine, package-import sandbox, plugin-discovery allowlist, and sandbox-model evidence by digest while Triton JIT, kernel launch, generated artifact execution, device access, kernel-cache access, backend binary emission, package import, Python import, plugin discovery, network, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`; example: `examples/triton_jit_execution_sandbox_gate.py`; doc: `docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md`. |
 | Source-To-Intent Next Syntax Slice | L1 | Branched dataflow, fanout reuse, all current MVP operation families, and multiple public returns are bound by source-free semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; example: `examples/source_to_intent_next_syntax_slice.py`. |
 | External Frontend Package Conformance | L1 | External frontend packages are reviewed as data-only manifests plus digest-only Source Intent fixtures, without package import, plugin discovery, direct source ingestion, or JIT execution. Schema: `schemas/external_frontend_package_conformance_report.v0.schema.json`; example: `examples/external_frontend_package_conformance.py`. |
 | Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
@@ -75,6 +76,11 @@ compatibility on day one.
   establishes allowlist requirements for plugin-shaped frontend integration
   while keeping actual plugin discovery, entrypoint discovery, registry scans,
   filesystem scans, and plugin code execution blocked.
+- Triton JIT Execution Sandbox is documented in
+  [Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md). It
+  establishes sandbox requirements for future JIT integration while keeping
+  actual Triton JIT execution, kernel launch, cache access, device access, and
+  executable artifacts blocked.
 - General source parsing must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before moving
   beyond the explicit research slice.
@@ -159,6 +165,15 @@ plugin discovery, entrypoint discovery, registry scans, filesystem scans,
 frontend package import, Python import, plugin code execution, network,
 subprocess, dynamic-library, device access, and capability claims from code
 blocked.
+
+The fourth dedicated surface gate is
+[Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md). The
+current report at `examples/triton_jit_execution_sandbox_gate.py` is validated
+by `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json` and keeps
+Triton JIT execution, kernel launch, generated artifact execution, device
+access, kernel-cache access, backend binary emission, frontend package import,
+Python import, plugin discovery, network, subprocess, and dynamic-library
+surfaces blocked.
 
 The [Source-To-Intent Next Syntax Slice](SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 now satisfies the parser RFC, next-syntax semantic corpus, Source Intent golden,

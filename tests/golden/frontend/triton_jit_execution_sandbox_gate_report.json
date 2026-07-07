@@ -1,0 +1,105 @@
+{
+  "admission_effect": "does_not_admit_triton_jit_execution",
+  "all_required_evidence_present": true,
+  "artifact_status": "review_gate",
+  "backend_binary_emitted": false,
+  "blocked_execution_surfaces": [
+    "device_access",
+    "dynamic_library_loading",
+    "frontend_package_import",
+    "generated_artifact_execution",
+    "kernel_cache_access",
+    "kernel_launch",
+    "network_access",
+    "plugin_discovery",
+    "python_import",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "blocked_outputs": [
+    "compiled_kernel",
+    "device_binary",
+    "executable_kernel",
+    "jit_artifact",
+    "kernel_cache_entry",
+    "kernel_launch_receipt"
+  ],
+  "compiled_kernel_emitted": false,
+  "device_access": false,
+  "dynamic_library_loading": false,
+  "evidence": [
+    {
+      "evidence_digest": "sha256:44374feab0efb66b64f0716f113bf53ea6ecb60e42717d2801f14471161e8681",
+      "evidence_id": "package_import_sandbox_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:e0be7d354a8c8cc093a29668fa3523f9326d76dd2df5f1cedc80174773028b6f",
+      "evidence_id": "plugin_discovery_allowlist_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:193037f8eda3c7fa47754af5a2b024c6642c6a7df407255bfe59a8f507639d11",
+      "evidence_id": "real_triton_integration_admission_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:2031c9801dc03523a5cb0789ada6fbc21772916d72c13698efd1651ae256d712",
+      "evidence_id": "source_ingestion_quarantine_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:56a3042ef5cdaad6e3b79f4e2ae522180d2f8f6cb539762f6f0ad798d10e6e7b",
+      "evidence_id": "triton_jit_execution_sandbox_model",
+      "required": true
+    }
+  ],
+  "evidence_count": 5,
+  "evidence_policy": "digest_only",
+  "frontend_package_import": false,
+  "gate_contract": "triton_jit_execution_sandbox_gate.data_only.v0",
+  "gate_id": "triton_jit_execution_sandbox_gate",
+  "gate_status": "sandbox_requirements_only",
+  "generated_artifact_execution": false,
+  "kernel_cache_access": false,
+  "kernel_launch": false,
+  "network_access": false,
+  "plugin_discovery": false,
+  "python_import": false,
+  "required_control_count": 20,
+  "required_controls": [
+    "cache_writes_blocked",
+    "compilation_outputs_are_metadata_only",
+    "device_access_blocked",
+    "digest_only_evidence",
+    "entrypoints_not_discovered",
+    "fail_closed_on_violation",
+    "kernel_launch_blocked",
+    "no_backend_binary_emission",
+    "no_device_access",
+    "no_dynamic_library_loading",
+    "no_frontend_package_import",
+    "no_generated_artifact_execution",
+    "no_kernel_cache_access",
+    "no_network_access",
+    "no_plugin_discovery",
+    "no_python_import",
+    "no_subprocess_execution",
+    "no_triton_jit_execution",
+    "sanitized_diagnostics_only",
+    "source_buffers_not_executed"
+  ],
+  "required_evidence_ids": [
+    "package_import_sandbox_gate",
+    "plugin_discovery_allowlist_gate",
+    "real_triton_integration_admission_gate",
+    "source_ingestion_quarantine_gate",
+    "triton_jit_execution_sandbox_model"
+  ],
+  "sandbox_boundary_established": true,
+  "schema_version": "tuc.triton_jit_execution_sandbox_gate_report.v0",
+  "source_executed": false,
+  "subprocess_execution": false,
+  "surface_id": "triton_jit_execution",
+  "triton_jit_execution": false
+}

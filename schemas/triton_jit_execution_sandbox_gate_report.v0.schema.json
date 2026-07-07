@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json",
+  "title": "TUC Triton JIT Execution Sandbox Gate Report v0",
+  "description": "Data-only gate schema establishing sandbox requirements for future Triton JIT execution without admitting JIT, kernel launch, generated artifact execution, device access, cache access, imports, plugin discovery, subprocess, network, or dynamic-library surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "all_required_evidence_present",
+    "artifact_status",
+    "backend_binary_emitted",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "compiled_kernel_emitted",
+    "device_access",
+    "dynamic_library_loading",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "frontend_package_import",
+    "gate_contract",
+    "gate_id",
+    "gate_status",
+    "generated_artifact_execution",
+    "kernel_cache_access",
+    "kernel_launch",
+    "network_access",
+    "plugin_discovery",
+    "python_import",
+    "required_control_count",
+    "required_controls",
+    "required_evidence_ids",
+    "sandbox_boundary_established",
+    "schema_version",
+    "source_executed",
+    "subprocess_execution",
+    "surface_id",
+    "triton_jit_execution"
+  ],
+  "properties": {
+    "admission_effect": {"const": "does_not_admit_triton_jit_execution"},
+    "all_required_evidence_present": {"const": true},
+    "artifact_status": {"const": "review_gate"},
+    "backend_binary_emitted": {"const": false},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/blocked_execution_surface"},
+      "uniqueItems": true
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/blocked_output"},
+      "uniqueItems": true
+    },
+    "compiled_kernel_emitted": {"const": false},
+    "device_access": {"const": false},
+    "dynamic_library_loading": {"const": false},
+    "evidence": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "evidence_count": {"const": 5},
+    "evidence_policy": {"const": "digest_only"},
+    "frontend_package_import": {"const": false},
+    "gate_contract": {"const": "triton_jit_execution_sandbox_gate.data_only.v0"},
+    "gate_id": {"const": "triton_jit_execution_sandbox_gate"},
+    "gate_status": {"const": "sandbox_requirements_only"},
+    "generated_artifact_execution": {"const": false},
+    "kernel_cache_access": {"const": false},
+    "kernel_launch": {"const": false},
+    "network_access": {"const": false},
+    "plugin_discovery": {"const": false},
+    "python_import": {"const": false},
+    "required_control_count": {"const": 20},
+    "required_controls": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {"$ref": "#/$defs/required_control"},
+      "uniqueItems": true
+    },
+    "required_evidence_ids": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/required_evidence_id"},
+      "uniqueItems": true
+    },
+    "sandbox_boundary_established": {"const": true},
+    "schema_version": {"const": "tuc.triton_jit_execution_sandbox_gate_report.v0"},
+    "source_executed": {"const": false},
+    "subprocess_execution": {"const": false},
+    "surface_id": {"const": "triton_jit_execution"},
+    "triton_jit_execution": {"const": false}
+  },
+  "$defs": {
+    "blocked_execution_surface": {
+      "enum": [
+        "device_access",
+        "dynamic_library_loading",
+        "frontend_package_import",
+        "generated_artifact_execution",
+        "kernel_cache_access",
+        "kernel_launch",
+        "network_access",
+        "plugin_discovery",
+        "python_import",
+        "subprocess_execution",
+        "triton_jit_execution"
+      ]
+    },
+    "blocked_output": {
+      "enum": [
+        "compiled_kernel",
+        "device_binary",
+        "executable_kernel",
+        "jit_artifact",
+        "kernel_cache_entry",
+        "kernel_launch_receipt"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_digest", "evidence_id", "required"],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"$ref": "#/$defs/required_evidence_id"},
+        "required": {"const": true}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_control": {
+      "enum": [
+        "cache_writes_blocked",
+        "compilation_outputs_are_metadata_only",
+        "device_access_blocked",
+        "digest_only_evidence",
+        "entrypoints_not_discovered",
+        "fail_closed_on_violation",
+        "kernel_launch_blocked",
+        "no_backend_binary_emission",
+        "no_device_access",
+        "no_dynamic_library_loading",
+        "no_frontend_package_import",
+        "no_generated_artifact_execution",
+        "no_kernel_cache_access",
+        "no_network_access",
+        "no_plugin_discovery",
+        "no_python_import",
+        "no_subprocess_execution",
+        "no_triton_jit_execution",
+        "sanitized_diagnostics_only",
+        "source_buffers_not_executed"
+      ]
+    },
+    "required_evidence_id": {
+      "enum": [
+        "package_import_sandbox_gate",
+        "plugin_discovery_allowlist_gate",
+        "real_triton_integration_admission_gate",
+        "source_ingestion_quarantine_gate",
+        "triton_jit_execution_sandbox_model"
+      ]
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

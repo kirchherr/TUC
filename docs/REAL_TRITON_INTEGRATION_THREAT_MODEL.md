@@ -51,7 +51,7 @@ admitted:
 - [Source Ingestion Quarantine Gate](SOURCE_INGESTION_QUARANTINE_GATE.md).
 - [Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md).
 - [Plugin Discovery Allowlist Gate](PLUGIN_DISCOVERY_ALLOWLIST_GATE.md).
-- Triton JIT Execution Sandbox Gate.
+- [Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md).
 - Device Access Sandbox Gate.
 - Generated Artifact Quarantine Gate.
 - Native Backend Execution Security Gate.
@@ -100,3 +100,14 @@ This gate establishes allowlist requirements for `plugin_discovery`, but it
 still does not discover plugins, load entrypoints, scan registries, scan
 filesystems, import packages, execute plugin code, or derive capability claims
 from plugin code.
+
+The fourth dedicated surface gate is
+[Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md). Its
+canonical doc path is `docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md`, its entry
+point is `examples/triton_jit_execution_sandbox_gate.py`, and its schema is
+`schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`.
+
+This gate establishes sandbox requirements for `triton_jit_execution`, but it
+still does not invoke Triton JIT, launch kernels, execute generated artifacts,
+access devices, touch kernel caches, emit backend binaries, or execute source
+buffers.
