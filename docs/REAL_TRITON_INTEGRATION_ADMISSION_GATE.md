@@ -30,6 +30,10 @@ gate IDs, counts, and fixed `false` execution flags.
 - First surface gate schema:
   `schemas/source_ingestion_quarantine_gate_report.v0.schema.json`
 - First surface gate example: `examples/source_ingestion_quarantine_gate.py`
+- Second surface gate: `docs/PACKAGE_IMPORT_SANDBOX_GATE.md`
+- Second surface gate schema:
+  `schemas/package_import_sandbox_gate_report.v0.schema.json`
+- Second surface gate example: `examples/package_import_sandbox_gate.py`
 
 ## Meaning
 
@@ -83,3 +87,13 @@ inspection, JIT, and generated-artifact execution.
 
 Entry point: `examples/source_ingestion_quarantine_gate.py`.
 Schema: `schemas/source_ingestion_quarantine_gate_report.v0.schema.json`.
+[Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md) is the second
+dedicated gate for one of the blocked surfaces listed here. It binds this
+admission gate, External Frontend Package Conformance, and Source Ingestion
+Quarantine evidence by digest while keeping `frontend_package_import = false`,
+`python_import = false`, and preventing package code execution, entrypoint
+discovery, network access, filesystem access, environment access, subprocesses,
+dynamic libraries, plugin discovery, and Source Intent from import.
+
+Entry point: `examples/package_import_sandbox_gate.py`.
+Schema: `schemas/package_import_sandbox_gate_report.v0.schema.json`.

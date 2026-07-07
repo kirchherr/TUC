@@ -49,7 +49,7 @@ Each surface needs a dedicated gate before it can change from blocked to
 admitted:
 
 - [Source Ingestion Quarantine Gate](SOURCE_INGESTION_QUARANTINE_GATE.md).
-- Package Import Sandbox Gate.
+- [Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md).
 - Plugin Discovery Allowlist Gate.
 - Triton JIT Execution Sandbox Gate.
 - Device Access Sandbox Gate.
@@ -81,3 +81,11 @@ point is `examples/source_ingestion_quarantine_gate.py`, and its schema is
 
 This gate establishes quarantine controls for `direct_source_ingestion`, but it
 still does not admit direct source ingestion into compiler artifacts.
+The second dedicated surface gate is
+[Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md). Its canonical
+doc path is `docs/PACKAGE_IMPORT_SANDBOX_GATE.md`, its entry point is
+`examples/package_import_sandbox_gate.py`, and its schema is
+`schemas/package_import_sandbox_gate_report.v0.schema.json`.
+
+This gate establishes sandbox requirements for `frontend_package_import`, but
+it still does not import packages or admit Python import into TUC.
