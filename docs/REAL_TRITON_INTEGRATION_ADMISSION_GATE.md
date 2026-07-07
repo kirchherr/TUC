@@ -26,6 +26,10 @@ gate IDs, counts, and fixed `false` execution flags.
 - Tests: `tests/test_real_triton_integration_admission_gate.py`
 - RFC: `rfcs/0244-real-triton-integration-admission-gate.md`
 - Threat model: `docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md`
+- First surface gate: `docs/SOURCE_INGESTION_QUARANTINE_GATE.md`
+- First surface gate schema:
+  `schemas/source_ingestion_quarantine_gate_report.v0.schema.json`
+- First surface gate example: `examples/source_ingestion_quarantine_gate.py`
 
 ## Meaning
 
@@ -66,3 +70,16 @@ permissions.
 Real Triton integration can only advance by replacing one blocked surface at a
 time with a dedicated gate that has its own RFC, threat model, negative tests,
 resource limits, and sandbox evidence.
+
+## First Surface Gate
+
+[Source Ingestion Quarantine Gate](SOURCE_INGESTION_QUARANTINE_GATE.md) is the
+first dedicated gate for one of the blocked surfaces listed here. It binds this
+admission gate, Source-To-Intent Parser Gate, Triton Source Preflight, and
+Triton Source Threat Model evidence by digest while keeping
+`direct_source_ingestion = false` and preventing source-to-ComputeGraph,
+source-to-HAC-IR, source-to-runtime-plan, Python import, function-object
+inspection, JIT, and generated-artifact execution.
+
+Entry point: `examples/source_ingestion_quarantine_gate.py`.
+Schema: `schemas/source_ingestion_quarantine_gate_report.v0.schema.json`.

@@ -48,7 +48,7 @@ The current gate keeps these real integration surfaces blocked:
 Each surface needs a dedicated gate before it can change from blocked to
 admitted:
 
-- Source Ingestion Quarantine Gate.
+- [Source Ingestion Quarantine Gate](SOURCE_INGESTION_QUARANTINE_GATE.md).
 - Package Import Sandbox Gate.
 - Plugin Discovery Allowlist Gate.
 - Triton JIT Execution Sandbox Gate.
@@ -70,3 +70,14 @@ can prove package-shaped plain-data fixtures without imports.
 That still does not grant execution permission. The current admission gate is
 therefore intentionally blocked until every real execution surface has its own
 reviewed threat model and gate.
+
+## Current Surface-Gate Evidence
+
+The first dedicated surface gate is
+[Source Ingestion Quarantine Gate](SOURCE_INGESTION_QUARANTINE_GATE.md). Its
+canonical doc path is `docs/SOURCE_INGESTION_QUARANTINE_GATE.md`, its entry
+point is `examples/source_ingestion_quarantine_gate.py`, and its schema is
+`schemas/source_ingestion_quarantine_gate_report.v0.schema.json`.
+
+This gate establishes quarantine controls for `direct_source_ingestion`, but it
+still does not admit direct source ingestion into compiler artifacts.
