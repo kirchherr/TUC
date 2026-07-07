@@ -20,6 +20,7 @@ compatibility on day one.
 | `@triton.jit` syntax | L1 | Preserved as a design goal; source text can pass execution-free preflight, and one explicit research parser slice accepts a tiny subset without executing decorators or JIT. General syntax support remains blocked. |
 | Triton source preflight | L0 | Bounded source syntax report rejects imports, decorator calls, dangerous builtins, host/device/network surfaces, unsupported calls, and HAC-IR leakage without producing a `ComputeGraph`; fuzz/property tests cover arbitrary decoded bytes and malicious seed cases. |
 | Triton Integration Readiness | L0 | Data-only readiness report for the Real Triton Integration milestone; it records satisfied and missing prerequisites while direct source ingestion and `@triton.jit` execution remain blocked. Schema: `schemas/triton_integration_readiness_report.v0.schema.json`; example: `examples/triton_integration_readiness.py`. |
+| Real Triton Integration Admission Gate | L0 | Fail-closed admission report binding readiness, external frontend conformance, and the real integration threat model by digest while source ingestion, package import, plugin discovery, JIT, device access, generated artifacts, and native backend execution remain blocked. Schema: `schemas/real_triton_integration_admission_gate_report.v0.schema.json`; example: `examples/real_triton_integration_admission_gate.py`; docs: `docs/REAL_TRITON_INTEGRATION_ADMISSION_GATE.md`, `docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md`. |
 | Source-To-Intent Next Syntax Slice | L1 | Branched dataflow, fanout reuse, all current MVP operation families, and multiple public returns are bound by source-free semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; example: `examples/source_to_intent_next_syntax_slice.py`. |
 | External Frontend Package Conformance | L1 | External frontend packages are reviewed as data-only manifests plus digest-only Source Intent fixtures, without package import, plugin discovery, direct source ingestion, or JIT execution. Schema: `schemas/external_frontend_package_conformance_report.v0.schema.json`; example: `examples/external_frontend_package_conformance.py`. |
 | Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
@@ -53,6 +54,11 @@ compatibility on day one.
 - Compatibility claims must be backed by tests or examples.
 - Real Triton-facing intake must remain execution-free; broader parser work
   requires separate review and sandbox evidence.
+- Real Triton Integration Admission is documented in
+  [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
+  and [Real Triton Integration Threat Model](REAL_TRITON_INTEGRATION_THREAT_MODEL.md).
+  It is an admission blocker, not permission to execute source, imports,
+  plugins, JIT, devices, generated artifacts, or native backends.
 - General source parsing must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before moving
   beyond the explicit research slice.
@@ -106,6 +112,13 @@ treating Real Triton Integration as roadmap progress. The current report at
 `examples/triton_integration_readiness.py` is now `ready` as data-only review
 evidence and is validated by
 `schemas/triton_integration_readiness_report.v0.schema.json`.
+
+Then use [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
+with [Real Triton Integration Threat Model](REAL_TRITON_INTEGRATION_THREAT_MODEL.md).
+The current gate at `examples/real_triton_integration_admission_gate.py` is
+validated by `schemas/real_triton_integration_admission_gate_report.v0.schema.json`,
+binds readiness and external frontend conformance by digest, and keeps real
+admission blocked until dedicated surface gates exist.
 
 The [Source-To-Intent Next Syntax Slice](SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 now satisfies the parser RFC, next-syntax semantic corpus, Source Intent golden,

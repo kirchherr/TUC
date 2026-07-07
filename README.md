@@ -399,6 +399,11 @@ Current frontend surfaces:
 - Triton Integration Readiness defining the next Real Triton Integration
   milestone as data-only review evidence with direct source ingestion and JIT
   execution still blocked. Schema: `schemas/triton_integration_readiness_report.v0.schema.json`; entry point: `examples/triton_integration_readiness.py`.
+- Real Triton Integration Admission Gate binding readiness, external frontend
+  conformance, and threat-model evidence by digest while admission stays
+  blocked until source ingestion, package import, plugin discovery, JIT, device
+  access, generated artifacts, and native backend execution each have dedicated
+  gates. Schema: `schemas/real_triton_integration_admission_gate_report.v0.schema.json`; entry point: `examples/real_triton_integration_admission_gate.py`; docs: `docs/REAL_TRITON_INTEGRATION_ADMISSION_GATE.md`, `docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -468,6 +473,7 @@ examples/source_to_intent_research_kernel_ingress_evidence_gate.py
 examples/source_to_intent_research_source_runtime_smoke.py
 examples/source_to_intent_research_readiness.py
 examples/external_frontend_package_conformance.py
+examples/real_triton_integration_admission_gate.py
 examples/source_to_intent_parser_block_gate.py
 ```
 
@@ -477,6 +483,8 @@ Key docs:
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
 - [Triton integration readiness](docs/TRITON_INTEGRATION_READINESS.md)
+- [Real Triton Integration Admission Gate](docs/REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
+- [Real Triton Integration Threat Model](docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

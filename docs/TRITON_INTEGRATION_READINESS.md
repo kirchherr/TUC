@@ -17,6 +17,14 @@ plugins, or create generated artifacts.
 - Golden: `tests/golden/frontend/triton_integration_readiness_report.json`
 - Tests: `tests/test_triton_integration_readiness.py`
 - RFC: `rfcs/0241-triton-integration-readiness.md`
+- Follow-on admission gate:
+  `docs/REAL_TRITON_INTEGRATION_ADMISSION_GATE.md`
+- Follow-on admission schema:
+  `schemas/real_triton_integration_admission_gate_report.v0.schema.json`
+- Follow-on admission example:
+  `examples/real_triton_integration_admission_gate.py`
+- Follow-on threat model:
+  `docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md`
 
 ## Current Meaning
 
@@ -61,3 +69,11 @@ permissions.
 The current `readiness_ready = true` value means the data-only prerequisite set
 is complete. It is not permission to execute user source, import external
 packages, run Triton JIT, or execute native backend code.
+
+The next checkpoint is
+[Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md).
+It binds this readiness report, External Frontend Package Conformance, and the
+[Real Triton Integration Threat Model](REAL_TRITON_INTEGRATION_THREAT_MODEL.md)
+by digest while keeping admission blocked until source ingestion, package
+import, plugin discovery, JIT execution, device access, generated artifact
+execution, and native backend execution each have dedicated gates.
