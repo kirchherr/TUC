@@ -401,9 +401,8 @@ Current frontend surfaces:
   execution still blocked. Schema: `schemas/triton_integration_readiness_report.v0.schema.json`; entry point: `examples/triton_integration_readiness.py`.
 - Real Triton Integration Admission Gate binding readiness, external frontend
   conformance, and threat-model evidence by digest while admission stays
-  blocked until source ingestion, package import, plugin discovery, JIT, device
-  access, generated artifacts, and native backend execution each have dedicated
-  gates. Schema: `schemas/real_triton_integration_admission_gate_report.v0.schema.json`; entry point: `examples/real_triton_integration_admission_gate.py`; docs: `docs/REAL_TRITON_INTEGRATION_ADMISSION_GATE.md`, `docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md`.
+  blocked because each real integration surface remains guarded by a
+  non-admitting dedicated gate. Schema: `schemas/real_triton_integration_admission_gate_report.v0.schema.json`; entry point: `examples/real_triton_integration_admission_gate.py`; docs: `docs/REAL_TRITON_INTEGRATION_ADMISSION_GATE.md`, `docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md`.
 - Source Ingestion Quarantine Gate establishing the first dedicated Real Triton
   Integration surface gate for `direct_source_ingestion`, with source buffers
   treated as untrusted, preflight-only, digest-only evidence and no
@@ -433,6 +432,12 @@ Current frontend surfaces:
   artifact emission, writes, loads, executable permissions, artifact-cache
   access, backend binary emission, device access, kernel launch, subprocess,
   and dynamic-library surfaces still blocked. Schema: `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`; entry point: `examples/generated_artifact_quarantine_gate.py`; doc: `docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md`.
+- Native Backend Execution Security Gate establishing the seventh dedicated Real
+  Triton Integration surface gate for `native_backend_execution`, with native
+  backend execution, native plugin ABI loading, backend plugin execution,
+  symbol resolution, FFI calls, unsafe memory access, dynamic-library loading,
+  generated artifact execution, device access, kernel launch, and subprocess
+  surfaces still blocked. Schema: `schemas/native_backend_execution_security_gate_report.v0.schema.json`; entry point: `examples/native_backend_execution_security_gate.py`; doc: `docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -526,6 +531,7 @@ Key docs:
 - [Triton JIT Execution Sandbox Gate](docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md)
 - [Device Access Sandbox Gate](docs/DEVICE_ACCESS_SANDBOX_GATE.md)
 - [Generated Artifact Quarantine Gate](docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md)
+- [Native Backend Execution Security Gate](docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

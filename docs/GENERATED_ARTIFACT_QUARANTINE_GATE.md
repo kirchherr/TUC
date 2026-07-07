@@ -77,3 +77,16 @@ Future generated artifact support may only move beyond this gate after a
 separate implementation RFC defines artifact provenance, content-addressed
 storage, path isolation, executable-bit policy, signature or attestation
 requirements, negative tests, and maintainer approval.
+## Next Surface Gate
+
+[Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md)
+is the seventh dedicated Real Triton Integration surface gate. Its canonical
+doc path is `docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md`, its entry point is
+`examples/native_backend_execution_security_gate.py`, and its schema is
+`schemas/native_backend_execution_security_gate_report.v0.schema.json`.
+
+That gate establishes security requirements for `native_backend_execution` while
+keeping native backend loading, native plugin ABI loading, backend plugin
+execution, symbol resolution, FFI calls, unsafe memory access, dynamic-library
+loading, device access, kernel launch, generated artifact execution, and
+subprocesses blocked.

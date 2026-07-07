@@ -27,6 +27,7 @@ compatibility on day one.
 | Triton JIT Execution Sandbox Gate | L0 | Dedicated Real Triton Integration surface gate for `triton_jit_execution`; it binds admission, source-ingestion quarantine, package-import sandbox, plugin-discovery allowlist, and sandbox-model evidence by digest while Triton JIT, kernel launch, generated artifact execution, device access, kernel-cache access, backend binary emission, package import, Python import, plugin discovery, network, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`; example: `examples/triton_jit_execution_sandbox_gate.py`; doc: `docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md`. |
 | Device Access Sandbox Gate | L0 | Dedicated Real Triton Integration surface gate for `device_access`; it binds admission, Triton-JIT sandbox, and device sandbox-model evidence by digest while device discovery, enumeration, driver calls, device handles, device memory allocation, memory mapping, direct memory access, kernel launch, generated artifact execution, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/device_access_sandbox_gate_report.v0.schema.json`; example: `examples/device_access_sandbox_gate.py`; doc: `docs/DEVICE_ACCESS_SANDBOX_GATE.md`. |
 | Generated Artifact Quarantine Gate | L0 | Dedicated Real Triton Integration surface gate for `generated_artifact_execution`; it binds admission, Triton-JIT sandbox, device-access sandbox, and quarantine-model evidence by digest while artifact emission, writes, loads, executable permissions, artifact-cache access, backend binary emission, generated artifact execution, device access, kernel launch, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`; example: `examples/generated_artifact_quarantine_gate.py`; doc: `docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md`. |
+| Native Backend Execution Security Gate | L0 | Dedicated Real Triton Integration surface gate for `native_backend_execution`; it binds admission, generated-artifact quarantine, device-access sandbox, backend plugin lifecycle policy, and security-model evidence by digest while native backend execution, native plugin ABI loading, backend plugin execution, symbol resolution, FFI calls, unsafe memory access, dynamic-library loading, generated artifact execution, device access, kernel launch, and subprocess surfaces remain blocked. Schema: `schemas/native_backend_execution_security_gate_report.v0.schema.json`; example: `examples/native_backend_execution_security_gate.py`; doc: `docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md`. |
 | Source-To-Intent Next Syntax Slice | L1 | Branched dataflow, fanout reuse, all current MVP operation families, and multiple public returns are bound by source-free semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; example: `examples/source_to_intent_next_syntax_slice.py`. |
 | External Frontend Package Conformance | L1 | External frontend packages are reviewed as data-only manifests plus digest-only Source Intent fixtures, without package import, plugin discovery, direct source ingestion, or JIT execution. Schema: `schemas/external_frontend_package_conformance_report.v0.schema.json`; example: `examples/external_frontend_package_conformance.py`. |
 | Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
@@ -93,6 +94,12 @@ compatibility on day one.
   It establishes quarantine requirements for future generated artifacts while
   keeping artifact emission, artifact writes, executable permissions, and
   generated artifact execution blocked.
+- Native Backend Execution Security is documented in
+  [Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md).
+  It establishes security requirements for future native backend execution
+  while keeping native backend loading, native plugin ABI loading, backend
+  plugin execution, symbol resolution, FFI calls, unsafe memory access, devices,
+  kernels, subprocesses, and generated artifacts blocked.
 - General source parsing must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before moving
   beyond the explicit research slice.
@@ -202,6 +209,14 @@ by `schemas/generated_artifact_quarantine_gate_report.v0.schema.json` and keeps
 artifact emission, writes, loads, executable permissions, artifact-cache access,
 backend binary emission, generated artifact execution, device access, kernel
 launch, subprocess, and dynamic-library surfaces blocked.
+The seventh dedicated surface gate is
+[Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md).
+The current report at `examples/native_backend_execution_security_gate.py` is
+validated by `schemas/native_backend_execution_security_gate_report.v0.schema.json`
+and keeps native backend execution, native plugin ABI loading, backend plugin
+execution, symbol resolution, FFI calls, unsafe memory access, dynamic-library
+loading, generated artifact execution, device access, kernel launch, and
+subprocess surfaces blocked.
 
 The [Source-To-Intent Next Syntax Slice](SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 now satisfies the parser RFC, next-syntax semantic corpus, Source Intent golden,

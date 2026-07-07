@@ -50,6 +50,10 @@ gate IDs, counts, and fixed `false` execution flags.
 - Sixth surface gate schema:
   `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`
 - Sixth surface gate example: `examples/generated_artifact_quarantine_gate.py`
+- Seventh surface gate: `docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md`
+- Seventh surface gate schema:
+  `schemas/native_backend_execution_security_gate_report.v0.schema.json`
+- Seventh surface gate example: `examples/native_backend_execution_security_gate.py`
 
 ## Meaning
 
@@ -170,3 +174,17 @@ access, kernel launch, subprocesses, and dynamic libraries.
 
 Entry point: `examples/generated_artifact_quarantine_gate.py`.
 Schema: `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`.
+## Seventh Surface Gate
+
+[Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md)
+is the seventh dedicated gate for one of the blocked surfaces listed here. It
+binds this admission gate, Generated Artifact Quarantine, Device Access Sandbox,
+and Backend Plugin Lifecycle Policy evidence by digest while keeping
+`native_backend_execution = false`, `native_plugin_abi_loading = false`,
+`backend_plugin_execution = false`, and preventing symbol resolution, FFI calls,
+unsafe memory access, dynamic-library loading, generated artifact execution,
+device access, kernel launch, subprocesses, and capability claims from native
+code.
+
+Entry point: `examples/native_backend_execution_security_gate.py`.
+Schema: `schemas/native_backend_execution_security_gate_report.v0.schema.json`.

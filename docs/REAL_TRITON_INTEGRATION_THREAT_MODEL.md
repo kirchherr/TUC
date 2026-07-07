@@ -54,7 +54,7 @@ admitted:
 - [Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md).
 - [Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md).
 - [Generated Artifact Quarantine Gate](GENERATED_ARTIFACT_QUARANTINE_GATE.md).
-- Native Backend Execution Security Gate.
+- [Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md).
 
 Those gates must define resource budgets, isolation, allowed inputs, forbidden
 outputs, diagnostics, artifact provenance, negative tests, and failure behavior
@@ -133,3 +133,14 @@ This gate establishes quarantine requirements for `generated_artifact_execution`
 but it still does not emit artifacts, write artifacts, load artifacts, grant
 executable permissions, access artifact caches, emit backend binaries, execute
 generated artifacts, or serialize generated code.
+The seventh dedicated surface gate is
+[Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md).
+Its canonical doc path is `docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md`, its
+entry point is `examples/native_backend_execution_security_gate.py`, and its
+schema is `schemas/native_backend_execution_security_gate_report.v0.schema.json`.
+
+This gate establishes security requirements for `native_backend_execution`, but
+it still does not load native backends, load plugin ABIs, execute backend
+plugins, resolve symbols, make FFI calls, access unsafe memory, load dynamic
+libraries, touch devices, launch kernels, execute generated artifacts, or
+serialize native handles.
