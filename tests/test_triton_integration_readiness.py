@@ -44,8 +44,8 @@ def test_current_triton_integration_readiness_is_blocked_but_informative() -> No
     assert payload["readiness_ready"] is False
     assert payload["direct_triton_source_ingestion"] is False
     assert payload["triton_jit_execution"] is False
-    assert payload["satisfied_prerequisite_count"] == 10
-    assert payload["missing_prerequisite_count"] == 5
+    assert payload["satisfied_prerequisite_count"] == 14
+    assert payload["missing_prerequisite_count"] == 1
     assert payload["blocked_prerequisite_count"] == 2
     assert payload["issues"] == list(TRITON_INTEGRATION_READINESS_DEFAULT_ISSUES)
     assert "jit_execution" in payload["blocked_execution_surfaces"]

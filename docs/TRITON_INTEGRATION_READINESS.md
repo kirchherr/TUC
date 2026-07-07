@@ -33,15 +33,15 @@ It records that TUC already has credible prerequisites:
 - explicit Source-To-Intent Research Parser;
 - Kernel Ingress research evidence;
 - Proof Of Backend Equivalence;
-- Layout Conversion Evidence.
+- Layout Conversion Evidence;
+- [Source-To-Intent Next Syntax Slice](SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md),
+  including `examples/source_to_intent_next_syntax_slice.py` and
+  `schemas/source_to_intent_next_syntax_report.v0.schema.json`.
+  Canonical doc path: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
 
-It also records missing prerequisites before broader Triton-facing integration
-can move beyond the current research slice:
+It also records one missing prerequisite before broader Triton-facing
+integration can move beyond the current research slice:
 
-- broader parser implementation RFC;
-- semantic mapping corpus for the next syntax;
-- Source Intent goldens for the next syntax;
-- fuzz/property coverage for semantic mapping;
 - external frontend package conformance.
 
 Direct Triton source ingestion and Triton JIT execution remain blocked by

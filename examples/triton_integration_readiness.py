@@ -59,23 +59,23 @@ _CURRENT_PREREQUISITES = (
     ),
     TritonIntegrationReadinessPrerequisite(
         "broader_parser_implementation_rfc",
-        "missing",
-        "not_supplied",
+        "satisfied",
+        "rfcs.0242_source_to_intent_next_syntax_slice",
     ),
     TritonIntegrationReadinessPrerequisite(
         "semantic_mapping_corpus_for_next_syntax",
-        "missing",
-        "not_supplied",
+        "satisfied",
+        "examples.source_to_intent_next_syntax_slice",
     ),
     TritonIntegrationReadinessPrerequisite(
         "source_intent_goldens_for_next_syntax",
-        "missing",
-        "not_supplied",
+        "satisfied",
+        "tests.golden.frontend.source_to_intent_next_syntax_source_intent",
     ),
     TritonIntegrationReadinessPrerequisite(
         "fuzz_semantic_mapping_for_next_syntax",
-        "missing",
-        "not_supplied",
+        "satisfied",
+        "tests.test_source_to_intent_next_syntax_slice",
     ),
     TritonIntegrationReadinessPrerequisite(
         "external_frontend_package_conformance",

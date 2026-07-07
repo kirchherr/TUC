@@ -23,7 +23,7 @@
     "direct_triton_source_ingestion_blocked",
     "triton_jit_execution_blocked"
   ],
-  "missing_prerequisite_count": 5,
+  "missing_prerequisite_count": 1,
   "prerequisites": [
     {
       "evidence_id": "docs.TRITON_SOURCE_THREAT_MODEL",
@@ -86,28 +86,28 @@
       "status": "satisfied"
     },
     {
-      "evidence_id": "not_supplied",
+      "evidence_id": "rfcs.0242_source_to_intent_next_syntax_slice",
       "prerequisite_id": "broader_parser_implementation_rfc",
       "required_for_readiness": true,
-      "status": "missing"
+      "status": "satisfied"
     },
     {
-      "evidence_id": "not_supplied",
+      "evidence_id": "examples.source_to_intent_next_syntax_slice",
       "prerequisite_id": "semantic_mapping_corpus_for_next_syntax",
       "required_for_readiness": true,
-      "status": "missing"
+      "status": "satisfied"
     },
     {
-      "evidence_id": "not_supplied",
+      "evidence_id": "tests.golden.frontend.source_to_intent_next_syntax_source_intent",
       "prerequisite_id": "source_intent_goldens_for_next_syntax",
       "required_for_readiness": true,
-      "status": "missing"
+      "status": "satisfied"
     },
     {
-      "evidence_id": "not_supplied",
+      "evidence_id": "tests.test_source_to_intent_next_syntax_slice",
       "prerequisite_id": "fuzz_semantic_mapping_for_next_syntax",
       "required_for_readiness": true,
-      "status": "missing"
+      "status": "satisfied"
     },
     {
       "evidence_id": "not_supplied",
@@ -131,7 +131,7 @@
   "proposal_name": "real_triton_integration_readiness_current",
   "readiness_contract": "triton_integration_readiness.data_only.v0",
   "readiness_ready": false,
-  "satisfied_prerequisite_count": 10,
+  "satisfied_prerequisite_count": 14,
   "schema_version": "tuc.triton_integration_readiness_report.v0",
   "triton_jit_execution": false
 }

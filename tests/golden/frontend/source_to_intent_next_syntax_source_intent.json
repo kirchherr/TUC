@@ -1,0 +1,118 @@
+{
+  "name": "next_syntax_branched_multi_return",
+  "operations": [
+    {
+      "family": "matmul",
+      "hints": {},
+      "inputs": [
+        "q",
+        "k"
+      ],
+      "name": "scores",
+      "outputs": [
+        "scores"
+      ]
+    },
+    {
+      "family": "elementwise",
+      "hints": {},
+      "inputs": [
+        "scores"
+      ],
+      "name": "activated",
+      "outputs": [
+        "activated"
+      ]
+    },
+    {
+      "attributes": {
+        "axis": 1
+      },
+      "family": "softmax",
+      "hints": {},
+      "inputs": [
+        "scores"
+      ],
+      "name": "normalized",
+      "outputs": [
+        "normalized"
+      ]
+    },
+    {
+      "attributes": {
+        "axis": 1
+      },
+      "family": "reduction",
+      "hints": {},
+      "inputs": [
+        "normalized"
+      ],
+      "name": "row_sum",
+      "outputs": [
+        "row_sum"
+      ]
+    }
+  ],
+  "returns": [
+    {
+      "public_name": "y",
+      "required": true,
+      "tensor_name": "activated"
+    },
+    {
+      "public_name": "z",
+      "required": true,
+      "tensor_name": "row_sum"
+    }
+  ],
+  "schema_version": "source_intent.v0",
+  "tensors": [
+    {
+      "dtype": "float32",
+      "name": "q",
+      "shape": [
+        4,
+        8
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "k",
+      "shape": [
+        8,
+        4
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "scores",
+      "shape": [
+        4,
+        4
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "activated",
+      "shape": [
+        4,
+        4
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "normalized",
+      "shape": [
+        4,
+        4
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "row_sum",
+      "shape": [
+        4
+      ]
+    }
+  ]
+}

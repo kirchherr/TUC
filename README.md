@@ -399,6 +399,9 @@ Current frontend surfaces:
 - Triton Integration Readiness defining the next Real Triton Integration
   milestone as data-only review evidence with direct source ingestion and JIT
   execution still blocked. Schema: `schemas/triton_integration_readiness_report.v0.schema.json`; entry point: `examples/triton_integration_readiness.py`.
+- Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
+  all MVP operation families, and multiple public returns through source-free
+  semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
 - Source Intent Axis Attributes for neutral `softmax` and `reduction` axis
