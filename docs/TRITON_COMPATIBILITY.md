@@ -21,6 +21,7 @@ compatibility on day one.
 | Triton source preflight | L0 | Bounded source syntax report rejects imports, decorator calls, dangerous builtins, host/device/network surfaces, unsupported calls, and HAC-IR leakage without producing a `ComputeGraph`; fuzz/property tests cover arbitrary decoded bytes and malicious seed cases. |
 | Triton Integration Readiness | L0 | Data-only readiness report for the Real Triton Integration milestone; it records satisfied and missing prerequisites while direct source ingestion and `@triton.jit` execution remain blocked. Schema: `schemas/triton_integration_readiness_report.v0.schema.json`; example: `examples/triton_integration_readiness.py`. |
 | Source-To-Intent Next Syntax Slice | L1 | Branched dataflow, fanout reuse, all current MVP operation families, and multiple public returns are bound by source-free semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; example: `examples/source_to_intent_next_syntax_slice.py`. |
+| External Frontend Package Conformance | L1 | External frontend packages are reviewed as data-only manifests plus digest-only Source Intent fixtures, without package import, plugin discovery, direct source ingestion, or JIT execution. Schema: `schemas/external_frontend_package_conformance_report.v0.schema.json`; example: `examples/external_frontend_package_conformance.py`. |
 | Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
 | Source Intent JSON Schema | L1 | Machine-readable `source_intent.v0` schema documents the plain-data contract for external frontend authors while runtime validation remains in Source Intent Intake. |
 | Source Intent Axis Attributes | L2 | Neutral `attributes.axis` semantics for `softmax` and `reduction` pass through Source Intent Intake, Metadata Conversion, and parser conformance evidence without backend/device facts. |
@@ -102,7 +103,8 @@ compatibility on day one.
 
 Use [Triton Integration Readiness](TRITON_INTEGRATION_READINESS.md) before
 treating Real Triton Integration as roadmap progress. The current report at
-`examples/triton_integration_readiness.py` remains `not_ready` and is validated by
+`examples/triton_integration_readiness.py` is now `ready` as data-only review
+evidence and is validated by
 `schemas/triton_integration_readiness_report.v0.schema.json`.
 
 The [Source-To-Intent Next Syntax Slice](SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
@@ -110,6 +112,12 @@ now satisfies the parser RFC, next-syntax semantic corpus, Source Intent golden,
 and semantic mapping fuzz/property prerequisites through
 `examples/source_to_intent_next_syntax_slice.py` and
 `schemas/source_to_intent_next_syntax_report.v0.schema.json`.
+
+The [External Frontend Package Conformance](EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
+report satisfies the external package conformance prerequisite through
+`examples/external_frontend_package_conformance.py` and
+`schemas/external_frontend_package_conformance_report.v0.schema.json`, while
+keeping package import, plugin discovery, source ingestion, and JIT blocked.
 
 Expand source-text to Source Intent IR only by adding parser budgets, semantic
 mapping corpus cases, source-intent goldens, deterministic diagnostics, HAC-IR

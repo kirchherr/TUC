@@ -79,8 +79,8 @@ _CURRENT_PREREQUISITES = (
     ),
     TritonIntegrationReadinessPrerequisite(
         "external_frontend_package_conformance",
-        "missing",
-        "not_supplied",
+        "satisfied",
+        "examples.external_frontend_package_conformance",
     ),
     TritonIntegrationReadinessPrerequisite(
         "direct_triton_source_ingestion",

@@ -20,7 +20,7 @@ plugins, or create generated artifacts.
 
 ## Current Meaning
 
-The current report is intentionally **not ready**.
+The current report is now **ready as data-only review evidence**.
 
 It records that TUC already has credible prerequisites:
 
@@ -38,14 +38,17 @@ It records that TUC already has credible prerequisites:
   including `examples/source_to_intent_next_syntax_slice.py` and
   `schemas/source_to_intent_next_syntax_report.v0.schema.json`.
   Canonical doc path: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
+- [External Frontend Package Conformance](EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md),
+  including `examples/external_frontend_package_conformance.py` and
+  `schemas/external_frontend_package_conformance_report.v0.schema.json`.
+  Canonical doc path: `docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md`.
 
-It also records one missing prerequisite before broader Triton-facing
-integration can move beyond the current research slice:
-
-- external frontend package conformance.
+It records no missing required data-only prerequisites for the current
+Real Triton Integration readiness checkpoint.
 
 Direct Triton source ingestion and Triton JIT execution remain blocked by
-policy in this report.
+policy in this report. Readiness is a review condition, not execution
+permission.
 
 ## Security Boundary
 
@@ -55,6 +58,6 @@ identifiers, runtime handles, backend artifacts, generated code, plugin
 entrypoints, raw benchmark output, raw timing samples, or executable
 permissions.
 
-Future work must make `readiness_ready = true` before any broader Triton-facing
-integration can count as roadmap progress. Even then, readiness is a review
-condition, not permission to execute user source or native backend code.
+The current `readiness_ready = true` value means the data-only prerequisite set
+is complete. It is not permission to execute user source, import external
+packages, run Triton JIT, or execute native backend code.

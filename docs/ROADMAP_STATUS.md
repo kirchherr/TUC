@@ -182,6 +182,7 @@ hardware-independent interface into capability-driven runtime planning.
 - Objective Alpha Public Evidence Catalog Extension-Tier Coverage now emits `catalog_required_extension_tiers`, `catalog_missing_extension_tiers`, and `catalog_extension_tier_coverage_status`, and the admission gate requires complete coverage for `governance`, `runtime_proof`, `frontend_runtime_proof`, and `claim_boundary` with no new source, execution, path-resolution, device, plugin, or native-performance surface.
 - [Triton Integration Readiness](TRITON_INTEGRATION_READINESS.md) now turns the next Real Triton Integration milestone into data-only review evidence at `examples/triton_integration_readiness.py`, with schema at `schemas/triton_integration_readiness_report.v0.schema.json`, deterministic golden evidence at `tests/golden/frontend/triton_integration_readiness_report.json`, current `integration_status: not_ready`, and direct Triton source ingestion plus `@triton.jit` execution still blocked.
 - [Source-To-Intent Next Syntax Slice](SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md) now satisfies the broader parser RFC, semantic mapping corpus, Source Intent golden, and semantic mapping fuzz/property prerequisites for Triton Integration Readiness through `examples/source_to_intent_next_syntax_slice.py`, schema `schemas/source_to_intent_next_syntax_report.v0.schema.json`, report golden `tests/golden/frontend/source_to_intent_next_syntax_report.json`, and Source Intent golden `tests/golden/frontend/source_to_intent_next_syntax_source_intent.json`, while direct source ingestion and `@triton.jit` execution remain blocked.
+- [External Frontend Package Conformance](EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md) now satisfies the final Triton Integration Readiness prerequisite through `examples/external_frontend_package_conformance.py`, schema `schemas/external_frontend_package_conformance_report.v0.schema.json`, and golden `tests/golden/frontend/external_frontend_package_conformance_report.json`, proving package manifests and digest-only Source Intent fixtures can be reviewed without package import, plugin discovery, source ingestion, or JIT execution.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
 - Golden runtime-plan dump for proof-of-abstraction placement and transfer
@@ -1485,8 +1486,8 @@ Current focus:
 
 ## Next
 
-- Real Triton integration remains the next credibility milestone, but it must pass
-  [Triton Integration Readiness](TRITON_INTEGRATION_READINESS.md) first; after the Source-To-Intent Next Syntax Slice, the current data-only report at `examples/triton_integration_readiness.py` is still intentionally `not_ready` because external frontend package conformance remains missing, and it uses `schemas/triton_integration_readiness_report.v0.schema.json`.
+- Real Triton integration remains the next credibility milestone. The current
+  [Triton Integration Readiness](TRITON_INTEGRATION_READINESS.md) report at `examples/triton_integration_readiness.py` is now `ready` as data-only review evidence, but source ingestion, package import, plugin discovery, Triton JIT, generated artifacts, and native backend execution remain blocked until separate threat models and gates exist.
 - Future Triton idiom coverage should enter through the schema-versioned
   metadata intake contract and
   [Triton Idiom Coverage Report](TRITON_IDIOM_COVERAGE_REPORT.md) before any

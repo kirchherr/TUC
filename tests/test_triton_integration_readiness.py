@@ -19,7 +19,6 @@ from tuc.frontend import (
     TRITON_INTEGRATION_READINESS_ARTIFACT_STATUS,
     TRITON_INTEGRATION_READINESS_BLOCKED_EXECUTION_SURFACES,
     TRITON_INTEGRATION_READINESS_CONTRACT,
-    TRITON_INTEGRATION_READINESS_DEFAULT_ISSUES,
     TRITON_INTEGRATION_READINESS_PREREQUISITE_STATUSES,
     TRITON_INTEGRATION_READINESS_REPORT_SCHEMA_VERSION,
     TRITON_INTEGRATION_READINESS_TARGET,
@@ -40,14 +39,17 @@ def test_current_triton_integration_readiness_is_blocked_but_informative() -> No
     assert payload["artifact_status"] == TRITON_INTEGRATION_READINESS_ARTIFACT_STATUS
     assert payload["readiness_contract"] == TRITON_INTEGRATION_READINESS_CONTRACT
     assert payload["integration_target"] == TRITON_INTEGRATION_READINESS_TARGET
-    assert payload["integration_status"] == "not_ready"
-    assert payload["readiness_ready"] is False
+    assert payload["integration_status"] == "ready"
+    assert payload["readiness_ready"] is True
     assert payload["direct_triton_source_ingestion"] is False
     assert payload["triton_jit_execution"] is False
-    assert payload["satisfied_prerequisite_count"] == 14
-    assert payload["missing_prerequisite_count"] == 1
+    assert payload["satisfied_prerequisite_count"] == 15
+    assert payload["missing_prerequisite_count"] == 0
     assert payload["blocked_prerequisite_count"] == 2
-    assert payload["issues"] == list(TRITON_INTEGRATION_READINESS_DEFAULT_ISSUES)
+    assert payload["issues"] == [
+        "direct_triton_source_ingestion_blocked",
+        "triton_jit_execution_blocked",
+    ]
     assert "jit_execution" in payload["blocked_execution_surfaces"]
 
 
@@ -64,7 +66,7 @@ def test_triton_integration_readiness_example_runs() -> None:
     )
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
-    assert '"readiness_ready": false' in completed.stdout
+    assert '"readiness_ready": true' in completed.stdout
     assert '"direct_triton_source_ingestion": false' in completed.stdout
     assert '"triton_jit_execution": false' in completed.stdout
     assert "python_source" not in completed.stdout
@@ -186,7 +188,7 @@ def test_triton_integration_readiness_golden_matches_schema_shape() -> None:
     assert sorted(golden) == sorted(schema["required"])
     assert golden["schema_version"] == TRITON_INTEGRATION_READINESS_REPORT_SCHEMA_VERSION
     assert golden["artifact_status"] == TRITON_INTEGRATION_READINESS_ARTIFACT_STATUS
-    assert golden["readiness_ready"] is False
+    assert golden["readiness_ready"] is True
     assert golden["direct_triton_source_ingestion"] is False
     assert golden["triton_jit_execution"] is False
     assert len(golden["blocked_execution_surfaces"]) == len(

@@ -402,6 +402,10 @@ Current frontend surfaces:
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
+- External Frontend Package Conformance proving an external frontend can be
+  reviewed as a data-only Source Intent package manifest plus digest-only
+  fixtures without package import, plugin discovery, source ingestion, or JIT.
+  Schema: `schemas/external_frontend_package_conformance_report.v0.schema.json`; entry point: `examples/external_frontend_package_conformance.py`; doc: `docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md`.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
 - Source Intent Axis Attributes for neutral `softmax` and `reduction` axis
@@ -463,6 +467,7 @@ examples/source_to_intent_research_kernel_ingress_proof_bundle.py
 examples/source_to_intent_research_kernel_ingress_evidence_gate.py
 examples/source_to_intent_research_source_runtime_smoke.py
 examples/source_to_intent_research_readiness.py
+examples/external_frontend_package_conformance.py
 examples/source_to_intent_parser_block_gate.py
 ```
 
@@ -472,6 +477,8 @@ Key docs:
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
 - [Triton integration readiness](docs/TRITON_INTEGRATION_READINESS.md)
+- [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
+- [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)
 - [Source Intent axis attributes](docs/SOURCE_INTENT_AXIS_ATTRIBUTES.md)
 - [Source Intent frontend conformance gate](docs/SOURCE_INTENT_FRONTEND_CONFORMANCE_GATE.md)
