@@ -423,6 +423,11 @@ Current frontend surfaces:
   kernel launch, generated artifact execution, device access, kernel-cache
   access, backend binary emission, package import, Python import, plugin
   discovery, network, subprocess, and dynamic-library surfaces still blocked. Schema: `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`; entry point: `examples/triton_jit_execution_sandbox_gate.py`; doc: `docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md`.
+- Device Access Sandbox Gate establishing the fifth dedicated Real Triton
+  Integration surface gate for `device_access`, with device discovery,
+  enumeration, driver calls, device handles, device memory allocation, memory
+  mapping, direct memory access, kernel launch, generated artifact execution,
+  subprocess, and dynamic-library surfaces still blocked. Schema: `schemas/device_access_sandbox_gate_report.v0.schema.json`; entry point: `examples/device_access_sandbox_gate.py`; doc: `docs/DEVICE_ACCESS_SANDBOX_GATE.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -497,6 +502,7 @@ examples/source_ingestion_quarantine_gate.py
 examples/package_import_sandbox_gate.py
 examples/plugin_discovery_allowlist_gate.py
 examples/triton_jit_execution_sandbox_gate.py
+examples/device_access_sandbox_gate.py
 examples/source_to_intent_parser_block_gate.py
 ```
 
@@ -512,6 +518,7 @@ Key docs:
 - [Package Import Sandbox Gate](docs/PACKAGE_IMPORT_SANDBOX_GATE.md)
 - [Plugin Discovery Allowlist Gate](docs/PLUGIN_DISCOVERY_ALLOWLIST_GATE.md)
 - [Triton JIT Execution Sandbox Gate](docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md)
+- [Device Access Sandbox Gate](docs/DEVICE_ACCESS_SANDBOX_GATE.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

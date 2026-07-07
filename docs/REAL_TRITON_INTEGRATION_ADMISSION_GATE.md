@@ -42,6 +42,10 @@ gate IDs, counts, and fixed `false` execution flags.
 - Fourth surface gate schema:
   `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`
 - Fourth surface gate example: `examples/triton_jit_execution_sandbox_gate.py`
+- Fifth surface gate: `docs/DEVICE_ACCESS_SANDBOX_GATE.md`
+- Fifth surface gate schema:
+  `schemas/device_access_sandbox_gate_report.v0.schema.json`
+- Fifth surface gate example: `examples/device_access_sandbox_gate.py`
 
 ## Meaning
 
@@ -136,3 +140,16 @@ access, subprocesses, and dynamic libraries.
 
 Entry point: `examples/triton_jit_execution_sandbox_gate.py`.
 Schema: `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`.
+
+## Fifth Surface Gate
+
+[Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md) is the fifth
+dedicated gate for one of the blocked surfaces listed here. It binds this
+admission gate and Triton JIT Execution Sandbox evidence by digest while
+keeping `device_access = false`, `device_discovery = false`, and preventing
+device enumeration, driver API calls, device handles, device memory allocation,
+memory mapping, direct memory access, kernel launch, generated artifact
+execution, subprocesses, and dynamic libraries.
+
+Entry point: `examples/device_access_sandbox_gate.py`.
+Schema: `schemas/device_access_sandbox_gate_report.v0.schema.json`.

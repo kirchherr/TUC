@@ -52,7 +52,7 @@ admitted:
 - [Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md).
 - [Plugin Discovery Allowlist Gate](PLUGIN_DISCOVERY_ALLOWLIST_GATE.md).
 - [Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md).
-- Device Access Sandbox Gate.
+- [Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md).
 - Generated Artifact Quarantine Gate.
 - Native Backend Execution Security Gate.
 
@@ -111,3 +111,14 @@ This gate establishes sandbox requirements for `triton_jit_execution`, but it
 still does not invoke Triton JIT, launch kernels, execute generated artifacts,
 access devices, touch kernel caches, emit backend binaries, or execute source
 buffers.
+
+The fifth dedicated surface gate is
+[Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md). Its canonical doc
+path is `docs/DEVICE_ACCESS_SANDBOX_GATE.md`, its entry point is
+`examples/device_access_sandbox_gate.py`, and its schema is
+`schemas/device_access_sandbox_gate_report.v0.schema.json`.
+
+This gate establishes sandbox requirements for `device_access`, but it still
+does not discover devices, enumerate devices, call driver APIs, emit device
+handles, allocate device memory, map device memory, perform direct memory
+access, launch kernels, or serialize hardware fingerprints.

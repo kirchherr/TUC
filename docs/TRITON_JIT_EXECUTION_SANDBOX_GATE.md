@@ -81,3 +81,16 @@ Future Triton JIT execution may only move beyond this gate after a separate
 implementation RFC defines an actual sandbox, cache isolation, artifact
 provenance, device mediation, resource limits, negative tests, and maintainer
 approval.
+
+## Next Surface Gate
+
+[Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md) is the next
+dedicated Real Triton Integration surface gate. Its canonical doc path is
+`docs/DEVICE_ACCESS_SANDBOX_GATE.md`, its entry point is
+`examples/device_access_sandbox_gate.py`, and its schema is
+`schemas/device_access_sandbox_gate_report.v0.schema.json`.
+
+That gate keeps device discovery, device enumeration, driver API calls, device
+handles, device memory allocation, memory mapping, direct memory access, kernel
+launch, generated artifact execution, subprocess execution, and dynamic library
+loading blocked while defining the sandbox requirements for future review.
