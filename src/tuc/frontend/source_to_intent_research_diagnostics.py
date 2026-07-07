@@ -39,6 +39,7 @@ SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_CASE_EXPECTATIONS = frozenset(
 )
 SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_REJECTION_REASONS = {
     "missing_axis_keyword": "requires explicit axis",
+    "preflight_annotation": "annotation",
     "preflight_decorator_call": "decorator_call",
     "preflight_import_statement": "import_statement",
     "unsupported_assignment_value": "assignment value must be a supported call",

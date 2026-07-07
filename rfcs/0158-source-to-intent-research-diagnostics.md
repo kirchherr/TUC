@@ -19,7 +19,7 @@ bounded, and source-free.
 
 This responds to the central frontend risk: real parser work can become a
 leaky shortcut into compiler artifacts if diagnostics, negative cases, and
-accepted scope are not made reviewable.
+accepted scope are not made reviewable, including annotated signatures that could smuggle unsupported type semantics.
 
 ## Decision
 

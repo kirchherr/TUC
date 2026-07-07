@@ -23,7 +23,8 @@ Accepted source buffers:
 
 Rejected source buffers:
 
-- `reject_ambiguous_softmax_axis`
+
+
 - `reject_decorator_call`
 - `reject_hardware_hint`
 - `reject_import_escape`
@@ -61,5 +62,5 @@ Expected result:
 ```text
 mvp_operation_family_coverage_complete = true
 accepted_case_count = 2
-rejected_case_count = 4
+rejected_case_count = 5
 ```

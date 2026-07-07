@@ -338,9 +338,11 @@ Current frontend surfaces:
 - Source-To-Intent Research Parser Conformance Gate proving the first parser
   output slice passes the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Diagnostics proving accepted parser cases and
-  whitelisted rejected cases remain deterministic, source-free, and bounded.
+  whitelisted rejected cases, including annotated signatures, remain
+  deterministic, source-free, and bounded.
 - Source-To-Intent Research Preflight Bridge proving accepted and rejected
-  parser diagnostics remain gated by execution-free Triton Source Preflight.
+  parser diagnostics, including annotation rejection, remain gated by
+  execution-free Triton Source Preflight.
 - Source-To-Intent Research Evidence Gate binding research readiness,
   conformance, and diagnostics by digest.
 - Source-To-Intent Research Execution Bridge proving accepted parser output can
@@ -382,11 +384,12 @@ Current frontend surfaces:
   before extraction or lowering.
 - Source-To-Intent Research Kernel Ingress Rejection Coverage proving current
   diagnostics and budget rejection surfaces are source-free and complete,
-  including import-preamble drift.
+  including import-preamble drift and annotated-signature rejection.
 - Source-To-Intent Research Kernel Ingress Conformance Gate proving Kernel
   Ingress outputs pass the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Kernel Ingress Diagnostics proving accepted and
-  rejected module-shaped source cases stay source-free, bounded, and
+
+
   fail-closed.
 - Source-To-Intent Research Kernel Ingress Idiom Alignment proving accepted
   module-shaped source outputs remain inside covered Triton MVP idioms.

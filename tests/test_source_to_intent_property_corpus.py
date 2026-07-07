@@ -36,9 +36,9 @@ def test_source_to_intent_property_corpus_binds_source_corpus() -> None:
     assert report.property_contract == SOURCE_TO_INTENT_PROPERTY_CORPUS_CONTRACT
     assert report.raw_source_policy == SOURCE_TO_INTENT_PROPERTY_CORPUS_RAW_SOURCE_POLICY
     assert report.source_corpus_contract == SOURCE_TO_INTENT_CORPUS_CONTRACT
-    assert report.source_corpus_case_count == 6
+    assert report.source_corpus_case_count == 7
     assert report.accepted_source_case_count == 2
-    assert report.rejected_source_case_count == 4
+    assert report.rejected_source_case_count == 5
     assert report.source_corpus_digest.startswith("sha256:")
     assert report.property_count == len(SOURCE_TO_INTENT_PROPERTY_CORPUS_REQUIRED_PROPERTIES)
     assert tuple(item.property_id for item in report.properties) == (

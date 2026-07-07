@@ -46,7 +46,7 @@ def test_research_diagnostics_report_tracks_accepted_and_rejected_cases() -> Non
     assert report.output_policy == SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY
     assert report.raw_source_policy == SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_RAW_SOURCE_POLICY
     assert report.accepted_case_count == 2
-    assert report.rejected_case_count == 4
+    assert report.rejected_case_count == 5
     assert report.rejection_reasons == tuple(
         sorted(SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_REJECTION_REASONS)
     )
@@ -54,6 +54,7 @@ def test_research_diagnostics_report_tracks_accepted_and_rejected_cases() -> Non
         "accepted_matmul_elementwise",
         "accepted_softmax_reduction",
         "reject_ambiguous_softmax_axis",
+        "reject_annotated_signature",
         "reject_decorator_call",
         "reject_hardware_hint",
         "reject_import_escape",
@@ -81,6 +82,7 @@ def test_research_diagnostics_example_runs() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"raw_source_policy": "omitted_by_policy"' in completed.stdout
     assert '"missing_axis_keyword"' in completed.stdout
+    assert '"preflight_annotation"' in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "tl.dot" not in completed.stdout
     assert "cuda" not in completed.stdout

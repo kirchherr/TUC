@@ -94,6 +94,7 @@ _EXPECTED_CASE_STAGES = {
     "accepted_matmul_elementwise": "accepted_pipeline",
     "accepted_softmax_reduction": "accepted_pipeline",
     "reject_ambiguous_softmax_axis": "parser_semantic_reject",
+    "reject_annotated_signature": "preflight_reject",
     "reject_decorator_call": "preflight_reject",
     "reject_hardware_hint": "parser_semantic_reject",
     "reject_import_escape": "preflight_reject",
@@ -102,6 +103,7 @@ _EXPECTED_PREFLIGHT_REJECTIONS = {
     "accepted_matmul_elementwise": [],
     "accepted_softmax_reduction": [],
     "reject_ambiguous_softmax_axis": [],
+    "reject_annotated_signature": ["annotation"],
     "reject_decorator_call": ["decorator_call", "unsupported_call_target"],
     "reject_hardware_hint": [],
     "reject_import_escape": ["import_statement"],
@@ -110,11 +112,11 @@ _EXPECTED_OPERATION_FAMILIES = {
     "accepted_matmul_elementwise": ["elementwise", "matmul"],
     "accepted_softmax_reduction": ["reduction", "softmax"],
     "reject_ambiguous_softmax_axis": ["softmax"],
+    "reject_annotated_signature": [],
     "reject_decorator_call": [],
     "reject_hardware_hint": [],
     "reject_import_escape": [],
 }
-
 
 def build_preflight_bridge_report() -> dict[str, object]:
     """Return source-free evidence that research parsing is gated by preflight."""
@@ -194,7 +196,7 @@ def assert_preflight_bridge_report_contract(report: object) -> None:
         "accepted_case_count": 2,
         "artifact_policy": SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE_ARTIFACT_POLICY,
         "bridge_contract": SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE_CONTRACT,
-        "case_count": 6,
+        "case_count": 7,
         "default_parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
         "diagnostics_contract": SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_CONTRACT,
         "parser_output_policy": SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY,
@@ -202,9 +204,9 @@ def assert_preflight_bridge_report_contract(report: object) -> None:
         "parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
         "preflight_accepted_count": 4,
         "preflight_contract": TRITON_SOURCE_PREFLIGHT_CONTRACT,
-        "preflight_reject_count": 2,
+        "preflight_reject_count": 3,
         "raw_source_policy": SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_RAW_SOURCE_POLICY,
-        "rejected_case_count": 4,
+        "rejected_case_count": 5,
         "schema_version": SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE_REPORT_SCHEMA_VERSION,
         "source_boundary": SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE_SOURCE_BOUNDARY,
         "status": "PASS",

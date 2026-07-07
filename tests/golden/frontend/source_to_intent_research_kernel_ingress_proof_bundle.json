@@ -97,14 +97,14 @@
       "artifact_id": "source_to_intent_research_kernel_ingress_rejection_coverage",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0",
-      "digest": "sha256:610f3e65940ce788a3c4ef91567b03a2cad3f73f4529b5b4b1f550067ffc0581",
+      "digest": "sha256:92add6db1fdcefc5ab57a50e4c14644b1fa9052c6bd9c7537fd70e92cd58cbbf",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_diagnostics",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
-      "digest": "sha256:a7ad36f4296fc529f9ae9eb866b5374179387ff99b4be9c5ec9f3e14cce042e4",
+      "digest": "sha256:e09ae0e0876fe48742c4161e1055d34815997cd194e1d5eb7b6473918a6e2bc1",
       "status": "accepted"
     },
     {

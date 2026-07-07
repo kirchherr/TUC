@@ -321,6 +321,10 @@ def _validate_shape_manifest_covers_function(
     function: ast.FunctionDef,
     shape_manifest: Mapping[str, tuple[int, ...]],
 ) -> None:
+    if _function_signature_has_annotations(function):
+        raise SourceToIntentResearchParserError(
+            "kernel signature must not contain annotations"
+        )
     if (
         function.args.posonlyargs
         or function.args.kwonlyargs
@@ -343,6 +347,17 @@ def _validate_shape_manifest_covers_function(
         raise SourceToIntentResearchParserError("tensor shape manifest missing argument")
     if unknown:
         raise SourceToIntentResearchParserError("tensor shape manifest has unknown key")
+
+
+def _function_signature_has_annotations(function: ast.FunctionDef) -> bool:
+    if function.returns is not None:
+        return True
+    arguments = (
+        *function.args.posonlyargs,
+        *function.args.args,
+        *function.args.kwonlyargs,
+    )
+    return any(argument.annotation is not None for argument in arguments)
 
 
 def _parse_function_body(state: _ParseState) -> None:

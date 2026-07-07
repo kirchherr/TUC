@@ -39,11 +39,11 @@
     "bridge_contract": {
       "const": "source_to_intent_research_preflight_bridge.execution_free.v0"
     },
-    "case_count": {"const": 6},
+    "case_count": {"const": 7},
     "cases": {
       "type": "array",
-      "minItems": 6,
-      "maxItems": 6,
+      "minItems": 7,
+      "maxItems": 7,
       "items": {"$ref": "#/$defs/case"}
     },
     "default_parser_status": {"const": "default_parser_blocked"},
@@ -56,9 +56,9 @@
     "parser_status": {"const": "research_explicit_only"},
     "preflight_accepted_count": {"const": 4},
     "preflight_contract": {"const": "triton_source_preflight.execution_free.v0"},
-    "preflight_reject_count": {"const": 2},
+    "preflight_reject_count": {"const": 3},
     "raw_source_policy": {"const": "omitted_by_policy"},
-    "rejected_case_count": {"const": 4},
+    "rejected_case_count": {"const": 5},
     "schema_version": {
       "const": "tuc.source_to_intent_research_preflight_bridge_report.v0"
     },
@@ -96,6 +96,7 @@
             "accepted_matmul_elementwise",
             "accepted_softmax_reduction",
             "reject_ambiguous_softmax_axis",
+            "reject_annotated_signature",
             "reject_decorator_call",
             "reject_hardware_hint",
             "reject_import_escape"
@@ -120,6 +121,7 @@
           "maxItems": 4,
           "items": {
             "enum": [
+              "annotation",
               "decorator_call",
               "import_statement",
               "unsupported_call_target"

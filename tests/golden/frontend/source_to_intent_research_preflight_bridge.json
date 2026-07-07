@@ -18,7 +18,7 @@
     "triton_jit_execution"
   ],
   "bridge_contract": "source_to_intent_research_preflight_bridge.execution_free.v0",
-  "case_count": 6,
+  "case_count": 7,
   "cases": [
     {
       "bridge_stage": "accepted_pipeline",
@@ -66,6 +66,20 @@
     },
     {
       "bridge_stage": "preflight_reject",
+      "case_id": "reject_annotated_signature",
+      "expectation": "rejected",
+      "operation_families": [],
+      "parser_diagnostic_outcome": "rejected",
+      "parser_rejection_reason": "preflight_annotation",
+      "preflight_rejected_features": [
+        "annotation"
+      ],
+      "preflight_status": "rejected",
+      "source_digest": "sha256:bef767e7a70a31a52c6e38a7fed87af653d5e9693fbaf9080b3ffc3d4ba29d58",
+      "source_name": "reject_annotated_signature"
+    },
+    {
+      "bridge_stage": "preflight_reject",
       "case_id": "reject_decorator_call",
       "expectation": "rejected",
       "operation_families": [],
@@ -108,15 +122,15 @@
   ],
   "default_parser_status": "default_parser_blocked",
   "diagnostics_contract": "source_to_intent_research_diagnostics.execution_free.v0",
-  "diagnostics_digest": "sha256:a54858d666ce65605e17d15ffd20e3136257ffbbf756b6c9f0b8cd604799a01d",
+  "diagnostics_digest": "sha256:672cecfb0a7e64675ca0b06234aec9a9ff0f40bbff5b8116811d295714208ef5",
   "parser_output_policy": "source_intent.v0_plain_data_only",
   "parser_semantic_reject_count": 2,
   "parser_status": "research_explicit_only",
   "preflight_accepted_count": 4,
   "preflight_contract": "triton_source_preflight.execution_free.v0",
-  "preflight_reject_count": 2,
+  "preflight_reject_count": 3,
   "raw_source_policy": "omitted_by_policy",
-  "rejected_case_count": 4,
+  "rejected_case_count": 5,
   "schema_version": "tuc.source_to_intent_research_preflight_bridge_report.v0",
   "source_boundary": "triton_source_preflight_before_research_parser",
   "status": "PASS"

@@ -43,6 +43,7 @@ SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS = {
     "kernel_name_mismatch": "target kernel name mismatch",
     "missing_triton_jit_decorator": "requires one @triton.jit decorator",
     "multiple_kernel_functions": "exactly one top-level kernel function",
+    "preflight_annotation": "annotation",
     "top_level_side_effect": "supports only imports and one kernel function",
     "unsupported_decorator": "requires @triton.jit decorator data",
     "unsupported_import": "supports only import triton",

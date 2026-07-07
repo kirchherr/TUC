@@ -24,19 +24,19 @@ Triton source ingestion.
 
 ## What It Proves
 
-For the six current research diagnostic cases, the bridge separates three
+For the seven current research diagnostic cases, the bridge separates three
 outcomes:
 
 - `accepted_pipeline`: Preflight accepts and the parser diagnostic accepts.
 - `preflight_reject`: Preflight rejects before parser semantics can approve
-  anything.
+  anything, including annotated signatures.
 - `parser_semantic_reject`: Preflight accepts bounded syntax, but parser
   semantics reject unsupported or ambiguous source intent.
 
 Current counts:
 
 - accepted pipeline cases: 2
-- preflight reject cases: 2
+- preflight reject cases: 3
 - parser semantic reject cases: 2
 
 ## Security Boundary

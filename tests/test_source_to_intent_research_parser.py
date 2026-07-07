@@ -158,6 +158,11 @@ def test_research_parser_report_schema_declares_version() -> None:
             "requires explicit axis",
         ),
         (
+            "@triton.jit\ndef annotated_signature(x: tl.tensor, y) -> tl.tensor:\n"
+            "    tl.store(y, x)\n",
+            "preflight rejected source: annotation",
+        ),
+        (
             "@triton.jit\ndef hardware_hint(x, y):\n"
             '    target = "cuda"\n'
             "    tl.store(y, x)\n",

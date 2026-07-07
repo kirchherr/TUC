@@ -78,6 +78,9 @@
           "$ref": "#/$defs/reject_missing_triton_jit_decorator"
         },
         {
+          "$ref": "#/$defs/reject_annotated_signature"
+        },
+        {
           "$ref": "#/$defs/reject_decorator_call"
         },
         {
@@ -105,13 +108,13 @@
           "$ref": "#/$defs/module_ast_depth_budget"
         }
       ],
-      "minItems": 13,
-      "maxItems": 13
+      "minItems": 14,
+      "maxItems": 14
     },
     "coverage_policy": {
       "const": "all_current_rejections_are_source_free_and_fail_closed"
     },
-    "covered_rejection_count": {"const": 13},
+    "covered_rejection_count": {"const": 14},
     "default_parser_status": {"const": "default_parser_blocked"},
     "diagnostics_contract": {
       "const": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0"
@@ -126,12 +129,13 @@
         {"const": "kernel_name_mismatch"},
         {"const": "missing_triton_jit_decorator"},
         {"const": "multiple_kernel_functions"},
+        {"const": "preflight_annotation"},
         {"const": "top_level_side_effect"},
         {"const": "unsupported_decorator"},
         {"const": "unsupported_import"}
       ],
-      "minItems": 9,
-      "maxItems": 9,
+      "minItems": 10,
+      "maxItems": 10,
       "uniqueItems": true
     },
     "frontend_ingress_contract": {
@@ -190,6 +194,15 @@
         "case_id": {"const": "reject_missing_triton_jit_decorator"},
         "coverage_source": {"const": "diagnostics"},
         "reason_id": {"const": "missing_triton_jit_decorator"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_annotated_signature": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_annotated_signature"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "preflight_annotation"},
         "status": {"const": "covered"}
       }
     },

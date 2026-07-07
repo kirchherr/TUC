@@ -17,7 +17,7 @@ diagnostic outcomes as its own machine-readable artifact.
 Add Source-To-Intent Research Preflight Bridge v0.
 
 The report runs the existing research diagnostic cases through Triton Source
-Preflight and compares the result with source-free parser diagnostics. It
+Preflight and compares the result with source-free parser diagnostics, including annotation rejection. It
 classifies each case as:
 
 - `accepted_pipeline`

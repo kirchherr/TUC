@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from examples.source_to_intent_corpus import (
     REJECT_AMBIGUOUS_SOFTMAX_AXIS_SOURCE,
+    REJECT_ANNOTATED_SIGNATURE_SOURCE,
     REJECT_DECORATOR_CALL_SOURCE,
     REJECT_HARDWARE_HINT_SOURCE,
     REJECT_IMPORT_ESCAPE_SOURCE,
@@ -56,6 +57,17 @@ def build_source_to_intent_research_diagnostic_cases() -> (
                 "y": (4, 8),
             },
             expected_rejection_reason="missing_axis_keyword",
+        ),
+        SourceToIntentResearchDiagnosticCase(
+            case_id="reject_annotated_signature",
+            expectation="rejected",
+            source=REJECT_ANNOTATED_SIGNATURE_SOURCE,
+            source_name="reject_annotated_signature",
+            tensor_shapes={
+                "x": (4, 8),
+                "y": (4, 8),
+            },
+            expected_rejection_reason="preflight_annotation",
         ),
         SourceToIntentResearchDiagnosticCase(
             case_id="reject_decorator_call",

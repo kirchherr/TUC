@@ -41,7 +41,10 @@ EXPECTED_CASE_FILES = {
         CORPUS_DIR / "rejected" / "reject_decorator_call.tucsrc",
         corpus_example.REJECT_DECORATOR_CALL_SOURCE,
     ),
-    "reject_hardware_hint": (
+    "reject_annotated_signature": (
+        CORPUS_DIR / "rejected" / "reject_annotated_signature.tucsrc",
+        corpus_example.REJECT_ANNOTATED_SIGNATURE_SOURCE,
+    ),    "reject_hardware_hint": (
         CORPUS_DIR / "rejected" / "reject_hardware_hint.tucsrc",
         corpus_example.REJECT_HARDWARE_HINT_SOURCE,
     ),
@@ -59,7 +62,7 @@ def test_source_to_intent_corpus_report_tracks_accepted_and_rejected_cases() -> 
 
     assert report.corpus_contract == SOURCE_TO_INTENT_CORPUS_CONTRACT
     assert report.accepted_case_count == 2
-    assert report.rejected_case_count == 4
+    assert report.rejected_case_count == 5
     assert report.operation_family_coverage == tuple(
         sorted(SOURCE_TO_INTENT_CORPUS_OPERATION_FAMILIES)
     )

@@ -24,14 +24,14 @@
       "artifact_id": "source_to_intent_research_diagnostics",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_diagnostics.execution_free.v0",
-      "digest": "sha256:60eb5965e0e97d424b2f2f0e88dbe02e656ee63b2d783f27c5ab7d7361cd2968",
+      "digest": "sha256:766fb364225e84ffdbed608380ee6caa59b2a6788f13fe45558c31eda05b65e0",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_preflight_bridge",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_preflight_bridge.execution_free.v0",
-      "digest": "sha256:b9928d806558110d5a3991167960d034d350172176a5fc8a41b91a608569bb69",
+      "digest": "sha256:73e7845f8a23ba410ee6f4828da640725c34282c2597a188b7dadfd49d3b276c",
       "status": "accepted"
     },
     {
@@ -66,7 +66,7 @@
       "artifact_id": "source_to_intent_research_kernel_ingress_diagnostics",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
-      "digest": "sha256:a7ad36f4296fc529f9ae9eb866b5374179387ff99b4be9c5ec9f3e14cce042e4",
+      "digest": "sha256:e09ae0e0876fe48742c4161e1055d34815997cd194e1d5eb7b6473918a6e2bc1",
       "status": "accepted"
     },
     {
@@ -87,21 +87,21 @@
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:25acf33962091a46fb3f71d80b9ff8d70b2307637c9ec7a817cc3853074c78f3",
+      "digest": "sha256:d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:b5cdead1cb47a9af4d87b2587cba3db742da21d04750d5a7f1ba8c052bfda7ad",
+      "digest": "sha256:b37eeb46180c24b3d69123ebdb28e89087997b0f4e5ff2349720f0fdd59204e8",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:ea45d5017b2267e2b4b80331effc2ffcdde2f7deda5be5e9d3fca4927b88fba4",
+      "digest": "sha256:0cae050c86d871dcc029bb860a591b64b2d36b882c0cbccaa6e2dbc49f5e71cd",
       "status": "accepted"
     }
   ],

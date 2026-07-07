@@ -37,7 +37,7 @@ The current parser accepts only a tiny subset:
 
 - one caller-provided source string
 - one `@triton.jit`-decorated function, parsed as syntax data
-- simple positional arguments only
+- simple unannotated positional arguments only
 - caller-provided tensor shapes for all function arguments
 - `tl.dot(a, b)` as `matmul`
 - `tl.where(...)` as `elementwise`

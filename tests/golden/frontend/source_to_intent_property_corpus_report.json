@@ -81,10 +81,10 @@
   "property_count": 8,
   "proposal_name": "research-source-to-intent-parser-proposal",
   "raw_source_policy": "omitted_by_policy",
-  "rejected_source_case_count": 4,
+  "rejected_source_case_count": 5,
   "required_property_coverage_complete": true,
   "schema_version": "tuc.source_to_intent_property_corpus_report.v0",
-  "source_corpus_case_count": 6,
+  "source_corpus_case_count": 7,
   "source_corpus_contract": "source_to_intent_corpus.data_only.v0",
-  "source_corpus_digest": "sha256:33d024ddb74a8e50a900c024e7fca572f16e099362bea9c42139c2288ea8a6d9"
+  "source_corpus_digest": "sha256:fd1566780be7254d1c20c8ef646dbd29c8d7165ff8128b7672b121fb9f66ecf7"
 }

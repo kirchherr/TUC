@@ -43,7 +43,8 @@ Accepted cases must produce parser reports with safe metadata:
 
 Rejected cases must fail closed with an expected whitelisted rejection reason:
 
-- `missing_axis_keyword`
+
+
 - `preflight_decorator_call`
 - `preflight_import_statement`
 - `unsupported_assignment_value`

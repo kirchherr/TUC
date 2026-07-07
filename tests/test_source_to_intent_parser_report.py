@@ -38,7 +38,7 @@ def test_source_to_intent_parser_report_is_proposal_only() -> None:
     assert report.allowed_future_output == SOURCE_TO_INTENT_PARSER_ALLOWED_FUTURE_OUTPUT
     assert report.raw_source_policy == SOURCE_TO_INTENT_PROPERTY_CORPUS_RAW_SOURCE_POLICY
     assert report.property_corpus_contract == SOURCE_TO_INTENT_PROPERTY_CORPUS_CONTRACT
-    assert report.source_corpus_case_count == 6
+    assert report.source_corpus_case_count == 7
     assert report.property_count == 8
     assert report.required_property_coverage_complete
     assert report.source_corpus_digest.startswith("sha256:")

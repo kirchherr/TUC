@@ -30,7 +30,7 @@ Source Intent Intake validation
 
 The parser supports only:
 
-- one function with simple positional arguments
+- one function with simple unannotated positional arguments
 - `tl.dot` -> `matmul`
 - `tl.where` -> `elementwise`
 - `tl.softmax(..., axis=N)` -> `softmax`

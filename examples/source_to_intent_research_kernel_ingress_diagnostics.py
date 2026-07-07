@@ -32,6 +32,10 @@ REJECT_IMPORT_AFTER_KERNEL_FUNCTION_MODULE_SOURCE = (
 REJECT_MISSING_TRITON_JIT_DECORATOR_MODULE_SOURCE = (
     REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace("@triton.jit\n", "")
 )
+REJECT_ANNOTATED_SIGNATURE_MODULE_SOURCE = REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
+    "def matmul_elementwise(a, b, y):",
+    "def matmul_elementwise(a: tl.tensor, b, y) -> tl.tensor:",
+)
 REJECT_DECORATOR_CALL_MODULE_SOURCE = REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
     "@triton.jit",
     "@triton.jit(num_warps=4)",
@@ -141,6 +145,15 @@ def build_source_to_intent_research_kernel_ingress_diagnostic_cases() -> (
             kernel_name="matmul_elementwise",
             tensor_shapes=matmul_shapes,
             expected_rejection_reason="missing_triton_jit_decorator",
+        ),
+        SourceToIntentResearchKernelIngressDiagnosticCase(
+            case_id="reject_annotated_signature",
+            expectation="rejected",
+            module_source=REJECT_ANNOTATED_SIGNATURE_MODULE_SOURCE,
+            source_name="reject_annotated_signature",
+            kernel_name="matmul_elementwise",
+            tensor_shapes=matmul_shapes,
+            expected_rejection_reason="preflight_annotation",
         ),
         SourceToIntentResearchKernelIngressDiagnosticCase(
             case_id="reject_decorator_call",

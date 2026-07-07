@@ -36,7 +36,8 @@ The diagnostics report records source-free evidence for:
 - unsupported imports
 - import-from statements
 - imports after the selected kernel function
-- missing `@triton.jit` decorators
+
+
 - decorator calls
 - unsupported decorators
 - multiple top-level kernel functions

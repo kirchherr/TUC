@@ -24,6 +24,7 @@ from tuc.frontend.source_to_intent_research_parser import (
     SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY,
     SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
     SourceToIntentResearchParseResult,
+    SourceToIntentResearchParserError,
     parse_triton_source_to_source_intent,
     source_to_intent_research_parse_report_to_dict,
 )
@@ -213,11 +214,14 @@ def ingest_triton_module_source_to_source_intent(
     imports, function = _validate_module_shape(tree, kernel_name)
     extracted_kernel_source = _extract_function_source(module_source, function)
 
-    parser_result = parse_triton_source_to_source_intent(
-        extracted_kernel_source,
-        source_name=source_name,
-        tensor_shapes=tensor_shapes,
-    )
+    try:
+        parser_result = parse_triton_source_to_source_intent(
+            extracted_kernel_source,
+            source_name=source_name,
+            tensor_shapes=tensor_shapes,
+        )
+    except SourceToIntentResearchParserError as exc:
+        raise SourceToIntentResearchKernelIngressError(str(exc)) from exc
     parser_report = source_to_intent_research_parse_report_to_dict(
         parser_result.report
     )

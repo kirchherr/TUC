@@ -41,6 +41,11 @@ def ambiguous_softmax_axis(x, y):
     tl.store(y, normalized)
 """
 
+REJECT_ANNOTATED_SIGNATURE_SOURCE = """@triton.jit
+def annotated_signature(x: tl.tensor, y) -> tl.tensor:
+    tl.store(y, x)
+"""
+
 REJECT_HARDWARE_HINT_SOURCE = """@triton.jit
 def hardware_hint(x, y):
     target = "cuda"
@@ -75,6 +80,12 @@ def build_source_to_intent_corpus_cases() -> tuple[SourceToIntentCorpusCase, ...
             expectation="rejected",
             source=REJECT_DECORATOR_CALL_SOURCE,
             expected_rejection_features=("decorator_call",),
+        ),
+        source_to_intent_corpus_case_from_source(
+            case_id="reject_annotated_signature",
+            expectation="rejected",
+            source=REJECT_ANNOTATED_SIGNATURE_SOURCE,
+            expected_rejection_features=("annotation",),
         ),
         source_to_intent_corpus_case_from_source(
             case_id="reject_hardware_hint",

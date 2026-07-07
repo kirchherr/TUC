@@ -160,6 +160,18 @@
       "source_name": "reject_missing_triton_jit_decorator"
     },
     {
+      "case_id": "reject_annotated_signature",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 230,
+      "module_digest": "sha256:777780e3ae8aa587075444f1ba56f25563d4cf01be3206f981f728735fa30fbc",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "preflight_annotation",
+      "source_name": "reject_annotated_signature"
+    },
+    {
       "case_id": "reject_decorator_call",
       "expectation": "rejected",
       "ingress_report_digest": "",
@@ -229,7 +241,7 @@
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",
-  "rejected_case_count": 9,
+  "rejected_case_count": 10,
   "rejection_reasons": [
     "decorator_call",
     "import_after_kernel_function",
@@ -237,6 +249,7 @@
     "kernel_name_mismatch",
     "missing_triton_jit_decorator",
     "multiple_kernel_functions",
+    "preflight_annotation",
     "top_level_side_effect",
     "unsupported_decorator",
     "unsupported_import"

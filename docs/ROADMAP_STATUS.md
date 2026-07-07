@@ -630,7 +630,8 @@ hardware-independent interface into capability-driven runtime planning.
   research proposal separately from the default block gate, showing current
   proposal evidence complete while keeping the default parser path blocked.
 - Source-To-Intent Corpus Evidence now adds accepted and rejected source-buffer
-  fixtures plus a data-only corpus report, covering all MVP operation families
+
+
   in accepted cases while keeping source text disconnected from Source Intent
   IR and compiler artifacts.
 - Source-To-Intent Property Corpus now binds fuzz/property obligations to the
@@ -657,7 +658,8 @@ hardware-independent interface into capability-driven runtime planning.
   `docs/SOURCE_INTENT_AXIS_ATTRIBUTES.md` and accepted by
   `rfcs/0157-source-intent-axis-attributes.md`.
 - Source-To-Intent Research Diagnostics now checks the accepted research parser
-  slices and whitelisted rejected source cases with source-free diagnostic
+
+
   reason IDs, deterministic golden evidence, and CI coverage.
 - Source-To-Intent Research Evidence Gate now binds Research Readiness,
   Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest,
@@ -947,7 +949,8 @@ Current slice:
   `schemas/source_to_intent_research_parser_report.v0.schema.json`,
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_parser.json`, and
-  fail-closed tests for imports, decorator calls, ambiguous softmax axes,
+
+
   unsupported assignments, shape mismatches, and unknown shape manifest entries.
 - Source-To-Intent Research Parser Conformance Gate at
   `examples/source_to_intent_research_parser_conformance_gate.py`, with golden
@@ -958,7 +961,7 @@ Current slice:
   `schemas/source_to_intent_research_diagnostics_report.v0.schema.json`,
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_diagnostics_report.json`,
-  and source-free rejection reason IDs for accepted/rejected parser cases.
+  and source-free rejection reason IDs for accepted/rejected parser cases, including annotated-signature rejection.
 - Source-To-Intent Research Preflight Bridge at
   `examples/source_to_intent_research_preflight_bridge.py`, with schema at
   `schemas/source_to_intent_research_preflight_bridge_report.v0.schema.json`,
@@ -1199,7 +1202,7 @@ Current slice:
   deterministic golden evidence at
   `tests/golden/frontend/source_to_intent_research_kernel_ingress_rejection_coverage.json`,
   diagnostics plus boundary-budget rejection coverage, including fail-closed
-  import-preamble drift coverage, and binding through the Kernel Ingress Proof
+  import-preamble drift and annotated-signature coverage, and binding through the Kernel Ingress Proof
   Bundle.
 - Source-To-Intent Research Kernel Ingress Conformance Gate at
   `examples/source_to_intent_research_kernel_ingress_conformance_gate.py`,
@@ -1218,7 +1221,7 @@ Current slice:
   `tests/golden/frontend/source_to_intent_research_kernel_ingress_diagnostics_report.json`,
   and digest binding through Source-To-Intent Research Evidence Gate and Proof
   Bundle for accepted/rejected module-shaped source diagnostics, including
-  imports-after-kernel rejection evidence.
+  imports-after-kernel and annotated-signature rejection evidence.
 - Source-To-Intent Research Kernel Ingress Idiom Alignment at
   `examples/source_to_intent_research_kernel_ingress_idiom_alignment.py`,
   with schema at

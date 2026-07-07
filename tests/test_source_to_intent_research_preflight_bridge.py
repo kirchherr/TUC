@@ -33,19 +33,19 @@ def test_source_to_intent_research_preflight_bridge_report_shape() -> None:
     assert report["bridge_contract"] == SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE_CONTRACT
     assert report["status"] == "PASS"
     assert report["accepted_case_count"] == 2
-    assert report["rejected_case_count"] == 4
+    assert report["rejected_case_count"] == 5
     assert report["preflight_accepted_count"] == 4
-    assert report["preflight_reject_count"] == 2
+    assert report["preflight_reject_count"] == 3
     assert report["parser_semantic_reject_count"] == 2
     assert [case["bridge_stage"] for case in report["cases"]] == [
         "accepted_pipeline",
         "accepted_pipeline",
         "parser_semantic_reject",
         "preflight_reject",
+        "preflight_reject",
         "parser_semantic_reject",
         "preflight_reject",
     ]
-
 
 @pytest.mark.parametrize(
     ("tamper_key", "tamper_value", "error"),
@@ -93,7 +93,7 @@ def test_source_to_intent_research_preflight_bridge_example_runs() -> None:
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"status": "PASS"' in completed.stdout
-    assert '"preflight_reject_count": 2' in completed.stdout
+    assert '"preflight_reject_count": 3' in completed.stdout
     assert '"parser_semantic_reject_count": 2' in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "tl.dot" not in completed.stdout

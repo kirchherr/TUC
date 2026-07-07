@@ -128,6 +128,12 @@ _EXPECTED_DIAGNOSTIC_COVERAGE = (
         "status": "covered",
     },
     {
+        "case_id": "reject_annotated_signature",
+        "coverage_source": "diagnostics",
+        "reason_id": "preflight_annotation",
+        "status": "covered",
+    },
+    {
         "case_id": "reject_decorator_call",
         "coverage_source": "diagnostics",
         "reason_id": "decorator_call",

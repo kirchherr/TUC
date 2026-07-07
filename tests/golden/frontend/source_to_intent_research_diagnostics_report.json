@@ -66,6 +66,17 @@
       "source_name": "reject_ambiguous_softmax_axis"
     },
     {
+      "case_id": "reject_annotated_signature",
+      "expectation": "rejected",
+      "operation_families": [],
+      "outcome": "rejected",
+      "parser_report_digest": "",
+      "rejection_reason": "preflight_annotation",
+      "source_bytes": 86,
+      "source_digest": "sha256:bef767e7a70a31a52c6e38a7fed87af653d5e9693fbaf9080b3ffc3d4ba29d58",
+      "source_name": "reject_annotated_signature"
+    },
+    {
       "case_id": "reject_decorator_call",
       "expectation": "rejected",
       "operation_families": [],
@@ -105,9 +116,10 @@
   "parser_contract": "source_to_intent_research_parser.execution_free.v0",
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
-  "rejected_case_count": 4,
+  "rejected_case_count": 5,
   "rejection_reasons": [
     "missing_axis_keyword",
+    "preflight_annotation",
     "preflight_decorator_call",
     "preflight_import_statement",
     "unsupported_assignment_value"

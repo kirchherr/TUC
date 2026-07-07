@@ -35,7 +35,7 @@
       "entry_point": "python examples/objective_alpha_evidence_extension_policy.py",
       "evidence_id": "objective_alpha_evidence_extension_policy",
       "extension_tier": "governance",
-      "metadata_digest": "96a9515fb8f947c01511a496a18a7b0947ab9a407dfdc57aea5de718c52d1e20",
+      "metadata_digest": "0b1a316fd41b3b6f406aad1ba497382194ef8f6495c4914a3a7c5b9259d89d5b",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -53,7 +53,7 @@
       "entry_point": "python examples/source_to_intent_research_kernel_ingress_proof_bundle.py",
       "evidence_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "extension_tier": "frontend_runtime_proof",
-      "metadata_digest": "25acf33962091a46fb3f71d80b9ff8d70b2307637c9ec7a817cc3853074c78f3",
+      "metadata_digest": "d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -62,7 +62,7 @@
       "entry_point": "python examples/source_to_intent_research_capability_claim_gate.py",
       "evidence_id": "source_to_intent_research_capability_claim_gate",
       "extension_tier": "claim_boundary",
-      "metadata_digest": "5a76c7e635cc77fc9c3bd642e525d14a0895fa6ded215c619150d234e0b7fa46",
+      "metadata_digest": "40e522becdfd4a0dc33b1504b2e6f1174c6bf78c949c5069402e49ccff9d72a8",
       "raw_output_policy": "digest_only",
       "status": "passed"
     }
@@ -71,7 +71,7 @@
   "catalog_entry_count": 4,
   "catalog_extension_tier_coverage_status": "complete",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "c151190aea32fe322b3f249cbd9f8d637cfb02eb4a60ef5de08dbbe792458894",
+  "catalog_metadata_digest": "a5c7e7b0d3a2aae0ab068786f9df64e8f73d9e42680be89dc6d9d97d5922ae7c",
   "catalog_missing_extension_tiers": [],
   "catalog_passed": true,
   "catalog_required_extension_tiers": [
@@ -84,7 +84,7 @@
   "catalog_status": "PASS",
   "digest_policy": "sha256_hex_only",
   "extension_policy_contract": "objective_alpha.evidence_extension_policy.data_only.v0",
-  "extension_policy_metadata_digest": "96a9515fb8f947c01511a496a18a7b0947ab9a407dfdc57aea5de718c52d1e20",
+  "extension_policy_metadata_digest": "0b1a316fd41b3b6f406aad1ba497382194ef8f6495c4914a3a7c5b9259d89d5b",
   "growth_policy": "append_only_rfc_bound",
   "issues": [],
   "required_controls": [
@@ -109,9 +109,9 @@
   ],
   "runtime_backend_equivalence_portfolio_metadata_digest": "46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
   "schema_version": "tuc.objective_alpha_public_evidence_catalog_report.v0",
-  "source_to_intent_research_capability_claim_gate_metadata_digest": "5a76c7e635cc77fc9c3bd642e525d14a0895fa6ded215c619150d234e0b7fa46",
-  "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": "25acf33962091a46fb3f71d80b9ff8d70b2307637c9ec7a817cc3853074c78f3",
-  "stable_bundle_metadata_digest": "607ee40c63d89301add9d40a03e63ef456bd8cfbb14845c48ca3caf08960eb0f",
+  "source_to_intent_research_capability_claim_gate_metadata_digest": "40e522becdfd4a0dc33b1504b2e6f1174c6bf78c949c5069402e49ccff9d72a8",
+  "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": "d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
+  "stable_bundle_metadata_digest": "828ecd2d2b17a7fde793db6ec81fd2f3f56bce2510ca55bdfaf349c0345baad0",
   "stable_entry_capacity": 16,
   "stable_entry_count": 16,
   "stable_entrypoint": "objective_alpha_public_proof_bundle"

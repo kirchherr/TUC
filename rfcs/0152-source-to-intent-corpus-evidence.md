@@ -34,7 +34,8 @@ elementwise,matmul,reduction,softmax
 The current rejected fixtures cover:
 
 ```text
-ambiguous_softmax_axis
+
+
 decorator_call
 hardware_specific_source_hint
 import_statement

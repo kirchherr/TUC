@@ -161,6 +161,13 @@ def test_kernel_ingress_frontend_extracts_mvp_pipeline_module_source() -> None:
             ),
             "requires @triton.jit decorator data",
         ),
+        (
+            REALISTIC_MATMUL_ELEMENTWISE_MODULE_SOURCE.replace(
+                "def matmul_elementwise(a, b, y):",
+                "def matmul_elementwise(a: tl.tensor, b, y) -> tl.tensor:",
+            ),
+            "preflight rejected source: annotation",
+        ),
     ],
 )
 def test_kernel_ingress_rejects_unsupported_module_surfaces(

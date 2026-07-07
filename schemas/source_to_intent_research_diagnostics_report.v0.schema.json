@@ -67,6 +67,7 @@
       "items": {
         "enum": [
           "missing_axis_keyword",
+          "preflight_annotation",
           "preflight_decorator_call",
           "preflight_import_statement",
           "unsupported_assignment_value"
@@ -118,6 +119,7 @@
             {
               "enum": [
                 "missing_axis_keyword",
+                "preflight_annotation",
                 "preflight_decorator_call",
                 "preflight_import_statement",
                 "unsupported_assignment_value"

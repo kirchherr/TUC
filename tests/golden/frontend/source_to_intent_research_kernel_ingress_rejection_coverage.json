@@ -63,6 +63,12 @@
       "status": "covered"
     },
     {
+      "case_id": "reject_annotated_signature",
+      "coverage_source": "diagnostics",
+      "reason_id": "preflight_annotation",
+      "status": "covered"
+    },
+    {
       "case_id": "reject_decorator_call",
       "coverage_source": "diagnostics",
       "reason_id": "decorator_call",
@@ -118,10 +124,10 @@
     }
   ],
   "coverage_policy": "all_current_rejections_are_source_free_and_fail_closed",
-  "covered_rejection_count": 13,
+  "covered_rejection_count": 14,
   "default_parser_status": "default_parser_blocked",
   "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
-  "diagnostics_digest": "sha256:a7ad36f4296fc529f9ae9eb866b5374179387ff99b4be9c5ec9f3e14cce042e4",
+  "diagnostics_digest": "sha256:e09ae0e0876fe48742c4161e1055d34815997cd194e1d5eb7b6473918a6e2bc1",
   "diagnostics_rejection_reasons": [
     "decorator_call",
     "import_after_kernel_function",
@@ -129,6 +135,7 @@
     "kernel_name_mismatch",
     "missing_triton_jit_decorator",
     "multiple_kernel_functions",
+    "preflight_annotation",
     "top_level_side_effect",
     "unsupported_decorator",
     "unsupported_import"

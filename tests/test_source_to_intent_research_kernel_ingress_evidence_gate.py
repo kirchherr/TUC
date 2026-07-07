@@ -42,11 +42,11 @@ def test_kernel_ingress_evidence_gate_matches_golden() -> None:
     assert 'conformance_gate = "passed"' in report
     assert 'idiom_alignment = "passed"' in report
     assert 'proof_bundle = "passed"' in report
-    assert 'covered_rejections = "13"' in report
+    assert 'covered_rejections = "14"' in report
     assert (
         'diagnostics_rejection_reasons = "decorator_call,'
         'import_after_kernel_function,import_from_statement,kernel_name_mismatch,'
-        'missing_triton_jit_decorator,multiple_kernel_functions,'
+        'missing_triton_jit_decorator,multiple_kernel_functions,preflight_annotation,'
         'top_level_side_effect,unsupported_decorator,unsupported_import"'
         in report
     )
