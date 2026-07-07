@@ -53,7 +53,7 @@ admitted:
 - [Plugin Discovery Allowlist Gate](PLUGIN_DISCOVERY_ALLOWLIST_GATE.md).
 - [Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md).
 - [Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md).
-- Generated Artifact Quarantine Gate.
+- [Generated Artifact Quarantine Gate](GENERATED_ARTIFACT_QUARANTINE_GATE.md).
 - Native Backend Execution Security Gate.
 
 Those gates must define resource budgets, isolation, allowed inputs, forbidden
@@ -122,3 +122,14 @@ This gate establishes sandbox requirements for `device_access`, but it still
 does not discover devices, enumerate devices, call driver APIs, emit device
 handles, allocate device memory, map device memory, perform direct memory
 access, launch kernels, or serialize hardware fingerprints.
+
+The sixth dedicated surface gate is
+[Generated Artifact Quarantine Gate](GENERATED_ARTIFACT_QUARANTINE_GATE.md). Its
+canonical doc path is `docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md`, its entry
+point is `examples/generated_artifact_quarantine_gate.py`, and its schema is
+`schemas/generated_artifact_quarantine_gate_report.v0.schema.json`.
+
+This gate establishes quarantine requirements for `generated_artifact_execution`,
+but it still does not emit artifacts, write artifacts, load artifacts, grant
+executable permissions, access artifact caches, emit backend binaries, execute
+generated artifacts, or serialize generated code.

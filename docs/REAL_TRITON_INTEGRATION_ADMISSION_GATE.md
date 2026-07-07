@@ -46,6 +46,10 @@ gate IDs, counts, and fixed `false` execution flags.
 - Fifth surface gate schema:
   `schemas/device_access_sandbox_gate_report.v0.schema.json`
 - Fifth surface gate example: `examples/device_access_sandbox_gate.py`
+- Sixth surface gate: `docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md`
+- Sixth surface gate schema:
+  `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`
+- Sixth surface gate example: `examples/generated_artifact_quarantine_gate.py`
 
 ## Meaning
 
@@ -153,3 +157,16 @@ execution, subprocesses, and dynamic libraries.
 
 Entry point: `examples/device_access_sandbox_gate.py`.
 Schema: `schemas/device_access_sandbox_gate_report.v0.schema.json`.
+
+## Sixth Surface Gate
+
+[Generated Artifact Quarantine Gate](GENERATED_ARTIFACT_QUARANTINE_GATE.md) is
+the sixth dedicated gate for one of the blocked surfaces listed here. It binds
+this admission gate, Triton JIT Execution Sandbox, and Device Access Sandbox
+evidence by digest while keeping `generated_artifact_execution = false`,
+`artifact_write = false`, and preventing artifact emission, artifact loading,
+artifact-cache access, executable permissions, backend binary emission, device
+access, kernel launch, subprocesses, and dynamic libraries.
+
+Entry point: `examples/generated_artifact_quarantine_gate.py`.
+Schema: `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`.

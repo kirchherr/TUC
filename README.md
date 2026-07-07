@@ -428,6 +428,11 @@ Current frontend surfaces:
   enumeration, driver calls, device handles, device memory allocation, memory
   mapping, direct memory access, kernel launch, generated artifact execution,
   subprocess, and dynamic-library surfaces still blocked. Schema: `schemas/device_access_sandbox_gate_report.v0.schema.json`; entry point: `examples/device_access_sandbox_gate.py`; doc: `docs/DEVICE_ACCESS_SANDBOX_GATE.md`.
+- Generated Artifact Quarantine Gate establishing the sixth dedicated Real
+  Triton Integration surface gate for `generated_artifact_execution`, with
+  artifact emission, writes, loads, executable permissions, artifact-cache
+  access, backend binary emission, device access, kernel launch, subprocess,
+  and dynamic-library surfaces still blocked. Schema: `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`; entry point: `examples/generated_artifact_quarantine_gate.py`; doc: `docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -503,6 +508,7 @@ examples/package_import_sandbox_gate.py
 examples/plugin_discovery_allowlist_gate.py
 examples/triton_jit_execution_sandbox_gate.py
 examples/device_access_sandbox_gate.py
+examples/generated_artifact_quarantine_gate.py
 examples/source_to_intent_parser_block_gate.py
 ```
 
@@ -519,6 +525,7 @@ Key docs:
 - [Plugin Discovery Allowlist Gate](docs/PLUGIN_DISCOVERY_ALLOWLIST_GATE.md)
 - [Triton JIT Execution Sandbox Gate](docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md)
 - [Device Access Sandbox Gate](docs/DEVICE_ACCESS_SANDBOX_GATE.md)
+- [Generated Artifact Quarantine Gate](docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

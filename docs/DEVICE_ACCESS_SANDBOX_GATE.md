@@ -73,3 +73,17 @@ Future device access may only move beyond this gate after a separate
 implementation RFC defines an actual sandbox, driver mediation, device
 provenance, resource budgets, allocation isolation, transfer controls,
 negative tests, and maintainer approval.
+
+## Next Surface Gate
+
+[Generated Artifact Quarantine Gate](GENERATED_ARTIFACT_QUARANTINE_GATE.md) is
+the next dedicated Real Triton Integration surface gate. Its canonical doc path
+is `docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md`, its entry point is
+`examples/generated_artifact_quarantine_gate.py`, and its schema is
+`schemas/generated_artifact_quarantine_gate_report.v0.schema.json`.
+
+That gate keeps generated artifact execution, artifact emission, artifact
+writes, artifact loads, executable permissions, artifact-cache access, backend
+binary emission, device access, kernel launch, subprocess execution, and
+dynamic library loading blocked while defining the quarantine requirements for
+future review.
