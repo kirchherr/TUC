@@ -413,6 +413,11 @@ Current frontend surfaces:
   integration kept manifest/fixture-only and no Python import, package code
   execution, entrypoint discovery, network, filesystem, environment,
   subprocess, or dynamic-library surface admitted. Schema: `schemas/package_import_sandbox_gate_report.v0.schema.json`; entry point: `examples/package_import_sandbox_gate.py`; doc: `docs/PACKAGE_IMPORT_SANDBOX_GATE.md`.
+- Plugin Discovery Allowlist Gate establishing the third dedicated Real Triton
+  Integration surface gate for `plugin_discovery`, with plugin discovery,
+  entrypoint discovery, registry scans, filesystem scans, plugin code
+  execution, frontend package import, Python import, network, subprocess,
+  dynamic-library, and device surfaces still blocked. Schema: `schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`; entry point: `examples/plugin_discovery_allowlist_gate.py`; doc: `docs/PLUGIN_DISCOVERY_ALLOWLIST_GATE.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -485,6 +490,7 @@ examples/external_frontend_package_conformance.py
 examples/real_triton_integration_admission_gate.py
 examples/source_ingestion_quarantine_gate.py
 examples/package_import_sandbox_gate.py
+examples/plugin_discovery_allowlist_gate.py
 examples/source_to_intent_parser_block_gate.py
 ```
 
@@ -498,6 +504,7 @@ Key docs:
 - [Real Triton Integration Threat Model](docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md)
 - [Source Ingestion Quarantine Gate](docs/SOURCE_INGESTION_QUARANTINE_GATE.md)
 - [Package Import Sandbox Gate](docs/PACKAGE_IMPORT_SANDBOX_GATE.md)
+- [Plugin Discovery Allowlist Gate](docs/PLUGIN_DISCOVERY_ALLOWLIST_GATE.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

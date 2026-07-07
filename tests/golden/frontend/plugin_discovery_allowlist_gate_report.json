@@ -1,0 +1,96 @@
+{
+  "admission_effect": "does_not_admit_plugin_discovery",
+  "all_required_evidence_present": true,
+  "allowlist_boundary_established": true,
+  "artifact_status": "review_gate",
+  "blocked_execution_surfaces": [
+    "device_access",
+    "dynamic_library_loading",
+    "entrypoint_discovery",
+    "file_system_access",
+    "frontend_package_import",
+    "network_access",
+    "plugin_code_execution",
+    "plugin_discovery",
+    "python_import",
+    "registry_scan",
+    "subprocess_execution"
+  ],
+  "blocked_outputs": [
+    "discovered_plugin",
+    "entrypoint_record",
+    "imported_module",
+    "plugin_capability_from_code",
+    "plugin_handle",
+    "plugin_registry_record"
+  ],
+  "capability_claims_from_code": false,
+  "device_access": false,
+  "dynamic_library_loading": false,
+  "entrypoint_discovery": false,
+  "evidence": [
+    {
+      "evidence_digest": "sha256:bd0ed6c655cf31899e2b3f0e3b03dd530b07481e40cd8e3aefabecde7d414dc1",
+      "evidence_id": "external_frontend_package_conformance",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:44374feab0efb66b64f0716f113bf53ea6ecb60e42717d2801f14471161e8681",
+      "evidence_id": "package_import_sandbox_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:0393ced6f1e262437cb929144e0623e02315860728db5c4e261b440879744b15",
+      "evidence_id": "plugin_discovery_allowlist_model",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:193037f8eda3c7fa47754af5a2b024c6642c6a7df407255bfe59a8f507639d11",
+      "evidence_id": "real_triton_integration_admission_gate",
+      "required": true
+    }
+  ],
+  "evidence_count": 4,
+  "evidence_policy": "digest_only",
+  "filesystem_scan": false,
+  "frontend_package_import": false,
+  "gate_contract": "plugin_discovery_allowlist_gate.data_only.v0",
+  "gate_id": "plugin_discovery_allowlist_gate",
+  "gate_status": "allowlist_requirements_only",
+  "network_access": false,
+  "plugin_code_execution": false,
+  "plugin_discovery": false,
+  "plugin_loaded": false,
+  "python_import": false,
+  "registry_scan": false,
+  "required_control_count": 18,
+  "required_controls": [
+    "allowlist_entries_are_manifest_ids",
+    "capability_claims_are_data_only",
+    "digest_only_evidence",
+    "entrypoints_not_discovered",
+    "fail_closed_on_violation",
+    "no_device_access",
+    "no_dynamic_library_loading",
+    "no_entrypoint_discovery",
+    "no_filesystem_scan",
+    "no_frontend_package_import",
+    "no_network_access",
+    "no_plugin_code_execution",
+    "no_plugin_discovery",
+    "no_python_import",
+    "no_registry_scan",
+    "no_subprocess_execution",
+    "plugin_treated_as_untrusted",
+    "sanitized_diagnostics_only"
+  ],
+  "required_evidence_ids": [
+    "external_frontend_package_conformance",
+    "package_import_sandbox_gate",
+    "plugin_discovery_allowlist_model",
+    "real_triton_integration_admission_gate"
+  ],
+  "schema_version": "tuc.plugin_discovery_allowlist_gate_report.v0",
+  "subprocess_execution": false,
+  "surface_id": "plugin_discovery"
+}

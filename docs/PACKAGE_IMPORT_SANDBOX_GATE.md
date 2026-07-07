@@ -75,3 +75,17 @@ permissions.
 Future frontend package integration may only move beyond this gate after a
 separate implementation RFC defines an actual sandbox, import isolation,
 resource limits, provenance, negative tests, and maintainer approval.
+
+## Next Surface Gate
+
+[Plugin Discovery Allowlist Gate](PLUGIN_DISCOVERY_ALLOWLIST_GATE.md) is the
+next dedicated Real Triton Integration surface gate. Its canonical doc path is
+`docs/PLUGIN_DISCOVERY_ALLOWLIST_GATE.md`, its entry point is
+`examples/plugin_discovery_allowlist_gate.py`, and its schema is
+`schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`.
+
+That gate keeps plugin discovery, entrypoint discovery, registry scans,
+filesystem scans, plugin code execution, frontend package import, Python
+import, network access, subprocess execution, dynamic library loading, device
+access, and capability claims from plugin code blocked while defining the
+manifest-ID allowlist requirements for future review.

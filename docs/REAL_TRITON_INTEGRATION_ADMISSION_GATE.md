@@ -34,6 +34,10 @@ gate IDs, counts, and fixed `false` execution flags.
 - Second surface gate schema:
   `schemas/package_import_sandbox_gate_report.v0.schema.json`
 - Second surface gate example: `examples/package_import_sandbox_gate.py`
+- Third surface gate: `docs/PLUGIN_DISCOVERY_ALLOWLIST_GATE.md`
+- Third surface gate schema:
+  `schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`
+- Third surface gate example: `examples/plugin_discovery_allowlist_gate.py`
 
 ## Meaning
 
@@ -87,6 +91,9 @@ inspection, JIT, and generated-artifact execution.
 
 Entry point: `examples/source_ingestion_quarantine_gate.py`.
 Schema: `schemas/source_ingestion_quarantine_gate_report.v0.schema.json`.
+
+## Second Surface Gate
+
 [Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md) is the second
 dedicated gate for one of the blocked surfaces listed here. It binds this
 admission gate, External Frontend Package Conformance, and Source Ingestion
@@ -97,3 +104,17 @@ dynamic libraries, plugin discovery, and Source Intent from import.
 
 Entry point: `examples/package_import_sandbox_gate.py`.
 Schema: `schemas/package_import_sandbox_gate_report.v0.schema.json`.
+
+## Third Surface Gate
+
+[Plugin Discovery Allowlist Gate](PLUGIN_DISCOVERY_ALLOWLIST_GATE.md) is the
+third dedicated gate for one of the blocked surfaces listed here. It binds this
+admission gate, External Frontend Package Conformance, and Package Import
+Sandbox evidence by digest while keeping `plugin_discovery = false`,
+`entrypoint_discovery = false`, and preventing registry scans, filesystem
+scans, plugin code execution, frontend package import, Python import, network
+access, subprocesses, dynamic libraries, device access, and capability claims
+from plugin code.
+
+Entry point: `examples/plugin_discovery_allowlist_gate.py`.
+Schema: `schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`.
