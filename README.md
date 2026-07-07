@@ -388,15 +388,17 @@ Current frontend surfaces:
 - Source-To-Intent Research Kernel Ingress Conformance Gate proving Kernel
   Ingress outputs pass the reusable Source Intent Frontend Conformance path.
 - Source-To-Intent Research Kernel Ingress Diagnostics proving accepted and
-
-
-  fail-closed.
+  rejected module-shaped source cases, including annotated signatures, stay
+  source-free, bounded, and fail-closed.
 - Source-To-Intent Research Kernel Ingress Idiom Alignment proving accepted
   module-shaped source outputs remain inside covered Triton MVP idioms.
 - Source-To-Intent Research Kernel Ingress Proof Bundle giving reviewers one
   digest-only entry point for the Kernel Ingress research slice.
 - Source-To-Intent Research Kernel Ingress Evidence Gate binding the focused
   Kernel Ingress proof slice as CI-facing source-free evidence.
+- Triton Integration Readiness defining the next Real Triton Integration
+  milestone as data-only review evidence with direct source ingestion and JIT
+  execution still blocked. Schema: `schemas/triton_integration_readiness_report.v0.schema.json`; entry point: `examples/triton_integration_readiness.py`.
 - Source Intent IR, schema, intake, return semantics, conformance, and metadata
   conversion.
 - Source Intent Axis Attributes for neutral `softmax` and `reduction` axis
@@ -466,6 +468,7 @@ Key docs:
 - [Frontend adapter](docs/FRONTEND_ADAPTER.md)
 - [Triton source threat model](docs/TRITON_SOURCE_THREAT_MODEL.md)
 - [Triton source preflight](docs/TRITON_SOURCE_PREFLIGHT.md)
+- [Triton integration readiness](docs/TRITON_INTEGRATION_READINESS.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)
 - [Source Intent axis attributes](docs/SOURCE_INTENT_AXIS_ATTRIBUTES.md)
 - [Source Intent frontend conformance gate](docs/SOURCE_INTENT_FRONTEND_CONFORMANCE_GATE.md)

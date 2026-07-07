@@ -180,6 +180,7 @@ hardware-independent interface into capability-driven runtime planning.
 - Objective Alpha Public Evidence Catalog now includes `source_to_intent_research_kernel_ingress_proof_bundle` as the first `frontend_runtime_proof` catalog entry, binding the Source-To-Intent Kernel Ingress Proof Bundle by SHA-256 metadata digest while keeping the fixed Public Proof Bundle unchanged and preserving source-free, digest-only public evidence.
 - Objective Alpha Public Evidence Catalog now includes `source_to_intent_research_capability_claim_gate` as the first `claim_boundary` catalog entry, binding the CI-facing Capability Claim Gate by SHA-256 metadata digest while keeping the fixed Public Proof Bundle unchanged and preserving source-free, digest-only public evidence.
 - Objective Alpha Public Evidence Catalog Extension-Tier Coverage now emits `catalog_required_extension_tiers`, `catalog_missing_extension_tiers`, and `catalog_extension_tier_coverage_status`, and the admission gate requires complete coverage for `governance`, `runtime_proof`, `frontend_runtime_proof`, and `claim_boundary` with no new source, execution, path-resolution, device, plugin, or native-performance surface.
+- [Triton Integration Readiness](TRITON_INTEGRATION_READINESS.md) now turns the next Real Triton Integration milestone into data-only review evidence at `examples/triton_integration_readiness.py`, with schema at `schemas/triton_integration_readiness_report.v0.schema.json`, deterministic golden evidence at `tests/golden/frontend/triton_integration_readiness_report.json`, current `integration_status: not_ready`, and direct Triton source ingestion plus `@triton.jit` execution still blocked.
 - Proof-of-abstraction example for Objective Alpha.
 - Golden proof-of-abstraction output for reproducible Level 3 validation.
 - Golden runtime-plan dump for proof-of-abstraction placement and transfer
@@ -1483,8 +1484,8 @@ Current focus:
 
 ## Next
 
-- Real Triton integration as a credibility milestone after the abstraction proof
-  remains stable.
+- Real Triton integration remains the next credibility milestone, but it must pass
+  [Triton Integration Readiness](TRITON_INTEGRATION_READINESS.md) first; the current data-only report at `examples/triton_integration_readiness.py` is intentionally `not_ready` and uses `schemas/triton_integration_readiness_report.v0.schema.json`.
 - Future Triton idiom coverage should enter through the schema-versioned
   metadata intake contract and
   [Triton Idiom Coverage Report](TRITON_IDIOM_COVERAGE_REPORT.md) before any

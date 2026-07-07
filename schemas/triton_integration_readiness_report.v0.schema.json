@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/triton_integration_readiness_report.v0.schema.json",
+  "title": "TUC Triton Integration Readiness Report v0",
+  "description": "Data-only readiness schema for future real Triton integration without opening source execution or JIT surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "blocked_prerequisite_count",
+    "direct_triton_source_ingestion",
+    "integration_status",
+    "integration_target",
+    "issues",
+    "missing_prerequisite_count",
+    "prerequisites",
+    "proposal_name",
+    "readiness_contract",
+    "readiness_ready",
+    "schema_version",
+    "satisfied_prerequisite_count",
+    "triton_jit_execution"
+  ],
+  "properties": {
+    "artifact_status": {"const": "diagnostic_only"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {"$ref": "#/$defs/report_text"},
+      "uniqueItems": true
+    },
+    "blocked_prerequisite_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 128
+    },
+    "direct_triton_source_ingestion": {"const": false},
+    "integration_status": {"enum": ["not_ready", "ready"]},
+    "integration_target": {"const": "real_triton_integration_phase_epsilon"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"},
+      "uniqueItems": true
+    },
+    "missing_prerequisite_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 128
+    },
+    "prerequisites": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/prerequisite"}
+    },
+    "proposal_name": {"$ref": "#/$defs/report_text"},
+    "readiness_contract": {"const": "triton_integration_readiness.data_only.v0"},
+    "readiness_ready": {"type": "boolean"},
+    "schema_version": {"const": "tuc.triton_integration_readiness_report.v0"},
+    "satisfied_prerequisite_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 128
+    },
+    "triton_jit_execution": {"const": false}
+  },
+  "$defs": {
+    "prerequisite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "prerequisite_id",
+        "required_for_readiness",
+        "status"
+      ],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/report_text"},
+        "prerequisite_id": {"$ref": "#/$defs/report_text"},
+        "required_for_readiness": {"type": "boolean"},
+        "status": {"enum": ["blocked_by_policy", "missing", "satisfied"]}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(not_supplied|[A-Za-z][A-Za-z0-9_.-]*)$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "url"
+        ]
+      }
+    }
+  }
+}
