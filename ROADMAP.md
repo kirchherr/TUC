@@ -1005,6 +1005,14 @@ Go/No-Go:
   Closure, requiring public output metadata to close across Output Contract,
   Public Output Bundle, Runtime Execution Receipt, and Runtime Execution
   Evidence Bundle before the Kernel Ingress claim can pass.
+- Source Intent Mixed Runtime Public Proof Bundle
+  (`examples/source_intent_mixed_runtime_public_proof_bundle.py`) binds Source
+  Intent plain data to mixed `systolic-sim + vector-sim` trusted execution,
+  Runtime Public Output Bundle, Reference Correctness, and Backend Equivalence
+  through schema `schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json`
+  and golden evidence at
+  `tests/golden/frontend/source_intent_mixed_runtime_public_proof_bundle.json`.
+  See `docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md`.
 - Source-To-Intent Research Kernel Ingress Backend Equivalence now compares
   accepted Kernel Ingress Source Intent cases under a neutral `reference-cpu`
   baseline and capability-selected `linear-sim`/`vector-sim` placements,

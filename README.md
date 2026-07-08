@@ -38,6 +38,17 @@ python examples/source_to_intent_research_capability_claim.py
 python examples/source_to_intent_research_capability_claim_gate.py
 ```
 
+Current practical Source Intent to mixed-runtime proof:
+
+```bash
+python examples/source_intent_mixed_runtime_public_proof_bundle.py
+```
+
+See
+[Source Intent Mixed Runtime Public Proof Bundle](docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md).
+Schema: `schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json`.
+Golden: `tests/golden/frontend/source_intent_mixed_runtime_public_proof_bundle.json`.
+
 ## Current Proofs
 
 Objective Alpha is the current proof shape:
@@ -126,6 +137,10 @@ Current runtime surfaces:
   runtime values while keeping review evidence metadata-only.
 - Source Intent Runtime Returns v0 for proving frontend public return intent
   resolves through Runtime Output Contract and Runtime Public Output Bundle.
+- Source Intent Mixed Runtime Public Proof Bundle v0 binding Source Intent
+  plain data through `systolic-sim + vector-sim` trusted execution, Runtime
+  Public Output Bundle, Reference Correctness, and Backend Equivalence as one
+  digest-only public proof.
 - Runtime Reference Correctness v0 for output/reference comparison without
   serialized tensor values.
 - Runtime Execution Receipt v0 linking runtime evidence reports, public output
@@ -227,6 +242,7 @@ examples/runtime_backend_equivalence_transfer_binding.py
 examples/runtime_output_contract.py
 examples/runtime_public_output_bundle.py
 examples/source_intent_runtime_returns.py
+examples/source_intent_mixed_runtime_public_proof_bundle.py
 examples/runtime_reference_correctness.py
 examples/runtime_candidate_scoring_gate.py
 examples/runtime_allocation_request_manifest.py
@@ -271,6 +287,7 @@ Key docs:
 - [Runtime Backend Equivalence Layout Binding](docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
+- [Source Intent Mixed Runtime Public Proof Bundle](docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)
 - [Runtime Reference Correctness](docs/RUNTIME_REFERENCE_CORRECTNESS.md)
 - [Runtime Allocation Request Manifest](docs/RUNTIME_ALLOCATION_REQUEST_MANIFEST.md)
 - [Runtime Allocation Admission](docs/RUNTIME_ALLOCATION_ADMISSION.md)
@@ -304,6 +321,7 @@ schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json
 schemas/runtime_output_contract_report.v0.schema.json
 schemas/runtime_public_output_bundle_report.v0.schema.json
 schemas/source_intent_runtime_returns_report.v0.schema.json
+schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json
 schemas/runtime_allocation_request_manifest_report.v0.schema.json
 schemas/runtime_allocation_admission_report.v0.schema.json
 schemas/runtime_allocation_receipt_report.v0.schema.json
@@ -477,6 +495,7 @@ CI-facing frontend evidence entry points:
 examples/source_intent_frontend_conformance_gate.py
 examples/source_intent_frontend_conformance.py
 examples/source_intent_runtime_returns.py
+examples/source_intent_mixed_runtime_public_proof_bundle.py
 examples/source_to_intent_corpus.py
 examples/source_to_intent_property_corpus.py
 examples/source_to_intent_parser_report.py

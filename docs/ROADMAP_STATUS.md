@@ -1,5 +1,16 @@
 # Roadmap Status
 
+- [Source Intent Mixed Runtime Public Proof Bundle](SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)
+  now provides the practical Source Intent to mixed-runtime proof at
+  `examples/source_intent_mixed_runtime_public_proof_bundle.py`, with schema
+  `schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json`
+  and golden evidence at
+  `tests/golden/frontend/source_intent_mixed_runtime_public_proof_bundle.json`,
+  binding Source Intent plain data through `systolic-sim + vector-sim`, Runtime
+  Public Output Bundle, Reference Correctness, and Backend Equivalence as one
+  digest-only review artifact. Canonical doc path:
+  `docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md`.
+
 This file tracks concrete progress against the roadmap. It is deliberately
 shorter and more operational than `ROADMAP.md`.
 

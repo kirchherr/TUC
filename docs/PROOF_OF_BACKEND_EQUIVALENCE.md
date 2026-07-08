@@ -81,6 +81,15 @@ tests/golden/runtime_backend_equivalence/mixed_accelerators.json
 tests/golden/runtime_backend_equivalence/portfolio_report.json
 ```
 
+Source Intent mixed-runtime public proof bundle:
+
+```text
+docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md
+examples/source_intent_mixed_runtime_public_proof_bundle.py
+schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json
+tests/golden/frontend/source_intent_mixed_runtime_public_proof_bundle.json
+```
+
 Source-To-Intent Kernel Ingress backend equivalence:
 
 ```text
@@ -108,6 +117,8 @@ tests/golden/frontend/source_to_intent_research_kernel_ingress_evidence_gate.txt
   capability-selected trusted simulator placement.
 - The observable terminal-output contract can remain equivalent across those
   placements.
+- Source Intent plain data can be bound to Public Output Bundle, Reference
+  Correctness, and Backend Equivalence evidence without serializing values.
 - Backend choice can be made visible through evidence instead of hidden inside
   implicit fallbacks.
 - Public proof artifacts can remain value-free while still binding the

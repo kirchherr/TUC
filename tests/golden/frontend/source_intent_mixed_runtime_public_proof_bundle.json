@@ -1,0 +1,148 @@
+{
+  "artifact_count": 9,
+  "artifact_policy": "digest_only_values_omitted",
+  "artifacts": [
+    {
+      "artifact_id": "source_intent_module",
+      "artifact_kind": "text_dump",
+      "contract": "source_intent_ir.canonical.v0",
+      "digest": "sha256:feaab68491e89a283c83d6a7c80fbf8259e07551cf493c1d2ecd34bf683f8973",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_intent_metadata",
+      "artifact_kind": "text_report",
+      "contract": "source_intent_to_metadata.execution_free.v0",
+      "digest": "sha256:c7b54b3d17379364383b1aa046a52347bfc2f391b8cd181de378a22df99a4566",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "candidate_execution_readiness",
+      "artifact_kind": "text_report",
+      "contract": "runtime_executor.trusted_backend.v0",
+      "digest": "sha256:58fad55669a817e420cbc1daf8459f6f80806b6155a2b1f726aafadb7f44735c",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "candidate_execution_trace",
+      "artifact_kind": "text_trace",
+      "contract": "runtime_executor.trusted_backend.v0",
+      "digest": "sha256:f1515bd10e0624099cac29ecf3b508d6316725dbc52787f20c347727f5a26955",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "candidate_output_manifest",
+      "artifact_kind": "json_report",
+      "contract": "runtime_output_manifest.data_only.v0",
+      "digest": "sha256:7340b88c8c3f7fa4d7fc8dd271c6d69c722c0ef24836a79bf19e461e1a233b76",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "candidate_output_contract",
+      "artifact_kind": "json_report",
+      "contract": "runtime_output_contract.data_only.v0",
+      "digest": "sha256:73152426e8d5c13cf58dabbfa4cb70b19f7d0bb5713ea7137118740855b81650",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "candidate_public_output_bundle",
+      "artifact_kind": "json_report",
+      "contract": "runtime_public_output_bundle.readonly_values.v0",
+      "digest": "sha256:645e52203daab9178228da194183d982684acb7b654f7b5fc1cf1786e0048b3c",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "candidate_reference_correctness",
+      "artifact_kind": "json_report",
+      "contract": "runtime_reference_correctness.data_only.v0",
+      "digest": "sha256:8ac58ba2ad0ca06c35188371360c2a0e7e13110a79661dad4dd57b9acc0fd031",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "runtime_backend_equivalence",
+      "artifact_kind": "json_report",
+      "contract": "runtime_backend_equivalence.data_only.v0",
+      "digest": "sha256:80d82bfa710ffd43f03e6efbc4630de33b7bfb4ebd1ba8f443bb08ede967db36",
+      "status": "accepted"
+    }
+  ],
+  "backend_equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "backend_equivalence_passed": true,
+  "baseline_backend_sequence": [
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu"
+  ],
+  "baseline_run_id": "reference_cpu",
+  "blocked_claims": [
+    "general_source_parser",
+    "real_triton_source_ingestion",
+    "native_backend_execution",
+    "native_performance_claim",
+    "runtime_handle_serialization"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "bundle_contract": "source_intent_mixed_runtime_public_proof_bundle.e2e.v0",
+  "candidate_backend_sequence": [
+    "systolic-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim"
+  ],
+  "candidate_run_id": "source_intent_mixed_accelerators",
+  "comparison_count": 1,
+  "equivalence_claim": "source_intent_preserves_public_outputs_across_mixed_backend_placements",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "source_intent_mixed_runtime_public_proof",
+  "metadata_contract": "source_intent_to_metadata.execution_free.v0",
+  "module_name": "source_intent_mixed_runtime_public_proof",
+  "operation_families": [
+    "matmul",
+    "softmax",
+    "reduction",
+    "elementwise"
+  ],
+  "output_contract": "runtime_output_contract.data_only.v0",
+  "output_manifest_contract": "runtime_output_manifest.data_only.v0",
+  "public_output_bundle_contract": "runtime_public_output_bundle.readonly_values.v0",
+  "public_output_bundle_passed": true,
+  "public_output_names": [
+    "api_activated"
+  ],
+  "raw_value_policy": "omitted_by_policy",
+  "reference_correctness_contract": "runtime_reference_correctness.data_only.v0",
+  "reference_correctness_passed": true,
+  "review_claims": [
+    "source_intent_plain_data_bound",
+    "metadata_conversion_bound",
+    "mixed_backend_placement_bound",
+    "trusted_runtime_execution_bound",
+    "public_output_bundle_bound",
+    "reference_correctness_passed",
+    "backend_equivalence_passed",
+    "values_omitted"
+  ],
+  "schema_version": "tuc.source_intent_mixed_runtime_public_proof_bundle_report.v0",
+  "source_boundary": "source_intent_plain_data_to_mixed_runtime_public_outputs",
+  "source_intent_contract": "source_intent_ir.canonical.v0",
+  "status": "PASS",
+  "terminal_outputs": [
+    "activated"
+  ],
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0",
+  "trusted_runtime_backends": [
+    "reference-cpu",
+    "systolic-sim",
+    "vector-sim"
+  ]
+}

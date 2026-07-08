@@ -44,6 +44,7 @@ From the repository root:
 ```bash
 python examples/proof_of_execution.py
 python examples/proof_of_backend_equivalence.py
+python examples/source_intent_mixed_runtime_public_proof_bundle.py
 python examples/runtime_evidence_gate.py
 python examples/source_to_intent_research_kernel_ingress_evidence_gate.py
 ```
@@ -53,6 +54,7 @@ With the Docker development environment:
 ```bash
 docker compose run --rm dev python examples/proof_of_execution.py
 docker compose run --rm dev python examples/proof_of_backend_equivalence.py
+docker compose run --rm dev python examples/source_intent_mixed_runtime_public_proof_bundle.py
 docker compose run --rm dev python examples/runtime_evidence_gate.py
 docker compose run --rm dev python examples/source_to_intent_research_kernel_ingress_evidence_gate.py
 ```
@@ -60,9 +62,11 @@ docker compose run --rm dev python examples/source_to_intent_research_kernel_ing
 The first command demonstrates trusted runtime execution for an already
 compiled graph. The second shows the canonical Backend Equivalence proof for
 `reference-cpu` versus mixed `systolic-sim + vector-sim` placement. The third
-checks the runtime evidence set. The fourth checks the current Source-To-Intent
-Kernel Ingress research slice, including runtime evidence, replay, backend
-equivalence, and source-free proof-bundle bindings.
+binds Source Intent plain data through mixed trusted execution, Public Output
+Bundle, Reference Correctness, and Backend Equivalence in one digest-only proof.
+The fourth checks the runtime evidence set. The fifth checks the current
+Source-To-Intent Kernel Ingress research slice, including runtime evidence,
+replay, backend equivalence, and source-free proof-bundle bindings.
 
 ## What To Inspect
 
@@ -81,6 +85,8 @@ tests/golden/runtime_backend_equivalence/current_report.json
 tests/golden/runtime_backend_equivalence/vector_sim_report.json
 tests/golden/runtime_backend_equivalence/mixed_accelerators.json
 tests/golden/proofs/proof_of_backend_equivalence.json
+schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json
+tests/golden/frontend/source_intent_mixed_runtime_public_proof_bundle.json
 tests/golden/frontend/source_to_intent_research_kernel_ingress_backend_equivalence.json
 tests/golden/frontend/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.json
 ```
@@ -121,8 +127,13 @@ tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_replay_ve
   transfer or converter steps.
 - Evidence gates bind report digests, schema versions, artifact IDs, backend
   sequences, output contracts, and raw-value omission policy.
+- Source Intent plain data can now be reviewed through a mixed
+  `systolic-sim + vector-sim` public proof bundle.
 - Kernel Ingress research cases can be reviewed through Source Intent and
   runtime evidence without treating source preflight as a production parser.
+
+See [Source Intent Mixed Runtime Public Proof Bundle](SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md).
+Canonical doc path: `docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md`.
 
 ## What This Does Not Prove
 
