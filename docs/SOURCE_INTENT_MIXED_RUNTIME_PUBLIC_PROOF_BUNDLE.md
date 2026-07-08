@@ -45,6 +45,15 @@ The deterministic golden evidence is:
 tests/golden/frontend/source_intent_mixed_runtime_public_proof_bundle.json
 ```
 
+## Catalog Binding
+
+The proof bundle is also admitted into the
+[Objective Alpha Public Evidence Catalog](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
+as `source_intent_mixed_runtime_public_proof_bundle`, a digest-only
+`frontend_runtime_proof` entry governed by
+`rfcs/0254-objective-alpha-source-intent-mixed-runtime-public-proof-catalog-entry.md`.
+The catalog stores only the SHA-256 metadata digest of this report.
+
 ## Evidence Bound
 
 The bundle binds these artifacts by SHA-256 digest:

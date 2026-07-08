@@ -8,6 +8,9 @@ from examples.objective_alpha_evidence_extension_policy import (
 from examples.runtime_backend_equivalence_portfolio import (
     build_backend_equivalence_portfolio_report,
 )
+from examples.source_intent_mixed_runtime_public_proof_bundle import (
+    build_report as build_source_intent_mixed_runtime_public_proof_bundle_report,
+)
 from examples.source_to_intent_research_capability_claim_gate import (
     build_gate_report as build_capability_claim_gate_report,
 )
@@ -28,6 +31,7 @@ def build_report_object() -> ObjectiveAlphaPublicEvidenceCatalogReport:
         build_extension_policy_report_object(),
         build_backend_equivalence_portfolio_report(),
         build_kernel_ingress_proof_bundle_report(),
+        build_source_intent_mixed_runtime_public_proof_bundle_report(),
         build_capability_claim_gate_report(),
     )
 

@@ -27,7 +27,7 @@ tests/golden/proofs/objective_alpha_public_evidence_catalog.json
 The catalog proves that Objective Alpha has a stable extension surface after the
 public proof bundle reached `entry_count: 16` and `entry_capacity: 16`.
 
-The catalog currently binds four entries by SHA-256 metadata digest:
+The catalog currently binds five entries by SHA-256 metadata digest:
 
 - the initial governance entry for the
   [Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md);
@@ -35,6 +35,8 @@ The catalog currently binds four entries by SHA-256 metadata digest:
   [Runtime Backend Equivalence Portfolio](RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md);
 - a `frontend_runtime_proof` entry for
   [Source-To-Intent Research Kernel Ingress Proof Bundle](SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md);
+- a second `frontend_runtime_proof` entry for
+  [Source Intent Mixed Runtime Public Proof Bundle](SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md);
 - a `claim_boundary` entry for the
   [Source-To-Intent Research Capability Claim Gate](SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE.md).
 
@@ -92,6 +94,8 @@ main proof path harder to audit.
   `rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md`
 - Kernel Ingress Proof Bundle catalog-entry decision:
   `rfcs/0237-objective-alpha-kernel-ingress-proof-bundle-catalog-entry.md`
+- Source Intent Mixed Runtime Public Proof Bundle catalog-entry decision:
+  `rfcs/0254-objective-alpha-source-intent-mixed-runtime-public-proof-catalog-entry.md`
 - Catalog extension-tier coverage decision:
   `rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md`
 - Capability Claim Gate catalog-entry decision:

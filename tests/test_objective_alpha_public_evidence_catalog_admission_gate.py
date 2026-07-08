@@ -148,9 +148,13 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_passes() -> None
     )
     assert payload["catalog_extension_tiers"][2] == "frontend_runtime_proof"
     assert payload["catalog_evidence_ids"][3] == (
+        "source_intent_mixed_runtime_public_proof_bundle"
+    )
+    assert payload["catalog_extension_tiers"][3] == "frontend_runtime_proof"
+    assert payload["catalog_evidence_ids"][4] == (
         "source_to_intent_research_capability_claim_gate"
     )
-    assert payload["catalog_extension_tiers"][3] == "claim_boundary"
+    assert payload["catalog_extension_tiers"][4] == "claim_boundary"
     assert payload["required_invariants"] == list(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS
     )
@@ -168,6 +172,10 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_passes() -> None
     assert len(str(payload["runtime_backend_equivalence_portfolio_metadata_digest"])) == 64
     assert (
         len(str(payload["source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest"]))
+        == 64
+    )
+    assert (
+        len(str(payload["source_intent_mixed_runtime_public_proof_bundle_metadata_digest"]))
         == 64
     )
     assert (
@@ -195,9 +203,10 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_example_runs() -
         completed.stdout
     )
     assert '"gate_passed": true' in completed.stdout
-    assert '"catalog_entry_count": 4' in completed.stdout
+    assert '"catalog_entry_count": 5' in completed.stdout
     assert "runtime_backend_equivalence_portfolio" in completed.stdout
     assert "source_to_intent_research_kernel_ingress_proof_bundle" in completed.stdout
+    assert "source_intent_mixed_runtime_public_proof_bundle" in completed.stdout
     assert "source_to_intent_research_capability_claim_gate" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "source_text" not in completed.stdout
@@ -349,6 +358,7 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_docs_are_linked(
         Path("rfcs/0234-objective-alpha-public-evidence-catalog-admission-gate.md"),
         Path("rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md"),
         Path("rfcs/0240-objective-alpha-capability-claim-gate-catalog-entry.md"),
+        Path("rfcs/0254-objective-alpha-source-intent-mixed-runtime-public-proof-catalog-entry.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert schema_path in text or path.name in {"README.md", "ROADMAP.md"}

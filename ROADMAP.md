@@ -297,10 +297,10 @@ Completed evidence:
 - [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
   provides that separate digest-only, RFC-bound growth surface, binding the
   extension policy, first Runtime Backend Equivalence Portfolio `runtime_proof`
-  entry, first Source-To-Intent Kernel Ingress `frontend_runtime_proof` entry,
-  and Source-To-Intent Capability Claim Gate `claim_boundary` entry by metadata
-  digest without adding entries to the fixed Objective Alpha Public Proof
-  Bundle.
+  entry, Source-To-Intent Kernel Ingress and Source Intent Mixed Runtime Public
+  Proof Bundle `frontend_runtime_proof` entries, and Source-To-Intent
+  Capability Claim Gate `claim_boundary` entry by metadata digest without
+  adding entries to the fixed Objective Alpha Public Proof Bundle.
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
   machine-checks that catalog admission remains append-only, RFC-bound,
   digest-only, source-free, and free of new execution surfaces.
@@ -309,9 +309,14 @@ Completed evidence:
   sources, and raw-output policies from typed data-only specs, reducing drift in
   future catalog additions without adding execution or source-ingress surfaces.
 - Objective Alpha Public Evidence Catalog now binds the Source-To-Intent Kernel
-  Ingress Proof Bundle as its first `frontend_runtime_proof` entry, connecting
+  Ingress Proof Bundle as a `frontend_runtime_proof` entry, connecting
   realistic source-intent ingress evidence to the public Universal Compute proof
   surface by digest only.
+- Objective Alpha Public Evidence Catalog now also binds the Source Intent
+  Mixed Runtime Public Proof Bundle as a `frontend_runtime_proof` entry,
+  connecting Source Intent plain data, mixed backend placement, trusted runtime
+  execution, public output closure, reference correctness, and backend
+  equivalence to the public proof surface by digest only.
 - Objective Alpha Public Evidence Catalog Extension-Tier Coverage now emits and
   gates required coverage for `governance`, `runtime_proof`,
   `frontend_runtime_proof`, and `claim_boundary`, making the current public

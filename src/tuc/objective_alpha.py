@@ -107,6 +107,13 @@ _FORBIDDEN_BUNDLE_TEXT = (
     "subprocess",
 )
 
+_CATALOG_SERIALIZED_REPORT_DECLARED_TOKEN_EXCEPTIONS = {
+    "source intent mixed runtime public proof bundle report": {
+        "dynamic_library": ("blocked_execution_surfaces", "dynamic_library_loading"),
+        "runtime_handle": ("blocked_claims", "runtime_handle_serialization"),
+        "subprocess": ("blocked_execution_surfaces", "subprocess_execution"),
+    }
+}
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ENTRY_ADMISSION_PATTERN_CONTRACT = (
     "objective_alpha.public_evidence_catalog_entry_admission_pattern.data_only.v0"
 )
@@ -898,6 +905,13 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS = (
         digest_source="source_to_intent_research_kernel_ingress_proof_bundle_report",
     ),
     ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+        evidence_id="source_intent_mixed_runtime_public_proof_bundle",
+        entry_point="python examples/source_intent_mixed_runtime_public_proof_bundle.py",
+        artifact_kind="schema_versioned_source_intent_mixed_runtime_public_proof_bundle_report",
+        extension_tier="frontend_runtime_proof",
+        digest_source="source_intent_mixed_runtime_public_proof_bundle_report",
+    ),
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
         evidence_id="source_to_intent_research_capability_claim_gate",
         entry_point="python examples/source_to_intent_research_capability_claim_gate.py",
         artifact_kind="deterministic_source_to_intent_research_capability_claim_gate_output",
@@ -1018,6 +1032,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
     extension_policy_metadata_digest: str
     runtime_backend_equivalence_portfolio_metadata_digest: str
     source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest: str
+    source_intent_mixed_runtime_public_proof_bundle_metadata_digest: str
     source_to_intent_research_capability_claim_gate_metadata_digest: str
     catalog_entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...]
     issues: tuple[str, ...]
@@ -1066,6 +1081,10 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             "objective alpha catalog source to intent kernel ingress proof bundle digest",
         )
         _validate_digest(
+            self.source_intent_mixed_runtime_public_proof_bundle_metadata_digest,
+            "objective alpha catalog source intent mixed runtime proof bundle digest",
+        )
+        _validate_digest(
             self.source_to_intent_research_capability_claim_gate_metadata_digest,
             "objective alpha catalog source to intent capability claim gate digest",
         )
@@ -1109,6 +1128,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 self.extension_policy_metadata_digest,
                 self.runtime_backend_equivalence_portfolio_metadata_digest,
                 self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest,
+                self.source_intent_mixed_runtime_public_proof_bundle_metadata_digest,
                 self.source_to_intent_research_capability_claim_gate_metadata_digest,
             ),
         )
@@ -1181,6 +1201,9 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": (
                     self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest
                 ),
+                "source_intent_mixed_runtime_public_proof_bundle_metadata_digest": (
+                    self.source_intent_mixed_runtime_public_proof_bundle_metadata_digest
+                ),
                 "source_to_intent_research_capability_claim_gate_metadata_digest": (
                     self.source_to_intent_research_capability_claim_gate_metadata_digest
                 ),
@@ -1191,6 +1214,34 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
 
 class ObjectiveAlphaPublicEvidenceCatalogError(ValueError):
     """Raised when Objective Alpha public evidence catalog validation fails."""
+
+
+def _catalog_forbidden_fragment_is_declared_token(
+    serialized_report: str,
+    field_name: str,
+    fragment: str,
+) -> bool:
+    expected = _CATALOG_SERIALIZED_REPORT_DECLARED_TOKEN_EXCEPTIONS.get(
+        field_name,
+        {},
+    ).get(fragment)
+    if expected is None:
+        return False
+    expected_field, expected_value = expected
+    try:
+        payload = json.loads(serialized_report)
+    except json.JSONDecodeError:
+        return False
+    if not isinstance(payload, dict):
+        return False
+    declared_values = payload.get(expected_field)
+    if not isinstance(declared_values, list):
+        return False
+    if not all(isinstance(value, str) for value in declared_values):
+        return False
+    if declared_values.count(expected_value) != 1:
+        return False
+    return serialized_report.lower().count(fragment) == 1
 
 
 def _catalog_metadata_digest_from_serialized_report(
@@ -1208,7 +1259,11 @@ def _catalog_metadata_digest_from_serialized_report(
         raise ObjectiveAlphaPublicEvidenceCatalogError(f"{field_name} exceeds size limit")
     lowered = serialized_report.lower()
     for fragment in _FORBIDDEN_BUNDLE_TEXT:
-        if fragment in lowered:
+        if fragment in lowered and not _catalog_forbidden_fragment_is_declared_token(
+            serialized_report,
+            field_name,
+            fragment,
+        ):
             raise ObjectiveAlphaPublicEvidenceCatalogError(
                 f"{field_name} contains forbidden fragment: {fragment}"
             )
@@ -1219,6 +1274,7 @@ def build_objective_alpha_public_evidence_catalog_report(
     policy_report: ObjectiveAlphaEvidenceExtensionPolicyReport,
     runtime_backend_equivalence_portfolio_report: RuntimeBackendEquivalencePortfolioReport,
     source_to_intent_research_kernel_ingress_proof_bundle_report: str,
+    source_intent_mixed_runtime_public_proof_bundle_report: str,
     source_to_intent_research_capability_claim_gate_report: str,
 ) -> ObjectiveAlphaPublicEvidenceCatalogReport:
     """Build the catalog for evidence beyond the fixed Objective Alpha bundle."""
@@ -1250,6 +1306,10 @@ def build_objective_alpha_public_evidence_catalog_report(
         source_to_intent_research_kernel_ingress_proof_bundle_report,
         "source to intent kernel ingress proof bundle report",
     )
+    mixed_runtime_public_proof_bundle_digest = _catalog_metadata_digest_from_serialized_report(
+        source_intent_mixed_runtime_public_proof_bundle_report,
+        "source intent mixed runtime public proof bundle report",
+    )
     capability_claim_gate_digest = _catalog_metadata_digest_from_serialized_report(
         source_to_intent_research_capability_claim_gate_report,
         "source to intent capability claim gate report",
@@ -1265,6 +1325,9 @@ def build_objective_alpha_public_evidence_catalog_report(
         source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest=(
             kernel_ingress_proof_bundle_digest
         ),
+        source_intent_mixed_runtime_public_proof_bundle_metadata_digest=(
+            mixed_runtime_public_proof_bundle_digest
+        ),
         source_to_intent_research_capability_claim_gate_metadata_digest=(
             capability_claim_gate_digest
         ),
@@ -1273,6 +1336,7 @@ def build_objective_alpha_public_evidence_catalog_report(
                 policy_digest,
                 portfolio_digest,
                 kernel_ingress_proof_bundle_digest,
+                mixed_runtime_public_proof_bundle_digest,
                 capability_claim_gate_digest,
             )
         ),
@@ -1316,6 +1380,9 @@ def objective_alpha_public_evidence_catalog_report_to_dict(
         ),
         "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": (
             report.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest
+        ),
+        "source_intent_mixed_runtime_public_proof_bundle_metadata_digest": (
+            report.source_intent_mixed_runtime_public_proof_bundle_metadata_digest
         ),
         "source_to_intent_research_capability_claim_gate_metadata_digest": (
             report.source_to_intent_research_capability_claim_gate_metadata_digest
@@ -1433,6 +1500,7 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS = (
     "backend_equivalence_portfolio_digest_entry_bound",
     "first_non_governance_runtime_proof_entry_bound",
     "kernel_ingress_proof_bundle_digest_entry_bound",
+    "source_intent_mixed_runtime_public_proof_bundle_digest_entry_bound",
     "capability_claim_gate_digest_entry_bound",
     "catalog_extension_tier_coverage_complete",
     "fixed_initial_catalog_entries",
@@ -1463,6 +1531,7 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
     extension_policy_metadata_digest: str
     runtime_backend_equivalence_portfolio_metadata_digest: str
     source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest: str
+    source_intent_mixed_runtime_public_proof_bundle_metadata_digest: str
     source_to_intent_research_capability_claim_gate_metadata_digest: str
     catalog_entry_capacity: int
     catalog_entry_count: int
@@ -1531,6 +1600,10 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
         _validate_digest(
             self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest,
             "objective alpha catalog gate source to intent kernel ingress proof bundle digest",
+        )
+        _validate_digest(
+            self.source_intent_mixed_runtime_public_proof_bundle_metadata_digest,
+            "objective alpha catalog gate source intent mixed runtime proof bundle digest",
         )
         _validate_digest(
             self.source_to_intent_research_capability_claim_gate_metadata_digest,
@@ -1710,6 +1783,9 @@ def build_objective_alpha_public_evidence_catalog_admission_gate_report(
         source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest=(
             catalog_report.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest
         ),
+        source_intent_mixed_runtime_public_proof_bundle_metadata_digest=(
+            catalog_report.source_intent_mixed_runtime_public_proof_bundle_metadata_digest
+        ),
         source_to_intent_research_capability_claim_gate_metadata_digest=(
             catalog_report.source_to_intent_research_capability_claim_gate_metadata_digest
         ),
@@ -1780,6 +1856,9 @@ def objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
         ),
         "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": (
             report.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest
+        ),
+        "source_intent_mixed_runtime_public_proof_bundle_metadata_digest": (
+            report.source_intent_mixed_runtime_public_proof_bundle_metadata_digest
         ),
         "source_to_intent_research_capability_claim_gate_metadata_digest": (
             report.source_to_intent_research_capability_claim_gate_metadata_digest

@@ -30,6 +30,7 @@
     "required_invariants",
     "runtime_backend_equivalence_portfolio_metadata_digest",
     "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest",
+    "source_intent_mixed_runtime_public_proof_bundle_metadata_digest",
     "source_to_intent_research_capability_claim_gate_metadata_digest",
     "schema_version",
     "stable_bundle_metadata_digest",
@@ -93,6 +94,10 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "source_intent_mixed_runtime_public_proof_bundle_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "source_to_intent_research_capability_claim_gate_metadata_digest": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
@@ -105,7 +110,7 @@
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 4
+      "const": 5
     },
     "catalog_required_extension_tiers": {
       "type": "array",
@@ -127,8 +132,8 @@
     },
     "catalog_entries": {
       "type": "array",
-      "minItems": 4,
-      "maxItems": 4,
+      "minItems": 5,
+      "maxItems": 5,
       "prefixItems": [
         {
           "type": "object",
@@ -225,6 +230,43 @@
             },
             "artifact_kind": {
               "const": "schema_versioned_source_to_intent_kernel_ingress_proof_bundle_report"
+            },
+            "extension_tier": {
+              "const": "frontend_runtime_proof"
+            },
+            "metadata_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "raw_output_policy": {
+              "const": "digest_only"
+            },
+            "status": {
+              "const": "passed"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_kind",
+            "entry_point",
+            "evidence_id",
+            "extension_tier",
+            "metadata_digest",
+            "raw_output_policy",
+            "status"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "source_intent_mixed_runtime_public_proof_bundle"
+            },
+            "entry_point": {
+              "const": "python examples/source_intent_mixed_runtime_public_proof_bundle.py"
+            },
+            "artifact_kind": {
+              "const": "schema_versioned_source_intent_mixed_runtime_public_proof_bundle_report"
             },
             "extension_tier": {
               "const": "frontend_runtime_proof"
