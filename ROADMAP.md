@@ -304,6 +304,12 @@ Completed evidence:
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
   machine-checks that catalog admission remains append-only, RFC-bound,
   digest-only, source-free, and free of new execution surfaces.
+- [Objective Alpha Research Claim](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM.md)
+  binds the public proof bundle, bundle gate, extension policy, public evidence
+  catalog, catalog admission gate, and Source Intent mixed-runtime proof into
+  one digest-only current research-claim snapshot without expanding parser,
+  plugin, device, generated-artifact, native-backend, or native-performance
+  surfaces.
 - Objective Alpha Public Evidence Catalog Entry Admission Pattern derives the
   catalog's expected IDs, entry points, artifact kinds, extension tiers, digest
   sources, and raw-output policies from typed data-only specs, reducing drift in

@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/objective_alpha_research_claim_report.v0.schema.json",
+  "title": "TUC Objective Alpha Research Claim Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "backend_equivalence_passed",
+    "baseline_backend_sequence",
+    "blocked_claims",
+    "broad_source_parser_claim",
+    "catalog_entry_count",
+    "claim_contract",
+    "claim_id",
+    "claim_metadata_digest",
+    "claim_passed",
+    "claim_scope",
+    "claim_status",
+    "evidence",
+    "evidence_count",
+    "mixed_backend_sequence",
+    "native_performance_claim",
+    "operation_families",
+    "public_bundle_entry_count",
+    "public_evidence_entry_count",
+    "reference_correctness_passed",
+    "required_invariants",
+    "schema_version",
+    "supported_claims",
+    "trusted_runtime_backends",
+    "vendor_replacement_claim"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.objective_alpha_research_claim_report.v0"},
+    "claim_contract": {"const": "objective_alpha.research_claim.digest_snapshot.v0"},
+    "claim_id": {"const": "objective_alpha_universal_compute_research_claim"},
+    "claim_status": {"const": "supported_for_objective_alpha_research_scope"},
+    "claim_scope": {"const": "objective_alpha_public_bundle_catalog_and_mixed_runtime_proof"},
+    "artifact_policy": {"const": "digest_only_source_free"},
+    "claim_passed": {"const": true},
+    "evidence_count": {"const": 6},
+    "public_bundle_entry_count": {"const": 16},
+    "catalog_entry_count": {"const": 5},
+    "public_evidence_entry_count": {"const": 21},
+    "backend_equivalence_passed": {"const": true},
+    "reference_correctness_passed": {"const": true},
+    "native_performance_claim": {"const": false},
+    "broad_source_parser_claim": {"const": false},
+    "vendor_replacement_claim": {"const": false},
+    "claim_metadata_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "supported_claims": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "prefixItems": [
+        {"const": "hardware_independent_compute_intent_current_research_slice"},
+        {"const": "capability_planned_trusted_runtime_execution"},
+        {"const": "mixed_backend_public_semantics_preserved"},
+        {"const": "digest_only_reviewable_public_evidence"},
+        {"const": "rfc_bound_public_evidence_growth"}
+      ]
+    },
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {"const": "native_performance_parity"},
+        {"const": "vendor_compiler_replacement"},
+        {"const": "broad_source_code_parsing"},
+        {"const": "arbitrary_third_party_backend_execution"},
+        {"const": "device_access"},
+        {"const": "generated_artifact_execution"},
+        {"const": "production_triton_integration"}
+      ]
+    },
+    "required_invariants": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "prefixItems": [
+        {"const": "public_proof_bundle_full"},
+        {"const": "public_proof_bundle_gate_passed"},
+        {"const": "extension_policy_passed"},
+        {"const": "public_evidence_catalog_passed"},
+        {"const": "public_evidence_catalog_admission_gate_passed"},
+        {"const": "source_intent_mixed_runtime_public_proof_passed"},
+        {"const": "backend_equivalence_passed"},
+        {"const": "reference_correctness_passed"},
+        {"const": "digest_only_source_free_claim"}
+      ]
+    },
+    "operation_families": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {"const": "matmul"},
+        {"const": "softmax"},
+        {"const": "reduction"},
+        {"const": "elementwise"}
+      ]
+    },
+    "trusted_runtime_backends": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {"const": "reference-cpu"},
+        {"const": "systolic-sim"},
+        {"const": "vector-sim"}
+      ]
+    },
+    "baseline_backend_sequence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {"const": "reference-cpu"},
+        {"const": "reference-cpu"},
+        {"const": "reference-cpu"},
+        {"const": "reference-cpu"}
+      ]
+    },
+    "mixed_backend_sequence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {"const": "systolic-sim"},
+        {"const": "vector-sim"},
+        {"const": "vector-sim"},
+        {"const": "vector-sim"}
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"$ref": "#/$defs/objective_alpha_public_proof_bundle"},
+        {"$ref": "#/$defs/objective_alpha_public_proof_bundle_gate"},
+        {"$ref": "#/$defs/objective_alpha_evidence_extension_policy"},
+        {"$ref": "#/$defs/objective_alpha_public_evidence_catalog"},
+        {"$ref": "#/$defs/objective_alpha_public_evidence_catalog_admission_gate"},
+        {"$ref": "#/$defs/source_intent_mixed_runtime_public_proof_bundle"}
+      ]
+    }
+  },
+  "$defs": {
+    "evidence_item_base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "digest", "status"],
+      "properties": {
+        "artifact_id": {"type": "string"},
+        "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "status": {"const": "accepted"}
+      }
+    },
+    "objective_alpha_public_proof_bundle": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_item_base"},
+        {"properties": {"artifact_id": {"const": "objective_alpha_public_proof_bundle"}}}
+      ]
+    },
+    "objective_alpha_public_proof_bundle_gate": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_item_base"},
+        {"properties": {"artifact_id": {"const": "objective_alpha_public_proof_bundle_gate"}}}
+      ]
+    },
+    "objective_alpha_evidence_extension_policy": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_item_base"},
+        {"properties": {"artifact_id": {"const": "objective_alpha_evidence_extension_policy"}}}
+      ]
+    },
+    "objective_alpha_public_evidence_catalog": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_item_base"},
+        {"properties": {"artifact_id": {"const": "objective_alpha_public_evidence_catalog"}}}
+      ]
+    },
+    "objective_alpha_public_evidence_catalog_admission_gate": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_item_base"},
+        {"properties": {"artifact_id": {"const": "objective_alpha_public_evidence_catalog_admission_gate"}}}
+      ]
+    },
+    "source_intent_mixed_runtime_public_proof_bundle": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_item_base"},
+        {"properties": {"artifact_id": {"const": "source_intent_mixed_runtime_public_proof_bundle"}}}
+      ]
+    }
+  }
+}
