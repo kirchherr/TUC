@@ -28,6 +28,7 @@ compatibility on day one.
 | Device Access Sandbox Gate | L0 | Dedicated Real Triton Integration surface gate for `device_access`; it binds admission, Triton-JIT sandbox, and device sandbox-model evidence by digest while device discovery, enumeration, driver calls, device handles, device memory allocation, memory mapping, direct memory access, kernel launch, generated artifact execution, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/device_access_sandbox_gate_report.v0.schema.json`; example: `examples/device_access_sandbox_gate.py`; doc: `docs/DEVICE_ACCESS_SANDBOX_GATE.md`. |
 | Generated Artifact Quarantine Gate | L0 | Dedicated Real Triton Integration surface gate for `generated_artifact_execution`; it binds admission, Triton-JIT sandbox, device-access sandbox, and quarantine-model evidence by digest while artifact emission, writes, loads, executable permissions, artifact-cache access, backend binary emission, generated artifact execution, device access, kernel launch, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`; example: `examples/generated_artifact_quarantine_gate.py`; doc: `docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md`. |
 | Native Backend Execution Security Gate | L0 | Dedicated Real Triton Integration surface gate for `native_backend_execution`; it binds admission, generated-artifact quarantine, device-access sandbox, backend plugin lifecycle policy, and security-model evidence by digest while native backend execution, native plugin ABI loading, backend plugin execution, symbol resolution, FFI calls, unsafe memory access, dynamic-library loading, generated artifact execution, device access, kernel launch, and subprocess surfaces remain blocked. Schema: `schemas/native_backend_execution_security_gate_report.v0.schema.json`; example: `examples/native_backend_execution_security_gate.py`; doc: `docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md`. |
+| Real Triton Surface Gate Completion | L0 | Compact data-only review artifact binding admission and all seven dedicated surface gates by digest; it proves the surface-gate set is complete while Real Triton admission remains blocked and all surface gates remain non-admitting. Schema: `schemas/real_triton_surface_gate_completion_report.v0.schema.json`; example: `examples/real_triton_surface_gate_completion.py`; doc: `docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md`. |
 | Source-To-Intent Next Syntax Slice | L1 | Branched dataflow, fanout reuse, all current MVP operation families, and multiple public returns are bound by source-free semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; example: `examples/source_to_intent_next_syntax_slice.py`. |
 | External Frontend Package Conformance | L1 | External frontend packages are reviewed as data-only manifests plus digest-only Source Intent fixtures, without package import, plugin discovery, direct source ingestion, or JIT execution. Schema: `schemas/external_frontend_package_conformance_report.v0.schema.json`; example: `examples/external_frontend_package_conformance.py`. |
 | Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
@@ -100,6 +101,10 @@ compatibility on day one.
   while keeping native backend loading, native plugin ABI loading, backend
   plugin execution, symbol resolution, FFI calls, unsafe memory access, devices,
   kernels, subprocesses, and generated artifacts blocked.
+- Real Triton Surface Gate Completion is documented in
+  [Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md).
+  It binds all seven dedicated surface gates by digest while keeping Real
+  Triton admission blocked.
 - General source parsing must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before moving
   beyond the explicit research slice.
@@ -217,6 +222,12 @@ and keeps native backend execution, native plugin ABI loading, backend plugin
 execution, symbol resolution, FFI calls, unsafe memory access, dynamic-library
 loading, generated artifact execution, device access, kernel launch, and
 subprocess surfaces blocked.
+The compact full-perimeter artifact is
+[Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md).
+The current report at `examples/real_triton_surface_gate_completion.py` is
+validated by `schemas/real_triton_surface_gate_completion_report.v0.schema.json`
+and binds admission plus all seven dedicated surface gates by digest while
+keeping Real Triton admission blocked.
 
 The [Source-To-Intent Next Syntax Slice](SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 now satisfies the parser RFC, next-syntax semantic corpus, Source Intent golden,

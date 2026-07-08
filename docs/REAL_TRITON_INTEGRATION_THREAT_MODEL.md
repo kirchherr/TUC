@@ -144,3 +144,11 @@ it still does not load native backends, load plugin ABIs, execute backend
 plugins, resolve symbols, make FFI calls, access unsafe memory, load dynamic
 libraries, touch devices, launch kernels, execute generated artifacts, or
 serialize native handles.
+The current full-perimeter review artifact is
+[Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md).
+Its canonical doc path is `docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md`, its
+entry point is `examples/real_triton_surface_gate_completion.py`, and its
+schema is `schemas/real_triton_surface_gate_completion_report.v0.schema.json`.
+
+This report binds the admission gate and all seven dedicated surface gates by
+digest while keeping Real Triton integration blocked.

@@ -54,6 +54,10 @@ gate IDs, counts, and fixed `false` execution flags.
 - Seventh surface gate schema:
   `schemas/native_backend_execution_security_gate_report.v0.schema.json`
 - Seventh surface gate example: `examples/native_backend_execution_security_gate.py`
+- Surface gate completion doc: `docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md`
+- Surface gate completion schema:
+  `schemas/real_triton_surface_gate_completion_report.v0.schema.json`
+- Surface gate completion example: `examples/real_triton_surface_gate_completion.py`
 
 ## Meaning
 
@@ -188,3 +192,13 @@ code.
 
 Entry point: `examples/native_backend_execution_security_gate.py`.
 Schema: `schemas/native_backend_execution_security_gate_report.v0.schema.json`.
+## Surface Gate Completion
+
+[Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md)
+binds this admission gate and all seven dedicated surface-gate reports by
+digest. Its canonical doc path is `docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md`,
+its entry point is `examples/real_triton_surface_gate_completion.py`, and its
+schema is `schemas/real_triton_surface_gate_completion_report.v0.schema.json`.
+
+The completion report proves the surface-gate set is complete while keeping
+`admitted = false` and every dedicated surface gate non-admitting.

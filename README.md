@@ -438,6 +438,10 @@ Current frontend surfaces:
   symbol resolution, FFI calls, unsafe memory access, dynamic-library loading,
   generated artifact execution, device access, kernel launch, and subprocess
   surfaces still blocked. Schema: `schemas/native_backend_execution_security_gate_report.v0.schema.json`; entry point: `examples/native_backend_execution_security_gate.py`; doc: `docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md`.
+- Real Triton Surface Gate Completion binding Real Triton Admission and all
+  seven dedicated surface gates by digest, proving the surface-gate set is
+  complete while admission remains blocked and every surface gate remains
+  non-admitting. Schema: `schemas/real_triton_surface_gate_completion_report.v0.schema.json`; entry point: `examples/real_triton_surface_gate_completion.py`; doc: `docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -532,6 +536,7 @@ Key docs:
 - [Device Access Sandbox Gate](docs/DEVICE_ACCESS_SANDBOX_GATE.md)
 - [Generated Artifact Quarantine Gate](docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md)
 - [Native Backend Execution Security Gate](docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md)
+- [Real Triton Surface Gate Completion](docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

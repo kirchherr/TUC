@@ -1,0 +1,108 @@
+{
+  "admission_effect": "does_not_admit_real_triton_integration",
+  "admission_gate_digest": "sha256:193037f8eda3c7fa47754af5a2b024c6642c6a7df407255bfe59a8f507639d11",
+  "admission_status": "blocked",
+  "admitted": false,
+  "all_required_surface_gates_present": true,
+  "all_surface_gates_non_admitting": true,
+  "artifact_status": "review_gate",
+  "blocked_claim_count": 6,
+  "blocked_claims": [
+    "accepts_arbitrary_triton_source",
+    "executes_generated_artifacts",
+    "executes_native_backends",
+    "imports_external_frontend_packages",
+    "runs_triton_jit",
+    "uses_real_devices"
+  ],
+  "blocked_execution_surfaces": [
+    "device_access",
+    "direct_source_ingestion",
+    "dynamic_library_loading",
+    "frontend_package_import",
+    "generated_artifact_execution",
+    "native_backend_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_object_inspection",
+    "python_import",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "blocked_surface_count": 12,
+  "completion_contract": "real_triton_surface_gate_completion.data_only.v0",
+  "completion_status": "complete",
+  "evidence_policy": "digest_only",
+  "expected_surface_gate_count": 7,
+  "missing_surface_gate_ids": [],
+  "required_surface_gate_ids": [
+    "source_ingestion_quarantine_gate",
+    "package_import_sandbox_gate",
+    "plugin_discovery_allowlist_gate",
+    "triton_jit_execution_sandbox_gate",
+    "device_access_sandbox_gate",
+    "generated_artifact_quarantine_gate",
+    "native_backend_execution_security_gate"
+  ],
+  "schema_version": "tuc.real_triton_surface_gate_completion_report.v0",
+  "security_boundary_established": true,
+  "surface_gate_count": 7,
+  "surface_gates": [
+    {
+      "admission_effect": "does_not_admit_direct_source_ingestion",
+      "evidence_digest": "sha256:2031c9801dc03523a5cb0789ada6fbc21772916d72c13698efd1651ae256d712",
+      "gate_id": "source_ingestion_quarantine_gate",
+      "gate_status": "quarantine_only",
+      "required": true,
+      "surface_id": "direct_source_ingestion"
+    },
+    {
+      "admission_effect": "does_not_admit_frontend_package_import",
+      "evidence_digest": "sha256:44374feab0efb66b64f0716f113bf53ea6ecb60e42717d2801f14471161e8681",
+      "gate_id": "package_import_sandbox_gate",
+      "gate_status": "sandbox_requirements_only",
+      "required": true,
+      "surface_id": "frontend_package_import"
+    },
+    {
+      "admission_effect": "does_not_admit_plugin_discovery",
+      "evidence_digest": "sha256:e0be7d354a8c8cc093a29668fa3523f9326d76dd2df5f1cedc80174773028b6f",
+      "gate_id": "plugin_discovery_allowlist_gate",
+      "gate_status": "allowlist_requirements_only",
+      "required": true,
+      "surface_id": "plugin_discovery"
+    },
+    {
+      "admission_effect": "does_not_admit_triton_jit_execution",
+      "evidence_digest": "sha256:54b5be668abaf656dd88295300a9dbc525b8917cc468085e22ae85d66f8890a2",
+      "gate_id": "triton_jit_execution_sandbox_gate",
+      "gate_status": "sandbox_requirements_only",
+      "required": true,
+      "surface_id": "triton_jit_execution"
+    },
+    {
+      "admission_effect": "does_not_admit_device_access",
+      "evidence_digest": "sha256:6ccf0486867e0217d5cc45c4aaf247df2fa77146611cb93c846de666c2edaef8",
+      "gate_id": "device_access_sandbox_gate",
+      "gate_status": "sandbox_requirements_only",
+      "required": true,
+      "surface_id": "device_access"
+    },
+    {
+      "admission_effect": "does_not_admit_generated_artifact_execution",
+      "evidence_digest": "sha256:9b010df036df3d1a6c070b3dc3a6cfedc2de6cb6a6ba85409f13f9cb255efe49",
+      "gate_id": "generated_artifact_quarantine_gate",
+      "gate_status": "quarantine_requirements_only",
+      "required": true,
+      "surface_id": "generated_artifact_execution"
+    },
+    {
+      "admission_effect": "does_not_admit_native_backend_execution",
+      "evidence_digest": "sha256:c26b955b163171dd5098a5db3d9fb200cea823faedbe0fe0c07d445ef75a4ec1",
+      "gate_id": "native_backend_execution_security_gate",
+      "gate_status": "security_requirements_only",
+      "required": true,
+      "surface_id": "native_backend_execution"
+    }
+  ]
+}
