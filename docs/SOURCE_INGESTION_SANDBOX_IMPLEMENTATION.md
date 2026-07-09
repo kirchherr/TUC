@@ -40,10 +40,10 @@ raw source text.
 ## First Slice Role
 
 This closes the `source_ingestion_sandbox_implementation` prerequisite in the
-Real Triton First Slice Plan. The Parser Fuzz Negative Corpus now covers the
-next prerequisite. The remaining blockers are:
+Real Triton First Slice Plan. Parser Fuzz Negative Corpus and Source-Free
+Diagnostics Admission Tests now cover the next two prerequisites. The remaining
+blockers are:
 
-- source-free diagnostics admission tests;
 - Source Intent plain-data output goldens;
 - CI replay for the admitted slice;
 - maintainer security review approval.

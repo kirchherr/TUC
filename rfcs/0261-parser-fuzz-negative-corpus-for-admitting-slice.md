@@ -55,6 +55,12 @@ The public report is digest-only and source-free.
 - Golden: `tests/golden/frontend/parser_fuzz_negative_corpus_for_admitting_slice_report.json`
 - Documentation: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
 - RFC path: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`
+- Source-Free Diagnostics Admission Tests Module: `src/tuc/frontend/source_free_diagnostics_admission.py`
+- Source-Free Diagnostics Admission Tests Example: `examples/source_free_diagnostics_admission_tests.py`
+- Source-Free Diagnostics Admission Tests Schema: `schemas/source_free_diagnostics_admission_tests_report.v0.schema.json`
+- Source-Free Diagnostics Admission Tests Golden: `tests/golden/frontend/source_free_diagnostics_admission_tests_report.json`
+- Source-Free Diagnostics Admission Tests Documentation: `docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md`
+- Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`
 
 ## Acceptance Criteria
 

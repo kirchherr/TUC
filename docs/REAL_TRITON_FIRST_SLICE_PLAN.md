@@ -19,7 +19,7 @@ python examples/real_triton_first_slice_plan.py
 
 ## What It Binds
 
-The plan binds nine current artifacts by SHA-256 metadata digest:
+The plan binds ten current artifacts by SHA-256 metadata digest:
 
 - Real Triton Integration Admission Gate.
 - Real Triton Surface Gate Completion.
@@ -27,6 +27,8 @@ The plan binds nine current artifacts by SHA-256 metadata digest:
 - Admitting Source Ingestion RFC.
 - Bounded Source Buffer API.
 - Source Ingestion Sandbox Implementation.
+- Parser Fuzz Negative Corpus For Admitting Slice.
+- Source-Free Diagnostics Admission Tests.
 - Source-To-Intent Research Source Runtime Smoke.
 - Source-To-Intent Research Kernel Ingress Proof Bundle.
 
@@ -34,10 +36,10 @@ The plan binds nine current artifacts by SHA-256 metadata digest:
 
 The plan identifies `direct_source_ingestion` as the first candidate surface
 for a future admitting slice. It now binds the requirements-only Admitting
-Source Ingestion RFC, the Bounded Source Buffer API, and the Source Ingestion
-Sandbox Implementation, but still records the fuzzing, diagnostics, golden,
-replay, and maintainer-review evidence required before that surface can become
-admitting.
+Source Ingestion RFC, the Bounded Source Buffer API, the Source Ingestion
+Sandbox Implementation, Parser Fuzz Negative Corpus, and Source-Free
+Diagnostics Admission Tests, but still records the golden, replay, and
+maintainer-review evidence required before that surface can become admitting.
 
 The remaining Real Triton surfaces stay blocked:
 
@@ -52,7 +54,6 @@ The remaining Real Triton surfaces stay blocked:
 
 Before `direct_source_ingestion` can become admitting, TUC still requires:
 
-- source-free diagnostics admission tests;
 - source-to-Intent plain-data output goldens;
 - CI replay for the admitted slice;
 - maintainer security review approval.
@@ -99,5 +100,11 @@ shortcuts.
 - Parser Fuzz Negative Corpus Golden: `tests/golden/frontend/parser_fuzz_negative_corpus_for_admitting_slice_report.json`
 - Parser Fuzz Negative Corpus Doc: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
 - Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`
+- Source-Free Diagnostics Admission Tests Module: `src/tuc/frontend/source_free_diagnostics_admission.py`
+- Source-Free Diagnostics Admission Tests Example: `examples/source_free_diagnostics_admission_tests.py`
+- Source-Free Diagnostics Admission Tests Schema: `schemas/source_free_diagnostics_admission_tests_report.v0.schema.json`
+- Source-Free Diagnostics Admission Tests Golden: `tests/golden/frontend/source_free_diagnostics_admission_tests_report.json`
+- Source-Free Diagnostics Admission Tests Doc: `docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md`
+- Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`
 - Admission Gate: [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
 - Surface Gate Completion: [Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md)

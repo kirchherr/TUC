@@ -33,9 +33,8 @@ function objects, and backend artifacts.
 
 ## Remaining Evidence
 
-The `bounded_source_buffer_api`, `source_ingestion_sandbox_implementation`, and `parser_fuzz_negative_corpus_for_admitting_slice` prerequisites are now covered. Before source ingestion can become admitting, TUC still requires:
+The `bounded_source_buffer_api`, `source_ingestion_sandbox_implementation`, `parser_fuzz_negative_corpus_for_admitting_slice`, and `source_free_diagnostics_admission_tests` prerequisites are now covered. Before source ingestion can become admitting, TUC still requires:
 
-- source-free diagnostics admission tests;
 - Source Intent plain-data output goldens;
 - CI replay for the admitted slice;
 - maintainer security review approval.
@@ -81,3 +80,10 @@ compiler shortcuts from source.
 - Parser Fuzz Negative Corpus Schema: `schemas/parser_fuzz_negative_corpus_for_admitting_slice_report.v0.schema.json`
 - Parser Fuzz Negative Corpus Golden: `tests/golden/frontend/parser_fuzz_negative_corpus_for_admitting_slice_report.json`
 - Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`
+- Source-Free Diagnostics Admission Tests: [Source-Free Diagnostics Admission Tests](SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md)
+- Source-Free Diagnostics Admission Tests Doc: `docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md`
+- Source-Free Diagnostics Admission Tests Module: `src/tuc/frontend/source_free_diagnostics_admission.py`
+- Source-Free Diagnostics Admission Tests Example: `examples/source_free_diagnostics_admission_tests.py`
+- Source-Free Diagnostics Admission Tests Schema: `schemas/source_free_diagnostics_admission_tests_report.v0.schema.json`
+- Source-Free Diagnostics Admission Tests Golden: `tests/golden/frontend/source_free_diagnostics_admission_tests_report.json`
+- Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`

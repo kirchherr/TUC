@@ -26,6 +26,9 @@ from examples.real_triton_integration_admission_gate import (
 from examples.real_triton_surface_gate_completion import (
     build_report as build_surface_gate_completion_report,
 )
+from examples.source_free_diagnostics_admission_tests import (
+    build_report as build_source_free_diagnostics_admission_tests_report,
+)
 from examples.source_ingestion_quarantine_gate import (
     build_report as build_source_ingestion_quarantine_report,
 )
@@ -60,6 +63,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_IDS = (
     "bounded_source_buffer_api",
     "source_ingestion_sandbox_implementation",
     "parser_fuzz_negative_corpus_for_admitting_slice",
+    "source_free_diagnostics_admission_tests",
     "source_to_intent_research_source_runtime_smoke",
     "source_to_intent_research_kernel_ingress_proof_bundle",
 )
@@ -71,6 +75,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_CONTRACT_KEYS = (
     "api_contract",
     "sandbox_contract",
     "corpus_contract",
+    "diagnostics_contract",
     "smoke_contract",
     "bundle_contract",
 )
@@ -82,6 +87,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_STATUS_KEYS = (
     "api_status",
     "sandbox_status",
     "corpus_status",
+    "diagnostics_status",
     "status",
     "status",
 )
@@ -92,6 +98,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_EXPECTED_STATUS = (
     "accepted_requirements_only",
     "implemented_non_admitting",
     "implemented_non_admitting",
+    "complete_non_admitting",
     "complete_non_admitting",
     "PASS",
     "PASS",
@@ -104,11 +111,11 @@ REAL_TRITON_FIRST_SLICE_PLAN_ALREADY_SATISFIED = (
     "bounded_source_buffer_api_bound",
     "source_ingestion_sandbox_implementation_bound",
     "parser_fuzz_negative_corpus_bound",
+    "source_free_diagnostics_admission_tests_bound",
     "research_source_runtime_smoke_passed",
     "kernel_ingress_proof_bundle_passed",
 )
 REAL_TRITON_FIRST_SLICE_PLAN_MISSING_ADMISSION_EVIDENCE = (
-    "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "ci_replay_for_admitted_slice",
     "maintainer_security_review_approval",
@@ -358,6 +365,9 @@ def _build_payloads() -> dict[str, Mapping[str, object]]:
         "parser_fuzz_negative_corpus_for_admitting_slice": (
             build_parser_fuzz_negative_corpus_report()
         ),
+        "source_free_diagnostics_admission_tests": (
+            build_source_free_diagnostics_admission_tests_report()
+        ),
         "source_to_intent_research_source_runtime_smoke": (
             build_source_runtime_smoke_report()
         ),
@@ -457,6 +467,24 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
         if negative_corpus.get(field_name) is not False:
             raise RealTritonFirstSlicePlanError(
                 f"first-slice parser corpus {field_name} drift"
+            )
+
+    diagnostics = payloads["source_free_diagnostics_admission_tests"]
+    if diagnostics.get("diagnostics_status") != "complete_non_admitting":
+        raise RealTritonFirstSlicePlanError("first-slice diagnostics status drift")
+    if diagnostics.get("required_reason_coverage_complete") is not True:
+        raise RealTritonFirstSlicePlanError("first-slice diagnostics coverage drift")
+    if diagnostics.get("diagnostic_count") != negative_corpus.get("case_count"):
+        raise RealTritonFirstSlicePlanError("first-slice diagnostics count drift")
+    for field_name in (
+        "source_to_compute_graph",
+        "source_to_hac_ir",
+        "source_to_intent_plain_data",
+        "source_to_runtime_plan",
+    ):
+        if diagnostics.get(field_name) is not False:
+            raise RealTritonFirstSlicePlanError(
+                f"first-slice diagnostics {field_name} drift"
             )
 
     smoke = payloads["source_to_intent_research_source_runtime_smoke"]

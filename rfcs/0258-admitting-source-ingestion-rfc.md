@@ -29,7 +29,7 @@ The report records:
 - the target slice: `bounded_source_buffer_to_source_intent_plain_data`;
 - allowed inputs and outputs;
 - denied compiler and execution outputs;
-- remaining diagnostics, golden, replay, and maintainer review evidence;
+- remaining golden, replay, and maintainer review evidence;
 - blocked claims and blocked execution surfaces.
 
 ## Security Boundary
@@ -54,6 +54,12 @@ The report is digest-only and source-free.
 - Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`
 - Parser Fuzz Negative Corpus: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
 - Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`
+- Source-Free Diagnostics Admission Tests: `docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md`
+- Source-Free Diagnostics Admission Tests Module: `src/tuc/frontend/source_free_diagnostics_admission.py`
+- Source-Free Diagnostics Admission Tests Example: `examples/source_free_diagnostics_admission_tests.py`
+- Source-Free Diagnostics Admission Tests Schema: `schemas/source_free_diagnostics_admission_tests_report.v0.schema.json`
+- Source-Free Diagnostics Admission Tests Golden: `tests/golden/frontend/source_free_diagnostics_admission_tests_report.json`
+- Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`
 
 ## Acceptance Criteria
 

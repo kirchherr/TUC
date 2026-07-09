@@ -487,6 +487,8 @@ Current frontend surfaces:
 - Parser Fuzz Negative Corpus For Admitting Slice defining deterministic
   source-free rejection seeds for the future admitting parser path while keeping
   Source Intent, graph, HAC-IR, and runtime-plan outputs blocked. Doc: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`.
+- Source-Free Diagnostics Admission Tests proving public parser rejection
+  diagnostics stay digest-only, reason-code based, and non-admitting. Doc: `docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -588,6 +590,7 @@ Key docs:
 - [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
 - [Source Ingestion Sandbox Implementation](docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
 - [Parser Fuzz Negative Corpus For Admitting Slice](docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
+- [Source-Free Diagnostics Admission Tests](docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

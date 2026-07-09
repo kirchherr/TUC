@@ -45,7 +45,6 @@ ADMITTING_SOURCE_INGESTION_RFC_DENIED_OUTPUTS = (
     "backend_artifact",
 )
 ADMITTING_SOURCE_INGESTION_RFC_REMAINING_EVIDENCE = (
-    "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "ci_replay_for_admitted_slice",
     "maintainer_security_review_approval",

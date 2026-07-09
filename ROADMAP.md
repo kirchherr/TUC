@@ -866,8 +866,9 @@ Deliverables:
 - [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
   (`examples/real_triton_first_slice_plan.py`) binding Admission, Surface Gate
   Completion, Source Ingestion Quarantine, Admitting Source Ingestion RFC,
-  Bounded Source Buffer API, Source Ingestion Sandbox Implementation, Source
-  Runtime Smoke, and Kernel Ingress Proof Bundle evidence by digest while
+  Bounded Source Buffer API, Source Ingestion Sandbox Implementation, Parser
+  Fuzz Negative Corpus, Source-Free Diagnostics Admission Tests, Source Runtime
+  Smoke, and Kernel Ingress Proof Bundle evidence by digest while
   identifying the remaining missing admission evidence before
   `direct_source_ingestion` can become the first admitting Real Triton slice.
 - [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
@@ -888,6 +889,10 @@ Deliverables:
   deterministic source-free negative/fuzz seeds for the future admitting parser
   path while keeping Source Intent plain-data, ComputeGraph, HAC-IR, and
   runtime-plan outputs blocked.
+- [Source-Free Diagnostics Admission Tests](docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md)
+  (`examples/source_free_diagnostics_admission_tests.py`) proving parser
+  rejection diagnostics stay source-free, reason-code based, bounded, and
+  non-admitting while Source Intent plain-data output remains blocked.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.

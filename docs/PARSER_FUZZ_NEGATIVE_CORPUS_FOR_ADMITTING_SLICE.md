@@ -53,13 +53,13 @@ hardware hints, shape profiles, syntax boundaries, and trust boundaries.
 ## First Slice Role
 
 This closes the `parser_fuzz_negative_corpus_for_admitting_slice` prerequisite
-in the Real Triton First Slice Plan. The remaining blockers are:
+in the Real Triton First Slice Plan. The next bound evidence is
+`source_free_diagnostics_admission_tests`, which proves the public rejection
+diagnostics for this corpus stay source-free. The remaining blockers are:
 
-- source-free diagnostics admission tests;
 - Source Intent plain-data output goldens;
 - CI replay for the admitted slice;
 - maintainer security review approval.
-
 ## Security Boundary
 
 The corpus is not a parser and does not call a parser. It uses the source
@@ -77,6 +77,12 @@ IR or source-to-runtime-plan shortcuts.
 - Golden: `tests/golden/frontend/parser_fuzz_negative_corpus_for_admitting_slice_report.json`
 - Tests: `tests/test_parser_fuzz_negative_corpus_for_admitting_slice.py`
 - RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`
+- Source-Free Diagnostics Admission Tests Module: `src/tuc/frontend/source_free_diagnostics_admission.py`
+- Source-Free Diagnostics Admission Tests Example: `examples/source_free_diagnostics_admission_tests.py`
+- Source-Free Diagnostics Admission Tests Schema: `schemas/source_free_diagnostics_admission_tests_report.v0.schema.json`
+- Source-Free Diagnostics Admission Tests Golden: `tests/golden/frontend/source_free_diagnostics_admission_tests_report.json`
+- Source-Free Diagnostics Admission Tests Doc: `docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md`
+- Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`
 - First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
 - Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
 - Source Ingestion Sandbox Implementation: [Source Ingestion Sandbox Implementation](SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
