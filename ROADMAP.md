@@ -883,6 +883,11 @@ Deliverables:
   (`examples/source_ingestion_sandbox_implementation.py`) wrapping the bounded
   source buffer as an execution-free non-admitting sandbox while keeping Source
   Intent plain-data, ComputeGraph, HAC-IR, and runtime-plan outputs blocked.
+- [Parser Fuzz Negative Corpus For Admitting Slice](docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
+  (`examples/parser_fuzz_negative_corpus_for_admitting_slice.py`) defining
+  deterministic source-free negative/fuzz seeds for the future admitting parser
+  path while keeping Source Intent plain-data, ComputeGraph, HAC-IR, and
+  runtime-plan outputs blocked.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.

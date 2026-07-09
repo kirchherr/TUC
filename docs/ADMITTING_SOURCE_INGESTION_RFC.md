@@ -33,9 +33,8 @@ function objects, and backend artifacts.
 
 ## Remaining Evidence
 
-The `bounded_source_buffer_api` and `source_ingestion_sandbox_implementation` prerequisites are now covered. Before source ingestion can become admitting, TUC still requires:
+The `bounded_source_buffer_api`, `source_ingestion_sandbox_implementation`, and `parser_fuzz_negative_corpus_for_admitting_slice` prerequisites are now covered. Before source ingestion can become admitting, TUC still requires:
 
-- parser fuzz and negative corpus for the admitting slice;
 - source-free diagnostics admission tests;
 - Source Intent plain-data output goldens;
 - CI replay for the admitted slice;
@@ -75,3 +74,10 @@ compiler shortcuts from source.
 - Source Ingestion Sandbox Schema: `schemas/source_ingestion_sandbox_implementation_report.v0.schema.json`
 - Source Ingestion Sandbox Golden: `tests/golden/frontend/source_ingestion_sandbox_implementation_report.json`
 - Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`
+- Parser Fuzz Negative Corpus: [Parser Fuzz Negative Corpus For Admitting Slice](PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
+- Parser Fuzz Negative Corpus Doc: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
+- Parser Fuzz Negative Corpus Module: `src/tuc/frontend/parser_fuzz_negative_corpus.py`
+- Parser Fuzz Negative Corpus Example: `examples/parser_fuzz_negative_corpus_for_admitting_slice.py`
+- Parser Fuzz Negative Corpus Schema: `schemas/parser_fuzz_negative_corpus_for_admitting_slice_report.v0.schema.json`
+- Parser Fuzz Negative Corpus Golden: `tests/golden/frontend/parser_fuzz_negative_corpus_for_admitting_slice_report.json`
+- Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`

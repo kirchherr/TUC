@@ -47,13 +47,12 @@
   "proposal_name": "direct_source_ingestion_first_slice",
   "proposal_status": "accepted_requirements_only",
   "remaining_evidence": [
-    "parser_fuzz_negative_corpus_for_admitting_slice",
     "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "ci_replay_for_admitted_slice",
     "maintainer_security_review_approval"
   ],
-  "remaining_evidence_count": 5,
+  "remaining_evidence_count": 4,
   "required_controls": [
     "bounded_source_buffer",
     "decode_only_before_validation",
@@ -72,7 +71,7 @@
   ],
   "required_controls_count": 14,
   "rfc_contract": "admitting_source_ingestion_rfc.data_only.v0",
-  "rfc_digest": "sha256:5caa601b42166696fa187c2d84d107cab4de8ef463f66cb754e9ef46fc2eb0e5",
+  "rfc_digest": "sha256:52942364021484411fd3e8dbae4e5b65daab663d2f2f5a8261790f7645f16db2",
   "rfc_id": "admitting_source_ingestion_rfc",
   "schema_version": "tuc.admitting_source_ingestion_rfc_report.v0",
   "source_ingestion_admission_ready": false,

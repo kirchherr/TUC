@@ -40,9 +40,9 @@ raw source text.
 ## First Slice Role
 
 This closes the `source_ingestion_sandbox_implementation` prerequisite in the
-Real Triton First Slice Plan. The remaining blockers are:
+Real Triton First Slice Plan. The Parser Fuzz Negative Corpus now covers the
+next prerequisite. The remaining blockers are:
 
-- parser fuzz and negative corpus for the admitting slice;
 - source-free diagnostics admission tests;
 - Source Intent plain-data output goldens;
 - CI replay for the admitted slice;
@@ -70,3 +70,10 @@ all outputs metadata-only and source-free.
 - First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
 - Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
 - Bounded Source Buffer API: [Bounded Source Buffer API](BOUNDED_SOURCE_BUFFER_API.md)
+- Parser Fuzz Negative Corpus: [Parser Fuzz Negative Corpus For Admitting Slice](PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
+- Parser Fuzz Negative Corpus Doc: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
+- Parser Fuzz Negative Corpus Module: `src/tuc/frontend/parser_fuzz_negative_corpus.py`
+- Parser Fuzz Negative Corpus Example: `examples/parser_fuzz_negative_corpus_for_admitting_slice.py`
+- Parser Fuzz Negative Corpus Schema: `schemas/parser_fuzz_negative_corpus_for_admitting_slice_report.v0.schema.json`
+- Parser Fuzz Negative Corpus Golden: `tests/golden/frontend/parser_fuzz_negative_corpus_for_admitting_slice_report.json`
+- Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`

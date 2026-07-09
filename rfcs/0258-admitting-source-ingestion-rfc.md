@@ -29,7 +29,7 @@ The report records:
 - the target slice: `bounded_source_buffer_to_source_intent_plain_data`;
 - allowed inputs and outputs;
 - denied compiler and execution outputs;
-- remaining fuzz, diagnostics, golden, replay, and maintainer review evidence;
+- remaining diagnostics, golden, replay, and maintainer review evidence;
 - blocked claims and blocked execution surfaces.
 
 ## Security Boundary
@@ -52,6 +52,8 @@ The report is digest-only and source-free.
 - RFC path: `rfcs/0258-admitting-source-ingestion-rfc.md`
 - Source Ingestion Sandbox Implementation: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`
 - Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`
+- Parser Fuzz Negative Corpus: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
+- Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`
 
 ## Acceptance Criteria
 

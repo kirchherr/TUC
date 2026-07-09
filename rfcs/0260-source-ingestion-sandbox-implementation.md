@@ -27,6 +27,7 @@ documentation at `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`.
 
 The sandbox:
 
+- is now followed by Parser Fuzz Negative Corpus evidence for the admitting slice;
 - wraps `bound_source_buffer`;
 - returns accepted metadata-only results with bounded source-buffer record
   digests;
@@ -56,6 +57,8 @@ The public report is metadata-only and source-free.
 - Golden: `tests/golden/frontend/source_ingestion_sandbox_implementation_report.json`
 - Documentation: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`
 - RFC path: `rfcs/0260-source-ingestion-sandbox-implementation.md`
+- Parser Fuzz Negative Corpus: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
+- Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`
 
 ## Acceptance Criteria
 

@@ -33,6 +33,7 @@ The plan binds:
 - Admitting Source Ingestion RFC;
 - Bounded Source Buffer API;
 - Source Ingestion Sandbox Implementation;
+- Parser Fuzz Negative Corpus For Admitting Slice;
 - Source-To-Intent Research Source Runtime Smoke;
 - Source-To-Intent Research Kernel Ingress Proof Bundle.
 
@@ -49,6 +50,8 @@ be considered for an admitting implementation.
 - Bounded Source Buffer API: `docs/BOUNDED_SOURCE_BUFFER_API.md`
 - Source Ingestion Sandbox Implementation: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`
 - Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`
+- Parser Fuzz Negative Corpus: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
+- Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`
 - RFC path: `rfcs/0257-real-triton-first-slice-plan.md`
 
 ## Security Boundary
@@ -65,7 +68,7 @@ The plan report is digest-only and source-free.
 ## Acceptance Criteria
 
 - The plan report is schema-versioned and fail-closed.
-- The plan binds exactly eight prerequisite evidence artifacts by digest.
+- The plan binds exactly nine prerequisite evidence artifacts by digest.
 - `direct_source_ingestion` is only a candidate target surface, not admitted.
 - All other Real Triton surfaces remain blocked.
 - Missing admission evidence is explicit and machine-reviewable.

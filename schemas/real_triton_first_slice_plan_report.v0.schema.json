@@ -38,8 +38,8 @@
     "admitted": {"const": false},
     "source_ingestion_admission_ready": {"const": false},
     "evidence_policy": {"const": "digest_only_source_free"},
-    "evidence_count": {"const": 8},
-    "missing_admission_evidence_count": {"const": 5},
+    "evidence_count": {"const": 9},
+    "missing_admission_evidence_count": {"const": 4},
     "surfaces_remaining_blocked_count": {"const": 6},
     "issues": {
       "type": "array",
@@ -48,8 +48,8 @@
     },
     "evidence": {
       "type": "array",
-      "minItems": 8,
-      "maxItems": 8,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         {"$ref": "#/$defs/admission_gate_evidence"},
         {"$ref": "#/$defs/surface_completion_evidence"},
@@ -57,6 +57,7 @@
         {"$ref": "#/$defs/admitting_source_ingestion_rfc_evidence"},
         {"$ref": "#/$defs/bounded_source_buffer_api_evidence"},
         {"$ref": "#/$defs/source_ingestion_sandbox_implementation_evidence"},
+        {"$ref": "#/$defs/parser_fuzz_negative_corpus_evidence"},
         {"$ref": "#/$defs/source_runtime_smoke_evidence"},
         {"$ref": "#/$defs/kernel_ingress_bundle_evidence"}
       ],
@@ -64,8 +65,8 @@
     },
     "already_satisfied_prerequisites": {
       "type": "array",
-      "minItems": 8,
-      "maxItems": 8,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         {"const": "real_triton_admission_gate_bound"},
         {"const": "surface_gate_completion_bound"},
@@ -73,6 +74,7 @@
         {"const": "admitting_source_ingestion_rfc_bound"},
         {"const": "bounded_source_buffer_api_bound"},
         {"const": "source_ingestion_sandbox_implementation_bound"},
+        {"const": "parser_fuzz_negative_corpus_bound"},
         {"const": "research_source_runtime_smoke_passed"},
         {"const": "kernel_ingress_proof_bundle_passed"}
       ],
@@ -80,10 +82,9 @@
     },
     "missing_admission_evidence": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 4,
+      "maxItems": 4,
       "prefixItems": [
-        {"const": "parser_fuzz_negative_corpus_for_admitting_slice"},
         {"const": "source_free_diagnostics_admission_tests"},
         {"const": "source_to_intent_plain_data_output_golden_for_admitted_slice"},
         {"const": "ci_replay_for_admitted_slice"},
@@ -231,6 +232,18 @@
             "contract": {"const": "source_ingestion_sandbox_implementation.execution_free.v0"},
             "evidence_id": {"const": "source_ingestion_sandbox_implementation"},
             "status": {"const": "implemented_non_admitting"}
+          }
+        }
+      ]
+    },
+    "parser_fuzz_negative_corpus_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "parser_fuzz_negative_corpus_for_admitting_slice.data_only.v0"},
+            "evidence_id": {"const": "parser_fuzz_negative_corpus_for_admitting_slice"},
+            "status": {"const": "complete_non_admitting"}
           }
         }
       ]

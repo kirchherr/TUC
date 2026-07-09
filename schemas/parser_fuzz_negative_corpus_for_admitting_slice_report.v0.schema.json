@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/parser_fuzz_negative_corpus_for_admitting_slice_report.v0.schema.json",
+  "title": "TUC Parser Fuzz Negative Corpus For Admitting Slice Report v0",
+  "description": "Source-free evidence for deterministic negative/fuzz seeds that a future admitting source-to-Intent parser must reject before lowering.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "case_count",
+    "cases",
+    "corpus_contract",
+    "corpus_status",
+    "evidence_id",
+    "expected_outcome",
+    "issues",
+    "mutation_family_coverage",
+    "mutation_family_coverage_complete",
+    "raw_source_policy",
+    "rejection_category_coverage",
+    "report_digest",
+    "required_control_count",
+    "required_controls",
+    "required_rejection_coverage_complete",
+    "sandbox_evidence",
+    "schema_version",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_intent_plain_data",
+    "source_to_runtime_plan",
+    "target_slice"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.parser_fuzz_negative_corpus_for_admitting_slice_report.v0"},
+    "evidence_id": {"const": "parser_fuzz_negative_corpus_for_admitting_slice"},
+    "corpus_contract": {"const": "parser_fuzz_negative_corpus_for_admitting_slice.data_only.v0"},
+    "corpus_status": {"const": "complete_non_admitting"},
+    "target_slice": {"const": "bounded_source_buffer_to_source_intent_plain_data"},
+    "artifact_policy": {"const": "digest_only_source_free"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "expected_outcome": {"const": "rejected_before_lowering"},
+    "source_to_compute_graph": {"const": false},
+    "source_to_hac_ir": {"const": false},
+    "source_to_intent_plain_data": {"const": false},
+    "source_to_runtime_plan": {"const": false},
+    "case_count": {"const": 8},
+    "required_control_count": {"const": 14},
+    "required_rejection_coverage_complete": {"const": true},
+    "mutation_family_coverage_complete": {"const": true},
+    "report_digest": {"$ref": "#/$defs/sha256_text"},
+    "issues": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "sandbox_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "digest",
+        "evidence_id",
+        "source_free",
+        "status",
+        "supports_corpus"
+      ],
+      "properties": {
+        "contract": {"const": "source_ingestion_sandbox_implementation.execution_free.v0"},
+        "digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"const": "source_ingestion_sandbox_implementation"},
+        "source_free": {"const": true},
+        "status": {"const": "implemented_non_admitting"},
+        "supports_corpus": {"const": true}
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/corpus_case"}
+    },
+    "rejection_category_coverage": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"const": "hardware_specific_source"},
+        {"const": "invalid_shape_profile"},
+        {"const": "malformed_syntax"},
+        {"const": "resource_budget"},
+        {"const": "unsafe_execution_surface"},
+        {"const": "unsupported_semantics"}
+      ],
+      "items": false
+    },
+    "mutation_family_coverage": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"const": "ast_boundary"},
+        {"const": "budget_boundary"},
+        {"const": "hardware_hint"},
+        {"const": "shape_profile"},
+        {"const": "syntax_boundary"},
+        {"const": "trust_boundary"}
+      ],
+      "items": false
+    },
+    "required_controls": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "prefixItems": [
+        {"const": "deterministic_seed_manifest"},
+        {"const": "source_digest_only"},
+        {"const": "source_free_rejection_metadata"},
+        {"const": "bounded_source_buffer_sandbox_bound"},
+        {"const": "all_cases_expected_rejected"},
+        {"const": "fail_closed_before_lowering"},
+        {"const": "no_source_to_intent_plain_data"},
+        {"const": "no_source_to_compute_graph"},
+        {"const": "no_source_to_hac_ir"},
+        {"const": "no_source_to_runtime_plan"},
+        {"const": "no_python_import"},
+        {"const": "no_triton_jit"},
+        {"const": "no_device_access"},
+        {"const": "no_generated_artifacts"}
+      ],
+      "items": false
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "prefixItems": [
+        {"const": "backend_artifact"},
+        {"const": "compute_graph"},
+        {"const": "generated_artifact"},
+        {"const": "hac_ir"},
+        {"const": "hs_ir"},
+        {"const": "python_function_object"},
+        {"const": "runtime_plan"},
+        {"const": "source_intent_plain_data"},
+        {"const": "tlir"}
+      ],
+      "items": false
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "prefixItems": [
+        {"const": "decorator_evaluation"},
+        {"const": "device_access"},
+        {"const": "dynamic_library_loading"},
+        {"const": "frontend_package_import"},
+        {"const": "generated_artifact_execution"},
+        {"const": "native_backend_execution"},
+        {"const": "network_access"},
+        {"const": "plugin_discovery"},
+        {"const": "python_import"},
+        {"const": "subprocess_execution"},
+        {"const": "triton_jit_execution"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"
+    },
+    "corpus_case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "expected_outcome",
+        "expected_reason_code",
+        "expected_rejection_category",
+        "line_count",
+        "mutation_family",
+        "sandbox_contract",
+        "sandbox_outcome",
+        "sandbox_reason_code",
+        "sandbox_status",
+        "source_bytes",
+        "source_digest",
+        "source_free"
+      ],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/report_text"},
+        "expected_outcome": {"const": "rejected_before_lowering"},
+        "expected_reason_code": {"$ref": "#/$defs/report_text"},
+        "expected_rejection_category": {
+          "enum": [
+            "hardware_specific_source",
+            "invalid_shape_profile",
+            "malformed_syntax",
+            "resource_budget",
+            "unsafe_execution_surface",
+            "unsupported_semantics"
+          ]
+        },
+        "line_count": {"type": "integer", "minimum": 1, "maximum": 4096},
+        "mutation_family": {
+          "enum": [
+            "ast_boundary",
+            "budget_boundary",
+            "hardware_hint",
+            "shape_profile",
+            "syntax_boundary",
+            "trust_boundary"
+          ]
+        },
+        "sandbox_contract": {"const": "source_ingestion_sandbox_implementation.execution_free.v0"},
+        "sandbox_outcome": {
+          "enum": ["accepted_metadata_only", "rejected"]
+        },
+        "sandbox_reason_code": {"$ref": "#/$defs/report_text"},
+        "sandbox_status": {"const": "implemented_non_admitting"},
+        "source_bytes": {"type": "integer", "minimum": 1, "maximum": 65536},
+        "source_digest": {"$ref": "#/$defs/sha256_text"},
+        "source_free": {"const": true}
+      }
+    }
+  }
+}
