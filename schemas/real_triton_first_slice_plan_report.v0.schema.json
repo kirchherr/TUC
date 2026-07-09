@@ -38,8 +38,8 @@
     "admitted": {"const": false},
     "source_ingestion_admission_ready": {"const": false},
     "evidence_policy": {"const": "digest_only_source_free"},
-    "evidence_count": {"const": 11},
-    "missing_admission_evidence_count": {"const": 2},
+    "evidence_count": {"const": 12},
+    "missing_admission_evidence_count": {"const": 1},
     "surfaces_remaining_blocked_count": {"const": 6},
     "issues": {
       "type": "array",
@@ -48,8 +48,8 @@
     },
     "evidence": {
       "type": "array",
-      "minItems": 11,
-      "maxItems": 11,
+      "minItems": 12,
+      "maxItems": 12,
       "prefixItems": [
         {"$ref": "#/$defs/admission_gate_evidence"},
         {"$ref": "#/$defs/surface_completion_evidence"},
@@ -60,6 +60,7 @@
         {"$ref": "#/$defs/parser_fuzz_negative_corpus_evidence"},
         {"$ref": "#/$defs/source_free_diagnostics_admission_evidence"},
         {"$ref": "#/$defs/source_to_intent_plain_data_golden_evidence"},
+        {"$ref": "#/$defs/ci_replay_evidence"},
         {"$ref": "#/$defs/source_runtime_smoke_evidence"},
         {"$ref": "#/$defs/kernel_ingress_bundle_evidence"}
       ],
@@ -67,8 +68,8 @@
     },
     "already_satisfied_prerequisites": {
       "type": "array",
-      "minItems": 11,
-      "maxItems": 11,
+      "minItems": 12,
+      "maxItems": 12,
       "prefixItems": [
         {"const": "real_triton_admission_gate_bound"},
         {"const": "surface_gate_completion_bound"},
@@ -79,6 +80,7 @@
         {"const": "parser_fuzz_negative_corpus_bound"},
         {"const": "source_free_diagnostics_admission_tests_bound"},
         {"const": "source_to_intent_plain_data_output_golden_bound"},
+        {"const": "ci_replay_for_admitted_slice_bound"},
         {"const": "research_source_runtime_smoke_passed"},
         {"const": "kernel_ingress_proof_bundle_passed"}
       ],
@@ -86,10 +88,9 @@
     },
     "missing_admission_evidence": {
       "type": "array",
-      "minItems": 2,
-      "maxItems": 2,
+      "minItems": 1,
+      "maxItems": 1,
       "prefixItems": [
-        {"const": "ci_replay_for_admitted_slice"},
         {"const": "maintainer_security_review_approval"}
       ],
       "items": false
@@ -270,6 +271,18 @@
             "contract": {"const": "source_to_intent_plain_data_output_golden_for_admitted_slice.data_only.v0"},
             "evidence_id": {"const": "source_to_intent_plain_data_output_golden_for_admitted_slice"},
             "status": {"const": "complete_non_admitting"}
+          }
+        }
+      ]
+    },
+    "ci_replay_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "ci_replay_for_admitted_slice.ci.v0"},
+            "evidence_id": {"const": "ci_replay_for_admitted_slice"},
+            "status": {"const": "PASS"}
           }
         }
       ]

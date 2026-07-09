@@ -13,7 +13,6 @@ from examples.source_to_intent_research_capability_claim import (
     SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_REPORT_SCHEMA_VERSION,
     assert_research_capability_claim_report_contract,
     build_report,
-    build_research_capability_claim_report,
 )
 
 GOLDEN_PATH = Path(

@@ -23,8 +23,8 @@ from tuc.frontend.source_to_intent_research_parser import (
     SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
     SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY,
     SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
-    SourceToIntentResearchParseResult,
     SourceToIntentResearchParserError,
+    SourceToIntentResearchParseResult,
     parse_triton_source_to_source_intent,
     source_to_intent_research_parse_report_to_dict,
 )

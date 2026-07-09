@@ -94,3 +94,10 @@ compiler shortcuts from source.
 - Source-To-Intent Plain-Data Output Golden Report Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_report.json`
 - Source-To-Intent Plain-Data Output Golden Source Intent Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_source_intent.json`
 - Source-To-Intent Plain-Data Output Golden RFC: `rfcs/0263-source-to-intent-plain-data-output-golden-for-admitted-slice.md`
+- CI Replay For Admitted Slice: [CI Replay For Admitted Slice](CI_REPLAY_FOR_ADMITTED_SLICE.md)
+- CI Replay For Admitted Slice Doc: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`
+- CI Replay For Admitted Slice Module: `src/tuc/frontend/admitted_slice_ci_replay.py`
+- CI Replay For Admitted Slice Example: `examples/ci_replay_for_admitted_slice.py`
+- CI Replay For Admitted Slice Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`
+- CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
+- CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`

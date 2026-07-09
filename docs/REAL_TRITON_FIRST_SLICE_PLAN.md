@@ -19,7 +19,7 @@ python examples/real_triton_first_slice_plan.py
 
 ## What It Binds
 
-The plan binds eleven current artifacts by SHA-256 metadata digest:
+The plan binds twelve current artifacts by SHA-256 metadata digest:
 
 - Real Triton Integration Admission Gate.
 - Real Triton Surface Gate Completion.
@@ -29,6 +29,8 @@ The plan binds eleven current artifacts by SHA-256 metadata digest:
 - Source Ingestion Sandbox Implementation.
 - Parser Fuzz Negative Corpus For Admitting Slice.
 - Source-Free Diagnostics Admission Tests.
+- Source-To-Intent Plain-Data Output Golden For Admitted Slice.
+- CI Replay For Admitted Slice.
 - Source-To-Intent Research Source Runtime Smoke.
 - Source-To-Intent Research Kernel Ingress Proof Bundle.
 
@@ -55,8 +57,6 @@ The remaining Real Triton surfaces stay blocked:
 
 Before `direct_source_ingestion` can become admitting, TUC still requires:
 
-- source-to-Intent plain-data output goldens;
-- CI replay for the admitted slice;
 - maintainer security review approval.
 
 ## Security Boundary
@@ -114,5 +114,11 @@ shortcuts.
 - Source-To-Intent Plain-Data Output Golden Source Intent Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_source_intent.json`
 - Source-To-Intent Plain-Data Output Golden Doc: `docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md`
 - Source-To-Intent Plain-Data Output Golden RFC: `rfcs/0263-source-to-intent-plain-data-output-golden-for-admitted-slice.md`
+- CI Replay For Admitted Slice Module: `src/tuc/frontend/admitted_slice_ci_replay.py`
+- CI Replay For Admitted Slice Example: `examples/ci_replay_for_admitted_slice.py`
+- CI Replay For Admitted Slice Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`
+- CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
+- CI Replay For Admitted Slice Doc: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`
+- CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`
 - Admission Gate: [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
 - Surface Gate Completion: [Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md)

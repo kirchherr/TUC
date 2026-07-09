@@ -17,6 +17,9 @@ from examples.admitting_source_ingestion_rfc import (
 from examples.bounded_source_buffer_api import (
     build_report as build_bounded_source_buffer_api_report,
 )
+from examples.ci_replay_for_admitted_slice import (
+    build_report as build_ci_replay_for_admitted_slice_report,
+)
 from examples.parser_fuzz_negative_corpus_for_admitting_slice import (
     build_report as build_parser_fuzz_negative_corpus_report,
 )
@@ -68,6 +71,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_IDS = (
     "parser_fuzz_negative_corpus_for_admitting_slice",
     "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
+    "ci_replay_for_admitted_slice",
     "source_to_intent_research_source_runtime_smoke",
     "source_to_intent_research_kernel_ingress_proof_bundle",
 )
@@ -81,6 +85,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_CONTRACT_KEYS = (
     "corpus_contract",
     "diagnostics_contract",
     "golden_contract",
+    "contract",
     "smoke_contract",
     "bundle_contract",
 )
@@ -96,6 +101,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_STATUS_KEYS = (
     "golden_status",
     "status",
     "status",
+    "status",
 )
 REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_EXPECTED_STATUS = (
     "blocked",
@@ -109,6 +115,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_EXPECTED_STATUS = (
     "complete_non_admitting",
     "PASS",
     "PASS",
+    "PASS",
 )
 REAL_TRITON_FIRST_SLICE_PLAN_ALREADY_SATISFIED = (
     "real_triton_admission_gate_bound",
@@ -120,11 +127,11 @@ REAL_TRITON_FIRST_SLICE_PLAN_ALREADY_SATISFIED = (
     "parser_fuzz_negative_corpus_bound",
     "source_free_diagnostics_admission_tests_bound",
     "source_to_intent_plain_data_output_golden_bound",
+    "ci_replay_for_admitted_slice_bound",
     "research_source_runtime_smoke_passed",
     "kernel_ingress_proof_bundle_passed",
 )
 REAL_TRITON_FIRST_SLICE_PLAN_MISSING_ADMISSION_EVIDENCE = (
-    "ci_replay_for_admitted_slice",
     "maintainer_security_review_approval",
 )
 REAL_TRITON_FIRST_SLICE_PLAN_SURFACES_REMAINING_BLOCKED = (
@@ -378,6 +385,9 @@ def _build_payloads() -> dict[str, Mapping[str, object]]:
         "source_to_intent_plain_data_output_golden_for_admitted_slice": (
             build_source_to_intent_plain_data_golden_report()
         ),
+        "ci_replay_for_admitted_slice": (
+            build_ci_replay_for_admitted_slice_report()
+        ),
         "source_to_intent_research_source_runtime_smoke": (
             build_source_runtime_smoke_report()
         ),
@@ -513,6 +523,28 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
         if golden.get(field_name) is not False:
             raise RealTritonFirstSlicePlanError(
                 f"first-slice golden {field_name} drift"
+            )
+
+    ci_replay = payloads["ci_replay_for_admitted_slice"]
+    if ci_replay.get("status") != "PASS" or ci_replay.get("all_replayed") is not True:
+        raise RealTritonFirstSlicePlanError("first-slice CI replay drift")
+    if ci_replay.get("ci_replay_step_bound") is not True:
+        raise RealTritonFirstSlicePlanError("first-slice CI replay workflow drift")
+    if ci_replay.get("source_ingestion_admission_ready") is not False:
+        raise RealTritonFirstSlicePlanError("first-slice CI replay readiness drift")
+    if tuple(_string_list(ci_replay.get("remaining_external_evidence"))) != (
+        "maintainer_security_review_approval",
+    ):
+        raise RealTritonFirstSlicePlanError("first-slice CI replay remaining evidence drift")
+    for field_name in (
+        "direct_source_ingestion",
+        "source_to_compute_graph",
+        "source_to_hac_ir",
+        "source_to_runtime_plan",
+    ):
+        if ci_replay.get(field_name) is not False:
+            raise RealTritonFirstSlicePlanError(
+                f"first-slice CI replay {field_name} drift"
             )
 
     smoke = payloads["source_to_intent_research_source_runtime_smoke"]

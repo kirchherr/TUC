@@ -473,11 +473,11 @@ Current frontend surfaces:
   non-admitting. Schema: `schemas/real_triton_surface_gate_completion_report.v0.schema.json`; entry point: `examples/real_triton_surface_gate_completion.py`; doc: `docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md`.
 - Real Triton First Slice Plan identifying `direct_source_ingestion` as the
   first candidate admitting slice while keeping `admitted = false` and now
-  binding eleven current evidence artifacts before any implementation can open
-  that surface. Schema: `schemas/real_triton_first_slice_plan_report.v0.schema.json`; entry point: `examples/real_triton_first_slice_plan.py`; doc: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`.
+  binding twelve current evidence artifacts, including CI replay, before any implementation can open that surface; only maintainer security review remains as admission evidence. Schema: `schemas/real_triton_first_slice_plan_report.v0.schema.json`; entry point: `examples/real_triton_first_slice_plan.py`; doc: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`.
 - Admitting Source Ingestion RFC defining the requirements-only first
   `direct_source_ingestion` slice boundary while keeping implementation and
   admission blocked. Doc: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`.
+- CI Replay For Admitted Slice binding the future first source-ingestion slice to read-only GitHub Actions replay of the bounded buffer, sandbox, negative corpus, source-free diagnostics, and plain-data golden evidence. Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`; entry point: `examples/ci_replay_for_admitted_slice.py`; doc: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`.
 - Bounded Source Buffer API validating source text as untrusted bounded data
   and emitting source-free metadata records without admitting source-to-IR or
   source-to-runtime paths. Doc: `docs/BOUNDED_SOURCE_BUFFER_API.md`.
@@ -587,6 +587,7 @@ Key docs:
 - [Real Triton Surface Gate Completion](docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md)
 - [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
 - [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
+- [CI Replay For Admitted Slice](docs/CI_REPLAY_FOR_ADMITTED_SLICE.md)
 - [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
 - [Source Ingestion Sandbox Implementation](docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
 - [Parser Fuzz Negative Corpus For Admitting Slice](docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)

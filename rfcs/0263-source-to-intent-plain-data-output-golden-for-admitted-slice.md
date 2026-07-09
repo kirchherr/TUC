@@ -66,6 +66,12 @@ reviewable plain data only and remains disconnected from compiler execution.
 - Documentation: `docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md`
 - First Slice Plan: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`
 - Admitting Source Ingestion RFC: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`
+- CI Replay For Admitted Slice: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`
+- CI Replay For Admitted Slice Example: `examples/ci_replay_for_admitted_slice.py`
+- CI Replay For Admitted Slice Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`
+- CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
+- CI Replay For Admitted Slice Module: `src/tuc/frontend/admitted_slice_ci_replay.py`
+- CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`
 - RFC path: `rfcs/0263-source-to-intent-plain-data-output-golden-for-admitted-slice.md`
 
 ## Acceptance Criteria

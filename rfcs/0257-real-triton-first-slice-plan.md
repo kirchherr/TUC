@@ -58,6 +58,12 @@ be considered for an admitting implementation.
 - Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`
 - Source-To-Intent Plain-Data Output Golden: `docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md`
 - Source-To-Intent Plain-Data Output Golden RFC: `rfcs/0263-source-to-intent-plain-data-output-golden-for-admitted-slice.md`
+- CI Replay For Admitted Slice: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`
+- CI Replay For Admitted Slice Module: `src/tuc/frontend/admitted_slice_ci_replay.py`
+- CI Replay For Admitted Slice Example: `examples/ci_replay_for_admitted_slice.py`
+- CI Replay For Admitted Slice Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`
+- CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
+- CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`
 - RFC path: `rfcs/0257-real-triton-first-slice-plan.md`
 
 ## Security Boundary
@@ -74,9 +80,9 @@ The plan report is digest-only and source-free.
 ## Acceptance Criteria
 
 - The plan report is schema-versioned and fail-closed.
-- The plan binds exactly eleven prerequisite evidence artifacts by digest.
+- The plan binds exactly twelve prerequisite evidence artifacts by digest.
 - `direct_source_ingestion` is only a candidate target surface, not admitted.
 - All other Real Triton surfaces remain blocked.
-- Missing admission evidence is explicit and machine-reviewable.
+- Maintainer security review remains explicit and machine-reviewable as the final admission evidence.
 - Tests cover drift, evidence ordering, source leakage, schema closure, and
   documentation links.

@@ -47,10 +47,9 @@
   "proposal_name": "direct_source_ingestion_first_slice",
   "proposal_status": "accepted_requirements_only",
   "remaining_evidence": [
-    "ci_replay_for_admitted_slice",
     "maintainer_security_review_approval"
   ],
-  "remaining_evidence_count": 2,
+  "remaining_evidence_count": 1,
   "required_controls": [
     "bounded_source_buffer",
     "decode_only_before_validation",
@@ -69,7 +68,7 @@
   ],
   "required_controls_count": 14,
   "rfc_contract": "admitting_source_ingestion_rfc.data_only.v0",
-  "rfc_digest": "sha256:5825d40ec2c47d49cee39247a838af15670e9de784e1659fdf3ec0b7448b40b3",
+  "rfc_digest": "sha256:16b2189b60b71642d116f601b559a67aaa11ae198dbf364abda207a4e976ea53",
   "rfc_id": "admitting_source_ingestion_rfc",
   "schema_version": "tuc.admitting_source_ingestion_rfc_report.v0",
   "source_ingestion_admission_ready": false,

@@ -60,3 +60,4 @@ replay for the admitted slice and maintainer security review approval exist.
 - First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
 - Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
 - Source-Free Diagnostics Admission Tests: [Source-Free Diagnostics Admission Tests](SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md)
+- CI Replay For Admitted Slice: [CI Replay For Admitted Slice](CI_REPLAY_FOR_ADMITTED_SLICE.md)

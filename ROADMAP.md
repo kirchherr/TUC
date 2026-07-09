@@ -866,10 +866,7 @@ Deliverables:
 - [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
   (`examples/real_triton_first_slice_plan.py`) binding Admission, Surface Gate
   Completion, Source Ingestion Quarantine, Admitting Source Ingestion RFC,
-  Bounded Source Buffer API, Source Ingestion Sandbox Implementation, Parser
-  Fuzz Negative Corpus, Source-Free Diagnostics Admission Tests, Source Runtime
-  Smoke, and Kernel Ingress Proof Bundle evidence by digest while
-  identifying the remaining missing admission evidence before
+  Bounded Source Buffer API, Source Ingestion Sandbox Implementation, Parser Fuzz Negative Corpus, Source-Free Diagnostics Admission Tests, Source-To-Intent Plain-Data Output Golden, CI Replay For Admitted Slice, Source Runtime Smoke, and Kernel Ingress Proof Bundle evidence by digest while identifying maintainer security review as the remaining missing admission evidence before
   `direct_source_ingestion` can become the first admitting Real Triton slice.
 - [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
   (`examples/admitting_source_ingestion_rfc.py`) defining the requirements-only
@@ -897,6 +894,8 @@ Deliverables:
   (`examples/source_to_intent_plain_data_output_golden_for_admitted_slice.py`)
   proving the future admitting source slice has reviewable `source_intent.v0`
   plain-data goldens while direct source ingestion remains blocked.
+- [CI Replay For Admitted Slice](docs/CI_REPLAY_FOR_ADMITTED_SLICE.md)
+  (`examples/ci_replay_for_admitted_slice.py`) binding the admitted-slice prerequisite artifacts to read-only GitHub Actions replay while keeping source ingestion blocked until maintainer security review approval.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.

@@ -29,7 +29,7 @@ The report records:
 - the target slice: `bounded_source_buffer_to_source_intent_plain_data`;
 - allowed inputs and outputs;
 - denied compiler and execution outputs;
-- remaining CI replay and maintainer review evidence;
+- remaining maintainer review evidence;
 - blocked claims and blocked execution surfaces.
 
 ## Security Boundary
@@ -67,6 +67,12 @@ The report is digest-only and source-free.
 - Source-To-Intent Plain-Data Output Golden Report Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_report.json`
 - Source-To-Intent Plain-Data Output Golden Source Intent Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_source_intent.json`
 - Source-To-Intent Plain-Data Output Golden RFC: `rfcs/0263-source-to-intent-plain-data-output-golden-for-admitted-slice.md`
+- CI Replay For Admitted Slice: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`
+- CI Replay For Admitted Slice Module: `src/tuc/frontend/admitted_slice_ci_replay.py`
+- CI Replay For Admitted Slice Example: `examples/ci_replay_for_admitted_slice.py`
+- CI Replay For Admitted Slice Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`
+- CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
+- CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`
 
 ## Acceptance Criteria
 
