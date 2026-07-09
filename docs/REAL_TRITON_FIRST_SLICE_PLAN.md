@@ -19,7 +19,7 @@ python examples/real_triton_first_slice_plan.py
 
 ## What It Binds
 
-The plan binds twelve current artifacts by SHA-256 metadata digest:
+The plan binds thirteen current artifacts by SHA-256 metadata digest:
 
 - Real Triton Integration Admission Gate.
 - Real Triton Surface Gate Completion.
@@ -31,6 +31,7 @@ The plan binds twelve current artifacts by SHA-256 metadata digest:
 - Source-Free Diagnostics Admission Tests.
 - Source-To-Intent Plain-Data Output Golden For Admitted Slice.
 - CI Replay For Admitted Slice.
+- Source Ingestion Approval Criteria.
 - Source-To-Intent Research Source Runtime Smoke.
 - Source-To-Intent Research Kernel Ingress Proof Bundle.
 
@@ -40,11 +41,16 @@ The plan identifies `direct_source_ingestion` as the first candidate surface
 for a future admitting slice. It now binds the requirements-only Admitting
 Source Ingestion RFC, the Bounded Source Buffer API, the Source Ingestion
 Sandbox Implementation, Parser Fuzz Negative Corpus, Source-Free Diagnostics
-Admission Tests, Source-To-Intent Plain-Data Output Golden, and CI Replay For
-Admitted Slice. Source Ingestion Approval Criteria define the objective non-admitting checks for a later maintainer decision. The Source Ingestion Maintainer Security Review Packet prepares
-that evidence for review, but the plan still records maintainer security review
-approval as the remaining external evidence before that surface can become
-admitting.
+Admission Tests, Source-To-Intent Plain-Data Output Golden, CI Replay For
+Admitted Slice, and Source Ingestion Approval Criteria. The criteria define the
+objective non-admitting checks for a later maintainer decision.
+
+The Source Ingestion Maintainer Security Review Packet, Maintainer Approval
+Artifact, and Source Ingestion Admission Gate are intentionally downstream of
+this plan because they bind the plan by digest. The first-slice plan therefore
+does not bind them back, avoiding circular evidence while still recording
+maintainer security review approval as the remaining external evidence before
+that surface can become admitting.
 
 The remaining Real Triton surfaces stay blocked:
 

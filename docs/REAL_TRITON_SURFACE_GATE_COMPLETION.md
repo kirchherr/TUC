@@ -66,9 +66,10 @@ approval.
 
 [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md) is the next
 data-only planning artifact after surface-gate completion. It binds this
-completion report, Real Triton Admission, Source Ingestion Quarantine, Source
-Runtime Smoke, and Kernel Ingress Proof Bundle evidence by digest while keeping
-`admitted = false`.
+completion report, Real Triton Admission, Source Ingestion Quarantine, the
+admitted-source-slice prerequisite chain, Source Ingestion Approval Criteria,
+Source Runtime Smoke, and Kernel Ingress Proof Bundle evidence by digest while
+keeping `admitted = false`.
 
 - Example: `examples/real_triton_first_slice_plan.py`
 - Schema: `schemas/real_triton_first_slice_plan_report.v0.schema.json`

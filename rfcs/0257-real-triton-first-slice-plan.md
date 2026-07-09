@@ -36,12 +36,16 @@ The plan binds:
 - Parser Fuzz Negative Corpus For Admitting Slice;
 - Source-Free Diagnostics Admission Tests;
 - Source-To-Intent Plain-Data Output Golden For Admitted Slice;
+- CI Replay For Admitted Slice;
+- Source Ingestion Approval Criteria;
 - Source-To-Intent Research Source Runtime Smoke;
 - Source-To-Intent Research Kernel Ingress Proof Bundle.
 
 The report keeps `admitted = false`, `source_ingestion_admission_ready = false`,
 and records the missing admission evidence before `direct_source_ingestion` can
-be considered for an admitting implementation.
+be considered for an admitting implementation. Downstream maintainer review,
+approval-artifact, and admission-gate reports bind this plan by digest; this
+plan does not bind them back, keeping the evidence graph acyclic.
 
 ## Contract
 
@@ -64,6 +68,11 @@ be considered for an admitting implementation.
 - CI Replay For Admitted Slice Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`
 - CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
 - CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`
+- Source Ingestion Approval Criteria: `docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md`
+- Source Ingestion Approval Criteria Example: `examples/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Schema: `schemas/source_ingestion_approval_criteria_report.v0.schema.json`
+- Source Ingestion Approval Criteria Golden: `tests/golden/frontend/source_ingestion_approval_criteria_report.json`
+- Source Ingestion Approval Criteria RFC: `rfcs/0268-source-ingestion-approval-criteria.md`
 - RFC path: `rfcs/0257-real-triton-first-slice-plan.md`
 
 ## Security Boundary
@@ -80,7 +89,7 @@ The plan report is digest-only and source-free.
 ## Acceptance Criteria
 
 - The plan report is schema-versioned and fail-closed.
-- The plan binds exactly twelve prerequisite evidence artifacts by digest.
+- The plan binds exactly thirteen prerequisite evidence artifacts by digest.
 - `direct_source_ingestion` is only a candidate target surface, not admitted.
 - All other Real Triton surfaces remain blocked.
 - Maintainer security review remains explicit and machine-reviewable as the final admission evidence.

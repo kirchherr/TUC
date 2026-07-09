@@ -214,8 +214,10 @@ The completion report proves the surface-gate set is complete while keeping
 
 [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md) binds this
 admission gate, Real Triton Surface Gate Completion, Source Ingestion
-Quarantine, Source Runtime Smoke, and Kernel Ingress Proof Bundle evidence by
-digest. Its canonical doc path is `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`, its
+Quarantine, the admitted-source-slice prerequisite chain, Source Ingestion
+Approval Criteria, Source Runtime Smoke, and Kernel Ingress Proof Bundle
+evidence by digest. Its canonical doc path is
+`docs/REAL_TRITON_FIRST_SLICE_PLAN.md`, its
 entry point is `examples/real_triton_first_slice_plan.py`, and its schema is
 `schemas/real_triton_first_slice_plan_report.v0.schema.json`.
 

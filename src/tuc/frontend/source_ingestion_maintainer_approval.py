@@ -268,6 +268,7 @@ def source_ingestion_maintainer_approval_report_to_dict(
             "status": evidence.status,
         },
         "remaining_external_evidence": list(report.required_external_evidence),
+        "required_external_evidence": list(report.required_external_evidence),
         "remaining_external_evidence_count": len(report.required_external_evidence),
         "required_control_count": len(report.required_controls),
         "required_controls": list(report.required_controls),

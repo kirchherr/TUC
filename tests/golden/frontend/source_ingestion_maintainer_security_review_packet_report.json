@@ -23,7 +23,7 @@
     "maintainer_security_review_approval"
   ],
   "remaining_external_evidence_count": 1,
-  "report_digest": "sha256:26cd291cbcd7ad5a8aba12344885af91129b6457a3c55d1e071cea09e70b9c84",
+  "report_digest": "sha256:22756094e916c8b0cc8ed32f8eb7e27ff149e10c5123c2c2cef15cf65a955347",
   "required_check_count": 16,
   "required_checks": [
     "bounded_source_buffer_reviewed",
@@ -110,7 +110,7 @@
     },
     {
       "contract": "real_triton_first_slice_plan.data_only.v0",
-      "digest": "sha256:7a85d17dec41060e02999cfb2d0208609c1f8f578c126b5e278cb774d9da7b39",
+      "digest": "sha256:888b378cb4130fb2645222b83429fb8bbc5cb8646eca4d087d9241cb8e0e8fdb",
       "evidence_id": "real_triton_first_admissible_slice_plan",
       "reviewable": true,
       "source_free": true,

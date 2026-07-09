@@ -12,6 +12,7 @@
     "source_free_diagnostics_admission_tests_bound",
     "source_to_intent_plain_data_output_golden_bound",
     "ci_replay_for_admitted_slice_bound",
+    "source_ingestion_approval_criteria_bound",
     "research_source_runtime_smoke_passed",
     "kernel_ingress_proof_bundle_passed"
   ],
@@ -98,10 +99,18 @@
     },
     {
       "contract": "ci_replay_for_admitted_slice.ci.v0",
-      "digest": "sha256:c67b07c1031b920c55df55d2a8ee59ac047ba0dc38a05dd27fab410c6dcfcddb",
+      "digest": "sha256:0c769f3329b834fbddb04844f0ff74817049f6f6e914813a6155053e8908b9f7",
       "evidence_id": "ci_replay_for_admitted_slice",
       "source_free": true,
       "status": "PASS",
+      "supports_plan": true
+    },
+    {
+      "contract": "source_ingestion_approval_criteria.data_only.v0",
+      "digest": "sha256:5e04b1a5bb2997975ac4b5e06299be856ec401dd8dc687354e39caae727fd229",
+      "evidence_id": "source_ingestion_approval_criteria",
+      "source_free": true,
+      "status": "criteria_defined_not_approved",
       "supports_plan": true
     },
     {
@@ -121,7 +130,7 @@
       "supports_plan": true
     }
   ],
-  "evidence_count": 12,
+  "evidence_count": 13,
   "evidence_policy": "digest_only_source_free",
   "issues": [],
   "missing_admission_evidence": [
@@ -137,6 +146,7 @@
     "source_to_compute_graph_blocked",
     "source_to_hac_ir_blocked",
     "source_to_runtime_plan_blocked",
+    "approval_status_not_approved",
     "python_import_blocked",
     "triton_jit_blocked",
     "device_access_blocked",

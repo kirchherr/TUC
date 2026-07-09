@@ -59,6 +59,8 @@ generated artifacts, approve parser behavior, or grant execution permission.
   [Source Ingestion Maintainer Security Review Packet](SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
 - Maintainer Approval Artifact:
   [Source Ingestion Maintainer Approval Artifact](SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md)
+- Maintainer Approval Artifact Doc:
+  `docs/SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md`
 - Maintainer Approval Artifact Module:
   `src/tuc/frontend/source_ingestion_maintainer_approval.py`
 - Maintainer Approval Artifact Example:

@@ -9,6 +9,8 @@ from hashlib import sha256
 
 from examples.source_ingestion_maintainer_security_review_packet import (
     assert_source_ingestion_maintainer_security_review_packet_contract,
+)
+from examples.source_ingestion_maintainer_security_review_packet import (
     build_report as build_maintainer_review_packet_report,
 )
 from tuc.frontend.source_ingestion_maintainer_approval import (
@@ -59,6 +61,7 @@ _TOP_LEVEL_KEYS = frozenset(
         "maintainer_review_packet",
         "remaining_external_evidence",
         "remaining_external_evidence_count",
+        "required_external_evidence",
         "report_digest",
         "required_control_count",
         "required_controls",
@@ -200,6 +203,11 @@ def assert_source_ingestion_maintainer_approval_artifact_report_contract(
         report.get("remaining_external_evidence"),
         SOURCE_INGESTION_MAINTAINER_APPROVAL_REQUIRED_EXTERNAL_EVIDENCE,
         "remaining_external_evidence",
+    )
+    _assert_string_sequence(
+        report.get("required_external_evidence"),
+        SOURCE_INGESTION_MAINTAINER_APPROVAL_REQUIRED_EXTERNAL_EVIDENCE,
+        "required_external_evidence",
     )
     _assert_string_sequence(
         report.get("required_controls"),

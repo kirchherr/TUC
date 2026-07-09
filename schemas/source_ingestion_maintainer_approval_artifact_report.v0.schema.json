@@ -24,6 +24,7 @@
     "maintainer_review_packet",
     "remaining_external_evidence",
     "remaining_external_evidence_count",
+    "required_external_evidence",
     "report_digest",
     "required_control_count",
     "required_controls",
@@ -73,6 +74,15 @@
       "items": false
     },
     "remaining_external_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [
+        {"const": "maintainer_security_review_approval"}
+      ],
+      "items": false
+    },
+    "required_external_evidence": {
       "type": "array",
       "minItems": 1,
       "maxItems": 1,

@@ -47,7 +47,9 @@ def test_real_triton_first_slice_plan_passes() -> None:
     report = _cached_report()
 
     assert_real_triton_first_slice_plan_report_contract(report)
-    assert report["schema_version"] == REAL_TRITON_FIRST_SLICE_PLAN_REPORT_SCHEMA_VERSION
+    assert report["schema_version"] == (
+        REAL_TRITON_FIRST_SLICE_PLAN_REPORT_SCHEMA_VERSION
+    )
     assert report["plan_contract"] == REAL_TRITON_FIRST_SLICE_PLAN_CONTRACT
     assert report["plan_id"] == REAL_TRITON_FIRST_SLICE_PLAN_ID
     assert report["plan_status"] == REAL_TRITON_FIRST_SLICE_PLAN_STATUS
@@ -92,6 +94,7 @@ def test_real_triton_first_slice_plan_example_runs() -> None:
     assert '"admitted": false' in completed.stdout
     assert '"source_ingestion_admission_ready": false' in completed.stdout
     assert "source_ingestion_sandbox_implementation" in completed.stdout
+    assert "source_ingestion_approval_criteria" in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "source_text" not in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
@@ -118,6 +121,16 @@ def test_real_triton_first_slice_plan_rejects_contract_drift(
 
     with pytest.raises(RealTritonFirstSlicePlanError, match=match):
         assert_real_triton_first_slice_plan_report_contract(report)
+
+
+def test_real_triton_first_slice_plan_avoids_downstream_evidence_cycle() -> None:
+    report = _cached_report()
+    evidence_ids = {item["evidence_id"] for item in report["evidence"]}
+
+    assert "source_ingestion_approval_criteria" in evidence_ids
+    assert "source_ingestion_maintainer_security_review_packet" not in evidence_ids
+    assert "source_ingestion_maintainer_approval_artifact" not in evidence_ids
+    assert "source_ingestion_admission_gate" not in evidence_ids
 
 
 def test_real_triton_first_slice_plan_rejects_evidence_order_drift() -> None:
@@ -200,7 +213,9 @@ def test_real_triton_first_slice_plan_golden_matches_schema_shape() -> None:
     golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
 
     assert sorted(golden) == sorted(schema["required"])
-    assert golden["schema_version"] == REAL_TRITON_FIRST_SLICE_PLAN_REPORT_SCHEMA_VERSION
+    assert golden["schema_version"] == (
+        REAL_TRITON_FIRST_SLICE_PLAN_REPORT_SCHEMA_VERSION
+    )
     assert golden["admitted"] is False
     assert golden["source_ingestion_admission_ready"] is False
     assert golden["evidence_count"] == len(REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_IDS)

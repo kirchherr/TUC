@@ -38,7 +38,7 @@
     "admitted": {"const": false},
     "source_ingestion_admission_ready": {"const": false},
     "evidence_policy": {"const": "digest_only_source_free"},
-    "evidence_count": {"const": 12},
+    "evidence_count": {"const": 13},
     "missing_admission_evidence_count": {"const": 1},
     "surfaces_remaining_blocked_count": {"const": 6},
     "issues": {
@@ -48,8 +48,8 @@
     },
     "evidence": {
       "type": "array",
-      "minItems": 12,
-      "maxItems": 12,
+      "minItems": 13,
+      "maxItems": 13,
       "prefixItems": [
         {"$ref": "#/$defs/admission_gate_evidence"},
         {"$ref": "#/$defs/surface_completion_evidence"},
@@ -61,6 +61,7 @@
         {"$ref": "#/$defs/source_free_diagnostics_admission_evidence"},
         {"$ref": "#/$defs/source_to_intent_plain_data_golden_evidence"},
         {"$ref": "#/$defs/ci_replay_evidence"},
+        {"$ref": "#/$defs/source_ingestion_approval_criteria_evidence"},
         {"$ref": "#/$defs/source_runtime_smoke_evidence"},
         {"$ref": "#/$defs/kernel_ingress_bundle_evidence"}
       ],
@@ -68,8 +69,8 @@
     },
     "already_satisfied_prerequisites": {
       "type": "array",
-      "minItems": 12,
-      "maxItems": 12,
+      "minItems": 13,
+      "maxItems": 13,
       "prefixItems": [
         {"const": "real_triton_admission_gate_bound"},
         {"const": "surface_gate_completion_bound"},
@@ -81,6 +82,7 @@
         {"const": "source_free_diagnostics_admission_tests_bound"},
         {"const": "source_to_intent_plain_data_output_golden_bound"},
         {"const": "ci_replay_for_admitted_slice_bound"},
+        {"const": "source_ingestion_approval_criteria_bound"},
         {"const": "research_source_runtime_smoke_passed"},
         {"const": "kernel_ingress_proof_bundle_passed"}
       ],
@@ -125,14 +127,15 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 10,
-      "maxItems": 10,
+      "minItems": 11,
+      "maxItems": 11,
       "prefixItems": [
         {"const": "admitted_false_until_admitting_rfc_accepted"},
         {"const": "direct_source_ingestion_false_until_all_admission_evidence"},
         {"const": "source_to_compute_graph_blocked"},
         {"const": "source_to_hac_ir_blocked"},
         {"const": "source_to_runtime_plan_blocked"},
+        {"const": "approval_status_not_approved"},
         {"const": "python_import_blocked"},
         {"const": "triton_jit_blocked"},
         {"const": "device_access_blocked"},
@@ -283,6 +286,18 @@
             "contract": {"const": "ci_replay_for_admitted_slice.ci.v0"},
             "evidence_id": {"const": "ci_replay_for_admitted_slice"},
             "status": {"const": "PASS"}
+          }
+        }
+      ]
+    },
+    "source_ingestion_approval_criteria_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "source_ingestion_approval_criteria.data_only.v0"},
+            "evidence_id": {"const": "source_ingestion_approval_criteria"},
+            "status": {"const": "criteria_defined_not_approved"}
           }
         }
       ]

@@ -40,6 +40,9 @@ claims.
 - Golden: `tests/golden/frontend/source_ingestion_admission_gate_report.json`
 - Tests: `tests/test_source_ingestion_admission_gate.py`
 - Doc: `docs/SOURCE_INGESTION_ADMISSION_GATE.md`
+- Maintainer Approval Artifact Doc: `docs/SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md`
+- Maintainer Approval Artifact Example: `examples/source_ingestion_maintainer_approval_artifact.py`
+- Maintainer Approval Artifact Schema: `schemas/source_ingestion_maintainer_approval_artifact_report.v0.schema.json`
 
 ## Consequences
 

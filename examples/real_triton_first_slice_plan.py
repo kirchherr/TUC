@@ -32,6 +32,9 @@ from examples.real_triton_surface_gate_completion import (
 from examples.source_free_diagnostics_admission_tests import (
     build_report as build_source_free_diagnostics_admission_tests_report,
 )
+from examples.source_ingestion_approval_criteria import (
+    build_report as build_source_ingestion_approval_criteria_report,
+)
 from examples.source_ingestion_quarantine_gate import (
     build_report as build_source_ingestion_quarantine_report,
 )
@@ -53,7 +56,9 @@ REAL_TRITON_FIRST_SLICE_PLAN_REPORT_SCHEMA_VERSION = (
 )
 REAL_TRITON_FIRST_SLICE_PLAN_CONTRACT = "real_triton_first_slice_plan.data_only.v0"
 REAL_TRITON_FIRST_SLICE_PLAN_ID = "real_triton_first_admissible_slice_plan"
-REAL_TRITON_FIRST_SLICE_PLAN_STATUS = "blocked_until_admitting_source_ingestion_evidence"
+REAL_TRITON_FIRST_SLICE_PLAN_STATUS = (
+    "blocked_until_admitting_source_ingestion_evidence"
+)
 REAL_TRITON_FIRST_SLICE_PLAN_TARGET_SURFACE = "direct_source_ingestion"
 REAL_TRITON_FIRST_SLICE_PLAN_TARGET_SLICE = (
     "bounded_source_buffer_to_source_intent_plain_data"
@@ -72,6 +77,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_IDS = (
     "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "ci_replay_for_admitted_slice",
+    "source_ingestion_approval_criteria",
     "source_to_intent_research_source_runtime_smoke",
     "source_to_intent_research_kernel_ingress_proof_bundle",
 )
@@ -86,6 +92,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_CONTRACT_KEYS = (
     "diagnostics_contract",
     "golden_contract",
     "contract",
+    "criteria_contract",
     "smoke_contract",
     "bundle_contract",
 )
@@ -100,6 +107,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_STATUS_KEYS = (
     "diagnostics_status",
     "golden_status",
     "status",
+    "criteria_status",
     "status",
     "status",
 )
@@ -114,6 +122,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_EXPECTED_STATUS = (
     "complete_non_admitting",
     "complete_non_admitting",
     "PASS",
+    "criteria_defined_not_approved",
     "PASS",
     "PASS",
 )
@@ -128,6 +137,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_ALREADY_SATISFIED = (
     "source_free_diagnostics_admission_tests_bound",
     "source_to_intent_plain_data_output_golden_bound",
     "ci_replay_for_admitted_slice_bound",
+    "source_ingestion_approval_criteria_bound",
     "research_source_runtime_smoke_passed",
     "kernel_ingress_proof_bundle_passed",
 )
@@ -156,6 +166,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_REQUIRED_INVARIANTS = (
     "source_to_compute_graph_blocked",
     "source_to_hac_ir_blocked",
     "source_to_runtime_plan_blocked",
+    "approval_status_not_approved",
     "python_import_blocked",
     "triton_jit_blocked",
     "device_access_blocked",
@@ -248,7 +259,12 @@ def build_real_triton_first_slice_plan_report() -> dict[str, object]:
     payloads = _build_payloads()
     _assert_supporting_payloads(payloads)
     evidence = [
-        _evidence_from_payload(evidence_id, payloads[evidence_id], contract_key, status_key)
+        _evidence_from_payload(
+            evidence_id,
+            payloads[evidence_id],
+            contract_key,
+            status_key,
+        )
         for evidence_id, contract_key, status_key in zip(
             REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_IDS,
             REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_CONTRACT_KEYS,
@@ -388,6 +404,9 @@ def _build_payloads() -> dict[str, Mapping[str, object]]:
         "ci_replay_for_admitted_slice": (
             build_ci_replay_for_admitted_slice_report()
         ),
+        "source_ingestion_approval_criteria": (
+            build_source_ingestion_approval_criteria_report()
+        ),
         "source_to_intent_research_source_runtime_smoke": (
             build_source_runtime_smoke_report()
         ),
@@ -403,7 +422,10 @@ def _build_payloads() -> dict[str, Mapping[str, object]]:
 
 def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) -> None:
     admission = payloads["real_triton_integration_admission_gate"]
-    if admission.get("admitted") is not False or admission.get("admission_status") != "blocked":
+    if (
+        admission.get("admitted") is not False
+        or admission.get("admission_status") != "blocked"
+    ):
         raise RealTritonFirstSlicePlanError("first-slice admission gate drift")
 
     completion = payloads["real_triton_surface_gate_completion"]
@@ -535,7 +557,9 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
     if tuple(_string_list(ci_replay.get("remaining_external_evidence"))) != (
         "maintainer_security_review_approval",
     ):
-        raise RealTritonFirstSlicePlanError("first-slice CI replay remaining evidence drift")
+        raise RealTritonFirstSlicePlanError(
+            "first-slice CI replay remaining evidence drift"
+        )
     for field_name in (
         "direct_source_ingestion",
         "source_to_compute_graph",
@@ -546,6 +570,22 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
             raise RealTritonFirstSlicePlanError(
                 f"first-slice CI replay {field_name} drift"
             )
+
+    criteria = payloads["source_ingestion_approval_criteria"]
+    if criteria.get("criteria_status") != "criteria_defined_not_approved":
+        raise RealTritonFirstSlicePlanError("first-slice approval criteria drift")
+    if criteria.get("approval_status") != "not_approved":
+        raise RealTritonFirstSlicePlanError(
+            "first-slice approval criteria approval drift"
+        )
+    if criteria.get("admitted") is not False:
+        raise RealTritonFirstSlicePlanError(
+            "first-slice approval criteria admission drift"
+        )
+    if criteria.get("source_ingestion_admission_ready") is not False:
+        raise RealTritonFirstSlicePlanError(
+            "first-slice approval criteria readiness drift"
+        )
 
     smoke = payloads["source_to_intent_research_source_runtime_smoke"]
     if smoke.get("status") != "PASS" or smoke.get("case_count") != 2:
@@ -617,7 +657,9 @@ def _assert_evidence(value: object) -> None:
         if not _SHA256_RE.fullmatch(digest):
             raise RealTritonFirstSlicePlanError("first-slice evidence digest invalid")
         if item.get("source_free") is not True:
-            raise RealTritonFirstSlicePlanError("first-slice evidence source flag drift")
+            raise RealTritonFirstSlicePlanError(
+                "first-slice evidence source flag drift"
+            )
         if item.get("supports_plan") is not True:
             raise RealTritonFirstSlicePlanError("first-slice evidence support drift")
         evidence_ids.append(evidence_id)
@@ -628,7 +670,9 @@ def _assert_evidence(value: object) -> None:
     if tuple(statuses) != REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_EXPECTED_STATUS:
         raise RealTritonFirstSlicePlanError("first-slice evidence status drift")
     if len(digests) != len(set(digests)):
-        raise RealTritonFirstSlicePlanError("first-slice evidence digests must be unique")
+        raise RealTritonFirstSlicePlanError(
+            "first-slice evidence digests must be unique"
+        )
 
 
 def _json_payload(text: str, evidence_id: str) -> Mapping[str, object]:
@@ -648,7 +692,11 @@ def _digest_payload(payload: Mapping[str, object]) -> str:
     return f"sha256:{sha256(text.encode('utf-8')).hexdigest()}"
 
 
-def _assert_string_sequence(value: object, expected: tuple[str, ...], field_name: str) -> None:
+def _assert_string_sequence(
+    value: object,
+    expected: tuple[str, ...],
+    field_name: str,
+) -> None:
     if tuple(_string_list(value)) != expected:
         raise RealTritonFirstSlicePlanError(f"first-slice {field_name} drift")
 
