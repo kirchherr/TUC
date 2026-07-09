@@ -29,7 +29,7 @@ The report records:
 - the target slice: `bounded_source_buffer_to_source_intent_plain_data`;
 - allowed inputs and outputs;
 - denied compiler and execution outputs;
-- remaining golden, replay, and maintainer review evidence;
+- remaining CI replay and maintainer review evidence;
 - blocked claims and blocked execution surfaces.
 
 ## Security Boundary
@@ -60,6 +60,13 @@ The report is digest-only and source-free.
 - Source-Free Diagnostics Admission Tests Schema: `schemas/source_free_diagnostics_admission_tests_report.v0.schema.json`
 - Source-Free Diagnostics Admission Tests Golden: `tests/golden/frontend/source_free_diagnostics_admission_tests_report.json`
 - Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`
+- Source-To-Intent Plain-Data Output Golden: `docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md`
+- Source-To-Intent Plain-Data Output Golden Module: `src/tuc/frontend/source_to_intent_admitted_slice_golden.py`
+- Source-To-Intent Plain-Data Output Golden Example: `examples/source_to_intent_plain_data_output_golden_for_admitted_slice.py`
+- Source-To-Intent Plain-Data Output Golden Schema: `schemas/source_to_intent_plain_data_output_golden_for_admitted_slice_report.v0.schema.json`
+- Source-To-Intent Plain-Data Output Golden Report Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_report.json`
+- Source-To-Intent Plain-Data Output Golden Source Intent Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_source_intent.json`
+- Source-To-Intent Plain-Data Output Golden RFC: `rfcs/0263-source-to-intent-plain-data-output-golden-for-admitted-slice.md`
 
 ## Acceptance Criteria
 

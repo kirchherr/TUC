@@ -893,6 +893,10 @@ Deliverables:
   (`examples/source_free_diagnostics_admission_tests.py`) proving parser
   rejection diagnostics stay source-free, reason-code based, bounded, and
   non-admitting while Source Intent plain-data output remains blocked.
+- [Source-To-Intent Plain-Data Output Golden For Admitted Slice](docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md)
+  (`examples/source_to_intent_plain_data_output_golden_for_admitted_slice.py`)
+  proving the future admitting source slice has reviewable `source_intent.v0`
+  plain-data goldens while direct source ingestion remains blocked.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.

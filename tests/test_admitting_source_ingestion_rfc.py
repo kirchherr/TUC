@@ -104,7 +104,8 @@ def test_admitting_source_ingestion_rfc_example_runs() -> None:
     assert '"admitted": false' in completed.stdout
     assert '"implementation_status": "not_implemented"' in completed.stdout
     assert '"source_ingestion_admission_ready": false' in completed.stdout
-    assert "source_to_intent_plain_data_output_golden_for_admitted_slice" in completed.stdout
+    assert "ci_replay_for_admitted_slice" in completed.stdout
+    assert "source_to_intent_plain_data_output_golden_for_admitted_slice" not in completed.stdout
     assert "source_free_diagnostics_admission_tests" not in completed.stdout
     assert "parser_fuzz_negative_corpus_for_admitting_slice" not in completed.stdout
     assert "source_ingestion_sandbox_implementation" not in completed.stdout

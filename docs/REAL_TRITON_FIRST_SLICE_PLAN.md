@@ -19,7 +19,7 @@ python examples/real_triton_first_slice_plan.py
 
 ## What It Binds
 
-The plan binds ten current artifacts by SHA-256 metadata digest:
+The plan binds eleven current artifacts by SHA-256 metadata digest:
 
 - Real Triton Integration Admission Gate.
 - Real Triton Surface Gate Completion.
@@ -37,9 +37,10 @@ The plan binds ten current artifacts by SHA-256 metadata digest:
 The plan identifies `direct_source_ingestion` as the first candidate surface
 for a future admitting slice. It now binds the requirements-only Admitting
 Source Ingestion RFC, the Bounded Source Buffer API, the Source Ingestion
-Sandbox Implementation, Parser Fuzz Negative Corpus, and Source-Free
-Diagnostics Admission Tests, but still records the golden, replay, and
-maintainer-review evidence required before that surface can become admitting.
+Sandbox Implementation, Parser Fuzz Negative Corpus, Source-Free Diagnostics
+Admission Tests, and Source-To-Intent Plain-Data Output Golden, but still
+records the CI replay and maintainer-review evidence required before that
+surface can become admitting.
 
 The remaining Real Triton surfaces stay blocked:
 
@@ -106,5 +107,12 @@ shortcuts.
 - Source-Free Diagnostics Admission Tests Golden: `tests/golden/frontend/source_free_diagnostics_admission_tests_report.json`
 - Source-Free Diagnostics Admission Tests Doc: `docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md`
 - Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`
+- Source-To-Intent Plain-Data Output Golden Module: `src/tuc/frontend/source_to_intent_admitted_slice_golden.py`
+- Source-To-Intent Plain-Data Output Golden Example: `examples/source_to_intent_plain_data_output_golden_for_admitted_slice.py`
+- Source-To-Intent Plain-Data Output Golden Schema: `schemas/source_to_intent_plain_data_output_golden_for_admitted_slice_report.v0.schema.json`
+- Source-To-Intent Plain-Data Output Golden Report Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_report.json`
+- Source-To-Intent Plain-Data Output Golden Source Intent Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_source_intent.json`
+- Source-To-Intent Plain-Data Output Golden Doc: `docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md`
+- Source-To-Intent Plain-Data Output Golden RFC: `rfcs/0263-source-to-intent-plain-data-output-golden-for-admitted-slice.md`
 - Admission Gate: [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
 - Surface Gate Completion: [Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md)

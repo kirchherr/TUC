@@ -5,7 +5,8 @@ future admitting `bounded_source_buffer_to_source_intent_plain_data` slice stay
 bounded, reason-code based, and source-free.
 
 They do not implement a parser, do not admit source ingestion, and do not emit
-Source Intent plain data. The current report keeps:
+Source Intent plain data. The next bound first-slice evidence is the
+[Source-To-Intent Plain-Data Output Golden For Admitted Slice](SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md). The current report keeps:
 
 ```text
 diagnostics_status = complete_non_admitting
@@ -61,3 +62,4 @@ compiler shortcuts from source.
 - Parser Fuzz Negative Corpus: [Parser Fuzz Negative Corpus For Admitting Slice](PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
 - First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
 - Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
+- Source-To-Intent Plain-Data Output Golden: [Source-To-Intent Plain-Data Output Golden For Admitted Slice](SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md)

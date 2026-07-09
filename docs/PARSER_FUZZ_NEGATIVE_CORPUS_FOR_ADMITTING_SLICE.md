@@ -54,12 +54,13 @@ hardware hints, shape profiles, syntax boundaries, and trust boundaries.
 
 This closes the `parser_fuzz_negative_corpus_for_admitting_slice` prerequisite
 in the Real Triton First Slice Plan. The next bound evidence is
-`source_free_diagnostics_admission_tests`, which proves the public rejection
-diagnostics for this corpus stay source-free. The remaining blockers are:
+`source_free_diagnostics_admission_tests`, followed by
+`source_to_intent_plain_data_output_golden_for_admitted_slice`. The remaining
+blockers are:
 
-- Source Intent plain-data output goldens;
 - CI replay for the admitted slice;
 - maintainer security review approval.
+
 ## Security Boundary
 
 The corpus is not a parser and does not call a parser. It uses the source

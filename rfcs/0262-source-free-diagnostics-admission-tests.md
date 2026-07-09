@@ -32,7 +32,8 @@ explicit false flags for Source Intent, graph, HAC-IR, and runtime-plan output.
 
 The report binds Parser Fuzz Negative Corpus For Admitting Slice evidence by
 digest and removes `source_free_diagnostics_admission_tests` from the remaining
-admission blockers while keeping source ingestion blocked.
+admission blockers while keeping source ingestion blocked. Follow-on evidence
+is recorded in RFC 0263 for the Source-To-Intent plain-data output golden.
 
 ## Security Boundary
 

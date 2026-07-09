@@ -35,6 +35,9 @@ from examples.source_ingestion_quarantine_gate import (
 from examples.source_ingestion_sandbox_implementation import (
     build_report as build_source_ingestion_sandbox_implementation_report,
 )
+from examples.source_to_intent_plain_data_output_golden_for_admitted_slice import (
+    build_report as build_source_to_intent_plain_data_golden_report,
+)
 from examples.source_to_intent_research_kernel_ingress_proof_bundle import (
     build_report as build_kernel_ingress_proof_bundle_report,
 )
@@ -64,6 +67,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_IDS = (
     "source_ingestion_sandbox_implementation",
     "parser_fuzz_negative_corpus_for_admitting_slice",
     "source_free_diagnostics_admission_tests",
+    "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "source_to_intent_research_source_runtime_smoke",
     "source_to_intent_research_kernel_ingress_proof_bundle",
 )
@@ -76,6 +80,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_CONTRACT_KEYS = (
     "sandbox_contract",
     "corpus_contract",
     "diagnostics_contract",
+    "golden_contract",
     "smoke_contract",
     "bundle_contract",
 )
@@ -88,6 +93,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_STATUS_KEYS = (
     "sandbox_status",
     "corpus_status",
     "diagnostics_status",
+    "golden_status",
     "status",
     "status",
 )
@@ -98,6 +104,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_EXPECTED_STATUS = (
     "accepted_requirements_only",
     "implemented_non_admitting",
     "implemented_non_admitting",
+    "complete_non_admitting",
     "complete_non_admitting",
     "complete_non_admitting",
     "PASS",
@@ -112,11 +119,11 @@ REAL_TRITON_FIRST_SLICE_PLAN_ALREADY_SATISFIED = (
     "source_ingestion_sandbox_implementation_bound",
     "parser_fuzz_negative_corpus_bound",
     "source_free_diagnostics_admission_tests_bound",
+    "source_to_intent_plain_data_output_golden_bound",
     "research_source_runtime_smoke_passed",
     "kernel_ingress_proof_bundle_passed",
 )
 REAL_TRITON_FIRST_SLICE_PLAN_MISSING_ADMISSION_EVIDENCE = (
-    "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "ci_replay_for_admitted_slice",
     "maintainer_security_review_approval",
 )
@@ -368,6 +375,9 @@ def _build_payloads() -> dict[str, Mapping[str, object]]:
         "source_free_diagnostics_admission_tests": (
             build_source_free_diagnostics_admission_tests_report()
         ),
+        "source_to_intent_plain_data_output_golden_for_admitted_slice": (
+            build_source_to_intent_plain_data_golden_report()
+        ),
         "source_to_intent_research_source_runtime_smoke": (
             build_source_runtime_smoke_report()
         ),
@@ -485,6 +495,24 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
         if diagnostics.get(field_name) is not False:
             raise RealTritonFirstSlicePlanError(
                 f"first-slice diagnostics {field_name} drift"
+            )
+
+    golden = payloads["source_to_intent_plain_data_output_golden_for_admitted_slice"]
+    if golden.get("golden_status") != "complete_non_admitting":
+        raise RealTritonFirstSlicePlanError("first-slice golden status drift")
+    if golden.get("source_to_intent_plain_data_output_golden") is not True:
+        raise RealTritonFirstSlicePlanError("first-slice golden output drift")
+    if golden.get("operation_family_coverage_complete") is not True:
+        raise RealTritonFirstSlicePlanError("first-slice golden coverage drift")
+    for field_name in (
+        "direct_source_ingestion",
+        "source_to_compute_graph",
+        "source_to_hac_ir",
+        "source_to_runtime_plan",
+    ):
+        if golden.get(field_name) is not False:
+            raise RealTritonFirstSlicePlanError(
+                f"first-slice golden {field_name} drift"
             )
 
     smoke = payloads["source_to_intent_research_source_runtime_smoke"]

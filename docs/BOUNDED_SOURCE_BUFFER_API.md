@@ -55,10 +55,10 @@ Rejected buffers return source-free reason codes such as `empty_source`,
 ## First Slice Role
 
 This closes the `bounded_source_buffer_api` prerequisite and is now wrapped by
-the Source Ingestion Sandbox Implementation. The Parser Fuzz Negative Corpus now
-covers the next prerequisite. Remaining blockers still include source-free
-diagnostics admission tests, Source Intent plain-data output goldens, CI replay,
-and maintainer security review approval.
+the Source Ingestion Sandbox Implementation. Parser Fuzz Negative Corpus,
+Source-Free Diagnostics Admission Tests, and Source-To-Intent Plain-Data Output
+Golden now cover the next prerequisites. Remaining blockers are CI replay and
+maintainer security review approval.
 
 ## Contract
 

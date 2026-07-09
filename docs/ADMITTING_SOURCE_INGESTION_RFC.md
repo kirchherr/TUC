@@ -33,9 +33,8 @@ function objects, and backend artifacts.
 
 ## Remaining Evidence
 
-The `bounded_source_buffer_api`, `source_ingestion_sandbox_implementation`, `parser_fuzz_negative_corpus_for_admitting_slice`, and `source_free_diagnostics_admission_tests` prerequisites are now covered. Before source ingestion can become admitting, TUC still requires:
+The `bounded_source_buffer_api`, `source_ingestion_sandbox_implementation`, `parser_fuzz_negative_corpus_for_admitting_slice`, `source_free_diagnostics_admission_tests`, and `source_to_intent_plain_data_output_golden_for_admitted_slice` prerequisites are now covered. Before source ingestion can become admitting, TUC still requires:
 
-- Source Intent plain-data output goldens;
 - CI replay for the admitted slice;
 - maintainer security review approval.
 
@@ -87,3 +86,11 @@ compiler shortcuts from source.
 - Source-Free Diagnostics Admission Tests Schema: `schemas/source_free_diagnostics_admission_tests_report.v0.schema.json`
 - Source-Free Diagnostics Admission Tests Golden: `tests/golden/frontend/source_free_diagnostics_admission_tests_report.json`
 - Source-Free Diagnostics Admission Tests RFC: `rfcs/0262-source-free-diagnostics-admission-tests.md`
+- Source-To-Intent Plain-Data Output Golden: [Source-To-Intent Plain-Data Output Golden For Admitted Slice](SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md)
+- Source-To-Intent Plain-Data Output Golden Doc: `docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md`
+- Source-To-Intent Plain-Data Output Golden Module: `src/tuc/frontend/source_to_intent_admitted_slice_golden.py`
+- Source-To-Intent Plain-Data Output Golden Example: `examples/source_to_intent_plain_data_output_golden_for_admitted_slice.py`
+- Source-To-Intent Plain-Data Output Golden Schema: `schemas/source_to_intent_plain_data_output_golden_for_admitted_slice_report.v0.schema.json`
+- Source-To-Intent Plain-Data Output Golden Report Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_report.json`
+- Source-To-Intent Plain-Data Output Golden Source Intent Golden: `tests/golden/frontend/source_to_intent_plain_data_output_golden_for_admitted_slice_source_intent.json`
+- Source-To-Intent Plain-Data Output Golden RFC: `rfcs/0263-source-to-intent-plain-data-output-golden-for-admitted-slice.md`
