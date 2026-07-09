@@ -481,6 +481,9 @@ Current frontend surfaces:
 - Bounded Source Buffer API validating source text as untrusted bounded data
   and emitting source-free metadata records without admitting source-to-IR or
   source-to-runtime paths. Doc: `docs/BOUNDED_SOURCE_BUFFER_API.md`.
+- Source Ingestion Sandbox Implementation wrapping the bounded source buffer in
+  an execution-free non-admitting sandbox, binding its evidence by digest while
+  keeping Source Intent, graph, HAC-IR, and runtime-plan outputs blocked. Doc: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -580,6 +583,7 @@ Key docs:
 - [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
 - [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
 - [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
+- [Source Ingestion Sandbox Implementation](docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

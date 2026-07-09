@@ -33,9 +33,8 @@ function objects, and backend artifacts.
 
 ## Remaining Evidence
 
-The `bounded_source_buffer_api` prerequisite is now covered. Before source ingestion can become admitting, TUC still requires:
+The `bounded_source_buffer_api` and `source_ingestion_sandbox_implementation` prerequisites are now covered. Before source ingestion can become admitting, TUC still requires:
 
-- source-ingestion sandbox implementation evidence;
 - parser fuzz and negative corpus for the admitting slice;
 - source-free diagnostics admission tests;
 - Source Intent plain-data output goldens;
@@ -69,3 +68,10 @@ compiler shortcuts from source.
 - Bounded Source Buffer API Schema: `schemas/bounded_source_buffer_api_report.v0.schema.json`
 - Bounded Source Buffer API Golden: `tests/golden/frontend/bounded_source_buffer_api_report.json`
 - Bounded Source Buffer API RFC: `rfcs/0259-bounded-source-buffer-api.md`
+- Source Ingestion Sandbox Implementation: [Source Ingestion Sandbox Implementation](SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
+- Source Ingestion Sandbox Doc: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`
+- Source Ingestion Sandbox Module: `src/tuc/frontend/source_ingestion_sandbox.py`
+- Source Ingestion Sandbox Example: `examples/source_ingestion_sandbox_implementation.py`
+- Source Ingestion Sandbox Schema: `schemas/source_ingestion_sandbox_implementation_report.v0.schema.json`
+- Source Ingestion Sandbox Golden: `tests/golden/frontend/source_ingestion_sandbox_implementation_report.json`
+- Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`

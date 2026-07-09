@@ -26,6 +26,9 @@ from examples.real_triton_surface_gate_completion import (
 from examples.source_ingestion_quarantine_gate import (
     build_report as build_source_ingestion_quarantine_report,
 )
+from examples.source_ingestion_sandbox_implementation import (
+    build_report as build_source_ingestion_sandbox_implementation_report,
+)
 from examples.source_to_intent_research_kernel_ingress_proof_bundle import (
     build_report as build_kernel_ingress_proof_bundle_report,
 )
@@ -52,6 +55,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_IDS = (
     "source_ingestion_quarantine_gate",
     "admitting_source_ingestion_rfc",
     "bounded_source_buffer_api",
+    "source_ingestion_sandbox_implementation",
     "source_to_intent_research_source_runtime_smoke",
     "source_to_intent_research_kernel_ingress_proof_bundle",
 )
@@ -61,6 +65,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_CONTRACT_KEYS = (
     "gate_contract",
     "rfc_contract",
     "api_contract",
+    "sandbox_contract",
     "smoke_contract",
     "bundle_contract",
 )
@@ -70,6 +75,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_STATUS_KEYS = (
     "gate_status",
     "proposal_status",
     "api_status",
+    "sandbox_status",
     "status",
     "status",
 )
@@ -78,6 +84,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_EVIDENCE_EXPECTED_STATUS = (
     "complete",
     "quarantine_only",
     "accepted_requirements_only",
+    "implemented_non_admitting",
     "implemented_non_admitting",
     "PASS",
     "PASS",
@@ -88,11 +95,11 @@ REAL_TRITON_FIRST_SLICE_PLAN_ALREADY_SATISFIED = (
     "source_ingestion_quarantine_bound",
     "admitting_source_ingestion_rfc_bound",
     "bounded_source_buffer_api_bound",
+    "source_ingestion_sandbox_implementation_bound",
     "research_source_runtime_smoke_passed",
     "kernel_ingress_proof_bundle_passed",
 )
 REAL_TRITON_FIRST_SLICE_PLAN_MISSING_ADMISSION_EVIDENCE = (
-    "source_ingestion_sandbox_implementation",
     "parser_fuzz_negative_corpus_for_admitting_slice",
     "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
@@ -117,7 +124,7 @@ REAL_TRITON_FIRST_SLICE_PLAN_BLOCKED_CLAIMS = (
 )
 REAL_TRITON_FIRST_SLICE_PLAN_REQUIRED_INVARIANTS = (
     "admitted_false_until_admitting_rfc_accepted",
-    "direct_source_ingestion_false_until_sandbox_evidence",
+    "direct_source_ingestion_false_until_all_admission_evidence",
     "source_to_compute_graph_blocked",
     "source_to_hac_ir_blocked",
     "source_to_runtime_plan_blocked",
@@ -338,6 +345,9 @@ def _build_payloads() -> dict[str, Mapping[str, object]]:
         "source_ingestion_quarantine_gate": build_source_ingestion_quarantine_report(),
         "admitting_source_ingestion_rfc": build_admitting_source_ingestion_rfc_report(),
         "bounded_source_buffer_api": build_bounded_source_buffer_api_report(),
+        "source_ingestion_sandbox_implementation": (
+            build_source_ingestion_sandbox_implementation_report()
+        ),
         "source_to_intent_research_source_runtime_smoke": (
             build_source_runtime_smoke_report()
         ),
@@ -406,6 +416,21 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
         if buffer_api.get(field_name) is not False:
             raise RealTritonFirstSlicePlanError(
                 f"first-slice buffer API {field_name} drift"
+            )
+
+    sandbox = payloads["source_ingestion_sandbox_implementation"]
+    if sandbox.get("sandbox_status") != "implemented_non_admitting":
+        raise RealTritonFirstSlicePlanError("first-slice sandbox status drift")
+    for field_name in (
+        "direct_source_ingestion",
+        "source_to_compute_graph",
+        "source_to_hac_ir",
+        "source_to_intent_plain_data",
+        "source_to_runtime_plan",
+    ):
+        if sandbox.get(field_name) is not False:
+            raise RealTritonFirstSlicePlanError(
+                f"first-slice sandbox {field_name} drift"
             )
 
     smoke = payloads["source_to_intent_research_source_runtime_smoke"]

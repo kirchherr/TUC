@@ -7,6 +7,7 @@
     "source_ingestion_quarantine_bound",
     "admitting_source_ingestion_rfc_bound",
     "bounded_source_buffer_api_bound",
+    "source_ingestion_sandbox_implementation_bound",
     "research_source_runtime_smoke_passed",
     "kernel_ingress_proof_bundle_passed"
   ],
@@ -45,7 +46,7 @@
     },
     {
       "contract": "admitting_source_ingestion_rfc.data_only.v0",
-      "digest": "sha256:35cb5554e837db6ff7360910fcb9e9af0b80d931996bc38ed3edbdc29b48aaac",
+      "digest": "sha256:8d76794b3e9e4b864dbe0afdec7aa9281f215aa903740c3a0b2f5a8bfd29ca98",
       "evidence_id": "admitting_source_ingestion_rfc",
       "source_free": true,
       "status": "accepted_requirements_only",
@@ -55,6 +56,14 @@
       "contract": "bounded_source_buffer_api.execution_free.v0",
       "digest": "sha256:f452052ad0b010257c63dcb7dfb1e006b0b9bd2f9dd49dcb03f14a6f8ded117d",
       "evidence_id": "bounded_source_buffer_api",
+      "source_free": true,
+      "status": "implemented_non_admitting",
+      "supports_plan": true
+    },
+    {
+      "contract": "source_ingestion_sandbox_implementation.execution_free.v0",
+      "digest": "sha256:453f0efe70a8cc1ffc7e9af753cb83e4234aab3f6cae86a1b7e7718aa9d16804",
+      "evidence_id": "source_ingestion_sandbox_implementation",
       "source_free": true,
       "status": "implemented_non_admitting",
       "supports_plan": true
@@ -76,24 +85,23 @@
       "supports_plan": true
     }
   ],
-  "evidence_count": 7,
+  "evidence_count": 8,
   "evidence_policy": "digest_only_source_free",
   "issues": [],
   "missing_admission_evidence": [
-    "source_ingestion_sandbox_implementation",
     "parser_fuzz_negative_corpus_for_admitting_slice",
     "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "ci_replay_for_admitted_slice",
     "maintainer_security_review_approval"
   ],
-  "missing_admission_evidence_count": 6,
+  "missing_admission_evidence_count": 5,
   "plan_contract": "real_triton_first_slice_plan.data_only.v0",
   "plan_id": "real_triton_first_admissible_slice_plan",
   "plan_status": "blocked_until_admitting_source_ingestion_evidence",
   "required_invariants": [
     "admitted_false_until_admitting_rfc_accepted",
-    "direct_source_ingestion_false_until_sandbox_evidence",
+    "direct_source_ingestion_false_until_all_admission_evidence",
     "source_to_compute_graph_blocked",
     "source_to_hac_ir_blocked",
     "source_to_runtime_plan_blocked",

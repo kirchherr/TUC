@@ -12,9 +12,10 @@ API for a future admitting `direct_source_ingestion` slice.
 ## Motivation
 
 The Admitting Source Ingestion RFC requires a bounded source-buffer API before
-any source-ingestion slice can become admitting. TUC needs this boundary before
-sandbox implementation, fuzzing, diagnostics admission tests, Source Intent
-goldens, replay, or maintainer approval can be credible.
+any source-ingestion slice can become admitting. TUC now wraps this boundary in
+the Source Ingestion Sandbox Implementation; fuzzing, diagnostics admission
+tests, Source Intent goldens, replay, and maintainer approval remain separate
+requirements.
 
 ## Decision
 
@@ -56,6 +57,8 @@ evaluate the AST.
 - Golden: `tests/golden/frontend/bounded_source_buffer_api_report.json`
 - Documentation: `docs/BOUNDED_SOURCE_BUFFER_API.md`
 - RFC path: `rfcs/0259-bounded-source-buffer-api.md`
+- Source Ingestion Sandbox Implementation: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`
+- Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`
 
 ## Acceptance Criteria
 

@@ -29,8 +29,7 @@ The report records:
 - the target slice: `bounded_source_buffer_to_source_intent_plain_data`;
 - allowed inputs and outputs;
 - denied compiler and execution outputs;
-- remaining implementation, fuzz, diagnostics, golden, replay, and maintainer
-  review evidence;
+- remaining fuzz, diagnostics, golden, replay, and maintainer review evidence;
 - blocked claims and blocked execution surfaces.
 
 ## Security Boundary
@@ -51,6 +50,8 @@ The report is digest-only and source-free.
 - Golden: `tests/golden/frontend/admitting_source_ingestion_rfc_report.json`
 - Documentation: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`
 - RFC path: `rfcs/0258-admitting-source-ingestion-rfc.md`
+- Source Ingestion Sandbox Implementation: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`
+- Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`
 
 ## Acceptance Criteria
 

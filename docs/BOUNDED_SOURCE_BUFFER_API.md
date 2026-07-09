@@ -54,11 +54,11 @@ Rejected buffers return source-free reason codes such as `empty_source`,
 
 ## First Slice Role
 
-This closes only the `bounded_source_buffer_api` prerequisite in the Real
-Triton First Slice Plan. Remaining blockers still include sandbox
-implementation, parser fuzz and negative corpus, source-free diagnostics
-admission tests, Source Intent plain-data output goldens, CI replay, and
-maintainer security review approval.
+This closes the `bounded_source_buffer_api` prerequisite and is now wrapped by
+the Source Ingestion Sandbox Implementation. Remaining blockers still include
+parser fuzz and negative corpus, source-free diagnostics admission tests, Source
+Intent plain-data output goldens, CI replay, and maintainer security review
+approval.
 
 ## Contract
 
@@ -70,3 +70,10 @@ maintainer security review approval.
 - RFC: `rfcs/0259-bounded-source-buffer-api.md`
 - First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
 - Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
+- Source Ingestion Sandbox Implementation: [Source Ingestion Sandbox Implementation](SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
+- Source Ingestion Sandbox Doc: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`
+- Source Ingestion Sandbox Module: `src/tuc/frontend/source_ingestion_sandbox.py`
+- Source Ingestion Sandbox Example: `examples/source_ingestion_sandbox_implementation.py`
+- Source Ingestion Sandbox Schema: `schemas/source_ingestion_sandbox_implementation_report.v0.schema.json`
+- Source Ingestion Sandbox Golden: `tests/golden/frontend/source_ingestion_sandbox_implementation_report.json`
+- Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`

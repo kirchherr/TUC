@@ -38,8 +38,8 @@
     "admitted": {"const": false},
     "source_ingestion_admission_ready": {"const": false},
     "evidence_policy": {"const": "digest_only_source_free"},
-    "evidence_count": {"const": 7},
-    "missing_admission_evidence_count": {"const": 6},
+    "evidence_count": {"const": 8},
+    "missing_admission_evidence_count": {"const": 5},
     "surfaces_remaining_blocked_count": {"const": 6},
     "issues": {
       "type": "array",
@@ -48,14 +48,15 @@
     },
     "evidence": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 8,
+      "maxItems": 8,
       "prefixItems": [
         {"$ref": "#/$defs/admission_gate_evidence"},
         {"$ref": "#/$defs/surface_completion_evidence"},
         {"$ref": "#/$defs/source_quarantine_evidence"},
         {"$ref": "#/$defs/admitting_source_ingestion_rfc_evidence"},
         {"$ref": "#/$defs/bounded_source_buffer_api_evidence"},
+        {"$ref": "#/$defs/source_ingestion_sandbox_implementation_evidence"},
         {"$ref": "#/$defs/source_runtime_smoke_evidence"},
         {"$ref": "#/$defs/kernel_ingress_bundle_evidence"}
       ],
@@ -63,14 +64,15 @@
     },
     "already_satisfied_prerequisites": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 8,
+      "maxItems": 8,
       "prefixItems": [
         {"const": "real_triton_admission_gate_bound"},
         {"const": "surface_gate_completion_bound"},
         {"const": "source_ingestion_quarantine_bound"},
         {"const": "admitting_source_ingestion_rfc_bound"},
         {"const": "bounded_source_buffer_api_bound"},
+        {"const": "source_ingestion_sandbox_implementation_bound"},
         {"const": "research_source_runtime_smoke_passed"},
         {"const": "kernel_ingress_proof_bundle_passed"}
       ],
@@ -78,10 +80,9 @@
     },
     "missing_admission_evidence": {
       "type": "array",
-      "minItems": 6,
-      "maxItems": 6,
+      "minItems": 5,
+      "maxItems": 5,
       "prefixItems": [
-        {"const": "source_ingestion_sandbox_implementation"},
         {"const": "parser_fuzz_negative_corpus_for_admitting_slice"},
         {"const": "source_free_diagnostics_admission_tests"},
         {"const": "source_to_intent_plain_data_output_golden_for_admitted_slice"},
@@ -124,7 +125,7 @@
       "maxItems": 10,
       "prefixItems": [
         {"const": "admitted_false_until_admitting_rfc_accepted"},
-        {"const": "direct_source_ingestion_false_until_sandbox_evidence"},
+        {"const": "direct_source_ingestion_false_until_all_admission_evidence"},
         {"const": "source_to_compute_graph_blocked"},
         {"const": "source_to_hac_ir_blocked"},
         {"const": "source_to_runtime_plan_blocked"},
@@ -217,6 +218,18 @@
           "properties": {
             "contract": {"const": "bounded_source_buffer_api.execution_free.v0"},
             "evidence_id": {"const": "bounded_source_buffer_api"},
+            "status": {"const": "implemented_non_admitting"}
+          }
+        }
+      ]
+    },
+    "source_ingestion_sandbox_implementation_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "source_ingestion_sandbox_implementation.execution_free.v0"},
+            "evidence_id": {"const": "source_ingestion_sandbox_implementation"},
             "status": {"const": "implemented_non_admitting"}
           }
         }
