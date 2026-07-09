@@ -310,6 +310,11 @@ Completed evidence:
   one digest-only current research-claim snapshot without expanding parser,
   plugin, device, generated-artifact, native-backend, or native-performance
   surfaces.
+- [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md)
+  makes that snapshot CI-checkable by binding the claim digest, metadata
+  digest, evidence IDs, public counts, supported claims, blocked claims, and
+  required invariants without serializing source, runtime handles, tensor
+  values, backend artifacts, or device details.
 - Objective Alpha Public Evidence Catalog Entry Admission Pattern derives the
   catalog's expected IDs, entry points, artifact kinds, extension tiers, digest
   sources, and raw-output policies from typed data-only specs, reducing drift in

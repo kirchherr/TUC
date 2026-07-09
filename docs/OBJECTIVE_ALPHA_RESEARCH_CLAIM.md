@@ -13,6 +13,7 @@ Run it with:
 
 ```bash
 python examples/objective_alpha_research_claim.py
+python examples/objective_alpha_research_claim_gate.py
 ```
 
 The report is schema-versioned at:
@@ -81,4 +82,10 @@ subprocesses, touch the network, parse source, or authorize generated artifacts.
 - Schema: `schemas/objective_alpha_research_claim_report.v0.schema.json`
 - Golden: `tests/golden/proofs/objective_alpha_research_claim.json`
 - Tests: `tests/test_objective_alpha_research_claim.py`
+- Gate: [Objective Alpha Research Claim Gate](OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md)
+- Gate doc path: `docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md`
+- Gate example: `examples/objective_alpha_research_claim_gate.py`
+- Gate schema: `schemas/objective_alpha_research_claim_gate_report.v0.schema.json`
+- Gate golden: `tests/golden/proofs/objective_alpha_research_claim_gate.json`
+- Gate RFC: `rfcs/0256-objective-alpha-research-claim-gate.md`
 - RFC: `rfcs/0255-objective-alpha-research-claim.md`

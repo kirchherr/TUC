@@ -35,6 +35,7 @@ Current high-level research claim artifacts:
 
 ```bash
 python examples/objective_alpha_research_claim.py
+python examples/objective_alpha_research_claim_gate.py
 python examples/source_to_intent_research_capability_claim.py
 python examples/source_to_intent_research_capability_claim_gate.py
 ```
@@ -44,6 +45,7 @@ admission gates, and Source Intent mixed-runtime proof into one digest-only
 review artifact. See [Objective Alpha Research Claim](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM.md).
 Schema: `schemas/objective_alpha_research_claim_report.v0.schema.json`.
 Golden: `tests/golden/proofs/objective_alpha_research_claim.json`.
+Gate: [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md).
 
 Current practical Source Intent to mixed-runtime proof:
 
@@ -267,6 +269,7 @@ Key docs:
 - [Runtime Executor](docs/RUNTIME_EXECUTOR.md)
 - [Runtime Evidence Flow](docs/RUNTIME_EVIDENCE_FLOW.md)
 - [Objective Alpha Research Claim](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM.md)
+- [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md)
 - [Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
 - [Objective Alpha Evidence Extension Policy](docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
 - [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
