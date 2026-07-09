@@ -46,7 +46,6 @@ ADMITTING_SOURCE_INGESTION_RFC_DENIED_OUTPUTS = (
 )
 ADMITTING_SOURCE_INGESTION_RFC_REMAINING_EVIDENCE = (
     "source_ingestion_sandbox_implementation",
-    "bounded_source_buffer_api",
     "parser_fuzz_negative_corpus_for_admitting_slice",
     "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",

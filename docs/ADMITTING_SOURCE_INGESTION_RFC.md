@@ -33,10 +33,9 @@ function objects, and backend artifacts.
 
 ## Remaining Evidence
 
-Before source ingestion can become admitting, TUC still requires:
+The `bounded_source_buffer_api` prerequisite is now covered. Before source ingestion can become admitting, TUC still requires:
 
 - source-ingestion sandbox implementation evidence;
-- bounded source-buffer API evidence;
 - parser fuzz and negative corpus for the admitting slice;
 - source-free diagnostics admission tests;
 - Source Intent plain-data output goldens;
@@ -63,3 +62,10 @@ compiler shortcuts from source.
 - Tests: `tests/test_admitting_source_ingestion_rfc.py`
 - RFC: `rfcs/0258-admitting-source-ingestion-rfc.md`
 - First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
+- Bounded Source Buffer API: [Bounded Source Buffer API](BOUNDED_SOURCE_BUFFER_API.md)
+- Bounded Source Buffer API Doc: `docs/BOUNDED_SOURCE_BUFFER_API.md`
+- Bounded Source Buffer API Module: `src/tuc/frontend/bounded_source_buffer.py`
+- Bounded Source Buffer API Example: `examples/bounded_source_buffer_api.py`
+- Bounded Source Buffer API Schema: `schemas/bounded_source_buffer_api_report.v0.schema.json`
+- Bounded Source Buffer API Golden: `tests/golden/frontend/bounded_source_buffer_api_report.json`
+- Bounded Source Buffer API RFC: `rfcs/0259-bounded-source-buffer-api.md`

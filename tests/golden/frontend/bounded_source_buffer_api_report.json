@@ -1,0 +1,177 @@
+{
+  "accepted_case_count": 2,
+  "accepted_records": [
+    {
+      "admission_effect": "does_not_admit_direct_source_ingestion",
+      "api_contract": "bounded_source_buffer_api.execution_free.v0",
+      "api_status": "implemented_non_admitting",
+      "ast_depth": 6,
+      "ast_node_count": 15,
+      "blocked_execution_surfaces": [
+        "decorator_evaluation",
+        "device_access",
+        "dynamic_library_loading",
+        "frontend_package_import",
+        "generated_artifact_execution",
+        "network_access",
+        "plugin_discovery",
+        "python_import",
+        "subprocess_execution",
+        "triton_jit_execution"
+      ],
+      "blocked_outputs": [
+        "compute_graph",
+        "generated_artifact",
+        "hac_ir",
+        "hs_ir",
+        "python_function_object",
+        "runtime_plan",
+        "source_intent_plain_data",
+        "tlir"
+      ],
+      "diagnostic_policy": "source_free_reason_codes_only",
+      "line_count": 3,
+      "output_policy": "metadata_record_only",
+      "raw_source_policy": "omitted_by_policy",
+      "shape_profile_digest": "sha256:0fe0a155cb4ed924b24715dca79930ea89a5be4f3ecf35aa3c58553f08a8901e",
+      "shape_profile_entry_count": 2,
+      "shape_profile_max_rank": 2,
+      "source_bytes": 42,
+      "source_digest": "sha256:067ab8f23371e6ba6cdd2db1e083415b338eb2bace64bfca4331490adc619106",
+      "source_name": "accepted_module_buffer"
+    },
+    {
+      "admission_effect": "does_not_admit_direct_source_ingestion",
+      "api_contract": "bounded_source_buffer_api.execution_free.v0",
+      "api_status": "implemented_non_admitting",
+      "ast_depth": 6,
+      "ast_node_count": 21,
+      "blocked_execution_surfaces": [
+        "decorator_evaluation",
+        "device_access",
+        "dynamic_library_loading",
+        "frontend_package_import",
+        "generated_artifact_execution",
+        "network_access",
+        "plugin_discovery",
+        "python_import",
+        "subprocess_execution",
+        "triton_jit_execution"
+      ],
+      "blocked_outputs": [
+        "compute_graph",
+        "generated_artifact",
+        "hac_ir",
+        "hs_ir",
+        "python_function_object",
+        "runtime_plan",
+        "source_intent_plain_data",
+        "tlir"
+      ],
+      "diagnostic_policy": "source_free_reason_codes_only",
+      "line_count": 4,
+      "output_policy": "metadata_record_only",
+      "raw_source_policy": "omitted_by_policy",
+      "shape_profile_digest": "sha256:ce260bd0260470327bf8a9b186aa79a5078c6a2a56682efd363bfbc8355d0a1c",
+      "shape_profile_entry_count": 3,
+      "shape_profile_max_rank": 2,
+      "source_bytes": 57,
+      "source_digest": "sha256:6c702af59417d550e199b9cf734ff64d274de58231db1acef63fa3d04faf1122",
+      "source_name": "accepted_decorator_data_buffer"
+    }
+  ],
+  "admission_effect": "does_not_admit_direct_source_ingestion",
+  "api_contract": "bounded_source_buffer_api.execution_free.v0",
+  "api_status": "implemented_non_admitting",
+  "artifact_policy": "metadata_only_source_free",
+  "blocked_execution_surfaces": [
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "frontend_package_import",
+    "generated_artifact_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_import",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "blocked_outputs": [
+    "compute_graph",
+    "generated_artifact",
+    "hac_ir",
+    "hs_ir",
+    "python_function_object",
+    "runtime_plan",
+    "source_intent_plain_data",
+    "tlir"
+  ],
+  "budget_limits": {
+    "ast_depth": 64,
+    "ast_nodes": 8192,
+    "shape_dimension": 2147483647,
+    "shape_profile_entries": 64,
+    "shape_rank": 8,
+    "source_bytes": 65536,
+    "source_lines": 2048
+  },
+  "diagnostic_policy": "source_free_reason_codes_only",
+  "direct_source_ingestion": false,
+  "evidence_id": "bounded_source_buffer_api",
+  "issues": [],
+  "output_policy": "metadata_record_only",
+  "raw_source_policy": "omitted_by_policy",
+  "rejection_case_count": 4,
+  "rejection_cases": [
+    {
+      "case_id": "empty_source_buffer",
+      "outcome": "rejected",
+      "reason_code": "empty_source",
+      "source_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_free": true
+    },
+    {
+      "case_id": "source_line_budget",
+      "outcome": "rejected",
+      "reason_code": "line_budget",
+      "source_digest": "sha256:bb435be5e54e8eae25217d64e9c31a95a659d14e33b2d362d41e20f584c19c7f",
+      "source_free": true
+    },
+    {
+      "case_id": "syntax_error",
+      "outcome": "rejected",
+      "reason_code": "syntax_error",
+      "source_digest": "sha256:6b8c8a725c23dc076d9a2c185ce4e02435746bc3b4f99906d13de360e56898c7",
+      "source_free": true
+    },
+    {
+      "case_id": "invalid_shape_profile",
+      "outcome": "rejected",
+      "reason_code": "shape_profile",
+      "source_digest": "sha256:9e26bf369911c45c243c684147b23fc9e1dcfcf257d299a1c632016a6fcd33f4",
+      "source_free": true
+    }
+  ],
+  "report_digest": "sha256:fa96666bfbeabee84f18cf9c0b622ae1f369bce03b76343e0fca6791b476e0c6",
+  "required_control_count": 14,
+  "required_controls": [
+    "bounded_source_buffer",
+    "utf8_decode_before_validation",
+    "source_buffer_size_limit",
+    "source_line_limit",
+    "ast_node_limit",
+    "ast_depth_limit",
+    "declared_shape_profile_required",
+    "shape_profile_entry_limit",
+    "shape_rank_limit",
+    "shape_dimension_limit",
+    "source_digest_only",
+    "source_free_diagnostics",
+    "no_source_to_intent_output",
+    "no_compiler_artifact_output"
+  ],
+  "schema_version": "tuc.bounded_source_buffer_api_report.v0",
+  "source_to_compute_graph": false,
+  "source_to_hac_ir": false,
+  "source_to_runtime_plan": false
+}

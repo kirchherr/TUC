@@ -1,5 +1,21 @@
 """Frontend metadata and developer-facing helpers."""
 
+from tuc.frontend.bounded_source_buffer import (
+    BOUNDED_SOURCE_BUFFER_ADMISSION_EFFECT,
+    BOUNDED_SOURCE_BUFFER_API_CONTRACT,
+    BOUNDED_SOURCE_BUFFER_API_STATUS,
+    BOUNDED_SOURCE_BUFFER_BLOCKED_EXECUTION_SURFACES,
+    BOUNDED_SOURCE_BUFFER_BLOCKED_OUTPUTS,
+    BOUNDED_SOURCE_BUFFER_DIAGNOSTIC_POLICY,
+    BOUNDED_SOURCE_BUFFER_OUTPUT_POLICY,
+    BOUNDED_SOURCE_BUFFER_RAW_SOURCE_POLICY,
+    MAX_BOUNDED_SOURCE_BUFFER_RECORD_BYTES,
+    MAX_BOUNDED_SOURCE_BUFFER_SHAPE_PROFILE_ENTRIES,
+    BoundedSourceBufferError,
+    BoundedSourceBufferRecord,
+    bound_source_buffer,
+    bounded_source_buffer_record_to_dict,
+)
 from tuc.frontend.device_access_sandbox_gate import (
     DEVICE_ACCESS_SANDBOX_ADMISSION_EFFECT,
     DEVICE_ACCESS_SANDBOX_BLOCKED_EXECUTION_SURFACES,
@@ -209,7 +225,9 @@ from tuc.frontend.source_ingestion_quarantine_gate import (
 )
 from tuc.frontend.source_intent import (
     MAX_SOURCE_INTENT_ARITY,
+    MAX_SOURCE_INTENT_DIMENSION,
     MAX_SOURCE_INTENT_OPERATIONS,
+    MAX_SOURCE_INTENT_RANK,
     MAX_SOURCE_INTENT_TENSORS,
     SOURCE_INTENT_IR_CONTRACT,
     SOURCE_INTENT_RETURN_POLICY,
@@ -498,6 +516,14 @@ from tuc.frontend.triton_source import (
 )
 
 __all__ = [
+    "BOUNDED_SOURCE_BUFFER_ADMISSION_EFFECT",
+    "BOUNDED_SOURCE_BUFFER_API_CONTRACT",
+    "BOUNDED_SOURCE_BUFFER_API_STATUS",
+    "BOUNDED_SOURCE_BUFFER_BLOCKED_EXECUTION_SURFACES",
+    "BOUNDED_SOURCE_BUFFER_BLOCKED_OUTPUTS",
+    "BOUNDED_SOURCE_BUFFER_DIAGNOSTIC_POLICY",
+    "BOUNDED_SOURCE_BUFFER_OUTPUT_POLICY",
+    "BOUNDED_SOURCE_BUFFER_RAW_SOURCE_POLICY",
     "DEVICE_ACCESS_SANDBOX_ADMISSION_EFFECT",
     "DEVICE_ACCESS_SANDBOX_BLOCKED_EXECUTION_SURFACES",
     "DEVICE_ACCESS_SANDBOX_BLOCKED_OUTPUTS",
@@ -545,6 +571,8 @@ __all__ = [
     "EXTERNAL_FRONTEND_PACKAGE_INTERFACE_CONTRACT",
     "EXTERNAL_FRONTEND_PACKAGE_REQUIRED_CAPABILITIES",
     "CompilationHints",
+    "MAX_BOUNDED_SOURCE_BUFFER_RECORD_BYTES",
+    "MAX_BOUNDED_SOURCE_BUFFER_SHAPE_PROFILE_ENTRIES",
     "MAX_DEVICE_ACCESS_SANDBOX_EVIDENCE",
     "MAX_DEVICE_ACCESS_SANDBOX_FIELD_BYTES",
     "MAX_DEVICE_ACCESS_SANDBOX_REPORT_BYTES",
@@ -574,8 +602,10 @@ __all__ = [
     "MAX_SOURCE_INGESTION_QUARANTINE_FIELD_BYTES",
     "MAX_SOURCE_INGESTION_QUARANTINE_REPORT_BYTES",
     "MAX_SOURCE_INTENT_ARITY",
+    "MAX_SOURCE_INTENT_DIMENSION",
     "MAX_SOURCE_INTENT_FRONTEND_CONFORMANCE_CASES",
     "MAX_SOURCE_INTENT_OPERATIONS",
+    "MAX_SOURCE_INTENT_RANK",
     "MAX_SOURCE_INTENT_RETURN_REPORT_BYTES",
     "MAX_SOURCE_INTENT_RUNTIME_RETURNS",
     "MAX_SOURCE_INTENT_RUNTIME_RETURNS_FIELD_BYTES",
@@ -764,6 +794,8 @@ __all__ = [
     "TRITON_JIT_EXECUTION_SANDBOX_REQUIRED_CONTROLS",
     "TRITON_JIT_EXECUTION_SANDBOX_REQUIRED_EVIDENCE",
     "TRITON_JIT_EXECUTION_SANDBOX_SURFACE_ID",
+    "BoundedSourceBufferError",
+    "BoundedSourceBufferRecord",
     "DeviceAccessSandboxEvidence",
     "DeviceAccessSandboxReport",
     "ExternalFrontendPackageConformanceReport",
@@ -840,6 +872,8 @@ __all__ = [
     "assert_source_intent_frontend_conformance",
     "assert_source_intent_runtime_returns",
     "assert_source_to_intent_readiness",
+    "bound_source_buffer",
+    "bounded_source_buffer_record_to_dict",
     "build_device_access_sandbox_report",
     "build_external_frontend_package_conformance_report",
     "build_generated_artifact_quarantine_report",

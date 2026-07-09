@@ -478,6 +478,9 @@ Current frontend surfaces:
 - Admitting Source Ingestion RFC defining the requirements-only first
   `direct_source_ingestion` slice boundary while keeping implementation and
   admission blocked. Doc: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`.
+- Bounded Source Buffer API validating source text as untrusted bounded data
+  and emitting source-free metadata records without admitting source-to-IR or
+  source-to-runtime paths. Doc: `docs/BOUNDED_SOURCE_BUFFER_API.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -576,6 +579,7 @@ Key docs:
 - [Real Triton Surface Gate Completion](docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md)
 - [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
 - [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
+- [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

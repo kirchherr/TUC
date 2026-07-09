@@ -30,6 +30,8 @@ The plan binds:
 - Real Triton Integration Admission Gate;
 - Real Triton Surface Gate Completion;
 - Source Ingestion Quarantine Gate;
+- Admitting Source Ingestion RFC;
+- Bounded Source Buffer API;
 - Source-To-Intent Research Source Runtime Smoke;
 - Source-To-Intent Research Kernel Ingress Proof Bundle.
 
@@ -43,6 +45,7 @@ be considered for an admitting implementation.
 - Schema: `schemas/real_triton_first_slice_plan_report.v0.schema.json`
 - Golden: `tests/golden/frontend/real_triton_first_slice_plan_report.json`
 - Documentation: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`
+- Bounded Source Buffer API: `docs/BOUNDED_SOURCE_BUFFER_API.md`
 - RFC path: `rfcs/0257-real-triton-first-slice-plan.md`
 
 ## Security Boundary
@@ -59,7 +62,7 @@ The plan report is digest-only and source-free.
 ## Acceptance Criteria
 
 - The plan report is schema-versioned and fail-closed.
-- The plan binds exactly five prerequisite evidence artifacts by digest.
+- The plan binds exactly seven prerequisite evidence artifacts by digest.
 - `direct_source_ingestion` is only a candidate target surface, not admitted.
 - All other Real Triton surfaces remain blocked.
 - Missing admission evidence is explicit and machine-reviewable.

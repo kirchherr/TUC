@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/bounded_source_buffer_api_report.v0.schema.json",
+  "title": "TUC Bounded Source Buffer API Report v0",
+  "description": "Source-free evidence for the bounded source-buffer API used before any admitting source-ingestion slice.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_case_count",
+    "accepted_records",
+    "admission_effect",
+    "api_contract",
+    "api_status",
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "budget_limits",
+    "diagnostic_policy",
+    "direct_source_ingestion",
+    "evidence_id",
+    "issues",
+    "output_policy",
+    "raw_source_policy",
+    "rejection_case_count",
+    "rejection_cases",
+    "report_digest",
+    "required_control_count",
+    "required_controls",
+    "schema_version",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_runtime_plan"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.bounded_source_buffer_api_report.v0"},
+    "api_contract": {"const": "bounded_source_buffer_api.execution_free.v0"},
+    "evidence_id": {"const": "bounded_source_buffer_api"},
+    "api_status": {"const": "implemented_non_admitting"},
+    "artifact_policy": {"const": "metadata_only_source_free"},
+    "admission_effect": {"const": "does_not_admit_direct_source_ingestion"},
+    "output_policy": {"const": "metadata_record_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "diagnostic_policy": {"const": "source_free_reason_codes_only"},
+    "direct_source_ingestion": {"const": false},
+    "source_to_compute_graph": {"const": false},
+    "source_to_hac_ir": {"const": false},
+    "source_to_runtime_plan": {"const": false},
+    "accepted_case_count": {"const": 2},
+    "rejection_case_count": {"const": 4},
+    "required_control_count": {"const": 14},
+    "report_digest": {"$ref": "#/$defs/sha256_text"},
+    "issues": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "budget_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ast_depth",
+        "ast_nodes",
+        "shape_dimension",
+        "shape_profile_entries",
+        "shape_rank",
+        "source_bytes",
+        "source_lines"
+      ],
+      "properties": {
+        "ast_depth": {"const": 64},
+        "ast_nodes": {"const": 8192},
+        "shape_dimension": {"const": 2147483647},
+        "shape_profile_entries": {"const": 64},
+        "shape_rank": {"const": 8},
+        "source_bytes": {"const": 65536},
+        "source_lines": {"const": 2048}
+      }
+    },
+    "accepted_records": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/bounded_source_record"}
+    },
+    "rejection_cases": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/rejection_case"}
+    },
+    "required_controls": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "prefixItems": [
+        {"const": "bounded_source_buffer"},
+        {"const": "utf8_decode_before_validation"},
+        {"const": "source_buffer_size_limit"},
+        {"const": "source_line_limit"},
+        {"const": "ast_node_limit"},
+        {"const": "ast_depth_limit"},
+        {"const": "declared_shape_profile_required"},
+        {"const": "shape_profile_entry_limit"},
+        {"const": "shape_rank_limit"},
+        {"const": "shape_dimension_limit"},
+        {"const": "source_digest_only"},
+        {"const": "source_free_diagnostics"},
+        {"const": "no_source_to_intent_output"},
+        {"const": "no_compiler_artifact_output"}
+      ],
+      "items": false
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "prefixItems": [
+        {"const": "compute_graph"},
+        {"const": "generated_artifact"},
+        {"const": "hac_ir"},
+        {"const": "hs_ir"},
+        {"const": "python_function_object"},
+        {"const": "runtime_plan"},
+        {"const": "source_intent_plain_data"},
+        {"const": "tlir"}
+      ],
+      "items": false
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "prefixItems": [
+        {"const": "decorator_evaluation"},
+        {"const": "device_access"},
+        {"const": "dynamic_library_loading"},
+        {"const": "frontend_package_import"},
+        {"const": "generated_artifact_execution"},
+        {"const": "network_access"},
+        {"const": "plugin_discovery"},
+        {"const": "python_import"},
+        {"const": "subprocess_execution"},
+        {"const": "triton_jit_execution"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "bounded_source_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admission_effect",
+        "api_contract",
+        "api_status",
+        "ast_depth",
+        "ast_node_count",
+        "blocked_execution_surfaces",
+        "blocked_outputs",
+        "diagnostic_policy",
+        "line_count",
+        "output_policy",
+        "raw_source_policy",
+        "shape_profile_digest",
+        "shape_profile_entry_count",
+        "shape_profile_max_rank",
+        "source_bytes",
+        "source_digest",
+        "source_name"
+      ],
+      "properties": {
+        "source_name": {"$ref": "#/$defs/report_text"},
+        "source_digest": {"$ref": "#/$defs/sha256_text"},
+        "source_bytes": {"type": "integer", "minimum": 1, "maximum": 65536},
+        "line_count": {"type": "integer", "minimum": 1, "maximum": 2048},
+        "ast_node_count": {"type": "integer", "minimum": 1, "maximum": 8192},
+        "ast_depth": {"type": "integer", "minimum": 1, "maximum": 64},
+        "shape_profile_digest": {"$ref": "#/$defs/sha256_text"},
+        "shape_profile_entry_count": {"type": "integer", "minimum": 1, "maximum": 64},
+        "shape_profile_max_rank": {"type": "integer", "minimum": 1, "maximum": 8},
+        "api_contract": {"const": "bounded_source_buffer_api.execution_free.v0"},
+        "api_status": {"const": "implemented_non_admitting"},
+        "output_policy": {"const": "metadata_record_only"},
+        "raw_source_policy": {"const": "omitted_by_policy"},
+        "diagnostic_policy": {"const": "source_free_reason_codes_only"},
+        "admission_effect": {"const": "does_not_admit_direct_source_ingestion"},
+        "blocked_outputs": {"$ref": "#/properties/blocked_outputs"},
+        "blocked_execution_surfaces": {
+          "$ref": "#/properties/blocked_execution_surfaces"
+        }
+      }
+    },
+    "rejection_case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "outcome",
+        "reason_code",
+        "source_digest",
+        "source_free"
+      ],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/report_text"},
+        "outcome": {"const": "rejected"},
+        "reason_code": {
+          "enum": ["empty_source", "line_budget", "syntax_error", "shape_profile"]
+        },
+        "source_digest": {"$ref": "#/$defs/sha256_text"},
+        "source_free": {"const": true}
+      }
+    }
+  }
+}

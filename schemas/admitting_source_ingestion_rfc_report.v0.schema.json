@@ -44,7 +44,7 @@
     "target_surface": {"const": "direct_source_ingestion"},
     "target_slice": {"const": "bounded_source_buffer_to_source_intent_plain_data"},
     "artifact_policy": {"const": "digest_only_source_free"},
-    "remaining_evidence_count": {"const": 7},
+    "remaining_evidence_count": {"const": 6},
     "required_controls_count": {"const": 14},
     "issues": {
       "type": "array",
@@ -90,11 +90,10 @@
     },
     "remaining_evidence": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         {"const": "source_ingestion_sandbox_implementation"},
-        {"const": "bounded_source_buffer_api"},
         {"const": "parser_fuzz_negative_corpus_for_admitting_slice"},
         {"const": "source_free_diagnostics_admission_tests"},
         {"const": "source_to_intent_plain_data_output_golden_for_admitted_slice"},

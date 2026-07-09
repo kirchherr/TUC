@@ -6,6 +6,7 @@
     "surface_gate_completion_bound",
     "source_ingestion_quarantine_bound",
     "admitting_source_ingestion_rfc_bound",
+    "bounded_source_buffer_api_bound",
     "research_source_runtime_smoke_passed",
     "kernel_ingress_proof_bundle_passed"
   ],
@@ -44,10 +45,18 @@
     },
     {
       "contract": "admitting_source_ingestion_rfc.data_only.v0",
-      "digest": "sha256:13b4d5ac991a4c216b4ba22155001c2804cd54d61499b71c2cde73a9a3671c22",
+      "digest": "sha256:35cb5554e837db6ff7360910fcb9e9af0b80d931996bc38ed3edbdc29b48aaac",
       "evidence_id": "admitting_source_ingestion_rfc",
       "source_free": true,
       "status": "accepted_requirements_only",
+      "supports_plan": true
+    },
+    {
+      "contract": "bounded_source_buffer_api.execution_free.v0",
+      "digest": "sha256:f452052ad0b010257c63dcb7dfb1e006b0b9bd2f9dd49dcb03f14a6f8ded117d",
+      "evidence_id": "bounded_source_buffer_api",
+      "source_free": true,
+      "status": "implemented_non_admitting",
       "supports_plan": true
     },
     {
@@ -67,19 +76,18 @@
       "supports_plan": true
     }
   ],
-  "evidence_count": 6,
+  "evidence_count": 7,
   "evidence_policy": "digest_only_source_free",
   "issues": [],
   "missing_admission_evidence": [
     "source_ingestion_sandbox_implementation",
-    "bounded_source_buffer_api",
     "parser_fuzz_negative_corpus_for_admitting_slice",
     "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "ci_replay_for_admitted_slice",
     "maintainer_security_review_approval"
   ],
-  "missing_admission_evidence_count": 7,
+  "missing_admission_evidence_count": 6,
   "plan_contract": "real_triton_first_slice_plan.data_only.v0",
   "plan_id": "real_triton_first_admissible_slice_plan",
   "plan_status": "blocked_until_admitting_source_ingestion_evidence",
