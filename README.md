@@ -38,6 +38,7 @@ python examples/objective_alpha_research_claim.py
 python examples/objective_alpha_research_claim_gate.py
 python examples/source_to_intent_research_capability_claim.py
 python examples/source_to_intent_research_capability_claim_gate.py
+python examples/research_scope_claim_gate.py
 ```
 
 The Objective Alpha claim snapshot binds the public proof bundle, catalog,
@@ -46,6 +47,12 @@ review artifact. See [Objective Alpha Research Claim](docs/OBJECTIVE_ALPHA_RESEA
 Schema: `schemas/objective_alpha_research_claim_report.v0.schema.json`.
 Golden: `tests/golden/proofs/objective_alpha_research_claim.json`.
 Gate: [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md).
+
+The project-level
+[Research Scope Claim Gate](docs/RESEARCH_SCOPE_CLAIM_GATE.md) binds the
+current high-level proof gates by digest and keeps production compiler, vendor
+replacement, native performance, source-ingestion, plugin-execution, and
+generated-artifact claims explicitly blocked.
 
 Current practical Source Intent to mixed-runtime proof:
 

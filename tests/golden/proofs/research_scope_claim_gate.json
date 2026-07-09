@@ -1,0 +1,99 @@
+{
+  "adoption_status": "pre_alpha_research",
+  "arbitrary_source_ingestion_claim": false,
+  "arbitrary_third_party_backend_execution_claim": false,
+  "artifact_policy": "digest_only_source_free",
+  "blocked_claims": [
+    "cuda_replacement",
+    "rocm_replacement",
+    "xla_replacement",
+    "tvm_replacement",
+    "iree_replacement",
+    "production_compiler",
+    "arbitrary_triton_source_ingestion",
+    "arbitrary_pytorch_model_support",
+    "native_performance_parity",
+    "real_hardware_backend_execution",
+    "external_plugin_execution",
+    "generated_artifact_execution"
+  ],
+  "claim_id": "the_universal_compute_research_scope",
+  "claim_statement": "hardware_independent_compute_intent_research_proof",
+  "claim_status": "supported_for_current_research_scope",
+  "cuda_replacement_claim": false,
+  "evidence": [
+    {
+      "contract": "objective_alpha.research_claim_gate.ci.v0",
+      "digest": "sha256:9ff2d428d0d45c7672be5e9666e0f7ad295869c7eacfe47354aa8794552df5fa",
+      "evidence_id": "objective_alpha_research_claim_gate",
+      "source_free": true,
+      "status": "PASS",
+      "supports_scope": true
+    },
+    {
+      "contract": "source_to_intent_research_capability_claim_gate.ci.v0",
+      "digest": "sha256:40e522becdfd4a0dc33b1504b2e6f1174c6bf78c949c5069402e49ccff9d72a8",
+      "evidence_id": "source_to_intent_research_capability_claim_gate",
+      "source_free": true,
+      "status": "PASS",
+      "supports_scope": true
+    },
+    {
+      "contract": "performance_proof_boundary.blocking.v0",
+      "digest": "sha256:12dc8c2b82d61d80b65402cd9897ab319096988bf04ad1f16fc2ea93212bf5a9",
+      "evidence_id": "performance_proof_interpretation",
+      "source_free": true,
+      "status": "blocked",
+      "supports_scope": true
+    },
+    {
+      "contract": "source_ingestion_admission_gate.fail_closed.v0",
+      "digest": "sha256:9c552c29cf0f9a8352d6e1317f1c5b56c7e962359f27c6af0eda663823aad974",
+      "evidence_id": "source_ingestion_admission_gate",
+      "source_free": true,
+      "status": "blocked_missing_maintainer_security_review_approval",
+      "supports_scope": true
+    }
+  ],
+  "evidence_count": 4,
+  "evidence_policy": "top_level_gate_digest_only_source_free",
+  "external_plugin_execution_claim": false,
+  "gate_contract": "research_scope.claim_gate.data_only.v0",
+  "gate_id": "research_scope_claim_gate",
+  "gate_passed": true,
+  "gate_status": "PASS",
+  "generated_artifact_execution_claim": false,
+  "iree_replacement_claim": false,
+  "issues": [],
+  "native_performance_claim": false,
+  "production_compiler_claim": false,
+  "real_hardware_backend_execution_claim": false,
+  "required_invariants": [
+    "objective_alpha_research_claim_gate_passed",
+    "source_to_intent_research_capability_claim_gate_passed",
+    "performance_interpretation_blocks_native_claims",
+    "source_ingestion_admission_gate_blocks_direct_source_ingestion",
+    "top_level_evidence_digest_bound",
+    "metadata_only_source_free_artifacts",
+    "production_compiler_claim_false",
+    "vendor_replacement_claims_false",
+    "native_performance_claim_false"
+  ],
+  "research_scope_claim": true,
+  "rocm_replacement_claim": false,
+  "schema_version": "tuc.research_scope_claim_gate_report.v0",
+  "scope_boundary": "research_proof_not_compiler_replacement",
+  "scope_report_digest": "sha256:d14629d45c25ce4f42ef186e95e1b2d3d9775a7ca4187aca6b961a8062932ddb",
+  "source_ingestion_admitted": false,
+  "supported_claims": [
+    "hardware_independent_compute_intent_current_research_scope",
+    "capability_driven_runtime_planning_current_slice",
+    "trusted_prototype_backend_execution_current_slice",
+    "backend_equivalence_metadata_checked",
+    "source_intent_to_runtime_research_path_bounded",
+    "secure_by_design_admission_boundaries"
+  ],
+  "time_horizon_claim": "no_timeline_claim",
+  "tvm_replacement_claim": false,
+  "xla_replacement_claim": false
+}
