@@ -33,8 +33,10 @@ SOURCE_INGESTION_ADMISSION_GATE_REQUIRED_EXTERNAL_EVIDENCE = (
 SOURCE_INGESTION_ADMISSION_GATE_REQUIRED_CONTROLS = (
     "maintainer_review_packet_bound",
     "approval_criteria_bound_by_review_packet",
+    "maintainer_approval_artifact_bound",
     "external_approval_artifact_required",
     "external_approval_artifact_absent",
+    "maintainer_approval_artifact_not_supplied",
     "direct_source_ingestion_false",
     "source_to_compute_graph_false",
     "source_to_hac_ir_false",
@@ -141,6 +143,7 @@ class SourceIngestionAdmissionGateReport:
     """Fail-closed source-ingestion admission gate report."""
 
     maintainer_review_packet: SourceIngestionAdmissionGateEvidence
+    maintainer_approval_artifact: SourceIngestionAdmissionGateEvidence
     gate_contract: str = SOURCE_INGESTION_ADMISSION_GATE_CONTRACT
     gate_id: str = SOURCE_INGESTION_ADMISSION_GATE_ID
     gate_status: str = SOURCE_INGESTION_ADMISSION_GATE_STATUS
@@ -166,7 +169,14 @@ class SourceIngestionAdmissionGateReport:
             SourceIngestionAdmissionGateEvidence,
         ):
             raise TypeError(
-                "source-ingestion admission gate evidence must be evidence"
+                "source-ingestion admission gate review packet must be evidence"
+            )
+        if not isinstance(
+            self.maintainer_approval_artifact,
+            SourceIngestionAdmissionGateEvidence,
+        ):
+            raise TypeError(
+                "source-ingestion admission gate approval artifact must be evidence"
             )
         if self.gate_contract != SOURCE_INGESTION_ADMISSION_GATE_CONTRACT:
             raise SourceIngestionAdmissionGateError("admission gate contract drift")
@@ -211,10 +221,14 @@ class SourceIngestionAdmissionGateReport:
 
 def build_source_ingestion_admission_gate_report(
     maintainer_review_packet: SourceIngestionAdmissionGateEvidence,
+    maintainer_approval_artifact: SourceIngestionAdmissionGateEvidence,
 ) -> SourceIngestionAdmissionGateReport:
     """Build a fail-closed source-ingestion admission gate report."""
 
-    return SourceIngestionAdmissionGateReport(maintainer_review_packet)
+    return SourceIngestionAdmissionGateReport(
+        maintainer_review_packet,
+        maintainer_approval_artifact,
+    )
 
 
 def source_ingestion_admission_gate_report_to_dict(
@@ -224,7 +238,8 @@ def source_ingestion_admission_gate_report_to_dict(
 
     if not isinstance(report, SourceIngestionAdmissionGateReport):
         raise TypeError("source-ingestion admission gate report must be report")
-    evidence = report.maintainer_review_packet
+    review_packet = report.maintainer_review_packet
+    approval_artifact = report.maintainer_approval_artifact
     return {
         "admission_status": report.admission_status,
         "admitted": False,
@@ -238,13 +253,21 @@ def source_ingestion_admission_gate_report_to_dict(
         "gate_contract": report.gate_contract,
         "gate_id": report.gate_id,
         "gate_status": report.gate_status,
+        "maintainer_approval_artifact": {
+            "contract": approval_artifact.contract,
+            "digest": approval_artifact.digest,
+            "evidence_id": approval_artifact.evidence_id,
+            "source_free": approval_artifact.source_free,
+            "status": approval_artifact.status,
+            "supports_gate": approval_artifact.supports_gate,
+        },
         "maintainer_review_packet": {
-            "contract": evidence.contract,
-            "digest": evidence.digest,
-            "evidence_id": evidence.evidence_id,
-            "source_free": evidence.source_free,
-            "status": evidence.status,
-            "supports_gate": evidence.supports_gate,
+            "contract": review_packet.contract,
+            "digest": review_packet.digest,
+            "evidence_id": review_packet.evidence_id,
+            "source_free": review_packet.source_free,
+            "status": review_packet.status,
+            "supports_gate": review_packet.supports_gate,
         },
         "required_control_count": len(report.required_controls),
         "required_controls": list(report.required_controls),
@@ -311,7 +334,11 @@ def dump_source_ingestion_admission_gate_report(
     return text + "\n"
 
 
-def _validate_exact_tuple(values: tuple[str, ...], expected: tuple[str, ...], label: str) -> None:
+def _validate_exact_tuple(
+    values: tuple[str, ...],
+    expected: tuple[str, ...],
+    label: str,
+) -> None:
     if type(values) is not tuple:
         raise TypeError(f"source-ingestion admission gate {label} must be tuple")
     if values != expected:

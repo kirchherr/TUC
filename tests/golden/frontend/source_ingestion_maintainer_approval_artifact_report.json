@@ -1,9 +1,11 @@
 {
-  "admission_status": "blocked",
+  "admission_effect": "does_not_admit_direct_source_ingestion",
   "admitted": false,
   "approval_artifact_present": false,
+  "approval_decision": "deny_until_external_approval",
   "approval_required": true,
   "approval_status": "not_approved",
+  "artifact_policy": "digest_only_source_free",
   "blocked_execution_surfaces": [
     "frontend_package_import",
     "plugin_discovery",
@@ -16,57 +18,46 @@
     "subprocess_execution",
     "dynamic_library_loading"
   ],
-  "decision": "deny_until_external_approval",
+  "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
+  "criteria_bound_by_review_packet": true,
   "direct_source_ingestion": false,
-  "evidence_policy": "digest_only_source_free",
-  "gate_contract": "source_ingestion_admission_gate.fail_closed.v0",
-  "gate_id": "source_ingestion_admission_gate",
-  "gate_report_digest": "sha256:77a0dd15aebb63ad928aef73578291606778630a5c93858d0e68ce9a629840e3",
-  "gate_status": "blocked_missing_maintainer_security_review_approval",
+  "evidence_id": "source_ingestion_maintainer_approval_artifact",
+  "execution_permission": "not_granted",
+  "external_approval_artifact_present": false,
   "issues": [],
-  "maintainer_approval_artifact": {
-    "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
-    "digest": "sha256:765510cab573838eed457fcb422a1e873a6137cf589f85432dbbe49a13fcd881",
-    "evidence_id": "source_ingestion_maintainer_approval_artifact",
-    "source_free": true,
-    "status": "external_approval_not_supplied",
-    "supports_gate": true
-  },
   "maintainer_review_packet": {
     "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
+    "criteria_bound": true,
     "digest": "sha256:06283ae05e0523df27b775a2197e2b64a5a45e49cd2461d507a2cc569f78d343",
     "evidence_id": "source_ingestion_maintainer_security_review_packet",
+    "reviewable": true,
     "source_free": true,
-    "status": "ready_for_maintainer_review",
-    "supports_gate": true
+    "status": "ready_for_maintainer_review"
   },
-  "required_control_count": 15,
+  "remaining_external_evidence": [
+    "maintainer_security_review_approval"
+  ],
+  "remaining_external_evidence_count": 1,
+  "report_digest": "sha256:06b55ca7026ce1d4272ecbec6ecc6b6c36ac6397b0321eca70b23b0c739a8d55",
+  "required_control_count": 10,
   "required_controls": [
     "maintainer_review_packet_bound",
     "approval_criteria_bound_by_review_packet",
-    "maintainer_approval_artifact_bound",
     "external_approval_artifact_required",
     "external_approval_artifact_absent",
-    "maintainer_approval_artifact_not_supplied",
-    "direct_source_ingestion_false",
-    "source_to_compute_graph_false",
-    "source_to_hac_ir_false",
-    "source_to_runtime_plan_false",
     "no_source_text_serialization",
     "no_source_intent_payload_serialization",
     "no_runtime_handle_serialization",
     "no_generated_artifacts",
+    "approval_not_granted",
     "fail_closed_until_approval"
   ],
-  "required_external_evidence": [
-    "maintainer_security_review_approval"
-  ],
-  "required_external_evidence_count": 1,
-  "schema_version": "tuc.source_ingestion_admission_gate_report.v0",
+  "schema_version": "tuc.source_ingestion_maintainer_approval_artifact_report.v0",
   "source_ingestion_admission_ready": false,
   "source_to_compute_graph": false,
   "source_to_hac_ir": false,
   "source_to_runtime_plan": false,
+  "status": "external_approval_not_supplied",
   "target_slice": "bounded_source_buffer_to_source_intent_plain_data",
   "target_surface": "direct_source_ingestion"
 }

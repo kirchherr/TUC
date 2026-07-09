@@ -57,4 +57,16 @@ generated artifacts, approve parser behavior, or grant execution permission.
 - RFC: `rfcs/0268-source-ingestion-approval-criteria.md`
 - Maintainer Review Packet:
   [Source Ingestion Maintainer Security Review Packet](SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
+- Maintainer Approval Artifact:
+  [Source Ingestion Maintainer Approval Artifact](SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md)
+- Maintainer Approval Artifact Module:
+  `src/tuc/frontend/source_ingestion_maintainer_approval.py`
+- Maintainer Approval Artifact Example:
+  `examples/source_ingestion_maintainer_approval_artifact.py`
+- Maintainer Approval Artifact Schema:
+  `schemas/source_ingestion_maintainer_approval_artifact_report.v0.schema.json`
+- Maintainer Approval Artifact Golden:
+  `tests/golden/frontend/source_ingestion_maintainer_approval_artifact_report.json`
+- Maintainer Approval Artifact RFC:
+  `rfcs/0269-source-ingestion-maintainer-approval-artifact.md`
 - Admission Gate: [Source Ingestion Admission Gate](SOURCE_INGESTION_ADMISSION_GATE.md)

@@ -77,6 +77,12 @@ def test_source_ingestion_admission_gate_passes() -> None:
     assert report["blocked_execution_surfaces"] == list(
         SOURCE_INGESTION_ADMISSION_GATE_BLOCKED_EXECUTION_SURFACES
     )
+    approval = report["maintainer_approval_artifact"]
+    assert isinstance(approval, dict)
+    assert approval["evidence_id"] == "source_ingestion_maintainer_approval_artifact"
+    assert approval["status"] == "external_approval_not_supplied"
+    assert approval["source_free"] is True
+    assert approval["supports_gate"] is True
     packet = report["maintainer_review_packet"]
     assert isinstance(packet, dict)
     assert packet["evidence_id"] == "source_ingestion_maintainer_security_review_packet"
@@ -104,6 +110,8 @@ def test_source_ingestion_admission_gate_example_runs() -> None:
     )
     assert '"admitted": false' in completed.stdout
     assert '"approval_artifact_present": false' in completed.stdout
+    assert '"maintainer_approval_artifact"' in completed.stdout
+    assert '"external_approval_not_supplied"' in completed.stdout
     assert '"source_ingestion_admission_ready": false' in completed.stdout
     assert '"source_text":' not in completed.stdout
     assert '"runtime_handle":' not in completed.stdout
@@ -167,6 +175,7 @@ def test_source_ingestion_admission_gate_schema_matches_contract() -> None:
         SOURCE_INGESTION_ADMISSION_GATE_STATUS
     )
     assert schema["properties"]["approval_artifact_present"]["const"] is False
+    assert "maintainer_approval_artifact" in schema["properties"]
     assert schema["properties"]["admitted"]["const"] is False
     assert [
         item["const"]
@@ -213,6 +222,11 @@ def test_source_ingestion_admission_gate_is_documented() -> None:
     example_path = "examples/source_ingestion_admission_gate.py"
     golden_path = "tests/golden/frontend/source_ingestion_admission_gate_report.json"
     module_path = "src/tuc/frontend/source_ingestion_admission_gate.py"
+    approval_doc_path = "docs/SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md"
+    approval_example_path = "examples/source_ingestion_maintainer_approval_artifact.py"
+    approval_schema_path = (
+        "schemas/source_ingestion_maintainer_approval_artifact_report.v0.schema.json"
+    )
     doc_path = "docs/SOURCE_INGESTION_ADMISSION_GATE.md"
     rfc_path = "rfcs/0266-source-ingestion-admission-gate.md"
 
@@ -230,6 +244,9 @@ def test_source_ingestion_admission_gate_is_documented() -> None:
         assert golden_path in text or path.name in {"README.md", "ROADMAP.md"}
         assert module_path in text or path.name in {"README.md", "ROADMAP.md"}
         assert doc_path in text or path == DOC_PATH
+        assert approval_doc_path in text or path.name in {"README.md", "ROADMAP.md"}
+        assert approval_example_path in text or path.name in {"README.md", "ROADMAP.md"}
+        assert approval_schema_path in text or path.name in {"README.md", "ROADMAP.md"}
         assert (
             rfc_path in text
             or path == Path(rfc_path)

@@ -145,5 +145,9 @@ jobs:
         run: python examples/source_ingestion_approval_criteria.py
       - name: CI replay for admitted slice
         run: python examples/ci_replay_for_admitted_slice.py
+      - name: Source ingestion maintainer approval artifact
+        run: python examples/source_ingestion_maintainer_approval_artifact.py
+      - name: Source ingestion admission gate
+        run: python examples/source_ingestion_admission_gate.py
       - name: Baseline benchmark smoke test
         run: python scripts/benchmark.py --iterations 1 --warmup 0
