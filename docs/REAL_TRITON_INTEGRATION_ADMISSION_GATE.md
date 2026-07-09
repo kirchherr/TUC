@@ -58,6 +58,13 @@ gate IDs, counts, and fixed `false` execution flags.
 - Surface gate completion schema:
   `schemas/real_triton_surface_gate_completion_report.v0.schema.json`
 - Surface gate completion example: `examples/real_triton_surface_gate_completion.py`
+- First slice plan doc: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`
+- First slice plan schema:
+  `schemas/real_triton_first_slice_plan_report.v0.schema.json`
+- First slice plan example: `examples/real_triton_first_slice_plan.py`
+- First slice plan golden:
+  `tests/golden/frontend/real_triton_first_slice_plan_report.json`
+- First slice plan RFC: `rfcs/0257-real-triton-first-slice-plan.md`
 
 ## Meaning
 
@@ -202,3 +209,16 @@ schema is `schemas/real_triton_surface_gate_completion_report.v0.schema.json`.
 
 The completion report proves the surface-gate set is complete while keeping
 `admitted = false` and every dedicated surface gate non-admitting.
+
+## First Slice Plan
+
+[Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md) binds this
+admission gate, Real Triton Surface Gate Completion, Source Ingestion
+Quarantine, Source Runtime Smoke, and Kernel Ingress Proof Bundle evidence by
+digest. Its canonical doc path is `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`, its
+entry point is `examples/real_triton_first_slice_plan.py`, and its schema is
+`schemas/real_triton_first_slice_plan_report.v0.schema.json`.
+
+The plan identifies `direct_source_ingestion` as the first candidate target
+surface while keeping `admitted = false` and listing the missing admission
+evidence before any source-ingestion implementation can become admitting.

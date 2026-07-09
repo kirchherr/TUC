@@ -61,3 +61,17 @@ Future Real Triton Integration work may only move beyond this completion report
 through a successor RFC that replaces one non-admitting surface gate with an
 implementation-specific proof, negative tests, sandbox evidence, and maintainer
 approval.
+
+## First Slice Plan
+
+[Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md) is the next
+data-only planning artifact after surface-gate completion. It binds this
+completion report, Real Triton Admission, Source Ingestion Quarantine, Source
+Runtime Smoke, and Kernel Ingress Proof Bundle evidence by digest while keeping
+`admitted = false`.
+
+- Example: `examples/real_triton_first_slice_plan.py`
+- Schema: `schemas/real_triton_first_slice_plan_report.v0.schema.json`
+- Golden: `tests/golden/frontend/real_triton_first_slice_plan_report.json`
+- RFC: `rfcs/0257-real-triton-first-slice-plan.md`
+- Canonical doc path: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`

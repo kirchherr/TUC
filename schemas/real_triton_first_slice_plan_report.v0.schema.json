@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/real_triton_first_slice_plan_report.v0.schema.json",
+  "title": "TUC Real Triton First Slice Plan Report v0",
+  "description": "Data-only plan for the first possible Real Triton admitting slice while keeping current admission blocked.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_status",
+    "admitted",
+    "already_satisfied_prerequisites",
+    "blocked_claims",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "issues",
+    "missing_admission_evidence",
+    "missing_admission_evidence_count",
+    "plan_contract",
+    "plan_id",
+    "plan_status",
+    "required_invariants",
+    "schema_version",
+    "source_ingestion_admission_ready",
+    "surfaces_remaining_blocked",
+    "surfaces_remaining_blocked_count",
+    "target_slice",
+    "target_surface"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.real_triton_first_slice_plan_report.v0"},
+    "plan_contract": {"const": "real_triton_first_slice_plan.data_only.v0"},
+    "plan_id": {"const": "real_triton_first_admissible_slice_plan"},
+    "plan_status": {"const": "blocked_until_admitting_source_ingestion_evidence"},
+    "target_surface": {"const": "direct_source_ingestion"},
+    "target_slice": {"const": "bounded_source_buffer_to_source_intent_plain_data"},
+    "admission_status": {"const": "blocked"},
+    "admitted": {"const": false},
+    "source_ingestion_admission_ready": {"const": false},
+    "evidence_policy": {"const": "digest_only_source_free"},
+    "evidence_count": {"const": 5},
+    "missing_admission_evidence_count": {"const": 8},
+    "surfaces_remaining_blocked_count": {"const": 6},
+    "issues": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "prefixItems": [
+        {"$ref": "#/$defs/admission_gate_evidence"},
+        {"$ref": "#/$defs/surface_completion_evidence"},
+        {"$ref": "#/$defs/source_quarantine_evidence"},
+        {"$ref": "#/$defs/source_runtime_smoke_evidence"},
+        {"$ref": "#/$defs/kernel_ingress_bundle_evidence"}
+      ],
+      "items": false
+    },
+    "already_satisfied_prerequisites": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "prefixItems": [
+        {"const": "real_triton_admission_gate_bound"},
+        {"const": "surface_gate_completion_bound"},
+        {"const": "source_ingestion_quarantine_bound"},
+        {"const": "research_source_runtime_smoke_passed"},
+        {"const": "kernel_ingress_proof_bundle_passed"}
+      ],
+      "items": false
+    },
+    "missing_admission_evidence": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "prefixItems": [
+        {"const": "admitting_source_ingestion_rfc"},
+        {"const": "source_ingestion_sandbox_implementation"},
+        {"const": "bounded_source_buffer_api"},
+        {"const": "parser_fuzz_negative_corpus_for_admitting_slice"},
+        {"const": "source_free_diagnostics_admission_tests"},
+        {"const": "source_to_intent_plain_data_output_golden_for_admitted_slice"},
+        {"const": "ci_replay_for_admitted_slice"},
+        {"const": "maintainer_security_review_approval"}
+      ],
+      "items": false
+    },
+    "surfaces_remaining_blocked": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"const": "frontend_package_import"},
+        {"const": "plugin_discovery"},
+        {"const": "triton_jit_execution"},
+        {"const": "device_access"},
+        {"const": "generated_artifact_execution"},
+        {"const": "native_backend_execution"}
+      ],
+      "items": false
+    },
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"const": "accepts_arbitrary_triton_source"},
+        {"const": "executes_generated_artifacts"},
+        {"const": "executes_native_backends"},
+        {"const": "imports_external_frontend_packages"},
+        {"const": "runs_triton_jit"},
+        {"const": "uses_real_devices"}
+      ],
+      "items": false
+    },
+    "required_invariants": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "prefixItems": [
+        {"const": "admitted_false_until_admitting_rfc_accepted"},
+        {"const": "direct_source_ingestion_false_until_sandbox_evidence"},
+        {"const": "source_to_compute_graph_blocked"},
+        {"const": "source_to_hac_ir_blocked"},
+        {"const": "source_to_runtime_plan_blocked"},
+        {"const": "python_import_blocked"},
+        {"const": "triton_jit_blocked"},
+        {"const": "device_access_blocked"},
+        {"const": "generated_artifact_execution_blocked"},
+        {"const": "digest_only_source_free_evidence"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "evidence_base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "digest",
+        "evidence_id",
+        "source_free",
+        "status",
+        "supports_plan"
+      ],
+      "properties": {
+        "contract": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"},
+        "digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"},
+        "source_free": {"const": true},
+        "status": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"},
+        "supports_plan": {"const": true}
+      }
+    },
+    "admission_gate_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "real_triton_integration_admission.data_only.v0"},
+            "evidence_id": {"const": "real_triton_integration_admission_gate"},
+            "status": {"const": "blocked"}
+          }
+        }
+      ]
+    },
+    "surface_completion_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "real_triton_surface_gate_completion.data_only.v0"},
+            "evidence_id": {"const": "real_triton_surface_gate_completion"},
+            "status": {"const": "complete"}
+          }
+        }
+      ]
+    },
+    "source_quarantine_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "source_ingestion_quarantine_gate.data_only.v0"},
+            "evidence_id": {"const": "source_ingestion_quarantine_gate"},
+            "status": {"const": "quarantine_only"}
+          }
+        }
+      ]
+    },
+    "source_runtime_smoke_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "source_to_intent_research_source_runtime_smoke.e2e.v0"},
+            "evidence_id": {"const": "source_to_intent_research_source_runtime_smoke"},
+            "status": {"const": "PASS"}
+          }
+        }
+      ]
+    },
+    "kernel_ingress_bundle_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0"},
+            "evidence_id": {"const": "source_to_intent_research_kernel_ingress_proof_bundle"},
+            "status": {"const": "PASS"}
+          }
+        }
+      ]
+    }
+  }
+}

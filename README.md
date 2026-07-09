@@ -471,6 +471,10 @@ Current frontend surfaces:
   seven dedicated surface gates by digest, proving the surface-gate set is
   complete while admission remains blocked and every surface gate remains
   non-admitting. Schema: `schemas/real_triton_surface_gate_completion_report.v0.schema.json`; entry point: `examples/real_triton_surface_gate_completion.py`; doc: `docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md`.
+- Real Triton First Slice Plan identifying `direct_source_ingestion` as the
+  first candidate admitting slice while keeping `admitted = false` and binding
+  the missing admission evidence before any implementation can open that
+  surface. Schema: `schemas/real_triton_first_slice_plan_report.v0.schema.json`; entry point: `examples/real_triton_first_slice_plan.py`; doc: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`.
 - Source-To-Intent Next Syntax Slice proving branched dataflow, fanout reuse,
   all MVP operation families, and multiple public returns through source-free
   semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; entry point: `examples/source_to_intent_next_syntax_slice.py`; doc: `docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md`.
@@ -567,6 +571,7 @@ Key docs:
 - [Generated Artifact Quarantine Gate](docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md)
 - [Native Backend Execution Security Gate](docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md)
 - [Real Triton Surface Gate Completion](docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md)
+- [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
 - [Source-To-Intent next syntax slice](docs/SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
 - [External frontend package conformance](docs/EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
 - [Source Intent schema](docs/SOURCE_INTENT_SCHEMA.md)

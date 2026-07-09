@@ -863,6 +863,12 @@ Deliverables:
 - Source-To-Intent Research Kernel Ingress Evidence Gate proving the focused
   Kernel Ingress proof slice is CI-bound before the global Source-To-Intent
   Research Evidence Gate accepts it.
+- [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
+  (`examples/real_triton_first_slice_plan.py`) binding Admission, Surface Gate
+  Completion, Source Ingestion Quarantine, Source Runtime Smoke, and Kernel
+  Ingress Proof Bundle evidence by digest while identifying the missing
+  admission evidence before `direct_source_ingestion` can become the first
+  admitting Real Triton slice.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
