@@ -38,6 +38,7 @@ packet without changing the admission boundary. It proves that the current
 evidence is collected, deterministic, source-free, and ready for a maintainer
 security review, but it records no maintainer decision.
 
+The Source Ingestion Admission Gate binds this packet and remains fail-closed.
 Before `direct_source_ingestion` can become admitting, TUC still requires:
 
 - maintainer security review approval.
@@ -62,5 +63,11 @@ source-to-runtime-plan shortcuts.
 - Golden: `tests/golden/frontend/source_ingestion_maintainer_security_review_packet_report.json`
 - Tests: `tests/test_source_ingestion_maintainer_security_review_packet.py`
 - RFC: `rfcs/0265-source-ingestion-maintainer-security-review-packet.md`
-- Admitting Source Ingestion RFC: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`
+- Admission Gate: [Source Ingestion Admission Gate](SOURCE_INGESTION_ADMISSION_GATE.md)
+- Admission Gate Doc: `docs/SOURCE_INGESTION_ADMISSION_GATE.md`
+- Admission Gate Module: `src/tuc/frontend/source_ingestion_admission_gate.py`
+- Admission Gate Example: `examples/source_ingestion_admission_gate.py`
+- Admission Gate Schema: `schemas/source_ingestion_admission_gate_report.v0.schema.json`
+- Admission Gate Golden: `tests/golden/frontend/source_ingestion_admission_gate_report.json`
+- Admission Gate RFC: `rfcs/0266-source-ingestion-admission-gate.md`- Admitting Source Ingestion RFC: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`
 - Real Triton First Slice Plan: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`
