@@ -490,6 +490,7 @@ Current frontend surfaces:
 - Source Ingestion Maintainer Security Review Packet collecting the admitted-slice RFC, buffer, sandbox, fuzz, diagnostics, golden, CI replay, approval criteria, and first-slice plan reports by digest for human security review while recording `approval_status = not_approved` and keeping source ingestion blocked. Schema: `schemas/source_ingestion_maintainer_security_review_packet_report.v0.schema.json`; entry point: `examples/source_ingestion_maintainer_security_review_packet.py`; doc: `docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md`.
 - Source Ingestion Maintainer Approval Artifact binding the review packet and recording `external_approval_not_supplied` while keeping `approval_artifact_present = false`. Schema: `schemas/source_ingestion_maintainer_approval_artifact_report.v0.schema.json`; entry point: `examples/source_ingestion_maintainer_approval_artifact.py`; doc: `docs/SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md`.
 - Source Ingestion Admission Gate binding the maintainer-review packet and missing-approval artifact into a fail-closed decision point with `admitted = false`, `approval_artifact_present = false`, and `source_ingestion_admission_ready = false` until external maintainer approval exists. Schema: `schemas/source_ingestion_admission_gate_report.v0.schema.json`; entry point: `examples/source_ingestion_admission_gate.py`; doc: `docs/SOURCE_INGESTION_ADMISSION_GATE.md`.
+- Evidence Graph Acyclicity Gate proving the current source-ingestion First-Slice -> Review -> Approval -> Admission -> Research-Scope digest graph is acyclic, source-free, and edge-digest-only. Schema: `schemas/evidence_graph_acyclicity_gate_report.v0.schema.json`; entry point: `examples/evidence_graph_acyclicity_gate.py`; doc: `docs/EVIDENCE_GRAPH_ACYCLICITY_GATE.md`.
 - Bounded Source Buffer API validating source text as untrusted bounded data
   and emitting source-free metadata records without admitting source-to-IR or
   source-to-runtime paths. Doc: `docs/BOUNDED_SOURCE_BUFFER_API.md`.
@@ -602,6 +603,8 @@ Key docs:
 - [CI Replay For Admitted Slice](docs/CI_REPLAY_FOR_ADMITTED_SLICE.md)
 - [Source Ingestion Approval Criteria](docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md)
 - [Source Ingestion Maintainer Approval Artifact](docs/SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md)
+- [Source Ingestion Admission Gate](docs/SOURCE_INGESTION_ADMISSION_GATE.md)
+- [Evidence Graph Acyclicity Gate](docs/EVIDENCE_GRAPH_ACYCLICITY_GATE.md)
 - [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
 - [Source Ingestion Sandbox Implementation](docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
 - [Parser Fuzz Negative Corpus For Admitting Slice](docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)

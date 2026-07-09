@@ -149,5 +149,7 @@ jobs:
         run: python examples/source_ingestion_maintainer_approval_artifact.py
       - name: Source ingestion admission gate
         run: python examples/source_ingestion_admission_gate.py
+      - name: Evidence graph acyclicity gate
+        run: python examples/evidence_graph_acyclicity_gate.py
       - name: Baseline benchmark smoke test
         run: python scripts/benchmark.py --iterations 1 --warmup 0

@@ -912,6 +912,8 @@ Deliverables:
   (`examples/source_ingestion_maintainer_approval_artifact.py`) binding the review packet and recording `external_approval_not_supplied` while keeping source ingestion blocked.
 - [Source Ingestion Admission Gate](docs/SOURCE_INGESTION_ADMISSION_GATE.md)
   (`examples/source_ingestion_admission_gate.py`) binding the review packet and missing-approval artifact into a fail-closed admission decision with `admitted = false` and `approval_artifact_present = false` until external maintainer approval exists.
+- [Evidence Graph Acyclicity Gate](docs/EVIDENCE_GRAPH_ACYCLICITY_GATE.md)
+  (`examples/evidence_graph_acyclicity_gate.py`) proving the current source-ingestion First-Slice -> Review -> Approval -> Admission -> Research-Scope digest graph is acyclic, source-free, and edge-digest-only before source-ingestion readiness can be claimed.
 - [Research Scope Claim Gate](docs/RESEARCH_SCOPE_CLAIM_GATE.md)
   (`examples/research_scope_claim_gate.py`) binding Objective Alpha,
   Source-To-Intent capability, performance-boundary interpretation, missing

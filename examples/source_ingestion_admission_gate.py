@@ -9,11 +9,15 @@ from hashlib import sha256
 
 from examples.source_ingestion_maintainer_approval_artifact import (
     assert_source_ingestion_maintainer_approval_artifact_report_contract,
+)
+from examples.source_ingestion_maintainer_approval_artifact import (
     build_report as build_maintainer_approval_artifact_report,
 )
 from examples.source_ingestion_maintainer_security_review_packet import (
     SOURCE_INGESTION_MAINTAINER_REVIEW_EVIDENCE_ID,
     assert_source_ingestion_maintainer_security_review_packet_contract,
+)
+from examples.source_ingestion_maintainer_security_review_packet import (
     build_report as build_maintainer_review_packet_report,
 )
 from tuc.frontend.source_ingestion_admission_gate import (

@@ -77,3 +77,9 @@ source-to-runtime-plan shortcuts.
 - Maintainer Approval Artifact RFC: `rfcs/0269-source-ingestion-maintainer-approval-artifact.md`
 - Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
 - Real Triton First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
+- Evidence Graph Acyclicity Gate: [Evidence Graph Acyclicity Gate](EVIDENCE_GRAPH_ACYCLICITY_GATE.md)
+- Evidence Graph Acyclicity Gate Module: `src/tuc/evidence_graph_acyclicity.py`
+- Evidence Graph Acyclicity Gate Example: `examples/evidence_graph_acyclicity_gate.py`
+- Evidence Graph Acyclicity Gate Schema: `schemas/evidence_graph_acyclicity_gate_report.v0.schema.json`
+- Evidence Graph Acyclicity Gate Golden: `tests/golden/frontend/evidence_graph_acyclicity_gate_report.json`
+- Evidence Graph Acyclicity Gate RFC: `rfcs/0270-evidence-graph-acyclicity-gate.md`

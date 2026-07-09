@@ -48,7 +48,7 @@
     },
     {
       "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
-      "digest": "sha256:daf691ccde2b56bd470c992078933a0ced40cdba18df2e1af4d988d1bd9c3f02",
+      "digest": "sha256:5586a7acdecdf259b20fc482ac34c958a6accbf3828837e160a4e051e8430086",
       "evidence_id": "source_ingestion_maintainer_approval_artifact",
       "source_free": true,
       "status": "external_approval_not_supplied",
@@ -56,7 +56,7 @@
     },
     {
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
-      "digest": "sha256:2f92381f6d3af810e2105a845a97239d446f8feede10e0d95c49cc252db30276",
+      "digest": "sha256:13c766ef133e6f7eae48b99e1bd6a985561b4186e9ad7234e1aab1f062e80ecc",
       "evidence_id": "source_ingestion_admission_gate",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
@@ -92,7 +92,7 @@
   "rocm_replacement_claim": false,
   "schema_version": "tuc.research_scope_claim_gate_report.v0",
   "scope_boundary": "research_proof_not_compiler_replacement",
-  "scope_report_digest": "sha256:c63380c1ed321c397723d9ea7d186cac3fa7e290a2441d95dabe0244409f6371",
+  "scope_report_digest": "sha256:b6c3c41e2f2ae5890cb622cc6e10bd462458ba86937c935711024d801a16061c",
   "source_ingestion_admitted": false,
   "supported_claims": [
     "hardware_independent_compute_intent_current_research_scope",
