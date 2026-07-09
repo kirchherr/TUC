@@ -27,6 +27,7 @@ The gate binds these current top-level evidence artifacts by digest:
 - `objective_alpha_research_claim_gate`
 - `source_to_intent_research_capability_claim_gate`
 - `performance_proof_interpretation`
+- `source_ingestion_maintainer_approval_artifact`
 - `source_ingestion_admission_gate`
 
 ## Required Non-Claims
@@ -62,4 +63,5 @@ benchmark samples.
 
 TUC's current high-level claim becomes reviewable as a narrow research proof.
 Any future move toward production compiler claims, native hardware execution,
-or source ingestion requires a separate admitting gate and evidence trail.
+or source ingestion requires a separate admitting gate, explicit approval artifact,
+and evidence trail.

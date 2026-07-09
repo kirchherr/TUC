@@ -13,6 +13,9 @@ from examples.objective_alpha_research_claim_gate import (
 from examples.source_ingestion_admission_gate import (
     assert_source_ingestion_admission_gate_report_contract,
 )
+from examples.source_ingestion_maintainer_approval_artifact import (
+    assert_source_ingestion_maintainer_approval_artifact_report_contract,
+)
 from examples.source_to_intent_research_capability_claim_gate import (
     SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE_CONTRACT,
     assert_capability_claim_gate_report_contract,
@@ -37,6 +40,9 @@ _SOURCE_TO_INTENT_CAPABILITY_GATE_GOLDEN = Path(
 _PERFORMANCE_PROOF_INTERPRETATION_GOLDEN = Path(
     "tests/golden/proofs/performance_proof_interpretation_report.json"
 )
+_SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT_GOLDEN = Path(
+    "tests/golden/frontend/source_ingestion_maintainer_approval_artifact_report.json"
+)
 _SOURCE_INGESTION_ADMISSION_GATE_GOLDEN = Path(
     "tests/golden/frontend/source_ingestion_admission_gate_report.json"
 )
@@ -50,6 +56,7 @@ def build_current_research_scope_claim_gate_report_text() -> str:
             _objective_alpha_research_claim_gate_binding(),
             _source_to_intent_research_capability_claim_gate_binding(),
             _performance_proof_interpretation_binding(),
+            _source_ingestion_maintainer_approval_artifact_binding(),
             _source_ingestion_admission_gate_binding(),
         )
     )
@@ -98,6 +105,28 @@ def _performance_proof_interpretation_binding() -> ResearchScopeEvidenceBinding:
         evidence_id=_PERFORMANCE_PROOF_INTERPRETATION_ID,
         contract=str(payload["claim_boundary"]),
         status=str(payload["performance_claim_status"]),
+        digest=_digest_text(text),
+    )
+
+
+def _source_ingestion_maintainer_approval_artifact_binding() -> (
+    ResearchScopeEvidenceBinding
+):
+    text = _SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT_GOLDEN.read_text(
+        encoding="utf-8"
+    )
+    payload = _load_json_object(text, "source ingestion maintainer approval artifact")
+    assert_source_ingestion_maintainer_approval_artifact_report_contract(payload)
+    if payload["approval_artifact_present"] is not False:
+        raise AssertionError("source ingestion approval artifact must remain absent")
+    if payload["approval_status"] != "not_approved":
+        raise AssertionError("source ingestion approval artifact must not approve")
+    if payload["source_ingestion_admission_ready"] is not False:
+        raise AssertionError("source ingestion approval artifact must block admission")
+    return ResearchScopeEvidenceBinding(
+        evidence_id=str(payload["evidence_id"]),
+        contract=str(payload["contract"]),
+        status=str(payload["status"]),
         digest=_digest_text(text),
     )
 

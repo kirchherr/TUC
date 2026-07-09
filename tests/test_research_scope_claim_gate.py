@@ -117,6 +117,7 @@ def test_research_scope_claim_gate_example_runs() -> None:
     assert '"source_ingestion_admitted": false' in completed.stdout
     assert "objective_alpha_research_claim_gate" in completed.stdout
     assert "performance_proof_interpretation" in completed.stdout
+    assert "source_ingestion_maintainer_approval_artifact" in completed.stdout
     assert "source_ingestion_admission_gate" in completed.stdout
     assert '"source_text":' not in completed.stdout
     assert '"raw_tensor_value":' not in completed.stdout
@@ -288,6 +289,8 @@ def test_research_scope_claim_gate_is_bound_in_ci_and_review_policy() -> None:
     assert "python examples/research_scope_claim_gate.py" in review_policy
     assert "production compiler" in review_policy
     assert "native performance" in review_policy
+    assert "missing source-ingestion approval" in review_policy
+    assert "missing source-ingestion approval artifact" in proof_review
 
 def test_research_scope_claim_gate_is_documented() -> None:
     schema_path = "schemas/research_scope_claim_gate_report.v0.schema.json"

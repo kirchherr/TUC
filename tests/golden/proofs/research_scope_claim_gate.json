@@ -47,6 +47,14 @@
       "supports_scope": true
     },
     {
+      "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
+      "digest": "sha256:fb252c79c0a171eb16cb65997686e6978a74c585e684c0853d8b7b723fdb6384",
+      "evidence_id": "source_ingestion_maintainer_approval_artifact",
+      "source_free": true,
+      "status": "external_approval_not_supplied",
+      "supports_scope": true
+    },
+    {
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
       "digest": "sha256:baa619c9823384f0cc8db1d85298508cc54578e0ddfc95010da986544a9ca57a",
       "evidence_id": "source_ingestion_admission_gate",
@@ -55,7 +63,7 @@
       "supports_scope": true
     }
   ],
-  "evidence_count": 4,
+  "evidence_count": 5,
   "evidence_policy": "top_level_gate_digest_only_source_free",
   "external_plugin_execution_claim": false,
   "gate_contract": "research_scope.claim_gate.data_only.v0",
@@ -72,6 +80,7 @@
     "objective_alpha_research_claim_gate_passed",
     "source_to_intent_research_capability_claim_gate_passed",
     "performance_interpretation_blocks_native_claims",
+    "source_ingestion_maintainer_approval_artifact_absent",
     "source_ingestion_admission_gate_blocks_direct_source_ingestion",
     "top_level_evidence_digest_bound",
     "metadata_only_source_free_artifacts",
@@ -83,7 +92,7 @@
   "rocm_replacement_claim": false,
   "schema_version": "tuc.research_scope_claim_gate_report.v0",
   "scope_boundary": "research_proof_not_compiler_replacement",
-  "scope_report_digest": "sha256:2507a1bbb7a18a281233e580bc57214ea4ee9fb417c31220f42a0fbabd4cfef8",
+  "scope_report_digest": "sha256:1699fa21bc9afffea77263faad8ba6d43523b710959450306bb60a1598b3d07a",
   "source_ingestion_admitted": false,
   "supported_claims": [
     "hardware_independent_compute_intent_current_research_scope",

@@ -68,7 +68,7 @@
     "generated_artifact_execution_claim": {"const": false},
     "external_plugin_execution_claim": {"const": false},
     "source_ingestion_admitted": {"const": false},
-    "evidence_count": {"const": 4},
+    "evidence_count": {"const": 5},
     "scope_report_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
     "issues": {"type": "array", "maxItems": 0},
     "supported_claims": {
@@ -105,12 +105,13 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 9,
-      "maxItems": 9,
+      "minItems": 10,
+      "maxItems": 10,
       "prefixItems": [
         {"const": "objective_alpha_research_claim_gate_passed"},
         {"const": "source_to_intent_research_capability_claim_gate_passed"},
         {"const": "performance_interpretation_blocks_native_claims"},
+        {"const": "source_ingestion_maintainer_approval_artifact_absent"},
         {"const": "source_ingestion_admission_gate_blocks_direct_source_ingestion"},
         {"const": "top_level_evidence_digest_bound"},
         {"const": "metadata_only_source_free_artifacts"},
@@ -121,8 +122,8 @@
     },
     "evidence": {
       "type": "array",
-      "minItems": 4,
-      "maxItems": 4,
+      "minItems": 5,
+      "maxItems": 5,
       "prefixItems": [
         {
           "type": "object",
@@ -179,6 +180,26 @@
             "evidence_id": {"const": "performance_proof_interpretation"},
             "contract": {"const": "performance_proof_boundary.blocking.v0"},
             "status": {"const": "blocked"},
+            "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+            "source_free": {"const": true},
+            "supports_scope": {"const": true}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract",
+            "digest",
+            "evidence_id",
+            "source_free",
+            "status",
+            "supports_scope"
+          ],
+          "properties": {
+            "evidence_id": {"const": "source_ingestion_maintainer_approval_artifact"},
+            "contract": {"const": "source_ingestion_maintainer_approval_artifact.absent.v0"},
+            "status": {"const": "external_approval_not_supplied"},
             "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
             "source_free": {"const": true},
             "supports_scope": {"const": true}

@@ -85,9 +85,9 @@ Before approving a proof artifact change, reviewers should confirm:
   before benchmark artifacts are treated as passing evidence.
 - The proof does not claim 100 percent native performance.
 - The Research Scope Claim Gate still binds the current top-level proof gates
-  and keeps production compiler, vendor replacement, native performance,
-  source-ingestion, plugin-execution, generated-artifact execution, and timeline
-  claims blocked.
+  plus the missing source-ingestion approval artifact, and keeps production
+  compiler, vendor replacement, native performance, source-ingestion,
+  plugin-execution, generated-artifact execution, and timeline claims blocked.
 
 ## Security Checks
 

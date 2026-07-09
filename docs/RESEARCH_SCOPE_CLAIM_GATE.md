@@ -27,7 +27,8 @@ The gate proves that the current project claim is still:
 
 - a narrow research proof for hardware-independent compute intent;
 - bound to Objective Alpha, Source-To-Intent capability, performance-boundary,
-  and source-ingestion admission evidence by digest;
+  missing source-ingestion approval artifact, and source-ingestion admission
+  evidence by digest;
 - metadata-only and source-free;
 - not a production compiler claim;
 - not a CUDA, ROCm, XLA, TVM, or IREE replacement claim;
@@ -44,6 +45,7 @@ The gate binds these top-level artifacts:
 - `objective_alpha_research_claim_gate`
 - `source_to_intent_research_capability_claim_gate`
 - `performance_proof_interpretation`
+- `source_ingestion_maintainer_approval_artifact`
 - `source_ingestion_admission_gate`
 
 Each artifact is referenced by evidence ID, contract, status, source-free flag,

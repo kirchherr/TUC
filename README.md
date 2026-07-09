@@ -50,9 +50,10 @@ Gate: [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_
 
 The project-level
 [Research Scope Claim Gate](docs/RESEARCH_SCOPE_CLAIM_GATE.md) binds the
-current high-level proof gates by digest and keeps production compiler, vendor
-replacement, native performance, source-ingestion, plugin-execution, and
-generated-artifact claims explicitly blocked.
+current high-level proof gates and missing source-ingestion approval artifact by
+digest, keeping production compiler, vendor replacement, native performance,
+source-ingestion, plugin-execution, and generated-artifact claims explicitly
+blocked.
 
 Current practical Source Intent to mixed-runtime proof:
 

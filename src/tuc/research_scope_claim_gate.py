@@ -54,6 +54,7 @@ RESEARCH_SCOPE_REQUIRED_INVARIANTS = (
     "objective_alpha_research_claim_gate_passed",
     "source_to_intent_research_capability_claim_gate_passed",
     "performance_interpretation_blocks_native_claims",
+    "source_ingestion_maintainer_approval_artifact_absent",
     "source_ingestion_admission_gate_blocks_direct_source_ingestion",
     "top_level_evidence_digest_bound",
     "metadata_only_source_free_artifacts",
@@ -122,6 +123,11 @@ RESEARCH_SCOPE_REQUIRED_EVIDENCE = (
         evidence_id="performance_proof_interpretation",
         contract="performance_proof_boundary.blocking.v0",
         status="blocked",
+    ),
+    ResearchScopeEvidenceRequirement(
+        evidence_id="source_ingestion_maintainer_approval_artifact",
+        contract="source_ingestion_maintainer_approval_artifact.absent.v0",
+        status="external_approval_not_supplied",
     ),
     ResearchScopeEvidenceRequirement(
         evidence_id="source_ingestion_admission_gate",

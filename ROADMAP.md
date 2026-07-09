@@ -906,11 +906,11 @@ Deliverables:
   (`examples/source_ingestion_admission_gate.py`) binding the review packet and missing-approval artifact into a fail-closed admission decision with `admitted = false` and `approval_artifact_present = false` until external maintainer approval exists.
 - [Research Scope Claim Gate](docs/RESEARCH_SCOPE_CLAIM_GATE.md)
   (`examples/research_scope_claim_gate.py`) binding Objective Alpha,
-  Source-To-Intent capability, performance-boundary interpretation, and
-  source-ingestion admission evidence by digest while explicitly blocking
-  production compiler, vendor replacement, native performance, source
-  ingestion, plugin execution, generated artifact execution, and timeline
-  claims.
+  Source-To-Intent capability, performance-boundary interpretation, missing
+  source-ingestion approval artifact, and source-ingestion admission evidence
+  by digest while explicitly blocking production compiler, vendor replacement,
+  native performance, source ingestion, plugin execution, generated artifact
+  execution, and timeline claims.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
