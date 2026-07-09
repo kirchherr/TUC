@@ -65,4 +65,5 @@ network or filesystem surfaces.
 - Schema: `schemas/research_scope_claim_gate_report.v0.schema.json`
 - Golden: `tests/golden/proofs/research_scope_claim_gate.json`
 - Tests: `tests/test_research_scope_claim_gate.py`
+- CI: `.github/workflows/ci.yml`
 - RFC: `rfcs/0267-research-scope-claim-gate.md`

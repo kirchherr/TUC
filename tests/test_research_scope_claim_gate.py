@@ -272,6 +272,23 @@ def test_research_scope_claim_gate_golden_matches_schema_shape() -> None:
     assert golden["source_ingestion_admitted"] is False
 
 
+def test_research_scope_claim_gate_is_bound_in_ci_and_review_policy() -> None:
+    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    pr_template = Path(".github/PULL_REQUEST_TEMPLATE.md").read_text(encoding="utf-8")
+    review_policy = Path("docs/REVIEW_POLICY.md").read_text(encoding="utf-8")
+    proof_review = Path("docs/PROOF_ARTIFACT_REVIEW.md").read_text(encoding="utf-8")
+
+    assert "permissions:\n  contents: read\n" in workflow
+    assert "persist-credentials: false" in workflow
+    assert "python examples/research_scope_claim_gate.py" in workflow
+    assert "python examples/research_scope_claim_gate.py" in pr_template
+    assert "Research Scope Claim Gate" in proof_review
+    assert "src/tuc/research_scope_claim_gate.py" in proof_review
+    assert "python examples/research_scope_claim_gate.py" in proof_review
+    assert "python examples/research_scope_claim_gate.py" in review_policy
+    assert "production compiler" in review_policy
+    assert "native performance" in review_policy
+
 def test_research_scope_claim_gate_is_documented() -> None:
     schema_path = "schemas/research_scope_claim_gate_report.v0.schema.json"
     example_path = "examples/research_scope_claim_gate.py"

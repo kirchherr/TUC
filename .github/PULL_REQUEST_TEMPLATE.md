@@ -12,6 +12,7 @@ mypy src/tuc
 pytest -q
 python examples/runtime_evidence_gate.py
 python examples/runtime_candidate_scoring_gate.py
+python examples/research_scope_claim_gate.py
 ```
 
 ## RFC / Design Impact
@@ -25,7 +26,10 @@ Does this change proof examples, proof metadata, proof golden files, HAC-IR
 proof fixtures, runtime-plan proof fixtures, or proof documentation?
 
 If yes, answer the checklist in
-`docs/PROOF_ARTIFACT_REVIEW.md`.
+`docs/PROOF_ARTIFACT_REVIEW.md` and confirm whether the
+Research Scope Claim Gate still blocks production compiler, replacement,
+native performance, source-ingestion, plugin-execution, and generated-artifact
+claims.
 
 ## Security Impact
 
