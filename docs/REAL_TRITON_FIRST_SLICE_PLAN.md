@@ -19,19 +19,22 @@ python examples/real_triton_first_slice_plan.py
 
 ## What It Binds
 
-The plan binds five current artifacts by SHA-256 metadata digest:
+The plan binds six current artifacts by SHA-256 metadata digest:
 
 - Real Triton Integration Admission Gate.
 - Real Triton Surface Gate Completion.
 - Source Ingestion Quarantine Gate.
+- Admitting Source Ingestion RFC.
 - Source-To-Intent Research Source Runtime Smoke.
 - Source-To-Intent Research Kernel Ingress Proof Bundle.
 
 ## Meaning
 
 The plan identifies `direct_source_ingestion` as the first candidate surface
-for a future admitting slice, but records the missing admission evidence before
-that can happen.
+for a future admitting slice. It now binds the requirements-only Admitting
+Source Ingestion RFC, but still records the implementation, fuzzing,
+diagnostics, golden, replay, and maintainer-review evidence required before
+that surface can become admitting.
 
 The remaining Real Triton surfaces stay blocked:
 
@@ -46,7 +49,6 @@ The remaining Real Triton surfaces stay blocked:
 
 Before `direct_source_ingestion` can become admitting, TUC still requires:
 
-- an admitting source-ingestion RFC;
 - sandbox implementation evidence;
 - bounded source-buffer API evidence;
 - fuzz and negative-test corpus for the admitting slice;
@@ -74,5 +76,10 @@ shortcuts.
 - Golden: `tests/golden/frontend/real_triton_first_slice_plan_report.json`
 - Tests: `tests/test_real_triton_first_slice_plan.py`
 - RFC: `rfcs/0257-real-triton-first-slice-plan.md`
+- Admitting Source Ingestion RFC Example: `examples/admitting_source_ingestion_rfc.py`
+- Admitting Source Ingestion RFC Schema: `schemas/admitting_source_ingestion_rfc_report.v0.schema.json`
+- Admitting Source Ingestion RFC Golden: `tests/golden/frontend/admitting_source_ingestion_rfc_report.json`
+- Admitting Source Ingestion RFC Doc: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`
+- Admitting Source Ingestion RFC: `rfcs/0258-admitting-source-ingestion-rfc.md`
 - Admission Gate: [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
 - Surface Gate Completion: [Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md)

@@ -38,8 +38,8 @@
     "admitted": {"const": false},
     "source_ingestion_admission_ready": {"const": false},
     "evidence_policy": {"const": "digest_only_source_free"},
-    "evidence_count": {"const": 5},
-    "missing_admission_evidence_count": {"const": 8},
+    "evidence_count": {"const": 6},
+    "missing_admission_evidence_count": {"const": 7},
     "surfaces_remaining_blocked_count": {"const": 6},
     "issues": {
       "type": "array",
@@ -48,12 +48,13 @@
     },
     "evidence": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         {"$ref": "#/$defs/admission_gate_evidence"},
         {"$ref": "#/$defs/surface_completion_evidence"},
         {"$ref": "#/$defs/source_quarantine_evidence"},
+        {"$ref": "#/$defs/admitting_source_ingestion_rfc_evidence"},
         {"$ref": "#/$defs/source_runtime_smoke_evidence"},
         {"$ref": "#/$defs/kernel_ingress_bundle_evidence"}
       ],
@@ -61,12 +62,13 @@
     },
     "already_satisfied_prerequisites": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         {"const": "real_triton_admission_gate_bound"},
         {"const": "surface_gate_completion_bound"},
         {"const": "source_ingestion_quarantine_bound"},
+        {"const": "admitting_source_ingestion_rfc_bound"},
         {"const": "research_source_runtime_smoke_passed"},
         {"const": "kernel_ingress_proof_bundle_passed"}
       ],
@@ -74,10 +76,9 @@
     },
     "missing_admission_evidence": {
       "type": "array",
-      "minItems": 8,
-      "maxItems": 8,
+      "minItems": 7,
+      "maxItems": 7,
       "prefixItems": [
-        {"const": "admitting_source_ingestion_rfc"},
         {"const": "source_ingestion_sandbox_implementation"},
         {"const": "bounded_source_buffer_api"},
         {"const": "parser_fuzz_negative_corpus_for_admitting_slice"},
@@ -192,6 +193,18 @@
             "contract": {"const": "source_ingestion_quarantine_gate.data_only.v0"},
             "evidence_id": {"const": "source_ingestion_quarantine_gate"},
             "status": {"const": "quarantine_only"}
+          }
+        }
+      ]
+    },
+    "admitting_source_ingestion_rfc_evidence": {
+      "allOf": [
+        {"$ref": "#/$defs/evidence_base"},
+        {
+          "properties": {
+            "contract": {"const": "admitting_source_ingestion_rfc.data_only.v0"},
+            "evidence_id": {"const": "admitting_source_ingestion_rfc"},
+            "status": {"const": "accepted_requirements_only"}
           }
         }
       ]

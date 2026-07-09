@@ -865,10 +865,14 @@ Deliverables:
   Research Evidence Gate accepts it.
 - [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
   (`examples/real_triton_first_slice_plan.py`) binding Admission, Surface Gate
-  Completion, Source Ingestion Quarantine, Source Runtime Smoke, and Kernel
-  Ingress Proof Bundle evidence by digest while identifying the missing
-  admission evidence before `direct_source_ingestion` can become the first
-  admitting Real Triton slice.
+  Completion, Source Ingestion Quarantine, Admitting Source Ingestion RFC,
+  Source Runtime Smoke, and Kernel Ingress Proof Bundle evidence by digest while
+  identifying the remaining missing admission evidence before
+  `direct_source_ingestion` can become the first admitting Real Triton slice.
+- [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
+  (`examples/admitting_source_ingestion_rfc.py`) defining the requirements-only
+  first `direct_source_ingestion` slice boundary while keeping source ingestion
+  implementation and admission blocked.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
