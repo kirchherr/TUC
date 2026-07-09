@@ -33,9 +33,15 @@ function objects, and backend artifacts.
 
 ## Remaining Evidence
 
-The `bounded_source_buffer_api`, `source_ingestion_sandbox_implementation`, `parser_fuzz_negative_corpus_for_admitting_slice`, `source_free_diagnostics_admission_tests`, and `source_to_intent_plain_data_output_golden_for_admitted_slice` prerequisites are now covered. Before source ingestion can become admitting, TUC still requires:
+The `bounded_source_buffer_api`, `source_ingestion_sandbox_implementation`,
+`parser_fuzz_negative_corpus_for_admitting_slice`,
+`source_free_diagnostics_admission_tests`,
+`source_to_intent_plain_data_output_golden_for_admitted_slice`,
+`ci_replay_for_admitted_slice`, and
+`source_ingestion_maintainer_security_review_packet` prerequisites are now
+covered as non-admitting review evidence. Before source ingestion can become
+admitting, TUC still requires:
 
-- CI replay for the admitted slice;
 - maintainer security review approval.
 
 ## Security Boundary
@@ -101,3 +107,10 @@ compiler shortcuts from source.
 - CI Replay For Admitted Slice Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`
 - CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
 - CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`
+- Source Ingestion Maintainer Security Review Packet: [Source Ingestion Maintainer Security Review Packet](SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
+- Source Ingestion Maintainer Security Review Packet Doc: `docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md`
+- Source Ingestion Maintainer Security Review Packet Module: `src/tuc/frontend/source_ingestion_maintainer_review.py`
+- Source Ingestion Maintainer Security Review Packet Example: `examples/source_ingestion_maintainer_security_review_packet.py`
+- Source Ingestion Maintainer Security Review Packet Schema: `schemas/source_ingestion_maintainer_security_review_packet_report.v0.schema.json`
+- Source Ingestion Maintainer Security Review Packet Golden: `tests/golden/frontend/source_ingestion_maintainer_security_review_packet_report.json`
+- Source Ingestion Maintainer Security Review Packet RFC: `rfcs/0265-source-ingestion-maintainer-security-review-packet.md`

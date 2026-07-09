@@ -1,0 +1,119 @@
+{
+  "admission_effect": "does_not_admit_direct_source_ingestion",
+  "approval_required": true,
+  "approval_status": "not_approved",
+  "artifact_policy": "digest_only_source_free",
+  "blocked_execution_surfaces": [
+    "frontend_package_import",
+    "plugin_discovery",
+    "triton_jit_execution",
+    "device_access",
+    "generated_artifact_execution",
+    "native_backend_execution",
+    "python_import",
+    "network_access",
+    "subprocess_execution",
+    "dynamic_library_loading"
+  ],
+  "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
+  "direct_source_ingestion": false,
+  "evidence_id": "source_ingestion_maintainer_security_review_packet",
+  "issues": [],
+  "remaining_external_evidence": [
+    "maintainer_security_review_approval"
+  ],
+  "remaining_external_evidence_count": 1,
+  "report_digest": "sha256:8b3c6299749763dd1355b0755aabf107bbed9461f150a361a45959f772bb0db2",
+  "required_check_count": 14,
+  "required_checks": [
+    "bounded_source_buffer_reviewed",
+    "sandbox_boundary_reviewed",
+    "negative_corpus_reviewed",
+    "source_free_diagnostics_reviewed",
+    "plain_data_golden_reviewed",
+    "ci_replay_reviewed",
+    "first_slice_plan_reviewed",
+    "no_raw_source_serialization",
+    "no_source_intent_payload_serialization",
+    "no_runtime_handle_serialization",
+    "no_host_path_serialization",
+    "no_command_serialization",
+    "direct_source_ingestion_remains_blocked",
+    "maintainer_approval_required"
+  ],
+  "review_evidence": [
+    {
+      "contract": "admitting_source_ingestion_rfc.data_only.v0",
+      "digest": "sha256:357fe0021fc50c6d143cb22654a7897024e832455bbc25c00e20cb7cb0e4851f",
+      "evidence_id": "admitting_source_ingestion_rfc",
+      "reviewable": true,
+      "source_free": true,
+      "status": "accepted_requirements_only"
+    },
+    {
+      "contract": "bounded_source_buffer_api.execution_free.v0",
+      "digest": "sha256:f452052ad0b010257c63dcb7dfb1e006b0b9bd2f9dd49dcb03f14a6f8ded117d",
+      "evidence_id": "bounded_source_buffer_api",
+      "reviewable": true,
+      "source_free": true,
+      "status": "implemented_non_admitting"
+    },
+    {
+      "contract": "source_ingestion_sandbox_implementation.execution_free.v0",
+      "digest": "sha256:453f0efe70a8cc1ffc7e9af753cb83e4234aab3f6cae86a1b7e7718aa9d16804",
+      "evidence_id": "source_ingestion_sandbox_implementation",
+      "reviewable": true,
+      "source_free": true,
+      "status": "implemented_non_admitting"
+    },
+    {
+      "contract": "parser_fuzz_negative_corpus_for_admitting_slice.data_only.v0",
+      "digest": "sha256:a46d4cecf2892c29b5cbc94cc8726e0408e9c05d7906d3d34a49613da9dcaa9b",
+      "evidence_id": "parser_fuzz_negative_corpus_for_admitting_slice",
+      "reviewable": true,
+      "source_free": true,
+      "status": "complete_non_admitting"
+    },
+    {
+      "contract": "source_free_diagnostics_admission_tests.data_only.v0",
+      "digest": "sha256:8c67eceb982ab47e2e609503f1ffe7fe4ca52794278b69b04bba58329afe09a7",
+      "evidence_id": "source_free_diagnostics_admission_tests",
+      "reviewable": true,
+      "source_free": true,
+      "status": "complete_non_admitting"
+    },
+    {
+      "contract": "source_to_intent_plain_data_output_golden_for_admitted_slice.data_only.v0",
+      "digest": "sha256:249c1409fc1884339770d67029992ca0dc67de099bf4091d940e59543d0b3dcb",
+      "evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice",
+      "reviewable": true,
+      "source_free": true,
+      "status": "complete_non_admitting"
+    },
+    {
+      "contract": "ci_replay_for_admitted_slice.ci.v0",
+      "digest": "sha256:c67b07c1031b920c55df55d2a8ee59ac047ba0dc38a05dd27fab410c6dcfcddb",
+      "evidence_id": "ci_replay_for_admitted_slice",
+      "reviewable": true,
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "contract": "real_triton_first_slice_plan.data_only.v0",
+      "digest": "sha256:ec3344a8b5a231dad71bb0ebf992702185cce081f125918acd7279761b3266ac",
+      "evidence_id": "real_triton_first_admissible_slice_plan",
+      "reviewable": true,
+      "source_free": true,
+      "status": "blocked_until_admitting_source_ingestion_evidence"
+    }
+  ],
+  "review_evidence_count": 8,
+  "schema_version": "tuc.source_ingestion_maintainer_security_review_packet_report.v0",
+  "source_ingestion_admission_ready": false,
+  "source_to_compute_graph": false,
+  "source_to_hac_ir": false,
+  "source_to_runtime_plan": false,
+  "status": "ready_for_maintainer_review",
+  "target_slice": "bounded_source_buffer_to_source_intent_plain_data",
+  "target_surface": "direct_source_ingestion"
+}

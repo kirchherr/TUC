@@ -33,9 +33,10 @@ artifacts.
 ## First Slice Role
 
 This artifact moves `ci_replay_for_admitted_slice` from missing admission
-evidence into bound first-slice evidence. The Admitting Source Ingestion RFC and
-Real Triton First Slice Plan remain blocked until
-`maintainer_security_review_approval` exists.
+evidence into bound first-slice evidence. The Source Ingestion Maintainer
+Security Review Packet now collects the admitted-slice evidence for human
+review, but the Admitting Source Ingestion RFC and Real Triton First Slice Plan
+remain blocked until `maintainer_security_review_approval` exists.
 
 ## Contract
 
@@ -48,4 +49,5 @@ Real Triton First Slice Plan remain blocked until
 - Workflow: `.github/workflows/ci.yml`
 - First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
 - Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
+- Source Ingestion Maintainer Security Review Packet: [Source Ingestion Maintainer Security Review Packet](SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
 - Source-To-Intent Plain-Data Output Golden: [Source-To-Intent Plain-Data Output Golden For Admitted Slice](SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md)

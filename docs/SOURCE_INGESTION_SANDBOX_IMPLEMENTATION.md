@@ -41,10 +41,10 @@ raw source text.
 
 This closes the `source_ingestion_sandbox_implementation` prerequisite in the
 Real Triton First Slice Plan. Parser Fuzz Negative Corpus, Source-Free
-Diagnostics Admission Tests, and Source-To-Intent Plain-Data Output Golden now
-cover the next three prerequisites. The remaining blockers are:
+Diagnostics Admission Tests, Source-To-Intent Plain-Data Output Golden,
+CI Replay, and the Maintainer Security Review Packet now cover the next
+non-admitting review prerequisites. The remaining blocker is:
 
-- CI replay for the admitted slice;
 - maintainer security review approval.
 
 ## Security Boundary

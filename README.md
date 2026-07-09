@@ -478,6 +478,7 @@ Current frontend surfaces:
   `direct_source_ingestion` slice boundary while keeping implementation and
   admission blocked. Doc: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`.
 - CI Replay For Admitted Slice binding the future first source-ingestion slice to read-only GitHub Actions replay of the bounded buffer, sandbox, negative corpus, source-free diagnostics, and plain-data golden evidence. Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`; entry point: `examples/ci_replay_for_admitted_slice.py`; doc: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`.
+- Source Ingestion Maintainer Security Review Packet collecting the admitted-slice RFC, buffer, sandbox, fuzz, diagnostics, golden, CI replay, and first-slice plan reports by digest for human security review while recording `approval_status = not_approved` and keeping source ingestion blocked. Schema: `schemas/source_ingestion_maintainer_security_review_packet_report.v0.schema.json`; entry point: `examples/source_ingestion_maintainer_security_review_packet.py`; doc: `docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md`.
 - Bounded Source Buffer API validating source text as untrusted bounded data
   and emitting source-free metadata records without admitting source-to-IR or
   source-to-runtime paths. Doc: `docs/BOUNDED_SOURCE_BUFFER_API.md`.

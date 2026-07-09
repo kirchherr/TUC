@@ -44,9 +44,11 @@ dynamic libraries.
 ## First Slice Role
 
 This artifact moves `source_to_intent_plain_data_output_golden_for_admitted_slice`
-from missing admission evidence into bound first-slice evidence. The Admitting
-Source Ingestion RFC and Real Triton First Slice Plan remain blocked until CI
-replay for the admitted slice and maintainer security review approval exist.
+from missing admission evidence into bound first-slice evidence. CI Replay
+and the Source Ingestion Maintainer Security Review Packet now prepare the
+slice for human review, but the Admitting Source Ingestion RFC and Real
+Triton First Slice Plan remain blocked until maintainer security review
+approval exists.
 
 ## Contract
 

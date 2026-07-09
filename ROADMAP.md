@@ -896,6 +896,8 @@ Deliverables:
   plain-data goldens while direct source ingestion remains blocked.
 - [CI Replay For Admitted Slice](docs/CI_REPLAY_FOR_ADMITTED_SLICE.md)
   (`examples/ci_replay_for_admitted_slice.py`) binding the admitted-slice prerequisite artifacts to read-only GitHub Actions replay while keeping source ingestion blocked until maintainer security review approval.
+- [Source Ingestion Maintainer Security Review Packet](docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
+  (`examples/source_ingestion_maintainer_security_review_packet.py`) collecting the admitted-slice evidence chain into a digest-only review packet with `approval_status = not_approved`, leaving maintainer security review approval as the only external admission evidence.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.

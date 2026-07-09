@@ -53,12 +53,11 @@ hardware hints, shape profiles, syntax boundaries, and trust boundaries.
 ## First Slice Role
 
 This closes the `parser_fuzz_negative_corpus_for_admitting_slice` prerequisite
-in the Real Triton First Slice Plan. The next bound evidence is
-`source_free_diagnostics_admission_tests`, followed by
-`source_to_intent_plain_data_output_golden_for_admitted_slice`. The remaining
-blockers are:
+in the Real Triton First Slice Plan. Source-Free Diagnostics Admission
+Tests, Source-To-Intent Plain-Data Output Golden, CI Replay, and the
+Maintainer Security Review Packet now cover the next non-admitting review
+prerequisites. The remaining blocker is:
 
-- CI replay for the admitted slice;
 - maintainer security review approval.
 
 ## Security Boundary
