@@ -20,7 +20,7 @@ python examples/source_ingestion_maintainer_security_review_packet.py
 
 ## What It Binds
 
-The packet binds eight source-free artifacts by SHA-256 metadata digest:
+The packet binds nine source-free artifacts by SHA-256 metadata digest:
 
 - Admitting Source Ingestion RFC.
 - Bounded Source Buffer API.
@@ -69,5 +69,13 @@ source-to-runtime-plan shortcuts.
 - Admission Gate Example: `examples/source_ingestion_admission_gate.py`
 - Admission Gate Schema: `schemas/source_ingestion_admission_gate_report.v0.schema.json`
 - Admission Gate Golden: `tests/golden/frontend/source_ingestion_admission_gate_report.json`
-- Admission Gate RFC: `rfcs/0266-source-ingestion-admission-gate.md`- Admitting Source Ingestion RFC: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`
+- Admission Gate RFC: `rfcs/0266-source-ingestion-admission-gate.md`
+- Source Ingestion Approval Criteria: [Source Ingestion Approval Criteria](SOURCE_INGESTION_APPROVAL_CRITERIA.md)
+- Source Ingestion Approval Criteria Doc: `docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md`
+- Source Ingestion Approval Criteria Module: `src/tuc/frontend/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Example: `examples/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Schema: `schemas/source_ingestion_approval_criteria_report.v0.schema.json`
+- Source Ingestion Approval Criteria Golden: `tests/golden/frontend/source_ingestion_approval_criteria_report.json`
+- Source Ingestion Approval Criteria RFC: `rfcs/0268-source-ingestion-approval-criteria.md`
+- Admitting Source Ingestion RFC: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`
 - Real Triton First Slice Plan: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`

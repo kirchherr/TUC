@@ -48,7 +48,7 @@
     },
     {
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
-      "digest": "sha256:9c552c29cf0f9a8352d6e1317f1c5b56c7e962359f27c6af0eda663823aad974",
+      "digest": "sha256:6ba36e04038d0f72d9a9cc9cf548f64342bc9a73597947c6e85dae87a67d638f",
       "evidence_id": "source_ingestion_admission_gate",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
@@ -83,7 +83,7 @@
   "rocm_replacement_claim": false,
   "schema_version": "tuc.research_scope_claim_gate_report.v0",
   "scope_boundary": "research_proof_not_compiler_replacement",
-  "scope_report_digest": "sha256:d14629d45c25ce4f42ef186e95e1b2d3d9775a7ca4187aca6b961a8062932ddb",
+  "scope_report_digest": "sha256:556191a71e775fc81e7d69533c5f233023b1f38e6e1f7579625829a3f771373e",
   "source_ingestion_admitted": false,
   "supported_claims": [
     "hardware_independent_compute_intent_current_research_scope",

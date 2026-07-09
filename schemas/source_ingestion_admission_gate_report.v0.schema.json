@@ -53,7 +53,7 @@
     "source_to_hac_ir": {"const": false},
     "source_to_runtime_plan": {"const": false},
     "required_external_evidence_count": {"const": 1},
-    "required_control_count": {"const": 12},
+    "required_control_count": {"const": 13},
     "gate_report_digest": {"$ref": "#/$defs/sha256_text"},
     "issues": {
       "type": "array",
@@ -71,10 +71,11 @@
     },
     "required_controls": {
       "type": "array",
-      "minItems": 12,
-      "maxItems": 12,
+      "minItems": 13,
+      "maxItems": 13,
       "prefixItems": [
         {"const": "maintainer_review_packet_bound"},
+        {"const": "approval_criteria_bound_by_review_packet"},
         {"const": "external_approval_artifact_required"},
         {"const": "external_approval_artifact_absent"},
         {"const": "direct_source_ingestion_false"},

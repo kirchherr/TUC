@@ -23,8 +23,8 @@
     "maintainer_security_review_approval"
   ],
   "remaining_external_evidence_count": 1,
-  "report_digest": "sha256:8b3c6299749763dd1355b0755aabf107bbed9461f150a361a45959f772bb0db2",
-  "required_check_count": 14,
+  "report_digest": "sha256:b2bdc5164ef1057699802ccb95433c38eaafc5073764cd9e6d25c8e757ee5126",
+  "required_check_count": 16,
   "required_checks": [
     "bounded_source_buffer_reviewed",
     "sandbox_boundary_reviewed",
@@ -32,7 +32,9 @@
     "source_free_diagnostics_reviewed",
     "plain_data_golden_reviewed",
     "ci_replay_reviewed",
+    "approval_criteria_reviewed",
     "first_slice_plan_reviewed",
+    "approval_criteria_non_admitting",
     "no_raw_source_serialization",
     "no_source_intent_payload_serialization",
     "no_runtime_handle_serialization",
@@ -92,22 +94,30 @@
     },
     {
       "contract": "ci_replay_for_admitted_slice.ci.v0",
-      "digest": "sha256:c67b07c1031b920c55df55d2a8ee59ac047ba0dc38a05dd27fab410c6dcfcddb",
+      "digest": "sha256:c62cede55ab0a4194d5fdde1a4c3d0c48e3dd08a6bec89abd30ac44029a147d1",
       "evidence_id": "ci_replay_for_admitted_slice",
       "reviewable": true,
       "source_free": true,
       "status": "PASS"
     },
     {
+      "contract": "source_ingestion_approval_criteria.data_only.v0",
+      "digest": "sha256:5e04b1a5bb2997975ac4b5e06299be856ec401dd8dc687354e39caae727fd229",
+      "evidence_id": "source_ingestion_approval_criteria",
+      "reviewable": true,
+      "source_free": true,
+      "status": "criteria_defined_not_approved"
+    },
+    {
       "contract": "real_triton_first_slice_plan.data_only.v0",
-      "digest": "sha256:ec3344a8b5a231dad71bb0ebf992702185cce081f125918acd7279761b3266ac",
+      "digest": "sha256:cd290fd6eface98f8b1d61b229aa246f739ef879a5d2fb009601b7e8330dce44",
       "evidence_id": "real_triton_first_admissible_slice_plan",
       "reviewable": true,
       "source_free": true,
       "status": "blocked_until_admitting_source_ingestion_evidence"
     }
   ],
-  "review_evidence_count": 8,
+  "review_evidence_count": 9,
   "schema_version": "tuc.source_ingestion_maintainer_security_review_packet_report.v0",
   "source_ingestion_admission_ready": false,
   "source_to_compute_graph": false,

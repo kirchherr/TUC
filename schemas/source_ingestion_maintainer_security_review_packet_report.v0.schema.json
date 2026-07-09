@@ -48,8 +48,8 @@
     "source_to_hac_ir": {"const": false},
     "source_to_runtime_plan": {"const": false},
     "remaining_external_evidence_count": {"const": 1},
-    "required_check_count": {"const": 14},
-    "review_evidence_count": {"const": 8},
+    "required_check_count": {"const": 16},
+    "review_evidence_count": {"const": 9},
     "report_digest": {"$ref": "#/$defs/sha256_text"},
     "issues": {
       "type": "array",
@@ -67,8 +67,8 @@
     },
     "required_checks": {
       "type": "array",
-      "minItems": 14,
-      "maxItems": 14,
+      "minItems": 16,
+      "maxItems": 16,
       "prefixItems": [
         {"const": "bounded_source_buffer_reviewed"},
         {"const": "sandbox_boundary_reviewed"},
@@ -76,7 +76,9 @@
         {"const": "source_free_diagnostics_reviewed"},
         {"const": "plain_data_golden_reviewed"},
         {"const": "ci_replay_reviewed"},
+        {"const": "approval_criteria_reviewed"},
         {"const": "first_slice_plan_reviewed"},
+        {"const": "approval_criteria_non_admitting"},
         {"const": "no_raw_source_serialization"},
         {"const": "no_source_intent_payload_serialization"},
         {"const": "no_runtime_handle_serialization"},
@@ -107,8 +109,8 @@
     },
     "review_evidence": {
       "type": "array",
-      "minItems": 8,
-      "maxItems": 8,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         {"$ref": "#/$defs/admitting_source_ingestion_rfc_review"},
         {"$ref": "#/$defs/bounded_source_buffer_api_review"},
@@ -117,6 +119,7 @@
         {"$ref": "#/$defs/source_free_diagnostics_review"},
         {"$ref": "#/$defs/source_to_intent_plain_data_golden_review"},
         {"$ref": "#/$defs/ci_replay_for_admitted_slice_review"},
+        {"$ref": "#/$defs/source_ingestion_approval_criteria_review"},
         {"$ref": "#/$defs/real_triton_first_slice_plan_review"}
       ],
       "items": false
@@ -227,6 +230,18 @@
             "contract": {"const": "ci_replay_for_admitted_slice.ci.v0"},
             "evidence_id": {"const": "ci_replay_for_admitted_slice"},
             "status": {"const": "PASS"}
+          }
+        }
+      ]
+    },
+    "source_ingestion_approval_criteria_review": {
+      "allOf": [
+        {"$ref": "#/$defs/review_item_base"},
+        {
+          "properties": {
+            "contract": {"const": "source_ingestion_approval_criteria.data_only.v0"},
+            "evidence_id": {"const": "source_ingestion_approval_criteria"},
+            "status": {"const": "criteria_defined_not_approved"}
           }
         }
       ]

@@ -896,8 +896,10 @@ Deliverables:
   plain-data goldens while direct source ingestion remains blocked.
 - [CI Replay For Admitted Slice](docs/CI_REPLAY_FOR_ADMITTED_SLICE.md)
   (`examples/ci_replay_for_admitted_slice.py`) binding the admitted-slice prerequisite artifacts to read-only GitHub Actions replay while keeping source ingestion blocked until maintainer security review approval.
+- [Source Ingestion Approval Criteria](docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md)
+  (`examples/source_ingestion_approval_criteria.py`) defining objective, data-only approval criteria while keeping `approval_status = not_approved` and `admitted = false`.
 - [Source Ingestion Maintainer Security Review Packet](docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
-  (`examples/source_ingestion_maintainer_security_review_packet.py`) collecting the admitted-slice evidence chain into a digest-only review packet with `approval_status = not_approved`, leaving maintainer security review approval as the only external admission evidence.
+  (`examples/source_ingestion_maintainer_security_review_packet.py`) collecting the admitted-slice evidence chain and approval criteria into a digest-only review packet with `approval_status = not_approved`, leaving maintainer security review approval as the only external admission evidence.
 - [Source Ingestion Admission Gate](docs/SOURCE_INGESTION_ADMISSION_GATE.md)
   (`examples/source_ingestion_admission_gate.py`) binding the review packet into a fail-closed admission decision with `admitted = false` and `approval_artifact_present = false` until external maintainer approval exists.
 - [Research Scope Claim Gate](docs/RESEARCH_SCOPE_CLAIM_GATE.md)

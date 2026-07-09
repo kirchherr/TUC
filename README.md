@@ -485,7 +485,8 @@ Current frontend surfaces:
   `direct_source_ingestion` slice boundary while keeping implementation and
   admission blocked. Doc: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`.
 - CI Replay For Admitted Slice binding the future first source-ingestion slice to read-only GitHub Actions replay of the bounded buffer, sandbox, negative corpus, source-free diagnostics, and plain-data golden evidence. Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`; entry point: `examples/ci_replay_for_admitted_slice.py`; doc: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`.
-- Source Ingestion Maintainer Security Review Packet collecting the admitted-slice RFC, buffer, sandbox, fuzz, diagnostics, golden, CI replay, and first-slice plan reports by digest for human security review while recording `approval_status = not_approved` and keeping source ingestion blocked. Schema: `schemas/source_ingestion_maintainer_security_review_packet_report.v0.schema.json`; entry point: `examples/source_ingestion_maintainer_security_review_packet.py`; doc: `docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md`.
+- Source Ingestion Approval Criteria defining the objective, non-admitting checks a future maintainer approval must satisfy before `direct_source_ingestion` can open. Schema: `schemas/source_ingestion_approval_criteria_report.v0.schema.json`; entry point: `examples/source_ingestion_approval_criteria.py`; doc: `docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md`.
+- Source Ingestion Maintainer Security Review Packet collecting the admitted-slice RFC, buffer, sandbox, fuzz, diagnostics, golden, CI replay, approval criteria, and first-slice plan reports by digest for human security review while recording `approval_status = not_approved` and keeping source ingestion blocked. Schema: `schemas/source_ingestion_maintainer_security_review_packet_report.v0.schema.json`; entry point: `examples/source_ingestion_maintainer_security_review_packet.py`; doc: `docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md`.
 - Source Ingestion Admission Gate binding the maintainer-review packet into a fail-closed decision point with `admitted = false`, `approval_artifact_present = false`, and `source_ingestion_admission_ready = false` until external maintainer approval exists. Schema: `schemas/source_ingestion_admission_gate_report.v0.schema.json`; entry point: `examples/source_ingestion_admission_gate.py`; doc: `docs/SOURCE_INGESTION_ADMISSION_GATE.md`.
 - Bounded Source Buffer API validating source text as untrusted bounded data
   and emitting source-free metadata records without admitting source-to-IR or
@@ -597,6 +598,7 @@ Key docs:
 - [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
 - [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
 - [CI Replay For Admitted Slice](docs/CI_REPLAY_FOR_ADMITTED_SLICE.md)
+- [Source Ingestion Approval Criteria](docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md)
 - [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
 - [Source Ingestion Sandbox Implementation](docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
 - [Parser Fuzz Negative Corpus For Admitting Slice](docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)

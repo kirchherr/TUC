@@ -61,5 +61,12 @@ source-to-runtime-plan shortcuts.
 - Tests: `tests/test_source_ingestion_admission_gate.py`
 - RFC: `rfcs/0266-source-ingestion-admission-gate.md`
 - Review Packet: [Source Ingestion Maintainer Security Review Packet](SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
+- Source Ingestion Approval Criteria: [Source Ingestion Approval Criteria](SOURCE_INGESTION_APPROVAL_CRITERIA.md)
+- Source Ingestion Approval Criteria Doc: `docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md`
+- Source Ingestion Approval Criteria Module: `src/tuc/frontend/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Example: `examples/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Schema: `schemas/source_ingestion_approval_criteria_report.v0.schema.json`
+- Source Ingestion Approval Criteria Golden: `tests/golden/frontend/source_ingestion_approval_criteria_report.json`
+- Source Ingestion Approval Criteria RFC: `rfcs/0268-source-ingestion-approval-criteria.md`
 - Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
 - Real Triton First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)

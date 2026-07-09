@@ -44,6 +44,7 @@ EXPECTED_REVIEW_EVIDENCE_IDS = (
     "source_free_diagnostics_admission_tests",
     "source_to_intent_plain_data_output_golden_for_admitted_slice",
     "ci_replay_for_admitted_slice",
+    "source_ingestion_approval_criteria",
     "real_triton_first_admissible_slice_plan",
 )
 

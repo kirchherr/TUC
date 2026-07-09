@@ -41,7 +41,7 @@ for a future admitting slice. It now binds the requirements-only Admitting
 Source Ingestion RFC, the Bounded Source Buffer API, the Source Ingestion
 Sandbox Implementation, Parser Fuzz Negative Corpus, Source-Free Diagnostics
 Admission Tests, Source-To-Intent Plain-Data Output Golden, and CI Replay For
-Admitted Slice. The Source Ingestion Maintainer Security Review Packet prepares
+Admitted Slice. Source Ingestion Approval Criteria define the objective non-admitting checks for a later maintainer decision. The Source Ingestion Maintainer Security Review Packet prepares
 that evidence for review, but the plan still records maintainer security review
 approval as the remaining external evidence before that surface can become
 admitting.
@@ -122,6 +122,12 @@ shortcuts.
 - CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
 - CI Replay For Admitted Slice Doc: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`
 - CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`
+- Source Ingestion Approval Criteria Module: `src/tuc/frontend/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Example: `examples/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Schema: `schemas/source_ingestion_approval_criteria_report.v0.schema.json`
+- Source Ingestion Approval Criteria Golden: `tests/golden/frontend/source_ingestion_approval_criteria_report.json`
+- Source Ingestion Approval Criteria Doc: `docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md`
+- Source Ingestion Approval Criteria RFC: `rfcs/0268-source-ingestion-approval-criteria.md`
 - Source Ingestion Maintainer Security Review Packet Module: `src/tuc/frontend/source_ingestion_maintainer_review.py`
 - Source Ingestion Maintainer Security Review Packet Example: `examples/source_ingestion_maintainer_security_review_packet.py`
 - Source Ingestion Maintainer Security Review Packet Schema: `schemas/source_ingestion_maintainer_security_review_packet_report.v0.schema.json`

@@ -49,6 +49,13 @@ from examples.source_free_diagnostics_admission_tests import (
 from examples.source_free_diagnostics_admission_tests import (
     build_report as build_source_free_diagnostics_admission_tests_report,
 )
+from examples.source_ingestion_approval_criteria import (
+    SOURCE_INGESTION_APPROVAL_CRITERIA_ID,
+    assert_source_ingestion_approval_criteria_report_contract,
+)
+from examples.source_ingestion_approval_criteria import (
+    build_report as build_source_ingestion_approval_criteria_report,
+)
 from examples.source_ingestion_sandbox_implementation import (
     SOURCE_INGESTION_SANDBOX_IMPLEMENTATION_EVIDENCE_ID,
     assert_source_ingestion_sandbox_implementation_report_contract,
@@ -197,6 +204,13 @@ _REVIEW_EVIDENCE_SPECS: tuple[
         assert_ci_replay_for_admitted_slice_report_contract,
         "contract",
         "status",
+    ),
+    (
+        SOURCE_INGESTION_APPROVAL_CRITERIA_ID,
+        build_source_ingestion_approval_criteria_report,
+        assert_source_ingestion_approval_criteria_report_contract,
+        "criteria_contract",
+        "criteria_status",
     ),
     (
         REAL_TRITON_FIRST_SLICE_PLAN_ID,

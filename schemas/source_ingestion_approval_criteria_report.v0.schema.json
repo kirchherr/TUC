@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_ingestion_approval_criteria_report.v0.schema.json",
+  "title": "TUC Source Ingestion Approval Criteria Report v0",
+  "description": "Data-only criteria for a future maintainer approval decision. It is not an approval and does not admit source ingestion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "admitted",
+    "approval_artifact_present",
+    "approval_required",
+    "approval_status",
+    "artifact_policy",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "criteria_contract",
+    "criteria_id",
+    "criteria_ready",
+    "criteria_status",
+    "direct_source_ingestion",
+    "evidence_id",
+    "execution_permission",
+    "issues",
+    "remaining_external_evidence",
+    "remaining_external_evidence_count",
+    "report_digest",
+    "required_criteria",
+    "required_criteria_count",
+    "schema_version",
+    "source_ingestion_admission_ready",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_runtime_plan",
+    "target_slice",
+    "target_surface"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.source_ingestion_approval_criteria_report.v0"},
+    "evidence_id": {"const": "source_ingestion_approval_criteria"},
+    "criteria_id": {"const": "source_ingestion_approval_criteria"},
+    "criteria_contract": {"const": "source_ingestion_approval_criteria.data_only.v0"},
+    "criteria_status": {"const": "criteria_defined_not_approved"},
+    "criteria_ready": {"const": true},
+    "approval_status": {"const": "not_approved"},
+    "approval_required": {"const": true},
+    "approval_artifact_present": {"const": false},
+    "target_surface": {"const": "direct_source_ingestion"},
+    "target_slice": {"const": "bounded_source_buffer_to_source_intent_plain_data"},
+    "artifact_policy": {"const": "criteria_only_source_free"},
+    "admission_effect": {"const": "does_not_admit_direct_source_ingestion"},
+    "admitted": {"const": false},
+    "direct_source_ingestion": {"const": false},
+    "source_ingestion_admission_ready": {"const": false},
+    "source_to_compute_graph": {"const": false},
+    "source_to_hac_ir": {"const": false},
+    "source_to_runtime_plan": {"const": false},
+    "execution_permission": {"const": "not_granted"},
+    "remaining_external_evidence_count": {"const": 1},
+    "required_criteria_count": {"const": 17},
+    "report_digest": {"$ref": "#/$defs/sha256_text"},
+    "issues": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "remaining_external_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [
+        {"const": "maintainer_security_review_approval"}
+      ],
+      "items": false
+    },
+    "required_criteria": {
+      "type": "array",
+      "minItems": 17,
+      "maxItems": 17,
+      "prefixItems": [
+        {"const": "bounded_source_buffer_reviewed"},
+        {"const": "sandbox_boundary_reviewed"},
+        {"const": "negative_corpus_reviewed"},
+        {"const": "source_free_diagnostics_reviewed"},
+        {"const": "plain_data_golden_reviewed"},
+        {"const": "ci_replay_reviewed"},
+        {"const": "first_slice_plan_reviewed"},
+        {"const": "no_raw_source_serialization"},
+        {"const": "no_source_intent_payload_serialization"},
+        {"const": "no_runtime_handle_serialization"},
+        {"const": "no_host_path_serialization"},
+        {"const": "no_command_serialization"},
+        {"const": "no_compute_graph_output"},
+        {"const": "no_hac_ir_output"},
+        {"const": "no_runtime_plan_output"},
+        {"const": "direct_source_ingestion_remains_blocked"},
+        {"const": "maintainer_approval_required"}
+      ],
+      "items": false
+    },
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {"const": "parser_approval"},
+        {"const": "source_execution"},
+        {"const": "source_to_compute_graph"},
+        {"const": "source_to_hac_ir"},
+        {"const": "source_to_runtime_plan"},
+        {"const": "native_backend_execution"},
+        {"const": "production_compiler_claim"}
+      ],
+      "items": false
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "prefixItems": [
+        {"const": "frontend_package_import"},
+        {"const": "plugin_discovery"},
+        {"const": "triton_jit_execution"},
+        {"const": "device_access"},
+        {"const": "generated_artifact_execution"},
+        {"const": "native_backend_execution"},
+        {"const": "python_import"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"},
+        {"const": "dynamic_library_loading"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

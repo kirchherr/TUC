@@ -37,7 +37,7 @@ The `bounded_source_buffer_api`, `source_ingestion_sandbox_implementation`,
 `parser_fuzz_negative_corpus_for_admitting_slice`,
 `source_free_diagnostics_admission_tests`,
 `source_to_intent_plain_data_output_golden_for_admitted_slice`,
-`ci_replay_for_admitted_slice`, and
+`ci_replay_for_admitted_slice`, `source_ingestion_approval_criteria`, and
 `source_ingestion_maintainer_security_review_packet` prerequisites are now
 covered as non-admitting review evidence. Before source ingestion can become
 admitting, TUC still requires:
@@ -107,6 +107,13 @@ compiler shortcuts from source.
 - CI Replay For Admitted Slice Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`
 - CI Replay For Admitted Slice Golden: `tests/golden/frontend/ci_replay_for_admitted_slice_report.json`
 - CI Replay For Admitted Slice RFC: `rfcs/0264-ci-replay-for-admitted-slice.md`
+- Source Ingestion Approval Criteria: [Source Ingestion Approval Criteria](SOURCE_INGESTION_APPROVAL_CRITERIA.md)
+- Source Ingestion Approval Criteria Doc: `docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md`
+- Source Ingestion Approval Criteria Module: `src/tuc/frontend/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Example: `examples/source_ingestion_approval_criteria.py`
+- Source Ingestion Approval Criteria Schema: `schemas/source_ingestion_approval_criteria_report.v0.schema.json`
+- Source Ingestion Approval Criteria Golden: `tests/golden/frontend/source_ingestion_approval_criteria_report.json`
+- Source Ingestion Approval Criteria RFC: `rfcs/0268-source-ingestion-approval-criteria.md`
 - Source Ingestion Maintainer Security Review Packet: [Source Ingestion Maintainer Security Review Packet](SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
 - Source Ingestion Maintainer Security Review Packet Doc: `docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md`
 - Source Ingestion Maintainer Security Review Packet Module: `src/tuc/frontend/source_ingestion_maintainer_review.py`

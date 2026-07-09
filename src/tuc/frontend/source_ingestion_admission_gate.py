@@ -32,6 +32,7 @@ SOURCE_INGESTION_ADMISSION_GATE_REQUIRED_EXTERNAL_EVIDENCE = (
 )
 SOURCE_INGESTION_ADMISSION_GATE_REQUIRED_CONTROLS = (
     "maintainer_review_packet_bound",
+    "approval_criteria_bound_by_review_packet",
     "external_approval_artifact_required",
     "external_approval_artifact_absent",
     "direct_source_ingestion_false",

@@ -35,7 +35,9 @@ SOURCE_INGESTION_MAINTAINER_REVIEW_REQUIRED_CHECKS = (
     "source_free_diagnostics_reviewed",
     "plain_data_golden_reviewed",
     "ci_replay_reviewed",
+    "approval_criteria_reviewed",
     "first_slice_plan_reviewed",
+    "approval_criteria_non_admitting",
     "no_raw_source_serialization",
     "no_source_intent_payload_serialization",
     "no_runtime_handle_serialization",
@@ -57,7 +59,7 @@ SOURCE_INGESTION_MAINTAINER_REVIEW_BLOCKED_EXECUTION_SURFACES = (
     "dynamic_library_loading",
 )
 
-MAX_SOURCE_INGESTION_MAINTAINER_REVIEW_ITEMS = 8
+MAX_SOURCE_INGESTION_MAINTAINER_REVIEW_ITEMS = 9
 MAX_SOURCE_INGESTION_MAINTAINER_REVIEW_REPORT_BYTES = 160 * 1024
 MAX_SOURCE_INGESTION_MAINTAINER_REVIEW_FIELD_BYTES = 512
 
