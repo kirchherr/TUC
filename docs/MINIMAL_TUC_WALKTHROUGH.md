@@ -47,6 +47,7 @@ python examples/proof_of_backend_equivalence.py
 python examples/source_intent_mixed_runtime_public_proof_bundle.py
 python examples/runtime_evidence_gate.py
 python examples/source_to_intent_research_kernel_ingress_evidence_gate.py
+python examples/first_real_triton_kernel_path.py
 ```
 
 With the Docker development environment:
@@ -57,6 +58,7 @@ docker compose run --rm dev python examples/proof_of_backend_equivalence.py
 docker compose run --rm dev python examples/source_intent_mixed_runtime_public_proof_bundle.py
 docker compose run --rm dev python examples/runtime_evidence_gate.py
 docker compose run --rm dev python examples/source_to_intent_research_kernel_ingress_evidence_gate.py
+docker compose run --rm dev python examples/first_real_triton_kernel_path.py
 ```
 
 The first command demonstrates trusted runtime execution for an already
@@ -66,7 +68,9 @@ binds Source Intent plain data through mixed trusted execution, Public Output
 Bundle, Reference Correctness, and Backend Equivalence in one digest-only proof.
 The fourth checks the runtime evidence set. The fifth checks the current
 Source-To-Intent Kernel Ingress research slice, including runtime evidence,
-replay, backend equivalence, and source-free proof-bundle bindings.
+replay, backend equivalence, and source-free proof-bundle bindings. The sixth
+command is the shortest practical top-level proof for the single `mvp_pipeline`
+Kernel Ingress path.
 
 ## What To Inspect
 
@@ -111,6 +115,15 @@ Kernel Ingress research proof evidence:
 tests/golden/frontend/source_to_intent_research_kernel_ingress_proof_bundle.json
 tests/golden/frontend/source_to_intent_research_kernel_ingress_evidence_gate.txt
 tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.json
+tests/golden/frontend/first_real_triton_kernel_path.json
+schemas/first_real_triton_kernel_path_report.v0.schema.json
+```
+
+First Real Triton Kernel Path doc and RFC:
+
+```text
+docs/FIRST_REAL_TRITON_KERNEL_PATH.md
+rfcs/0272-first-real-triton-kernel-path.md
 ```
 
 ## What This Proves

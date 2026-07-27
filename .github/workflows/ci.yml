@@ -151,6 +151,8 @@ jobs:
         run: python examples/source_ingestion_maintainer_approval_artifact.py
       - name: Source ingestion admission gate
         run: python examples/source_ingestion_admission_gate.py
+      - name: First real Triton kernel path
+        run: python examples/first_real_triton_kernel_path.py
       - name: Evidence graph acyclicity gate
         run: python examples/evidence_graph_acyclicity_gate.py
       - name: Baseline benchmark smoke test

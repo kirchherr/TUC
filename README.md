@@ -433,6 +433,15 @@ Current frontend surfaces:
   digest-only entry point for the Kernel Ingress research slice.
 - Source-To-Intent Research Kernel Ingress Evidence Gate binding the focused
   Kernel Ingress proof slice as CI-facing source-free evidence.
+- First Real Triton Kernel Path giving reviewers one compact, digest-bound
+  proof for the `mvp_pipeline` research case across Kernel Ingress, Source
+  Intent re-intake, trusted runtime execution, backend-equivalence evidence,
+  and fail-closed source-ingestion admission. Schema:
+  `schemas/first_real_triton_kernel_path_report.v0.schema.json`; entry point:
+  `examples/first_real_triton_kernel_path.py`; golden:
+  `tests/golden/frontend/first_real_triton_kernel_path.json`; doc:
+  `docs/FIRST_REAL_TRITON_KERNEL_PATH.md`; RFC:
+  `rfcs/0272-first-real-triton-kernel-path.md`.
 - Triton Integration Readiness defining the next Real Triton Integration
   milestone as data-only review evidence with direct source ingestion and JIT
   execution still blocked. Schema: `schemas/triton_integration_readiness_report.v0.schema.json`; entry point: `examples/triton_integration_readiness.py`.
@@ -570,6 +579,7 @@ examples/source_to_intent_research_kernel_ingress_diagnostics.py
 examples/source_to_intent_research_kernel_ingress_idiom_alignment.py
 examples/source_to_intent_research_kernel_ingress_proof_bundle.py
 examples/source_to_intent_research_kernel_ingress_evidence_gate.py
+examples/first_real_triton_kernel_path.py
 examples/source_to_intent_research_source_runtime_smoke.py
 examples/source_to_intent_research_readiness.py
 examples/external_frontend_package_conformance.py
@@ -606,6 +616,7 @@ Key docs:
 - [Source Ingestion Maintainer Approval Artifact](docs/SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md)
 - [Source Ingestion Admission Gate](docs/SOURCE_INGESTION_ADMISSION_GATE.md)
 - [Source Ingestion Pre-Claim Acyclicity Gate](docs/SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE.md)
+- [First Real Triton Kernel Path](docs/FIRST_REAL_TRITON_KERNEL_PATH.md)
 - [Evidence Graph Acyclicity Gate](docs/EVIDENCE_GRAPH_ACYCLICITY_GATE.md)
 - [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
 - [Source Ingestion Sandbox Implementation](docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
@@ -651,6 +662,7 @@ Key docs:
 - [Source-to-Intent research kernel ingress idiom alignment](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_IDIOM_ALIGNMENT.md)
 - [Source-to-Intent research kernel ingress proof bundle](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md)
 - [Source-to-Intent research kernel ingress evidence gate](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md)
+- [First Real Triton Kernel Path](docs/FIRST_REAL_TRITON_KERNEL_PATH.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)

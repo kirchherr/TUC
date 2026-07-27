@@ -26,6 +26,13 @@ native performance claims.
 - Capability claim consumer:
   `examples/source_to_intent_research_capability_claim.py`
 - CI entry: `.github/workflows/ci.yml`
+- Practical first-path proof: `examples/first_real_triton_kernel_path.py`
+- Practical first-path schema:
+  `schemas/first_real_triton_kernel_path_report.v0.schema.json`
+- Practical first-path golden:
+  `tests/golden/frontend/first_real_triton_kernel_path.json`
+- Practical first-path doc: `docs/FIRST_REAL_TRITON_KERNEL_PATH.md`
+- Practical first-path RFC: `rfcs/0272-first-real-triton-kernel-path.md`
 
 ## What It Bundles
 
