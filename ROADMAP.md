@@ -877,6 +877,19 @@ Deliverables:
   `schemas/first_real_triton_kernel_path_report.v0.schema.json`; golden:
   `tests/golden/frontend/first_real_triton_kernel_path.json`; RFC:
   `rfcs/0272-first-real-triton-kernel-path.md`.
+- [Real Triton First Slice Evidence Portfolio](docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md)
+  (`examples/real_triton_first_slice_evidence_portfolio.py`) binding Real
+  Triton First Slice Plan, Source Ingestion Maintainer Security Review Packet,
+  missing Maintainer Approval Artifact, Source Ingestion Admission Gate,
+  Source Ingestion Pre-Claim Acyclicity Gate, First Real Triton Kernel Path,
+  and Research Scope Claim Gate into one digest-only portfolio while preserving
+  `admitted = false`, `direct_source_ingestion = false`,
+  `surface_opened = false`, native performance claims false, and vendor
+  replacement claims false. Schema:
+  `schemas/real_triton_first_slice_evidence_portfolio_report.v0.schema.json`;
+  golden:
+  `tests/golden/frontend/real_triton_first_slice_evidence_portfolio_report.json`;
+  RFC: `rfcs/0274-real-triton-first-slice-evidence-portfolio.md`.
 - [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
   (`examples/real_triton_first_slice_plan.py`) binding Admission, Surface Gate
   Completion, Source Ingestion Quarantine, Admitting Source Ingestion RFC,

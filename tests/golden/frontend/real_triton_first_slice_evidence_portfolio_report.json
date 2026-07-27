@@ -1,0 +1,121 @@
+{
+  "admission_status": "blocked",
+  "admitted": false,
+  "blocked_claims": [
+    "arbitrary_triton_source_ingestion",
+    "production_source_parser",
+    "source_to_compute_graph_admission",
+    "native_backend_execution",
+    "native_performance_parity",
+    "cuda_replacement",
+    "runtime_handle_residency"
+  ],
+  "device_access": false,
+  "direct_source_ingestion": false,
+  "evidence": [
+    {
+      "artifact_id": "real_triton_first_admissible_slice_plan",
+      "artifact_kind": "json_report",
+      "contract": "real_triton_first_slice_plan.data_only.v0",
+      "digest": "sha256:e1185ee2d6a6cd98b2a7090bf3103eac18809bcb9862dce8ef0263713613bcec",
+      "source_free": true,
+      "status": "blocked_until_admitting_source_ingestion_evidence",
+      "supports_portfolio": true
+    },
+    {
+      "artifact_id": "source_ingestion_maintainer_security_review_packet",
+      "artifact_kind": "json_report",
+      "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
+      "digest": "sha256:37e7c1904c8b7e665576f1eba58b2ed2229cd19320865bf6825de8ed78a0a6fd",
+      "source_free": true,
+      "status": "ready_for_maintainer_review",
+      "supports_portfolio": true
+    },
+    {
+      "artifact_id": "source_ingestion_maintainer_approval_artifact",
+      "artifact_kind": "json_report",
+      "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
+      "digest": "sha256:c67db2b6356abc27f3feffe387f9a2216aa1a4f722ca8a910da944846ab261f6",
+      "source_free": true,
+      "status": "external_approval_not_supplied",
+      "supports_portfolio": true
+    },
+    {
+      "artifact_id": "source_ingestion_admission_gate",
+      "artifact_kind": "json_report",
+      "contract": "source_ingestion_admission_gate.fail_closed.v0",
+      "digest": "sha256:08e5033993c1ccd3c9996069a037c9896cdfd8c2287c5edbfdb2c9ac3f9957c4",
+      "source_free": true,
+      "status": "blocked_missing_maintainer_security_review_approval",
+      "supports_portfolio": true
+    },
+    {
+      "artifact_id": "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
+      "artifact_kind": "json_report",
+      "contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
+      "digest": "sha256:6ba176a71a096be5783cb9daed9535e2b2af8cac31e3f37240c1c7de82181597",
+      "source_free": true,
+      "status": "PASS",
+      "supports_portfolio": true
+    },
+    {
+      "artifact_id": "first_real_triton_kernel_path",
+      "artifact_kind": "json_report",
+      "contract": "first_real_triton_kernel_path.digest_bound.v0",
+      "digest": "sha256:f740bfd97236164d2f2068905e066434e9a3041a97ce4ef82265906533d6f003",
+      "source_free": true,
+      "status": "PASS",
+      "supports_portfolio": true
+    },
+    {
+      "artifact_id": "research_scope_claim_gate",
+      "artifact_kind": "json_report",
+      "contract": "research_scope.claim_gate.data_only.v0",
+      "digest": "sha256:9d038d14e918e5690ded1af24cf3d4f5bc314053db4f7f285f81ee9ee9c7296d",
+      "source_free": true,
+      "status": "PASS",
+      "supports_portfolio": true
+    }
+  ],
+  "evidence_count": 7,
+  "evidence_policy": "digest_only_source_free",
+  "external_approval_present": false,
+  "first_real_path_status": "PASS",
+  "generated_artifact_execution": false,
+  "issues": [],
+  "native_performance_claim": false,
+  "portfolio_contract": "real_triton_first_slice_evidence_portfolio.research_boundary.v0",
+  "portfolio_id": "real_triton_first_slice_evidence_portfolio",
+  "portfolio_scope": "bounded_research_proof_not_source_ingestion_admission",
+  "portfolio_status": "PASS",
+  "production_compiler_claim": false,
+  "proven_claims": [
+    "first_real_mvp_pipeline_kernel_path_passed",
+    "source_intent_reintake_to_runtime_evidence_bound",
+    "backend_equivalence_metadata_bound",
+    "first_slice_prerequisite_evidence_bound",
+    "source_ingestion_admission_fail_closed",
+    "project_scope_remains_research_only"
+  ],
+  "research_scope_claim": true,
+  "runtime_handle_residency_claim": false,
+  "safety_invariants": [
+    "source_ingestion_admitted_false",
+    "direct_source_ingestion_false",
+    "external_approval_present_false",
+    "production_compiler_claim_false",
+    "native_performance_claim_false",
+    "vendor_replacement_claim_false",
+    "triton_jit_execution_false",
+    "device_access_false",
+    "generated_artifact_execution_false",
+    "digest_only_source_free"
+  ],
+  "schema_version": "tuc.real_triton_first_slice_evidence_portfolio_report.v0",
+  "source_ingestion_admission_ready": false,
+  "surface_opened": false,
+  "target_slice": "bounded_source_buffer_to_source_intent_plain_data",
+  "target_surface": "direct_source_ingestion",
+  "triton_jit_execution": false,
+  "vendor_replacement_claim": false
+}

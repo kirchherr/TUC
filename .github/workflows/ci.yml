@@ -153,6 +153,8 @@ jobs:
         run: python examples/source_ingestion_admission_gate.py
       - name: First real Triton kernel path
         run: python examples/first_real_triton_kernel_path.py
+      - name: Real Triton first slice evidence portfolio
+        run: python examples/real_triton_first_slice_evidence_portfolio.py
       - name: Evidence graph acyclicity gate
         run: python examples/evidence_graph_acyclicity_gate.py
       - name: Baseline benchmark smoke test

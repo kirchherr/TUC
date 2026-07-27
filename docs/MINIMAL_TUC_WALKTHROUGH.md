@@ -116,14 +116,19 @@ tests/golden/frontend/source_to_intent_research_kernel_ingress_proof_bundle.json
 tests/golden/frontend/source_to_intent_research_kernel_ingress_evidence_gate.txt
 tests/golden/frontend/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.json
 tests/golden/frontend/first_real_triton_kernel_path.json
+tests/golden/frontend/real_triton_first_slice_evidence_portfolio_report.json
 schemas/first_real_triton_kernel_path_report.v0.schema.json
+schemas/real_triton_first_slice_evidence_portfolio_report.v0.schema.json
 ```
 
-First Real Triton Kernel Path doc and RFC:
+First Real Triton Kernel Path and portfolio docs:
 
 ```text
 docs/FIRST_REAL_TRITON_KERNEL_PATH.md
+docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md
 rfcs/0272-first-real-triton-kernel-path.md
+rfcs/0274-real-triton-first-slice-evidence-portfolio.md
+examples/real_triton_first_slice_evidence_portfolio.py
 ```
 
 ## What This Proves

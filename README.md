@@ -39,6 +39,7 @@ python examples/objective_alpha_research_claim_gate.py
 python examples/source_to_intent_research_capability_claim.py
 python examples/source_to_intent_research_capability_claim_gate.py
 python examples/research_scope_claim_gate.py
+python examples/real_triton_first_slice_evidence_portfolio.py
 ```
 
 The Objective Alpha claim snapshot binds the public proof bundle, catalog,
@@ -54,6 +55,17 @@ current high-level proof gates and missing source-ingestion approval artifact by
 digest, keeping production compiler, vendor replacement, native performance,
 source-ingestion, plugin-execution, and generated-artifact claims explicitly
 blocked.
+
+The
+[Real Triton First Slice Evidence Portfolio](docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md)
+binds the first Real Triton slice plan, maintainer review packet, missing
+approval artifact, fail-closed admission gate, pre-claim acyclicity, First Real
+Triton Kernel Path, and Research Scope Claim Gate into one digest-only milestone
+while keeping direct source ingestion blocked. Schema:
+`schemas/real_triton_first_slice_evidence_portfolio_report.v0.schema.json`.
+Golden:
+`tests/golden/frontend/real_triton_first_slice_evidence_portfolio_report.json`.
+RFC: `rfcs/0274-real-triton-first-slice-evidence-portfolio.md`.
 
 Current practical Source Intent to mixed-runtime proof:
 
@@ -618,6 +630,7 @@ Key docs:
 - [Source Ingestion Admission Gate](docs/SOURCE_INGESTION_ADMISSION_GATE.md)
 - [Source Ingestion Pre-Claim Acyclicity Gate](docs/SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE.md)
 - [First Real Triton Kernel Path](docs/FIRST_REAL_TRITON_KERNEL_PATH.md)
+- [Real Triton First Slice Evidence Portfolio](docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md)
 - [Evidence Graph Acyclicity Gate](docs/EVIDENCE_GRAPH_ACYCLICITY_GATE.md)
 - [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
 - [Source Ingestion Sandbox Implementation](docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
@@ -664,6 +677,7 @@ Key docs:
 - [Source-to-Intent research kernel ingress proof bundle](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md)
 - [Source-to-Intent research kernel ingress evidence gate](docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md)
 - [First Real Triton Kernel Path](docs/FIRST_REAL_TRITON_KERNEL_PATH.md)
+- [Real Triton First Slice Evidence Portfolio](docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md)
 - [Source-to-Intent parser block gate](docs/SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md)
 - [Source-to-Intent research readiness](docs/SOURCE_TO_INTENT_RESEARCH_READINESS.md)
 - [Source-to-Intent parser gate](docs/SOURCE_TO_INTENT_PARSER_GATE.md)

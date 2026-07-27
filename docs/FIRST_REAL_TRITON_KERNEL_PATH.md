@@ -96,3 +96,22 @@ execution surfaces?
 ```
 
 Current answer: `PASS` for the bounded `mvp_pipeline` research case.
+## Portfolio Binding
+
+The broader first-slice milestone is
+[Real Triton First Slice Evidence Portfolio](REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md).
+It binds this proof together with the first-slice plan, maintainer review,
+missing approval artifact, fail-closed admission gate, pre-claim acyclicity,
+and Research Scope Claim Gate.
+
+Canonical portfolio doc path: `docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md`
+
+Portfolio example: `examples/real_triton_first_slice_evidence_portfolio.py`
+
+Portfolio schema:
+`schemas/real_triton_first_slice_evidence_portfolio_report.v0.schema.json`
+
+Portfolio golden:
+`tests/golden/frontend/real_triton_first_slice_evidence_portfolio_report.json`
+
+Portfolio RFC: `rfcs/0274-real-triton-first-slice-evidence-portfolio.md`
