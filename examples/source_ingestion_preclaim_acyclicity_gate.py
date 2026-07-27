@@ -1,4 +1,4 @@
-"""Emit the source-ingestion evidence graph acyclicity gate."""
+"""Emit the pre-claim source-ingestion evidence graph acyclicity gate."""
 
 from __future__ import annotations
 
@@ -11,9 +11,6 @@ from examples.real_triton_first_slice_plan import (
 )
 from examples.real_triton_first_slice_plan import (
     build_report as build_real_triton_first_slice_plan_report,
-)
-from examples.research_scope_claim_gate import (
-    build_current_research_scope_claim_gate_report_text,
 )
 from examples.source_ingestion_admission_gate import (
     assert_source_ingestion_admission_gate_report_contract,
@@ -36,21 +33,34 @@ from examples.source_ingestion_maintainer_security_review_packet import (
 from tuc.evidence_graph_acyclicity import (
     EVIDENCE_GRAPH_ACYCLICITY_EDGE_DIRECTION,
     EVIDENCE_GRAPH_ACYCLICITY_EVIDENCE_POLICY,
-    EVIDENCE_GRAPH_ACYCLICITY_GATE_CONTRACT,
-    EVIDENCE_GRAPH_ACYCLICITY_GATE_ID,
-    EVIDENCE_GRAPH_ACYCLICITY_GATE_STATUS,
-    EVIDENCE_GRAPH_ACYCLICITY_GRAPH_SCOPE,
-    EVIDENCE_GRAPH_ACYCLICITY_REPORT_SCHEMA_VERSION,
-    EVIDENCE_GRAPH_ACYCLICITY_REQUIRED_INVARIANTS,
     EvidenceGraphAcyclicityError,
     EvidenceGraphEdge,
     EvidenceGraphNode,
     build_evidence_graph_acyclicity_report,
-    dump_evidence_graph_acyclicity_report,
     evidence_graph_acyclicity_report_to_dict,
 )
 
-SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_NODE_IDS = (
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_REPORT_SCHEMA_VERSION = (
+    "tuc.source_ingestion_preclaim_acyclicity_gate_report.v0"
+)
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_CONTRACT = (
+    "source_ingestion_preclaim_acyclicity_gate.data_only.v0"
+)
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_ID = (
+    "source_ingestion_preclaim_evidence_graph_acyclicity_gate"
+)
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_STATUS = "PASS"
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GRAPH_SCOPE = (
+    "source_ingestion_first_slice_to_admission_gate"
+)
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_REQUIRED_INVARIANTS = (
+    "edge_endpoints_declared",
+    "graph_is_acyclic",
+    "dependency_first_topological_order_emitted",
+    "digest_only_source_free_edges",
+    "research_scope_claim_not_in_preclaim_graph",
+)
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_NODE_IDS = (
     "real_triton_integration_admission_gate",
     "real_triton_surface_gate_completion",
     "source_ingestion_quarantine_gate",
@@ -68,12 +78,10 @@ SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_NODE_IDS = (
     "source_ingestion_maintainer_security_review_packet",
     "source_ingestion_maintainer_approval_artifact",
     "source_ingestion_admission_gate",
-    "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
-    "research_scope_claim_gate",
 )
-SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_EDGE_COUNT = 28
-SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_REPORT_PATH = (
-    "tests/golden/frontend/evidence_graph_acyclicity_gate_report.json"
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_EDGE_COUNT = 25
+SOURCE_INGESTION_PRECLAIM_ACYCLICITY_REPORT_PATH = (
+    "tests/golden/frontend/source_ingestion_preclaim_acyclicity_gate_report.json"
 )
 
 _TOP_LEVEL_KEYS = frozenset(
@@ -125,75 +133,86 @@ _FORBIDDEN_FRAGMENTS = (
     '"raw_source":',
     '"raw_source_text":',
     '"raw_tensor_value":',
+    '"research_scope_claim_gate"',
     '"runtime_handle":',
     '"source_intent_payload":',
     '"source_text":',
     "tl.dot",
     "tl.store",
 )
-_RESEARCH_SCOPE_SOURCE_INGESTION_TARGETS = frozenset(
-    {
-        "source_ingestion_maintainer_approval_artifact",
-        "source_ingestion_admission_gate",
-        "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
-    }
-)
 
 
-def build_current_evidence_graph_acyclicity_gate_report() -> dict[str, object]:
-    """Build the current source-ingestion evidence DAG acyclicity report."""
+def build_current_source_ingestion_preclaim_acyclicity_gate_report() -> (
+    dict[str, object]
+):
+    """Build the source-ingestion DAG proof before research-scope binding."""
 
-    payloads = _build_payloads()
-    nodes, edges = _build_graph(payloads)
+    nodes, edges = _build_graph(_build_payloads())
     report = build_evidence_graph_acyclicity_report(nodes, edges)
     payload = evidence_graph_acyclicity_report_to_dict(report)
-    assert_evidence_graph_acyclicity_gate_report_contract(payload)
+    payload.update(
+        {
+            "gate_contract": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_CONTRACT,
+            "gate_id": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_ID,
+            "gate_status": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_STATUS,
+            "graph_scope": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GRAPH_SCOPE,
+            "required_invariants": list(
+                SOURCE_INGESTION_PRECLAIM_ACYCLICITY_REQUIRED_INVARIANTS
+            ),
+            "schema_version": (
+                SOURCE_INGESTION_PRECLAIM_ACYCLICITY_REPORT_SCHEMA_VERSION
+            ),
+        }
+    )
+    assert_source_ingestion_preclaim_acyclicity_gate_report_contract(payload)
     return payload
 
 
 def build_report() -> str:
-    """Return stable JSON evidence for the acyclicity gate."""
+    """Return stable JSON evidence for the pre-claim acyclicity gate."""
 
-    report = build_evidence_graph_acyclicity_report(
-        *_build_graph(_build_payloads()),
-    )
-    return dump_evidence_graph_acyclicity_report(report)
+    payload = build_current_source_ingestion_preclaim_acyclicity_gate_report()
+    text = json.dumps(payload, indent=2, sort_keys=True)
+    _assert_text_is_source_free(text)
+    return f"{text}\n"
 
 
 def main() -> None:
     print(build_report(), end="")
 
 
-def assert_evidence_graph_acyclicity_gate_report_contract(report: object) -> None:
-    """Fail closed unless the acyclicity gate matches the current v0 contract."""
+def assert_source_ingestion_preclaim_acyclicity_gate_report_contract(
+    report: object,
+) -> None:
+    """Fail closed unless the pre-claim acyclicity report matches v0."""
 
     if not isinstance(report, Mapping):
-        raise EvidenceGraphAcyclicityError("evidence graph report must be object")
+        raise EvidenceGraphAcyclicityError("preclaim acyclicity report must be object")
     if set(report) != _TOP_LEVEL_KEYS:
-        raise EvidenceGraphAcyclicityError("evidence graph top-level keys drift")
+        raise EvidenceGraphAcyclicityError("preclaim acyclicity top-level keys drift")
 
     expected = {
         "cycle_count": 0,
-        "edge_count": SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_EDGE_COUNT,
+        "edge_count": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_EDGE_COUNT,
         "edge_direction": EVIDENCE_GRAPH_ACYCLICITY_EDGE_DIRECTION,
         "evidence_policy": EVIDENCE_GRAPH_ACYCLICITY_EVIDENCE_POLICY,
-        "gate_contract": EVIDENCE_GRAPH_ACYCLICITY_GATE_CONTRACT,
-        "gate_id": EVIDENCE_GRAPH_ACYCLICITY_GATE_ID,
-        "gate_status": EVIDENCE_GRAPH_ACYCLICITY_GATE_STATUS,
-        "graph_scope": EVIDENCE_GRAPH_ACYCLICITY_GRAPH_SCOPE,
-        "node_count": len(SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_NODE_IDS),
-        "schema_version": EVIDENCE_GRAPH_ACYCLICITY_REPORT_SCHEMA_VERSION,
+        "gate_contract": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_CONTRACT,
+        "gate_id": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_ID,
+        "gate_status": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_STATUS,
+        "graph_scope": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GRAPH_SCOPE,
+        "node_count": len(SOURCE_INGESTION_PRECLAIM_ACYCLICITY_NODE_IDS),
+        "schema_version": SOURCE_INGESTION_PRECLAIM_ACYCLICITY_REPORT_SCHEMA_VERSION,
         "source_free": True,
     }
     for key, expected_value in expected.items():
         if report.get(key) != expected_value:
-            raise EvidenceGraphAcyclicityError(f"evidence graph {key} drift")
+            raise EvidenceGraphAcyclicityError(f"preclaim acyclicity {key} drift")
 
     if report.get("detected_cycles") != []:
-        raise EvidenceGraphAcyclicityError("evidence graph cycles must be empty")
+        raise EvidenceGraphAcyclicityError("preclaim acyclicity cycles must be empty")
     _assert_string_sequence(
         report.get("required_invariants"),
-        EVIDENCE_GRAPH_ACYCLICITY_REQUIRED_INVARIANTS,
+        SOURCE_INGESTION_PRECLAIM_ACYCLICITY_REQUIRED_INVARIANTS,
         "required_invariants",
     )
     _assert_nodes(report.get("nodes"))
@@ -208,7 +227,6 @@ def _build_payloads() -> dict[str, Mapping[str, object]]:
         "review_packet": build_source_ingestion_maintainer_review_report(),
         "approval_artifact": build_source_ingestion_maintainer_approval_report(),
         "admission_gate": build_source_ingestion_admission_gate_report(),
-        "research_scope": build_current_research_scope_claim_gate_report_text(),
     }
     payloads = {key: _json_payload(text, key) for key, text in texts.items()}
     assert_real_triton_first_slice_plan_report_contract(payloads["first_slice"])
@@ -232,7 +250,6 @@ def _build_graph(
     review_packet = payloads["review_packet"]
     approval_artifact = payloads["approval_artifact"]
     admission_gate = payloads["admission_gate"]
-    research_scope = payloads["research_scope"]
 
     first_slice_id = _add_report_node(
         nodes,
@@ -262,13 +279,6 @@ def _build_graph(
         "gate_contract",
         "gate_status",
     )
-    research_scope_id = _add_report_node(
-        nodes,
-        research_scope,
-        "gate_id",
-        "gate_contract",
-        "gate_status",
-    )
 
     _extend_edges_from_items(nodes, edges, first_slice_id, first_slice["evidence"])
     _extend_edges_from_items(nodes, edges, review_packet_id, review_packet["review_evidence"])
@@ -290,15 +300,10 @@ def _build_graph(
         admission_gate_id,
         admission_gate["maintainer_approval_artifact"],
     )
-    _extend_edges_from_items(
-        nodes,
-        edges,
-        research_scope_id,
-        _source_ingestion_research_scope_edges(research_scope["evidence"]),
-    )
 
     ordered_nodes = tuple(
-        nodes[evidence_id] for evidence_id in SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_NODE_IDS
+        nodes[evidence_id]
+        for evidence_id in SOURCE_INGESTION_PRECLAIM_ACYCLICITY_NODE_IDS
     )
     return ordered_nodes, tuple(edges)
 
@@ -324,13 +329,13 @@ def _append_edge_from_item(
     item: object,
 ) -> None:
     if not isinstance(item, Mapping):
-        raise EvidenceGraphAcyclicityError("evidence graph edge item must be object")
+        raise EvidenceGraphAcyclicityError("preclaim edge item must be object")
     evidence_id = _required_text(item, "evidence_id")
     contract = _required_text(item, "contract")
     status = _required_text(item, "status")
     digest = _required_text(item, "digest")
     if item.get("source_free") is not True:
-        raise EvidenceGraphAcyclicityError("evidence graph edge item must be source-free")
+        raise EvidenceGraphAcyclicityError("preclaim edge item must be source-free")
     _add_or_confirm_node(nodes, evidence_id, contract, status, "leaf_evidence")
     edges.append(
         EvidenceGraphEdge(
@@ -348,23 +353,9 @@ def _extend_edges_from_items(
     items: object,
 ) -> None:
     if not isinstance(items, Iterable) or isinstance(items, (str, bytes)):
-        raise EvidenceGraphAcyclicityError("evidence graph edge items must be iterable")
+        raise EvidenceGraphAcyclicityError("preclaim edge items must be iterable")
     for item in items:
         _append_edge_from_item(nodes, edges, from_evidence_id, item)
-
-
-def _source_ingestion_research_scope_edges(items: object) -> tuple[Mapping[str, object], ...]:
-    if not isinstance(items, Iterable) or isinstance(items, (str, bytes)):
-        raise EvidenceGraphAcyclicityError("research scope evidence must be iterable")
-    selected = []
-    for item in items:
-        if not isinstance(item, Mapping):
-            raise EvidenceGraphAcyclicityError("research scope evidence item invalid")
-        if item.get("evidence_id") in _RESEARCH_SCOPE_SOURCE_INGESTION_TARGETS:
-            selected.append(item)
-    if {item["evidence_id"] for item in selected} != _RESEARCH_SCOPE_SOURCE_INGESTION_TARGETS:
-        raise EvidenceGraphAcyclicityError("research scope source-ingestion edges drift")
-    return tuple(selected)
 
 
 def _add_or_confirm_node(
@@ -377,7 +368,7 @@ def _add_or_confirm_node(
     existing = nodes.get(evidence_id)
     if existing is not None:
         if existing.contract != contract or existing.status != status:
-            raise EvidenceGraphAcyclicityError("evidence graph node contract drift")
+            raise EvidenceGraphAcyclicityError("preclaim node contract drift")
         return
     nodes[evidence_id] = EvidenceGraphNode(
         evidence_id=evidence_id,
@@ -389,63 +380,67 @@ def _add_or_confirm_node(
 
 def _assert_nodes(value: object) -> None:
     if not isinstance(value, list):
-        raise EvidenceGraphAcyclicityError("evidence graph nodes must be list")
+        raise EvidenceGraphAcyclicityError("preclaim nodes must be list")
     if [item.get("evidence_id") for item in value if isinstance(item, Mapping)] != list(
-        SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_NODE_IDS
+        SOURCE_INGESTION_PRECLAIM_ACYCLICITY_NODE_IDS
     ):
-        raise EvidenceGraphAcyclicityError("evidence graph node IDs drift")
+        raise EvidenceGraphAcyclicityError("preclaim node IDs drift")
     for item in value:
         if not isinstance(item, Mapping) or set(item) != _NODE_KEYS:
-            raise EvidenceGraphAcyclicityError("evidence graph node keys drift")
+            raise EvidenceGraphAcyclicityError("preclaim node keys drift")
+        if item.get("evidence_id") == "research_scope_claim_gate":
+            raise EvidenceGraphAcyclicityError("research scope cannot be preclaim node")
         for key in ("contract", "evidence_id", "node_kind", "status"):
             _validate_text(item.get(key), f"node {key}")
         if item.get("source_free") is not True:
-            raise EvidenceGraphAcyclicityError("evidence graph node source flag drift")
+            raise EvidenceGraphAcyclicityError("preclaim node source flag drift")
 
 
 def _assert_edges(value: object) -> None:
     if not isinstance(value, list):
-        raise EvidenceGraphAcyclicityError("evidence graph edges must be list")
-    if len(value) != SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_EDGE_COUNT:
-        raise EvidenceGraphAcyclicityError("evidence graph edge count drift")
-    node_ids = set(SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_NODE_IDS)
+        raise EvidenceGraphAcyclicityError("preclaim edges must be list")
+    if len(value) != SOURCE_INGESTION_PRECLAIM_ACYCLICITY_EDGE_COUNT:
+        raise EvidenceGraphAcyclicityError("preclaim edge count drift")
+    node_ids = set(SOURCE_INGESTION_PRECLAIM_ACYCLICITY_NODE_IDS)
     edge_pairs = set()
     for item in value:
         if not isinstance(item, Mapping) or set(item) != _EDGE_KEYS:
-            raise EvidenceGraphAcyclicityError("evidence graph edge keys drift")
+            raise EvidenceGraphAcyclicityError("preclaim edge keys drift")
         from_id = _required_text(item, "from_evidence_id")
         to_id = _required_text(item, "to_evidence_id")
         _validate_text(item.get("edge_kind"), "edge kind")
         digest = item.get("bound_digest")
         if not isinstance(digest, str) or not _SHA256_RE.fullmatch(digest):
-            raise EvidenceGraphAcyclicityError("evidence graph edge digest invalid")
+            raise EvidenceGraphAcyclicityError("preclaim edge digest invalid")
         if item.get("source_free") is not True:
-            raise EvidenceGraphAcyclicityError("evidence graph edge source flag drift")
+            raise EvidenceGraphAcyclicityError("preclaim edge source flag drift")
         if from_id not in node_ids or to_id not in node_ids:
-            raise EvidenceGraphAcyclicityError("evidence graph edge endpoint drift")
+            raise EvidenceGraphAcyclicityError("preclaim edge endpoint drift")
         if (from_id, to_id) in edge_pairs:
-            raise EvidenceGraphAcyclicityError("evidence graph duplicate edge")
+            raise EvidenceGraphAcyclicityError("preclaim duplicate edge")
         edge_pairs.add((from_id, to_id))
 
 
 def _assert_topological_order(value: object) -> None:
     if not isinstance(value, list):
-        raise EvidenceGraphAcyclicityError("evidence graph topological order invalid")
-    if set(value) != set(SOURCE_INGESTION_EVIDENCE_GRAPH_ACYCLICITY_NODE_IDS):
-        raise EvidenceGraphAcyclicityError("evidence graph topological nodes drift")
+        raise EvidenceGraphAcyclicityError("preclaim topological order invalid")
+    if set(value) != set(SOURCE_INGESTION_PRECLAIM_ACYCLICITY_NODE_IDS):
+        raise EvidenceGraphAcyclicityError("preclaim topological nodes drift")
+    if "research_scope_claim_gate" in value:
+        raise EvidenceGraphAcyclicityError("research scope cannot appear preclaim")
     if value.index("real_triton_first_admissible_slice_plan") > value.index(
         "source_ingestion_maintainer_security_review_packet"
     ):
-        raise EvidenceGraphAcyclicityError("evidence graph first-slice order drift")
-    if value.index("source_ingestion_preclaim_evidence_graph_acyclicity_gate") > value.index(
-        "research_scope_claim_gate"
+        raise EvidenceGraphAcyclicityError("preclaim first-slice order drift")
+    if value.index("source_ingestion_maintainer_approval_artifact") > value.index(
+        "source_ingestion_admission_gate"
     ):
-        raise EvidenceGraphAcyclicityError("evidence graph preclaim order drift")
+        raise EvidenceGraphAcyclicityError("preclaim admission order drift")
 
 
 def _assert_string_sequence(value: object, expected: tuple[str, ...], label: str) -> None:
     if not isinstance(value, list) or tuple(value) != expected:
-        raise EvidenceGraphAcyclicityError(f"evidence graph {label} drift")
+        raise EvidenceGraphAcyclicityError(f"preclaim {label} drift")
     for item in value:
         _validate_text(item, label)
 
@@ -466,7 +461,7 @@ def _required_text(payload: Mapping[str, object], key: str) -> str:
 
 def _validate_text(value: object, label: str) -> None:
     if not isinstance(value, str) or not _TOKEN_RE.fullmatch(value):
-        raise EvidenceGraphAcyclicityError(f"evidence graph {label} invalid")
+        raise EvidenceGraphAcyclicityError(f"preclaim {label} invalid")
 
 
 def _assert_text_is_source_free(text: str) -> None:
@@ -474,7 +469,7 @@ def _assert_text_is_source_free(text: str) -> None:
     for fragment in _FORBIDDEN_FRAGMENTS:
         if fragment in lowered:
             raise EvidenceGraphAcyclicityError(
-                f"evidence graph contains forbidden fragment: {fragment}"
+                f"preclaim report contains forbidden fragment: {fragment}"
             )
 
 

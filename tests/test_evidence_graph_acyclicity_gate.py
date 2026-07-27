@@ -85,6 +85,7 @@ def test_evidence_graph_acyclicity_gate_example_runs() -> None:
     assert "real_triton_first_admissible_slice_plan" in completed.stdout
     assert "source_ingestion_maintainer_security_review_packet" in completed.stdout
     assert "source_ingestion_admission_gate" in completed.stdout
+    assert "source_ingestion_preclaim_evidence_graph_acyclicity_gate" in completed.stdout
     assert '"source_text":' not in completed.stdout
     assert '"runtime_handle":' not in completed.stdout
 
@@ -104,6 +105,9 @@ def test_evidence_graph_acyclicity_gate_edges_are_dependency_ordered() -> None:
         "source_ingestion_admission_gate"
     )
     assert order.index("source_ingestion_admission_gate") < order.index(
+        "source_ingestion_preclaim_evidence_graph_acyclicity_gate"
+    )
+    assert order.index("source_ingestion_preclaim_evidence_graph_acyclicity_gate") < order.index(
         "research_scope_claim_gate"
     )
 

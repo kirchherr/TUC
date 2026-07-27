@@ -1,7 +1,7 @@
 {
   "cycle_count": 0,
   "detected_cycles": [],
-  "edge_count": 28,
+  "edge_count": 25,
   "edge_direction": "dependent_report_to_bound_evidence",
   "edges": [
     {
@@ -178,35 +178,14 @@
       "from_evidence_id": "source_ingestion_admission_gate",
       "source_free": true,
       "to_evidence_id": "source_ingestion_maintainer_approval_artifact"
-    },
-    {
-      "bound_digest": "sha256:b566939955ff7eb8d81d037cc731cf9ce8da99c834cdbd1a8afb6d071c0ad37c",
-      "edge_kind": "digest_binding",
-      "from_evidence_id": "research_scope_claim_gate",
-      "source_free": true,
-      "to_evidence_id": "source_ingestion_maintainer_approval_artifact"
-    },
-    {
-      "bound_digest": "sha256:5899057282af7a2e435528044ac3bbb38d2b448da43dafea54d5b43ffa2db606",
-      "edge_kind": "digest_binding",
-      "from_evidence_id": "research_scope_claim_gate",
-      "source_free": true,
-      "to_evidence_id": "source_ingestion_admission_gate"
-    },
-    {
-      "bound_digest": "sha256:02f862daa0178e1aa80bd0333b5079df748f517e374643992833bdee0dadac5a",
-      "edge_kind": "digest_binding",
-      "from_evidence_id": "research_scope_claim_gate",
-      "source_free": true,
-      "to_evidence_id": "source_ingestion_preclaim_evidence_graph_acyclicity_gate"
     }
   ],
   "evidence_policy": "edge_digest_only_source_free",
-  "gate_contract": "evidence_graph_acyclicity_gate.data_only.v0",
-  "gate_id": "source_ingestion_evidence_graph_acyclicity_gate",
+  "gate_contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
+  "gate_id": "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
   "gate_status": "PASS",
-  "graph_scope": "source_ingestion_first_slice_to_research_scope",
-  "node_count": 19,
+  "graph_scope": "source_ingestion_first_slice_to_admission_gate",
+  "node_count": 17,
   "nodes": [
     {
       "contract": "real_triton_integration_admission.data_only.v0",
@@ -326,20 +305,6 @@
       "node_kind": "evidence_report",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval"
-    },
-    {
-      "contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
-      "evidence_id": "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
-      "node_kind": "leaf_evidence",
-      "source_free": true,
-      "status": "PASS"
-    },
-    {
-      "contract": "research_scope.claim_gate.data_only.v0",
-      "evidence_id": "research_scope_claim_gate",
-      "node_kind": "evidence_report",
-      "source_free": true,
-      "status": "PASS"
     }
   ],
   "required_invariants": [
@@ -347,9 +312,9 @@
     "graph_is_acyclic",
     "dependency_first_topological_order_emitted",
     "digest_only_source_free_edges",
-    "source_ingestion_downstream_gates_do_not_cycle_into_first_slice"
+    "research_scope_claim_not_in_preclaim_graph"
   ],
-  "schema_version": "tuc.evidence_graph_acyclicity_gate_report.v0",
+  "schema_version": "tuc.source_ingestion_preclaim_acyclicity_gate_report.v0",
   "source_free": true,
   "topological_order": [
     "admitting_source_ingestion_rfc",
@@ -368,8 +333,6 @@
     "real_triton_first_admissible_slice_plan",
     "source_ingestion_maintainer_security_review_packet",
     "source_ingestion_maintainer_approval_artifact",
-    "source_ingestion_admission_gate",
-    "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
-    "research_scope_claim_gate"
+    "source_ingestion_admission_gate"
   ]
 }

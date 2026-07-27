@@ -16,6 +16,11 @@ from examples.source_ingestion_admission_gate import (
 from examples.source_ingestion_maintainer_approval_artifact import (
     assert_source_ingestion_maintainer_approval_artifact_report_contract,
 )
+from examples.source_ingestion_preclaim_acyclicity_gate import (
+    SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_CONTRACT,
+    SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_ID,
+    assert_source_ingestion_preclaim_acyclicity_gate_report_contract,
+)
 from examples.source_to_intent_research_capability_claim_gate import (
     SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE_CONTRACT,
     assert_capability_claim_gate_report_contract,
@@ -46,6 +51,9 @@ _SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT_GOLDEN = Path(
 _SOURCE_INGESTION_ADMISSION_GATE_GOLDEN = Path(
     "tests/golden/frontend/source_ingestion_admission_gate_report.json"
 )
+_SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_GOLDEN = Path(
+    "tests/golden/frontend/source_ingestion_preclaim_acyclicity_gate_report.json"
+)
 
 
 def build_current_research_scope_claim_gate_report_text() -> str:
@@ -58,6 +66,7 @@ def build_current_research_scope_claim_gate_report_text() -> str:
             _performance_proof_interpretation_binding(),
             _source_ingestion_maintainer_approval_artifact_binding(),
             _source_ingestion_admission_gate_binding(),
+            _source_ingestion_preclaim_acyclicity_gate_binding(),
         )
     )
     return dump_research_scope_claim_gate_report(report)
@@ -140,6 +149,26 @@ def _source_ingestion_admission_gate_binding() -> ResearchScopeEvidenceBinding:
     return ResearchScopeEvidenceBinding(
         evidence_id=str(payload["gate_id"]),
         contract=str(payload["gate_contract"]),
+        status=str(payload["gate_status"]),
+        digest=_digest_text(text),
+    )
+
+
+def _source_ingestion_preclaim_acyclicity_gate_binding() -> (
+    ResearchScopeEvidenceBinding
+):
+    text = _SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_GOLDEN.read_text(
+        encoding="utf-8"
+    )
+    payload = _load_json_object(text, "source ingestion preclaim acyclicity gate")
+    assert_source_ingestion_preclaim_acyclicity_gate_report_contract(payload)
+    if payload["cycle_count"] != 0:
+        raise AssertionError("source ingestion preclaim acyclicity gate must pass")
+    if "research_scope_claim_gate" in json.dumps(payload, sort_keys=True):
+        raise AssertionError("preclaim acyclicity gate must not include research scope")
+    return ResearchScopeEvidenceBinding(
+        evidence_id=SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_ID,
+        contract=SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE_CONTRACT,
         status=str(payload["gate_status"]),
         digest=_digest_text(text),
     )

@@ -12,6 +12,7 @@ mypy src/tuc
 pytest -q
 python examples/runtime_evidence_gate.py
 python examples/runtime_candidate_scoring_gate.py
+python examples/source_ingestion_preclaim_acyclicity_gate.py
 python examples/research_scope_claim_gate.py
 python examples/evidence_graph_acyclicity_gate.py
 ```

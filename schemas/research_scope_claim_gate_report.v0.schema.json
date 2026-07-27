@@ -68,7 +68,7 @@
     "generated_artifact_execution_claim": {"const": false},
     "external_plugin_execution_claim": {"const": false},
     "source_ingestion_admitted": {"const": false},
-    "evidence_count": {"const": 5},
+    "evidence_count": {"const": 6},
     "scope_report_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
     "issues": {"type": "array", "maxItems": 0},
     "supported_claims": {
@@ -105,14 +105,15 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 10,
-      "maxItems": 10,
+      "minItems": 11,
+      "maxItems": 11,
       "prefixItems": [
         {"const": "objective_alpha_research_claim_gate_passed"},
         {"const": "source_to_intent_research_capability_claim_gate_passed"},
         {"const": "performance_interpretation_blocks_native_claims"},
         {"const": "source_ingestion_maintainer_approval_artifact_absent"},
         {"const": "source_ingestion_admission_gate_blocks_direct_source_ingestion"},
+        {"const": "source_ingestion_preclaim_evidence_graph_acyclic"},
         {"const": "top_level_evidence_digest_bound"},
         {"const": "metadata_only_source_free_artifacts"},
         {"const": "production_compiler_claim_false"},
@@ -122,8 +123,8 @@
     },
     "evidence": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         {
           "type": "object",
@@ -220,6 +221,30 @@
             "evidence_id": {"const": "source_ingestion_admission_gate"},
             "contract": {"const": "source_ingestion_admission_gate.fail_closed.v0"},
             "status": {"const": "blocked_missing_maintainer_security_review_approval"},
+            "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+            "source_free": {"const": true},
+            "supports_scope": {"const": true}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract",
+            "digest",
+            "evidence_id",
+            "source_free",
+            "status",
+            "supports_scope"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "source_ingestion_preclaim_evidence_graph_acyclicity_gate"
+            },
+            "contract": {
+              "const": "source_ingestion_preclaim_acyclicity_gate.data_only.v0"
+            },
+            "status": {"const": "PASS"},
             "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
             "source_free": {"const": true},
             "supports_scope": {"const": true}

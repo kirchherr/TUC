@@ -119,6 +119,7 @@ def test_research_scope_claim_gate_example_runs() -> None:
     assert "performance_proof_interpretation" in completed.stdout
     assert "source_ingestion_maintainer_approval_artifact" in completed.stdout
     assert "source_ingestion_admission_gate" in completed.stdout
+    assert "source_ingestion_preclaim_evidence_graph_acyclicity_gate" in completed.stdout
     assert '"source_text":' not in completed.stdout
     assert '"raw_tensor_value":' not in completed.stdout
     assert '"runtime_handle":' not in completed.stdout

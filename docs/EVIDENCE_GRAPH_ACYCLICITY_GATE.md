@@ -1,7 +1,7 @@
 # Evidence Graph Acyclicity Gate
 
 Evidence Graph Acyclicity Gate v0 is the data-only CI gate that proves the
-current source-ingestion evidence chain is a directed acyclic graph.
+current source-ingestion evidence chain, including the pre-claim acyclicity binding, is a directed acyclic graph.
 
 Run it with:
 
@@ -23,13 +23,14 @@ The current graph covers:
 - Source Ingestion Maintainer Security Review Packet.
 - Source Ingestion Maintainer Approval Artifact.
 - Source Ingestion Admission Gate.
+- Source Ingestion Pre-Claim Acyclicity Gate as a Research Scope binding.
 - Research Scope Claim Gate source-ingestion bindings.
 
 The report currently emits:
 
 ```text
-node_count = 18
-edge_count = 27
+node_count = 19
+edge_count = 28
 cycle_count = 0
 gate_status = PASS
 ```
@@ -74,4 +75,10 @@ shortcuts.
 - Maintainer Review Packet: [Source Ingestion Maintainer Security Review Packet](SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
 - Maintainer Approval Artifact: [Source Ingestion Maintainer Approval Artifact](SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md)
 - Source Ingestion Admission Gate: [Source Ingestion Admission Gate](SOURCE_INGESTION_ADMISSION_GATE.md)
+- Source Ingestion Pre-Claim Acyclicity Gate: [Source Ingestion Pre-Claim Acyclicity Gate](SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE.md)
+- Source Ingestion Pre-Claim Acyclicity Gate Example: `examples/source_ingestion_preclaim_acyclicity_gate.py`
+- Source Ingestion Pre-Claim Acyclicity Gate Doc: `docs/SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE.md`
+- Source Ingestion Pre-Claim Acyclicity Gate Schema: `schemas/source_ingestion_preclaim_acyclicity_gate_report.v0.schema.json`
+- Source Ingestion Pre-Claim Acyclicity Gate Golden: `tests/golden/frontend/source_ingestion_preclaim_acyclicity_gate_report.json`
+- Source Ingestion Pre-Claim Acyclicity Gate RFC: `rfcs/0271-source-ingestion-preclaim-acyclicity-gate.md`
 - Research Scope Claim Gate: [Research Scope Claim Gate](RESEARCH_SCOPE_CLAIM_GATE.md)

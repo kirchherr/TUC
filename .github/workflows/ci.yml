@@ -137,6 +137,8 @@ jobs:
         run: python examples/source_to_intent_research_capability_claim.py
       - name: Source-To-Intent research capability claim gate
         run: python examples/source_to_intent_research_capability_claim_gate.py
+      - name: Source ingestion pre-claim acyclicity gate
+        run: python examples/source_ingestion_preclaim_acyclicity_gate.py
       - name: Research scope claim gate
         run: python examples/research_scope_claim_gate.py
       - name: Source-To-Intent parser block gate

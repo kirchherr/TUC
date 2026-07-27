@@ -48,7 +48,7 @@
     },
     {
       "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
-      "digest": "sha256:5586a7acdecdf259b20fc482ac34c958a6accbf3828837e160a4e051e8430086",
+      "digest": "sha256:b566939955ff7eb8d81d037cc731cf9ce8da99c834cdbd1a8afb6d071c0ad37c",
       "evidence_id": "source_ingestion_maintainer_approval_artifact",
       "source_free": true,
       "status": "external_approval_not_supplied",
@@ -56,14 +56,22 @@
     },
     {
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
-      "digest": "sha256:13c766ef133e6f7eae48b99e1bd6a985561b4186e9ad7234e1aab1f062e80ecc",
+      "digest": "sha256:5899057282af7a2e435528044ac3bbb38d2b448da43dafea54d5b43ffa2db606",
       "evidence_id": "source_ingestion_admission_gate",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
       "supports_scope": true
+    },
+    {
+      "contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
+      "digest": "sha256:02f862daa0178e1aa80bd0333b5079df748f517e374643992833bdee0dadac5a",
+      "evidence_id": "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
+      "source_free": true,
+      "status": "PASS",
+      "supports_scope": true
     }
   ],
-  "evidence_count": 5,
+  "evidence_count": 6,
   "evidence_policy": "top_level_gate_digest_only_source_free",
   "external_plugin_execution_claim": false,
   "gate_contract": "research_scope.claim_gate.data_only.v0",
@@ -82,6 +90,7 @@
     "performance_interpretation_blocks_native_claims",
     "source_ingestion_maintainer_approval_artifact_absent",
     "source_ingestion_admission_gate_blocks_direct_source_ingestion",
+    "source_ingestion_preclaim_evidence_graph_acyclic",
     "top_level_evidence_digest_bound",
     "metadata_only_source_free_artifacts",
     "production_compiler_claim_false",
@@ -92,7 +101,7 @@
   "rocm_replacement_claim": false,
   "schema_version": "tuc.research_scope_claim_gate_report.v0",
   "scope_boundary": "research_proof_not_compiler_replacement",
-  "scope_report_digest": "sha256:b6c3c41e2f2ae5890cb622cc6e10bd462458ba86937c935711024d801a16061c",
+  "scope_report_digest": "sha256:34ad6389a077ac707386191f4dd79b276e2c251c8aac125c0a5b1ae9ff530e3b",
   "source_ingestion_admitted": false,
   "supported_claims": [
     "hardware_independent_compute_intent_current_research_scope",

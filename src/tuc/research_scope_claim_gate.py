@@ -56,6 +56,7 @@ RESEARCH_SCOPE_REQUIRED_INVARIANTS = (
     "performance_interpretation_blocks_native_claims",
     "source_ingestion_maintainer_approval_artifact_absent",
     "source_ingestion_admission_gate_blocks_direct_source_ingestion",
+    "source_ingestion_preclaim_evidence_graph_acyclic",
     "top_level_evidence_digest_bound",
     "metadata_only_source_free_artifacts",
     "production_compiler_claim_false",
@@ -133,6 +134,11 @@ RESEARCH_SCOPE_REQUIRED_EVIDENCE = (
         evidence_id="source_ingestion_admission_gate",
         contract="source_ingestion_admission_gate.fail_closed.v0",
         status="blocked_missing_maintainer_security_review_approval",
+    ),
+    ResearchScopeEvidenceRequirement(
+        evidence_id="source_ingestion_preclaim_evidence_graph_acyclicity_gate",
+        contract="source_ingestion_preclaim_acyclicity_gate.data_only.v0",
+        status="PASS",
     ),
 )
 
