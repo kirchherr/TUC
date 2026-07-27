@@ -297,10 +297,11 @@ Completed evidence:
 - [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
   provides that separate digest-only, RFC-bound growth surface, binding the
   extension policy, first Runtime Backend Equivalence Portfolio `runtime_proof`
-  entry, Source-To-Intent Kernel Ingress and Source Intent Mixed Runtime Public
-  Proof Bundle `frontend_runtime_proof` entries, and Source-To-Intent
-  Capability Claim Gate `claim_boundary` entry by metadata digest without
-  adding entries to the fixed Objective Alpha Public Proof Bundle.
+  entry, Source-To-Intent Kernel Ingress, Source Intent Mixed Runtime Public
+  Proof Bundle, and First Real Triton Kernel Path `frontend_runtime_proof`
+  entries, and Source-To-Intent Capability Claim Gate `claim_boundary` entry by
+  metadata digest without adding entries to the fixed Objective Alpha Public
+  Proof Bundle.
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
   machine-checks that catalog admission remains append-only, RFC-bound,
   digest-only, source-free, and free of new execution surfaces.
@@ -309,7 +310,8 @@ Completed evidence:
   catalog, catalog admission gate, and Source Intent mixed-runtime proof into
   one digest-only current research-claim snapshot without expanding parser,
   plugin, device, generated-artifact, native-backend, or native-performance
-  surfaces.
+  surfaces; the public evidence surface is now 16 fixed bundle entries plus 6
+  catalog entries.
 - [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md)
   makes that snapshot CI-checkable by binding the claim digest, metadata
   digest, evidence IDs, public counts, supported claims, blocked claims, and
@@ -328,6 +330,10 @@ Completed evidence:
   connecting Source Intent plain data, mixed backend placement, trusted runtime
   execution, public output closure, reference correctness, and backend
   equivalence to the public proof surface by digest only.
+- Objective Alpha Public Evidence Catalog now binds the First Real Triton Kernel
+  Path as a `frontend_runtime_proof` entry, exposing the bounded `mvp_pipeline`
+  path in the public proof surface by digest only without admitting broader
+  source parsing or JIT execution.
 - Objective Alpha Public Evidence Catalog Extension-Tier Coverage now emits and
   gates required coverage for `governance`, `runtime_proof`,
   `frontend_runtime_proof`, and `claim_boundary`, making the current public

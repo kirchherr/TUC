@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from examples.first_real_triton_kernel_path import (
+    build_report as build_first_real_triton_kernel_path_report,
+)
 from examples.objective_alpha_evidence_extension_policy import (
     build_report_object as build_extension_policy_report_object,
 )
@@ -33,6 +36,7 @@ def build_report_object() -> ObjectiveAlphaPublicEvidenceCatalogReport:
         build_kernel_ingress_proof_bundle_report(),
         build_source_intent_mixed_runtime_public_proof_bundle_report(),
         build_capability_claim_gate_report(),
+        build_first_real_triton_kernel_path_report(),
     )
 
 
@@ -48,3 +52,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

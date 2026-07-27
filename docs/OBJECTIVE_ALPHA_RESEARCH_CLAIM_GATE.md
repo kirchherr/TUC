@@ -28,7 +28,7 @@ expected claim contract, evidence IDs, claim digest, claim metadata digest,
 entry counts, supported claims, blocked claims, and required invariants.
 
 It fails closed if the claim digest drifts, if evidence IDs reorder, if public
-bundle or catalog counts change, or if native performance, vendor replacement,
+bundle or catalog counts change from the current 16 + 6 = 22 public evidence surface, or if native performance, vendor replacement,
 or broad source parser claims are enabled.
 
 ## Security Boundary

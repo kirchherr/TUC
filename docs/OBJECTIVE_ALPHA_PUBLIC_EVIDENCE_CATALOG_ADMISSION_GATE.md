@@ -35,6 +35,7 @@ still passes the fixed v0 admission rules:
 - the Source-To-Intent Kernel Ingress Proof Bundle digest is bound;
 - the Source Intent Mixed Runtime Public Proof Bundle digest is bound;
 - the Source-To-Intent Research Capability Claim Gate digest is bound;
+- the First Real Triton Kernel Path digest is bound;
 - the initial governance entry, first runtime-proof entry,
   frontend-runtime-proof entries, and claim-boundary entry are fixed;
 - required extension-tier coverage is complete for `governance`,
@@ -74,3 +75,6 @@ output.
   `rfcs/0238-objective-alpha-catalog-extension-tier-coverage.md`
 - Capability Claim Gate catalog-entry decision:
   `rfcs/0240-objective-alpha-capability-claim-gate-catalog-entry.md`
+- First Real Triton Kernel Path catalog-entry decision:
+  `rfcs/0273-objective-alpha-first-real-triton-kernel-path-catalog-entry.md`
+

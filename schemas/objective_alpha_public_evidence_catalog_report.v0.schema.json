@@ -32,6 +32,7 @@
     "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest",
     "source_intent_mixed_runtime_public_proof_bundle_metadata_digest",
     "source_to_intent_research_capability_claim_gate_metadata_digest",
+    "first_real_triton_kernel_path_metadata_digest",
     "schema_version",
     "stable_bundle_metadata_digest",
     "stable_entry_capacity",
@@ -102,6 +103,10 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "first_real_triton_kernel_path_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "catalog_metadata_digest": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
@@ -110,7 +115,7 @@
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 5
+      "const": 6
     },
     "catalog_required_extension_tiers": {
       "type": "array",
@@ -132,8 +137,8 @@
     },
     "catalog_entries": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         {
           "type": "object",
@@ -307,6 +312,43 @@
             },
             "extension_tier": {
               "const": "claim_boundary"
+            },
+            "metadata_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "raw_output_policy": {
+              "const": "digest_only"
+            },
+            "status": {
+              "const": "passed"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_kind",
+            "entry_point",
+            "evidence_id",
+            "extension_tier",
+            "metadata_digest",
+            "raw_output_policy",
+            "status"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "first_real_triton_kernel_path"
+            },
+            "entry_point": {
+              "const": "python examples/first_real_triton_kernel_path.py"
+            },
+            "artifact_kind": {
+              "const": "schema_versioned_first_real_triton_kernel_path_report"
+            },
+            "extension_tier": {
+              "const": "frontend_runtime_proof"
             },
             "metadata_digest": {
               "type": "string",

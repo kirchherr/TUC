@@ -112,7 +112,10 @@ _CATALOG_SERIALIZED_REPORT_DECLARED_TOKEN_EXCEPTIONS = {
         "dynamic_library": ("blocked_execution_surfaces", "dynamic_library_loading"),
         "runtime_handle": ("blocked_claims", "runtime_handle_serialization"),
         "subprocess": ("blocked_execution_surfaces", "subprocess_execution"),
-    }
+    },
+    "first real Triton kernel path report": {
+        "runtime_handle": ("blocked_claims", "runtime_handle_residency"),
+    },
 }
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ENTRY_ADMISSION_PATTERN_CONTRACT = (
     "objective_alpha.public_evidence_catalog_entry_admission_pattern.data_only.v0"
@@ -918,6 +921,13 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS = (
         extension_tier="claim_boundary",
         digest_source="source_to_intent_research_capability_claim_gate_report",
     ),
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+        evidence_id="first_real_triton_kernel_path",
+        entry_point="python examples/first_real_triton_kernel_path.py",
+        artifact_kind="schema_versioned_first_real_triton_kernel_path_report",
+        extension_tier="frontend_runtime_proof",
+        digest_source="first_real_triton_kernel_path_report",
+    ),
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS = _catalog_admission_spec_values(
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
@@ -1034,6 +1044,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
     source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest: str
     source_intent_mixed_runtime_public_proof_bundle_metadata_digest: str
     source_to_intent_research_capability_claim_gate_metadata_digest: str
+    first_real_triton_kernel_path_metadata_digest: str
     catalog_entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...]
     issues: tuple[str, ...]
     schema_version: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION
@@ -1088,6 +1099,10 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             self.source_to_intent_research_capability_claim_gate_metadata_digest,
             "objective alpha catalog source to intent capability claim gate digest",
         )
+        _validate_digest(
+            self.first_real_triton_kernel_path_metadata_digest,
+            "objective alpha catalog first real Triton kernel path digest",
+        )
         if self.schema_version != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION:
             raise ValueError("objective alpha catalog schema mismatch")
         if self.catalog_id != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID:
@@ -1130,6 +1145,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 self.source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest,
                 self.source_intent_mixed_runtime_public_proof_bundle_metadata_digest,
                 self.source_to_intent_research_capability_claim_gate_metadata_digest,
+                self.first_real_triton_kernel_path_metadata_digest,
             ),
         )
         if self.catalog_missing_extension_tiers:
@@ -1207,6 +1223,9 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 "source_to_intent_research_capability_claim_gate_metadata_digest": (
                     self.source_to_intent_research_capability_claim_gate_metadata_digest
                 ),
+                "first_real_triton_kernel_path_metadata_digest": (
+                    self.first_real_triton_kernel_path_metadata_digest
+                ),
                 "stable_bundle_metadata_digest": self.stable_bundle_metadata_digest,
             }
         )
@@ -1276,6 +1295,7 @@ def build_objective_alpha_public_evidence_catalog_report(
     source_to_intent_research_kernel_ingress_proof_bundle_report: str,
     source_intent_mixed_runtime_public_proof_bundle_report: str,
     source_to_intent_research_capability_claim_gate_report: str,
+    first_real_triton_kernel_path_report: str,
 ) -> ObjectiveAlphaPublicEvidenceCatalogReport:
     """Build the catalog for evidence beyond the fixed Objective Alpha bundle."""
 
@@ -1314,6 +1334,10 @@ def build_objective_alpha_public_evidence_catalog_report(
         source_to_intent_research_capability_claim_gate_report,
         "source to intent capability claim gate report",
     )
+    first_real_triton_kernel_path_digest = _catalog_metadata_digest_from_serialized_report(
+        first_real_triton_kernel_path_report,
+        "first real Triton kernel path report",
+    )
     return ObjectiveAlphaPublicEvidenceCatalogReport(
         stable_entrypoint=policy_report.stable_entrypoint,
         stable_entry_capacity=policy_report.stable_entry_capacity,
@@ -1331,6 +1355,9 @@ def build_objective_alpha_public_evidence_catalog_report(
         source_to_intent_research_capability_claim_gate_metadata_digest=(
             capability_claim_gate_digest
         ),
+        first_real_triton_kernel_path_metadata_digest=(
+            first_real_triton_kernel_path_digest
+        ),
         catalog_entries=_catalog_entries_from_admission_specs(
             (
                 policy_digest,
@@ -1338,6 +1365,7 @@ def build_objective_alpha_public_evidence_catalog_report(
                 kernel_ingress_proof_bundle_digest,
                 mixed_runtime_public_proof_bundle_digest,
                 capability_claim_gate_digest,
+                first_real_triton_kernel_path_digest,
             )
         ),
         issues=(),
@@ -1386,6 +1414,9 @@ def objective_alpha_public_evidence_catalog_report_to_dict(
         ),
         "source_to_intent_research_capability_claim_gate_metadata_digest": (
             report.source_to_intent_research_capability_claim_gate_metadata_digest
+        ),
+        "first_real_triton_kernel_path_metadata_digest": (
+            report.first_real_triton_kernel_path_metadata_digest
         ),
         "schema_version": report.schema_version,
         "stable_bundle_metadata_digest": report.stable_bundle_metadata_digest,
@@ -1502,6 +1533,7 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS = (
     "kernel_ingress_proof_bundle_digest_entry_bound",
     "source_intent_mixed_runtime_public_proof_bundle_digest_entry_bound",
     "capability_claim_gate_digest_entry_bound",
+    "first_real_triton_kernel_path_digest_entry_bound",
     "catalog_extension_tier_coverage_complete",
     "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",
@@ -1533,6 +1565,7 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
     source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest: str
     source_intent_mixed_runtime_public_proof_bundle_metadata_digest: str
     source_to_intent_research_capability_claim_gate_metadata_digest: str
+    first_real_triton_kernel_path_metadata_digest: str
     catalog_entry_capacity: int
     catalog_entry_count: int
     catalog_entry_digest_count: int
@@ -1608,6 +1641,10 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
         _validate_digest(
             self.source_to_intent_research_capability_claim_gate_metadata_digest,
             "objective alpha catalog gate source to intent capability claim gate digest",
+        )
+        _validate_digest(
+            self.first_real_triton_kernel_path_metadata_digest,
+            "objective alpha catalog gate first real Triton kernel path digest",
         )
         if self.schema_version != (
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_SCHEMA_VERSION
@@ -1789,6 +1826,9 @@ def build_objective_alpha_public_evidence_catalog_admission_gate_report(
         source_to_intent_research_capability_claim_gate_metadata_digest=(
             catalog_report.source_to_intent_research_capability_claim_gate_metadata_digest
         ),
+        first_real_triton_kernel_path_metadata_digest=(
+            catalog_report.first_real_triton_kernel_path_metadata_digest
+        ),
         catalog_entry_capacity=catalog_report.catalog_entry_capacity,
         catalog_entry_count=catalog_report.catalog_entry_count,
         catalog_entry_digest_count=sum(
@@ -1862,6 +1902,9 @@ def objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
         ),
         "source_to_intent_research_capability_claim_gate_metadata_digest": (
             report.source_to_intent_research_capability_claim_gate_metadata_digest
+        ),
+        "first_real_triton_kernel_path_metadata_digest": (
+            report.first_real_triton_kernel_path_metadata_digest
         ),
         "schema_version": report.schema_version,
         "stable_entry_capacity": report.stable_entry_capacity,
@@ -2018,3 +2061,5 @@ __all__ = [
     "objective_alpha_public_proof_bundle_gate_report_to_dict",
     "objective_alpha_public_proof_bundle_to_dict",
 ]
+
+

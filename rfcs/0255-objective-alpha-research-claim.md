@@ -47,7 +47,7 @@ The claim report is digest-only and source-free.
 - The report is schema-versioned and closed with `additionalProperties: false`.
 - The report binds exactly six supporting artifacts by SHA-256 digest.
 - The public proof bundle is still full at sixteen entries.
-- The public evidence catalog has five entries and its admission gate passes.
+- The public evidence catalog has six entries and its admission gate passes.
 - The Source Intent mixed-runtime proof passes backend equivalence and reference
   correctness.
 - Native performance, vendor replacement, broad source parsing, arbitrary

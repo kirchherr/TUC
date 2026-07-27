@@ -128,10 +128,11 @@ coverage evidence for `governance`, `runtime_proof`,
 Objective Alpha covers the current governance, backend-equivalence,
 source-ingress, and claim-boundary proof roles. Its first non-governance
 catalog entry binds the Runtime Backend Equivalence Portfolio as
-`runtime_proof` evidence, its `frontend_runtime_proof` entries bind both the
-Source-To-Intent Kernel Ingress Proof Bundle and Source Intent Mixed Runtime
-Public Proof Bundle, and its `claim_boundary` entry binds the Source-To-Intent
-Research Capability Claim Gate without expanding the fixed public bundle.
+`runtime_proof` evidence, its `frontend_runtime_proof` entries bind the
+Source-To-Intent Kernel Ingress Proof Bundle, Source Intent Mixed Runtime
+Public Proof Bundle, and First Real Triton Kernel Path; its
+`claim_boundary` entry binds the Source-To-Intent Research Capability Claim
+Gate without expanding the fixed public bundle.
 
 ## Runtime Execution
 

@@ -49,8 +49,8 @@ The gate report is digest-only and source-free.
 - The gate report is schema-versioned and closed with `additionalProperties: false`.
 - The gate binds the Objective Alpha Research Claim digest and metadata digest.
 - The gate binds exactly six claim evidence IDs in fixed order.
-- The gate requires public bundle count 16, catalog count 5, and total public
-  evidence count 21.
+- The gate requires public bundle count 16, catalog count 6, and total public
+  evidence count 22.
 - Native performance, vendor replacement, broad source parsing, arbitrary
   third-party backend execution, device access, generated artifact execution,
   and production Triton integration remain blocked.

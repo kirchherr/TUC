@@ -40,6 +40,7 @@
     "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest",
     "source_intent_mixed_runtime_public_proof_bundle_metadata_digest",
     "source_to_intent_research_capability_claim_gate_metadata_digest",
+    "first_real_triton_kernel_path_metadata_digest",
     "schema_version",
     "stable_entry_capacity",
     "stable_entry_count",
@@ -118,61 +119,69 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "first_real_triton_kernel_path_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "catalog_entry_capacity": {
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 5
+      "const": 6
     },
     "catalog_entry_digest_count": {
-      "const": 5
+      "const": 6
     },
     "catalog_evidence_ids": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         { "const": "objective_alpha_evidence_extension_policy" },
         { "const": "runtime_backend_equivalence_portfolio" },
         { "const": "source_to_intent_research_kernel_ingress_proof_bundle" },
         { "const": "source_intent_mixed_runtime_public_proof_bundle" },
-        { "const": "source_to_intent_research_capability_claim_gate" }
+        { "const": "source_to_intent_research_capability_claim_gate" },
+        { "const": "first_real_triton_kernel_path" }
       ]
     },
     "catalog_entry_points": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         { "const": "python examples/objective_alpha_evidence_extension_policy.py" },
         { "const": "python examples/runtime_backend_equivalence_portfolio.py" },
         { "const": "python examples/source_to_intent_research_kernel_ingress_proof_bundle.py" },
         { "const": "python examples/source_intent_mixed_runtime_public_proof_bundle.py" },
-        { "const": "python examples/source_to_intent_research_capability_claim_gate.py" }
+        { "const": "python examples/source_to_intent_research_capability_claim_gate.py" },
+        { "const": "python examples/first_real_triton_kernel_path.py" }
       ]
     },
     "catalog_artifact_kinds": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         { "const": "schema_versioned_extension_policy_report" },
         { "const": "schema_versioned_backend_equivalence_portfolio_report" },
         { "const": "schema_versioned_source_to_intent_kernel_ingress_proof_bundle_report" },
         { "const": "schema_versioned_source_intent_mixed_runtime_public_proof_bundle_report" },
-        { "const": "deterministic_source_to_intent_research_capability_claim_gate_output" }
+        { "const": "deterministic_source_to_intent_research_capability_claim_gate_output" },
+        { "const": "schema_versioned_first_real_triton_kernel_path_report" }
       ]
     },
     "catalog_extension_tiers": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         { "const": "governance" },
         { "const": "runtime_proof" },
         { "const": "frontend_runtime_proof" },
         { "const": "frontend_runtime_proof" },
-        { "const": "claim_boundary" }
+        { "const": "claim_boundary" },
+        { "const": "frontend_runtime_proof" }
       ]
     },
     "catalog_required_extension_tiers": {
@@ -195,9 +204,10 @@
     },
     "catalog_raw_output_policies": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
+        { "const": "digest_only" },
         { "const": "digest_only" },
         { "const": "digest_only" },
         { "const": "digest_only" },
@@ -207,8 +217,8 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 18,
-      "maxItems": 18,
+      "minItems": 19,
+      "maxItems": 19,
       "prefixItems": [
         { "const": "catalog_report_passed" },
         { "const": "catalog_metadata_digest_bound" },
@@ -221,6 +231,7 @@
         { "const": "kernel_ingress_proof_bundle_digest_entry_bound" },
         { "const": "source_intent_mixed_runtime_public_proof_bundle_digest_entry_bound" },
         { "const": "capability_claim_gate_digest_entry_bound" },
+        { "const": "first_real_triton_kernel_path_digest_entry_bound" },
         { "const": "catalog_extension_tier_coverage_complete" },
         { "const": "fixed_initial_catalog_entries" },
         { "const": "append_only_rfc_bound_growth_policy" },

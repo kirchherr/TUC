@@ -65,8 +65,8 @@ serialized proof report and bounded metadata about the entry.
 
 ## Acceptance Criteria
 
-- The catalog contains five entries and keeps the fixed public proof bundle at
-  sixteen entries.
+- The catalog keeps the fixed public proof bundle at sixteen entries and admits
+  this entry through the RFC-bound catalog growth surface.
 - The new entry is ordered after the Source-To-Intent Kernel Ingress Proof
   Bundle and before the Source-To-Intent Research Capability Claim Gate.
 - The admission gate requires the new digest binding invariant

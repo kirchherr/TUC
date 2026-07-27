@@ -56,8 +56,8 @@ def test_objective_alpha_research_claim_passes() -> None:
     assert report["claim_passed"] is True
     assert report["evidence_count"] == len(OBJECTIVE_ALPHA_RESEARCH_CLAIM_EVIDENCE_IDS)
     assert report["public_bundle_entry_count"] == 16
-    assert report["catalog_entry_count"] == 5
-    assert report["public_evidence_entry_count"] == 21
+    assert report["catalog_entry_count"] == 6
+    assert report["public_evidence_entry_count"] == 22
     assert report["backend_equivalence_passed"] is True
     assert report["reference_correctness_passed"] is True
     assert report["native_performance_claim"] is False
@@ -97,7 +97,7 @@ def test_objective_alpha_research_claim_example_runs() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
     assert "objective_alpha.research_claim.digest_snapshot.v0" in completed.stdout
     assert '"claim_passed": true' in completed.stdout
-    assert '"public_evidence_entry_count": 21' in completed.stdout
+    assert '"public_evidence_entry_count": 22' in completed.stdout
     assert "source_intent_mixed_runtime_public_proof_bundle" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "source_text" not in completed.stdout
@@ -165,8 +165,8 @@ def test_objective_alpha_research_claim_schema_matches_contract() -> None:
         OBJECTIVE_ALPHA_RESEARCH_CLAIM_EVIDENCE_IDS
     )
     assert schema["properties"]["public_bundle_entry_count"]["const"] == 16
-    assert schema["properties"]["catalog_entry_count"]["const"] == 5
-    assert schema["properties"]["public_evidence_entry_count"]["const"] == 21
+    assert schema["properties"]["catalog_entry_count"]["const"] == 6
+    assert schema["properties"]["public_evidence_entry_count"]["const"] == 22
     assert [
         item["const"] for item in schema["properties"]["supported_claims"]["prefixItems"]
     ] == list(OBJECTIVE_ALPHA_RESEARCH_CLAIM_SUPPORTED_CLAIMS)
@@ -210,8 +210,8 @@ def test_objective_alpha_research_claim_golden_matches_schema() -> None:
     assert golden["claim_passed"] is True
     assert golden["evidence_count"] == len(OBJECTIVE_ALPHA_RESEARCH_CLAIM_EVIDENCE_IDS)
     assert golden["public_bundle_entry_count"] == 16
-    assert golden["catalog_entry_count"] == 5
-    assert golden["public_evidence_entry_count"] == 21
+    assert golden["catalog_entry_count"] == 6
+    assert golden["public_evidence_entry_count"] == 22
 
 
 def test_objective_alpha_research_claim_docs_are_linked() -> None:
