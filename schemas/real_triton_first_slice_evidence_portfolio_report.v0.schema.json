@@ -97,16 +97,13 @@
         },
         {
           "$ref": "#/$defs/first_real_path"
-        },
-        {
-          "$ref": "#/$defs/research_scope"
         }
       ],
-      "minItems": 7,
-      "maxItems": 7
+      "minItems": 6,
+      "maxItems": 6
     },
     "evidence_count": {
-      "const": 7
+      "const": 6
     },
     "evidence_policy": {
       "const": "digest_only_source_free"
@@ -385,26 +382,6 @@
             },
             "status": {
               "const": "blocked_until_admitting_source_ingestion_evidence"
-            }
-          }
-        }
-      ]
-    },
-    "research_scope": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/binding"
-        },
-        {
-          "properties": {
-            "artifact_id": {
-              "const": "research_scope_claim_gate"
-            },
-            "contract": {
-              "const": "research_scope.claim_gate.data_only.v0"
-            },
-            "status": {
-              "const": "PASS"
             }
           }
         }

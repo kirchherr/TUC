@@ -27,7 +27,7 @@ tests/golden/proofs/objective_alpha_public_evidence_catalog.json
 The catalog proves that Objective Alpha has a stable extension surface after the
 public proof bundle reached `entry_count: 16` and `entry_capacity: 16`.
 
-The catalog currently binds six entries by SHA-256 metadata digest:
+The catalog currently binds seven entries by SHA-256 metadata digest:
 
 - the initial governance entry for the
   [Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md);
@@ -40,7 +40,9 @@ The catalog currently binds six entries by SHA-256 metadata digest:
 - a `claim_boundary` entry for the
   [Source-To-Intent Research Capability Claim Gate](SOURCE_TO_INTENT_RESEARCH_CAPABILITY_CLAIM_GATE.md);
 - a `frontend_runtime_proof` entry for the
-  [First Real Triton Kernel Path](FIRST_REAL_TRITON_KERNEL_PATH.md).
+  [First Real Triton Kernel Path](FIRST_REAL_TRITON_KERNEL_PATH.md);
+- a `frontend_runtime_proof` entry for the
+  [Real Triton First Slice Evidence Portfolio](REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md).
 
 Future catalog entries must be added through an RFC and must remain
 schema-versioned, digest-only, source-free in public reports, and free of
@@ -104,6 +106,8 @@ main proof path harder to audit.
   `rfcs/0240-objective-alpha-capability-claim-gate-catalog-entry.md`
 - First Real Triton Kernel Path catalog-entry decision:
   `rfcs/0273-objective-alpha-first-real-triton-kernel-path-catalog-entry.md`
+- Real Triton First Slice Evidence Portfolio catalog-entry decision:
+  `rfcs/0275-objective-alpha-real-triton-first-slice-portfolio-catalog-entry.md`
 
 ## Security Boundary
 

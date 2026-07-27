@@ -116,7 +116,7 @@ def test_real_triton_first_slice_evidence_portfolio_example_runs() -> None:
     assert '"direct_source_ingestion": false' in completed.stdout
     assert '"first_real_path_status": "PASS"' in completed.stdout
     assert "first_real_triton_kernel_path" in completed.stdout
-    assert "research_scope_claim_gate" in completed.stdout
+    assert "research_scope_claim_gate" not in completed.stdout
     assert "@triton.jit" not in completed.stdout
     assert "import triton" not in completed.stdout
     assert "tl.dot" not in completed.stdout

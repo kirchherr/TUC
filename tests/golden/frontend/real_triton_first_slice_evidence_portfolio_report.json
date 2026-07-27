@@ -66,18 +66,9 @@
       "source_free": true,
       "status": "PASS",
       "supports_portfolio": true
-    },
-    {
-      "artifact_id": "research_scope_claim_gate",
-      "artifact_kind": "json_report",
-      "contract": "research_scope.claim_gate.data_only.v0",
-      "digest": "sha256:9d038d14e918e5690ded1af24cf3d4f5bc314053db4f7f285f81ee9ee9c7296d",
-      "source_free": true,
-      "status": "PASS",
-      "supports_portfolio": true
     }
   ],
-  "evidence_count": 7,
+  "evidence_count": 6,
   "evidence_policy": "digest_only_source_free",
   "external_approval_present": false,
   "first_real_path_status": "PASS",

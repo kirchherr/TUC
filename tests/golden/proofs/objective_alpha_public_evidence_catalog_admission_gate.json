@@ -34,20 +34,22 @@
     "schema_versioned_source_to_intent_kernel_ingress_proof_bundle_report",
     "schema_versioned_source_intent_mixed_runtime_public_proof_bundle_report",
     "deterministic_source_to_intent_research_capability_claim_gate_output",
-    "schema_versioned_first_real_triton_kernel_path_report"
+    "schema_versioned_first_real_triton_kernel_path_report",
+    "schema_versioned_real_triton_first_slice_evidence_portfolio_report"
   ],
   "catalog_contract": "objective_alpha.public_evidence_catalog.data_only.v0",
   "catalog_digest_policy": "sha256_hex_only",
   "catalog_entry_capacity": 32,
-  "catalog_entry_count": 6,
-  "catalog_entry_digest_count": 6,
+  "catalog_entry_count": 7,
+  "catalog_entry_digest_count": 7,
   "catalog_entry_points": [
     "python examples/objective_alpha_evidence_extension_policy.py",
     "python examples/runtime_backend_equivalence_portfolio.py",
     "python examples/source_to_intent_research_kernel_ingress_proof_bundle.py",
     "python examples/source_intent_mixed_runtime_public_proof_bundle.py",
     "python examples/source_to_intent_research_capability_claim_gate.py",
-    "python examples/first_real_triton_kernel_path.py"
+    "python examples/first_real_triton_kernel_path.py",
+    "python examples/real_triton_first_slice_evidence_portfolio.py"
   ],
   "catalog_evidence_ids": [
     "objective_alpha_evidence_extension_policy",
@@ -55,7 +57,8 @@
     "source_to_intent_research_kernel_ingress_proof_bundle",
     "source_intent_mixed_runtime_public_proof_bundle",
     "source_to_intent_research_capability_claim_gate",
-    "first_real_triton_kernel_path"
+    "first_real_triton_kernel_path",
+    "real_triton_first_slice_evidence_portfolio"
   ],
   "catalog_extension_tier_coverage_status": "complete",
   "catalog_extension_tiers": [
@@ -64,13 +67,15 @@
     "frontend_runtime_proof",
     "frontend_runtime_proof",
     "claim_boundary",
+    "frontend_runtime_proof",
     "frontend_runtime_proof"
   ],
   "catalog_growth_policy": "append_only_rfc_bound",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "4bec6b93f04544ee511725b0e2e824ef4996af0c8233b9ab9e1b1959484aac5c",
+  "catalog_metadata_digest": "089e74b97f378b95c43523ce9a753c723270f1eea7199299a7486b7af6e4e1c5",
   "catalog_missing_extension_tiers": [],
   "catalog_raw_output_policies": [
+    "digest_only",
     "digest_only",
     "digest_only",
     "digest_only",
@@ -94,6 +99,7 @@
   "gate_passed": true,
   "gate_status": "PASS",
   "issues": [],
+  "real_triton_first_slice_evidence_portfolio_metadata_digest": "8100f2703b3d8bbc4b2e075f4f263ea82c813b6cf577fdf9823e9adeed3bb716",
   "required_controls": [
     "schema_versioned_extension_artifacts",
     "sha256_metadata_digests",
@@ -117,6 +123,7 @@
     "source_intent_mixed_runtime_public_proof_bundle_digest_entry_bound",
     "capability_claim_gate_digest_entry_bound",
     "first_real_triton_kernel_path_digest_entry_bound",
+    "real_triton_first_slice_evidence_portfolio_digest_entry_bound",
     "catalog_extension_tier_coverage_complete",
     "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",

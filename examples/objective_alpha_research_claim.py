@@ -207,8 +207,8 @@ def assert_objective_alpha_research_claim_report_contract(report: object) -> Non
         "claim_passed": True,
         "evidence_count": len(OBJECTIVE_ALPHA_RESEARCH_CLAIM_EVIDENCE_IDS),
         "public_bundle_entry_count": 16,
-        "catalog_entry_count": 6,
-        "public_evidence_entry_count": 22,
+        "catalog_entry_count": 7,
+        "public_evidence_entry_count": 23,
         "backend_equivalence_passed": True,
         "reference_correctness_passed": True,
         "native_performance_claim": False,
@@ -324,18 +324,22 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
     catalog = payloads["objective_alpha_public_evidence_catalog"]
     if catalog.get("catalog_passed") is not True:
         raise ObjectiveAlphaResearchClaimError("public evidence catalog did not pass")
-    if catalog.get("catalog_entry_count") != 6:
+    if catalog.get("catalog_entry_count") != 7:
         raise ObjectiveAlphaResearchClaimError("public evidence catalog entry count drift")
     catalog_ids = _mapping_list_values(catalog.get("catalog_entries"), "evidence_id")
     if "source_intent_mixed_runtime_public_proof_bundle" not in catalog_ids:
         raise ObjectiveAlphaResearchClaimError("mixed runtime proof missing from catalog")
     if "first_real_triton_kernel_path" not in catalog_ids:
         raise ObjectiveAlphaResearchClaimError("first real Triton kernel path missing from catalog")
+    if "real_triton_first_slice_evidence_portfolio" not in catalog_ids:
+        raise ObjectiveAlphaResearchClaimError(
+            "real Triton first slice portfolio missing from catalog"
+        )
 
     catalog_gate = payloads["objective_alpha_public_evidence_catalog_admission_gate"]
     if catalog_gate.get("gate_passed") is not True:
         raise ObjectiveAlphaResearchClaimError("public evidence catalog gate did not pass")
-    if catalog_gate.get("catalog_entry_count") != 6:
+    if catalog_gate.get("catalog_entry_count") != 7:
         raise ObjectiveAlphaResearchClaimError("public evidence catalog gate entry count drift")
 
     mixed_proof = payloads["source_intent_mixed_runtime_public_proof_bundle"]

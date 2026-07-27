@@ -59,9 +59,9 @@ blocked.
 The
 [Real Triton First Slice Evidence Portfolio](docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md)
 binds the first Real Triton slice plan, maintainer review packet, missing
-approval artifact, fail-closed admission gate, pre-claim acyclicity, First Real
-Triton Kernel Path, and Research Scope Claim Gate into one digest-only milestone
-while keeping direct source ingestion blocked. Schema:
+approval artifact, fail-closed admission gate, pre-claim acyclicity, and First
+Real Triton Kernel Path into one digest-only, catalog-safe milestone while
+keeping direct source ingestion blocked. Schema:
 `schemas/real_triton_first_slice_evidence_portfolio_report.v0.schema.json`.
 Golden:
 `tests/golden/frontend/real_triton_first_slice_evidence_portfolio_report.json`.
@@ -142,9 +142,9 @@ source-ingress, and claim-boundary proof roles. Its first non-governance
 catalog entry binds the Runtime Backend Equivalence Portfolio as
 `runtime_proof` evidence, its `frontend_runtime_proof` entries bind the
 Source-To-Intent Kernel Ingress Proof Bundle, Source Intent Mixed Runtime
-Public Proof Bundle, and First Real Triton Kernel Path; its
-`claim_boundary` entry binds the Source-To-Intent Research Capability Claim
-Gate without expanding the fixed public bundle.
+Public Proof Bundle, First Real Triton Kernel Path, and Real Triton First Slice
+Evidence Portfolio; its `claim_boundary` entry binds the Source-To-Intent
+Research Capability Claim Gate without expanding the fixed public bundle.
 
 ## Runtime Execution
 

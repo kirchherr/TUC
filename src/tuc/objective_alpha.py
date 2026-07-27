@@ -116,6 +116,12 @@ _CATALOG_SERIALIZED_REPORT_DECLARED_TOKEN_EXCEPTIONS = {
     "first real Triton kernel path report": {
         "runtime_handle": ("blocked_claims", "runtime_handle_residency"),
     },
+    "real Triton first slice evidence portfolio report": {
+        "runtime_handle": (
+            ("blocked_claims", "runtime_handle_residency"),
+            ("runtime_handle_residency_claim", False),
+        ),
+    },
 }
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ENTRY_ADMISSION_PATTERN_CONTRACT = (
     "objective_alpha.public_evidence_catalog_entry_admission_pattern.data_only.v0"
@@ -928,6 +934,13 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS = (
         extension_tier="frontend_runtime_proof",
         digest_source="first_real_triton_kernel_path_report",
     ),
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+        evidence_id="real_triton_first_slice_evidence_portfolio",
+        entry_point="python examples/real_triton_first_slice_evidence_portfolio.py",
+        artifact_kind="schema_versioned_real_triton_first_slice_evidence_portfolio_report",
+        extension_tier="frontend_runtime_proof",
+        digest_source="real_triton_first_slice_evidence_portfolio_report",
+    ),
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS = _catalog_admission_spec_values(
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
@@ -1045,6 +1058,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
     source_intent_mixed_runtime_public_proof_bundle_metadata_digest: str
     source_to_intent_research_capability_claim_gate_metadata_digest: str
     first_real_triton_kernel_path_metadata_digest: str
+    real_triton_first_slice_evidence_portfolio_metadata_digest: str
     catalog_entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...]
     issues: tuple[str, ...]
     schema_version: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION
@@ -1103,6 +1117,10 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             self.first_real_triton_kernel_path_metadata_digest,
             "objective alpha catalog first real Triton kernel path digest",
         )
+        _validate_digest(
+            self.real_triton_first_slice_evidence_portfolio_metadata_digest,
+            "objective alpha catalog real Triton first slice evidence portfolio digest",
+        )
         if self.schema_version != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION:
             raise ValueError("objective alpha catalog schema mismatch")
         if self.catalog_id != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID:
@@ -1146,6 +1164,7 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 self.source_intent_mixed_runtime_public_proof_bundle_metadata_digest,
                 self.source_to_intent_research_capability_claim_gate_metadata_digest,
                 self.first_real_triton_kernel_path_metadata_digest,
+                self.real_triton_first_slice_evidence_portfolio_metadata_digest,
             ),
         )
         if self.catalog_missing_extension_tiers:
@@ -1226,6 +1245,9 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 "first_real_triton_kernel_path_metadata_digest": (
                     self.first_real_triton_kernel_path_metadata_digest
                 ),
+                "real_triton_first_slice_evidence_portfolio_metadata_digest": (
+                    self.real_triton_first_slice_evidence_portfolio_metadata_digest
+                ),
                 "stable_bundle_metadata_digest": self.stable_bundle_metadata_digest,
             }
         )
@@ -1240,27 +1262,71 @@ def _catalog_forbidden_fragment_is_declared_token(
     field_name: str,
     fragment: str,
 ) -> bool:
-    expected = _CATALOG_SERIALIZED_REPORT_DECLARED_TOKEN_EXCEPTIONS.get(
-        field_name,
-        {},
-    ).get(fragment)
+    exception_map = _CATALOG_SERIALIZED_REPORT_DECLARED_TOKEN_EXCEPTIONS.get(field_name)
+    if not isinstance(exception_map, dict):
+        return False
+    expected = exception_map.get(fragment)
     if expected is None:
         return False
-    expected_field, expected_value = expected
+    rules = _catalog_declared_token_rules(expected)
+    if not rules:
+        return False
     try:
         payload = json.loads(serialized_report)
     except json.JSONDecodeError:
         return False
     if not isinstance(payload, dict):
         return False
+    declared_match_count = sum(
+        _catalog_declared_token_rule_match_count(payload, fragment, rule) for rule in rules
+    )
+    return (
+        declared_match_count == len(rules)
+        and serialized_report.lower().count(fragment) == declared_match_count
+    )
+
+
+def _catalog_declared_token_rules(expected: object) -> tuple[tuple[str, object], ...]:
+    if not isinstance(expected, tuple):
+        return ()
+    if len(expected) == 2 and isinstance(expected[0], str):
+        return ((expected[0], expected[1]),)
+
+    rules: list[tuple[str, object]] = []
+    for item in expected:
+        if not isinstance(item, tuple) or len(item) != 2 or not isinstance(item[0], str):
+            return ()
+        rules.append((item[0], item[1]))
+    return tuple(rules)
+
+
+def _catalog_declared_token_rule_match_count(
+    payload: dict[str, object],
+    fragment: str,
+    rule: tuple[str, object],
+) -> int:
+    expected_field, expected_value = rule
     declared_values = payload.get(expected_field)
-    if not isinstance(declared_values, list):
-        return False
-    if not all(isinstance(value, str) for value in declared_values):
-        return False
-    if declared_values.count(expected_value) != 1:
-        return False
-    return serialized_report.lower().count(fragment) == 1
+
+    if isinstance(expected_value, str):
+        if not isinstance(declared_values, list):
+            return 0
+        if not all(isinstance(value, str) for value in declared_values):
+            return 0
+        if declared_values.count(expected_value) != 1:
+            return 0
+        if fragment not in expected_value.lower():
+            return 0
+        return 1
+
+    if isinstance(expected_value, bool):
+        if not isinstance(declared_values, bool) or declared_values is not expected_value:
+            return 0
+        if fragment not in expected_field.lower():
+            return 0
+        return 1
+
+    return 0
 
 
 def _catalog_metadata_digest_from_serialized_report(
@@ -1296,6 +1362,7 @@ def build_objective_alpha_public_evidence_catalog_report(
     source_intent_mixed_runtime_public_proof_bundle_report: str,
     source_to_intent_research_capability_claim_gate_report: str,
     first_real_triton_kernel_path_report: str,
+    real_triton_first_slice_evidence_portfolio_report: str,
 ) -> ObjectiveAlphaPublicEvidenceCatalogReport:
     """Build the catalog for evidence beyond the fixed Objective Alpha bundle."""
 
@@ -1338,6 +1405,12 @@ def build_objective_alpha_public_evidence_catalog_report(
         first_real_triton_kernel_path_report,
         "first real Triton kernel path report",
     )
+    real_triton_first_slice_evidence_portfolio_digest = (
+        _catalog_metadata_digest_from_serialized_report(
+            real_triton_first_slice_evidence_portfolio_report,
+            "real Triton first slice evidence portfolio report",
+        )
+    )
     return ObjectiveAlphaPublicEvidenceCatalogReport(
         stable_entrypoint=policy_report.stable_entrypoint,
         stable_entry_capacity=policy_report.stable_entry_capacity,
@@ -1358,6 +1431,9 @@ def build_objective_alpha_public_evidence_catalog_report(
         first_real_triton_kernel_path_metadata_digest=(
             first_real_triton_kernel_path_digest
         ),
+        real_triton_first_slice_evidence_portfolio_metadata_digest=(
+            real_triton_first_slice_evidence_portfolio_digest
+        ),
         catalog_entries=_catalog_entries_from_admission_specs(
             (
                 policy_digest,
@@ -1366,6 +1442,7 @@ def build_objective_alpha_public_evidence_catalog_report(
                 mixed_runtime_public_proof_bundle_digest,
                 capability_claim_gate_digest,
                 first_real_triton_kernel_path_digest,
+                real_triton_first_slice_evidence_portfolio_digest,
             )
         ),
         issues=(),
@@ -1417,6 +1494,9 @@ def objective_alpha_public_evidence_catalog_report_to_dict(
         ),
         "first_real_triton_kernel_path_metadata_digest": (
             report.first_real_triton_kernel_path_metadata_digest
+        ),
+        "real_triton_first_slice_evidence_portfolio_metadata_digest": (
+            report.real_triton_first_slice_evidence_portfolio_metadata_digest
         ),
         "schema_version": report.schema_version,
         "stable_bundle_metadata_digest": report.stable_bundle_metadata_digest,
@@ -1534,6 +1614,7 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS = (
     "source_intent_mixed_runtime_public_proof_bundle_digest_entry_bound",
     "capability_claim_gate_digest_entry_bound",
     "first_real_triton_kernel_path_digest_entry_bound",
+    "real_triton_first_slice_evidence_portfolio_digest_entry_bound",
     "catalog_extension_tier_coverage_complete",
     "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",
@@ -1566,6 +1647,7 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
     source_intent_mixed_runtime_public_proof_bundle_metadata_digest: str
     source_to_intent_research_capability_claim_gate_metadata_digest: str
     first_real_triton_kernel_path_metadata_digest: str
+    real_triton_first_slice_evidence_portfolio_metadata_digest: str
     catalog_entry_capacity: int
     catalog_entry_count: int
     catalog_entry_digest_count: int
@@ -1645,6 +1727,10 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
         _validate_digest(
             self.first_real_triton_kernel_path_metadata_digest,
             "objective alpha catalog gate first real Triton kernel path digest",
+        )
+        _validate_digest(
+            self.real_triton_first_slice_evidence_portfolio_metadata_digest,
+            "objective alpha catalog gate real Triton first slice evidence portfolio digest",
         )
         if self.schema_version != (
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_SCHEMA_VERSION
@@ -1829,6 +1915,9 @@ def build_objective_alpha_public_evidence_catalog_admission_gate_report(
         first_real_triton_kernel_path_metadata_digest=(
             catalog_report.first_real_triton_kernel_path_metadata_digest
         ),
+        real_triton_first_slice_evidence_portfolio_metadata_digest=(
+            catalog_report.real_triton_first_slice_evidence_portfolio_metadata_digest
+        ),
         catalog_entry_capacity=catalog_report.catalog_entry_capacity,
         catalog_entry_count=catalog_report.catalog_entry_count,
         catalog_entry_digest_count=sum(
@@ -1905,6 +1994,9 @@ def objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
         ),
         "first_real_triton_kernel_path_metadata_digest": (
             report.first_real_triton_kernel_path_metadata_digest
+        ),
+        "real_triton_first_slice_evidence_portfolio_metadata_digest": (
+            report.real_triton_first_slice_evidence_portfolio_metadata_digest
         ),
         "schema_version": report.schema_version,
         "stable_entry_capacity": report.stable_entry_capacity,

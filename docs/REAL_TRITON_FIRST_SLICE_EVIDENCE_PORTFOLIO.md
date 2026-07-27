@@ -41,12 +41,12 @@ The portfolio binds these reports by SHA-256 digest:
 - `examples/source_ingestion_admission_gate.py`
 - `examples/source_ingestion_preclaim_acyclicity_gate.py`
 - `examples/first_real_triton_kernel_path.py`
-- `examples/research_scope_claim_gate.py`
 
 This keeps the first-slice prerequisite plan, maintainer review packet, missing
-approval artifact, fail-closed admission gate, pre-claim acyclicity gate, first
-real Triton kernel path proof, and project-level research-scope boundary visible
-in one stable artifact.
+approval artifact, fail-closed admission gate, pre-claim acyclicity gate, and
+first real Triton kernel path proof visible in one stable artifact. The
+project-level research-scope gate stays above this portfolio to avoid an
+Evidence-cycle through the Objective Alpha catalog.
 
 ## What It Proves
 

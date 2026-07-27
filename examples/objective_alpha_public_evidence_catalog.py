@@ -8,6 +8,9 @@ from examples.first_real_triton_kernel_path import (
 from examples.objective_alpha_evidence_extension_policy import (
     build_report_object as build_extension_policy_report_object,
 )
+from examples.real_triton_first_slice_evidence_portfolio import (
+    build_report as build_real_triton_first_slice_evidence_portfolio_report,
+)
 from examples.runtime_backend_equivalence_portfolio import (
     build_backend_equivalence_portfolio_report,
 )
@@ -37,6 +40,7 @@ def build_report_object() -> ObjectiveAlphaPublicEvidenceCatalogReport:
         build_source_intent_mixed_runtime_public_proof_bundle_report(),
         build_capability_claim_gate_report(),
         build_first_real_triton_kernel_path_report(),
+        build_real_triton_first_slice_evidence_portfolio_report(),
     )
 
 

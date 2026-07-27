@@ -298,8 +298,9 @@ Completed evidence:
   provides that separate digest-only, RFC-bound growth surface, binding the
   extension policy, first Runtime Backend Equivalence Portfolio `runtime_proof`
   entry, Source-To-Intent Kernel Ingress, Source Intent Mixed Runtime Public
-  Proof Bundle, and First Real Triton Kernel Path `frontend_runtime_proof`
-  entries, and Source-To-Intent Capability Claim Gate `claim_boundary` entry by
+  Proof Bundle, First Real Triton Kernel Path, and Real Triton First Slice
+  Evidence Portfolio `frontend_runtime_proof` entries, and Source-To-Intent
+  Capability Claim Gate `claim_boundary` entry by
   metadata digest without adding entries to the fixed Objective Alpha Public
   Proof Bundle.
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
@@ -310,7 +311,7 @@ Completed evidence:
   catalog, catalog admission gate, and Source Intent mixed-runtime proof into
   one digest-only current research-claim snapshot without expanding parser,
   plugin, device, generated-artifact, native-backend, or native-performance
-  surfaces; the public evidence surface is now 16 fixed bundle entries plus 6
+  surfaces; the public evidence surface is now 16 fixed bundle entries plus 7
   catalog entries.
 - [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md)
   makes that snapshot CI-checkable by binding the claim digest, metadata
@@ -331,9 +332,10 @@ Completed evidence:
   execution, public output closure, reference correctness, and backend
   equivalence to the public proof surface by digest only.
 - Objective Alpha Public Evidence Catalog now binds the First Real Triton Kernel
-  Path as a `frontend_runtime_proof` entry, exposing the bounded `mvp_pipeline`
-  path in the public proof surface by digest only without admitting broader
-  source parsing or JIT execution.
+  Path and Real Triton First Slice Evidence Portfolio as `frontend_runtime_proof`
+  entries, exposing the bounded `mvp_pipeline` path and its source-ingestion
+  boundary evidence by digest only without admitting broader source parsing or
+  JIT execution.
 - Objective Alpha Public Evidence Catalog Extension-Tier Coverage now emits and
   gates required coverage for `governance`, `runtime_proof`,
   `frontend_runtime_proof`, and `claim_boundary`, making the current public
@@ -881,8 +883,8 @@ Deliverables:
   (`examples/real_triton_first_slice_evidence_portfolio.py`) binding Real
   Triton First Slice Plan, Source Ingestion Maintainer Security Review Packet,
   missing Maintainer Approval Artifact, Source Ingestion Admission Gate,
-  Source Ingestion Pre-Claim Acyclicity Gate, First Real Triton Kernel Path,
-  and Research Scope Claim Gate into one digest-only portfolio while preserving
+  Source Ingestion Pre-Claim Acyclicity Gate, and First Real Triton Kernel Path
+  into one digest-only, catalog-safe portfolio while preserving
   `admitted = false`, `direct_source_ingestion = false`,
   `surface_opened = false`, native performance claims false, and vendor
   replacement claims false. Schema:

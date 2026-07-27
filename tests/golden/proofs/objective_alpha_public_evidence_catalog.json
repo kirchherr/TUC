@@ -83,13 +83,22 @@
       "metadata_digest": "f740bfd97236164d2f2068905e066434e9a3041a97ce4ef82265906533d6f003",
       "raw_output_policy": "digest_only",
       "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_real_triton_first_slice_evidence_portfolio_report",
+      "entry_point": "python examples/real_triton_first_slice_evidence_portfolio.py",
+      "evidence_id": "real_triton_first_slice_evidence_portfolio",
+      "extension_tier": "frontend_runtime_proof",
+      "metadata_digest": "8100f2703b3d8bbc4b2e075f4f263ea82c813b6cf577fdf9823e9adeed3bb716",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
     }
   ],
   "catalog_entry_capacity": 32,
-  "catalog_entry_count": 6,
+  "catalog_entry_count": 7,
   "catalog_extension_tier_coverage_status": "complete",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "4bec6b93f04544ee511725b0e2e824ef4996af0c8233b9ab9e1b1959484aac5c",
+  "catalog_metadata_digest": "089e74b97f378b95c43523ce9a753c723270f1eea7199299a7486b7af6e4e1c5",
   "catalog_missing_extension_tiers": [],
   "catalog_passed": true,
   "catalog_required_extension_tiers": [
@@ -106,6 +115,7 @@
   "first_real_triton_kernel_path_metadata_digest": "f740bfd97236164d2f2068905e066434e9a3041a97ce4ef82265906533d6f003",
   "growth_policy": "append_only_rfc_bound",
   "issues": [],
+  "real_triton_first_slice_evidence_portfolio_metadata_digest": "8100f2703b3d8bbc4b2e075f4f263ea82c813b6cf577fdf9823e9adeed3bb716",
   "required_controls": [
     "schema_versioned_extension_artifacts",
     "sha256_metadata_digests",

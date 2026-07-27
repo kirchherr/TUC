@@ -25,9 +25,6 @@ from examples.real_triton_first_slice_plan import (
 from examples.real_triton_first_slice_plan import (
     build_report as build_real_triton_first_slice_plan_report,
 )
-from examples.research_scope_claim_gate import (
-    build_current_research_scope_claim_gate_report_text,
-)
 from examples.source_ingestion_admission_gate import (
     SOURCE_INGESTION_ADMISSION_GATE_CONTRACT,
     assert_source_ingestion_admission_gate_report_contract,
@@ -69,12 +66,6 @@ from tuc.frontend.source_ingestion_maintainer_approval import (
 from tuc.frontend.source_ingestion_maintainer_review import (
     SOURCE_INGESTION_MAINTAINER_REVIEW_CONTRACT,
     SOURCE_INGESTION_MAINTAINER_REVIEW_STATUS,
-)
-from tuc.research_scope_claim_gate import (
-    RESEARCH_SCOPE_CLAIM_GATE_CONTRACT,
-    RESEARCH_SCOPE_CLAIM_GATE_ID,
-    RESEARCH_SCOPE_CLAIM_GATE_STATUS,
-    assert_research_scope_claim_gate_report_contract,
 )
 
 REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO_REPORT_SCHEMA_VERSION = (
@@ -183,15 +174,6 @@ _BINDING_SPECS = (
         "proof_id",
         "path_contract",
         "status",
-    ),
-    (
-        RESEARCH_SCOPE_CLAIM_GATE_ID,
-        "json_report",
-        RESEARCH_SCOPE_CLAIM_GATE_CONTRACT,
-        RESEARCH_SCOPE_CLAIM_GATE_STATUS,
-        "gate_id",
-        "gate_contract",
-        "gate_status",
     ),
 )
 
@@ -428,9 +410,6 @@ def _build_texts() -> dict[str, str]:
         FIRST_REAL_TRITON_KERNEL_PATH_EVIDENCE_ID: (
             build_first_real_triton_kernel_path_report()
         ),
-        RESEARCH_SCOPE_CLAIM_GATE_ID: (
-            build_current_research_scope_claim_gate_report_text()
-        ),
     }
 
 
@@ -501,23 +480,6 @@ def _assert_supporting_payloads(
             "first-slice portfolio first path status drift"
         )
 
-    scope = payloads[RESEARCH_SCOPE_CLAIM_GATE_ID]
-    assert_research_scope_claim_gate_report_contract(scope)
-    if scope.get("research_scope_claim") is not True:
-        raise RealTritonFirstSliceEvidencePortfolioError(
-            "first-slice portfolio research scope drift"
-        )
-    for field_name in (
-        "production_compiler_claim",
-        "native_performance_claim",
-        "source_ingestion_admitted",
-        "external_plugin_execution_claim",
-        "generated_artifact_execution_claim",
-    ):
-        if scope.get(field_name) is not False:
-            raise RealTritonFirstSliceEvidencePortfolioError(
-                f"first-slice portfolio scope {field_name} drift"
-            )
 
 
 def _assert_closed_ingestion_surface(
