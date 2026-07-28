@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/objective_beta_reproducibility_gate_report.v0.schema.json",
+  "title": "TUC Objective Beta Reproducibility Gate Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "blocked_claims",
+    "capsule_digest",
+    "capsule_id",
+    "capsule_metadata_digest",
+    "claim_digest",
+    "claim_gate_digest",
+    "claim_link_verified",
+    "evidence_links_verified",
+    "external_approval_required",
+    "forbidden_execution_surfaces",
+    "gate_contract",
+    "gate_id",
+    "gate_passed",
+    "gate_status",
+    "issues",
+    "native_performance_claim",
+    "replay_policy",
+    "schema_version",
+    "source_free",
+    "source_ingestion_admitted",
+    "vendor_replacement_claim",
+    "verified_artifact_count",
+    "verified_artifact_ids"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.objective_beta_reproducibility_gate_report.v0"
+    },
+    "gate_contract": {
+      "const": "objective_beta.reproducibility_gate.offline_replay.v0"
+    },
+    "gate_id": { "const": "objective_beta_reproducibility_gate" },
+    "gate_status": { "const": "PASS" },
+    "gate_passed": { "const": true },
+    "capsule_id": { "const": "objective_beta_reproducibility_capsule" },
+    "capsule_digest": { "$ref": "#/$defs/digest" },
+    "capsule_metadata_digest": { "$ref": "#/$defs/digest" },
+    "claim_digest": { "$ref": "#/$defs/digest" },
+    "claim_gate_digest": { "$ref": "#/$defs/digest" },
+    "replay_policy": {
+      "const": "no_source_compiler_runtime_or_backend_execution"
+    },
+    "verified_artifact_count": { "const": 9 },
+    "verified_artifact_ids": {
+      "const": [
+        "objective_alpha_research_claim_gate",
+        "source_to_intent_research_kernel_ingress_proof_bundle",
+        "first_real_triton_kernel_path",
+        "real_triton_first_slice_evidence_portfolio",
+        "real_triton_first_slice_admission_readiness_gate",
+        "real_triton_first_slice_maintainer_approval_request",
+        "research_scope_claim_gate",
+        "objective_beta_research_claim",
+        "objective_beta_research_claim_gate"
+      ]
+    },
+    "claim_link_verified": { "const": true },
+    "evidence_links_verified": { "const": true },
+    "source_free": { "const": true },
+    "external_approval_required": { "const": true },
+    "source_ingestion_admitted": { "const": false },
+    "native_performance_claim": { "const": false },
+    "vendor_replacement_claim": { "const": false },
+    "blocked_claims": {
+      "const": [
+        "arbitrary_triton_source_ingestion",
+        "production_source_parser",
+        "broad_source_code_parsing",
+        "source_to_compute_graph_admission",
+        "native_backend_execution",
+        "native_performance_parity",
+        "real_hardware_backend_execution",
+        "external_plugin_execution",
+        "generated_artifact_execution",
+        "vendor_compiler_replacement",
+        "cuda_replacement"
+      ]
+    },
+    "forbidden_execution_surfaces": {
+      "const": [
+        "source_execution",
+        "compiler_execution",
+        "runtime_execution",
+        "backend_execution",
+        "plugin_loading",
+        "dynamic_import",
+        "subprocess_execution",
+        "network_access",
+        "device_access",
+        "generated_artifact_execution"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 0
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

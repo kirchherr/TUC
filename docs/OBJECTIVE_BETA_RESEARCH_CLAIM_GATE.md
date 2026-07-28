@@ -5,6 +5,11 @@ Beta snapshot. It binds the serialized Objective Beta claim by digest and fails
 closed if the claim changes shape, opens source ingestion, enables native
 performance claims, or drifts away from the fixed evidence order.
 
+The next reproducibility layer is the
+[Objective Beta Reproducibility Capsule](OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE.md),
+which binds this gate and all direct Beta evidence into an independently
+replayable nine-artifact closure.
+
 Run it with:
 
 ```bash

@@ -334,6 +334,21 @@ Completed evidence:
   (`examples/objective_beta_research_claim_gate.py`) validates the Beta claim
   digest, evidence order, fail-closed source-ingestion state, and blocked
   product/performance claims.
+- [Objective Beta Reproducibility Capsule](docs/OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE.md)
+  (`examples/objective_beta_reproducibility_capsule.py`) binds the seven Beta
+  dependencies, Beta claim, and claim gate as a fixed nine-entry digest-only
+  manifest; schema
+  `schemas/objective_beta_reproducibility_capsule_report.v0.schema.json`, golden
+  `tests/golden/proofs/objective_beta_reproducibility_capsule.json`, and RFC
+  `rfcs/0281-objective-beta-reproducibility-capsule.md` make the closure
+  independently reviewable without publishing paths or payloads.
+- [Objective Beta Reproducibility Gate](docs/OBJECTIVE_BETA_REPRODUCIBILITY_GATE.md)
+  (`examples/objective_beta_reproducibility_gate.py`) replays all nine fixed
+  artifact digests, the claim-to-gate link, and direct claim evidence links
+  without source, compiler, runtime, backend, plugin, device, subprocess,
+  network, or generated-artifact execution. Schema:
+  `schemas/objective_beta_reproducibility_gate_report.v0.schema.json`; golden:
+  `tests/golden/proofs/objective_beta_reproducibility_gate.json`.
 - Objective Alpha Public Evidence Catalog Entry Admission Pattern derives the
   catalog's expected IDs, entry points, artifact kinds, extension tiers, digest
   sources, and raw-output policies from typed data-only specs, reducing drift in

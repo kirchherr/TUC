@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/objective_beta_reproducibility_capsule_report.v0.schema.json",
+  "title": "TUC Objective Beta Reproducibility Capsule Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_claims",
+    "capsule_contract",
+    "capsule_id",
+    "capsule_metadata_digest",
+    "capsule_status",
+    "claim_digest",
+    "claim_gate_digest",
+    "claim_gate_id",
+    "claim_id",
+    "claim_metadata_digest",
+    "evidence",
+    "evidence_count",
+    "external_approval_required",
+    "native_performance_claim",
+    "replay_policy",
+    "schema_version",
+    "source_ingestion_admitted",
+    "vendor_replacement_claim"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.objective_beta_reproducibility_capsule_report.v0"
+    },
+    "capsule_contract": {
+      "const": "objective_beta.reproducibility_capsule.digest_manifest.v0"
+    },
+    "capsule_id": { "const": "objective_beta_reproducibility_capsule" },
+    "capsule_status": { "const": "reproducible_from_repository_goldens" },
+    "artifact_policy": {
+      "const": "allowlisted_repository_goldens_digest_only_source_free"
+    },
+    "replay_policy": {
+      "const": "no_source_compiler_runtime_or_backend_execution"
+    },
+    "claim_id": { "const": "objective_beta_universal_compute_research_claim" },
+    "claim_gate_id": { "const": "objective_beta_research_claim_gate" },
+    "capsule_metadata_digest": { "$ref": "#/$defs/digest" },
+    "claim_digest": { "$ref": "#/$defs/digest" },
+    "claim_gate_digest": { "$ref": "#/$defs/digest" },
+    "claim_metadata_digest": { "$ref": "#/$defs/digest" },
+    "evidence_count": { "const": 9 },
+    "evidence": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "prefixItems": [
+        { "$ref": "#/$defs/evidence_alpha_gate" },
+        { "$ref": "#/$defs/evidence_kernel_ingress" },
+        { "$ref": "#/$defs/evidence_first_path" },
+        { "$ref": "#/$defs/evidence_portfolio" },
+        { "$ref": "#/$defs/evidence_readiness" },
+        { "$ref": "#/$defs/evidence_approval_request" },
+        { "$ref": "#/$defs/evidence_scope_gate" },
+        { "$ref": "#/$defs/evidence_beta_claim" },
+        { "$ref": "#/$defs/evidence_beta_gate" }
+      ],
+      "items": false
+    },
+    "blocked_claims": {
+      "const": [
+        "arbitrary_triton_source_ingestion",
+        "production_source_parser",
+        "broad_source_code_parsing",
+        "source_to_compute_graph_admission",
+        "native_backend_execution",
+        "native_performance_parity",
+        "real_hardware_backend_execution",
+        "external_plugin_execution",
+        "generated_artifact_execution",
+        "vendor_compiler_replacement",
+        "cuda_replacement"
+      ]
+    },
+    "external_approval_required": { "const": true },
+    "source_ingestion_admitted": { "const": false },
+    "native_performance_claim": { "const": false },
+    "vendor_replacement_claim": { "const": false }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "content_type", "digest", "role", "source_free"],
+      "properties": {
+        "artifact_id": { "type": "string", "minLength": 1 },
+        "content_type": { "const": "application/json" },
+        "digest": { "$ref": "#/$defs/digest" },
+        "role": { "type": "string", "minLength": 1 },
+        "source_free": { "const": true }
+      }
+    },
+    "evidence_alpha_gate": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": { "const": "objective_alpha_research_claim_gate" },
+            "role": { "const": "predecessor_claim_gate" }
+          }
+        }
+      ]
+    },
+    "evidence_kernel_ingress": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "source_to_intent_research_kernel_ingress_proof_bundle"
+            },
+            "role": { "const": "kernel_ingress_proof" }
+          }
+        }
+      ]
+    },
+    "evidence_first_path": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": { "const": "first_real_triton_kernel_path" },
+            "role": { "const": "bounded_kernel_path" }
+          }
+        }
+      ]
+    },
+    "evidence_portfolio": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": { "const": "real_triton_first_slice_evidence_portfolio" },
+            "role": { "const": "first_slice_portfolio" }
+          }
+        }
+      ]
+    },
+    "evidence_readiness": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "real_triton_first_slice_admission_readiness_gate"
+            },
+            "role": { "const": "fail_closed_admission_readiness" }
+          }
+        }
+      ]
+    },
+    "evidence_approval_request": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "real_triton_first_slice_maintainer_approval_request"
+            },
+            "role": { "const": "external_review_request" }
+          }
+        }
+      ]
+    },
+    "evidence_scope_gate": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": { "const": "research_scope_claim_gate" },
+            "role": { "const": "research_scope_boundary" }
+          }
+        }
+      ]
+    },
+    "evidence_beta_claim": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": { "const": "objective_beta_research_claim" },
+            "role": { "const": "research_claim" }
+          }
+        }
+      ]
+    },
+    "evidence_beta_gate": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": { "const": "objective_beta_research_claim_gate" },
+            "role": { "const": "research_claim_gate" }
+          }
+        }
+      ]
+    }
+  }
+}

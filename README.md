@@ -38,6 +38,8 @@ python examples/objective_alpha_research_claim.py
 python examples/objective_alpha_research_claim_gate.py
 python examples/objective_beta_research_claim.py
 python examples/objective_beta_research_claim_gate.py
+python examples/objective_beta_reproducibility_capsule.py
+python examples/objective_beta_reproducibility_gate.py
 python examples/source_to_intent_research_capability_claim.py
 python examples/source_to_intent_research_capability_claim_gate.py
 python examples/research_scope_claim_gate.py
@@ -58,6 +60,19 @@ Kernel Ingress, First Real Triton Kernel Path, first-slice readiness, the
 maintainer approval request, and Research Scope Gate evidence into one
 digest-only research milestone. Gate:
 [Objective Beta Research Claim Gate](docs/OBJECTIVE_BETA_RESEARCH_CLAIM_GATE.md).
+
+The [Objective Beta Reproducibility Capsule](docs/OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE.md)
+and [Reproducibility Gate](docs/OBJECTIVE_BETA_REPRODUCIBILITY_GATE.md)
+raise that milestone to an offline-reviewable evidence closure: nine fixed
+repository artifacts, including the Beta claim and gate, are replay-verified by
+digest without source, compiler, runtime, backend, plugin, device, subprocess,
+network, or generated-artifact execution. Schema:
+`schemas/objective_beta_reproducibility_capsule_report.v0.schema.json` and
+`schemas/objective_beta_reproducibility_gate_report.v0.schema.json`. Goldens:
+`tests/golden/proofs/objective_beta_reproducibility_capsule.json` and
+`tests/golden/proofs/objective_beta_reproducibility_gate.json`. Start with
+[Reproducing Objective Beta](docs/REPRODUCING_OBJECTIVE_BETA.md). RFC:
+`rfcs/0281-objective-beta-reproducibility-capsule.md`.
 
 The project-level
 [Research Scope Claim Gate](docs/RESEARCH_SCOPE_CLAIM_GATE.md) binds the
