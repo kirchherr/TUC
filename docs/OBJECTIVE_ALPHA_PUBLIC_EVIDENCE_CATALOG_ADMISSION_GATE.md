@@ -45,6 +45,14 @@ still passes the fixed v0 admission rules:
 - catalog entries remain digest-only and source-free;
 - blocked claims and blocked execution surfaces are preserved.
 
+The companion [Objective Alpha Catalog Acyclicity Gate](OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md)
+scans the fixed catalog-entry evidence artifacts and verifies that entries do
+not depend on downstream catalog or claim gates. It is emitted by
+`examples/objective_alpha_catalog_acyclicity_gate.py`, schema-versioned at
+`schemas/objective_alpha_catalog_acyclicity_gate_report.v0.schema.json`, and
+has golden evidence at
+`tests/golden/proofs/objective_alpha_catalog_acyclicity_gate.json`.
+
 ## Security Boundary
 
 The gate validates trusted in-memory report objects and emits only bounded
@@ -66,6 +74,10 @@ output.
 - Tests: `tests/test_objective_alpha_public_evidence_catalog_admission_gate.py`
 - Gate decision:
   `rfcs/0234-objective-alpha-public-evidence-catalog-admission-gate.md`
+- Companion acyclicity gate:
+  `docs/OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md`
+- Companion acyclicity gate decision:
+  `rfcs/0276-objective-alpha-catalog-acyclicity-gate.md`
 - First runtime-proof entry decision:
   `rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md`
 - First frontend-runtime-proof entry decision:

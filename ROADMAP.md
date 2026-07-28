@@ -306,6 +306,12 @@ Completed evidence:
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
   machine-checks that catalog admission remains append-only, RFC-bound,
   digest-only, source-free, and free of new execution surfaces.
+- [Objective Alpha Catalog Acyclicity Gate](docs/OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md)
+  (`examples/objective_alpha_catalog_acyclicity_gate.py`) scans fixed catalog-entry
+  evidence artifacts and verifies they do not bind downstream catalog or claim
+  gates. Schema: `schemas/objective_alpha_catalog_acyclicity_gate_report.v0.schema.json`;
+  golden: `tests/golden/proofs/objective_alpha_catalog_acyclicity_gate.json`;
+  RFC: `rfcs/0276-objective-alpha-catalog-acyclicity-gate.md`.
 - [Objective Alpha Research Claim](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM.md)
   binds the public proof bundle, bundle gate, extension policy, public evidence
   catalog, catalog admission gate, and Source Intent mixed-runtime proof into

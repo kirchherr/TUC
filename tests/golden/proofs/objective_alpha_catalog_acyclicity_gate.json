@@ -1,0 +1,88 @@
+{
+  "artifact_status": "review_gate",
+  "catalog_admission_gate_report_digest": "sha256:c9b6766228aa8a59c4d93b7ae0b5951c2305f6b452e11019606731e770bc0142",
+  "catalog_entry_count": 7,
+  "catalog_entry_ids": [
+    "objective_alpha_evidence_extension_policy",
+    "runtime_backend_equivalence_portfolio",
+    "source_to_intent_research_kernel_ingress_proof_bundle",
+    "source_intent_mixed_runtime_public_proof_bundle",
+    "source_to_intent_research_capability_claim_gate",
+    "first_real_triton_kernel_path",
+    "real_triton_first_slice_evidence_portfolio"
+  ],
+  "catalog_id": "objective_alpha_public_evidence_catalog",
+  "catalog_report_digest": "sha256:95f85704d0cdb6d576fb13e50082bea1b30468ae070938b1b4477158872fa485",
+  "cycle_count": 0,
+  "detected_cycles": [],
+  "entry_scan_results": [
+    {
+      "evidence_id": "objective_alpha_evidence_extension_policy",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:4f918c51fe83ec1a1799317cd892027f46a19b5c3fe552227cb6ab8b901fd2cb",
+      "source_free": true
+    },
+    {
+      "evidence_id": "runtime_backend_equivalence_portfolio",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
+      "source_free": true
+    },
+    {
+      "evidence_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
+      "source_free": true
+    },
+    {
+      "evidence_id": "source_intent_mixed_runtime_public_proof_bundle",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:baf6d1b6939d7653378a9ad44415865db94532b46242e45a07216adab4f3f05a",
+      "source_free": true
+    },
+    {
+      "evidence_id": "source_to_intent_research_capability_claim_gate",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:40e522becdfd4a0dc33b1504b2e6f1174c6bf78c949c5069402e49ccff9d72a8",
+      "source_free": true
+    },
+    {
+      "evidence_id": "first_real_triton_kernel_path",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:f740bfd97236164d2f2068905e066434e9a3041a97ce4ef82265906533d6f003",
+      "source_free": true
+    },
+    {
+      "evidence_id": "real_triton_first_slice_evidence_portfolio",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:8100f2703b3d8bbc4b2e075f4f263ea82c813b6cf577fdf9823e9adeed3bb716",
+      "source_free": true
+    }
+  ],
+  "evidence_policy": "digest_only_source_free_report_scan",
+  "forbidden_downstream_dependency_count": 5,
+  "forbidden_downstream_dependency_ids": [
+    "objective_alpha_public_evidence_catalog",
+    "objective_alpha_public_evidence_catalog_admission_gate",
+    "objective_alpha_research_claim",
+    "objective_alpha_research_claim_gate",
+    "research_scope_claim_gate"
+  ],
+  "gate_contract": "objective_alpha.catalog_acyclicity_gate.data_only.v0",
+  "gate_id": "objective_alpha_catalog_acyclicity_gate",
+  "gate_passed": true,
+  "gate_scope": "objective_alpha_catalog_entries_below_claim_gates",
+  "gate_status": "PASS",
+  "issues": [],
+  "required_invariants": [
+    "catalog_report_passed",
+    "catalog_admission_gate_passed",
+    "catalog_entries_do_not_bind_catalog_or_claim_gates",
+    "catalog_entry_reports_source_free",
+    "forbidden_downstream_ids_absent",
+    "dependency_cycle_count_zero"
+  ],
+  "schema_version": "tuc.objective_alpha_catalog_acyclicity_gate_report.v0",
+  "source_free": true,
+  "surface_opened": false
+}

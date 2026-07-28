@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/objective_alpha_catalog_acyclicity_gate_report.v0.schema.json",
+  "title": "TUC Objective Alpha Catalog Acyclicity Gate Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "catalog_admission_gate_report_digest",
+    "catalog_entry_count",
+    "catalog_entry_ids",
+    "catalog_id",
+    "catalog_report_digest",
+    "cycle_count",
+    "detected_cycles",
+    "entry_scan_results",
+    "evidence_policy",
+    "forbidden_downstream_dependency_count",
+    "forbidden_downstream_dependency_ids",
+    "gate_contract",
+    "gate_id",
+    "gate_passed",
+    "gate_scope",
+    "gate_status",
+    "issues",
+    "required_invariants",
+    "schema_version",
+    "source_free",
+    "surface_opened"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.objective_alpha_catalog_acyclicity_gate_report.v0"
+    },
+    "gate_id": {
+      "const": "objective_alpha_catalog_acyclicity_gate"
+    },
+    "gate_contract": {
+      "const": "objective_alpha.catalog_acyclicity_gate.data_only.v0"
+    },
+    "artifact_status": {
+      "const": "review_gate"
+    },
+    "gate_passed": {
+      "const": true
+    },
+    "gate_status": {
+      "const": "PASS"
+    },
+    "gate_scope": {
+      "const": "objective_alpha_catalog_entries_below_claim_gates"
+    },
+    "evidence_policy": {
+      "const": "digest_only_source_free_report_scan"
+    },
+    "catalog_id": {
+      "const": "objective_alpha_public_evidence_catalog"
+    },
+    "catalog_entry_count": {
+      "const": 7
+    },
+    "catalog_report_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "catalog_admission_gate_report_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "catalog_entry_ids": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        { "const": "objective_alpha_evidence_extension_policy" },
+        { "const": "runtime_backend_equivalence_portfolio" },
+        { "const": "source_to_intent_research_kernel_ingress_proof_bundle" },
+        { "const": "source_intent_mixed_runtime_public_proof_bundle" },
+        { "const": "source_to_intent_research_capability_claim_gate" },
+        { "const": "first_real_triton_kernel_path" },
+        { "const": "real_triton_first_slice_evidence_portfolio" }
+      ]
+    },
+    "forbidden_downstream_dependency_count": {
+      "const": 5
+    },
+    "forbidden_downstream_dependency_ids": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "prefixItems": [
+        { "const": "objective_alpha_public_evidence_catalog" },
+        { "const": "objective_alpha_public_evidence_catalog_admission_gate" },
+        { "const": "objective_alpha_research_claim" },
+        { "const": "objective_alpha_research_claim_gate" },
+        { "const": "research_scope_claim_gate" }
+      ]
+    },
+    "entry_scan_results": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "objective_alpha_evidence_extension_policy" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "runtime_backend_equivalence_portfolio" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "source_to_intent_research_kernel_ingress_proof_bundle" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "source_intent_mixed_runtime_public_proof_bundle" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "source_to_intent_research_capability_claim_gate" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "first_real_triton_kernel_path" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "real_triton_first_slice_evidence_portfolio" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        }
+      ]
+    },
+    "cycle_count": {
+      "const": 0
+    },
+    "detected_cycles": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "required_invariants": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        { "const": "catalog_report_passed" },
+        { "const": "catalog_admission_gate_passed" },
+        { "const": "catalog_entries_do_not_bind_catalog_or_claim_gates" },
+        { "const": "catalog_entry_reports_source_free" },
+        { "const": "forbidden_downstream_ids_absent" },
+        { "const": "dependency_cycle_count_zero" }
+      ]
+    },
+    "source_free": {
+      "const": true
+    },
+    "surface_opened": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

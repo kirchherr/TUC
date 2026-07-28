@@ -40,6 +40,7 @@ python examples/source_to_intent_research_capability_claim.py
 python examples/source_to_intent_research_capability_claim_gate.py
 python examples/research_scope_claim_gate.py
 python examples/real_triton_first_slice_evidence_portfolio.py
+python examples/objective_alpha_catalog_acyclicity_gate.py
 ```
 
 The Objective Alpha claim snapshot binds the public proof bundle, catalog,
@@ -66,6 +67,14 @@ keeping direct source ingestion blocked. Schema:
 Golden:
 `tests/golden/frontend/real_triton_first_slice_evidence_portfolio_report.json`.
 RFC: `rfcs/0274-real-triton-first-slice-evidence-portfolio.md`.
+
+The
+[Objective Alpha Catalog Acyclicity Gate](docs/OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md)
+scans fixed catalog-entry evidence artifacts and proves they do not bind
+downstream catalog or claim gates. Schema:
+`schemas/objective_alpha_catalog_acyclicity_gate_report.v0.schema.json`.
+Golden: `tests/golden/proofs/objective_alpha_catalog_acyclicity_gate.json`.
+RFC: `rfcs/0276-objective-alpha-catalog-acyclicity-gate.md`.
 
 Current practical Source Intent to mixed-runtime proof:
 
@@ -295,6 +304,7 @@ Key docs:
 - [Objective Alpha Evidence Extension Policy](docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
 - [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
+- [Objective Alpha Catalog Acyclicity Gate](docs/OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md)
 - [Runtime Tensor Store](docs/RUNTIME_TENSOR_STORE.md)
 - [Runtime Tensor Store Evidence](docs/RUNTIME_TENSOR_STORE_EVIDENCE.md)
 - [Runtime Input Manifest](docs/RUNTIME_INPUT_MANIFEST.md)

@@ -60,6 +60,12 @@ The [Objective Alpha Public Evidence Catalog Admission Gate](OBJECTIVE_ALPHA_PUB
 machine-checks those admission rules. Canonical doc path:
 `docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md`.
 
+The [Objective Alpha Catalog Acyclicity Gate](OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md)
+checks the fixed catalog-entry evidence artifacts and fails closed if any entry
+binds the catalog, catalog admission gate, Objective Alpha research claim,
+Objective Alpha research claim gate, or Research Scope claim gate. Canonical doc
+path: `docs/OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md`.
+
 ## Entry Admission Pattern
 
 Catalog entries are admitted through a typed, data-only admission pattern before
@@ -93,6 +99,12 @@ main proof path harder to audit.
 - Admission gate example: `examples/objective_alpha_public_evidence_catalog_admission_gate.py`
 - Admission gate schema:
   `schemas/objective_alpha_public_evidence_catalog_admission_gate_report.v0.schema.json`
+- Acyclicity gate: [Objective Alpha Catalog Acyclicity Gate](OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md)
+- Acyclicity gate example: `examples/objective_alpha_catalog_acyclicity_gate.py`
+- Acyclicity gate schema:
+  `schemas/objective_alpha_catalog_acyclicity_gate_report.v0.schema.json`
+- Acyclicity gate golden:
+  `tests/golden/proofs/objective_alpha_catalog_acyclicity_gate.json`
 - Initial catalog decision: `rfcs/0233-objective-alpha-public-evidence-catalog.md`
 - First runtime-proof entry decision:
   `rfcs/0235-objective-alpha-backend-equivalence-portfolio-catalog-entry.md`
@@ -108,6 +120,8 @@ main proof path harder to audit.
   `rfcs/0273-objective-alpha-first-real-triton-kernel-path-catalog-entry.md`
 - Real Triton First Slice Evidence Portfolio catalog-entry decision:
   `rfcs/0275-objective-alpha-real-triton-first-slice-portfolio-catalog-entry.md`
+- Catalog acyclicity gate decision:
+  `rfcs/0276-objective-alpha-catalog-acyclicity-gate.md`
 
 ## Security Boundary
 
