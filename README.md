@@ -514,6 +514,11 @@ Current frontend surfaces:
 - Real Triton First Slice Plan identifying `direct_source_ingestion` as the
   first candidate admitting slice while keeping `admitted = false` and now
   binding thirteen current evidence artifacts, including CI replay and Source Ingestion Approval Criteria, before any implementation can open that surface; only maintainer security review remains as admission evidence, and downstream review/approval gates bind this plan without creating circular evidence. Schema: `schemas/real_triton_first_slice_plan_report.v0.schema.json`; entry point: `examples/real_triton_first_slice_plan.py`; doc: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`.
+- Real Triton First Slice Admission Readiness Gate binding the first-slice plan,
+  maintainer review packet, missing approval artifact, admission gate, first
+  real kernel path, evidence portfolio, and catalog acyclicity by digest while
+  keeping `gate_passed = false`, `admission_ready = false`, and `admitted = false`
+  until external maintainer approval exists. Schema: `schemas/real_triton_first_slice_admission_readiness_gate_report.v0.schema.json`; entry point: `examples/real_triton_first_slice_admission_readiness_gate.py`; golden: `tests/golden/frontend/real_triton_first_slice_admission_readiness_gate_report.json`; doc: `docs/REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md`; RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`.
 - Admitting Source Ingestion RFC defining the requirements-only first
   `direct_source_ingestion` slice boundary while keeping implementation and
   admission blocked. Doc: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`.

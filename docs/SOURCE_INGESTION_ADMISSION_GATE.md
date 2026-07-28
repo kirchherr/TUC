@@ -40,6 +40,13 @@ Before `direct_source_ingestion` can become admitting, TUC still requires:
 
 - maintainer security review approval.
 
+
+The [Real Triton First Slice Admission Readiness Gate](REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md)
+binds this fail-closed admission result together with the first-slice plan,
+maintainer review packet, missing approval artifact, First Real Triton Kernel
+Path, first-slice evidence portfolio, and Objective Alpha Catalog Acyclicity
+Gate. Its current result remains blocked by the same missing external
+maintainer security review approval.
 ## Security Boundary
 
 The report is digest-only and source-free. It does not serialize source text,
@@ -87,3 +94,12 @@ source-to-runtime-plan shortcuts.
 - Evidence Graph Acyclicity Gate Schema: `schemas/evidence_graph_acyclicity_gate_report.v0.schema.json`
 - Evidence Graph Acyclicity Gate Golden: `tests/golden/frontend/evidence_graph_acyclicity_gate_report.json`
 - Evidence Graph Acyclicity Gate RFC: `rfcs/0270-evidence-graph-acyclicity-gate.md`
+
+## Real Triton First Slice Readiness
+
+- Real Triton First Slice Admission Readiness Gate: [Real Triton First Slice Admission Readiness Gate](REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md)
+- Real Triton First Slice Admission Readiness Gate Example: `examples/real_triton_first_slice_admission_readiness_gate.py`
+- Real Triton First Slice Admission Readiness Gate Schema: `schemas/real_triton_first_slice_admission_readiness_gate_report.v0.schema.json`
+- Real Triton First Slice Admission Readiness Gate Golden: `tests/golden/frontend/real_triton_first_slice_admission_readiness_gate_report.json`
+- Real Triton First Slice Admission Readiness Gate RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`
+- Canonical Admission Readiness Gate Doc: `docs/REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md`

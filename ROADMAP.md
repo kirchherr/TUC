@@ -911,6 +911,17 @@ Deliverables:
   review, approval-artifact, and admission-gate reports bind this plan by
   digest instead of being bound back into it, keeping the evidence graph
   acyclic.
+- [Real Triton First Slice Admission Readiness Gate](docs/REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md)
+  (`examples/real_triton_first_slice_admission_readiness_gate.py`) binds the
+  first-slice plan, maintainer review packet, missing approval artifact,
+  admission gate, First Real Triton Kernel Path, first-slice evidence
+  portfolio, and Objective Alpha Catalog Acyclicity Gate by digest while
+  keeping admission blocked until external maintainer security review approval
+  exists. Schema:
+  `schemas/real_triton_first_slice_admission_readiness_gate_report.v0.schema.json`;
+  golden:
+  `tests/golden/frontend/real_triton_first_slice_admission_readiness_gate_report.json`;
+  RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`.
 - [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
   (`examples/admitting_source_ingestion_rfc.py`) defining the requirements-only
   first `direct_source_ingestion` slice boundary while keeping source ingestion

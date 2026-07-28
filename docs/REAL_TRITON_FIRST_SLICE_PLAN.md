@@ -61,6 +61,12 @@ The remaining Real Triton surfaces stay blocked:
 - generated artifact execution;
 - native backend execution.
 
+
+The [Real Triton First Slice Admission Readiness Gate](REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md)
+turns this plan plus its downstream review, missing approval, admission, first
+kernel path, evidence portfolio, and catalog acyclicity evidence into one
+compact fail-closed readiness answer: admission remains blocked until external
+maintainer security review approval exists.
 ## Missing Admission Evidence
 
 Before `direct_source_ingestion` can become admitting, TUC still requires:
@@ -142,3 +148,12 @@ shortcuts.
 - Source Ingestion Maintainer Security Review Packet RFC: `rfcs/0265-source-ingestion-maintainer-security-review-packet.md`
 - Admission Gate: [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
 - Surface Gate Completion: [Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md)
+
+## Admission Readiness Gate
+
+- Admission Readiness Gate: [Real Triton First Slice Admission Readiness Gate](REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md)
+- Admission Readiness Gate Example: `examples/real_triton_first_slice_admission_readiness_gate.py`
+- Admission Readiness Gate Schema: `schemas/real_triton_first_slice_admission_readiness_gate_report.v0.schema.json`
+- Admission Readiness Gate Golden: `tests/golden/frontend/real_triton_first_slice_admission_readiness_gate_report.json`
+- Admission Readiness Gate RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`
+- Canonical Admission Readiness Gate Doc: `docs/REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md`
