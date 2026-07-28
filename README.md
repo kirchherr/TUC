@@ -519,6 +519,11 @@ Current frontend surfaces:
   real kernel path, evidence portfolio, and catalog acyclicity by digest while
   keeping `gate_passed = false`, `admission_ready = false`, and `admitted = false`
   until external maintainer approval exists. Schema: `schemas/real_triton_first_slice_admission_readiness_gate_report.v0.schema.json`; entry point: `examples/real_triton_first_slice_admission_readiness_gate.py`; golden: `tests/golden/frontend/real_triton_first_slice_admission_readiness_gate_report.json`; doc: `docs/REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md`; RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`.
+- Real Triton First Slice Maintainer Approval Request packaging the readiness
+  gate, maintainer review packet, missing approval artifact, and admission gate
+  by digest for external maintainer review while recording
+  `approval_request_is_approval = false`, `approval_status = not_approved`,
+  `admission_ready = false`, and `admitted = false`. Schema: `schemas/real_triton_first_slice_maintainer_approval_request_report.v0.schema.json`; entry point: `examples/real_triton_first_slice_maintainer_approval_request.py`; golden: `tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json`; doc: `docs/REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md`; RFC: `rfcs/0278-real-triton-first-slice-maintainer-approval-request.md`.
 - Admitting Source Ingestion RFC defining the requirements-only first
   `direct_source_ingestion` slice boundary while keeping implementation and
   admission blocked. Doc: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`.

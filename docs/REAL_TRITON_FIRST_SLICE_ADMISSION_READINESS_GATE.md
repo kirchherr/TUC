@@ -48,6 +48,11 @@ This is not a failed CI state. It is a fail-closed readiness result: all current
 repository evidence is bound, and the remaining external evidence is still
 `maintainer_security_review_approval`.
 
+The Real Triton First Slice Maintainer Approval Request packages this readiness
+gate with the maintainer review packet, missing approval artifact, and
+source-ingestion admission gate for external human review while remaining
+non-approving and non-admitting.
+
 ## Security Boundary
 
 The gate reads only fixed repository evidence artifacts and emits only bounded
@@ -70,3 +75,8 @@ artifacts, raw benchmark data, or generated code.
 - First Slice Plan: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`
 - Source Ingestion Admission Gate: `docs/SOURCE_INGESTION_ADMISSION_GATE.md`
 - RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`
+- Maintainer Approval Request: `docs/REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md`
+- Maintainer Approval Request Example: `examples/real_triton_first_slice_maintainer_approval_request.py`
+- Maintainer Approval Request Schema: `schemas/real_triton_first_slice_maintainer_approval_request_report.v0.schema.json`
+- Maintainer Approval Request Golden: `tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json`
+- Maintainer Approval Request RFC: `rfcs/0278-real-triton-first-slice-maintainer-approval-request.md`

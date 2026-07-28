@@ -922,6 +922,15 @@ Deliverables:
   golden:
   `tests/golden/frontend/real_triton_first_slice_admission_readiness_gate_report.json`;
   RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`.
+- [Real Triton First Slice Maintainer Approval Request](docs/REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md)
+  (`examples/real_triton_first_slice_maintainer_approval_request.py`) packages
+  the readiness gate, maintainer review packet, missing approval artifact, and
+  admission gate by digest for external maintainer review while keeping the
+  request non-approving, source-free, and non-admitting. Schema:
+  `schemas/real_triton_first_slice_maintainer_approval_request_report.v0.schema.json`;
+  golden:
+  `tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json`;
+  RFC: `rfcs/0278-real-triton-first-slice-maintainer-approval-request.md`.
 - [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
   (`examples/admitting_source_ingestion_rfc.py`) defining the requirements-only
   first `direct_source_ingestion` slice boundary while keeping source ingestion

@@ -36,6 +36,10 @@ This artifact separates three states that must not be confused:
 The Source Ingestion Admission Gate binds this artifact and remains fail-closed
 while `approval_artifact_present = false`.
 
+The Real Triton First Slice Maintainer Approval Request also binds this missing
+approval state so an external reviewer can see that the request is not an
+approval artifact.
+
 ## Security Boundary
 
 The report is digest-only and source-free. It does not serialize source text,
@@ -60,3 +64,8 @@ generated artifacts, approve parser behavior, or grant execution permission.
 - Maintainer Review Packet:
   [Source Ingestion Maintainer Security Review Packet](SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
 - Admission Gate: [Source Ingestion Admission Gate](SOURCE_INGESTION_ADMISSION_GATE.md)
+- Real Triton First Slice Maintainer Approval Request: `docs/REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md`
+- Real Triton First Slice Maintainer Approval Request Example: `examples/real_triton_first_slice_maintainer_approval_request.py`
+- Real Triton First Slice Maintainer Approval Request Schema: `schemas/real_triton_first_slice_maintainer_approval_request_report.v0.schema.json`
+- Real Triton First Slice Maintainer Approval Request Golden: `tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json`
+- Real Triton First Slice Maintainer Approval Request RFC: `rfcs/0278-real-triton-first-slice-maintainer-approval-request.md`

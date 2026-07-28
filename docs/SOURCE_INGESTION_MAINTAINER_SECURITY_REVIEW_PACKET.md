@@ -39,6 +39,11 @@ evidence is collected, deterministic, source-free, and ready for a maintainer
 security review, but it records no maintainer decision.
 
 The Source Ingestion Maintainer Approval Artifact binds this packet and records that external approval is still not supplied. The Source Ingestion Admission Gate binds both artifacts and remains fail-closed.
+
+The Real Triton First Slice Maintainer Approval Request packages this packet with
+the first-slice readiness gate, missing approval artifact, and admission gate for
+external human review while still recording no approval.
+
 Before `direct_source_ingestion` can become admitting, TUC still requires:
 
 - maintainer security review approval.
@@ -84,5 +89,10 @@ source-to-runtime-plan shortcuts.
 - Maintainer Approval Artifact Schema: `schemas/source_ingestion_maintainer_approval_artifact_report.v0.schema.json`
 - Maintainer Approval Artifact Golden: `tests/golden/frontend/source_ingestion_maintainer_approval_artifact_report.json`
 - Maintainer Approval Artifact RFC: `rfcs/0269-source-ingestion-maintainer-approval-artifact.md`
+- Real Triton First Slice Maintainer Approval Request: `docs/REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md`
+- Real Triton First Slice Maintainer Approval Request Example: `examples/real_triton_first_slice_maintainer_approval_request.py`
+- Real Triton First Slice Maintainer Approval Request Schema: `schemas/real_triton_first_slice_maintainer_approval_request_report.v0.schema.json`
+- Real Triton First Slice Maintainer Approval Request Golden: `tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json`
+- Real Triton First Slice Maintainer Approval Request RFC: `rfcs/0278-real-triton-first-slice-maintainer-approval-request.md`
 - Admitting Source Ingestion RFC: `docs/ADMITTING_SOURCE_INGESTION_RFC.md`
 - Real Triton First Slice Plan: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`

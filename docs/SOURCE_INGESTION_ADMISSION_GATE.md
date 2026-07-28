@@ -47,6 +47,12 @@ maintainer review packet, missing approval artifact, First Real Triton Kernel
 Path, first-slice evidence portfolio, and Objective Alpha Catalog Acyclicity
 Gate. Its current result remains blocked by the same missing external
 maintainer security review approval.
+
+The [Real Triton First Slice Maintainer Approval Request](REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md)
+packages this fail-closed admission result with the readiness gate, maintainer
+review packet, and missing approval artifact for external review without
+granting approval.
+
 ## Security Boundary
 
 The report is digest-only and source-free. It does not serialize source text,
@@ -103,3 +109,9 @@ source-to-runtime-plan shortcuts.
 - Real Triton First Slice Admission Readiness Gate Golden: `tests/golden/frontend/real_triton_first_slice_admission_readiness_gate_report.json`
 - Real Triton First Slice Admission Readiness Gate RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`
 - Canonical Admission Readiness Gate Doc: `docs/REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md`
+- Real Triton First Slice Maintainer Approval Request: [Real Triton First Slice Maintainer Approval Request](REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md)
+- Real Triton First Slice Maintainer Approval Request Doc: `docs/REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md`
+- Real Triton First Slice Maintainer Approval Request Example: `examples/real_triton_first_slice_maintainer_approval_request.py`
+- Real Triton First Slice Maintainer Approval Request Schema: `schemas/real_triton_first_slice_maintainer_approval_request_report.v0.schema.json`
+- Real Triton First Slice Maintainer Approval Request Golden: `tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json`
+- Real Triton First Slice Maintainer Approval Request RFC: `rfcs/0278-real-triton-first-slice-maintainer-approval-request.md`
