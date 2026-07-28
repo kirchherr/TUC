@@ -36,6 +36,8 @@ Current high-level research claim artifacts:
 ```bash
 python examples/objective_alpha_research_claim.py
 python examples/objective_alpha_research_claim_gate.py
+python examples/objective_beta_research_claim.py
+python examples/objective_beta_research_claim_gate.py
 python examples/source_to_intent_research_capability_claim.py
 python examples/source_to_intent_research_capability_claim_gate.py
 python examples/research_scope_claim_gate.py
@@ -49,6 +51,13 @@ review artifact. See [Objective Alpha Research Claim](docs/OBJECTIVE_ALPHA_RESEA
 Schema: `schemas/objective_alpha_research_claim_report.v0.schema.json`.
 Golden: `tests/golden/proofs/objective_alpha_research_claim.json`.
 Gate: [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md).
+
+The [Objective Beta Research Claim](docs/OBJECTIVE_BETA_RESEARCH_CLAIM.md)
+is the successor snapshot: it keeps Objective Alpha bound while adding
+Kernel Ingress, First Real Triton Kernel Path, first-slice readiness, the
+maintainer approval request, and Research Scope Gate evidence into one
+digest-only research milestone. Gate:
+[Objective Beta Research Claim Gate](docs/OBJECTIVE_BETA_RESEARCH_CLAIM_GATE.md).
 
 The project-level
 [Research Scope Claim Gate](docs/RESEARCH_SCOPE_CLAIM_GATE.md) binds the

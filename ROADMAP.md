@@ -1,4 +1,4 @@
-# TUC Roadmap
+﻿# TUC Roadmap
 
 ## Strategic Priority
 
@@ -324,6 +324,16 @@ Completed evidence:
   digest, evidence IDs, public counts, supported claims, blocked claims, and
   required invariants without serializing source, runtime handles, tensor
   values, backend artifacts, or device details.
+- [Objective Beta Research Claim](docs/OBJECTIVE_BETA_RESEARCH_CLAIM.md)
+  (`examples/objective_beta_research_claim.py`) binds Objective Alpha, Kernel
+  Ingress, First Real Triton Kernel Path, first-slice evidence portfolio,
+  admission readiness, maintainer approval request, and Research Scope Gate
+  evidence by digest while keeping source ingestion, native performance, and
+  vendor replacement claims blocked.
+- [Objective Beta Research Claim Gate](docs/OBJECTIVE_BETA_RESEARCH_CLAIM_GATE.md)
+  (`examples/objective_beta_research_claim_gate.py`) validates the Beta claim
+  digest, evidence order, fail-closed source-ingestion state, and blocked
+  product/performance claims.
 - Objective Alpha Public Evidence Catalog Entry Admission Pattern derives the
   catalog's expected IDs, entry points, artifact kinds, extension tiers, digest
   sources, and raw-output policies from typed data-only specs, reducing drift in
