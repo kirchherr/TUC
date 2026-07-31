@@ -360,6 +360,27 @@ Specialized Backend
 
 working together.
 
+Current controlled advance: Backend Package Execution Admission proves the
+end-to-end transition from external capability data to a digest-bound trusted
+executor projection. The proof source plan is `reference-cpu -> external-vector`;
+the executable projection is `reference-cpu -> vector-sim`, and Runtime Backend
+Equivalence passes against the all-CPU baseline.
+
+Evidence:
+
+`docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md`,
+`examples/backend_package_execution_proof.py`,
+`schemas/backend_package_execution_admission_report.v0.schema.json`,
+`schemas/backend_package_execution_proof_report.v0.schema.json`,
+`tests/golden/backend_package_execution/admission_report.json`,
+`tests/golden/backend_package_execution/proof_report.json`, and
+`rfcs/0283-backend-package-execution-admission.md`
+.
+
+This materially advances Milestone 4 but does not close its native target:
+external package code, GPU kernels, specialized physical devices, and native
+performance remain unexecuted and unproven.
+
 ## Strategic Risks
 
 ### Risk A: Becoming Another Compiler

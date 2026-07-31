@@ -1,0 +1,46 @@
+{
+  "admission_contract": "backend_package_execution_admission.trusted_projection.v0",
+  "admission_policy": "digest_bound_pre_registered_executor_only",
+  "admission_status": "ADMITTED",
+  "allowed_operations": [
+    "elementwise"
+  ],
+  "binding_id": "external_vector_reference_projection_v0",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "capability_manifest_digest": "sha256:ca1de79c1935a08617343687a06816821b77e4837ac7ac8430998c746bd60d3a",
+  "declared_operations": [
+    "elementwise"
+  ],
+  "execution_mode": "trusted_reference_projection_only",
+  "external_plugin_execution": false,
+  "integration_report_matches": true,
+  "integration_status": "PASS",
+  "issues": [],
+  "memory_domain": "device_sram",
+  "package_backend_implementation_executed": false,
+  "package_backend_name": "external-vector",
+  "package_digest": "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee",
+  "package_id": "external-vector-reference-package",
+  "package_version": "0.1.0",
+  "physical_device_execution": false,
+  "produced_layouts": [
+    "row_major"
+  ],
+  "projection_execution_allowed": true,
+  "schema_version": "tuc.backend_package_execution_admission_report.v0",
+  "supported_layouts": [
+    "row_major"
+  ],
+  "trusted_executor_backend": "vector-sim",
+  "trusted_executor_contract_digest": "sha256:89a8be02144416cd98c7aa0e14b1e6cd16dbce7b900da80143756e456cf24d45",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

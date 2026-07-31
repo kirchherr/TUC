@@ -1454,6 +1454,18 @@ Current focus:
 - Treat this as proof of capability and planning portability only; executable
   backend admission remains a separate blocked trust decision.
 
+- Keep Backend Package Execution Admission passing as the only bridge from an
+  external package plan to runtime execution. Its complete evidence set is
+  `docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md`,
+  `examples/backend_package_execution_proof.py`,
+  `schemas/backend_package_execution_admission_report.v0.schema.json`,
+  `schemas/backend_package_execution_proof_report.v0.schema.json`,
+  `tests/golden/backend_package_execution/admission_report.json`,
+  `tests/golden/backend_package_execution/proof_report.json`, and
+  `rfcs/0283-backend-package-execution-admission.md`.
+- Preserve both source and projected plan identities; do not describe trusted
+  reference projection as external plugin, native, or physical execution.
+
 - Strengthen backend manifests, registry, diagnostics, and conformance fixtures.
 - Keep backend onboarding capability-first and execution-free.
 - Use the external-style backend author path as the reference for toy backend

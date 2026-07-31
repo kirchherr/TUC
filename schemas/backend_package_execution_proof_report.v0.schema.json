@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/backend_package_execution_proof_report.v0.schema.json",
+  "title": "TUC Backend Package Execution Proof Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_contract",
+    "admission_status",
+    "binding_id",
+    "blocked_execution_surfaces",
+    "capability_manifest_digest",
+    "equivalence_comparison_metadata_digest",
+    "equivalence_contract",
+    "equivalence_passed",
+    "execution_mode",
+    "execution_step_count",
+    "executor_contract",
+    "external_plugin_execution",
+    "graph_name",
+    "output_dtypes",
+    "output_shapes",
+    "output_tensor_names",
+    "package_backend_implementation_executed",
+    "package_backend_name",
+    "package_digest",
+    "package_id",
+    "physical_device_execution",
+    "projected_backend_sequence",
+    "projected_operation_count",
+    "projected_plan_digest",
+    "proof_contract",
+    "proof_status",
+    "raw_tensor_value_policy",
+    "schema_version",
+    "source_backend_sequence",
+    "source_plan_digest",
+    "transfer_edge_count",
+    "trusted_executor_backend",
+    "trusted_executor_contract_digest",
+    "trusted_executor_registry"
+  ],
+  "properties": {
+    "schema_version": { "const": "tuc.backend_package_execution_proof_report.v0" },
+    "proof_contract": { "const": "backend_package_execution_proof.trusted_projection.v0" },
+    "proof_status": { "const": "PASS" },
+    "admission_contract": { "const": "backend_package_execution_admission.trusted_projection.v0" },
+    "admission_status": { "const": "ADMITTED" },
+    "execution_mode": { "const": "trusted_reference_projection_only" },
+    "executor_contract": { "const": "runtime_executor.trusted_backend.v0" },
+    "equivalence_contract": { "const": "runtime_backend_equivalence.data_only.v0" },
+    "trusted_executor_registry": { "const": "trusted_runtime_executor_registry.v0" },
+    "package_id": { "$ref": "#/$defs/identifier" },
+    "package_digest": { "$ref": "#/$defs/digest" },
+    "capability_manifest_digest": { "$ref": "#/$defs/digest" },
+    "binding_id": { "$ref": "#/$defs/identifier" },
+    "graph_name": { "$ref": "#/$defs/identifier" },
+    "package_backend_name": { "$ref": "#/$defs/identifier" },
+    "trusted_executor_backend": { "$ref": "#/$defs/identifier" },
+    "trusted_executor_contract_digest": { "$ref": "#/$defs/digest" },
+    "source_plan_digest": { "$ref": "#/$defs/digest" },
+    "projected_plan_digest": { "$ref": "#/$defs/digest" },
+    "source_backend_sequence": { "$ref": "#/$defs/backend_sequence" },
+    "projected_backend_sequence": { "$ref": "#/$defs/backend_sequence" },
+    "projected_operation_count": { "type": "integer", "minimum": 1, "maximum": 4096 },
+    "transfer_edge_count": { "type": "integer", "minimum": 0, "maximum": 4096 },
+    "execution_step_count": { "type": "integer", "minimum": 1, "maximum": 4096 },
+    "output_tensor_names": { "$ref": "#/$defs/identifier_array" },
+    "output_dtypes": { "$ref": "#/$defs/identifier_array" },
+    "output_shapes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 16,
+        "items": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "equivalence_comparison_metadata_digest": { "$ref": "#/$defs/digest" },
+    "equivalence_passed": { "const": true },
+    "raw_tensor_value_policy": { "const": "omitted_by_policy" },
+    "external_plugin_execution": { "const": false },
+    "package_backend_implementation_executed": { "const": false },
+    "physical_device_execution": { "const": false },
+    "blocked_execution_surfaces": {
+      "const": [
+        "backend_plugin_discovery",
+        "device_access",
+        "dynamic_import",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "jit_execution",
+        "network_access",
+        "subprocess_execution"
+      ]
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,255}$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "backend_sequence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": { "$ref": "#/$defs/identifier" }
+    },
+    "identifier_array": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": { "$ref": "#/$defs/identifier" }
+    }
+  }
+}

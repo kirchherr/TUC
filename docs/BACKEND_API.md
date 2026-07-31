@@ -366,6 +366,24 @@ library, a command, a device path, a runtime handle, or an artifact, and it
 cannot request execution. Passing the report is not executable-backend
 certification.
 
+## Package Execution Admission
+
+The controlled execution bridge is documented in
+`docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md` and implemented by
+`examples/backend_package_execution_proof.py`. Its fail-closed admission and
+proof schemas are
+`schemas/backend_package_execution_admission_report.v0.schema.json` and
+`schemas/backend_package_execution_proof_report.v0.schema.json`. Deterministic
+evidence is frozen in
+`tests/golden/backend_package_execution/admission_report.json` and
+`tests/golden/backend_package_execution/proof_report.json`; the trust decision
+is recorded by `rfcs/0283-backend-package-execution-admission.md`.
+
+Admission is package- and capability-digest-bound. It maps only to a fixed
+in-repository trusted executor after operation, memory-domain, layout, and
+executor-contract checks. It never imports or executes package code, and it
+does not grant general plugin or native-backend admission.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:

@@ -621,6 +621,22 @@ Completed evidence:
 
 Next work:
 
+- Backend Package Execution Admission binds the exact portable package and
+  capability digests to a pre-registered trusted executor, projects
+  `reference-cpu -> external-vector` to `reference-cpu -> vector-sim`,
+  preserves the transfer edge, executes the graph, and requires semantic
+  equivalence against the CPU baseline. Evidence:
+  `docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md`,
+  `examples/backend_package_execution_proof.py`,
+  `schemas/backend_package_execution_admission_report.v0.schema.json`,
+  `schemas/backend_package_execution_proof_report.v0.schema.json`,
+  `tests/golden/backend_package_execution/admission_report.json`,
+  `tests/golden/backend_package_execution/proof_report.json`, and
+  `rfcs/0283-backend-package-execution-admission.md`.
+- External plugin code, physical devices, and native artifacts remain blocked;
+  this is trusted reference projection rather than native backend execution.
+
+
 - Add future decision-report fixtures only when new proof graph families or
   capability claims introduce new backend-selection evidence.
 

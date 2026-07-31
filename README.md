@@ -754,6 +754,22 @@ are documented in `docs/BACKEND_INTEGRATION_PACKAGE.md`, specified by
 accepted by `rfcs/0282-backend-integration-package.md`. No backend code is
 loaded and a passing report grants no execution permission.
 
+The next controlled step is Backend Package Execution Admission v0. The
+digest-bound proof in `examples/backend_package_execution_proof.py` preserves
+the source plan `reference-cpu -> external-vector`, projects it to the fixed
+trusted executor sequence `reference-cpu -> vector-sim`, executes it, and
+requires Backend Equivalence against the CPU baseline. The complete contract
+is documented by
+`docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md`,
+`schemas/backend_package_execution_admission_report.v0.schema.json`,
+`schemas/backend_package_execution_proof_report.v0.schema.json`,
+`tests/golden/backend_package_execution/admission_report.json`,
+`tests/golden/backend_package_execution/proof_report.json`, and
+`rfcs/0283-backend-package-execution-admission.md`
+.
+The package implementation, external plugins, native artifacts, and physical
+devices remain unexecuted.
+
 Current plugin lifecycle boundary:
 
 ```bash

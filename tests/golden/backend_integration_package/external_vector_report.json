@@ -14,7 +14,7 @@
     "generated_artifact_execution",
     "runtime_execution"
   ],
-  "capability_manifest_digest": "sha256:2934068f85b288aa2c0788e8eee3bc5041c694dda5299edc200286c3a03f5fd2",
+  "capability_manifest_digest": "sha256:ca1de79c1935a08617343687a06816821b77e4837ac7ac8430998c746bd60d3a",
   "case_count": 3,
   "case_results": [
     {
@@ -60,7 +60,7 @@
   "issues": [],
   "memory_domain": "device_sram",
   "network_access": false,
-  "package_digest": "sha256:8fb495817580e3ce8d1ba4aac11a127de56e7d9b1b4965ce3ce41c764e1a865f",
+  "package_digest": "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee",
   "package_id": "external-vector-reference-package",
   "package_policy": "capability_and_planning_conformance_only",
   "package_version": "0.1.0",
@@ -73,7 +73,7 @@
   },
   "plugin_discovery": false,
   "produced_layouts": [
-    "vector"
+    "row_major"
   ],
   "runtime_execution": false,
   "schema_version": "tuc.backend_integration_package_report.v0",

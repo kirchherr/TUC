@@ -16,7 +16,7 @@
     "preferred_for": ["elementwise"],
     "memory_domain": "device_sram",
     "supported_layouts": ["row_major"],
-    "produced_layouts": ["vector"]
+    "produced_layouts": ["row_major"]
   },
   "conformance_cases": [
     {
