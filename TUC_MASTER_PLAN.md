@@ -332,6 +332,22 @@ TUC core?
 
 If no, the architecture is not ready.
 
+Current result: **PASS for capability and planning integration; executable
+backend admission remains blocked.** The data-only contract is documented in
+`docs/BACKEND_INTEGRATION_PACKAGE.md`. The runnable proof
+`examples/backend_integration_package.py` consumes the portable reference
+package `examples/backend_packages/external_vector.v0.json` without a core
+change or plugin import. Its fail-closed contracts are
+`schemas/backend_integration_package.v0.schema.json` and
+`schemas/backend_integration_package_report.v0.schema.json`; the deterministic
+result is frozen at
+`tests/golden/backend_integration_package/external_vector_report.json` and the
+decision is recorded in `rfcs/0282-backend-integration-package.md`.
+
+This proves the external ownership boundary for capability declaration,
+negative conformance, and compiler selection. It does not prove a native ABI,
+vendor code execution, device access, or performance.
+
 ### Milestone 4: Heterogeneous Execution Proof
 
 Target:

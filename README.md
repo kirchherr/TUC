@@ -743,6 +743,17 @@ manifest
     -> Backend Author Readiness
 ```
 
+The portable, data-only Backend Integration Package v0 now closes the
+capability-and-planning portion of the external backend author test. Run
+`examples/backend_integration_package.py` against the reference package
+`examples/backend_packages/external_vector.v0.json`. The contract and evidence
+are documented in `docs/BACKEND_INTEGRATION_PACKAGE.md`, specified by
+`schemas/backend_integration_package.v0.schema.json` and
+`schemas/backend_integration_package_report.v0.schema.json`, frozen at
+`tests/golden/backend_integration_package/external_vector_report.json`, and
+accepted by `rfcs/0282-backend-integration-package.md`. No backend code is
+loaded and a passing report grants no execution permission.
+
 Current plugin lifecycle boundary:
 
 ```bash

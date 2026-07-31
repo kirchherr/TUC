@@ -1443,6 +1443,17 @@ Current focus:
 
 Current focus:
 
+- Keep the portable Backend Integration Package v0 passing as the external
+  author boundary: `docs/BACKEND_INTEGRATION_PACKAGE.md`,
+  `examples/backend_integration_package.py`,
+  `examples/backend_packages/external_vector.v0.json`,
+  `schemas/backend_integration_package.v0.schema.json`,
+  `schemas/backend_integration_package_report.v0.schema.json`,
+  `tests/golden/backend_integration_package/external_vector_report.json`, and
+  `rfcs/0282-backend-integration-package.md`.
+- Treat this as proof of capability and planning portability only; executable
+  backend admission remains a separate blocked trust decision.
+
 - Strengthen backend manifests, registry, diagnostics, and conformance fixtures.
 - Keep backend onboarding capability-first and execution-free.
 - Use the external-style backend author path as the reference for toy backend

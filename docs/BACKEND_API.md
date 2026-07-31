@@ -347,6 +347,25 @@ registry loading and stops if the manifest is blocked.
 It also emits [Backend Author Readiness](BACKEND_AUTHOR_READINESS.md), whose
 schema is `schemas/backend_author_readiness_report.v0.schema.json`.
 
+## Portable Integration Package
+
+The first vendor-facing portability contract is the data-only
+`docs/BACKEND_INTEGRATION_PACKAGE.md`. Its runnable proof is
+`examples/backend_integration_package.py`, using
+`examples/backend_packages/external_vector.v0.json`. Input and output are
+defined by `schemas/backend_integration_package.v0.schema.json` and
+`schemas/backend_integration_package_report.v0.schema.json`; the expected
+report is
+`tests/golden/backend_integration_package/external_vector_report.json`, and the
+decision is recorded in `rfcs/0282-backend-integration-package.md`.
+
+This path packages a capability manifest together with bounded positive and
+negative support expectations. TUC validates those claims and creates its own
+compiler planning probe. The package cannot provide source, an entry point, a
+library, a command, a device path, a runtime handle, or an artifact, and it
+cannot request execution. Passing the report is not executable-backend
+certification.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:

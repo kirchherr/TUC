@@ -1,0 +1,84 @@
+{
+  "artifact_execution": false,
+  "backend_code_executed": false,
+  "backend_code_included": false,
+  "backend_name": "external-vector",
+  "blocked_execution_surfaces": [
+    "backend_code_execution",
+    "plugin_discovery",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "subprocess_execution",
+    "network_access",
+    "device_access",
+    "generated_artifact_execution",
+    "runtime_execution"
+  ],
+  "capability_manifest_digest": "sha256:2934068f85b288aa2c0788e8eee3bc5041c694dda5299edc200286c3a03f5fd2",
+  "case_count": 3,
+  "case_results": [
+    {
+      "case_id": "elementwise_row_major_accept",
+      "expected_reason": "accepted",
+      "expected_supported": true,
+      "layout": "row_major",
+      "matched": true,
+      "observed_reason": "accepted",
+      "observed_supported": true,
+      "operation_kind": "elementwise"
+    },
+    {
+      "case_id": "matmul_row_major_reject",
+      "expected_reason": "unsupported_operation_kind",
+      "expected_supported": false,
+      "layout": "row_major",
+      "matched": true,
+      "observed_reason": "unsupported_operation_kind",
+      "observed_supported": false,
+      "operation_kind": "matmul"
+    },
+    {
+      "case_id": "elementwise_blocked_reject",
+      "expected_reason": "unsupported_layout",
+      "expected_supported": false,
+      "layout": "blocked",
+      "matched": true,
+      "observed_reason": "unsupported_layout",
+      "observed_supported": false,
+      "operation_kind": "elementwise"
+    }
+  ],
+  "conformance_passed": true,
+  "declared_operation_families": [
+    "elementwise"
+  ],
+  "device_access": false,
+  "execution_permission": false,
+  "import_policy": "no_import_or_plugin_discovery",
+  "integration_contract": "backend_integration.data_only.v0",
+  "integration_status": "PASS",
+  "issues": [],
+  "memory_domain": "device_sram",
+  "network_access": false,
+  "package_digest": "sha256:8fb495817580e3ce8d1ba4aac11a127de56e7d9b1b4965ce3ce41c764e1a865f",
+  "package_id": "external-vector-reference-package",
+  "package_policy": "capability_and_planning_conformance_only",
+  "package_version": "0.1.0",
+  "planning_probe": {
+    "assigned_backend": "external-vector",
+    "assignment_matched": true,
+    "graph_name": "backend_integration_package_probe",
+    "operation_kind": "elementwise",
+    "operation_name": "elementwise_row_major_accept"
+  },
+  "plugin_discovery": false,
+  "produced_layouts": [
+    "vector"
+  ],
+  "runtime_execution": false,
+  "schema_version": "tuc.backend_integration_package_report.v0",
+  "subprocess_execution": false,
+  "supported_layouts": [
+    "row_major"
+  ]
+}

@@ -575,6 +575,17 @@ Deliverables:
 
 Completed evidence:
 
+- Backend Integration Package v0 gives external authors one portable,
+  data-only capability-and-planning artifact and proves compiler assignment
+  without core changes or executable plugin admission. See
+  `docs/BACKEND_INTEGRATION_PACKAGE.md`,
+  `examples/backend_integration_package.py`,
+  `examples/backend_packages/external_vector.v0.json`,
+  `schemas/backend_integration_package.v0.schema.json`,
+  `schemas/backend_integration_package_report.v0.schema.json`,
+  `tests/golden/backend_integration_package/external_vector_report.json`, and
+  `rfcs/0282-backend-integration-package.md`.
+
 - External-style backend author path demonstrates manifest loading, explicit
   registry diagnostics, compiler planning, reusable conformance, and trusted
   lowering without modifying TUC core.
@@ -614,6 +625,10 @@ Next work:
   capability claims introduce new backend-selection evidence.
 
 Go/No-Go:
+
+- An external backend author can submit one bounded JSON package and receive a
+  deterministic capability, rejection, and compiler-selection report without
+  modifying TUC core or supplying executable code.
 
 - A toy backend can be described through capability data.
 - Unsupported operations and layouts are rejected explicitly.
