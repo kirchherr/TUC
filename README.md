@@ -125,6 +125,19 @@ Schema: `schemas/source_intent_backend_package_portfolio_report.v0.schema.json`.
 Golden: `tests/golden/frontend/source_intent_backend_package_portfolio_report.json`.
 RFC: `rfcs/0285-source-intent-backend-package-portfolio.md`.
 
+The next research slice now starts from realistic bounded Triton-like module
+text and reaches the same external package portfolio without importing or
+executing the module:
+
+```bash
+python examples/triton_research_backend_package_portfolio.py
+```
+
+See [Triton Research Backend Package Portfolio](docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md).
+Schema: `schemas/triton_research_backend_package_portfolio_report.v0.schema.json`.
+Golden: `tests/golden/frontend/triton_research_backend_package_portfolio_report.json`.
+RFC: `rfcs/0286-triton-research-backend-package-portfolio.md`.
+
 ## Current Proofs
 
 Objective Alpha is the current proof shape:
@@ -806,6 +819,16 @@ frontend boundary in one live path. The evidence set is
 and `rfcs/0285-source-intent-backend-package-portfolio.md`. Source payloads,
 raw values, package code, plugins, devices, and native artifacts remain outside
 the serialized proof and executable trust boundary.
+
+Triton Research Backend Package Portfolio v0 extends the same path to the
+fixed realistic Kernel Ingress source slice. Its complete evidence set is
+`docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md`,
+`examples/triton_research_backend_package_portfolio.py`,
+`schemas/triton_research_backend_package_portfolio_report.v0.schema.json`,
+`tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+and `rfcs/0286-triton-research-backend-package-portfolio.md`. The source is
+bounded and parsed as AST data; imports, decorators, JIT, package code, plugins,
+native artifacts, and devices are not executed.
 
 Current plugin lifecycle boundary:
 

@@ -418,6 +418,25 @@ single live proof connecting neutral frontend intent to independently declared
 heterogeneous capability ownership without fallback or external code
 execution.
 
+The Triton Research Backend Package Portfolio now advances that result from
+plain frontend data to the fixed realistic syntax slice:
+
+```text
+bounded Triton module text -> Source Intent -> HAC-IR
+  -> external package portfolio -> trusted heterogeneous execution
+  -> public output + independent correctness + equivalence
+```
+
+Evidence is provided by
+`docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md`,
+`examples/triton_research_backend_package_portfolio.py`,
+`schemas/triton_research_backend_package_portfolio_report.v0.schema.json`,
+`tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+and `rfcs/0286-triton-research-backend-package-portfolio.md`. Source remains a
+bounded research input: module imports, decorators, JIT, external packages, and
+native backends are not executed, and production source ingestion remains
+unadmitted.
+
 ## Strategic Risks
 
 ### Risk A: Becoming Another Compiler

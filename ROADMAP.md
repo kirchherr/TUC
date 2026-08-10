@@ -654,6 +654,16 @@ Completed controlled execution evidence:
   `schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
   `tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
   and `rfcs/0285-source-intent-backend-package-portfolio.md`.
+- Triton Research Backend Package Portfolio extends that vertical path to the
+  fixed realistic module-source slice: bounded AST ingress emits Source Intent
+  plain data, every operation is assigned to the exact external two-package
+  set without fallback, trusted simulators execute, and reference correctness
+  plus backend equivalence pass. Evidence:
+  `docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md`,
+  `examples/triton_research_backend_package_portfolio.py`,
+  `schemas/triton_research_backend_package_portfolio_report.v0.schema.json`,
+  `tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+  and `rfcs/0286-triton-research-backend-package-portfolio.md`.
 - External plugin code, physical devices, and native artifacts remain blocked;
   this is trusted reference projection rather than native backend execution.
 

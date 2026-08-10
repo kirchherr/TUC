@@ -1,5 +1,20 @@
 # Roadmap Status
 
+- [Triton Research Backend Package Portfolio](TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md)
+  now provides the strongest joined live proof at
+  `examples/triton_research_backend_package_portfolio.py`: bounded realistic
+  Triton-like module text reaches Source Intent, HAC-IR, the exact external
+  two-package plan, trusted heterogeneous execution, public-output closure,
+  independent reference correctness, and backend equivalence without fallback.
+  Its schema is
+  `schemas/triton_research_backend_package_portfolio_report.v0.schema.json`,
+  golden evidence is
+  `tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+  and the decision is recorded in
+  `rfcs/0286-triton-research-backend-package-portfolio.md`. Imports, decorators,
+  JIT, package code, plugins, native artifacts, devices, and production source
+  admission remain blocked.
+
 - [Source Intent Backend Package Portfolio](SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md)
   now joins the neutral frontend and external backend-author paths in one live
   no-fallback execution proof at
@@ -1498,6 +1513,13 @@ Current focus:
   `schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
   `tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
   and `rfcs/0285-source-intent-backend-package-portfolio.md`.
+- Keep Triton Research Backend Package Portfolio passing as the fixed
+  syntax-to-external-capability proof. Its complete evidence set is
+  `docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md`,
+  `examples/triton_research_backend_package_portfolio.py`,
+  `schemas/triton_research_backend_package_portfolio_report.v0.schema.json`,
+  `tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+  and `rfcs/0286-triton-research-backend-package-portfolio.md`.
 
 - Strengthen backend manifests, registry, diagnostics, and conformance fixtures.
 - Keep backend onboarding capability-first and execution-free.

@@ -423,6 +423,24 @@ and the trust decision is recorded by
 source execution, package implementation execution, plugin discovery, native
 artifacts, or device access to Backend API v0.1.
 
+## Triton Research Source To Package Portfolio
+
+The fixed source-syntax research path is documented by
+`docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md` and runs through
+`examples/triton_research_backend_package_portfolio.py`. Bounded Kernel Ingress
+and the execution-free research parser emit canonical Source Intent before the
+same exact package admission and trusted projection used by the plain-data
+proof.
+
+Its nested fail-closed contract is
+`schemas/triton_research_backend_package_portfolio_report.v0.schema.json`, the
+deterministic report is
+`tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+and the decision is recorded by
+`rfcs/0286-triton-research-backend-package-portfolio.md`. This path grants no
+general source-ingestion, import, decorator, JIT, package-code, plugin, native,
+or physical-device execution authority.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:

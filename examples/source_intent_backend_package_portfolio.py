@@ -301,6 +301,21 @@ def run_evidence() -> SourceIntentBackendPackagePortfolioEvidence:
     """Run the complete execution-free-intake to trusted-runtime proof."""
 
     module = source_intent_from_mapping(build_source_intent_data())
+    inputs = proof_inputs()
+    return run_module_evidence(module, inputs, reference_outputs(inputs))
+
+
+def run_module_evidence(
+    module: SourceIntentModule,
+    inputs: dict[str, FloatArray],
+    references: dict[str, FloatArray],
+) -> SourceIntentBackendPackagePortfolioEvidence:
+    """Run one validated Source Intent module through the fixed portfolio."""
+
+    if not isinstance(module, SourceIntentModule):
+        raise TypeError("package portfolio proof requires SourceIntentModule")
+    if type(inputs) is not dict or type(references) is not dict:
+        raise TypeError("package portfolio proof values must use plain dictionaries")
     metadata_report = build_source_intent_metadata_report(module)
     graph = source_intent_to_triton_metadata(module).to_compute_graph()
     packages = tuple(
@@ -321,7 +336,6 @@ def run_evidence() -> SourceIntentBackendPackagePortfolioEvidence:
         graph,
         tuple(package.capability for package in packages),
     )
-    inputs = proof_inputs()
     candidate = execute_backend_package_execution_portfolio(
         compilation.hac_ir.graph,
         compilation.partition_plan,
@@ -364,7 +378,7 @@ def run_evidence() -> SourceIntentBackendPackagePortfolioEvidence:
         build_runtime_reference_correctness_report(
             graph,
             candidate.execution,
-            reference_outputs(inputs),
+            references,
         )
     )
     return SourceIntentBackendPackagePortfolioEvidence(
@@ -386,7 +400,7 @@ def build_source_intent_backend_package_portfolio_report() -> dict[str, object]:
     """Return digest-only evidence for the complete vertical proof."""
 
     evidence = run_evidence()
-    artifact_texts = _artifact_texts(evidence)
+    artifact_texts = artifact_texts_for_evidence(evidence)
     artifacts = [
         {
             "artifact_id": artifact_id,
@@ -550,7 +564,7 @@ def main() -> None:
     print(build_report(), end="")
 
 
-def _artifact_texts(
+def artifact_texts_for_evidence(
     evidence: SourceIntentBackendPackagePortfolioEvidence,
 ) -> dict[str, str]:
     return {
