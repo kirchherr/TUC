@@ -644,6 +644,16 @@ Completed controlled execution evidence:
   `tests/golden/backend_integration_package/external_systolic_report.json`,
   `tests/golden/backend_package_execution_portfolio/proof_report.json`, and
   `rfcs/0284-multi-package-execution-portfolio.md`.
+- Source Intent Backend Package Portfolio closes the previously separate
+  frontend and package paths in one live no-fallback proof: Source Intent plain
+  data reaches `external-systolic -> external-vector`, retains the explicit
+  layout conversion, projects to trusted simulators, resolves its public
+  return, and passes both independent reference correctness and backend
+  equivalence. Evidence: `docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md`,
+  `examples/source_intent_backend_package_portfolio.py`,
+  `schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
+  `tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+  and `rfcs/0285-source-intent-backend-package-portfolio.md`.
 - External plugin code, physical devices, and native artifacts remain blocked;
   this is trusted reference projection rather than native backend execution.
 

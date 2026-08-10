@@ -111,6 +111,20 @@ See
 Schema: `schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json`.
 Golden: `tests/golden/frontend/source_intent_mixed_runtime_public_proof_bundle.json`.
 
+The stronger vertical proof now continues the same neutral Source Intent through
+the exact external two-package portfolio, with no fallback and with explicit
+layout conversion, trusted execution, public-output closure, independent
+reference correctness, and backend equivalence:
+
+```bash
+python examples/source_intent_backend_package_portfolio.py
+```
+
+See [Source Intent Backend Package Portfolio](docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md).
+Schema: `schemas/source_intent_backend_package_portfolio_report.v0.schema.json`.
+Golden: `tests/golden/frontend/source_intent_backend_package_portfolio_report.json`.
+RFC: `rfcs/0285-source-intent-backend-package-portfolio.md`.
+
 ## Current Proofs
 
 Objective Alpha is the current proof shape:
@@ -782,6 +796,16 @@ The complete evidence set is
 
 Package implementations, external plugins, native artifacts, and physical
 devices remain unexecuted.
+
+Source Intent Backend Package Portfolio v0 joins that package proof to the
+frontend boundary in one live path. The evidence set is
+`docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md`,
+`examples/source_intent_backend_package_portfolio.py`,
+`schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
+`tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+and `rfcs/0285-source-intent-backend-package-portfolio.md`. Source payloads,
+raw values, package code, plugins, devices, and native artifacts remain outside
+the serialized proof and executable trust boundary.
 
 Current plugin lifecycle boundary:
 

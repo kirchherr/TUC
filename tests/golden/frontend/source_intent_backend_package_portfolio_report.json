@@ -1,0 +1,150 @@
+{
+  "artifact_count": 10,
+  "artifact_policy": "digest_only_source_and_values_omitted",
+  "artifacts": [
+    {
+      "artifact_id": "source_intent_module",
+      "artifact_kind": "text_dump",
+      "contract": "source_intent_ir.canonical.v0",
+      "digest": "sha256:a3855406ad103922bceb4097a8c85fb70beffeaf730448c670b3029057438892",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_intent_metadata",
+      "artifact_kind": "text_report",
+      "contract": "source_intent_to_metadata.execution_free.v0",
+      "digest": "sha256:d439b250638d9eebb0cc9f78699ae08013f5613daa6301d7b10cf0985b2a89d5",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "hac_ir",
+      "artifact_kind": "text_dump",
+      "contract": "hac-ir.v0",
+      "digest": "sha256:bc1534269f6123292532fd36c30431f25a7947ed4ef819e24ec1038cbedf3bfc",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "external_systolic_integration",
+      "artifact_kind": "json_report",
+      "contract": "backend_integration.data_only.v0",
+      "digest": "sha256:39f0d2fc4c432420e1f1b971c46d16efc4717b587820f4f6a86790ae6ee45d0f",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "external_vector_integration",
+      "artifact_kind": "json_report",
+      "contract": "backend_integration.data_only.v0",
+      "digest": "sha256:71924c671ae99e03bceb56233cf4450dec716c9c0b9fe512ff9b7ebe511e83cc",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "package_portfolio_execution",
+      "artifact_kind": "json_report",
+      "contract": "backend_package_execution_portfolio.trusted_projection.v0",
+      "digest": "sha256:51686dc0bda0122416dc91c13daef8d25bd60ccd3689ca3cc2adec78e6074c9d",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "public_output_contract",
+      "artifact_kind": "json_report",
+      "contract": "runtime_output_contract.data_only.v0",
+      "digest": "sha256:a4ddc60506e99a41879f048f3961140af074df88e2f2f3dae3b42a0196f8e223",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "public_output_bundle",
+      "artifact_kind": "json_report",
+      "contract": "runtime_public_output_bundle.readonly_values.v0",
+      "digest": "sha256:cd1ca113dd590bf22a158d165cdaededd0ba946670694a0c82cd0fbfb2a485e8",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "reference_correctness",
+      "artifact_kind": "json_report",
+      "contract": "runtime_reference_correctness.data_only.v0",
+      "digest": "sha256:73ea55267e590b0a0822e103e9db521065cdf461d70074f40dbd18c348df1585",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "backend_equivalence",
+      "artifact_kind": "json_report",
+      "contract": "runtime_backend_equivalence.data_only.v0",
+      "digest": "sha256:3836f3b2c2374628d904814312057c6a0c4d39a50e5cca436e49bb505c6ff27d",
+      "status": "accepted"
+    }
+  ],
+  "backend_equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "backend_equivalence_passed": true,
+  "backend_integration_contract": "backend_integration.data_only.v0",
+  "blocked_claims": [
+    "source_text_execution",
+    "general_source_parser",
+    "external_package_code_execution",
+    "native_backend_execution",
+    "physical_device_residency",
+    "native_performance_parity"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "equivalence_comparison_metadata_digest": "sha256:fb5d1063330ae17149017f7caec8e570b812697d67eed0a563204abb11173c13",
+  "external_package_code_executed": false,
+  "external_plugin_execution": false,
+  "fallback_assignment_count": 0,
+  "graph_name": "source_intent_backend_package_portfolio",
+  "hac_ir_contract": "hac-ir.v0",
+  "layout_conversion_count": 1,
+  "metadata_contract": "source_intent_to_metadata.execution_free.v0",
+  "module_name": "source_intent_backend_package_portfolio",
+  "operation_families": [
+    "matmul",
+    "elementwise"
+  ],
+  "output_contract": "runtime_output_contract.data_only.v0",
+  "package_admission_contract": "backend_package_execution_admission.trusted_projection.v0",
+  "package_backend_sequence": [
+    "external-systolic",
+    "external-vector"
+  ],
+  "package_digests": [
+    "sha256:806813974dfde16b46f694566d751b18780d5e43d8455467bf4e5d7ea38b452c",
+    "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee"
+  ],
+  "package_ids": [
+    "external-systolic-reference-package",
+    "external-vector-reference-package"
+  ],
+  "physical_device_execution": false,
+  "portfolio_contract": "backend_package_execution_portfolio.trusted_projection.v0",
+  "proof_claim": "source_intent_reaches_no_fallback_external_package_execution_with_equivalent_outputs",
+  "proof_contract": "source_intent_backend_package_portfolio.e2e.v0",
+  "proof_status": "PASS",
+  "public_output_bundle_contract": "runtime_public_output_bundle.readonly_values.v0",
+  "public_output_names": [
+    "api_activated"
+  ],
+  "raw_tensor_value_policy": "omitted_by_policy",
+  "raw_tensor_values_serialized": false,
+  "reference_correctness_contract": "runtime_reference_correctness.data_only.v0",
+  "reference_correctness_passed": true,
+  "schema_version": "tuc.source_intent_backend_package_portfolio_report.v0",
+  "source_boundary": "source_intent_plain_data_to_external_package_portfolio",
+  "source_intent_contract": "source_intent_ir.canonical.v0",
+  "source_intent_payload_serialized": false,
+  "source_text_executed": false,
+  "terminal_output_names": [
+    "activated"
+  ],
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0",
+  "trusted_executor_sequence": [
+    "systolic-sim",
+    "vector-sim"
+  ]
+}

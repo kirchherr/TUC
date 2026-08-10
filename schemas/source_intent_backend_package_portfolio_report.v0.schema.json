@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_intent_backend_package_portfolio_report.v0.schema.json",
+  "title": "TUC Source Intent Backend Package Portfolio Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_count",
+    "artifact_policy",
+    "artifacts",
+    "backend_equivalence_contract",
+    "backend_equivalence_passed",
+    "backend_integration_contract",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "equivalence_comparison_metadata_digest",
+    "external_package_code_executed",
+    "external_plugin_execution",
+    "fallback_assignment_count",
+    "graph_name",
+    "hac_ir_contract",
+    "layout_conversion_count",
+    "metadata_contract",
+    "module_name",
+    "operation_families",
+    "output_contract",
+    "package_admission_contract",
+    "package_backend_sequence",
+    "package_digests",
+    "package_ids",
+    "physical_device_execution",
+    "portfolio_contract",
+    "proof_claim",
+    "proof_contract",
+    "proof_status",
+    "public_output_bundle_contract",
+    "public_output_names",
+    "raw_tensor_value_policy",
+    "raw_tensor_values_serialized",
+    "reference_correctness_contract",
+    "reference_correctness_passed",
+    "schema_version",
+    "source_boundary",
+    "source_intent_contract",
+    "source_intent_payload_serialized",
+    "source_text_executed",
+    "terminal_output_names",
+    "trusted_executor_registry",
+    "trusted_executor_sequence"
+  ],
+  "properties": {
+    "artifact_count": { "const": 10 },
+    "artifact_policy": { "const": "digest_only_source_and_values_omitted" },
+    "artifacts": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "prefixItems": [
+        { "$ref": "#/$defs/source_intent_module_artifact" },
+        { "$ref": "#/$defs/source_intent_metadata_artifact" },
+        { "$ref": "#/$defs/hac_ir_artifact" },
+        { "$ref": "#/$defs/external_systolic_artifact" },
+        { "$ref": "#/$defs/external_vector_artifact" },
+        { "$ref": "#/$defs/portfolio_artifact" },
+        { "$ref": "#/$defs/output_contract_artifact" },
+        { "$ref": "#/$defs/public_output_artifact" },
+        { "$ref": "#/$defs/reference_correctness_artifact" },
+        { "$ref": "#/$defs/backend_equivalence_artifact" }
+      ],
+      "items": false
+    },
+    "backend_equivalence_contract": { "const": "runtime_backend_equivalence.data_only.v0" },
+    "backend_equivalence_passed": { "const": true },
+    "backend_integration_contract": { "const": "backend_integration.data_only.v0" },
+    "blocked_claims": {
+      "const": [
+        "source_text_execution",
+        "general_source_parser",
+        "external_package_code_execution",
+        "native_backend_execution",
+        "physical_device_residency",
+        "native_performance_parity"
+      ]
+    },
+    "blocked_execution_surfaces": {
+      "const": [
+        "backend_plugin_discovery",
+        "device_access",
+        "dynamic_import",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "jit_execution",
+        "network_access",
+        "subprocess_execution"
+      ]
+    },
+    "equivalence_comparison_metadata_digest": { "$ref": "#/$defs/digest" },
+    "external_package_code_executed": { "const": false },
+    "external_plugin_execution": { "const": false },
+    "fallback_assignment_count": { "const": 0 },
+    "graph_name": { "const": "source_intent_backend_package_portfolio" },
+    "hac_ir_contract": { "const": "hac-ir.v0" },
+    "layout_conversion_count": { "const": 1 },
+    "metadata_contract": { "const": "source_intent_to_metadata.execution_free.v0" },
+    "module_name": { "const": "source_intent_backend_package_portfolio" },
+    "operation_families": { "const": ["matmul", "elementwise"] },
+    "output_contract": { "const": "runtime_output_contract.data_only.v0" },
+    "package_admission_contract": { "const": "backend_package_execution_admission.trusted_projection.v0" },
+    "package_backend_sequence": { "const": ["external-systolic", "external-vector"] },
+    "package_digests": {
+      "const": [
+        "sha256:806813974dfde16b46f694566d751b18780d5e43d8455467bf4e5d7ea38b452c",
+        "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee"
+      ]
+    },
+    "package_ids": {
+      "const": [
+        "external-systolic-reference-package",
+        "external-vector-reference-package"
+      ]
+    },
+    "physical_device_execution": { "const": false },
+    "portfolio_contract": { "const": "backend_package_execution_portfolio.trusted_projection.v0" },
+    "proof_claim": { "const": "source_intent_reaches_no_fallback_external_package_execution_with_equivalent_outputs" },
+    "proof_contract": { "const": "source_intent_backend_package_portfolio.e2e.v0" },
+    "proof_status": { "const": "PASS" },
+    "public_output_bundle_contract": { "const": "runtime_public_output_bundle.readonly_values.v0" },
+    "public_output_names": { "const": ["api_activated"] },
+    "raw_tensor_value_policy": { "const": "omitted_by_policy" },
+    "raw_tensor_values_serialized": { "const": false },
+    "reference_correctness_contract": { "const": "runtime_reference_correctness.data_only.v0" },
+    "reference_correctness_passed": { "const": true },
+    "schema_version": { "const": "tuc.source_intent_backend_package_portfolio_report.v0" },
+    "source_boundary": { "const": "source_intent_plain_data_to_external_package_portfolio" },
+    "source_intent_contract": { "const": "source_intent_ir.canonical.v0" },
+    "source_intent_payload_serialized": { "const": false },
+    "source_text_executed": { "const": false },
+    "terminal_output_names": { "const": ["activated"] },
+    "trusted_executor_registry": { "const": "trusted_runtime_executor_registry.v0" },
+    "trusted_executor_sequence": { "const": ["systolic-sim", "vector-sim"] }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "artifact_kind", "contract", "digest", "status"],
+      "properties": {
+        "artifact_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "artifact_kind": { "enum": ["json_report", "text_dump", "text_report"] },
+        "contract": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "digest": { "$ref": "#/$defs/digest" },
+        "status": { "const": "accepted" }
+      }
+    },
+    "source_intent_module_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "source_intent_module" }, "artifact_kind": { "const": "text_dump" }, "contract": { "const": "source_intent_ir.canonical.v0" } } }
+      ]
+    },
+    "source_intent_metadata_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "source_intent_metadata" }, "artifact_kind": { "const": "text_report" }, "contract": { "const": "source_intent_to_metadata.execution_free.v0" } } }
+      ]
+    },
+    "hac_ir_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "hac_ir" }, "artifact_kind": { "const": "text_dump" }, "contract": { "const": "hac-ir.v0" } } }
+      ]
+    },
+    "external_systolic_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "external_systolic_integration" }, "artifact_kind": { "const": "json_report" }, "contract": { "const": "backend_integration.data_only.v0" } } }
+      ]
+    },
+    "external_vector_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "external_vector_integration" }, "artifact_kind": { "const": "json_report" }, "contract": { "const": "backend_integration.data_only.v0" } } }
+      ]
+    },
+    "portfolio_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "package_portfolio_execution" }, "artifact_kind": { "const": "json_report" }, "contract": { "const": "backend_package_execution_portfolio.trusted_projection.v0" } } }
+      ]
+    },
+    "output_contract_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "public_output_contract" }, "artifact_kind": { "const": "json_report" }, "contract": { "const": "runtime_output_contract.data_only.v0" } } }
+      ]
+    },
+    "public_output_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "public_output_bundle" }, "artifact_kind": { "const": "json_report" }, "contract": { "const": "runtime_public_output_bundle.readonly_values.v0" } } }
+      ]
+    },
+    "reference_correctness_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "reference_correctness" }, "artifact_kind": { "const": "json_report" }, "contract": { "const": "runtime_reference_correctness.data_only.v0" } } }
+      ]
+    },
+    "backend_equivalence_artifact": {
+      "allOf": [
+        { "$ref": "#/$defs/artifact" },
+        { "properties": { "artifact_id": { "const": "backend_equivalence" }, "artifact_kind": { "const": "json_report" }, "contract": { "const": "runtime_backend_equivalence.data_only.v0" } } }
+      ]
+    }
+  }
+}

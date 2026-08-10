@@ -404,6 +404,25 @@ composition decision is recorded by
 This is trusted semantic composition, not package implementation, plugin,
 native artifact, or physical device execution.
 
+## Source Intent To Package Portfolio
+
+The joined vertical proof is documented by
+`docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md` and runs through
+`examples/source_intent_backend_package_portfolio.py`. It starts from bounded
+Source Intent plain data, compiles against both exact external package
+capabilities, forbids fallback, projects to trusted simulators, and requires
+public-output closure, independent reference correctness, and backend
+equivalence.
+
+Its fail-closed public contract is
+`schemas/source_intent_backend_package_portfolio_report.v0.schema.json`, the
+deterministic report is
+`tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+and the trust decision is recorded by
+`rfcs/0285-source-intent-backend-package-portfolio.md`. The proof does not add
+source execution, package implementation execution, plugin discovery, native
+artifacts, or device access to Backend API v0.1.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:

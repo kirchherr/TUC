@@ -1,5 +1,20 @@
 # Roadmap Status
 
+- [Source Intent Backend Package Portfolio](SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md)
+  now joins the neutral frontend and external backend-author paths in one live
+  no-fallback execution proof at
+  `examples/source_intent_backend_package_portfolio.py`. Its fail-closed schema
+  is `schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
+  deterministic golden evidence is
+  `tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+  and the decision is recorded in
+  `rfcs/0285-source-intent-backend-package-portfolio.md`. The path preserves
+  `external-systolic -> external-vector`, projects to
+  `systolic-sim -> vector-sim`, retains `blocked -> row_major`, resolves the
+  Source Intent public return, and requires reference correctness plus backend
+  equivalence while source text, package code, plugins, native artifacts, and
+  physical devices remain blocked.
+
 - [Source Intent Mixed Runtime Public Proof Bundle](SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)
   now provides the practical Source Intent to mixed-runtime proof at
   `examples/source_intent_mixed_runtime_public_proof_bundle.py`, with schema
@@ -1476,6 +1491,13 @@ Current focus:
   `rfcs/0284-multi-package-execution-portfolio.md`.
 - Preserve exact package-set admission, disjoint operation authority, explicit
   layout conversion, and zero fallback assignments in this v0 proof.
+- Keep Source Intent Backend Package Portfolio passing as the first joined
+  frontend-to-external-capability proof. Its complete evidence set is
+  `docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md`,
+  `examples/source_intent_backend_package_portfolio.py`,
+  `schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
+  `tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+  and `rfcs/0285-source-intent-backend-package-portfolio.md`.
 
 - Strengthen backend manifests, registry, diagnostics, and conformance fixtures.
 - Keep backend onboarding capability-first and execution-free.

@@ -400,6 +400,24 @@ This materially advances Milestones 3 and 4 but does not close the native
 target: external package code, GPU kernels, specialized physical devices, and
 native performance remain unexecuted and unproven.
 
+The Source Intent Backend Package Portfolio now closes the frontend-to-package
+gap in the same milestone:
+
+```text
+Source Intent -> HAC-IR -> external package portfolio
+              -> trusted heterogeneous execution
+              -> public outputs + reference correctness + equivalence
+```
+
+It runs from `examples/source_intent_backend_package_portfolio.py` and is
+documented by `docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md`, with
+`schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
+`tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+and `rfcs/0285-source-intent-backend-package-portfolio.md`. This is the first
+single live proof connecting neutral frontend intent to independently declared
+heterogeneous capability ownership without fallback or external code
+execution.
+
 ## Strategic Risks
 
 ### Risk A: Becoming Another Compiler
