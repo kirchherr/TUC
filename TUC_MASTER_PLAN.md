@@ -360,26 +360,45 @@ Specialized Backend
 
 working together.
 
-Current controlled advance: Backend Package Execution Admission proves the
-end-to-end transition from external capability data to a digest-bound trusted
-executor projection. The proof source plan is `reference-cpu -> external-vector`;
-the executable projection is `reference-cpu -> vector-sim`, and Runtime Backend
-Equivalence passes against the all-CPU baseline.
-
-Evidence:
-
+Backend Package Execution Admission first proved the transition from one
+external capability package to a digest-bound trusted executor projection. Its
+historical evidence remains
 `docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md`,
 `examples/backend_package_execution_proof.py`,
 `schemas/backend_package_execution_admission_report.v0.schema.json`,
 `schemas/backend_package_execution_proof_report.v0.schema.json`,
 `tests/golden/backend_package_execution/admission_report.json`,
 `tests/golden/backend_package_execution/proof_report.json`, and
-`rfcs/0283-backend-package-execution-admission.md`
-.
+`rfcs/0283-backend-package-execution-admission.md`.
 
-This materially advances Milestone 4 but does not close its native target:
-external package code, GPU kernels, specialized physical devices, and native
-performance remain unexecuted and unproven.
+Backend Package Execution Portfolio now proves the stronger no-fallback
+composition path:
+
+```text
+external-systolic -> external-vector
+        |                  |
+        v                  v
+  systolic-sim ------> vector-sim
+```
+
+The package boundary is exact and data-only, the intermediate
+`blocked -> row_major` layout conversion remains explicit, execution uses only
+fixed trusted simulators, and Runtime Backend Equivalence passes against the
+all-CPU baseline.
+
+Evidence:
+
+`docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
+`examples/backend_package_execution_portfolio.py`,
+`examples/backend_packages/external_systolic.v0.json`,
+`schemas/backend_package_execution_portfolio_report.v0.schema.json`,
+`tests/golden/backend_integration_package/external_systolic_report.json`,
+`tests/golden/backend_package_execution_portfolio/proof_report.json`, and
+`rfcs/0284-multi-package-execution-portfolio.md`.
+
+This materially advances Milestones 3 and 4 but does not close the native
+target: external package code, GPU kernels, specialized physical devices, and
+native performance remain unexecuted and unproven.
 
 ## Strategic Risks
 

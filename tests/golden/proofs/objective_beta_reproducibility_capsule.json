@@ -15,13 +15,13 @@
   ],
   "capsule_contract": "objective_beta.reproducibility_capsule.digest_manifest.v0",
   "capsule_id": "objective_beta_reproducibility_capsule",
-  "capsule_metadata_digest": "fea0ccc8ccdec7f058ad04258fabdae4f816a418f3cc44e1b714ea984ed8d3d5",
+  "capsule_metadata_digest": "81eb220fbfae8f7efc2349529290ef8cb5baea36133545a45594e885cc1ffc79",
   "capsule_status": "reproducible_from_repository_goldens",
-  "claim_digest": "55d087c07342ace55b55152a8f775430bb6a5f958abb71f88d81b4c3ab6a7b54",
-  "claim_gate_digest": "2c5ebffa5a228d296e34f77b4d54c898c1564acf8e2b7d2c8a0c4abd98eee631",
+  "claim_digest": "c3abd742bffa58397fb5881a0e36359c9e9d082dcfa84a3552c51d93f15be146",
+  "claim_gate_digest": "e10e11744240f690e5228e7b5ce9358679e7bee14d40639912a820b89d3364cc",
   "claim_gate_id": "objective_beta_research_claim_gate",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "3733b49f12a4cd04fd3545a3a2154bb5d049241165f43f2fa1bf8d29906d402c",
+  "claim_metadata_digest": "d526a06a609498d5f89d08cc341b98fe5f2c8f25442555908b5ec06587edc13a",
   "evidence": [
     {
       "artifact_id": "objective_alpha_research_claim_gate",
@@ -54,14 +54,14 @@
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "content_type": "application/json",
-      "digest": "29887c43b7646aabc3cde864be9fb4b099d8034cd73dd42d54189135650db932",
+      "digest": "b74d256fb04e4fe7daa3764352445d8b68001a91907a26d1f3499432d8be9735",
       "role": "fail_closed_admission_readiness",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_maintainer_approval_request",
       "content_type": "application/json",
-      "digest": "8acad0b2fc08b751f555e12ec452f9110c37f63b34e187868c4f943ec17da1e3",
+      "digest": "6a34535b4d041a761a8c399782dd09f92f68cd7dd3011dc8a03988bd6244db49",
       "role": "external_review_request",
       "source_free": true
     },
@@ -75,14 +75,14 @@
     {
       "artifact_id": "objective_beta_research_claim",
       "content_type": "application/json",
-      "digest": "55d087c07342ace55b55152a8f775430bb6a5f958abb71f88d81b4c3ab6a7b54",
+      "digest": "c3abd742bffa58397fb5881a0e36359c9e9d082dcfa84a3552c51d93f15be146",
       "role": "research_claim",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim_gate",
       "content_type": "application/json",
-      "digest": "2c5ebffa5a228d296e34f77b4d54c898c1564acf8e2b7d2c8a0c4abd98eee631",
+      "digest": "e10e11744240f690e5228e7b5ce9358679e7bee14d40639912a820b89d3364cc",
       "role": "research_claim_gate",
       "source_free": true
     }

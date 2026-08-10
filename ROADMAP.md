@@ -619,7 +619,7 @@ Completed evidence:
 - Golden compiler decision-report fixtures cover the softmax proof graph's
   explicit fallback and rejected backend support evidence.
 
-Next work:
+Completed controlled execution evidence:
 
 - Backend Package Execution Admission binds the exact portable package and
   capability digests to a pre-registered trusted executor, projects
@@ -633,9 +633,19 @@ Next work:
   `tests/golden/backend_package_execution/admission_report.json`,
   `tests/golden/backend_package_execution/proof_report.json`, and
   `rfcs/0283-backend-package-execution-admission.md`.
+- Backend Package Execution Portfolio composes two exact data-only packages,
+  plans `external-systolic -> external-vector` with no fallback, retains the
+  `blocked -> row_major` conversion, projects to
+  `systolic-sim -> vector-sim`, and requires CPU-baseline equivalence. Evidence:
+  `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
+  `examples/backend_package_execution_portfolio.py`,
+  `examples/backend_packages/external_systolic.v0.json`,
+  `schemas/backend_package_execution_portfolio_report.v0.schema.json`,
+  `tests/golden/backend_integration_package/external_systolic_report.json`,
+  `tests/golden/backend_package_execution_portfolio/proof_report.json`, and
+  `rfcs/0284-multi-package-execution-portfolio.md`.
 - External plugin code, physical devices, and native artifacts remain blocked;
   this is trusted reference projection rather than native backend execution.
-
 
 - Add future decision-report fixtures only when new proof graph families or
   capability claims introduce new backend-selection evidence.

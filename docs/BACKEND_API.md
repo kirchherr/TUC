@@ -384,6 +384,26 @@ in-repository trusted executor after operation, memory-domain, layout, and
 executor-contract checks. It never imports or executes package code, and it
 does not grant general plugin or native-backend admission.
 
+## Multi-Package Execution Portfolio
+
+The no-fallback composition proof is documented by
+`docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md` and runs through
+`examples/backend_package_execution_portfolio.py`. It combines the package at
+`examples/backend_packages/external_systolic.v0.json` with the existing vector
+package, projects their complete source plan to fixed trusted executors, retains
+explicit layout-conversion evidence, and requires reference equivalence.
+
+The fail-closed report contract is
+`schemas/backend_package_execution_portfolio_report.v0.schema.json`.
+Deterministic package and portfolio evidence is frozen at
+`tests/golden/backend_integration_package/external_systolic_report.json` and
+`tests/golden/backend_package_execution_portfolio/proof_report.json`. The exact
+composition decision is recorded by
+`rfcs/0284-multi-package-execution-portfolio.md`.
+
+This is trusted semantic composition, not package implementation, plugin,
+native artifact, or physical device execution.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:

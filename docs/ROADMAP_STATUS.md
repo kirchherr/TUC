@@ -1465,6 +1465,17 @@ Current focus:
   `rfcs/0283-backend-package-execution-admission.md`.
 - Preserve both source and projected plan identities; do not describe trusted
   reference projection as external plugin, native, or physical execution.
+- Keep Backend Package Execution Portfolio passing as the no-fallback,
+  multi-package composition proof. Its complete evidence set is
+  `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
+  `examples/backend_package_execution_portfolio.py`,
+  `examples/backend_packages/external_systolic.v0.json`,
+  `schemas/backend_package_execution_portfolio_report.v0.schema.json`,
+  `tests/golden/backend_integration_package/external_systolic_report.json`,
+  `tests/golden/backend_package_execution_portfolio/proof_report.json`, and
+  `rfcs/0284-multi-package-execution-portfolio.md`.
+- Preserve exact package-set admission, disjoint operation authority, explicit
+  layout conversion, and zero fallback assignments in this v0 proof.
 
 - Strengthen backend manifests, registry, diagnostics, and conformance fixtures.
 - Keep backend onboarding capability-first and execution-free.

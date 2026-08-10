@@ -49,7 +49,7 @@
     "no_native_performance_claim"
   ],
   "schema_version": "tuc.objective_alpha_evidence_extension_policy_report.v0",
-  "stable_bundle_metadata_digest": "a163bccd01c6f2f9dd03fa9f0340f4c33e9d0e19b46ef520f2dc647aa2b5ed07",
+  "stable_bundle_metadata_digest": "828ecd2d2b17a7fde793db6ec81fd2f3f56bce2510ca55bdfaf349c0345baad0",
   "stable_entry_capacity": 16,
   "stable_entry_count": 16,
   "stable_entrypoint": "objective_alpha_public_proof_bundle",

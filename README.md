@@ -754,20 +754,33 @@ are documented in `docs/BACKEND_INTEGRATION_PACKAGE.md`, specified by
 accepted by `rfcs/0282-backend-integration-package.md`. No backend code is
 loaded and a passing report grants no execution permission.
 
-The next controlled step is Backend Package Execution Admission v0. The
-digest-bound proof in `examples/backend_package_execution_proof.py` preserves
-the source plan `reference-cpu -> external-vector`, projects it to the fixed
-trusted executor sequence `reference-cpu -> vector-sim`, executes it, and
-requires Backend Equivalence against the CPU baseline. The complete contract
-is documented by
+Backend Package Execution Admission v0 provides the first controlled bridge.
+The digest-bound proof in `examples/backend_package_execution_proof.py`
+preserves `reference-cpu -> external-vector`, projects it to
+`reference-cpu -> vector-sim`, executes it, and requires Backend Equivalence.
+Its contract is documented by
 `docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md`,
 `schemas/backend_package_execution_admission_report.v0.schema.json`,
 `schemas/backend_package_execution_proof_report.v0.schema.json`,
 `tests/golden/backend_package_execution/admission_report.json`,
 `tests/golden/backend_package_execution/proof_report.json`, and
-`rfcs/0283-backend-package-execution-admission.md`
-.
-The package implementation, external plugins, native artifacts, and physical
+`rfcs/0283-backend-package-execution-admission.md`.
+
+Backend Package Execution Portfolio v0 now removes the implicit fallback from
+the candidate path. `examples/backend_package_execution_portfolio.py` composes
+the existing vector package with
+`examples/backend_packages/external_systolic.v0.json`, plans
+`external-systolic -> external-vector`, retains the explicit
+`blocked -> row_major` layout conversion, projects to
+`systolic-sim -> vector-sim`, and passes equivalence against `reference-cpu`.
+The complete evidence set is
+`docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
+`schemas/backend_package_execution_portfolio_report.v0.schema.json`,
+`tests/golden/backend_integration_package/external_systolic_report.json`,
+`tests/golden/backend_package_execution_portfolio/proof_report.json`, and
+`rfcs/0284-multi-package-execution-portfolio.md`.
+
+Package implementations, external plugins, native artifacts, and physical
 devices remain unexecuted.
 
 Current plugin lifecycle boundary:

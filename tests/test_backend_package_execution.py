@@ -308,16 +308,24 @@ def test_backend_package_execution_requires_plain_input_mapping() -> None:
 def test_backend_package_execution_binding_is_digest_pinned() -> None:
     bindings = trusted_backend_package_execution_bindings()
 
-    assert len(bindings) == 1
-    binding = bindings[0]
-    assert binding.package_id == "external-vector-reference-package"
-    assert binding.package_digest == (
+    assert len(bindings) == 2
+    by_id = {binding.package_id: binding for binding in bindings}
+    vector = by_id["external-vector-reference-package"]
+    assert vector.package_digest == (
         "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee"
     )
-    assert binding.capability_manifest_digest == (
+    assert vector.capability_manifest_digest == (
         "sha256:ca1de79c1935a08617343687a06816821b77e4837ac7ac8430998c746bd60d3a"
     )
-    assert binding.trusted_executor_backend == "vector-sim"
+    assert vector.trusted_executor_backend == "vector-sim"
+    systolic = by_id["external-systolic-reference-package"]
+    assert systolic.package_digest == (
+        "sha256:806813974dfde16b46f694566d751b18780d5e43d8455467bf4e5d7ea38b452c"
+    )
+    assert systolic.capability_manifest_digest == (
+        "sha256:7a282b30b775cca5b826019ee1652ce221a85eef6878c7266febc2202293bbf0"
+    )
+    assert systolic.trusted_executor_backend == "systolic-sim"
 
 
 @pytest.mark.parametrize("schema_path", (ADMISSION_SCHEMA, PROOF_SCHEMA))

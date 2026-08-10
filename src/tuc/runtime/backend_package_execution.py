@@ -19,7 +19,10 @@ from tuc.backends.integration_package import (
     BackendIntegrationPackageReport,
     evaluate_backend_integration_package,
 )
-from tuc.backends.simulator import VectorSimulatorBackend
+from tuc.backends.simulator import (
+    SystolicArraySimulatorBackend,
+    VectorSimulatorBackend,
+)
 from tuc.ir.memory import LayoutKind, MemoryDomainKind
 from tuc.ir.model import ComputeGraph, OperationKind
 from tuc.runtime.backend_equivalence import (
@@ -416,6 +419,26 @@ def trusted_backend_package_execution_bindings(
     """Return the fixed maintainer-owned package execution allowlist."""
 
     bindings = (
+        TrustedBackendPackageExecutionBinding(
+            binding_id="external_systolic_reference_projection_v0",
+            package_id="external-systolic-reference-package",
+            package_digest=(
+                "sha256:806813974dfde16b46f694566d751b18780d5e43d8455467bf4e5d7ea38b452c"
+            ),
+            capability_manifest_digest=(
+                "sha256:7a282b30b775cca5b826019ee1652ce221a85eef6878c7266febc2202293bbf0"
+            ),
+            package_backend_name="external-systolic",
+            trusted_executor_backend="systolic-sim",
+            trusted_executor_contract_digest=(
+                "sha256:8fa2768b1531ae842d95e05ed6a2c5587516716bef6b50aa21894214d6b7f472"
+            ),
+            allowed_operations=(OperationKind.MATMUL,),
+            expected_memory_domain=MemoryDomainKind.DEVICE_SRAM,
+            expected_supported_layouts=(LayoutKind.ROW_MAJOR,),
+            expected_produced_layouts=(LayoutKind.BLOCKED,),
+            approval_rfc_id="rfc_0284_multi_package_execution_portfolio",
+        ),
         TrustedBackendPackageExecutionBinding(
             binding_id="external_vector_reference_projection_v0",
             package_id="external-vector-reference-package",
@@ -930,6 +953,8 @@ def _binding_for_package_id(
 def _trusted_capability_for_executor(
     executor_name: str,
 ) -> BackendCapability | None:
+    if executor_name == "systolic-sim":
+        return SystolicArraySimulatorBackend().capability
     if executor_name == "vector-sim":
         return VectorSimulatorBackend().capability
     return None
