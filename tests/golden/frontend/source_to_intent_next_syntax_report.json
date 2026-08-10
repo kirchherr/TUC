@@ -39,7 +39,7 @@
       "return_count": 2,
       "source_bytes": 266,
       "source_digest": "sha256:7d87417bf11dfe2935fff23e75623d3868a3bd0bf53d7cdd818be8bdff07231a",
-      "source_intent_payload_digest": "sha256:0fb1e13848509219a969af0473e0400e2100bf2a391169e91bd3eb586a0246f6",
+      "source_intent_payload_digest": "sha256:9a59d358057f910a119283ea6c7bbeec5a359f22553b7af0457cd6e063741aea",
       "source_name": "next_syntax_branched_multi_return",
       "syntax_features": [
         "branched_dataflow",

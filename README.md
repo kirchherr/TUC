@@ -137,6 +137,11 @@ See [Triton Research Backend Package Portfolio](docs/TRITON_RESEARCH_BACKEND_PAC
 Schema: `schemas/triton_research_backend_package_portfolio_report.v0.schema.json`.
 Golden: `tests/golden/frontend/triton_research_backend_package_portfolio_report.json`.
 RFC: `rfcs/0286-triton-research-backend-package-portfolio.md`.
+Its exact `tl.where(x > 0, x, 0)` slice now preserves ReLU value semantics
+through Source Intent, Metadata, HAC-IR, trusted execution, and independent
+reference evidence; see
+[Source Intent Elementwise Semantics](docs/SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md)
+and `rfcs/0287-source-intent-elementwise-semantics.md`.
 
 ## Current Proofs
 

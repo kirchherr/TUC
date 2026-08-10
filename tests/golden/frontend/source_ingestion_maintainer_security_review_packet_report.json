@@ -23,7 +23,7 @@
     "maintainer_security_review_approval"
   ],
   "remaining_external_evidence_count": 1,
-  "report_digest": "sha256:8fad9bf828fde5e5f06ebb6ad0465aae2b004e8e49750e020a03618c671ce3b7",
+  "report_digest": "sha256:d098a237d43d60ea08d57bf5d990d3983f141d28b4ab0dc648f7b7e9e693764b",
   "required_check_count": 16,
   "required_checks": [
     "bounded_source_buffer_reviewed",
@@ -86,7 +86,7 @@
     },
     {
       "contract": "source_to_intent_plain_data_output_golden_for_admitted_slice.data_only.v0",
-      "digest": "sha256:249c1409fc1884339770d67029992ca0dc67de099bf4091d940e59543d0b3dcb",
+      "digest": "sha256:d12dc4765799564f2422f1fc8e64588c35c4769427fde894858334cfdbf2ded4",
       "evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice",
       "reviewable": true,
       "source_free": true,
@@ -94,7 +94,7 @@
     },
     {
       "contract": "ci_replay_for_admitted_slice.ci.v0",
-      "digest": "sha256:caccf0f6ea18fd354099440d6c5259d1236730a11d16af1debf7b6d2be29fafd",
+      "digest": "sha256:21e3a634c9482f7c16cb9b0590ad2bfbfe1843ba8bfae94abe7674e660e500bc",
       "evidence_id": "ci_replay_for_admitted_slice",
       "reviewable": true,
       "source_free": true,
@@ -110,7 +110,7 @@
     },
     {
       "contract": "real_triton_first_slice_plan.data_only.v0",
-      "digest": "sha256:5a05ca8a5df92d73cd71ca93099037356ddbe62c69924e4f41e1640ce149a773",
+      "digest": "sha256:eebf2312fb5dffc8116bcf5387401cb0e6ed280c8098147b8d08350780b3c4d0",
       "evidence_id": "real_triton_first_admissible_slice_plan",
       "reviewable": true,
       "source_free": true,

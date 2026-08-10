@@ -149,7 +149,7 @@
     "research_module_softmax_reduction": 2
   },
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:ecb91b9de5dc9558b12dc71ea2bd55c7f5c34174f054172bb37ce38ace6eb367",
+  "runtime_matrix_digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_coverage_policy_report.v0",
   "source_boundary": "triton_module_source_buffer_to_runtime_via_research_kernel_ingress",
   "status": "PASS",

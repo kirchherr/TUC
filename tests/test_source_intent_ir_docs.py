@@ -75,6 +75,28 @@ def test_source_intent_metadata_doc_preserves_adapter_boundary() -> None:
         assert expected in text
 
 
+def test_source_intent_elementwise_semantics_are_explicit_and_fail_closed() -> None:
+    text = Path("docs/SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md").read_text(
+        encoding="utf-8"
+    )
+    rfc = Path("rfcs/0287-source-intent-elementwise-semantics.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "elementwise_kind",
+        "gelu`, `identity`, `relu",
+        "tl.where(x > 0, x, 0)",
+        "tl.where(x > 0, x, x)",
+        "This is not general `tl.where` support",
+        "Unknown semantics are rejected",
+        "Production source ingestion remains blocked",
+    ):
+        assert expected in text
+    assert "proof-validity defect" in rfc
+    assert "Failing closed" in rfc
+
+
 def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
     text = Path("docs/SOURCE_INTENT_INTAKE.md").read_text(encoding="utf-8")
 

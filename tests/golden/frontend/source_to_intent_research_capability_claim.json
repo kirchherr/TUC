@@ -36,91 +36,91 @@
       "artifact_id": "source_to_intent_research_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_proof_bundle.review.v0",
-      "digest": "sha256:c19bfa22e9a1690ec3e638c75bbb3596ae61001f9dec4d0d7d20fbd8949c81d0",
+      "digest": "sha256:03872b2b95fa6d66c37118cf6b3490a6c83cf92f1a020a41674f40d247d4c601",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:0cae050c86d871dcc029bb860a591b64b2d36b882c0cbccaa6e2dbc49f5e71cd",
+      "digest": "sha256:43fd2d1d912b0af77f5df353adc7fc982c76977f3390288b0984d2b3d71e6f02",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
+      "digest": "sha256:afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:b37eeb46180c24b3d69123ebdb28e89087997b0f4e5ff2349720f0fdd59204e8",
+      "digest": "sha256:edb449d918cbe5977b923bcab35c666e1f3801ce5fbcbf4fc557a1c9b9048d1a",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_matrix",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-      "digest": "sha256:ecb91b9de5dc9558b12dc71ea2bd55c7f5c34174f054172bb37ce38ace6eb367",
+      "digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_step_trace",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
-      "digest": "sha256:0bbfe74ffac5de228b7e7d1c6722a191fe18ce2a0249aef7a8e01be566b7a5cf",
+      "digest": "sha256:642defa2dde723a98ddcb781e7f31cf01ab8e8b0f07f7d971a42a94eacd55ff1",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0",
-      "digest": "sha256:738cc349be1c940b1b818a42aefd6e11ba677a20df1499656dd8de2a57899ac0",
+      "digest": "sha256:11742c03cf15a2599682ea08289a0868c98b66853de5bb08d2d0a32c2d3ac53f",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_output_closure_index.review.v0",
-      "digest": "sha256:eb181c07883bc53f267f997801b4685d78e8ffad8a875bad25f6403237c297d6",
+      "digest": "sha256:b99b7581b7f193de8c4043950c554fd2d200093c7c99abce8115722df25f07fe",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.review.v0",
-      "digest": "sha256:4a8824c10ae8216d0caa3a0605fa3ed3134ac009d72afc56a515666804f373d8",
+      "digest": "sha256:cb0d0ba368961d6d515dfa668b7f2b2e22d9d8e496dce54a13838af32f011c30",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
-      "digest": "sha256:370e95228e734dd9fccb6ed62ef181cd7d17de730a768b82744677f80361ac6e",
+      "digest": "sha256:865c3b899b09975e73005e6c8ad5ee594fb4f6601b8aadbf7948f4f09e9aa9ea",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
-      "digest": "sha256:7ec396a324d58d9e4eb05830a26731e6092d9fbc36ed05f317b6ead03147ae28",
+      "digest": "sha256:9267b39546c800c68c701acbee9efa3e80109bf4769e62cf0c45793bd6a0b2a1",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
-      "digest": "sha256:e11d2f21ce1ed1df2cd765a6bf9ad2de02e416dd1b35b4b1c8d9a4e837f7dd75",
+      "digest": "sha256:4a81e92b00569a56b9753914311b0908b4ea9d98071146df5feec2990d30e83a",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_runtime_backend_alignment.trusted_executor.v0",
-      "digest": "sha256:a0af8abf7d1d93ce7298a9857fbc575fd7c2b7f0725f62c740a0b7b5d45c1625",
+      "digest": "sha256:258aa40f984633639b5660649b148a9f3899a3867a4d6a8b6ef3c3f1e8678818",
       "status": "accepted"
     }
   ],

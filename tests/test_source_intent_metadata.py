@@ -74,6 +74,35 @@ def test_source_intent_metadata_conversion_preserves_axis_attributes() -> None:
     assert compiled.partition_plan.assignments
 
 
+def test_source_intent_metadata_maps_elementwise_semantics_to_runtime_kernel() -> None:
+    module = source_intent_from_mapping(
+        {
+            "name": "source_intent_relu",
+            "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+            "tensors": [
+                {"name": "x", "shape": [4, 8]},
+                {"name": "activated", "shape": [4, 8]},
+            ],
+            "operations": [
+                {
+                    "name": "activated",
+                    "family": "elementwise",
+                    "inputs": ["x"],
+                    "outputs": ["activated"],
+                    "attributes": {"elementwise_kind": "relu"},
+                }
+            ],
+        }
+    )
+
+    metadata = source_intent_to_triton_metadata(module)
+    graph = metadata.to_compute_graph()
+
+    assert module.operations[0].attributes == {"elementwise_kind": "relu"}
+    assert metadata.operations[0].attributes == {"kernel": "relu"}
+    assert graph.operations[0].attributes["kernel"] == "relu"
+
+
 def test_source_intent_metadata_conversion_rejects_non_module() -> None:
     with pytest.raises(TypeError, match="SourceIntentModule"):
         source_intent_to_triton_metadata("def kernel(): pass")  # type: ignore[arg-type]

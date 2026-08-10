@@ -53,7 +53,7 @@
   "default_parser_status": "default_parser_blocked",
   "direct_triton_source_ingestion": false,
   "execution_bridge_contract": "source_to_intent_research_execution_bridge.explicit.v0",
-  "execution_bridge_digest": "sha256:ec03eec65c3e1334066e213ff07c6038c897bb6c161fcc4e7c35ad0038f3f4cd",
+  "execution_bridge_digest": "sha256:9aa34617f9e3cc805bc8de53375ef8e15c6a0edae1681976d90f410f58e1bcd6",
   "input_policy": "accepted_research_parser_results_only",
   "parser_sources": [
     "research_matmul_elementwise",

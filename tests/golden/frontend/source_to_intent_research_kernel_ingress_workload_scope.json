@@ -248,7 +248,7 @@
   ],
   "source_boundary": "kernel_ingress_shape_profile_evidence_to_workload_scope_review",
   "source_evidence_contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
-  "source_evidence_digest": "sha256:7ec396a324d58d9e4eb05830a26731e6092d9fbc36ed05f317b6ead03147ae28",
+  "source_evidence_digest": "sha256:9267b39546c800c68c701acbee9efa3e80109bf4769e62cf0c45793bd6a0b2a1",
   "source_schema_version": "tuc.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles_report.v0",
   "status": "PASS",
   "trusted_runtime_backends": [

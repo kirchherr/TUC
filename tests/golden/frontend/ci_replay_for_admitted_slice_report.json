@@ -64,7 +64,7 @@
     },
     {
       "contract": "source_to_intent_plain_data_output_golden_for_admitted_slice.data_only.v0",
-      "digest": "sha256:9efd554d0368fa117f9ce1d9b6e3d7fdad51b58c07b28ed7acb7e558a920c207",
+      "digest": "sha256:80461795a7df91ccb17bc2d3d78546222a95c7b0338be8c5eaea2143abf76aec",
       "evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice",
       "replayed": true,
       "source_free": true,
@@ -72,7 +72,7 @@
     }
   ],
   "replayed_evidence_count": 5,
-  "report_digest": "sha256:6a5d87bb8352c8ef40678e8dfc6d1cbb1276de05231afe612b1939cad0fbb89a",
+  "report_digest": "sha256:ce1bb8d125116650408048821c616695fa5e923b4793d91dc363205a7b746910",
   "required_control_count": 17,
   "required_controls": [
     "github_actions_permissions_contents_read",

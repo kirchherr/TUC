@@ -102,7 +102,7 @@
   "kernel_ingress_conformance_gate_contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
   "kernel_ingress_conformance_gate_digest": "sha256:2eb76bb53e517e7cbc7dd547b90c41c4fd969216e3579d734c8c2e1dbd5e0e96",
   "kernel_ingress_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
-  "kernel_ingress_digest": "sha256:37e3908582971511d784103074ef77490457bc54b96586add1479eb84195c520",
+  "kernel_ingress_digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
   "kernel_names": [
     "matmul_elementwise",
     "softmax_reduction",

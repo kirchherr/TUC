@@ -40,7 +40,7 @@
       "parser_contract": "source_to_intent_research_parser.execution_free.v0",
       "parser_output_policy": "source_intent.v0_plain_data_only",
       "parser_status": "research_explicit_only",
-      "plain_data_digest": "sha256:20b83d9aebaf4b231ccb37c55171faef3ce258efb6fb0d8df422108fe1a7bb4f",
+      "plain_data_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
       "public_returns": [
         "y"
       ],
@@ -92,7 +92,7 @@
   "output_policy": "source_intent.v0_plain_data_only",
   "plain_data_schema_version": "tuc.source_to_intent_plain_data_output_golden_for_admitted_slice_plain_data.v0",
   "raw_source_policy": "omitted_by_policy",
-  "report_digest": "sha256:9efd554d0368fa117f9ce1d9b6e3d7fdad51b58c07b28ed7acb7e558a920c207",
+  "report_digest": "sha256:80461795a7df91ccb17bc2d3d78546222a95c7b0338be8c5eaea2143abf76aec",
   "required_control_count": 17,
   "required_controls": [
     "bounded_source_buffer_api_bound",

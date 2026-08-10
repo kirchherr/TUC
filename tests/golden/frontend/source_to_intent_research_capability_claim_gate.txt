@@ -2,7 +2,7 @@ source_to_intent.research_capability_claim_gate @source_to_intent_research_capab
   gate_contract = "source_to_intent_research_capability_claim_gate.ci.v0"
   claim_contract = "source_to_intent_research_capability_claim.review.v0"
   capability_claim = "passed"
-  capability_claim_digest = "sha256:96cc40a4499a70dddb705a674244e459432898cfe192cbe7f0611a02c7f3e6ac"
+  capability_claim_digest = "sha256:0035bab1d50ecba55f0f095533ed8b5a0933de323d2580b09744f40d58574f0d"
   claim_id = "bounded_universal_compute_research_slice"
   claim_scope = "accepted_source_to_intent_kernel_ingress_mvp_pipeline"
   claim_status = "supported_for_current_research_scope"

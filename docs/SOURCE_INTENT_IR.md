@@ -24,7 +24,8 @@ The v0 contract accepts only:
 - bounded tensor names, shapes, and dtypes
 - operation families: `matmul`, `elementwise`, `reduction`, `softmax`
 - symbolic input and output tensor references
-- neutral operation attributes: `axis` for `reduction` and `softmax`
+- neutral operation attributes: `axis` for `reduction` and `softmax`, plus
+  closed `elementwise_kind` value semantics for `elementwise`
 - neutral frontend hints: `prefer_linear_accelerator`, `prefer_sparsity`,
   `robust_to_noise`, and `max_error_budget`
 - deterministic dumps for review
@@ -77,6 +78,9 @@ Rejected examples include:
 Neutral operation intent belongs here. Hardware capability and placement
 evidence belong in backend capability data, HS-IR, runtime plans, and compiler
 decision reports.
+
+[Source Intent Elementwise Semantics](SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md)
+defines the fixed semantic enum and its fail-closed source-parser mapping.
 
 ## Relationship To Source Preflight
 

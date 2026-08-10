@@ -17,7 +17,7 @@
       "artifact_id": "real_triton_first_admissible_slice_plan",
       "artifact_kind": "json_report",
       "contract": "real_triton_first_slice_plan.data_only.v0",
-      "digest": "sha256:e1185ee2d6a6cd98b2a7090bf3103eac18809bcb9862dce8ef0263713613bcec",
+      "digest": "sha256:d49a1e82b4fd0be6bb0ff30d268fb6199327aef14517c7331e3b6614277178d1",
       "source_free": true,
       "status": "blocked_until_admitting_source_ingestion_evidence",
       "supports_portfolio": true
@@ -26,7 +26,7 @@
       "artifact_id": "source_ingestion_maintainer_security_review_packet",
       "artifact_kind": "json_report",
       "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
-      "digest": "sha256:37e7c1904c8b7e665576f1eba58b2ed2229cd19320865bf6825de8ed78a0a6fd",
+      "digest": "sha256:e4f4850c476cf18f11376df89415d4df3d60f0c659d756013ff69d11e2be055d",
       "source_free": true,
       "status": "ready_for_maintainer_review",
       "supports_portfolio": true
@@ -35,7 +35,7 @@
       "artifact_id": "source_ingestion_maintainer_approval_artifact",
       "artifact_kind": "json_report",
       "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
-      "digest": "sha256:c67db2b6356abc27f3feffe387f9a2216aa1a4f722ca8a910da944846ab261f6",
+      "digest": "sha256:2cbd7493171984ee5076f1108954c2fee0a5c4009105ce65da2d66e70436afeb",
       "source_free": true,
       "status": "external_approval_not_supplied",
       "supports_portfolio": true
@@ -44,7 +44,7 @@
       "artifact_id": "source_ingestion_admission_gate",
       "artifact_kind": "json_report",
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
-      "digest": "sha256:08e5033993c1ccd3c9996069a037c9896cdfd8c2287c5edbfdb2c9ac3f9957c4",
+      "digest": "sha256:c7329680546454124f28ff5d5ee14636e9a20198a60a364fade7c9cbc64bf310",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
       "supports_portfolio": true
@@ -53,7 +53,7 @@
       "artifact_id": "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
       "artifact_kind": "json_report",
       "contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
-      "digest": "sha256:6ba176a71a096be5783cb9daed9535e2b2af8cac31e3f37240c1c7de82181597",
+      "digest": "sha256:8a67f43cd236e646f24ccbde18a8c6af41f937b8e6c9d0ef06a8e84689461e8f",
       "source_free": true,
       "status": "PASS",
       "supports_portfolio": true
@@ -62,7 +62,7 @@
       "artifact_id": "first_real_triton_kernel_path",
       "artifact_kind": "json_report",
       "contract": "first_real_triton_kernel_path.digest_bound.v0",
-      "digest": "sha256:f740bfd97236164d2f2068905e066434e9a3041a97ce4ef82265906533d6f003",
+      "digest": "sha256:b61ceed9be8d1c5462af975506ae3277cb7fbecd09a7c64a7a47245118d2aa72",
       "source_free": true,
       "status": "PASS",
       "supports_portfolio": true

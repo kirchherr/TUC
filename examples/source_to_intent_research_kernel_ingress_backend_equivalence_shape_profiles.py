@@ -623,13 +623,13 @@ def _references_for(
 ) -> dict[str, FloatArray]:
     if source_name == "research_matmul_elementwise":
         projection = reference_matmul(inputs["a"], inputs["b"])
-        return {"activated": reference_elementwise(projection)}
+        return {"activated": reference_elementwise(projection, "relu")}
     if source_name == "research_softmax_reduction":
         normalized = reference_softmax(inputs["x"], axis=1)
         return {"row_sum": reference_reduction_sum(normalized, axis=1)}
     if source_name == "research_softmax_elementwise":
         normalized = reference_softmax(inputs["x"], axis=1)
-        return {"activated": reference_elementwise(normalized)}
+        return {"activated": reference_elementwise(normalized, "identity")}
     if source_name == "research_matmul_reduction":
         projection = reference_matmul(inputs["a"], inputs["b"])
         return {"column_sum": reference_reduction_sum(projection, axis=1)}
@@ -637,7 +637,7 @@ def _references_for(
         projection = reference_matmul(inputs["a"], inputs["b"])
         normalized = reference_softmax(projection, axis=1)
         row_sum = reference_reduction_sum(normalized, axis=1)
-        return {"stable": reference_elementwise(row_sum)}
+        return {"stable": reference_elementwise(row_sum, "identity")}
     raise ValueError("unsupported kernel ingress backend equivalence source")
 
 

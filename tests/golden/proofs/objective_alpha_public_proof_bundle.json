@@ -21,7 +21,7 @@
   "broad_source_parser_claim": false,
   "bundle_contract": "objective_alpha.public_proof_bundle.v0",
   "bundle_id": "objective_alpha_public_proof_bundle",
-  "bundle_metadata_digest": "828ecd2d2b17a7fde793db6ec81fd2f3f56bce2510ca55bdfaf349c0345baad0",
+  "bundle_metadata_digest": "e86a3fb8dbe50802444d9e24ecf52a32b25931c54f660c8c90099e3b362624c6",
   "claim_status": "correctness_and_inspectability_only",
   "entry_capacity": 16,
   "entry_count": 16,
@@ -142,7 +142,7 @@
       "artifact_kind": "schema_versioned_source_to_intent_research_proof_bundle_report",
       "entry_point": "python examples/source_to_intent_research_proof_bundle.py",
       "evidence_id": "source_to_intent_research_proof_bundle",
-      "metadata_digest": "c19bfa22e9a1690ec3e638c75bbb3596ae61001f9dec4d0d7d20fbd8949c81d0",
+      "metadata_digest": "03872b2b95fa6d66c37118cf6b3490a6c83cf92f1a020a41674f40d247d4c601",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -150,7 +150,7 @@
       "artifact_kind": "deterministic_source_to_intent_kernel_ingress_evidence_gate_output",
       "entry_point": "python examples/source_to_intent_research_kernel_ingress_evidence_gate.py",
       "evidence_id": "source_to_intent_research_kernel_ingress_evidence_gate",
-      "metadata_digest": "b37eeb46180c24b3d69123ebdb28e89087997b0f4e5ff2349720f0fdd59204e8",
+      "metadata_digest": "edb449d918cbe5977b923bcab35c666e1f3801ce5fbcbf4fc557a1c9b9048d1a",
       "raw_output_policy": "digest_only",
       "status": "passed"
     }

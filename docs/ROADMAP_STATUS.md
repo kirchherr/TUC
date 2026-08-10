@@ -1,5 +1,14 @@
 # Roadmap Status
 
+- [Source Intent Elementwise Semantics](SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md)
+  now preserves the fixed Triton research slice's value semantics from exact
+  `tl.where` syntax through Source Intent `elementwise_kind`, Metadata and
+  ComputeGraph `kernel`, trusted execution, and independent references. ReLU
+  and exact identity forms are structurally recognized; every other `where`
+  form fails closed. A negative-valued execution test prevents identity from
+  satisfying the ReLU proof. Decision:
+  `rfcs/0287-source-intent-elementwise-semantics.md`.
+
 - [Triton Research Backend Package Portfolio](TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md)
   now provides the strongest joined live proof at
   `examples/triton_research_backend_package_portfolio.py`: bounded realistic

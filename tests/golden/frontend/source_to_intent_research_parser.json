@@ -63,6 +63,9 @@
         ]
       },
       {
+        "attributes": {
+          "elementwise_kind": "relu"
+        },
         "family": "elementwise",
         "hints": {},
         "inputs": [

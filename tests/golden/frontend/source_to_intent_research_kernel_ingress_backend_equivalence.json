@@ -190,7 +190,7 @@
   "executor_contract": "runtime_executor.trusted_backend.v0",
   "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
   "kernel_ingress_backend_equivalence_contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
-  "kernel_ingress_digest": "sha256:37e3908582971511d784103074ef77490457bc54b96586add1479eb84195c520",
+  "kernel_ingress_digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
   "parser_status": "research_explicit_only",
   "raw_source_policy": "omitted_by_policy",
   "raw_value_policy": "omitted_by_policy",

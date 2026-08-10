@@ -200,6 +200,7 @@ from tuc.compiler import (
     compile_graph,
 )
 from tuc.frontend import (
+    SOURCE_INTENT_ELEMENTWISE_KINDS,
     SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA_VERSION,
     SOURCE_INTENT_INTAKE_CONTRACT,
     SOURCE_INTENT_IR_CONTRACT,
@@ -1764,6 +1765,7 @@ __all__ = [
     "RuntimeTensorStoreEvidenceReport",
     "RuntimeTensorValueEvidence",
     "RuntimeValueRecord",
+    "SOURCE_INTENT_ELEMENTWISE_KINDS",
     "SOURCE_INTENT_FRONTEND_CONFORMANCE_REPORT_SCHEMA_VERSION",
     "SOURCE_INTENT_IR_CONTRACT",
     "SOURCE_INTENT_INTAKE_CONTRACT",

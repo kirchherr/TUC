@@ -40,7 +40,7 @@
   "bundle_claim_status": "correctness_and_inspectability_only",
   "bundle_contract": "objective_alpha.public_proof_bundle.v0",
   "bundle_id": "objective_alpha_public_proof_bundle",
-  "bundle_metadata_digest": "828ecd2d2b17a7fde793db6ec81fd2f3f56bce2510ca55bdfaf349c0345baad0",
+  "bundle_metadata_digest": "e86a3fb8dbe50802444d9e24ecf52a32b25931c54f660c8c90099e3b362624c6",
   "bundle_raw_output_policy": "digest_only",
   "digest_policy": "sha256_hex_only",
   "entry_capacity": 16,

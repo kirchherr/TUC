@@ -15,74 +15,74 @@
   ],
   "capsule_contract": "objective_beta.reproducibility_capsule.digest_manifest.v0",
   "capsule_id": "objective_beta_reproducibility_capsule",
-  "capsule_metadata_digest": "81eb220fbfae8f7efc2349529290ef8cb5baea36133545a45594e885cc1ffc79",
+  "capsule_metadata_digest": "e75497676279beb62910b97db6ad00c1b1d4e3a7a8b1610626b4c80a8aa7b91b",
   "capsule_status": "reproducible_from_repository_goldens",
-  "claim_digest": "c3abd742bffa58397fb5881a0e36359c9e9d082dcfa84a3552c51d93f15be146",
-  "claim_gate_digest": "e10e11744240f690e5228e7b5ce9358679e7bee14d40639912a820b89d3364cc",
+  "claim_digest": "09a6d2e659487ad646b12c8867b4da9445498c9d0cc1720c397fa99d82f04f98",
+  "claim_gate_digest": "f3756330ae2c1327b4e10630a5fc789ccaf9dd98ce5a40a336881218c11f7e79",
   "claim_gate_id": "objective_beta_research_claim_gate",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "d526a06a609498d5f89d08cc341b98fe5f2c8f25442555908b5ec06587edc13a",
+  "claim_metadata_digest": "d1749a5bbd17917c2fde0fdb947b983ecf78723b22c5d263bdee23847ab4f7d8",
   "evidence": [
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "content_type": "application/json",
-      "digest": "6c34159cfb197841f0084aade3a9150546554c283b10fe6ea0fc443390d48325",
+      "digest": "1a7bc408ce3b2cfa059ca973089c974ca1542392fd706835b2f7544f8031088d",
       "role": "predecessor_claim_gate",
       "source_free": true
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "content_type": "application/json",
-      "digest": "d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
+      "digest": "afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
       "role": "kernel_ingress_proof",
       "source_free": true
     },
     {
       "artifact_id": "first_real_triton_kernel_path",
       "content_type": "application/json",
-      "digest": "f740bfd97236164d2f2068905e066434e9a3041a97ce4ef82265906533d6f003",
+      "digest": "b61ceed9be8d1c5462af975506ae3277cb7fbecd09a7c64a7a47245118d2aa72",
       "role": "bounded_kernel_path",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_evidence_portfolio",
       "content_type": "application/json",
-      "digest": "8100f2703b3d8bbc4b2e075f4f263ea82c813b6cf577fdf9823e9adeed3bb716",
+      "digest": "467189b0daa466f7036ec72ca3a4ac862a8779dec9961ee03cb4efe0ff6a0c5c",
       "role": "first_slice_portfolio",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "content_type": "application/json",
-      "digest": "b74d256fb04e4fe7daa3764352445d8b68001a91907a26d1f3499432d8be9735",
+      "digest": "4ea7fc49b611efd16f5a251c6151e9f674e80bcaf409f22aedbef53a6c556f13",
       "role": "fail_closed_admission_readiness",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_maintainer_approval_request",
       "content_type": "application/json",
-      "digest": "6a34535b4d041a761a8c399782dd09f92f68cd7dd3011dc8a03988bd6244db49",
+      "digest": "dae9c4acf7dd38420618499304a70e86a24ec78c4bc1ab98fac35454354f4168",
       "role": "external_review_request",
       "source_free": true
     },
     {
       "artifact_id": "research_scope_claim_gate",
       "content_type": "application/json",
-      "digest": "2fde0310bd2e425a1530f987a5ebcf202ce300273e19a947bae0b026e3b94f2b",
+      "digest": "101810f11cd2cfc3bafdf717c8cbad93b6b938d948b2ea9bfc04c194bd7bf85c",
       "role": "research_scope_boundary",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim",
       "content_type": "application/json",
-      "digest": "c3abd742bffa58397fb5881a0e36359c9e9d082dcfa84a3552c51d93f15be146",
+      "digest": "09a6d2e659487ad646b12c8867b4da9445498c9d0cc1720c397fa99d82f04f98",
       "role": "research_claim",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim_gate",
       "content_type": "application/json",
-      "digest": "e10e11744240f690e5228e7b5ce9358679e7bee14d40639912a820b89d3364cc",
+      "digest": "f3756330ae2c1327b4e10630a5fc789ccaf9dd98ce5a40a336881218c11f7e79",
       "role": "research_claim_gate",
       "source_free": true
     }

@@ -16,7 +16,7 @@ from __future__ import annotations
 import ast
 import json
 import re
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from hashlib import sha256
 
@@ -443,17 +443,50 @@ def _parse_where(
 ) -> tuple[str, tuple[str, ...], tuple[int, ...], dict[str, object]]:
     if len(call.args) != 3 or call.keywords:
         raise SourceToIntentResearchParserError("tl.where requires three positional inputs")
-    inputs = _unique_names(
-        name
-        for argument in call.args
-        for name in _names_in_expression(argument)
+    condition, true_value, false_value = call.args
+    input_name = _positive_zero_condition_input(condition)
+    if _name_argument(true_value, "tl.where true input") != input_name:
+        raise SourceToIntentResearchParserError(
+            "tl.where true input must match condition input"
+        )
+    if _is_zero_literal(false_value):
+        elementwise_kind = "relu"
+    elif isinstance(false_value, ast.Name) and false_value.id == input_name:
+        elementwise_kind = "identity"
+    else:
+        raise SourceToIntentResearchParserError(
+            "tl.where false input must be numeric zero or condition input"
+        )
+    shape = _known_shape(input_name, state)
+    return (
+        "elementwise",
+        (input_name,),
+        shape,
+        {"elementwise_kind": elementwise_kind},
     )
-    if not inputs:
-        raise SourceToIntentResearchParserError("tl.where requires tensor input data")
-    shapes = tuple(_known_shape(name, state) for name in inputs)
-    if len(set(shapes)) != 1:
-        raise SourceToIntentResearchParserError("tl.where tensor input shapes must match")
-    return "elementwise", inputs, shapes[0], {}
+
+
+def _positive_zero_condition_input(condition: ast.AST) -> str:
+    if (
+        not isinstance(condition, ast.Compare)
+        or len(condition.ops) != 1
+        or not isinstance(condition.ops[0], ast.Gt)
+        or len(condition.comparators) != 1
+        or not _is_zero_literal(condition.comparators[0])
+    ):
+        raise SourceToIntentResearchParserError(
+            "tl.where supports only tensor > 0 condition"
+        )
+    return _name_argument(condition.left, "tl.where condition input")
+
+
+def _is_zero_literal(node: ast.AST) -> bool:
+    return (
+        isinstance(node, ast.Constant)
+        and isinstance(node.value, int | float)
+        and not isinstance(node.value, bool)
+        and node.value == 0
+    )
 
 
 def _parse_softmax(
@@ -537,23 +570,6 @@ def _name_argument(node: ast.AST, label: str) -> str:
         raise SourceToIntentResearchParserError(f"{label} must be a simple name")
     _validate_identifier(node.id, label)
     return node.id
-
-
-def _names_in_expression(node: ast.AST) -> tuple[str, ...]:
-    names: list[str] = []
-    for child in ast.walk(node):
-        if isinstance(child, ast.Name):
-            _validate_identifier(child.id, "source expression name")
-            names.append(child.id)
-    return tuple(names)
-
-
-def _unique_names(values: Iterable[str]) -> tuple[str, ...]:
-    names: list[str] = []
-    for value in values:
-        if value not in names:
-            names.append(value)
-    return tuple(names)
 
 
 def _expression_name(node: ast.AST) -> str | None:

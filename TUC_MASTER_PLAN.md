@@ -437,6 +437,13 @@ bounded research input: module imports, decorators, JIT, external packages, and
 native backends are not executed, and production source ingestion remains
 unadmitted.
 
+RFC 0287 closes the first source-value semantic gap: the fixed Triton
+`tl.where(x > 0, x, 0)` form is represented as neutral
+`elementwise_kind=relu`, mapped to the bounded runtime kernel, and checked with
+negative-valued inputs against an independent reference. Exact redundant
+`tl.where(x > 0, x, x)` is modeled as identity; every other `where` form fails
+closed. This keeps the research proof honest without widening source admission.
+
 ## Strategic Risks
 
 ### Risk A: Becoming Another Compiler

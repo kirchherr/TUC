@@ -37,7 +37,7 @@
     {
       "case_id": "accepted_module_matmul_elementwise",
       "expectation": "accepted",
-      "ingress_report_digest": "sha256:d9ace16c4eb4f386ef6a0cc1eec0dcd1a091e420f942d9d8efc63d4c9a2be31e",
+      "ingress_report_digest": "sha256:5608e21f317835c6e64dc5128ed29b8fed300c7d769c1c5ba2a83e26caeb5a86",
       "kernel_name": "matmul_elementwise",
       "module_bytes": 206,
       "module_digest": "sha256:eb599f41b7abee29e06c0842db8ba43fc8e8b710f668532a767c31fd81d7f7a0",
@@ -82,7 +82,7 @@
     {
       "case_id": "accepted_module_softmax_elementwise",
       "expectation": "accepted",
-      "ingress_report_digest": "sha256:a7faae1d41037e868cfd09580738a1285c1a5d1cddcdb379df462bb903211b95",
+      "ingress_report_digest": "sha256:b2f4afca4cd9fa329eecc811899f2c2f1247afea3574a1bfc0bbf665654876f0",
       "kernel_name": "softmax_elementwise",
       "module_bytes": 220,
       "module_digest": "sha256:47880aa48401a979fb09bf64accbc9ea65b91fabb51b545ef29782e828f93af2",
@@ -97,7 +97,7 @@
     {
       "case_id": "accepted_module_mvp_pipeline",
       "expectation": "accepted",
-      "ingress_report_digest": "sha256:59771584a6ef6c8eff4cc02b49a9b4cfc624f041b5725ab43dfcef564cb8838f",
+      "ingress_report_digest": "sha256:10fb94d312a55edf71fb03c3b7645445e83514e18ca5e77a54d7e29511c59103",
       "kernel_name": "mvp_pipeline",
       "module_bytes": 281,
       "module_digest": "sha256:47f230b1ac25994fb6a2a63ac703c2f78451b1d37349fb113b6e2081b0f43f78",

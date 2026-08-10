@@ -109,6 +109,10 @@
           "type": "integer",
           "minimum": -8,
           "maximum": 7
+        },
+        "elementwise_kind": {
+          "type": "string",
+          "enum": ["gelu", "identity", "relu"]
         }
       }
     }

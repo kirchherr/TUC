@@ -74,7 +74,7 @@
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "contract": "real_triton_first_slice_admission_readiness_gate.data_only.v0",
-      "digest": "sha256:b74d256fb04e4fe7daa3764352445d8b68001a91907a26d1f3499432d8be9735",
+      "digest": "sha256:4ea7fc49b611efd16f5a251c6151e9f674e80bcaf409f22aedbef53a6c556f13",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
       "supports_approval_request": true
@@ -82,7 +82,7 @@
     {
       "artifact_id": "source_ingestion_maintainer_security_review_packet",
       "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
-      "digest": "sha256:37e7c1904c8b7e665576f1eba58b2ed2229cd19320865bf6825de8ed78a0a6fd",
+      "digest": "sha256:e4f4850c476cf18f11376df89415d4df3d60f0c659d756013ff69d11e2be055d",
       "source_free": true,
       "status": "ready_for_maintainer_review",
       "supports_approval_request": true
@@ -90,7 +90,7 @@
     {
       "artifact_id": "source_ingestion_maintainer_approval_artifact",
       "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
-      "digest": "sha256:c67db2b6356abc27f3feffe387f9a2216aa1a4f722ca8a910da944846ab261f6",
+      "digest": "sha256:2cbd7493171984ee5076f1108954c2fee0a5c4009105ce65da2d66e70436afeb",
       "source_free": true,
       "status": "external_approval_not_supplied",
       "supports_approval_request": true
@@ -98,7 +98,7 @@
     {
       "artifact_id": "source_ingestion_admission_gate",
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
-      "digest": "sha256:08e5033993c1ccd3c9996069a037c9896cdfd8c2287c5edbfdb2c9ac3f9957c4",
+      "digest": "sha256:c7329680546454124f28ff5d5ee14636e9a20198a60a364fade7c9cbc64bf310",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
       "supports_approval_request": true

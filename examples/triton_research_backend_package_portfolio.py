@@ -444,7 +444,7 @@ def _assert_frontend(value: object) -> None:
         "parser_status": SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
         "source_intent_contract": SOURCE_INTENT_IR_CONTRACT,
         "source_intent_digest": (
-            "sha256:20b83d9aebaf4b231ccb37c55171faef3ce258efb6fb0d8df422108fe1a7bb4f"
+            "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa"
         ),
         "source_intent_payload_serialized": False,
     }

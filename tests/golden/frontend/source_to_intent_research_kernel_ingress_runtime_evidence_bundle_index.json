@@ -250,9 +250,9 @@
     "execution_receipt"
   ],
   "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
-  "runtime_matrix_digest": "sha256:ecb91b9de5dc9558b12dc71ea2bd55c7f5c34174f054172bb37ce38ace6eb367",
+  "runtime_matrix_digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
   "runtime_step_trace_contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
-  "runtime_step_trace_digest": "sha256:0bbfe74ffac5de228b7e7d1c6722a191fe18ce2a0249aef7a8e01be566b7a5cf",
+  "runtime_step_trace_digest": "sha256:642defa2dde723a98ddcb781e7f31cf01ab8e8b0f07f7d971a42a94eacd55ff1",
   "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index_report.v0",
   "source_boundary": "kernel_ingress_runtime_to_standard_execution_evidence_bundle_index",
   "status": "PASS",

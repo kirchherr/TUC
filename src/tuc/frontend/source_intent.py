@@ -35,8 +35,12 @@ _ALLOWED_HINTS = frozenset(
         "robust_to_noise",
     }
 )
-_ALLOWED_ATTRIBUTES = frozenset({"axis"})
+SOURCE_INTENT_ELEMENTWISE_KINDS = ("gelu", "identity", "relu")
+_ALLOWED_ATTRIBUTES = frozenset({"axis", "elementwise_kind"})
 _AXIS_OPERATION_FAMILIES = frozenset({"reduction", "softmax"})
+_ATTRIBUTE_OPERATION_FAMILIES = frozenset(
+    {*_AXIS_OPERATION_FAMILIES, "elementwise"}
+)
 _BOOLEAN_HINTS = frozenset(
     {"prefer_linear_accelerator", "prefer_sparsity", "robust_to_noise"}
 )
@@ -359,9 +363,24 @@ def _freeze_attributes(
                     "reduction and softmax"
                 )
             frozen[key] = value
+        elif key == "elementwise_kind":
+            if family != "elementwise":
+                raise ValueError(
+                    "source-intent elementwise_kind attribute is allowed only "
+                    "for elementwise"
+                )
+            if not isinstance(value, str):
+                raise TypeError(
+                    "source-intent elementwise_kind attribute must be a string"
+                )
+            if value not in SOURCE_INTENT_ELEMENTWISE_KINDS:
+                raise ValueError(
+                    "source-intent elementwise_kind attribute is unsupported"
+                )
+            frozen[key] = value
     if family in _AXIS_OPERATION_FAMILIES and "axis" not in frozen:
         raise ValueError("source-intent reduction and softmax require axis attribute")
-    if family not in _AXIS_OPERATION_FAMILIES and frozen:
+    if family not in _ATTRIBUTE_OPERATION_FAMILIES and frozen:
         raise ValueError("source-intent operation family does not accept attributes")
     return MappingProxyType(frozen)
 
@@ -417,6 +436,7 @@ __all__ = [
     "MAX_SOURCE_INTENT_OPERATIONS",
     "MAX_SOURCE_INTENT_TENSORS",
     "SOURCE_INTENT_IR_CONTRACT",
+    "SOURCE_INTENT_ELEMENTWISE_KINDS",
     "SOURCE_INTENT_RETURN_POLICY",
     "SourceIntentModule",
     "SourceIntentOperation",

@@ -664,6 +664,12 @@ Completed controlled execution evidence:
   `schemas/triton_research_backend_package_portfolio_report.v0.schema.json`,
   `tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
   and `rfcs/0286-triton-research-backend-package-portfolio.md`.
+- Source Intent Elementwise Semantics closes the first source-value semantic
+  gap by carrying exact ReLU or identity meaning from the bounded `tl.where`
+  slice through Metadata, ComputeGraph, trusted Runtime Executor, and
+  independent reference evidence. Unsupported `where` forms fail closed.
+  Evidence: `docs/SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md` and
+  `rfcs/0287-source-intent-elementwise-semantics.md`.
 - External plugin code, physical devices, and native artifacts remain blocked;
   this is trusted reference projection rather than native backend execution.
 

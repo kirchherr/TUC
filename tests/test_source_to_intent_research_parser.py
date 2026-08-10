@@ -5,9 +5,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+import numpy as np
 import pytest
+from numpy.testing import assert_allclose
 
 from examples.source_to_intent_research_parser import MATMUL_ELEMENTWISE_SOURCE
+from tuc.backends import LinearAlgebraSimulatorBackend, VectorSimulatorBackend
+from tuc.compiler import compile_graph
 from tuc.frontend import (
     SOURCE_INTENT_IR_CONTRACT,
     SOURCE_INTENT_SCHEMA_VERSION,
@@ -19,8 +23,10 @@ from tuc.frontend import (
     SourceToIntentResearchParserError,
     dump_source_to_intent_research_parse_result,
     parse_triton_source_to_source_intent,
+    source_intent_to_triton_metadata,
     source_to_intent_research_parse_report_to_dict,
 )
+from tuc.runtime import execute_graph
 
 GOLDEN_PATH = Path("tests/golden/frontend/source_to_intent_research_parser.json")
 SCHEMA_PATH = Path("schemas/source_to_intent_research_parser_report.v0.schema.json")
@@ -48,6 +54,14 @@ def test_research_parser_emits_source_intent_plain_data() -> None:
         "matmul",
         "elementwise",
     )
+    assert result.module.operations[1].attributes == {
+        "elementwise_kind": "relu"
+    }
+    operations = result.source_intent_payload["operations"]
+    assert isinstance(operations, list)
+    elementwise = operations[1]
+    assert isinstance(elementwise, dict)
+    assert elementwise["attributes"] == {"elementwise_kind": "relu"}
     assert tuple(source_return.public_name for source_return in result.module.returns) == (
         "y",
     )
@@ -89,6 +103,56 @@ def test_research_parser_handles_softmax_reduction_subset() -> None:
     assert result.module.returns[0].public_name == "y"
     assert result.module.returns[0].tensor_name == "row_sum"
     assert result.report.operation_families == ("reduction", "softmax")
+
+
+def test_research_parser_preserves_relu_through_trusted_execution() -> None:
+    result = _parse_matmul_elementwise()
+    graph = source_intent_to_triton_metadata(result.module).to_compute_graph()
+    compiled = compile_graph(
+        graph,
+        [
+            LinearAlgebraSimulatorBackend().capability,
+            VectorSimulatorBackend().capability,
+        ],
+    )
+    lhs = np.zeros((4, 8), dtype=np.float64)
+    lhs[:, 0] = (-2.0, 1.0, 0.0, -3.0)
+    rhs = np.zeros((8, 2), dtype=np.float64)
+    rhs[0, :] = (1.0, -1.0)
+
+    execution = execute_graph(
+        compiled.hac_ir.graph,
+        compiled.partition_plan,
+        {"a": lhs, "b": rhs},
+    )
+
+    assert graph.operations[1].attributes["kernel"] == "relu"
+    assert_allclose(
+        execution.output_for("activated"),
+        np.array(
+            [
+                [0.0, 2.0],
+                [1.0, 0.0],
+                [0.0, 0.0],
+                [0.0, 3.0],
+            ]
+        ),
+    )
+
+
+def test_research_parser_models_exact_identity_where() -> None:
+    result = parse_triton_source_to_source_intent(
+        "@triton.jit\n"
+        "def identity_where(x, y):\n"
+        "    copied = tl.where(x > 0.0, x, x)\n"
+        "    tl.store(y, copied)\n",
+        source_name="identity_where",
+        tensor_shapes={"x": (4, 8), "y": (4, 8)},
+    )
+
+    assert result.module.operations[0].attributes == {
+        "elementwise_kind": "identity"
+    }
 
 
 def test_research_parser_dump_matches_golden() -> None:
@@ -215,6 +279,56 @@ def test_research_parser_rejects_unknown_shape_manifest_entries() -> None:
                 "extra": (1,),
                 "y": (4, 2),
             },
+        )
+
+
+@pytest.mark.parametrize(
+    ("where_expression", "message"),
+    (
+        ("tl.where(x < 0.0, x, 0.0)", "supports only tensor > 0"),
+        ("tl.where(x > 0.0, y, 0.0)", "true input must match"),
+        (
+            "tl.where(x > 0.0, x, 1.0)",
+            "false input must be numeric zero or condition input",
+        ),
+    ),
+)
+def test_research_parser_rejects_unmodeled_where_semantics(
+    where_expression: str,
+    message: str,
+) -> None:
+    source = (
+        "@triton.jit\n"
+        "def rejected_where(x, y):\n"
+        f"    activated = {where_expression}\n"
+        "    tl.store(y, activated)\n"
+    )
+
+    with pytest.raises(SourceToIntentResearchParserError, match=message):
+        parse_triton_source_to_source_intent(
+            source,
+            source_name="rejected_where",
+            tensor_shapes={"x": (4, 8), "y": (4, 8)},
+        )
+
+
+def test_research_parser_rejects_huge_numeric_condition_without_overflow() -> None:
+    huge_integer = "9" * 400
+    source = (
+        "@triton.jit\n"
+        "def huge_condition(x, y):\n"
+        f"    activated = tl.where(x > {huge_integer}, x, 0.0)\n"
+        "    tl.store(y, activated)\n"
+    )
+
+    with pytest.raises(
+        SourceToIntentResearchParserError,
+        match="supports only tensor > 0",
+    ):
+        parse_triton_source_to_source_intent(
+            source,
+            source_name="huge_condition",
+            tensor_shapes={"x": (4, 8), "y": (4, 8)},
         )
 
 

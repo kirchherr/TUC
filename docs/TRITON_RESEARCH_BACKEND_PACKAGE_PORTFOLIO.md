@@ -37,7 +37,8 @@ python examples/triton_research_backend_package_portfolio.py
 ## Accepted Source Slice
 
 The fixed module contains only the approved import aliases, one
-`@triton.jit`-decorated function, `tl.dot`, `tl.where`, and `tl.store`. The
+`@triton.jit`-decorated function, `tl.dot`, the exact ReLU form
+`tl.where(projection > 0, projection, 0)`, and `tl.store`. The
 ingress receives a caller-provided shape manifest and validates byte, line,
 AST-node, AST-depth, operation, tensor, return, and shape bounds.
 
@@ -77,6 +78,11 @@ The Source Intent return maps public output `y` to terminal tensor
 that boundary. The result must pass both an independent NumPy reference and an
 all-`reference-cpu` Backend Equivalence comparison.
 
+The parser records `elementwise_kind=relu`, metadata maps it to `kernel=relu`,
+and trusted execution applies ReLU. The value-level test and independent
+reference include negative matrix-product results, so an identity lowering
+cannot pass this semantic closure.
+
 PASS therefore means that the fixed syntax slice preserved its observable
 intent across frontend translation, external capability ownership, trusted
 heterogeneous placement, and runtime execution.
@@ -98,6 +104,8 @@ reject unknown properties.
 - Source size and AST complexity are bounded before semantic parsing.
 - Imports and decorators are validated as syntax and never executed.
 - Source Intent is reconstructed through the canonical plain-data intake.
+- Source-level ReLU semantics are bound through Source Intent, Metadata,
+  ComputeGraph, Runtime Executor, and independent reference evidence.
 - Backend authority cannot enter Source Intent or HAC-IR.
 - The exact two-package set must own every assignment; fallback is forbidden.
 - Trusted projection uses maintainer-owned digest bindings and fixed simulators.

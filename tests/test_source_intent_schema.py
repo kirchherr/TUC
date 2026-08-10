@@ -36,6 +36,11 @@ def test_source_intent_json_schema_matches_runtime_contract() -> None:
     assert defs["attributes"]["additionalProperties"] is False
     assert defs["attributes"]["properties"]["axis"]["minimum"] == -8
     assert defs["attributes"]["properties"]["axis"]["maximum"] == 7
+    assert defs["attributes"]["properties"]["elementwise_kind"]["enum"] == [
+        "gelu",
+        "identity",
+        "relu",
+    ]
     assert defs["tensor"]["properties"]["shape"]["maxItems"] == 8
     assert defs["tensor_name_list"]["maxItems"] == 16
     assert defs["dimension"]["maximum"] == 2147483647
@@ -54,7 +59,7 @@ def test_source_intent_json_schema_rejects_unknown_fields_by_contract() -> None:
     assert "prefer_analog_linear" not in hint_properties
     assert "backend" not in hint_properties
     attribute_properties = set(defs["attributes"]["properties"])
-    assert attribute_properties == {"axis"}
+    assert attribute_properties == {"axis", "elementwise_kind"}
     assert "python_source" not in schema["properties"]
     assert "file_path" not in defs["tensor"]["properties"]
     assert "plugin_entrypoint" not in defs["operation"]["properties"]

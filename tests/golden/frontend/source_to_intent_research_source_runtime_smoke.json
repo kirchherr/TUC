@@ -15,7 +15,7 @@
       "case_id": "research_matmul_elementwise",
       "compiler_decision_digest": "sha256:0ef406110c3c2230f86e75d77e2baa5fcea1de1b24d3eab78686524c5ee026a8",
       "execution_trace_digest": "sha256:d9ee6ed8ea961a6018b3171a73c46dd091d1e02b9796c728b79d78a36fe081ee",
-      "hac_ir_digest": "sha256:8ab8b459f7218ccee36a2bcee517b0fb4d5e4ad6f5da9ef605c2c9928f0b70c1",
+      "hac_ir_digest": "sha256:ce31cbbe27b2a09dadf34e62797662fa9a07b6c48a87d09c02f55438003a2d5d",
       "metadata_intake_digest": "sha256:b3ecbab4325452b9b338f5784e996583a0246e6a324ce59d59d61de8720b0204",
       "metadata_report_digest": "sha256:f5afc0dfdde3084c1784220c6caa86c31a49b10b7ff755af37157aa4d8f02be9",
       "operation_families": [
@@ -23,7 +23,7 @@
         "matmul"
       ],
       "parser_report_digest": "sha256:d30b27123ce5e10b658841ed7d65a5f8ba9243d4f5c9f80751b857daf54dffbb",
-      "plain_data_digest": "sha256:20b83d9aebaf4b231ccb37c55171faef3ce258efb6fb0d8df422108fe1a7bb4f",
+      "plain_data_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
       "preflight_digest": "sha256:ada5e20795f6f43f0fa0782ef06387b29fd3e4cba5953d2aac13480ba8fe246d",
       "preflight_status": "accepted",
       "readiness_digest": "sha256:29cd62aff9ed16f01eaddb8aeabc0875b977c521050e458faa7fd4dcf6f563db",

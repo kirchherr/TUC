@@ -61,14 +61,14 @@
       "to_evidence_id": "source_free_diagnostics_admission_tests"
     },
     {
-      "bound_digest": "sha256:249c1409fc1884339770d67029992ca0dc67de099bf4091d940e59543d0b3dcb",
+      "bound_digest": "sha256:d12dc4765799564f2422f1fc8e64588c35c4769427fde894858334cfdbf2ded4",
       "edge_kind": "digest_binding",
       "from_evidence_id": "real_triton_first_admissible_slice_plan",
       "source_free": true,
       "to_evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice"
     },
     {
-      "bound_digest": "sha256:caccf0f6ea18fd354099440d6c5259d1236730a11d16af1debf7b6d2be29fafd",
+      "bound_digest": "sha256:21e3a634c9482f7c16cb9b0590ad2bfbfe1843ba8bfae94abe7674e660e500bc",
       "edge_kind": "digest_binding",
       "from_evidence_id": "real_triton_first_admissible_slice_plan",
       "source_free": true,
@@ -82,14 +82,14 @@
       "to_evidence_id": "source_ingestion_approval_criteria"
     },
     {
-      "bound_digest": "sha256:409e0da61ea5b3421d2ddb3f4f72da6eb89f6a660cf502ae766f3394eb93f5ed",
+      "bound_digest": "sha256:84866ee323974afacfb68dbfec6192873220b89182113737768368d498d2583a",
       "edge_kind": "digest_binding",
       "from_evidence_id": "real_triton_first_admissible_slice_plan",
       "source_free": true,
       "to_evidence_id": "source_to_intent_research_source_runtime_smoke"
     },
     {
-      "bound_digest": "sha256:ed3aab45b769c4c8e53a70635619c1487483cce1e7d160b5e0c842d54b7b5812",
+      "bound_digest": "sha256:b21df339aa9ad48b7e32454a25f440d2d6f16112161575bbeea8a81bee4ca424",
       "edge_kind": "digest_binding",
       "from_evidence_id": "real_triton_first_admissible_slice_plan",
       "source_free": true,
@@ -131,14 +131,14 @@
       "to_evidence_id": "source_free_diagnostics_admission_tests"
     },
     {
-      "bound_digest": "sha256:249c1409fc1884339770d67029992ca0dc67de099bf4091d940e59543d0b3dcb",
+      "bound_digest": "sha256:d12dc4765799564f2422f1fc8e64588c35c4769427fde894858334cfdbf2ded4",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
       "source_free": true,
       "to_evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice"
     },
     {
-      "bound_digest": "sha256:caccf0f6ea18fd354099440d6c5259d1236730a11d16af1debf7b6d2be29fafd",
+      "bound_digest": "sha256:21e3a634c9482f7c16cb9b0590ad2bfbfe1843ba8bfae94abe7674e660e500bc",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
       "source_free": true,
@@ -152,28 +152,28 @@
       "to_evidence_id": "source_ingestion_approval_criteria"
     },
     {
-      "bound_digest": "sha256:5a05ca8a5df92d73cd71ca93099037356ddbe62c69924e4f41e1640ce149a773",
+      "bound_digest": "sha256:eebf2312fb5dffc8116bcf5387401cb0e6ed280c8098147b8d08350780b3c4d0",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
       "source_free": true,
       "to_evidence_id": "real_triton_first_admissible_slice_plan"
     },
     {
-      "bound_digest": "sha256:e5aa82b03784ff82161d2c4e9528694217d78c15aafc42d36615230af83661d9",
+      "bound_digest": "sha256:fb93f2eb6d7a5f3012c8a52b2d2c6eb686f2d0719a6e7dafbf9c65569fd21373",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_maintainer_approval_artifact",
       "source_free": true,
       "to_evidence_id": "source_ingestion_maintainer_security_review_packet"
     },
     {
-      "bound_digest": "sha256:e5aa82b03784ff82161d2c4e9528694217d78c15aafc42d36615230af83661d9",
+      "bound_digest": "sha256:fb93f2eb6d7a5f3012c8a52b2d2c6eb686f2d0719a6e7dafbf9c65569fd21373",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_admission_gate",
       "source_free": true,
       "to_evidence_id": "source_ingestion_maintainer_security_review_packet"
     },
     {
-      "bound_digest": "sha256:46b8b357fcef15dd471feae8f64e1714545d0bf17a090ee75403b41d4896ea77",
+      "bound_digest": "sha256:7eb7dba8dfd19d73adfa8a4cf4c04188c1c51902e93c32ddc276585da8b7c839",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_admission_gate",
       "source_free": true,

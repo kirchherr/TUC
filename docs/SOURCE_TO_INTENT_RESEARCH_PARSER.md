@@ -40,7 +40,8 @@ The current parser accepts only a tiny subset:
 - simple unannotated positional arguments only
 - caller-provided tensor shapes for all function arguments
 - `tl.dot(a, b)` as `matmul`
-- `tl.where(...)` as `elementwise`
+- exact `tl.where(x > 0, x, 0)` as `elementwise_kind=relu`
+- exact `tl.where(x > 0, x, x)` as `elementwise_kind=identity`
 - `tl.softmax(x, axis=N)` as `softmax`
 - `tl.sum(x, axis=N)` as `reduction`
 - `tl.store(output_arg, produced_tensor)` as an explicit Source Intent public
@@ -48,6 +49,11 @@ The current parser accepts only a tiny subset:
 - explicit axis syntax as neutral Source Intent `attributes.axis`
 
 Everything else fails closed.
+
+These two forms are not general `tl.where` support. Different comparisons,
+operands, branches, arity, or keyword forms are rejected instead of being
+silently lowered to identity. See
+[Source Intent Elementwise Semantics](SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md).
 
 ## Security Boundary
 

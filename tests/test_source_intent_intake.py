@@ -73,6 +73,65 @@ def test_source_intent_intake_accepts_axis_attributes_for_axis_ops() -> None:
     assert module.operations[1].attributes["axis"] == 1
 
 
+def test_source_intent_intake_accepts_bounded_elementwise_semantics() -> None:
+    module = source_intent_from_mapping(
+        {
+            "name": "source_intent_relu",
+            "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+            "tensors": [
+                {"name": "x", "shape": [4, 8]},
+                {"name": "activated", "shape": [4, 8]},
+            ],
+            "operations": [
+                {
+                    "name": "activated",
+                    "family": "elementwise",
+                    "inputs": ["x"],
+                    "outputs": ["activated"],
+                    "attributes": {"elementwise_kind": "relu"},
+                }
+            ],
+        }
+    )
+
+    assert module.operations[0].attributes["elementwise_kind"] == "relu"
+
+
+@pytest.mark.parametrize(
+    ("family", "value"),
+    (
+        ("elementwise", "sigmoid"),
+        ("elementwise", "attacker.module:run"),
+        ("elementwise", 1),
+        ("matmul", "relu"),
+    ),
+)
+def test_source_intent_intake_rejects_invalid_elementwise_semantics(
+    family: str,
+    value: object,
+) -> None:
+    with pytest.raises((TypeError, ValueError)):
+        source_intent_from_mapping(
+            {
+                "name": "invalid_elementwise_kind",
+                "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+                "tensors": [
+                    {"name": "x", "shape": [4, 8]},
+                    {"name": "y", "shape": [4, 8]},
+                ],
+                "operations": [
+                    {
+                        "name": "op",
+                        "family": family,
+                        "inputs": ["x"],
+                        "outputs": ["y"],
+                        "attributes": {"elementwise_kind": value},
+                    }
+                ],
+            }
+        )
+
+
 @pytest.mark.parametrize(
     "payload",
     [

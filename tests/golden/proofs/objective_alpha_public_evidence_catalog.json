@@ -35,7 +35,7 @@
       "entry_point": "python examples/objective_alpha_evidence_extension_policy.py",
       "evidence_id": "objective_alpha_evidence_extension_policy",
       "extension_tier": "governance",
-      "metadata_digest": "0b1a316fd41b3b6f406aad1ba497382194ef8f6495c4914a3a7c5b9259d89d5b",
+      "metadata_digest": "4c8dc9cd62201e414cf653c9f2e64a773d54df83835167df4e224791394e3cdf",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -53,7 +53,7 @@
       "entry_point": "python examples/source_to_intent_research_kernel_ingress_proof_bundle.py",
       "evidence_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "extension_tier": "frontend_runtime_proof",
-      "metadata_digest": "d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
+      "metadata_digest": "afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -71,7 +71,7 @@
       "entry_point": "python examples/source_to_intent_research_capability_claim_gate.py",
       "evidence_id": "source_to_intent_research_capability_claim_gate",
       "extension_tier": "claim_boundary",
-      "metadata_digest": "40e522becdfd4a0dc33b1504b2e6f1174c6bf78c949c5069402e49ccff9d72a8",
+      "metadata_digest": "4b3d8514ad2855a6ee5968c6d4814cd18a48c3bb6543def61f8f11383ab10327",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -80,7 +80,7 @@
       "entry_point": "python examples/first_real_triton_kernel_path.py",
       "evidence_id": "first_real_triton_kernel_path",
       "extension_tier": "frontend_runtime_proof",
-      "metadata_digest": "f740bfd97236164d2f2068905e066434e9a3041a97ce4ef82265906533d6f003",
+      "metadata_digest": "b61ceed9be8d1c5462af975506ae3277cb7fbecd09a7c64a7a47245118d2aa72",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -89,7 +89,7 @@
       "entry_point": "python examples/real_triton_first_slice_evidence_portfolio.py",
       "evidence_id": "real_triton_first_slice_evidence_portfolio",
       "extension_tier": "frontend_runtime_proof",
-      "metadata_digest": "8100f2703b3d8bbc4b2e075f4f263ea82c813b6cf577fdf9823e9adeed3bb716",
+      "metadata_digest": "467189b0daa466f7036ec72ca3a4ac862a8779dec9961ee03cb4efe0ff6a0c5c",
       "raw_output_policy": "digest_only",
       "status": "passed"
     }
@@ -98,7 +98,7 @@
   "catalog_entry_count": 7,
   "catalog_extension_tier_coverage_status": "complete",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "089e74b97f378b95c43523ce9a753c723270f1eea7199299a7486b7af6e4e1c5",
+  "catalog_metadata_digest": "26fc4722f1b240e6a52a0d4ffae1226b826267dde775b180c070ccbe9d56ecad",
   "catalog_missing_extension_tiers": [],
   "catalog_passed": true,
   "catalog_required_extension_tiers": [
@@ -111,11 +111,11 @@
   "catalog_status": "PASS",
   "digest_policy": "sha256_hex_only",
   "extension_policy_contract": "objective_alpha.evidence_extension_policy.data_only.v0",
-  "extension_policy_metadata_digest": "0b1a316fd41b3b6f406aad1ba497382194ef8f6495c4914a3a7c5b9259d89d5b",
-  "first_real_triton_kernel_path_metadata_digest": "f740bfd97236164d2f2068905e066434e9a3041a97ce4ef82265906533d6f003",
+  "extension_policy_metadata_digest": "4c8dc9cd62201e414cf653c9f2e64a773d54df83835167df4e224791394e3cdf",
+  "first_real_triton_kernel_path_metadata_digest": "b61ceed9be8d1c5462af975506ae3277cb7fbecd09a7c64a7a47245118d2aa72",
   "growth_policy": "append_only_rfc_bound",
   "issues": [],
-  "real_triton_first_slice_evidence_portfolio_metadata_digest": "8100f2703b3d8bbc4b2e075f4f263ea82c813b6cf577fdf9823e9adeed3bb716",
+  "real_triton_first_slice_evidence_portfolio_metadata_digest": "467189b0daa466f7036ec72ca3a4ac862a8779dec9961ee03cb4efe0ff6a0c5c",
   "required_controls": [
     "schema_versioned_extension_artifacts",
     "sha256_metadata_digests",
@@ -139,9 +139,9 @@
   "runtime_backend_equivalence_portfolio_metadata_digest": "46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
   "schema_version": "tuc.objective_alpha_public_evidence_catalog_report.v0",
   "source_intent_mixed_runtime_public_proof_bundle_metadata_digest": "baf6d1b6939d7653378a9ad44415865db94532b46242e45a07216adab4f3f05a",
-  "source_to_intent_research_capability_claim_gate_metadata_digest": "40e522becdfd4a0dc33b1504b2e6f1174c6bf78c949c5069402e49ccff9d72a8",
-  "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": "d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
-  "stable_bundle_metadata_digest": "828ecd2d2b17a7fde793db6ec81fd2f3f56bce2510ca55bdfaf349c0345baad0",
+  "source_to_intent_research_capability_claim_gate_metadata_digest": "4b3d8514ad2855a6ee5968c6d4814cd18a48c3bb6543def61f8f11383ab10327",
+  "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": "afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
+  "stable_bundle_metadata_digest": "e86a3fb8dbe50802444d9e24ecf52a32b25931c54f660c8c90099e3b362624c6",
   "stable_entry_capacity": 16,
   "stable_entry_count": 16,
   "stable_entrypoint": "objective_alpha_public_proof_bundle"

@@ -127,7 +127,7 @@
   "covered_rejection_count": 14,
   "default_parser_status": "default_parser_blocked",
   "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
-  "diagnostics_digest": "sha256:e09ae0e0876fe48742c4161e1055d34815997cd194e1d5eb7b6473918a6e2bc1",
+  "diagnostics_digest": "sha256:332bff41658b96428c3eaf0353ff776d0078e463afbcfeb8af975c61ff966506",
   "diagnostics_rejection_reasons": [
     "decorator_call",
     "import_after_kernel_function",

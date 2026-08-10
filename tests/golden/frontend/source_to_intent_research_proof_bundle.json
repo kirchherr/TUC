@@ -38,35 +38,35 @@
       "artifact_id": "source_to_intent_research_execution_bridge",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_execution_bridge.explicit.v0",
-      "digest": "sha256:ec03eec65c3e1334066e213ff07c6038c897bb6c161fcc4e7c35ad0038f3f4cd",
+      "digest": "sha256:9aa34617f9e3cc805bc8de53375ef8e15c6a0edae1681976d90f410f58e1bcd6",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_idiom_alignment",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_idiom_alignment.scope.v0",
-      "digest": "sha256:2d8798bf9b2179069c8a4c45f10a10a0f481c7c5e3097757cc1ac09d7d4bc6d5",
+      "digest": "sha256:ce07460b3ab1c0151c818640af00f90b374fbc026f7ec61d5c5f403f085fe94e",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_source_runtime_smoke",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_source_runtime_smoke.e2e.v0",
-      "digest": "sha256:353c1a95954d246a503730be740b3bcf977daad90b6ffd1c07b85248503f740d",
+      "digest": "sha256:71da714fe895d7c6b763f86ca2aaebbb3f13be99738af9ecf448690697c09dc5",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress.e2e.v0",
-      "digest": "sha256:37e3908582971511d784103074ef77490457bc54b96586add1479eb84195c520",
+      "digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_diagnostics",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
-      "digest": "sha256:e09ae0e0876fe48742c4161e1055d34815997cd194e1d5eb7b6473918a6e2bc1",
+      "digest": "sha256:332bff41658b96428c3eaf0353ff776d0078e463afbcfeb8af975c61ff966506",
       "status": "accepted"
     },
     {
@@ -80,28 +80,28 @@
       "artifact_id": "source_to_intent_research_kernel_ingress_idiom_alignment",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
-      "digest": "sha256:3a3323f9a6873ae160493053bc8ac7c7f6667de2c52cc63fe272fe3b5e1dab68",
+      "digest": "sha256:1b0d7c411ee424a21287d16dee655883ecba76ac881d986ecd4b830dc4af0d82",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
       "artifact_kind": "json_report",
       "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
-      "digest": "sha256:d9e2b6210d21762c7a3d64f21d429c3bb8aab3feb264358bcce3f2a633e48d28",
+      "digest": "sha256:afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
-      "digest": "sha256:b37eeb46180c24b3d69123ebdb28e89087997b0f4e5ff2349720f0fdd59204e8",
+      "digest": "sha256:edb449d918cbe5977b923bcab35c666e1f3801ce5fbcbf4fc557a1c9b9048d1a",
       "status": "accepted"
     },
     {
       "artifact_id": "source_to_intent_research_evidence_gate",
       "artifact_kind": "text_gate",
       "contract": "source_to_intent_research_evidence_gate.ci.v0",
-      "digest": "sha256:0cae050c86d871dcc029bb860a591b64b2d36b882c0cbccaa6e2dbc49f5e71cd",
+      "digest": "sha256:43fd2d1d912b0af77f5df353adc7fc982c76977f3390288b0984d2b3d71e6f02",
       "status": "accepted"
     }
   ],
