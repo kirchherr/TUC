@@ -1621,6 +1621,19 @@ Current focus:
 
 ## Next
 
+- The isolated Source Ingestion Research Worker is complete as a non-admitting
+  Linux prototype. A bounded realistic module now crosses a fixed `-I` worker
+  with CPU, address-space, file-size, open-file, core-dump, request, response,
+  and wall-clock controls; the parent revalidates Source Intent and completes
+  the external Systolic/Vector package proof with reference correctness and
+  backend equivalence. Evidence:
+  `examples/isolated_source_ingestion_research_proof.py`,
+  `schemas/isolated_source_ingestion_research_proof_report.v0.schema.json`, and
+  `tests/golden/frontend/isolated_source_ingestion_research_proof_report.json`.
+  Production admission remains closed; the next security escalation would be
+  OS-level filesystem/network namespaces plus syscall filtering, not broader
+  parser syntax.
+
 - Real Triton integration remains the next credibility milestone. The current
   [Triton Integration Readiness](TRITON_INTEGRATION_READINESS.md) report at `examples/triton_integration_readiness.py` is now `ready` as data-only review evidence, [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md) at `examples/real_triton_integration_admission_gate.py` now binds readiness, external package conformance, and [Real Triton Integration Threat Model](REAL_TRITON_INTEGRATION_THREAT_MODEL.md) evidence by digest with schema `schemas/real_triton_integration_admission_gate_report.v0.schema.json`, [Source Ingestion Quarantine Gate](SOURCE_INGESTION_QUARANTINE_GATE.md) at `examples/source_ingestion_quarantine_gate.py` establishes the first dedicated surface gate with schema `schemas/source_ingestion_quarantine_gate_report.v0.schema.json`, [Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md) at `examples/package_import_sandbox_gate.py` establishes the second dedicated surface gate with schema `schemas/package_import_sandbox_gate_report.v0.schema.json`, [Plugin Discovery Allowlist Gate](PLUGIN_DISCOVERY_ALLOWLIST_GATE.md) at `examples/plugin_discovery_allowlist_gate.py` establishes the third dedicated surface gate with schema `schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`, [Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md) at `examples/triton_jit_execution_sandbox_gate.py` establishes the fourth dedicated surface gate with schema `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`, [Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md) at `examples/device_access_sandbox_gate.py` establishes the fifth dedicated surface gate with schema `schemas/device_access_sandbox_gate_report.v0.schema.json`, [Generated Artifact Quarantine Gate](GENERATED_ARTIFACT_QUARANTINE_GATE.md) at `examples/generated_artifact_quarantine_gate.py` establishes the sixth dedicated surface gate with schema `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`, [Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md) at `examples/native_backend_execution_security_gate.py` establishes the seventh dedicated surface gate with schema `schemas/native_backend_execution_security_gate_report.v0.schema.json`, and [Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md) at `examples/real_triton_surface_gate_completion.py` binds the full perimeter with schema `schemas/real_triton_surface_gate_completion_report.v0.schema.json`; admission remains blocked because every current surface gate is non-admitting and still requirements-only: source ingestion remains quarantine-only, package import remains sandbox-requirements-only, plugin discovery remains allowlist-requirements-only, Triton JIT remains sandbox-requirements-only, device access remains sandbox-requirements-only, generated artifacts remain quarantine-requirements-only, and native backend execution remains security-requirements-only.
 - Future Triton idiom coverage should enter through the schema-versioned

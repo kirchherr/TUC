@@ -1,0 +1,125 @@
+{
+  "admission_effect": "does_not_admit_production_source_ingestion",
+  "artifact_digests": [
+    {
+      "artifact_id": "source_intent_module",
+      "digest": "sha256:28b53a45c1b6a44917aea819904fccb58891e1b41c55f1afe1d6ee47e0443fcb"
+    },
+    {
+      "artifact_id": "source_intent_metadata",
+      "digest": "sha256:f5afc0dfdde3084c1784220c6caa86c31a49b10b7ff755af37157aa4d8f02be9"
+    },
+    {
+      "artifact_id": "hac_ir",
+      "digest": "sha256:ce31cbbe27b2a09dadf34e62797662fa9a07b6c48a87d09c02f55438003a2d5d"
+    },
+    {
+      "artifact_id": "external_systolic_integration",
+      "digest": "sha256:39f0d2fc4c432420e1f1b971c46d16efc4717b587820f4f6a86790ae6ee45d0f"
+    },
+    {
+      "artifact_id": "external_vector_integration",
+      "digest": "sha256:71924c671ae99e03bceb56233cf4450dec716c9c0b9fe512ff9b7ebe511e83cc"
+    },
+    {
+      "artifact_id": "package_portfolio_execution",
+      "digest": "sha256:9ab5108f4d705bb8189eeccdd34e7e4aa16cec967427f1c579674f5c5868f556"
+    },
+    {
+      "artifact_id": "public_output_contract",
+      "digest": "sha256:27133d33470e34a93f4e1a4c19b2495ba29d2024a2c71749cdf53d74834c0f93"
+    },
+    {
+      "artifact_id": "public_output_bundle",
+      "digest": "sha256:a6357b2919b0e62941b7cd0882e74f08d6f170da7b990b74de2eb2ffa7da9e10"
+    },
+    {
+      "artifact_id": "reference_correctness",
+      "digest": "sha256:a8f0678065842d149f2c819e36d92b4b7baa9064b2c76faefe489f75c96dfec6"
+    },
+    {
+      "artifact_id": "backend_equivalence",
+      "digest": "sha256:a19277ab87f7e691f4b26e96532a81323a9e6ed34665d312dc77c151ec749250"
+    }
+  ],
+  "artifact_policy": "metadata_digest_only_source_and_values_omitted",
+  "backend_equivalence_passed": true,
+  "blocked_claims": [
+    "general_triton_parser",
+    "kernel_network_isolation",
+    "native_backend_execution",
+    "native_performance_parity",
+    "production_source_ingestion",
+    "production_source_sandbox"
+  ],
+  "direct_source_ingestion": false,
+  "enforced_controls": [
+    "address_space_limit",
+    "core_dump_disabled",
+    "cpu_time_limit",
+    "empty_working_directory",
+    "file_size_limit",
+    "fixed_worker_path",
+    "isolated_python_mode",
+    "minimal_environment",
+    "open_file_limit",
+    "parent_wall_clock_timeout",
+    "request_byte_limit",
+    "response_byte_limit",
+    "shell_disabled",
+    "strict_response_revalidation"
+  ],
+  "equivalence_comparison_metadata_digest": "sha256:d80e1740866d35edc86c993e347da4bbc6d58f2a89ae42c4269d4bb7f11e914f",
+  "explicit_non_claims": [
+    "filesystem_namespace_isolation",
+    "kernel_network_isolation",
+    "native_code_sandbox",
+    "production_source_ingestion",
+    "production_source_sandbox"
+  ],
+  "external_package_code_executed": false,
+  "filesystem_namespace_isolation": false,
+  "fixed_worker_process_executed": true,
+  "issues": [],
+  "kernel_name": "matmul_elementwise",
+  "kernel_network_isolation": false,
+  "operation_families": [
+    "elementwise",
+    "matmul"
+  ],
+  "package_backend_sequence": [
+    "external-systolic",
+    "external-vector"
+  ],
+  "package_ids": [
+    "external-systolic-reference-package",
+    "external-vector-reference-package"
+  ],
+  "production_source_ingestion": false,
+  "proof_claim": "bounded_source_reaches_equivalent_trusted_package_execution_through_fixed_worker",
+  "proof_contract": "isolated_source_ingestion_research_proof.e2e.v0",
+  "proof_status": "PASS",
+  "public_output_bundle_metadata_digest": "sha256:8307a00bbd6d219706326ec11a2a653b8eb8bdee7fa4430d629993436302680e",
+  "public_output_names": [
+    "y"
+  ],
+  "raw_source_serialized": false,
+  "raw_tensor_values_serialized": false,
+  "reference_correctness_passed": true,
+  "report_digest": "sha256:da2f2110889c2c774f9f16c6ccbc7317ab20046680d90d5f7b479c8a33f975b8",
+  "research_source_to_intent_plain_data": true,
+  "schema_version": "tuc.isolated_source_ingestion_research_proof_report.v0",
+  "source_intent_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
+  "source_intent_payload_serialized": false,
+  "source_name": "research_matmul_elementwise",
+  "source_text_executed": false,
+  "trusted_executor_sequence": [
+    "systolic-sim",
+    "vector-sim"
+  ],
+  "user_selected_subprocess_executed": false,
+  "worker_contract": "isolated_source_ingestion.research_non_admitting.v0",
+  "worker_protocol": "tuc.isolated_source_ingestion_worker.v0",
+  "worker_report_digest": "sha256:950642c527d6a44fea27e00a63736eafc2eae9fa8ee71a6e6d97986236e28b98",
+  "worker_status": "research_prototype_non_admitting"
+}

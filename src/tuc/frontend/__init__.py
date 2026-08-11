@@ -108,6 +108,22 @@ from tuc.frontend.generated_artifact_quarantine_gate import (
     generated_artifact_quarantine_report_to_dict,
 )
 from tuc.frontend.hints import CompilationHints
+from tuc.frontend.isolated_source_ingestion import (
+    ISOLATED_SOURCE_INGESTION_ADMISSION_EFFECT,
+    ISOLATED_SOURCE_INGESTION_BLOCKED_EXECUTION_SURFACES,
+    ISOLATED_SOURCE_INGESTION_CONTRACT,
+    ISOLATED_SOURCE_INGESTION_ENFORCED_CONTROLS,
+    ISOLATED_SOURCE_INGESTION_EXPLICIT_NON_CLAIMS,
+    ISOLATED_SOURCE_INGESTION_OUTPUT_POLICY,
+    ISOLATED_SOURCE_INGESTION_RAW_SOURCE_POLICY,
+    ISOLATED_SOURCE_INGESTION_STATUS,
+    ISOLATED_SOURCE_INGESTION_WORKER_PROTOCOL,
+    IsolatedSourceIngestionError,
+    IsolatedSourceIngestionReport,
+    IsolatedSourceIngestionResult,
+    ingest_isolated_triton_module_source,
+    isolated_source_ingestion_report_to_dict,
+)
 from tuc.frontend.native_backend_execution_security_gate import (
     MAX_NATIVE_BACKEND_EXECUTION_SECURITY_EVIDENCE,
     MAX_NATIVE_BACKEND_EXECUTION_SECURITY_FIELD_BYTES,
@@ -726,6 +742,18 @@ from tuc.frontend.triton_source import (
 )
 
 __all__ = [
+    "ISOLATED_SOURCE_INGESTION_ADMISSION_EFFECT",
+    "ISOLATED_SOURCE_INGESTION_BLOCKED_EXECUTION_SURFACES",
+    "ISOLATED_SOURCE_INGESTION_CONTRACT",
+    "ISOLATED_SOURCE_INGESTION_ENFORCED_CONTROLS",
+    "ISOLATED_SOURCE_INGESTION_EXPLICIT_NON_CLAIMS",
+    "ISOLATED_SOURCE_INGESTION_OUTPUT_POLICY",
+    "ISOLATED_SOURCE_INGESTION_RAW_SOURCE_POLICY",
+    "ISOLATED_SOURCE_INGESTION_STATUS",
+    "ISOLATED_SOURCE_INGESTION_WORKER_PROTOCOL",
+    "IsolatedSourceIngestionError",
+    "IsolatedSourceIngestionReport",
+    "IsolatedSourceIngestionResult",
     "BOUNDED_SOURCE_BUFFER_ADMISSION_EFFECT",
     "BOUNDED_SOURCE_BUFFER_API_CONTRACT",
     "BOUNDED_SOURCE_BUFFER_API_STATUS",
@@ -1215,6 +1243,7 @@ __all__ = [
     "dump_source_free_diagnostics_admission_report",
     "source_free_diagnostics_admission_report_to_dict",
     "run_source_ingestion_sandbox",
+    "ingest_isolated_triton_module_source",
     "build_device_access_sandbox_report",
     "build_external_frontend_package_conformance_report",
     "build_generated_artifact_quarantine_report",
@@ -1336,6 +1365,7 @@ __all__ = [
     "default_source_to_intent_property_requirements",
     "source_intent_payload_digest",
     "source_ingestion_sandbox_result_to_dict",
+    "isolated_source_ingestion_report_to_dict",
     "external_frontend_package_conformance_report_to_dict",
     "package_import_sandbox_evidence_from_payload",
     "package_import_sandbox_report_to_dict",

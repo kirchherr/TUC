@@ -102,6 +102,15 @@ Open proof obligations include:
 - external review and conformance evidence before claiming ecosystem
   compatibility
 
+The narrow Source-to-Intent obligation now has a stronger research prototype:
+one realistic bounded module is parsed in a fixed, resource-limited Linux
+worker, independently revalidated in the parent, and carried through the
+no-fallback Systolic/Vector package portfolio with reference correctness and
+backend equivalence. This closes process isolation for the current research
+slice, not production admission. Filesystem namespaces, kernel network
+isolation, syscall filtering, broader parser coverage, and independent
+security approval remain open before any production source-ingestion claim.
+
 ## Non-Negotiable Principles
 
 ### Principle 1

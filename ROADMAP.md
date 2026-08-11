@@ -1036,6 +1036,20 @@ Deliverables:
   (`examples/source_ingestion_sandbox_implementation.py`) wrapping the bounded
   source buffer as an execution-free non-admitting sandbox while keeping Source
   Intent plain-data, ComputeGraph, HAC-IR, and runtime-plan outputs blocked.
+- [Isolated Source Ingestion Research Worker](docs/ISOLATED_SOURCE_INGESTION_RESEARCH_WORKER.md)
+  (`examples/isolated_source_ingestion_research_proof.py`) now moves the narrow
+  research parser into a fixed resource-limited Linux worker, revalidates its
+  Source Intent in the parent, and completes the no-fallback external package
+  proof with reference correctness and backend equivalence. Production source
+  ingestion, filesystem namespace isolation, and kernel network isolation
+  remain false. Parent and worker:
+  `src/tuc/frontend/isolated_source_ingestion.py` and
+  `src/tuc/frontend/_isolated_source_ingestion_worker.py`; schema:
+  `schemas/isolated_source_ingestion_research_proof_report.v0.schema.json`;
+  golden:
+  `tests/golden/frontend/isolated_source_ingestion_research_proof_report.json`;
+  tests: `tests/test_isolated_source_ingestion_research_proof.py`; RFC:
+  `rfcs/0288-isolated-source-ingestion-research-worker.md`.
 - [Parser Fuzz Negative Corpus For Admitting Slice](docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
   (`examples/parser_fuzz_negative_corpus_for_admitting_slice.py`) defining
   deterministic source-free negative/fuzz seeds for the future admitting parser

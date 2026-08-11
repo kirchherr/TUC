@@ -143,6 +143,16 @@ reference evidence; see
 [Source Intent Elementwise Semantics](docs/SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md)
 and `rfcs/0287-source-intent-elementwise-semantics.md`.
 
+The same vertical slice now runs its bounded parser in a fixed, resource-limited
+Linux worker before parent-side Source Intent revalidation and the no-fallback
+package proof. It remains explicitly non-admitting and does not claim filesystem
+namespace or kernel network isolation. Run
+`python examples/isolated_source_ingestion_research_proof.py`; see
+[Isolated Source Ingestion Research Worker](docs/ISOLATED_SOURCE_INGESTION_RESEARCH_WORKER.md),
+schema `schemas/isolated_source_ingestion_research_proof_report.v0.schema.json`,
+golden `tests/golden/frontend/isolated_source_ingestion_research_proof_report.json`,
+and RFC `rfcs/0288-isolated-source-ingestion-research-worker.md`.
+
 ## Current Proofs
 
 Objective Alpha is the current proof shape:
