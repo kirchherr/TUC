@@ -330,6 +330,14 @@ def test_ci_and_release_use_locked_toolchain_without_build_isolation() -> None:
         assert 'pip install -e ".[dev]"' not in workflow
 
 
+def test_ci_declares_repository_example_import_path() -> None:
+    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
+
+    assert "PYTHONPATH: ${{ github.workspace }}" in workflow
+    assert 'pythonpath = [".", "src"]' in pyproject
+
+
 def test_source_worker_sbom_is_deterministic_and_material_bound() -> None:
     project_root = Path(__file__).resolve().parents[1]
     module = _load_module("generate_source_worker_sbom.py")
