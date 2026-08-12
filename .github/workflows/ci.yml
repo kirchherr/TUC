@@ -32,7 +32,7 @@ jobs:
       - name: Mypy
         run: mypy src/tuc
       - name: Pytest
-        run: pytest -q
+        run: pytest -q -n 4
       - name: Example
         run: python examples/phase0_vertical_slice.py
       - name: Phase 1 pipeline example

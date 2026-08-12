@@ -22,7 +22,9 @@ after `pypi` environment approval.
 CI and release tooling for Linux x86_64 / CPython 3.12 is resolved in
 `requirements/ci.txt`. Every wheel is version- and SHA-256-pinned, installation
 uses `--require-hashes`, and TUC's editable install disables dependency
-resolution and build isolation. Lock updates require normal dependency review.
+resolution and build isolation. CI and release tests use four fixed isolated
+workers from the locked `pytest-xdist` wheel. Lock updates require normal
+dependency review.
 
 ## Trust Boundary
 

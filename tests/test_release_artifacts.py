@@ -328,6 +328,7 @@ def test_ci_and_release_use_locked_toolchain_without_build_isolation() -> None:
         assert workflow.count(install_lock) == 1
         assert workflow.count(install_project) == 1
         assert 'pip install -e ".[dev]"' not in workflow
+        assert workflow.count("run: pytest -q -n 4") == 1
 
 
 def test_ci_declares_repository_example_import_path() -> None:

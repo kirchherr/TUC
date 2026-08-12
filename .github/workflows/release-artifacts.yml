@@ -38,7 +38,7 @@ jobs:
       - name: Mypy
         run: mypy src/tuc
       - name: Pytest
-        run: pytest -q
+        run: pytest -q -n 4
       - name: Build distributions
         run: python -m build
       - name: Verify wheel import
