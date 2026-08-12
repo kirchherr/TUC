@@ -66,6 +66,7 @@
         "attestation_receipt_schema",
         "attestation_receipt_writer",
         "build_context_policy",
+        "ci_toolchain_lock",
         "dockerfile",
         "requirements",
         "sbom_generator",
@@ -76,6 +77,7 @@
         "attestation_receipt_schema": { "$ref": "#/$defs/digest" },
         "attestation_receipt_writer": { "$ref": "#/$defs/digest" },
         "build_context_policy": { "$ref": "#/$defs/digest" },
+        "ci_toolchain_lock": { "$ref": "#/$defs/digest" },
         "dockerfile": { "$ref": "#/$defs/digest" },
         "requirements": { "$ref": "#/$defs/digest" },
         "sbom_generator": { "$ref": "#/$defs/digest" },
@@ -103,6 +105,7 @@
         { "const": "buildx_action_sha_pinned" },
         { "const": "buildx_version_pinned" },
         { "const": "checksum_manifest_configured" },
+        { "const": "ci_toolchain_hash_locked" },
         { "const": "github_oidc_attestation_configured" },
         { "const": "github_attestation_cli_policy_configured" },
         { "const": "github_cli_version_recorded" },
@@ -111,8 +114,8 @@
         { "const": "worker_sbom_attestation_configured" }
       ],
       "items": false,
-      "minItems": 15,
-      "maxItems": 15
+      "minItems": 16,
+      "maxItems": 16
     },
     "sbom_format": { "const": "CycloneDX-1.6" },
     "schema_version": { "const": "tuc.oci_source_worker_release_provenance_readiness_report.v0" },

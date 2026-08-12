@@ -88,7 +88,7 @@
     {
       "artifact_id": "objective_alpha_catalog_acyclicity_gate",
       "contract": "objective_alpha.catalog_acyclicity_gate.data_only.v0",
-      "digest": "sha256:25792bddbf74cd368d4911fe38984a69118877fb6e2cc2c8133102c076f343ae",
+      "digest": "sha256:9adf2e41f7bca265bf310da081e8301c18a1e9b0aec92224c7b8e8a84bcae443",
       "source_free": true,
       "status": "PASS",
       "supports_readiness_gate": true

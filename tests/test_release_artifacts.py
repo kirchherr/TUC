@@ -274,6 +274,62 @@ def test_release_workflow_actions_are_sha_pinned() -> None:
     ]
 
 
+def test_ci_toolchain_is_version_and_hash_locked() -> None:
+    lines = [
+        line
+        for line in Path("requirements/ci.txt").read_text(encoding="utf-8").splitlines()
+        if line and not line.startswith("#")
+    ]
+    requirement_pattern = re.compile(
+        r"([a-z0-9-]+)==([0-9]+(?:\.[0-9]+){1,3}) "
+        r"--hash=sha256:([a-f0-9]{64})"
+    )
+
+    assert lines[0] == "--only-binary=:all:"
+    requirements = [requirement_pattern.fullmatch(line) for line in lines[1:]]
+    assert all(requirements)
+    package_names = [match.group(1) for match in requirements if match is not None]
+    assert package_names == sorted(package_names)
+    assert len(package_names) == len(set(package_names)) == 21
+    assert set(package_names) == {
+        "ast-serialize",
+        "build",
+        "execnet",
+        "hypothesis",
+        "iniconfig",
+        "librt",
+        "mypy",
+        "mypy-extensions",
+        "numpy",
+        "packaging",
+        "pathspec",
+        "pluggy",
+        "pygments",
+        "pyproject-hooks",
+        "pytest",
+        "pytest-xdist",
+        "ruff",
+        "setuptools",
+        "sortedcontainers",
+        "typing-extensions",
+        "wheel",
+    }
+
+
+def test_ci_and_release_use_locked_toolchain_without_build_isolation() -> None:
+    install_lock = "python -m pip install --require-hashes -r requirements/ci.txt"
+    install_project = "python -m pip install --no-deps --no-build-isolation -e ."
+
+    for workflow_path in (
+        Path(".github/workflows/ci.yml"),
+        Path(".github/workflows/release-artifacts.yml"),
+    ):
+        workflow = workflow_path.read_text(encoding="utf-8")
+        assert workflow.count(install_lock) == 1
+        assert workflow.count(install_project) == 1
+        assert 'pip install -e ".[dev]"' not in workflow
+
+
 def test_source_worker_sbom_is_deterministic_and_material_bound() -> None:
     project_root = Path(__file__).resolve().parents[1]
     module = _load_module("generate_source_worker_sbom.py")

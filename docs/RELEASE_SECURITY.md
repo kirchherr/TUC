@@ -19,6 +19,11 @@ The workflow uploads these files as GitHub Actions artifacts. On protected `v*`
 tag pushes, it can also publish wheel and source distribution files to PyPI
 after `pypi` environment approval.
 
+CI and release tooling for Linux x86_64 / CPython 3.12 is resolved in
+`requirements/ci.txt`. Every wheel is version- and SHA-256-pinned, installation
+uses `--require-hashes`, and TUC's editable install disables dependency
+resolution and build isolation. Lock updates require normal dependency review.
+
 ## Trust Boundary
 
 Release artifacts change TUC's downstream trust boundary because users may run

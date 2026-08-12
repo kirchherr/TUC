@@ -24,7 +24,7 @@
   "evidence": [
     {
       "contract": "objective_alpha.research_claim_gate.ci.v0",
-      "digest": "sha256:7116b1f3764b97f51446079ee567d9559ad1485cb882b8a9e432d5f499b68530",
+      "digest": "sha256:71d3df09499aefcb182652f529272beb70555d7e6de0af93d5e095d241013077",
       "evidence_id": "objective_alpha_research_claim_gate",
       "source_free": true,
       "status": "PASS",
@@ -101,7 +101,7 @@
   "rocm_replacement_claim": false,
   "schema_version": "tuc.research_scope_claim_gate_report.v0",
   "scope_boundary": "research_proof_not_compiler_replacement",
-  "scope_report_digest": "sha256:f21b28cde3070fa9533e4040d744832de4d2ba7cc0117b7045b63376436ba930",
+  "scope_report_digest": "sha256:75c5d9caa7b88b28e06df2141f21088a0ceb1b9d85d99b9b08d2c9ed5073ef94",
   "source_ingestion_admitted": false,
   "supported_claims": [
     "hardware_independent_compute_intent_current_research_scope",

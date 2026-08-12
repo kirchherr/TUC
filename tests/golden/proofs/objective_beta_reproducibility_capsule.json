@@ -18,18 +18,18 @@
   ],
   "capsule_contract": "objective_beta.reproducibility_capsule.digest_manifest.v0",
   "capsule_id": "objective_beta_reproducibility_capsule",
-  "capsule_metadata_digest": "7ce6f4ca17233c69aadd9391f6f483aeb2637c24dadc9ed8989de5c48a3d1a8a",
+  "capsule_metadata_digest": "656fe4d649194e859568291b10b2eb411f310579674784141ae46a345c8f744d",
   "capsule_status": "reproducible_from_repository_goldens",
-  "claim_digest": "d9cf3e8d0f158aa46e43b729c9d120e701152dd12aad5e1f5eef73ba64f849ad",
-  "claim_gate_digest": "bbe102c17e0dc69ff7044dbe0936010ae2436df7c5469df64ed15c84c0e0cb66",
+  "claim_digest": "d6346f2ee7616c857cb84faabb6334d5dd72f3851db00a175b18f9881ddb0e6d",
+  "claim_gate_digest": "1b1883911a0e212d536bb53721409f9cfee5b244bd03e8a5500d192aa6aaadd6",
   "claim_gate_id": "objective_beta_research_claim_gate",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "694ca1f0b0685760fb4135d0943ac9bee934efe9e455bfd86124c90a59bc4a1a",
+  "claim_metadata_digest": "826301b4b97b5c19e343137c6ace3f6e43b96732853ba49c528c68e73b5766e4",
   "evidence": [
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "content_type": "application/json",
-      "digest": "7116b1f3764b97f51446079ee567d9559ad1485cb882b8a9e432d5f499b68530",
+      "digest": "71d3df09499aefcb182652f529272beb70555d7e6de0af93d5e095d241013077",
       "role": "predecessor_claim_gate",
       "source_free": true
     },
@@ -57,21 +57,21 @@
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "content_type": "application/json",
-      "digest": "363a7b6fe02564bf8e93d635a7f390c2552977959ccaee29469013109f283390",
+      "digest": "29bed005ad68dcd2f82cd286aaa632c2be189c6f8941277289db6093eca4b3eb",
       "role": "fail_closed_admission_readiness",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_maintainer_approval_request",
       "content_type": "application/json",
-      "digest": "a06e62c963dbdabdbb3d4e7fa7a7a9b63e077895631c08a697a491d2b295a78d",
+      "digest": "7fb1543930133f5d2ef8bc2dd9b5428bdd55e0d9854fdf4014b1586460cf5bfa",
       "role": "external_review_request",
       "source_free": true
     },
     {
       "artifact_id": "research_scope_claim_gate",
       "content_type": "application/json",
-      "digest": "91df9d972f7ed6486750725db4f4667831892861b5581e76246ed5b72ed31eb1",
+      "digest": "5e08638d2e6ed6215c14e9baf0ba60e76460acd6aa38b9aa40a1b5895e00cac3",
       "role": "research_scope_boundary",
       "source_free": true
     },
@@ -85,21 +85,21 @@
     {
       "artifact_id": "oci_source_worker_release_provenance_readiness",
       "content_type": "application/json",
-      "digest": "55d7d989498330bfd2512821354af9b993130763096c0c9e32ce8bece1f6d916",
+      "digest": "b3f94829c0cfa5c7ed4e8c602803df0bd02a88acdad52d9d4a77b475b80b8618",
       "role": "release_provenance_readiness",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim",
       "content_type": "application/json",
-      "digest": "d9cf3e8d0f158aa46e43b729c9d120e701152dd12aad5e1f5eef73ba64f849ad",
+      "digest": "d6346f2ee7616c857cb84faabb6334d5dd72f3851db00a175b18f9881ddb0e6d",
       "role": "research_claim",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim_gate",
       "content_type": "application/json",
-      "digest": "bbe102c17e0dc69ff7044dbe0936010ae2436df7c5469df64ed15c84c0e0cb66",
+      "digest": "1b1883911a0e212d536bb53721409f9cfee5b244bd03e8a5500d192aa6aaadd6",
       "role": "research_claim_gate",
       "source_free": true
     }

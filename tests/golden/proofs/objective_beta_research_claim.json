@@ -22,7 +22,7 @@
   "broad_source_parser_claim": false,
   "claim_contract": "objective_beta.research_claim.digest_snapshot.v0",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "694ca1f0b0685760fb4135d0943ac9bee934efe9e455bfd86124c90a59bc4a1a",
+  "claim_metadata_digest": "826301b4b97b5c19e343137c6ace3f6e43b96732853ba49c528c68e73b5766e4",
   "claim_passed": true,
   "claim_scope": "objective_beta_kernel_ingress_first_slice_review_readiness",
   "claim_status": "supported_for_objective_beta_research_scope",
@@ -30,7 +30,7 @@
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "contract": "objective_alpha.research_claim_gate.ci.v0",
-      "digest": "7116b1f3764b97f51446079ee567d9559ad1485cb882b8a9e432d5f499b68530",
+      "digest": "71d3df09499aefcb182652f529272beb70555d7e6de0af93d5e095d241013077",
       "source_free": true,
       "status": "PASS"
     },
@@ -58,21 +58,21 @@
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "contract": "real_triton_first_slice_admission_readiness_gate.data_only.v0",
-      "digest": "363a7b6fe02564bf8e93d635a7f390c2552977959ccaee29469013109f283390",
+      "digest": "29bed005ad68dcd2f82cd286aaa632c2be189c6f8941277289db6093eca4b3eb",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval"
     },
     {
       "artifact_id": "real_triton_first_slice_maintainer_approval_request",
       "contract": "real_triton_first_slice_maintainer_approval_request.data_only.v0",
-      "digest": "a06e62c963dbdabdbb3d4e7fa7a7a9b63e077895631c08a697a491d2b295a78d",
+      "digest": "7fb1543930133f5d2ef8bc2dd9b5428bdd55e0d9854fdf4014b1586460cf5bfa",
       "source_free": true,
       "status": "ready_for_external_review"
     },
     {
       "artifact_id": "research_scope_claim_gate",
       "contract": "research_scope.claim_gate.data_only.v0",
-      "digest": "91df9d972f7ed6486750725db4f4667831892861b5581e76246ed5b72ed31eb1",
+      "digest": "5e08638d2e6ed6215c14e9baf0ba60e76460acd6aa38b9aa40a1b5895e00cac3",
       "source_free": true,
       "status": "PASS"
     },
@@ -86,7 +86,7 @@
     {
       "artifact_id": "oci_source_worker_release_provenance_readiness",
       "contract": "oci_source_worker.release_provenance_readiness.data_only.v0",
-      "digest": "55d7d989498330bfd2512821354af9b993130763096c0c9e32ce8bece1f6d916",
+      "digest": "b3f94829c0cfa5c7ed4e8c602803df0bd02a88acdad52d9d4a77b475b80b8618",
       "source_free": true,
       "status": "PASS"
     }
