@@ -77,10 +77,21 @@ High-risk release actions are pinned to reviewed commit SHAs:
 | --- | --- | --- |
 | `actions/checkout` | `v6.0.2` | `de0fac2e4500dabe0009e67214ff5f5447ce83dd` |
 | `actions/setup-python` | `v6.2.0` | `a309ff8b426b58ec0e2a45f0f869d46889d02405` |
+| `docker/setup-buildx-action` | `v4.2.0` | `bb05f3f5519dd87d3ba754cc423b652a5edd6d2c` |
 | `actions/attest` | `v4.1.0` | `59d89421af93a897026c735860bf21b6eb4f7b26` |
 | `actions/upload-artifact` | `v7.0.1` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` |
 | `actions/download-artifact` | `v8.0.1` | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` |
 | `pypa/gh-action-pypi-publish` | `v1.14.0` | `cef221092ed1bacb1cc03d23a2d87d1d172e277b` |
+
+The OCI builder toolchain is pinned independently of the setup action:
+
+| Tool | Version | Immutable Reference |
+| --- | --- | --- |
+| Docker Buildx | `v0.34.1` | setup action `version` input |
+| Moby BuildKit | `v0.30.0` | `sha256:0168606be2315b7c807a03b3d8aa79beefdb31c98740cebdffdfeebf31190c9f` |
+
+BuildKit starts with `--cdi-disabled`; the workflow does not allow
+`network.host`, `security.insecure`, or device entitlements.
 
 When updating a release action:
 

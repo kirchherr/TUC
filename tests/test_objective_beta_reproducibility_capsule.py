@@ -71,7 +71,7 @@ def test_objective_beta_reproducibility_capsule_example_runs() -> None:
     )
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
-    assert '"evidence_count": 9' in completed.stdout
+    assert '"evidence_count": 11' in completed.stdout
     assert '"source_ingestion_admitted": false' in completed.stdout
     assert "source_text" not in completed.stdout
     assert "runtime_handle" not in completed.stdout

@@ -8,7 +8,7 @@ performance claims, or drifts away from the fixed evidence order.
 The next reproducibility layer is the
 [Objective Beta Reproducibility Capsule](OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE.md),
 which binds this gate and all direct Beta evidence into an independently
-replayable nine-artifact closure.
+replayable eleven-artifact closure.
 
 Run it with:
 
@@ -35,8 +35,9 @@ The gate passes only while:
 - `gate_passed = true`.
 - `claim_contract = objective_beta.research_claim.digest_snapshot.v0`.
 - Objective Alpha, Kernel Ingress, First Real Triton Path, first-slice evidence,
-  admission readiness, maintainer approval request, and research scope evidence
-  remain bound in the expected order.
+  admission readiness, maintainer approval request, research scope, OCI kernel
+  isolation, and OCI release-provenance readiness evidence remain bound in the
+  expected order.
 - `source_ingestion_admitted = false`.
 - `admission_ready = false`.
 - `surface_opened = false`.

@@ -34,11 +34,15 @@ Objective Beta binds:
 - Real Triton First Slice Admission Readiness Gate.
 - Real Triton First Slice Maintainer Approval Request.
 - Research Scope Claim Gate.
+- OCI Source Ingestion Research Proof.
+- OCI Source Worker Release Provenance Readiness.
 
 The claim records `claim_passed = true` for the bounded research scope while
 keeping `source_ingestion_admitted = false`, `admission_ready = false`,
 `surface_opened = false`, `native_performance_claim = false`, and
-`vendor_replacement_claim = false`.
+`vendor_replacement_claim = false`. The OCI readiness evidence also preserves
+`external_attestation_verified = false`, `production_source_sandbox = false`,
+and `published_worker_image_provenance = false`.
 
 ## Meaning
 
@@ -50,6 +54,8 @@ Realistic Kernel Ingress evidence is bound.
 The first Real Triton path is reviewable.
 The first source-ingestion slice is review-ready.
 Admission still remains fail-closed until external approval exists.
+The isolated worker path and its protected release configuration are bound.
+External attestation and production sandbox claims remain unproven.
 ```
 
 That is the correct research posture for TUC: stronger evidence, still bounded

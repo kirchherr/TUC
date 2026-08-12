@@ -16,7 +16,7 @@ evidence set.
 
 ## Capsule Contents
 
-The capsule binds nine JSON artifacts by SHA-256 digest:
+The capsule binds eleven JSON artifacts by SHA-256 digest:
 
 1. Objective Alpha Research Claim Gate
 2. Source-To-Intent Research Kernel Ingress Proof Bundle
@@ -25,8 +25,10 @@ The capsule binds nine JSON artifacts by SHA-256 digest:
 5. Real Triton First Slice Admission Readiness Gate
 6. Real Triton First Slice Maintainer Approval Request
 7. Research Scope Claim Gate
-8. Objective Beta Research Claim
-9. Objective Beta Research Claim Gate
+8. OCI Source Ingestion Research Proof
+9. OCI Source Worker Release Provenance Readiness
+10. Objective Beta Research Claim
+11. Objective Beta Research Claim Gate
 
 The serialized capsule carries artifact IDs, roles, content types, digests, and
 claim-boundary flags. It does not carry repository paths, source text, Source
@@ -44,7 +46,7 @@ The capsule verifies that:
 
 - the Beta claim and claim gate satisfy their v0 contracts;
 - the claim gate binds the exact serialized claim digest;
-- all seven claim evidence entries bind the exact allowlisted artifact bytes;
+- all nine claim evidence entries bind the exact allowlisted artifact bytes;
 - evidence order and roles match the frozen v0 contract;
 - source ingestion, native performance, and vendor replacement remain blocked;
 - external maintainer approval remains required.

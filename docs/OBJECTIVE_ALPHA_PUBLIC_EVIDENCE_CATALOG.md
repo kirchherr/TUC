@@ -27,7 +27,7 @@ tests/golden/proofs/objective_alpha_public_evidence_catalog.json
 The catalog proves that Objective Alpha has a stable extension surface after the
 public proof bundle reached `entry_count: 16` and `entry_capacity: 16`.
 
-The catalog currently binds seven entries by SHA-256 metadata digest:
+The catalog currently binds nine entries by SHA-256 metadata digest:
 
 - the initial governance entry for the
   [Objective Alpha Evidence Extension Policy](OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md);
@@ -43,6 +43,10 @@ The catalog currently binds seven entries by SHA-256 metadata digest:
   [First Real Triton Kernel Path](FIRST_REAL_TRITON_KERNEL_PATH.md);
 - a `frontend_runtime_proof` entry for the
   [Real Triton First Slice Evidence Portfolio](REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md).
+- an `isolation_proof` entry for the
+  [OCI Source Ingestion Research Worker](OCI_SOURCE_INGESTION_RESEARCH_WORKER.md);
+- a `supply_chain_readiness` entry for
+  [OCI Source Worker Release Provenance](OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md).
 
 Future catalog entries must be added through an RFC and must remain
 schema-versioned, digest-only, source-free in public reports, and free of
@@ -52,9 +56,9 @@ performance claims.
 The catalog now emits machine-readable extension-tier coverage evidence:
 `catalog_required_extension_tiers`, `catalog_missing_extension_tiers`, and
 `catalog_extension_tier_coverage_status`. The current required set is
-`governance`, `runtime_proof`, `frontend_runtime_proof`, and
-`claim_boundary`; the status must be `complete` and the missing-tier list must
-be empty.
+`governance`, `runtime_proof`, `frontend_runtime_proof`, `claim_boundary`,
+`isolation_proof`, and `supply_chain_readiness`; the status must be `complete`
+and the missing-tier list must be empty.
 
 The [Objective Alpha Public Evidence Catalog Admission Gate](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
 machine-checks those admission rules. Canonical doc path:
@@ -122,6 +126,8 @@ main proof path harder to audit.
   `rfcs/0275-objective-alpha-real-triton-first-slice-portfolio-catalog-entry.md`
 - Catalog acyclicity gate decision:
   `rfcs/0276-objective-alpha-catalog-acyclicity-gate.md`
+- OCI isolation and release-provenance catalog decision:
+  `rfcs/0290-oci-source-worker-release-provenance.md`
 
 ## Security Boundary
 

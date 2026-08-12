@@ -34,6 +34,8 @@
     "source_to_intent_research_capability_claim_gate_metadata_digest",
     "first_real_triton_kernel_path_metadata_digest",
     "real_triton_first_slice_evidence_portfolio_metadata_digest",
+    "oci_source_ingestion_research_proof_metadata_digest",
+    "oci_source_worker_release_provenance_readiness_metadata_digest",
     "schema_version",
     "stable_bundle_metadata_digest",
     "stable_entry_capacity",
@@ -112,6 +114,14 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "oci_source_ingestion_research_proof_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "oci_source_worker_release_provenance_readiness_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "catalog_metadata_digest": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
@@ -120,17 +130,19 @@
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 7
+      "const": 9
     },
     "catalog_required_extension_tiers": {
       "type": "array",
-      "minItems": 4,
-      "maxItems": 4,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         { "const": "governance" },
         { "const": "runtime_proof" },
         { "const": "frontend_runtime_proof" },
-        { "const": "claim_boundary" }
+        { "const": "claim_boundary" },
+        { "const": "isolation_proof" },
+        { "const": "supply_chain_readiness" }
       ]
     },
     "catalog_missing_extension_tiers": {
@@ -142,8 +154,8 @@
     },
     "catalog_entries": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         {
           "type": "object",
@@ -391,6 +403,80 @@
             },
             "extension_tier": {
               "const": "frontend_runtime_proof"
+            },
+            "metadata_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "raw_output_policy": {
+              "const": "digest_only"
+            },
+            "status": {
+              "const": "passed"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_kind",
+            "entry_point",
+            "evidence_id",
+            "extension_tier",
+            "metadata_digest",
+            "raw_output_policy",
+            "status"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "oci_source_ingestion_research_proof"
+            },
+            "entry_point": {
+              "const": "python examples/oci_source_ingestion_research_proof.py"
+            },
+            "artifact_kind": {
+              "const": "schema_versioned_oci_source_ingestion_research_proof_report"
+            },
+            "extension_tier": {
+              "const": "isolation_proof"
+            },
+            "metadata_digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "raw_output_policy": {
+              "const": "digest_only"
+            },
+            "status": {
+              "const": "passed"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_kind",
+            "entry_point",
+            "evidence_id",
+            "extension_tier",
+            "metadata_digest",
+            "raw_output_policy",
+            "status"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "oci_source_worker_release_provenance_readiness"
+            },
+            "entry_point": {
+              "const": "python examples/oci_source_worker_release_provenance_readiness.py"
+            },
+            "artifact_kind": {
+              "const": "schema_versioned_oci_worker_release_provenance_readiness_report"
+            },
+            "extension_tier": {
+              "const": "supply_chain_readiness"
             },
             "metadata_digest": {
               "type": "string",

@@ -92,20 +92,40 @@
       "metadata_digest": "6576001cbdc1693464b1ceff6f07f32007fe5e2bc72ae63d112e59f7ddbe7000",
       "raw_output_policy": "digest_only",
       "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_oci_source_ingestion_research_proof_report",
+      "entry_point": "python examples/oci_source_ingestion_research_proof.py",
+      "evidence_id": "oci_source_ingestion_research_proof",
+      "extension_tier": "isolation_proof",
+      "metadata_digest": "ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_oci_worker_release_provenance_readiness_report",
+      "entry_point": "python examples/oci_source_worker_release_provenance_readiness.py",
+      "evidence_id": "oci_source_worker_release_provenance_readiness",
+      "extension_tier": "supply_chain_readiness",
+      "metadata_digest": "cdfb98df2be4b194bb360aca8cff2f18cc918ec35b8d43c397b77983ee4db7f3",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
     }
   ],
   "catalog_entry_capacity": 32,
-  "catalog_entry_count": 7,
+  "catalog_entry_count": 9,
   "catalog_extension_tier_coverage_status": "complete",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "ef590af9c9cfd7735f65058b4dc5886d3de9fc659f2fc41be9ab6da49b28ce2a",
+  "catalog_metadata_digest": "57f8739867fa341e7c8b8343d453a700a72b3a7863d44d0165d5a2a39f721a77",
   "catalog_missing_extension_tiers": [],
   "catalog_passed": true,
   "catalog_required_extension_tiers": [
     "governance",
     "runtime_proof",
     "frontend_runtime_proof",
-    "claim_boundary"
+    "claim_boundary",
+    "isolation_proof",
+    "supply_chain_readiness"
   ],
   "catalog_scope": "objective_alpha_extensions_after_public_bundle_capacity",
   "catalog_status": "PASS",
@@ -115,6 +135,8 @@
   "first_real_triton_kernel_path_metadata_digest": "612ff0d3de31c8a20888a5b18f1c5ddc34b8364c24824ae8831b2090e2032e2f",
   "growth_policy": "append_only_rfc_bound",
   "issues": [],
+  "oci_source_ingestion_research_proof_metadata_digest": "ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
+  "oci_source_worker_release_provenance_readiness_metadata_digest": "cdfb98df2be4b194bb360aca8cff2f18cc918ec35b8d43c397b77983ee4db7f3",
   "real_triton_first_slice_evidence_portfolio_metadata_digest": "6576001cbdc1693464b1ceff6f07f32007fe5e2bc72ae63d112e59f7ddbe7000",
   "required_controls": [
     "schema_versioned_extension_artifacts",

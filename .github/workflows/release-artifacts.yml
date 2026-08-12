@@ -24,6 +24,11 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.12"
+      - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+        with:
+          version: v0.34.1
+          driver-opts: image=moby/buildkit:v0.30.0@sha256:0168606be2315b7c807a03b3d8aa79beefdb31c98740cebdffdfeebf31190c9f
+          buildkitd-flags: --cdi-disabled
       - name: Install package
         run: python -m pip install -e ".[dev]"
       - name: Ruff
@@ -42,8 +47,21 @@ jobs:
           cd /tmp
           /tmp/tuc-release-check/bin/python -m pip install "${wheel_path}"
           /tmp/tuc-release-check/bin/python -c "import importlib.metadata; import tuc; print(importlib.metadata.version('tuc'))"
+      - name: Build source-worker OCI archive
+        run: |
+          docker buildx build \
+            --file docker/source-worker/Dockerfile \
+            --platform linux/amd64 \
+            --provenance=false \
+            --sbom=false \
+            --output type=oci,dest=dist/tuc-source-ingestion-worker.oci.tar \
+            .
+      - name: Verify source-worker OCI archive
+        run: python scripts/verify_source_worker_oci_archive.py dist/tuc-source-ingestion-worker.oci.tar
       - name: Generate CycloneDX SBOM
         run: python scripts/generate_sbom.py --output dist/tuc.cdx.json
+      - name: Generate source-worker CycloneDX SBOM
+        run: python scripts/generate_source_worker_sbom.py --output dist/tuc-source-ingestion-worker.cdx.json
       - name: Write SHA-256 checksums
         run: python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
       - name: Attest distribution provenance
@@ -59,6 +77,15 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
           sbom-path: dist/tuc.cdx.json
+      - name: Attest source-worker OCI provenance
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        with:
+          subject-path: dist/tuc-source-ingestion-worker.oci.tar
+      - name: Attest source-worker SBOM
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        with:
+          subject-path: dist/tuc-source-ingestion-worker.oci.tar
+          sbom-path: dist/tuc-source-ingestion-worker.cdx.json
       - name: Upload release artifact bundle
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -67,6 +94,8 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
             dist/*.cdx.json
+            dist/*.oci-verification.json
+            dist/*.oci.tar
             dist/SHA256SUMS
           if-no-files-found: error
           retention-days: 30

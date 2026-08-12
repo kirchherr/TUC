@@ -45,6 +45,7 @@ python examples/source_to_intent_research_capability_claim_gate.py
 python examples/research_scope_claim_gate.py
 python examples/real_triton_first_slice_evidence_portfolio.py
 python examples/objective_alpha_catalog_acyclicity_gate.py
+python examples/oci_source_worker_release_provenance_readiness.py
 ```
 
 The Objective Alpha claim snapshot binds the public proof bundle, catalog,
@@ -55,15 +56,15 @@ Golden: `tests/golden/proofs/objective_alpha_research_claim.json`.
 Gate: [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md).
 
 The [Objective Beta Research Claim](docs/OBJECTIVE_BETA_RESEARCH_CLAIM.md)
-is the successor snapshot: it keeps Objective Alpha bound while adding
-Kernel Ingress, First Real Triton Kernel Path, first-slice readiness, the
-maintainer approval request, and Research Scope Gate evidence into one
-digest-only research milestone. Gate:
+is the successor snapshot: it keeps Objective Alpha bound while adding Kernel
+Ingress, First Real Triton Kernel Path, first-slice readiness, the maintainer
+approval request, Research Scope Gate, kernel-isolated OCI ingestion, and OCI
+worker release-provenance readiness into one digest-only research milestone. Gate:
 [Objective Beta Research Claim Gate](docs/OBJECTIVE_BETA_RESEARCH_CLAIM_GATE.md).
 
 The [Objective Beta Reproducibility Capsule](docs/OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE.md)
 and [Reproducibility Gate](docs/OBJECTIVE_BETA_REPRODUCIBILITY_GATE.md)
-raise that milestone to an offline-reviewable evidence closure: nine fixed
+raise that milestone to an offline-reviewable evidence closure: eleven fixed
 repository artifacts, including the Beta claim and gate, are replay-verified by
 digest without source, compiler, runtime, backend, plugin, device, subprocess,
 network, or generated-artifact execution. Schema:
@@ -153,16 +154,18 @@ schema `schemas/isolated_source_ingestion_research_proof_report.v0.schema.json`,
 golden `tests/golden/frontend/isolated_source_ingestion_research_proof_report.json`,
 and RFC `rfcs/0288-isolated-source-ingestion-research-worker.md`.
 
-The hardened successor now runs that parser in a dedicated OCI container with
-no network, no repository mount, read-only root filesystem, zero capabilities,
-`no-new-privileges`, seccomp, and cgroup limits. It verifies those kernel facts
-inside the worker and binds the resulting Source Intent digest to the existing
-no-fallback backend proof. Run
-`python examples/oci_source_ingestion_research_proof.py`; see
-[OCI Source Ingestion Research Worker](docs/OCI_SOURCE_INGESTION_RESEARCH_WORKER.md),
-schema `schemas/oci_source_ingestion_research_proof_report.v0.schema.json`,
-golden `tests/golden/frontend/oci_source_ingestion_research_proof_report.json`,
-and RFC `rfcs/0289-oci-source-ingestion-research-worker.md`.
+The protected release workflow now also builds that worker as a verified
+`linux/amd64` OCI Image Layout archive, emits a worker-specific CycloneDX SBOM,
+and requests GitHub OIDC provenance and SBOM attestations. Run
+`python examples/oci_source_worker_release_provenance_readiness.py`; see
+[OCI Source Worker Release Provenance](docs/OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md),
+schema
+`schemas/oci_source_worker_release_provenance_readiness_report.v0.schema.json`,
+golden
+`tests/golden/frontend/oci_source_worker_release_provenance_readiness_report.json`,
+and RFC `rfcs/0290-oci-source-worker-release-provenance.md`. External
+attestation verification, public registry publication, and production source
+ingestion remain blocked.
 
 The hardened successor now runs that parser in a dedicated OCI container with
 no network, no repository mount, read-only root filesystem, zero capabilities,
@@ -960,6 +963,7 @@ Key docs:
 - [Security baseline](docs/SECURITY_BASELINE.md)
 - [Review policy](docs/REVIEW_POLICY.md)
 - [Release governance](docs/RELEASE_GOVERNANCE.md)
+- [OCI source-worker release provenance](docs/OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md)
 - [Branch protection policy](docs/BRANCH_PROTECTION.md)
 
 ## Quickstart

@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuc.dev/schemas/oci_source_worker_release_provenance_readiness_report.v0.schema.json",
+  "title": "TUC OCI Source Worker Release Provenance Readiness Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_format",
+    "artifact_name",
+    "artifact_policy",
+    "attest_action",
+    "attested_release_artifact_configured",
+    "blocked_claims",
+    "buildkit_image",
+    "buildx_action",
+    "buildx_version",
+    "execution_permission",
+    "external_attestation_verified",
+    "long_lived_signing_secret_required",
+    "material_digests",
+    "oci_research_proof_digest",
+    "platform",
+    "production_source_ingestion",
+    "production_source_sandbox",
+    "published_worker_image_provenance",
+    "readiness_claim",
+    "readiness_contract",
+    "readiness_status",
+    "report_digest",
+    "required_controls",
+    "sbom_format",
+    "schema_version",
+    "workflow_digest"
+  ],
+  "properties": {
+    "artifact_format": { "const": "oci_image_layout_tar" },
+    "artifact_name": { "const": "tuc-source-ingestion-worker.oci.tar" },
+    "artifact_policy": { "const": "metadata_digest_only_source_and_archive_omitted" },
+    "attest_action": { "const": "actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26" },
+    "attested_release_artifact_configured": { "const": true },
+    "blocked_claims": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "byte_identical_reproducible_image" },
+        { "const": "external_attestation_verified" },
+        { "const": "production_source_ingestion" },
+        { "const": "production_source_sandbox" },
+        { "const": "public_registry_image" }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "buildkit_image": { "const": "moby/buildkit:v0.30.0@sha256:0168606be2315b7c807a03b3d8aa79beefdb31c98740cebdffdfeebf31190c9f" },
+    "buildx_action": { "const": "docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c" },
+    "buildx_version": { "const": "v0.34.1" },
+    "execution_permission": { "const": false },
+    "external_attestation_verified": { "const": false },
+    "long_lived_signing_secret_required": { "const": false },
+    "material_digests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "archive_verifier",
+        "build_context_policy",
+        "dockerfile",
+        "requirements",
+        "sbom_generator",
+        "worker_source"
+      ],
+      "properties": {
+        "archive_verifier": { "$ref": "#/$defs/digest" },
+        "build_context_policy": { "$ref": "#/$defs/digest" },
+        "dockerfile": { "$ref": "#/$defs/digest" },
+        "requirements": { "$ref": "#/$defs/digest" },
+        "sbom_generator": { "$ref": "#/$defs/digest" },
+        "worker_source": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "oci_research_proof_digest": { "$ref": "#/$defs/digest" },
+    "platform": { "const": "linux/amd64" },
+    "production_source_ingestion": { "const": false },
+    "production_source_sandbox": { "const": false },
+    "published_worker_image_provenance": { "const": false },
+    "readiness_claim": { "const": "release_workflow_can_emit_verified_attested_oci_archive_and_worker_sbom" },
+    "readiness_contract": { "const": "oci_source_worker.release_provenance_readiness.data_only.v0" },
+    "readiness_status": { "const": "PASS" },
+    "report_digest": { "$ref": "#/$defs/digest" },
+    "required_controls": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "archive_verified_before_attestation" },
+        { "const": "base_image_digest_pinned" },
+        { "const": "build_context_allowlisted" },
+        { "const": "buildkit_cdi_disabled" },
+        { "const": "buildkit_image_digest_pinned" },
+        { "const": "buildkit_insecure_entitlements_disabled" },
+        { "const": "buildx_action_sha_pinned" },
+        { "const": "buildx_version_pinned" },
+        { "const": "checksum_manifest_configured" },
+        { "const": "github_oidc_attestation_configured" },
+        { "const": "requirements_hash_locked" },
+        { "const": "worker_sbom_attestation_configured" }
+      ],
+      "items": false,
+      "minItems": 12,
+      "maxItems": 12
+    },
+    "sbom_format": { "const": "CycloneDX-1.6" },
+    "schema_version": { "const": "tuc.oci_source_worker_release_provenance_readiness_report.v0" },
+    "workflow_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

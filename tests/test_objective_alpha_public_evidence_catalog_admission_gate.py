@@ -159,6 +159,12 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_passes() -> None
     assert payload["catalog_extension_tiers"][5] == "frontend_runtime_proof"
     assert payload["catalog_evidence_ids"][6] == "real_triton_first_slice_evidence_portfolio"
     assert payload["catalog_extension_tiers"][6] == "frontend_runtime_proof"
+    assert payload["catalog_evidence_ids"][7] == "oci_source_ingestion_research_proof"
+    assert payload["catalog_extension_tiers"][7] == "isolation_proof"
+    assert payload["catalog_evidence_ids"][8] == (
+        "oci_source_worker_release_provenance_readiness"
+    )
+    assert payload["catalog_extension_tiers"][8] == "supply_chain_readiness"
     assert payload["required_invariants"] == list(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS
     )
@@ -188,6 +194,11 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_passes() -> None
     )
     assert len(str(payload["first_real_triton_kernel_path_metadata_digest"])) == 64
     assert len(str(payload["real_triton_first_slice_evidence_portfolio_metadata_digest"])) == 64
+    assert len(str(payload["oci_source_ingestion_research_proof_metadata_digest"])) == 64
+    assert (
+        len(str(payload["oci_source_worker_release_provenance_readiness_metadata_digest"]))
+        == 64
+    )
 
 
 def test_objective_alpha_public_evidence_catalog_admission_gate_dump_matches_golden() -> None:
@@ -209,13 +220,15 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_example_runs() -
         completed.stdout
     )
     assert '"gate_passed": true' in completed.stdout
-    assert '"catalog_entry_count": 7' in completed.stdout
+    assert '"catalog_entry_count": 9' in completed.stdout
     assert "runtime_backend_equivalence_portfolio" in completed.stdout
     assert "source_to_intent_research_kernel_ingress_proof_bundle" in completed.stdout
     assert "source_intent_mixed_runtime_public_proof_bundle" in completed.stdout
     assert "source_to_intent_research_capability_claim_gate" in completed.stdout
     assert "first_real_triton_kernel_path" in completed.stdout
     assert "real_triton_first_slice_evidence_portfolio" in completed.stdout
+    assert "oci_source_ingestion_research_proof" in completed.stdout
+    assert "oci_source_worker_release_provenance_readiness" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "source_text" not in completed.stdout
     assert "host_path" not in completed.stdout
@@ -310,6 +323,18 @@ def test_objective_alpha_public_evidence_catalog_admission_gate_schema_matches_c
         schema["properties"]["real_triton_first_slice_evidence_portfolio_metadata_digest"][
             "pattern"
         ]
+        == "^[a-f0-9]{64}$"
+    )
+    assert (
+        schema["properties"]["oci_source_ingestion_research_proof_metadata_digest"][
+            "pattern"
+        ]
+        == "^[a-f0-9]{64}$"
+    )
+    assert (
+        schema["properties"][
+            "oci_source_worker_release_provenance_readiness_metadata_digest"
+        ]["pattern"]
         == "^[a-f0-9]{64}$"
     )
 

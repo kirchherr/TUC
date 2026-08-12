@@ -15,6 +15,12 @@ from examples.first_real_triton_kernel_path import (
 from examples.objective_alpha_research_claim_gate import (
     assert_objective_alpha_research_claim_gate_report_contract,
 )
+from examples.oci_source_ingestion_research_proof import (
+    assert_oci_source_ingestion_research_proof_report,
+)
+from examples.oci_source_worker_release_provenance_readiness import (
+    assert_report_contract as assert_oci_release_provenance_readiness_report_contract,
+)
 from examples.real_triton_first_slice_admission_readiness_gate import (
     assert_real_triton_first_slice_admission_readiness_gate_report_contract,
 )
@@ -51,6 +57,8 @@ OBJECTIVE_BETA_RESEARCH_CLAIM_EVIDENCE_IDS = (
     "real_triton_first_slice_admission_readiness_gate",
     "real_triton_first_slice_maintainer_approval_request",
     "research_scope_claim_gate",
+    "oci_source_ingestion_research_proof",
+    "oci_source_worker_release_provenance_readiness",
 )
 OBJECTIVE_BETA_RESEARCH_CLAIM_SUPPORTED_CLAIMS = (
     "objective_alpha_research_claim_preserved",
@@ -60,6 +68,8 @@ OBJECTIVE_BETA_RESEARCH_CLAIM_SUPPORTED_CLAIMS = (
     "first_slice_review_readiness_bound",
     "external_approval_request_packaged",
     "research_scope_boundaries_preserved",
+    "kernel_isolated_source_ingestion_proof_bound",
+    "oci_worker_release_provenance_readiness_bound",
 )
 OBJECTIVE_BETA_RESEARCH_CLAIM_BLOCKED_CLAIMS = (
     "arbitrary_triton_source_ingestion",
@@ -73,6 +83,9 @@ OBJECTIVE_BETA_RESEARCH_CLAIM_BLOCKED_CLAIMS = (
     "generated_artifact_execution",
     "vendor_compiler_replacement",
     "cuda_replacement",
+    "production_source_sandbox",
+    "external_release_attestation_verified",
+    "public_registry_worker_image",
 )
 OBJECTIVE_BETA_RESEARCH_CLAIM_REQUIRED_INVARIANTS = (
     "objective_alpha_claim_gate_passed",
@@ -82,6 +95,10 @@ OBJECTIVE_BETA_RESEARCH_CLAIM_REQUIRED_INVARIANTS = (
     "admission_readiness_fail_closed",
     "maintainer_approval_request_non_approving",
     "research_scope_gate_passed",
+    "oci_kernel_isolation_proof_passed",
+    "oci_release_provenance_readiness_passed",
+    "production_source_sandbox_false",
+    "external_attestation_unverified",
     "source_ingestion_admitted_false",
     "external_approval_still_required",
     "native_performance_claim_false",
@@ -179,6 +196,12 @@ _ARTIFACT_PATHS = {
         "tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json"
     ),
     "research_scope_claim_gate": Path("tests/golden/proofs/research_scope_claim_gate.json"),
+    "oci_source_ingestion_research_proof": Path(
+        "tests/golden/frontend/oci_source_ingestion_research_proof_report.json"
+    ),
+    "oci_source_worker_release_provenance_readiness": Path(
+        "tests/golden/frontend/oci_source_worker_release_provenance_readiness_report.json"
+    ),
 }
 
 
@@ -342,6 +365,8 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
     readiness = payloads["real_triton_first_slice_admission_readiness_gate"]
     approval_request = payloads["real_triton_first_slice_maintainer_approval_request"]
     scope = payloads["research_scope_claim_gate"]
+    oci_proof = payloads["oci_source_ingestion_research_proof"]
+    oci_readiness = payloads["oci_source_worker_release_provenance_readiness"]
 
     assert_objective_alpha_research_claim_gate_report_contract(alpha)
     assert_kernel_ingress_proof_bundle_report_contract(kernel)
@@ -351,6 +376,8 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
     assert_real_triton_first_slice_maintainer_approval_request_report_contract(
         approval_request
     )
+    assert_oci_source_ingestion_research_proof_report(dict(oci_proof))
+    assert_oci_release_provenance_readiness_report_contract(oci_readiness)
     _assert_status(scope, "gate_contract", "research_scope.claim_gate.data_only.v0")
     _assert_status(scope, "gate_status", "PASS")
     _assert_true(alpha, "gate_passed")
@@ -374,6 +401,16 @@ def _assert_supporting_payloads(payloads: Mapping[str, Mapping[str, object]]) ->
     _assert_false(scope, "source_ingestion_admitted")
     _assert_false(scope, "native_performance_claim")
     _assert_false(scope, "production_compiler_claim")
+    _assert_status(oci_proof, "proof_status", "PASS")
+    _assert_false(oci_proof, "production_source_ingestion")
+    _assert_false(oci_proof, "production_source_sandbox")
+    _assert_false(oci_proof, "published_worker_image_provenance")
+    _assert_status(oci_readiness, "readiness_status", "PASS")
+    _assert_false(oci_readiness, "external_attestation_verified")
+    _assert_false(oci_readiness, "production_source_ingestion")
+    _assert_false(oci_readiness, "production_source_sandbox")
+    _assert_false(oci_readiness, "published_worker_image_provenance")
+    _assert_false(oci_readiness, "execution_permission")
     if int(kernel["artifact_count"]) != 15:
         raise ObjectiveBetaResearchClaimError("kernel ingress artifact count mismatch")
 
@@ -387,6 +424,8 @@ def _artifact_contract(artifact_id: str, payload: Mapping[str, object]) -> str:
         "real_triton_first_slice_admission_readiness_gate": "gate_contract",
         "real_triton_first_slice_maintainer_approval_request": "request_contract",
         "research_scope_claim_gate": "gate_contract",
+        "oci_source_ingestion_research_proof": "proof_contract",
+        "oci_source_worker_release_provenance_readiness": "readiness_contract",
     }
     return str(payload[contract_keys[artifact_id]])
 
@@ -400,6 +439,8 @@ def _artifact_status(artifact_id: str, payload: Mapping[str, object]) -> str:
         "real_triton_first_slice_admission_readiness_gate": "gate_status",
         "real_triton_first_slice_maintainer_approval_request": "request_status",
         "research_scope_claim_gate": "gate_status",
+        "oci_source_ingestion_research_proof": "proof_status",
+        "oci_source_worker_release_provenance_readiness": "readiness_status",
     }
     return str(payload[status_keys[artifact_id]])
 

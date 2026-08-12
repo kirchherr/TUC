@@ -57,7 +57,7 @@
       "const": "objective_alpha_public_evidence_catalog"
     },
     "catalog_entry_count": {
-      "const": 7
+      "const": 9
     },
     "catalog_report_digest": {
       "$ref": "#/$defs/digest"
@@ -67,8 +67,8 @@
     },
     "catalog_entry_ids": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         { "const": "objective_alpha_evidence_extension_policy" },
         { "const": "runtime_backend_equivalence_portfolio" },
@@ -76,7 +76,9 @@
         { "const": "source_intent_mixed_runtime_public_proof_bundle" },
         { "const": "source_to_intent_research_capability_claim_gate" },
         { "const": "first_real_triton_kernel_path" },
-        { "const": "real_triton_first_slice_evidence_portfolio" }
+        { "const": "real_triton_first_slice_evidence_portfolio" },
+        { "const": "oci_source_ingestion_research_proof" },
+        { "const": "oci_source_worker_release_provenance_readiness" }
       ]
     },
     "forbidden_downstream_dependency_count": {
@@ -96,8 +98,8 @@
     },
     "entry_scan_results": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         {
           "type": "object",
@@ -206,6 +208,38 @@
           ],
           "properties": {
             "evidence_id": { "const": "real_triton_first_slice_evidence_portfolio" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "oci_source_ingestion_research_proof" },
+            "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
+            "report_digest": { "$ref": "#/$defs/digest" },
+            "source_free": { "const": true }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "forbidden_downstream_dependency_hits",
+            "report_digest",
+            "source_free"
+          ],
+          "properties": {
+            "evidence_id": { "const": "oci_source_worker_release_provenance_readiness" },
             "forbidden_downstream_dependency_hits": { "type": "array", "maxItems": 0 },
             "report_digest": { "$ref": "#/$defs/digest" },
             "source_free": { "const": true }

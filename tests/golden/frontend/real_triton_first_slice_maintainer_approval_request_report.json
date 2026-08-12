@@ -74,7 +74,7 @@
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "contract": "real_triton_first_slice_admission_readiness_gate.data_only.v0",
-      "digest": "sha256:16e0d17636bd2f45c60c58b73460025ab11a720dbf13829a4c297a4278ca09f0",
+      "digest": "sha256:ac03766d1f61d7f0fe7d606cc00315968293bcd4023d45310be695398faf092c",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
       "supports_approval_request": true

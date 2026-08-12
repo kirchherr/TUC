@@ -31,7 +31,7 @@ and its
 [Admission Gate](OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
 pass before catalog-entry acyclicity is accepted.
 
-It then scans the fixed, versioned evidence artifacts for all seven current
+It then scans the fixed, versioned evidence artifacts for all nine current
 catalog entries and fails closed if any entry report references one of these
 downstream dependency IDs:
 

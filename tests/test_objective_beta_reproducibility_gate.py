@@ -73,7 +73,7 @@ def test_objective_beta_reproducibility_gate_example_runs() -> None:
 
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8")
     assert '"gate_passed": true' in completed.stdout
-    assert '"verified_artifact_count": 9' in completed.stdout
+    assert '"verified_artifact_count": 11' in completed.stdout
     assert "source_text" not in completed.stdout
     assert "runtime_handle" not in completed.stdout
     assert "host_path" not in completed.stdout

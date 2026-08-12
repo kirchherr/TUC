@@ -10,13 +10,16 @@
     "external_plugin_execution",
     "generated_artifact_execution",
     "vendor_compiler_replacement",
-    "cuda_replacement"
+    "cuda_replacement",
+    "production_source_sandbox",
+    "external_release_attestation_verified",
+    "public_registry_worker_image"
   ],
-  "capsule_digest": "f1baae29db83e3aaa48895cab9600405f34b07bee0cff08858296755dddf9ab3",
+  "capsule_digest": "9d12fd885cb120c4e9fddb2d6477e1526682f4a333fef0f2b6f22fda259ea70c",
   "capsule_id": "objective_beta_reproducibility_capsule",
-  "capsule_metadata_digest": "8a1dc51371d36886f95536915159a66e328933e2eb7676f8b0f0c724787022f3",
-  "claim_digest": "3cb0aa23fbeba50ff6c7f54484ba168b0dcd4951523e1dd2bccd7d9cbe516a51",
-  "claim_gate_digest": "75a79dbc7f7d8645ee200cabbdc2041e567990493d52bdc139c888e8c295fdd0",
+  "capsule_metadata_digest": "cb16f11593469a16fcf47d38204e922bc9167f74ec76358eec994b734ef8c7c8",
+  "claim_digest": "7109708906fb73997f50ab987a0c08312cd3eb313e19a9362e0e462a6299457f",
+  "claim_gate_digest": "22fff634bd8568fbb2da978f05357f5fa02f6d8aa740337e83bb7a9bf21befd8",
   "claim_link_verified": true,
   "evidence_links_verified": true,
   "external_approval_required": true,
@@ -43,7 +46,7 @@
   "source_free": true,
   "source_ingestion_admitted": false,
   "vendor_replacement_claim": false,
-  "verified_artifact_count": 9,
+  "verified_artifact_count": 11,
   "verified_artifact_ids": [
     "objective_alpha_research_claim_gate",
     "source_to_intent_research_kernel_ingress_proof_bundle",
@@ -52,6 +55,8 @@
     "real_triton_first_slice_admission_readiness_gate",
     "real_triton_first_slice_maintainer_approval_request",
     "research_scope_claim_gate",
+    "oci_source_ingestion_research_proof",
+    "oci_source_worker_release_provenance_readiness",
     "objective_beta_research_claim",
     "objective_beta_research_claim_gate"
   ]

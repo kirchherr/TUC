@@ -129,6 +129,12 @@ OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_ENTRY_REPORT_PATHS = {
     "real_triton_first_slice_evidence_portfolio": Path(
         "tests/golden/frontend/real_triton_first_slice_evidence_portfolio_report.json"
     ),
+    "oci_source_ingestion_research_proof": Path(
+        "tests/golden/frontend/oci_source_ingestion_research_proof_report.json"
+    ),
+    "oci_source_worker_release_provenance_readiness": Path(
+        "tests/golden/frontend/oci_source_worker_release_provenance_readiness_report.json"
+    ),
 }
 
 

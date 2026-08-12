@@ -54,7 +54,7 @@
     "artifact_policy": { "const": "digest_only_source_free" },
     "claim_digest": { "$ref": "#/$defs/digest" },
     "claim_metadata_digest": { "$ref": "#/$defs/digest" },
-    "evidence_count": { "const": 7 },
+    "evidence_count": { "const": 9 },
     "evidence_ids": {
       "const": [
         "objective_alpha_research_claim_gate",
@@ -63,7 +63,9 @@
         "real_triton_first_slice_evidence_portfolio",
         "real_triton_first_slice_admission_readiness_gate",
         "real_triton_first_slice_maintainer_approval_request",
-        "research_scope_claim_gate"
+        "research_scope_claim_gate",
+        "oci_source_ingestion_research_proof",
+        "oci_source_worker_release_provenance_readiness"
       ]
     },
     "supported_claims": {
@@ -74,7 +76,9 @@
         "first_real_triton_kernel_path_bound",
         "first_slice_review_readiness_bound",
         "external_approval_request_packaged",
-        "research_scope_boundaries_preserved"
+        "research_scope_boundaries_preserved",
+        "kernel_isolated_source_ingestion_proof_bound",
+        "oci_worker_release_provenance_readiness_bound"
       ]
     },
     "blocked_claims": {
@@ -89,7 +93,10 @@
         "external_plugin_execution",
         "generated_artifact_execution",
         "vendor_compiler_replacement",
-        "cuda_replacement"
+        "cuda_replacement",
+        "production_source_sandbox",
+        "external_release_attestation_verified",
+        "public_registry_worker_image"
       ]
     },
     "required_invariants": {
@@ -101,6 +108,10 @@
         "admission_readiness_fail_closed",
         "maintainer_approval_request_non_approving",
         "research_scope_gate_passed",
+        "oci_kernel_isolation_proof_passed",
+        "oci_release_provenance_readiness_passed",
+        "production_source_sandbox_false",
+        "external_attestation_unverified",
         "source_ingestion_admitted_false",
         "external_approval_still_required",
         "native_performance_claim_false",

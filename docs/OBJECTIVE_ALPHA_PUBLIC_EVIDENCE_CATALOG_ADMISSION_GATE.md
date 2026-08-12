@@ -37,10 +37,13 @@ still passes the fixed v0 admission rules:
 - the Source-To-Intent Research Capability Claim Gate digest is bound;
 - the First Real Triton Kernel Path digest is bound;
 - the Real Triton First Slice Evidence Portfolio digest is bound;
+- the OCI Source Ingestion Research Proof digest is bound;
+- the OCI Source Worker Release Provenance Readiness digest is bound;
 - the initial governance entry, first runtime-proof entry,
   frontend-runtime-proof entries, and claim-boundary entry are fixed;
 - required extension-tier coverage is complete for `governance`,
-  `runtime_proof`, `frontend_runtime_proof`, and `claim_boundary`;
+  `runtime_proof`, `frontend_runtime_proof`, `claim_boundary`,
+  `isolation_proof`, and `supply_chain_readiness`;
 - catalog growth is append-only and RFC-bound;
 - catalog entries remain digest-only and source-free;
 - blocked claims and blocked execution surfaces are preserved.
@@ -92,4 +95,6 @@ output.
   `rfcs/0273-objective-alpha-first-real-triton-kernel-path-catalog-entry.md`
 - Real Triton First Slice Evidence Portfolio catalog-entry decision:
   `rfcs/0275-objective-alpha-real-triton-first-slice-portfolio-catalog-entry.md`
+- OCI isolation and release-provenance catalog decision:
+  `rfcs/0290-oci-source-worker-release-provenance.md`
 

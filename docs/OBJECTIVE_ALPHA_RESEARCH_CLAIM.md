@@ -51,7 +51,10 @@ The supported research claim is that the current Objective Alpha slice shows
 hardware-independent compute intent flowing through capability-planned trusted
 runtime execution, preserving public semantics across a mixed
 `reference-cpu` versus `systolic-sim + vector-sim` proof path, while public
-evidence remains digest-only and RFC-bound. The current public evidence surface is 16 fixed bundle entries plus 7 catalog entries, for 23 public evidence entries.
+evidence remains digest-only and RFC-bound. The current public evidence surface
+is 16 fixed bundle entries plus 9 catalog entries, for 25 public evidence
+entries. The catalog additions bind kernel-isolated OCI ingestion and worker
+release-provenance readiness while keeping production admission blocked.
 
 ## Blocked Claims
 

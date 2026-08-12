@@ -120,6 +120,14 @@ retaining an explicit boundary: published image provenance, independent
 security review, broader syntax coverage, and production admission are not yet
 claimed.
 
+The protected release path now builds the same worker as a `linux/amd64` OCI
+Image Layout archive, verifies its descriptor graph and fixed non-root runtime
+configuration without extraction, generates a dedicated CycloneDX SBOM, and
+configures GitHub OIDC provenance and SBOM attestations. This closes release
+configuration readiness for the research artifact. A protected release run,
+independent attestation verification, public registry publication, production
+source ingestion, and a production sandbox remain outside the claim.
+
 ## Non-Negotiable Principles
 
 ### Principle 1

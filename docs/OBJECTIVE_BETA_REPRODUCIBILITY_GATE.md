@@ -10,11 +10,11 @@ re-running source, compilation, runtime execution, backend code, or hardware.
 The gate fails closed unless all of these checks pass:
 
 - the serialized capsule satisfies its exact v0 contract;
-- the artifact set exactly matches the nine-entry internal allowlist;
+- the artifact set exactly matches the eleven-entry internal allowlist;
 - every artifact is source-free JSON;
 - every artifact byte digest matches the capsule entry;
 - the Beta claim digest matches the capsule and Beta gate;
-- all seven direct claim evidence links match their artifacts in fixed order;
+- all nine direct claim evidence links match their artifacts in fixed order;
 - the claim metadata digest is preserved;
 - external approval remains required;
 - source ingestion, native performance, and vendor replacement remain false.
@@ -40,7 +40,7 @@ A passing report contains:
 ```text
 gate_status: PASS
 gate_passed: true
-verified_artifact_count: 9
+verified_artifact_count: 11
 claim_link_verified: true
 evidence_links_verified: true
 source_ingestion_admitted: false

@@ -46,11 +46,11 @@
     "claim_digest": { "$ref": "#/$defs/digest" },
     "claim_gate_digest": { "$ref": "#/$defs/digest" },
     "claim_metadata_digest": { "$ref": "#/$defs/digest" },
-    "evidence_count": { "const": 9 },
+    "evidence_count": { "const": 11 },
     "evidence": {
       "type": "array",
-      "minItems": 9,
-      "maxItems": 9,
+      "minItems": 11,
+      "maxItems": 11,
       "prefixItems": [
         { "$ref": "#/$defs/evidence_alpha_gate" },
         { "$ref": "#/$defs/evidence_kernel_ingress" },
@@ -59,6 +59,8 @@
         { "$ref": "#/$defs/evidence_readiness" },
         { "$ref": "#/$defs/evidence_approval_request" },
         { "$ref": "#/$defs/evidence_scope_gate" },
+        { "$ref": "#/$defs/evidence_oci_ingestion" },
+        { "$ref": "#/$defs/evidence_oci_release_readiness" },
         { "$ref": "#/$defs/evidence_beta_claim" },
         { "$ref": "#/$defs/evidence_beta_gate" }
       ],
@@ -76,7 +78,10 @@
         "external_plugin_execution",
         "generated_artifact_execution",
         "vendor_compiler_replacement",
-        "cuda_replacement"
+        "cuda_replacement",
+        "production_source_sandbox",
+        "external_release_attestation_verified",
+        "public_registry_worker_image"
       ]
     },
     "external_approval_required": { "const": true },
@@ -191,6 +196,28 @@
           "properties": {
             "artifact_id": { "const": "objective_beta_research_claim" },
             "role": { "const": "research_claim" }
+          }
+        }
+      ]
+    },
+    "evidence_oci_ingestion": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": { "const": "oci_source_ingestion_research_proof" },
+            "role": { "const": "kernel_isolation_proof" }
+          }
+        }
+      ]
+    },
+    "evidence_oci_release_readiness": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        {
+          "properties": {
+            "artifact_id": { "const": "oci_source_worker_release_provenance_readiness" },
+            "role": { "const": "release_provenance_readiness" }
           }
         }
       ]

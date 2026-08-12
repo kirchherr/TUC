@@ -17,6 +17,9 @@ from examples.objective_alpha_evidence_extension_policy import (
     build_report_object as build_extension_policy_report_object,
 )
 from examples.objective_alpha_public_evidence_catalog import build_report_object
+from examples.oci_source_worker_release_provenance_readiness import (
+    build_report as build_oci_source_worker_release_provenance_readiness_report,
+)
 from examples.real_triton_first_slice_evidence_portfolio import (
     build_report as build_real_triton_first_slice_evidence_portfolio_report,
 )
@@ -115,6 +118,18 @@ def _cached_real_triton_first_slice_evidence_portfolio_report() -> str:
 
 
 @lru_cache(maxsize=1)
+def _cached_oci_source_ingestion_research_proof_report() -> str:
+    return Path(
+        "tests/golden/frontend/oci_source_ingestion_research_proof_report.json"
+    ).read_text(encoding="utf-8")
+
+
+@lru_cache(maxsize=1)
+def _cached_oci_source_worker_release_provenance_readiness_report() -> str:
+    return build_oci_source_worker_release_provenance_readiness_report()
+
+
+@lru_cache(maxsize=1)
 def _cached_catalog_report() -> ObjectiveAlphaPublicEvidenceCatalogReport:
     return build_report_object()
 
@@ -210,6 +225,14 @@ def test_objective_alpha_public_evidence_catalog_passes() -> None:
         payload["catalog_entries"][6]["metadata_digest"]
         == payload["real_triton_first_slice_evidence_portfolio_metadata_digest"]
     )
+    assert (
+        payload["catalog_entries"][7]["metadata_digest"]
+        == payload["oci_source_ingestion_research_proof_metadata_digest"]
+    )
+    assert (
+        payload["catalog_entries"][8]["metadata_digest"]
+        == payload["oci_source_worker_release_provenance_readiness_metadata_digest"]
+    )
     assert payload["catalog_entries"][1]["evidence_id"] == ("runtime_backend_equivalence_portfolio")
     assert payload["catalog_entries"][1]["extension_tier"] == "runtime_proof"
     assert payload["catalog_entries"][2]["evidence_id"] == (
@@ -230,6 +253,14 @@ def test_objective_alpha_public_evidence_catalog_passes() -> None:
         "real_triton_first_slice_evidence_portfolio"
     )
     assert payload["catalog_entries"][6]["extension_tier"] == "frontend_runtime_proof"
+    assert payload["catalog_entries"][7]["evidence_id"] == (
+        "oci_source_ingestion_research_proof"
+    )
+    assert payload["catalog_entries"][7]["extension_tier"] == "isolation_proof"
+    assert payload["catalog_entries"][8]["evidence_id"] == (
+        "oci_source_worker_release_provenance_readiness"
+    )
+    assert payload["catalog_entries"][8]["extension_tier"] == "supply_chain_readiness"
     assert payload["issues"] == []
     assert len(str(payload["stable_bundle_metadata_digest"])) == 64
     assert len(str(payload["extension_policy_metadata_digest"])) == 64
@@ -248,6 +279,11 @@ def test_objective_alpha_public_evidence_catalog_passes() -> None:
     )
     assert len(str(payload["first_real_triton_kernel_path_metadata_digest"])) == 64
     assert len(str(payload["real_triton_first_slice_evidence_portfolio_metadata_digest"])) == 64
+    assert len(str(payload["oci_source_ingestion_research_proof_metadata_digest"])) == 64
+    assert (
+        len(str(payload["oci_source_worker_release_provenance_readiness_metadata_digest"]))
+        == 64
+    )
     assert len(str(payload["catalog_metadata_digest"])) == 64
 
 
@@ -283,6 +319,8 @@ def test_objective_alpha_public_evidence_catalog_entry_admission_pattern_drives_
         "source_to_intent_research_capability_claim_gate_report",
         "first_real_triton_kernel_path_report",
         "real_triton_first_slice_evidence_portfolio_report",
+        "oci_source_ingestion_research_proof_report",
+        "oci_source_worker_release_provenance_readiness_report",
     )
     assert len(set(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS)) == len(specs)
     assert len(set(OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_POINTS)) == len(specs)
@@ -343,13 +381,15 @@ def test_objective_alpha_public_evidence_catalog_example_runs() -> None:
     assert completed.stdout == GOLDEN_PATH.read_text(encoding="utf-8").rstrip("\n") + "\n"
     assert "objective_alpha.public_evidence_catalog.data_only.v0" in completed.stdout
     assert '"catalog_passed": true' in completed.stdout
-    assert '"catalog_entry_count": 7' in completed.stdout
+    assert '"catalog_entry_count": 9' in completed.stdout
     assert "runtime_backend_equivalence_portfolio" in completed.stdout
     assert "source_to_intent_research_kernel_ingress_proof_bundle" in completed.stdout
     assert "source_intent_mixed_runtime_public_proof_bundle" in completed.stdout
     assert "source_to_intent_research_capability_claim_gate" in completed.stdout
     assert "first_real_triton_kernel_path" in completed.stdout
     assert "real_triton_first_slice_evidence_portfolio" in completed.stdout
+    assert "oci_source_ingestion_research_proof" in completed.stdout
+    assert "oci_source_worker_release_provenance_readiness" in completed.stdout
     assert "raw_tensor_value" not in completed.stdout
     assert "source_text" not in completed.stdout
     assert "host_path" not in completed.stdout
@@ -367,6 +407,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
             _cached_capability_claim_gate_report(),
             _cached_first_real_triton_kernel_path_report(),
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
     with pytest.raises(TypeError, match="RuntimeBackendEquivalencePortfolioReport"):
         build_objective_alpha_public_evidence_catalog_report(
@@ -377,6 +419,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
             _cached_capability_claim_gate_report(),
             _cached_first_real_triton_kernel_path_report(),
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
     with pytest.raises(TypeError, match="serialized report string"):
         build_objective_alpha_public_evidence_catalog_report(
@@ -387,6 +431,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
             _cached_capability_claim_gate_report(),
             _cached_first_real_triton_kernel_path_report(),
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
     with pytest.raises(TypeError, match="serialized report string"):
         build_objective_alpha_public_evidence_catalog_report(
@@ -397,6 +443,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
             _cached_capability_claim_gate_report(),
             _cached_first_real_triton_kernel_path_report(),
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
     with pytest.raises(TypeError, match="serialized report string"):
         build_objective_alpha_public_evidence_catalog_report(
@@ -407,6 +455,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
             object(),  # type: ignore[arg-type]
             _cached_first_real_triton_kernel_path_report(),
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
     with pytest.raises(TypeError, match="serialized report string"):
         build_objective_alpha_public_evidence_catalog_report(
@@ -417,6 +467,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
             _cached_capability_claim_gate_report(),
             object(),  # type: ignore[arg-type]
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
     with pytest.raises(TypeError, match="serialized report string"):
         build_objective_alpha_public_evidence_catalog_report(
@@ -427,6 +479,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_wrong_type() -> None:
             _cached_capability_claim_gate_report(),
             _cached_first_real_triton_kernel_path_report(),
             object(),  # type: ignore[arg-type]
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
 
 
@@ -446,6 +500,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_extra_blocked_surface_t
             _cached_capability_claim_gate_report(),
             _cached_first_real_triton_kernel_path_report(),
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
 
 
@@ -462,6 +518,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_failed_policy() -> None
             _cached_capability_claim_gate_report(),
             _cached_first_real_triton_kernel_path_report(),
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
 
 
@@ -488,6 +546,8 @@ def test_objective_alpha_public_evidence_catalog_rejects_failed_portfolio() -> N
             _cached_capability_claim_gate_report(),
             _cached_first_real_triton_kernel_path_report(),
             _cached_real_triton_first_slice_evidence_portfolio_report(),
+            _cached_oci_source_ingestion_research_proof_report(),
+            _cached_oci_source_worker_release_provenance_readiness_report(),
         )
 
 
@@ -537,6 +597,18 @@ def test_objective_alpha_public_evidence_catalog_rejects_policy_digest_drift() -
         replace(
             report,
             first_real_triton_kernel_path_metadata_digest="f" * 64,
+        )
+
+    with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="metadata digest mismatch"):
+        replace(
+            report,
+            oci_source_ingestion_research_proof_metadata_digest="a" * 64,
+        )
+
+    with pytest.raises(ObjectiveAlphaPublicEvidenceCatalogError, match="metadata digest mismatch"):
+        replace(
+            report,
+            oci_source_worker_release_provenance_readiness_metadata_digest="b" * 64,
         )
 
 
@@ -606,6 +678,18 @@ def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> No
         ]
         == "^[a-f0-9]{64}$"
     )
+    assert (
+        schema["properties"]["oci_source_ingestion_research_proof_metadata_digest"][
+            "pattern"
+        ]
+        == "^[a-f0-9]{64}$"
+    )
+    assert (
+        schema["properties"][
+            "oci_source_worker_release_provenance_readiness_metadata_digest"
+        ]["pattern"]
+        == "^[a-f0-9]{64}$"
+    )
     catalog_entry_schemas = schema["properties"]["catalog_entries"]["prefixItems"]
     assert len(catalog_entry_schemas) == len(
         OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS
@@ -617,6 +701,8 @@ def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> No
     assert catalog_entry_schemas[4]["additionalProperties"] is False
     assert catalog_entry_schemas[5]["additionalProperties"] is False
     assert catalog_entry_schemas[6]["additionalProperties"] is False
+    assert catalog_entry_schemas[7]["additionalProperties"] is False
+    assert catalog_entry_schemas[8]["additionalProperties"] is False
     assert catalog_entry_schemas[1]["properties"]["evidence_id"]["const"] == (
         "runtime_backend_equivalence_portfolio"
     )
@@ -634,6 +720,12 @@ def test_objective_alpha_public_evidence_catalog_schema_matches_contract() -> No
     )
     assert catalog_entry_schemas[6]["properties"]["evidence_id"]["const"] == (
         "real_triton_first_slice_evidence_portfolio"
+    )
+    assert catalog_entry_schemas[7]["properties"]["evidence_id"]["const"] == (
+        "oci_source_ingestion_research_proof"
+    )
+    assert catalog_entry_schemas[8]["properties"]["evidence_id"]["const"] == (
+        "oci_source_worker_release_provenance_readiness"
     )
 
 
@@ -699,6 +791,7 @@ def test_objective_alpha_public_evidence_catalog_docs_are_linked() -> None:
         Path("rfcs/0254-objective-alpha-source-intent-mixed-runtime-public-proof-catalog-entry.md"),
         Path("rfcs/0273-objective-alpha-first-real-triton-kernel-path-catalog-entry.md"),
         Path("rfcs/0275-objective-alpha-real-triton-first-slice-portfolio-catalog-entry.md"),
+        Path("rfcs/0290-oci-source-worker-release-provenance.md"),
     ):
         text = path.read_text(encoding="utf-8")
         assert schema_path in text or path.name in {"README.md", "ROADMAP.md"}

@@ -11,6 +11,7 @@ from pathlib import Path
 
 from examples.objective_beta_research_claim import (
     OBJECTIVE_BETA_RESEARCH_CLAIM_BLOCKED_CLAIMS,
+    OBJECTIVE_BETA_RESEARCH_CLAIM_EVIDENCE_IDS,
     OBJECTIVE_BETA_RESEARCH_CLAIM_FORBIDDEN_FRAGMENTS,
     OBJECTIVE_BETA_RESEARCH_CLAIM_ID,
     assert_objective_beta_research_claim_report_contract,
@@ -51,6 +52,11 @@ OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE_EVIDENCE_SPECS = (
         "external_review_request",
     ),
     ("research_scope_claim_gate", "research_scope_boundary"),
+    ("oci_source_ingestion_research_proof", "kernel_isolation_proof"),
+    (
+        "oci_source_worker_release_provenance_readiness",
+        "release_provenance_readiness",
+    ),
     ("objective_beta_research_claim", "research_claim"),
     ("objective_beta_research_claim_gate", "research_claim_gate"),
 )
@@ -78,6 +84,12 @@ OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE_ARTIFACT_PATHS = {
         "tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json"
     ),
     "research_scope_claim_gate": Path("tests/golden/proofs/research_scope_claim_gate.json"),
+    "oci_source_ingestion_research_proof": Path(
+        "tests/golden/frontend/oci_source_ingestion_research_proof_report.json"
+    ),
+    "oci_source_worker_release_provenance_readiness": Path(
+        "tests/golden/frontend/oci_source_worker_release_provenance_readiness_report.json"
+    ),
     "objective_beta_research_claim": Path(
         "tests/golden/proofs/objective_beta_research_claim.json"
     ),
@@ -243,7 +255,7 @@ def _assert_claim_chain(
     evidence = claim.get("evidence")
     if not isinstance(evidence, list):
         raise ObjectiveBetaReproducibilityCapsuleError("claim evidence missing")
-    expected_dependency_ids = OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE_EVIDENCE_IDS[:7]
+    expected_dependency_ids = OBJECTIVE_BETA_RESEARCH_CLAIM_EVIDENCE_IDS
     observed_ids: list[str] = []
     for item in evidence:
         if not isinstance(item, Mapping):

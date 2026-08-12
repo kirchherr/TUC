@@ -14,16 +14,19 @@
     "external_plugin_execution",
     "generated_artifact_execution",
     "vendor_compiler_replacement",
-    "cuda_replacement"
+    "cuda_replacement",
+    "production_source_sandbox",
+    "external_release_attestation_verified",
+    "public_registry_worker_image"
   ],
   "broad_source_parser_claim": false,
   "claim_contract": "objective_beta.research_claim.digest_snapshot.v0",
-  "claim_digest": "3cb0aa23fbeba50ff6c7f54484ba168b0dcd4951523e1dd2bccd7d9cbe516a51",
+  "claim_digest": "7109708906fb73997f50ab987a0c08312cd3eb313e19a9362e0e462a6299457f",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "8adfa6273de36919a89e307dd9bba581691c859e30a6b9fe79138216f422b5d3",
+  "claim_metadata_digest": "56ed620725c54f2e3219aff23d6c68ccb49e92792882138190fc6fe4e9b37ad8",
   "claim_scope": "objective_beta_kernel_ingress_first_slice_review_readiness",
   "claim_status": "supported_for_objective_beta_research_scope",
-  "evidence_count": 7,
+  "evidence_count": 9,
   "evidence_ids": [
     "objective_alpha_research_claim_gate",
     "source_to_intent_research_kernel_ingress_proof_bundle",
@@ -31,7 +34,9 @@
     "real_triton_first_slice_evidence_portfolio",
     "real_triton_first_slice_admission_readiness_gate",
     "real_triton_first_slice_maintainer_approval_request",
-    "research_scope_claim_gate"
+    "research_scope_claim_gate",
+    "oci_source_ingestion_research_proof",
+    "oci_source_worker_release_provenance_readiness"
   ],
   "external_approval_required": true,
   "first_real_path_status": "PASS",
@@ -54,6 +59,10 @@
     "admission_readiness_fail_closed",
     "maintainer_approval_request_non_approving",
     "research_scope_gate_passed",
+    "oci_kernel_isolation_proof_passed",
+    "oci_release_provenance_readiness_passed",
+    "production_source_sandbox_false",
+    "external_attestation_unverified",
     "source_ingestion_admitted_false",
     "external_approval_still_required",
     "native_performance_claim_false",
@@ -70,7 +79,9 @@
     "first_real_triton_kernel_path_bound",
     "first_slice_review_readiness_bound",
     "external_approval_request_packaged",
-    "research_scope_boundaries_preserved"
+    "research_scope_boundaries_preserved",
+    "kernel_isolated_source_ingestion_proof_bound",
+    "oci_worker_release_provenance_readiness_bound"
   ],
   "surface_opened": false,
   "vendor_replacement_claim": false

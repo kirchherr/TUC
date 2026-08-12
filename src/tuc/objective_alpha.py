@@ -122,6 +122,10 @@ _CATALOG_SERIALIZED_REPORT_DECLARED_TOKEN_EXCEPTIONS = {
             ("runtime_handle_residency_claim", False),
         ),
     },
+    "OCI source ingestion research proof report": {
+        "raw_tensor_value": ("raw_tensor_values_serialized", False),
+        "source_text": ("source_text_executed", False),
+    },
 }
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ENTRY_ADMISSION_PATTERN_CONTRACT = (
     "objective_alpha.public_evidence_catalog_entry_admission_pattern.data_only.v0"
@@ -941,6 +945,20 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS = (
         extension_tier="frontend_runtime_proof",
         digest_source="real_triton_first_slice_evidence_portfolio_report",
     ),
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+        evidence_id="oci_source_ingestion_research_proof",
+        entry_point="python examples/oci_source_ingestion_research_proof.py",
+        artifact_kind="schema_versioned_oci_source_ingestion_research_proof_report",
+        extension_tier="isolation_proof",
+        digest_source="oci_source_ingestion_research_proof_report",
+    ),
+    ObjectiveAlphaPublicEvidenceCatalogEntryAdmissionSpec(
+        evidence_id="oci_source_worker_release_provenance_readiness",
+        entry_point="python examples/oci_source_worker_release_provenance_readiness.py",
+        artifact_kind="schema_versioned_oci_worker_release_provenance_readiness_report",
+        extension_tier="supply_chain_readiness",
+        digest_source="oci_source_worker_release_provenance_readiness_report",
+    ),
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_IDS = _catalog_admission_spec_values(
     OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_SPECS,
@@ -963,6 +981,8 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_REQUIRED_EXTENSION_TIERS = (
     "runtime_proof",
     "frontend_runtime_proof",
     "claim_boundary",
+    "isolation_proof",
+    "supply_chain_readiness",
 )
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXTENSION_TIER_COVERAGE_STATUS_PASS = "complete"
 OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_EXPECTED_ENTRY_DIGEST_SOURCES = (
@@ -1059,6 +1079,8 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
     source_to_intent_research_capability_claim_gate_metadata_digest: str
     first_real_triton_kernel_path_metadata_digest: str
     real_triton_first_slice_evidence_portfolio_metadata_digest: str
+    oci_source_ingestion_research_proof_metadata_digest: str
+    oci_source_worker_release_provenance_readiness_metadata_digest: str
     catalog_entries: tuple[ObjectiveAlphaPublicEvidenceCatalogEntry, ...]
     issues: tuple[str, ...]
     schema_version: str = OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION
@@ -1121,6 +1143,14 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
             self.real_triton_first_slice_evidence_portfolio_metadata_digest,
             "objective alpha catalog real Triton first slice evidence portfolio digest",
         )
+        _validate_digest(
+            self.oci_source_ingestion_research_proof_metadata_digest,
+            "objective alpha catalog OCI source ingestion proof digest",
+        )
+        _validate_digest(
+            self.oci_source_worker_release_provenance_readiness_metadata_digest,
+            "objective alpha catalog OCI worker release provenance readiness digest",
+        )
         if self.schema_version != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_SCHEMA_VERSION:
             raise ValueError("objective alpha catalog schema mismatch")
         if self.catalog_id != OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ID:
@@ -1165,6 +1195,8 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 self.source_to_intent_research_capability_claim_gate_metadata_digest,
                 self.first_real_triton_kernel_path_metadata_digest,
                 self.real_triton_first_slice_evidence_portfolio_metadata_digest,
+                self.oci_source_ingestion_research_proof_metadata_digest,
+                self.oci_source_worker_release_provenance_readiness_metadata_digest,
             ),
         )
         if self.catalog_missing_extension_tiers:
@@ -1247,6 +1279,12 @@ class ObjectiveAlphaPublicEvidenceCatalogReport:
                 ),
                 "real_triton_first_slice_evidence_portfolio_metadata_digest": (
                     self.real_triton_first_slice_evidence_portfolio_metadata_digest
+                ),
+                "oci_source_ingestion_research_proof_metadata_digest": (
+                    self.oci_source_ingestion_research_proof_metadata_digest
+                ),
+                "oci_source_worker_release_provenance_readiness_metadata_digest": (
+                    self.oci_source_worker_release_provenance_readiness_metadata_digest
                 ),
                 "stable_bundle_metadata_digest": self.stable_bundle_metadata_digest,
             }
@@ -1363,6 +1401,8 @@ def build_objective_alpha_public_evidence_catalog_report(
     source_to_intent_research_capability_claim_gate_report: str,
     first_real_triton_kernel_path_report: str,
     real_triton_first_slice_evidence_portfolio_report: str,
+    oci_source_ingestion_research_proof_report: str,
+    oci_source_worker_release_provenance_readiness_report: str,
 ) -> ObjectiveAlphaPublicEvidenceCatalogReport:
     """Build the catalog for evidence beyond the fixed Objective Alpha bundle."""
 
@@ -1411,6 +1451,18 @@ def build_objective_alpha_public_evidence_catalog_report(
             "real Triton first slice evidence portfolio report",
         )
     )
+    oci_source_ingestion_research_proof_digest = (
+        _catalog_metadata_digest_from_serialized_report(
+            oci_source_ingestion_research_proof_report,
+            "OCI source ingestion research proof report",
+        )
+    )
+    oci_source_worker_release_provenance_readiness_digest = (
+        _catalog_metadata_digest_from_serialized_report(
+            oci_source_worker_release_provenance_readiness_report,
+            "OCI source worker release provenance readiness report",
+        )
+    )
     return ObjectiveAlphaPublicEvidenceCatalogReport(
         stable_entrypoint=policy_report.stable_entrypoint,
         stable_entry_capacity=policy_report.stable_entry_capacity,
@@ -1434,6 +1486,12 @@ def build_objective_alpha_public_evidence_catalog_report(
         real_triton_first_slice_evidence_portfolio_metadata_digest=(
             real_triton_first_slice_evidence_portfolio_digest
         ),
+        oci_source_ingestion_research_proof_metadata_digest=(
+            oci_source_ingestion_research_proof_digest
+        ),
+        oci_source_worker_release_provenance_readiness_metadata_digest=(
+            oci_source_worker_release_provenance_readiness_digest
+        ),
         catalog_entries=_catalog_entries_from_admission_specs(
             (
                 policy_digest,
@@ -1443,6 +1501,8 @@ def build_objective_alpha_public_evidence_catalog_report(
                 capability_claim_gate_digest,
                 first_real_triton_kernel_path_digest,
                 real_triton_first_slice_evidence_portfolio_digest,
+                oci_source_ingestion_research_proof_digest,
+                oci_source_worker_release_provenance_readiness_digest,
             )
         ),
         issues=(),
@@ -1497,6 +1557,12 @@ def objective_alpha_public_evidence_catalog_report_to_dict(
         ),
         "real_triton_first_slice_evidence_portfolio_metadata_digest": (
             report.real_triton_first_slice_evidence_portfolio_metadata_digest
+        ),
+        "oci_source_ingestion_research_proof_metadata_digest": (
+            report.oci_source_ingestion_research_proof_metadata_digest
+        ),
+        "oci_source_worker_release_provenance_readiness_metadata_digest": (
+            report.oci_source_worker_release_provenance_readiness_metadata_digest
         ),
         "schema_version": report.schema_version,
         "stable_bundle_metadata_digest": report.stable_bundle_metadata_digest,
@@ -1615,6 +1681,8 @@ OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_REQUIRED_INVARIANTS = (
     "capability_claim_gate_digest_entry_bound",
     "first_real_triton_kernel_path_digest_entry_bound",
     "real_triton_first_slice_evidence_portfolio_digest_entry_bound",
+    "oci_source_ingestion_research_proof_digest_entry_bound",
+    "oci_source_worker_release_provenance_readiness_digest_entry_bound",
     "catalog_extension_tier_coverage_complete",
     "fixed_initial_catalog_entries",
     "append_only_rfc_bound_growth_policy",
@@ -1648,6 +1716,8 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
     source_to_intent_research_capability_claim_gate_metadata_digest: str
     first_real_triton_kernel_path_metadata_digest: str
     real_triton_first_slice_evidence_portfolio_metadata_digest: str
+    oci_source_ingestion_research_proof_metadata_digest: str
+    oci_source_worker_release_provenance_readiness_metadata_digest: str
     catalog_entry_capacity: int
     catalog_entry_count: int
     catalog_entry_digest_count: int
@@ -1731,6 +1801,14 @@ class ObjectiveAlphaPublicEvidenceCatalogAdmissionGateReport:
         _validate_digest(
             self.real_triton_first_slice_evidence_portfolio_metadata_digest,
             "objective alpha catalog gate real Triton first slice evidence portfolio digest",
+        )
+        _validate_digest(
+            self.oci_source_ingestion_research_proof_metadata_digest,
+            "objective alpha catalog gate OCI source ingestion proof digest",
+        )
+        _validate_digest(
+            self.oci_source_worker_release_provenance_readiness_metadata_digest,
+            "objective alpha catalog gate OCI worker release provenance readiness digest",
         )
         if self.schema_version != (
             OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE_SCHEMA_VERSION
@@ -1918,6 +1996,12 @@ def build_objective_alpha_public_evidence_catalog_admission_gate_report(
         real_triton_first_slice_evidence_portfolio_metadata_digest=(
             catalog_report.real_triton_first_slice_evidence_portfolio_metadata_digest
         ),
+        oci_source_ingestion_research_proof_metadata_digest=(
+            catalog_report.oci_source_ingestion_research_proof_metadata_digest
+        ),
+        oci_source_worker_release_provenance_readiness_metadata_digest=(
+            catalog_report.oci_source_worker_release_provenance_readiness_metadata_digest
+        ),
         catalog_entry_capacity=catalog_report.catalog_entry_capacity,
         catalog_entry_count=catalog_report.catalog_entry_count,
         catalog_entry_digest_count=sum(
@@ -1997,6 +2081,12 @@ def objective_alpha_public_evidence_catalog_admission_gate_report_to_dict(
         ),
         "real_triton_first_slice_evidence_portfolio_metadata_digest": (
             report.real_triton_first_slice_evidence_portfolio_metadata_digest
+        ),
+        "oci_source_ingestion_research_proof_metadata_digest": (
+            report.oci_source_ingestion_research_proof_metadata_digest
+        ),
+        "oci_source_worker_release_provenance_readiness_metadata_digest": (
+            report.oci_source_worker_release_provenance_readiness_metadata_digest
         ),
         "schema_version": report.schema_version,
         "stable_entry_capacity": report.stable_entry_capacity,

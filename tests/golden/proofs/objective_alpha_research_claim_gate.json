@@ -11,11 +11,11 @@
     "production_triton_integration"
   ],
   "broad_source_parser_claim": false,
-  "catalog_entry_count": 7,
+  "catalog_entry_count": 9,
   "claim_contract": "objective_alpha.research_claim.digest_snapshot.v0",
-  "claim_digest": "2312c8f3140dcdd81ac954c3a6ac8a1cfd8d39cf8ea2ac9077234f0727dd5334",
+  "claim_digest": "bc13b046970be705b63c6a9ebd1ce3e96b110ed7677948c25b95545c5ddcb625",
   "claim_id": "objective_alpha_universal_compute_research_claim",
-  "claim_metadata_digest": "b344c07c1e6f0f5da727353d93ef195372b54f9b2c4cc54327ab36d3531d7560",
+  "claim_metadata_digest": "3369ab03778dda66b0ce8784852f17f68d5e4e683c2254e47a01a19e38c790aa",
   "claim_scope": "objective_alpha_public_bundle_catalog_and_mixed_runtime_proof",
   "claim_status": "supported_for_objective_alpha_research_scope",
   "evidence_count": 6,
@@ -34,7 +34,7 @@
   "issues": [],
   "native_performance_claim": false,
   "public_bundle_entry_count": 16,
-  "public_evidence_entry_count": 23,
+  "public_evidence_entry_count": 25,
   "reference_correctness_passed": true,
   "required_invariants": [
     "public_proof_bundle_full",

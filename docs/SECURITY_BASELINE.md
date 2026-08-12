@@ -290,6 +290,11 @@ Implemented now:
 - Pre-publish release artifact workflow with least-privilege OIDC-backed
   GitHub attestations, CycloneDX SBOM generation, SHA-256 checksums, and no
   registry publishing permissions.
+- Verified source-worker OCI Image Layout release artifact with bounded
+  no-extraction descriptor validation, worker-specific CycloneDX SBOM, pinned
+  base image, hash-locked requirements, allowlisted build context, and separate
+  provenance/SBOM attestations; external verification and production admission
+  remain blocked.
 - Release workflow action SHA pinning and release governance policy for tag
   rulesets, publishing environments, and PyPI Trusted Publishing.
 - Isolated PyPI publishing job with OIDC Trusted Publishing, no stored PyPI

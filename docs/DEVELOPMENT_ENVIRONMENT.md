@@ -139,6 +139,18 @@ The GitHub release-artifact workflow also creates provenance and SBOM
 attestations. Local runs generate the distributions, CycloneDX SBOM, and
 checksum manifest only.
 
+To exercise the source-worker release artifact locally with a Buildx builder
+that supports the OCI exporter:
+
+```powershell
+docker buildx build --file docker/source-worker/Dockerfile --platform linux/amd64 --provenance=false --sbom=false --output type=oci,dest=dist/tuc-source-ingestion-worker.oci.tar .
+docker compose run --rm dev python scripts/verify_source_worker_oci_archive.py dist/tuc-source-ingestion-worker.oci.tar
+docker compose run --rm dev python scripts/generate_source_worker_sbom.py --output dist/tuc-source-ingestion-worker.cdx.json
+```
+
+The verifier does not extract the archive. The protected GitHub release
+workflow, rather than a local build, is the attestation authority.
+
 ## Verify HAC-IR Dialect Contracts
 
 ```powershell

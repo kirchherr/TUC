@@ -300,7 +300,9 @@ Completed evidence:
   entry, Source-To-Intent Kernel Ingress, Source Intent Mixed Runtime Public
   Proof Bundle, First Real Triton Kernel Path, and Real Triton First Slice
   Evidence Portfolio `frontend_runtime_proof` entries, and Source-To-Intent
-  Capability Claim Gate `claim_boundary` entry by
+  Capability Claim Gate `claim_boundary` entry, OCI Source Ingestion Research
+  Proof `isolation_proof` entry, and OCI Source Worker Release Provenance
+  Readiness `supply_chain_readiness` entry by
   metadata digest without adding entries to the fixed Objective Alpha Public
   Proof Bundle.
 - [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
@@ -317,8 +319,8 @@ Completed evidence:
   catalog, catalog admission gate, and Source Intent mixed-runtime proof into
   one digest-only current research-claim snapshot without expanding parser,
   plugin, device, generated-artifact, native-backend, or native-performance
-  surfaces; the public evidence surface is now 16 fixed bundle entries plus 7
-  catalog entries.
+  surfaces; the public evidence surface is now 16 fixed bundle entries plus 9
+  catalog entries, for 25 entries total.
 - [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md)
   makes that snapshot CI-checkable by binding the claim digest, metadata
   digest, evidence IDs, public counts, supported claims, blocked claims, and
@@ -327,28 +329,36 @@ Completed evidence:
 - [Objective Beta Research Claim](docs/OBJECTIVE_BETA_RESEARCH_CLAIM.md)
   (`examples/objective_beta_research_claim.py`) binds Objective Alpha, Kernel
   Ingress, First Real Triton Kernel Path, first-slice evidence portfolio,
-  admission readiness, maintainer approval request, and Research Scope Gate
-  evidence by digest while keeping source ingestion, native performance, and
-  vendor replacement claims blocked.
+  admission readiness, maintainer approval request, Research Scope Gate, OCI
+  kernel-isolation proof, and OCI worker release-provenance readiness evidence
+  by digest while keeping source ingestion, production sandbox, external
+  attestation, native performance, and vendor replacement claims blocked.
 - [Objective Beta Research Claim Gate](docs/OBJECTIVE_BETA_RESEARCH_CLAIM_GATE.md)
   (`examples/objective_beta_research_claim_gate.py`) validates the Beta claim
   digest, evidence order, fail-closed source-ingestion state, and blocked
   product/performance claims.
 - [Objective Beta Reproducibility Capsule](docs/OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE.md)
-  (`examples/objective_beta_reproducibility_capsule.py`) binds the seven Beta
-  dependencies, Beta claim, and claim gate as a fixed nine-entry digest-only
+  (`examples/objective_beta_reproducibility_capsule.py`) binds the nine Beta
+  dependencies, Beta claim, and claim gate as a fixed eleven-entry digest-only
   manifest; schema
   `schemas/objective_beta_reproducibility_capsule_report.v0.schema.json`, golden
   `tests/golden/proofs/objective_beta_reproducibility_capsule.json`, and RFC
   `rfcs/0281-objective-beta-reproducibility-capsule.md` make the closure
   independently reviewable without publishing paths or payloads.
 - [Objective Beta Reproducibility Gate](docs/OBJECTIVE_BETA_REPRODUCIBILITY_GATE.md)
-  (`examples/objective_beta_reproducibility_gate.py`) replays all nine fixed
+  (`examples/objective_beta_reproducibility_gate.py`) replays all eleven fixed
   artifact digests, the claim-to-gate link, and direct claim evidence links
   without source, compiler, runtime, backend, plugin, device, subprocess,
   network, or generated-artifact execution. Schema:
   `schemas/objective_beta_reproducibility_gate_report.v0.schema.json`; golden:
   `tests/golden/proofs/objective_beta_reproducibility_gate.json`.
+- [OCI Source Worker Release Provenance](docs/OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md)
+  adds a protected release path for a verified `linux/amd64` OCI Image Layout
+  archive, worker CycloneDX SBOM, SHA-256 checksums, and GitHub OIDC provenance
+  and SBOM attestations. Its readiness report remains data-only and explicitly
+  blocks external-attestation verification, public registry publication,
+  byte-identical reproducibility, production ingestion, and production sandbox
+  claims. RFC: `rfcs/0290-oci-source-worker-release-provenance.md`.
 - Objective Alpha Public Evidence Catalog Entry Admission Pattern derives the
   catalog's expected IDs, entry points, artifact kinds, extension tiers, digest
   sources, and raw-output policies from typed data-only specs, reducing drift in

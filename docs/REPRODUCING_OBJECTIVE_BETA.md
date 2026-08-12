@@ -13,7 +13,7 @@ docker compose run --rm -T dev python examples/objective_beta_reproducibility_ca
 docker compose run --rm -T dev python examples/objective_beta_reproducibility_gate.py
 ```
 
-The final command must report `gate_status: PASS`, nine verified artifacts, a
+The final command must report `gate_status: PASS`, eleven verified artifacts, a
 verified claim link, verified evidence links, and
 `source_ingestion_admitted: false`.
 
@@ -39,6 +39,8 @@ Objective Alpha gate
 Kernel-ingress and first-slice evidence
         +
 Research-scope boundary
+        +
+OCI isolation proof and release-provenance readiness
         ->
 Objective Beta claim
         ->

@@ -47,7 +47,7 @@
     "replay_policy": {
       "const": "no_source_compiler_runtime_or_backend_execution"
     },
-    "verified_artifact_count": { "const": 9 },
+    "verified_artifact_count": { "const": 11 },
     "verified_artifact_ids": {
       "const": [
         "objective_alpha_research_claim_gate",
@@ -57,6 +57,8 @@
         "real_triton_first_slice_admission_readiness_gate",
         "real_triton_first_slice_maintainer_approval_request",
         "research_scope_claim_gate",
+        "oci_source_ingestion_research_proof",
+        "oci_source_worker_release_provenance_readiness",
         "objective_beta_research_claim",
         "objective_beta_research_claim_gate"
       ]
@@ -80,7 +82,10 @@
         "external_plugin_execution",
         "generated_artifact_execution",
         "vendor_compiler_replacement",
-        "cuda_replacement"
+        "cuda_replacement",
+        "production_source_sandbox",
+        "external_release_attestation_verified",
+        "public_registry_worker_image"
       ]
     },
     "forbidden_execution_surfaces": {

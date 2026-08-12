@@ -14,12 +14,15 @@
     "external_plugin_execution",
     "generated_artifact_execution",
     "vendor_compiler_replacement",
-    "cuda_replacement"
+    "cuda_replacement",
+    "production_source_sandbox",
+    "external_release_attestation_verified",
+    "public_registry_worker_image"
   ],
   "broad_source_parser_claim": false,
   "claim_contract": "objective_beta.research_claim.digest_snapshot.v0",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "8adfa6273de36919a89e307dd9bba581691c859e30a6b9fe79138216f422b5d3",
+  "claim_metadata_digest": "56ed620725c54f2e3219aff23d6c68ccb49e92792882138190fc6fe4e9b37ad8",
   "claim_passed": true,
   "claim_scope": "objective_beta_kernel_ingress_first_slice_review_readiness",
   "claim_status": "supported_for_objective_beta_research_scope",
@@ -27,7 +30,7 @@
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "contract": "objective_alpha.research_claim_gate.ci.v0",
-      "digest": "246f33701853a970e92b386c5986a3fb1968fcce580b1f489d7717b1c795fc29",
+      "digest": "1187b8374b49c5dec90b953411a4b7df820ee1d4ea0c3b0d7d9e9fdc51262a46",
       "source_free": true,
       "status": "PASS"
     },
@@ -55,26 +58,40 @@
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "contract": "real_triton_first_slice_admission_readiness_gate.data_only.v0",
-      "digest": "16e0d17636bd2f45c60c58b73460025ab11a720dbf13829a4c297a4278ca09f0",
+      "digest": "ac03766d1f61d7f0fe7d606cc00315968293bcd4023d45310be695398faf092c",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval"
     },
     {
       "artifact_id": "real_triton_first_slice_maintainer_approval_request",
       "contract": "real_triton_first_slice_maintainer_approval_request.data_only.v0",
-      "digest": "caec569a9a93815891b98155d0ec752585ae14fdf73bf29a0cc73c6c07d59798",
+      "digest": "2cdaef5aff2a9272e0db169bc4289d5e31a4d8d52f1b0c600f109df50bdcf825",
       "source_free": true,
       "status": "ready_for_external_review"
     },
     {
       "artifact_id": "research_scope_claim_gate",
       "contract": "research_scope.claim_gate.data_only.v0",
-      "digest": "45305454bce4e01e1cb999d0935302dbde55a109ff1ceb759cf0f41b1774d0b0",
+      "digest": "1188b57c5f4388cb656c67830ff9967225fc55bbddd8403a7d0e8a7bdd6ed3a5",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "artifact_id": "oci_source_ingestion_research_proof",
+      "contract": "oci_source_ingestion_research_proof.kernel_isolated.v0",
+      "digest": "ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "artifact_id": "oci_source_worker_release_provenance_readiness",
+      "contract": "oci_source_worker.release_provenance_readiness.data_only.v0",
+      "digest": "cdfb98df2be4b194bb360aca8cff2f18cc918ec35b8d43c397b77983ee4db7f3",
       "source_free": true,
       "status": "PASS"
     }
   ],
-  "evidence_count": 7,
+  "evidence_count": 9,
   "external_approval_required": true,
   "first_real_path_status": "PASS",
   "first_slice_portfolio_status": "PASS",
@@ -97,6 +114,10 @@
     "admission_readiness_fail_closed",
     "maintainer_approval_request_non_approving",
     "research_scope_gate_passed",
+    "oci_kernel_isolation_proof_passed",
+    "oci_release_provenance_readiness_passed",
+    "production_source_sandbox_false",
+    "external_attestation_unverified",
     "source_ingestion_admitted_false",
     "external_approval_still_required",
     "native_performance_claim_false",
@@ -113,7 +134,9 @@
     "first_real_triton_kernel_path_bound",
     "first_slice_review_readiness_bound",
     "external_approval_request_packaged",
-    "research_scope_boundaries_preserved"
+    "research_scope_boundaries_preserved",
+    "kernel_isolated_source_ingestion_proof_bound",
+    "oci_worker_release_provenance_readiness_bound"
   ],
   "surface_opened": false,
   "trusted_runtime_backends": [

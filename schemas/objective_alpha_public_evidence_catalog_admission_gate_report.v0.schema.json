@@ -42,6 +42,8 @@
     "source_to_intent_research_capability_claim_gate_metadata_digest",
     "first_real_triton_kernel_path_metadata_digest",
     "real_triton_first_slice_evidence_portfolio_metadata_digest",
+    "oci_source_ingestion_research_proof_metadata_digest",
+    "oci_source_worker_release_provenance_readiness_metadata_digest",
     "schema_version",
     "stable_entry_capacity",
     "stable_entry_count",
@@ -128,19 +130,27 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "oci_source_ingestion_research_proof_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "oci_source_worker_release_provenance_readiness_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "catalog_entry_capacity": {
       "const": 32
     },
     "catalog_entry_count": {
-      "const": 7
+      "const": 9
     },
     "catalog_entry_digest_count": {
-      "const": 7
+      "const": 9
     },
     "catalog_evidence_ids": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         { "const": "objective_alpha_evidence_extension_policy" },
         { "const": "runtime_backend_equivalence_portfolio" },
@@ -148,13 +158,15 @@
         { "const": "source_intent_mixed_runtime_public_proof_bundle" },
         { "const": "source_to_intent_research_capability_claim_gate" },
         { "const": "first_real_triton_kernel_path" },
-        { "const": "real_triton_first_slice_evidence_portfolio" }
+        { "const": "real_triton_first_slice_evidence_portfolio" },
+        { "const": "oci_source_ingestion_research_proof" },
+        { "const": "oci_source_worker_release_provenance_readiness" }
       ]
     },
     "catalog_entry_points": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         { "const": "python examples/objective_alpha_evidence_extension_policy.py" },
         { "const": "python examples/runtime_backend_equivalence_portfolio.py" },
@@ -162,13 +174,15 @@
         { "const": "python examples/source_intent_mixed_runtime_public_proof_bundle.py" },
         { "const": "python examples/source_to_intent_research_capability_claim_gate.py" },
         { "const": "python examples/first_real_triton_kernel_path.py" },
-        { "const": "python examples/real_triton_first_slice_evidence_portfolio.py" }
+        { "const": "python examples/real_triton_first_slice_evidence_portfolio.py" },
+        { "const": "python examples/oci_source_ingestion_research_proof.py" },
+        { "const": "python examples/oci_source_worker_release_provenance_readiness.py" }
       ]
     },
     "catalog_artifact_kinds": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         { "const": "schema_versioned_extension_policy_report" },
         { "const": "schema_versioned_backend_equivalence_portfolio_report" },
@@ -176,13 +190,15 @@
         { "const": "schema_versioned_source_intent_mixed_runtime_public_proof_bundle_report" },
         { "const": "deterministic_source_to_intent_research_capability_claim_gate_output" },
         { "const": "schema_versioned_first_real_triton_kernel_path_report" },
-        { "const": "schema_versioned_real_triton_first_slice_evidence_portfolio_report" }
+        { "const": "schema_versioned_real_triton_first_slice_evidence_portfolio_report" },
+        { "const": "schema_versioned_oci_source_ingestion_research_proof_report" },
+        { "const": "schema_versioned_oci_worker_release_provenance_readiness_report" }
       ]
     },
     "catalog_extension_tiers": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
         { "const": "governance" },
         { "const": "runtime_proof" },
@@ -190,18 +206,22 @@
         { "const": "frontend_runtime_proof" },
         { "const": "claim_boundary" },
         { "const": "frontend_runtime_proof" },
-        { "const": "frontend_runtime_proof" }
+        { "const": "frontend_runtime_proof" },
+        { "const": "isolation_proof" },
+        { "const": "supply_chain_readiness" }
       ]
     },
     "catalog_required_extension_tiers": {
       "type": "array",
-      "minItems": 4,
-      "maxItems": 4,
+      "minItems": 6,
+      "maxItems": 6,
       "prefixItems": [
         { "const": "governance" },
         { "const": "runtime_proof" },
         { "const": "frontend_runtime_proof" },
-        { "const": "claim_boundary" }
+        { "const": "claim_boundary" },
+        { "const": "isolation_proof" },
+        { "const": "supply_chain_readiness" }
       ]
     },
     "catalog_missing_extension_tiers": {
@@ -213,9 +233,11 @@
     },
     "catalog_raw_output_policies": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "prefixItems": [
+        { "const": "digest_only" },
+        { "const": "digest_only" },
         { "const": "digest_only" },
         { "const": "digest_only" },
         { "const": "digest_only" },
@@ -227,8 +249,8 @@
     },
     "required_invariants": {
       "type": "array",
-      "minItems": 20,
-      "maxItems": 20,
+      "minItems": 22,
+      "maxItems": 22,
       "prefixItems": [
         { "const": "catalog_report_passed" },
         { "const": "catalog_metadata_digest_bound" },
@@ -243,6 +265,8 @@
         { "const": "capability_claim_gate_digest_entry_bound" },
         { "const": "first_real_triton_kernel_path_digest_entry_bound" },
         { "const": "real_triton_first_slice_evidence_portfolio_digest_entry_bound" },
+        { "const": "oci_source_ingestion_research_proof_digest_entry_bound" },
+        { "const": "oci_source_worker_release_provenance_readiness_digest_entry_bound" },
         { "const": "catalog_extension_tier_coverage_complete" },
         { "const": "fixed_initial_catalog_entries" },
         { "const": "append_only_rfc_bound_growth_policy" },

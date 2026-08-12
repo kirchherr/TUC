@@ -19,6 +19,7 @@ from examples.objective_beta_reproducibility_capsule import (
 )
 from examples.objective_beta_research_claim import (
     OBJECTIVE_BETA_RESEARCH_CLAIM_BLOCKED_CLAIMS,
+    OBJECTIVE_BETA_RESEARCH_CLAIM_EVIDENCE_IDS,
     OBJECTIVE_BETA_RESEARCH_CLAIM_FORBIDDEN_FRAGMENTS,
 )
 
@@ -278,7 +279,7 @@ def _verify_claim_links(
             raise ObjectiveBetaReproducibilityGateError(
                 f"replay claim evidence digest mismatch: {artifact_id}"
             )
-    if tuple(observed_ids) != OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE_EVIDENCE_IDS[:7]:
+    if tuple(observed_ids) != OBJECTIVE_BETA_RESEARCH_CLAIM_EVIDENCE_IDS:
         raise ObjectiveBetaReproducibilityGateError("replay claim evidence order mismatch")
     for payload_name, payload in (("claim", claim), ("claim gate", claim_gate)):
         for key in (
