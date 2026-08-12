@@ -40,7 +40,7 @@
     {
       "artifact_id": "real_triton_first_admissible_slice_plan",
       "contract": "real_triton_first_slice_plan.data_only.v0",
-      "digest": "sha256:2c8f4bd89f3084b799c54f10c053894343a12e05f22f2c97685d001624fd237b",
+      "digest": "sha256:6aeee2a1e2020eec61a99e98f57296545af685e57c279dfcee94de2f136707bf",
       "source_free": true,
       "status": "blocked_until_admitting_source_ingestion_evidence",
       "supports_readiness_gate": true
@@ -48,7 +48,7 @@
     {
       "artifact_id": "source_ingestion_maintainer_security_review_packet",
       "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
-      "digest": "sha256:d28f50191ed1778a7e506011fbf8825cb43dd257480e6af966f337a0c4fdaa92",
+      "digest": "sha256:463d286eb97f84d3eba4ff7938fe9bca0838545bc0cbd8b425f4ba3db6f38ef2",
       "source_free": true,
       "status": "ready_for_maintainer_review",
       "supports_readiness_gate": true
@@ -56,7 +56,7 @@
     {
       "artifact_id": "source_ingestion_maintainer_approval_artifact",
       "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
-      "digest": "sha256:6418bb7b19b51997a80638c193cc36899a664b78e73d2b7e79eac66a9375a03a",
+      "digest": "sha256:e725a83191f56aaabffcefebd2917acd987c671db046005a138bd30d0024b591",
       "source_free": true,
       "status": "external_approval_not_supplied",
       "supports_readiness_gate": true
@@ -64,7 +64,7 @@
     {
       "artifact_id": "source_ingestion_admission_gate",
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
-      "digest": "sha256:6c81cb8d2cc063107bf1ce876c8f34080e0b55481c154963814112e4c64aa761",
+      "digest": "sha256:ba8a22de6469c641c2808d500427d3c4da3d32d54342d596a601c93dba16559c",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
       "supports_readiness_gate": true
@@ -72,7 +72,7 @@
     {
       "artifact_id": "first_real_triton_kernel_path",
       "contract": "first_real_triton_kernel_path.digest_bound.v0",
-      "digest": "sha256:612ff0d3de31c8a20888a5b18f1c5ddc34b8364c24824ae8831b2090e2032e2f",
+      "digest": "sha256:3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
       "source_free": true,
       "status": "PASS",
       "supports_readiness_gate": true
@@ -80,7 +80,7 @@
     {
       "artifact_id": "real_triton_first_slice_evidence_portfolio",
       "contract": "real_triton_first_slice_evidence_portfolio.research_boundary.v0",
-      "digest": "sha256:6576001cbdc1693464b1ceff6f07f32007fe5e2bc72ae63d112e59f7ddbe7000",
+      "digest": "sha256:b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
       "source_free": true,
       "status": "PASS",
       "supports_readiness_gate": true
@@ -88,7 +88,7 @@
     {
       "artifact_id": "objective_alpha_catalog_acyclicity_gate",
       "contract": "objective_alpha.catalog_acyclicity_gate.data_only.v0",
-      "digest": "sha256:9adf2e41f7bca265bf310da081e8301c18a1e9b0aec92224c7b8e8a84bcae443",
+      "digest": "sha256:042b33c6916501bb524772674865cf36b87a73666add3522820728b08ce5c1ec",
       "source_free": true,
       "status": "PASS",
       "supports_readiness_gate": true

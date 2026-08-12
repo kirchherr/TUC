@@ -20,7 +20,7 @@
   "catalog_entry_count": 9,
   "claim_contract": "objective_alpha.research_claim.digest_snapshot.v0",
   "claim_id": "objective_alpha_universal_compute_research_claim",
-  "claim_metadata_digest": "4db6bac8e97e6596381456fef42df9ce96fbf2984ce2bb304d64c2ad50cff567",
+  "claim_metadata_digest": "2026adeb3ac0f2519af399e698a4db5e790cc5cf707a0cd2a0ba8aafe82626ec",
   "claim_passed": true,
   "claim_scope": "objective_alpha_public_bundle_catalog_and_mixed_runtime_proof",
   "claim_status": "supported_for_objective_alpha_research_scope",
@@ -42,12 +42,12 @@
     },
     {
       "artifact_id": "objective_alpha_public_evidence_catalog",
-      "digest": "a9d7157e37b59ba02583e4582aa18a291a93f12b851036c898f75978b2a6434f",
+      "digest": "1b1c73127b7aa90f3e12fd15484f0d7325dee2b02b6570d0837ec1502cac0ed3",
       "status": "accepted"
     },
     {
       "artifact_id": "objective_alpha_public_evidence_catalog_admission_gate",
-      "digest": "83be3289e9e662617f6da6ea1a710626c61b9be2cb2bd4a2f34eb2d0d1c775d4",
+      "digest": "7b619ee8baa46deecb1c186db311a601ef3428e05b48b8c34de0cc7fe930095f",
       "status": "accepted"
     },
     {

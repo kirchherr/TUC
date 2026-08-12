@@ -1,6 +1,6 @@
 {
   "artifact_status": "review_gate",
-  "catalog_admission_gate_report_digest": "sha256:83be3289e9e662617f6da6ea1a710626c61b9be2cb2bd4a2f34eb2d0d1c775d4",
+  "catalog_admission_gate_report_digest": "sha256:7b619ee8baa46deecb1c186db311a601ef3428e05b48b8c34de0cc7fe930095f",
   "catalog_entry_count": 9,
   "catalog_entry_ids": [
     "objective_alpha_evidence_extension_policy",
@@ -14,7 +14,7 @@
     "oci_source_worker_release_provenance_readiness"
   ],
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_report_digest": "sha256:a9d7157e37b59ba02583e4582aa18a291a93f12b851036c898f75978b2a6434f",
+  "catalog_report_digest": "sha256:1b1c73127b7aa90f3e12fd15484f0d7325dee2b02b6570d0837ec1502cac0ed3",
   "cycle_count": 0,
   "detected_cycles": [],
   "entry_scan_results": [
@@ -51,13 +51,13 @@
     {
       "evidence_id": "first_real_triton_kernel_path",
       "forbidden_downstream_dependency_hits": [],
-      "report_digest": "sha256:612ff0d3de31c8a20888a5b18f1c5ddc34b8364c24824ae8831b2090e2032e2f",
+      "report_digest": "sha256:3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
       "source_free": true
     },
     {
       "evidence_id": "real_triton_first_slice_evidence_portfolio",
       "forbidden_downstream_dependency_hits": [],
-      "report_digest": "sha256:6576001cbdc1693464b1ceff6f07f32007fe5e2bc72ae63d112e59f7ddbe7000",
+      "report_digest": "sha256:b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
       "source_free": true
     },
     {
@@ -69,7 +69,7 @@
     {
       "evidence_id": "oci_source_worker_release_provenance_readiness",
       "forbidden_downstream_dependency_hits": [],
-      "report_digest": "sha256:b3f94829c0cfa5c7ed4e8c602803df0bd02a88acdad52d9d4a77b475b80b8618",
+      "report_digest": "sha256:064d99bb38d320a739eca721e6a5c70c17cd349d32324fd042a5a74af11f7957",
       "source_free": true
     }
   ],

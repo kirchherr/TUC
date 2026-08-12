@@ -18,18 +18,18 @@
   ],
   "capsule_contract": "objective_beta.reproducibility_capsule.digest_manifest.v0",
   "capsule_id": "objective_beta_reproducibility_capsule",
-  "capsule_metadata_digest": "656fe4d649194e859568291b10b2eb411f310579674784141ae46a345c8f744d",
+  "capsule_metadata_digest": "025a49a0ec03385ccc41a230cc263e7a65f036edbb3a5fae61882b6a41ffdf55",
   "capsule_status": "reproducible_from_repository_goldens",
-  "claim_digest": "d6346f2ee7616c857cb84faabb6334d5dd72f3851db00a175b18f9881ddb0e6d",
-  "claim_gate_digest": "1b1883911a0e212d536bb53721409f9cfee5b244bd03e8a5500d192aa6aaadd6",
+  "claim_digest": "53d015a94783c2b8ad08764840b6fc405a978d3cacf51d7f2186c24329bade31",
+  "claim_gate_digest": "debed9ad88dea6f52212474f914e619df27331c7e790d675031772db9b258f1d",
   "claim_gate_id": "objective_beta_research_claim_gate",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "826301b4b97b5c19e343137c6ace3f6e43b96732853ba49c528c68e73b5766e4",
+  "claim_metadata_digest": "bf1d833a96ecf8e47c659a93b5d0f7da027c8d1fab9362ceeeb01f4b8c15e8cc",
   "evidence": [
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "content_type": "application/json",
-      "digest": "71d3df09499aefcb182652f529272beb70555d7e6de0af93d5e095d241013077",
+      "digest": "ffa5d0ba3301717e8a6cffe6cdf82aa2acc6df37c47eb562ce1d6cf79ba68673",
       "role": "predecessor_claim_gate",
       "source_free": true
     },
@@ -43,35 +43,35 @@
     {
       "artifact_id": "first_real_triton_kernel_path",
       "content_type": "application/json",
-      "digest": "612ff0d3de31c8a20888a5b18f1c5ddc34b8364c24824ae8831b2090e2032e2f",
+      "digest": "3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
       "role": "bounded_kernel_path",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_evidence_portfolio",
       "content_type": "application/json",
-      "digest": "6576001cbdc1693464b1ceff6f07f32007fe5e2bc72ae63d112e59f7ddbe7000",
+      "digest": "b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
       "role": "first_slice_portfolio",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "content_type": "application/json",
-      "digest": "29bed005ad68dcd2f82cd286aaa632c2be189c6f8941277289db6093eca4b3eb",
+      "digest": "689329f74fdcdba1b44a97fb99e2d1ff163ec1e23132cb4c3cc8727f94b447fb",
       "role": "fail_closed_admission_readiness",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_maintainer_approval_request",
       "content_type": "application/json",
-      "digest": "7fb1543930133f5d2ef8bc2dd9b5428bdd55e0d9854fdf4014b1586460cf5bfa",
+      "digest": "2b658eb3d00dd1604c23233ae9de6304137d0e7497127be75bb1a79f09f3c2bf",
       "role": "external_review_request",
       "source_free": true
     },
     {
       "artifact_id": "research_scope_claim_gate",
       "content_type": "application/json",
-      "digest": "5e08638d2e6ed6215c14e9baf0ba60e76460acd6aa38b9aa40a1b5895e00cac3",
+      "digest": "db610fa25de8e3531a4cca996e58d413bd32baa936cfe7080cb6e6708a0045e9",
       "role": "research_scope_boundary",
       "source_free": true
     },
@@ -85,21 +85,21 @@
     {
       "artifact_id": "oci_source_worker_release_provenance_readiness",
       "content_type": "application/json",
-      "digest": "b3f94829c0cfa5c7ed4e8c602803df0bd02a88acdad52d9d4a77b475b80b8618",
+      "digest": "064d99bb38d320a739eca721e6a5c70c17cd349d32324fd042a5a74af11f7957",
       "role": "release_provenance_readiness",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim",
       "content_type": "application/json",
-      "digest": "d6346f2ee7616c857cb84faabb6334d5dd72f3851db00a175b18f9881ddb0e6d",
+      "digest": "53d015a94783c2b8ad08764840b6fc405a978d3cacf51d7f2186c24329bade31",
       "role": "research_claim",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim_gate",
       "content_type": "application/json",
-      "digest": "1b1883911a0e212d536bb53721409f9cfee5b244bd03e8a5500d192aa6aaadd6",
+      "digest": "debed9ad88dea6f52212474f914e619df27331c7e790d675031772db9b258f1d",
       "role": "research_claim_gate",
       "source_free": true
     }
