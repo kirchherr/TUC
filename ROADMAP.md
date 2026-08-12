@@ -1050,6 +1050,19 @@ Deliverables:
   `tests/golden/frontend/isolated_source_ingestion_research_proof_report.json`;
   tests: `tests/test_isolated_source_ingestion_research_proof.py`; RFC:
   `rfcs/0288-isolated-source-ingestion-research-worker.md`.
+- [OCI Source Ingestion Research Worker](docs/OCI_SOURCE_INGESTION_RESEARCH_WORKER.md)
+  (`examples/oci_source_ingestion_research_proof.py`) closes the next process
+  isolation obligation for the narrow research slice: a dedicated digest-pinned
+  image runs with no network or repository mount, read-only RootFS, zero
+  capabilities, no-new-privileges, seccomp, and cgroup limits; observed worker
+  facts and the Compose contract must match before its Source Intent digest can
+  bind to the no-fallback Systolic/Vector proof. Schema:
+  `schemas/oci_source_ingestion_research_proof_report.v0.schema.json`; golden:
+  `tests/golden/frontend/oci_source_ingestion_research_proof_report.json`;
+  tests: `tests/test_oci_source_ingestion_research_proof.py`; RFC:
+  `rfcs/0289-oci-source-ingestion-research-worker.md`. Production admission and
+  production sandbox claims remain blocked pending published image provenance
+  and independent security review.
 - [Parser Fuzz Negative Corpus For Admitting Slice](docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
   (`examples/parser_fuzz_negative_corpus_for_admitting_slice.py`) defining
   deterministic source-free negative/fuzz seeds for the future admitting parser

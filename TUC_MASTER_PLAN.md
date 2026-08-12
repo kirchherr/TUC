@@ -111,6 +111,15 @@ slice, not production admission. Filesystem namespaces, kernel network
 isolation, syscall filtering, broader parser coverage, and independent
 security approval remain open before any production source-ingestion claim.
 
+The current narrow slice now also crosses a dedicated OCI boundary with
+kernel-observed network and filesystem isolation, seccomp,
+no-new-privileges, zero capabilities, non-root identity, and cgroup limits.
+Its Source Intent digest is bound to the no-fallback Systolic/Vector execution
+proof. This establishes a practical kernel-isolated research path while
+retaining an explicit boundary: published image provenance, independent
+security review, broader syntax coverage, and production admission are not yet
+claimed.
+
 ## Non-Negotiable Principles
 
 ### Principle 1

@@ -153,6 +153,28 @@ schema `schemas/isolated_source_ingestion_research_proof_report.v0.schema.json`,
 golden `tests/golden/frontend/isolated_source_ingestion_research_proof_report.json`,
 and RFC `rfcs/0288-isolated-source-ingestion-research-worker.md`.
 
+The hardened successor now runs that parser in a dedicated OCI container with
+no network, no repository mount, read-only root filesystem, zero capabilities,
+`no-new-privileges`, seccomp, and cgroup limits. It verifies those kernel facts
+inside the worker and binds the resulting Source Intent digest to the existing
+no-fallback backend proof. Run
+`python examples/oci_source_ingestion_research_proof.py`; see
+[OCI Source Ingestion Research Worker](docs/OCI_SOURCE_INGESTION_RESEARCH_WORKER.md),
+schema `schemas/oci_source_ingestion_research_proof_report.v0.schema.json`,
+golden `tests/golden/frontend/oci_source_ingestion_research_proof_report.json`,
+and RFC `rfcs/0289-oci-source-ingestion-research-worker.md`.
+
+The hardened successor now runs that parser in a dedicated OCI container with
+no network, no repository mount, read-only root filesystem, zero capabilities,
+`no-new-privileges`, seccomp, and cgroup limits. It verifies those kernel facts
+inside the worker and binds the resulting Source Intent digest to the existing
+no-fallback backend proof. Run
+`python examples/oci_source_ingestion_research_proof.py`; see
+[OCI Source Ingestion Research Worker](docs/OCI_SOURCE_INGESTION_RESEARCH_WORKER.md),
+schema `schemas/oci_source_ingestion_research_proof_report.v0.schema.json`,
+golden `tests/golden/frontend/oci_source_ingestion_research_proof_report.json`,
+and RFC `rfcs/0289-oci-source-ingestion-research-worker.md`.
+
 ## Current Proofs
 
 Objective Alpha is the current proof shape:

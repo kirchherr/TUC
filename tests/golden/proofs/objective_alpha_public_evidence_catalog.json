@@ -80,7 +80,7 @@
       "entry_point": "python examples/first_real_triton_kernel_path.py",
       "evidence_id": "first_real_triton_kernel_path",
       "extension_tier": "frontend_runtime_proof",
-      "metadata_digest": "b61ceed9be8d1c5462af975506ae3277cb7fbecd09a7c64a7a47245118d2aa72",
+      "metadata_digest": "612ff0d3de31c8a20888a5b18f1c5ddc34b8364c24824ae8831b2090e2032e2f",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -89,7 +89,7 @@
       "entry_point": "python examples/real_triton_first_slice_evidence_portfolio.py",
       "evidence_id": "real_triton_first_slice_evidence_portfolio",
       "extension_tier": "frontend_runtime_proof",
-      "metadata_digest": "467189b0daa466f7036ec72ca3a4ac862a8779dec9961ee03cb4efe0ff6a0c5c",
+      "metadata_digest": "6576001cbdc1693464b1ceff6f07f32007fe5e2bc72ae63d112e59f7ddbe7000",
       "raw_output_policy": "digest_only",
       "status": "passed"
     }
@@ -98,7 +98,7 @@
   "catalog_entry_count": 7,
   "catalog_extension_tier_coverage_status": "complete",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "26fc4722f1b240e6a52a0d4ffae1226b826267dde775b180c070ccbe9d56ecad",
+  "catalog_metadata_digest": "ef590af9c9cfd7735f65058b4dc5886d3de9fc659f2fc41be9ab6da49b28ce2a",
   "catalog_missing_extension_tiers": [],
   "catalog_passed": true,
   "catalog_required_extension_tiers": [
@@ -112,10 +112,10 @@
   "digest_policy": "sha256_hex_only",
   "extension_policy_contract": "objective_alpha.evidence_extension_policy.data_only.v0",
   "extension_policy_metadata_digest": "4c8dc9cd62201e414cf653c9f2e64a773d54df83835167df4e224791394e3cdf",
-  "first_real_triton_kernel_path_metadata_digest": "b61ceed9be8d1c5462af975506ae3277cb7fbecd09a7c64a7a47245118d2aa72",
+  "first_real_triton_kernel_path_metadata_digest": "612ff0d3de31c8a20888a5b18f1c5ddc34b8364c24824ae8831b2090e2032e2f",
   "growth_policy": "append_only_rfc_bound",
   "issues": [],
-  "real_triton_first_slice_evidence_portfolio_metadata_digest": "467189b0daa466f7036ec72ca3a4ac862a8779dec9961ee03cb4efe0ff6a0c5c",
+  "real_triton_first_slice_evidence_portfolio_metadata_digest": "6576001cbdc1693464b1ceff6f07f32007fe5e2bc72ae63d112e59f7ddbe7000",
   "required_controls": [
     "schema_versioned_extension_artifacts",
     "sha256_metadata_digests",

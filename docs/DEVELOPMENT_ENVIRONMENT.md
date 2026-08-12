@@ -79,6 +79,20 @@ docker compose run --rm dev python scripts/benchmark.py --iterations 1 --warmup 
 docker compose run --rm dev python examples/backend_api_v0.py
 ```
 
+## Hardened Source Worker
+
+Build and replay the kernel-isolated Source-to-Intent research proof:
+
+```bash
+docker compose build source-ingestion-worker
+TUC_VERIFY_OCI_GOLDEN=1 python examples/oci_source_ingestion_research_proof.py
+```
+
+The worker service has no repository volume or network and runs with a
+read-only root filesystem, zero capabilities, no-new-privileges, seccomp, and
+fixed cgroup limits. See
+[OCI Source Ingestion Research Worker](OCI_SOURCE_INGESTION_RESEARCH_WORKER.md).
+
 The example shows a trusted in-process prototype backend with declarative
 capabilities, runtime planning, HS-IR assignment, and explicit lower-time
 capability rejection.

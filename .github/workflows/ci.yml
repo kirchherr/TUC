@@ -159,3 +159,21 @@ jobs:
         run: python examples/evidence_graph_acyclicity_gate.py
       - name: Baseline benchmark smoke test
         run: python scripts/benchmark.py --iterations 1 --warmup 0
+
+
+  oci-source-ingestion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Build hardened source-ingestion worker
+        run: docker compose build source-ingestion-worker
+      - name: Replay OCI source-ingestion proof
+        env:
+          TUC_VERIFY_OCI_GOLDEN: "1"
+        run: python examples/oci_source_ingestion_research_proof.py
