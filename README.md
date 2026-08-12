@@ -156,16 +156,19 @@ and RFC `rfcs/0288-isolated-source-ingestion-research-worker.md`.
 
 The protected release workflow now also builds that worker as a verified
 `linux/amd64` OCI Image Layout archive, emits a worker-specific CycloneDX SBOM,
-and requests GitHub OIDC provenance and SBOM attestations. Run
+requests GitHub OIDC provenance and SBOM attestations, and policy-verifies the
+provenance attestation in the same GitHub-hosted run. A bounded receipt binds
+the archive digest to the signer workflow, commit, ref, OIDC issuer, and run.
+Run
 `python examples/oci_source_worker_release_provenance_readiness.py`; see
 [OCI Source Worker Release Provenance](docs/OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md),
 schema
 `schemas/oci_source_worker_release_provenance_readiness_report.v0.schema.json`,
 golden
 `tests/golden/frontend/oci_source_worker_release_provenance_readiness_report.json`,
-and RFC `rfcs/0290-oci-source-worker-release-provenance.md`. External
-attestation verification, public registry publication, and production source
-ingestion remain blocked.
+and RFC `rfcs/0290-oci-source-worker-release-provenance.md`. An executed run,
+external consumer verification, public registry publication, and production
+source ingestion remain blocked in repository evidence.
 
 The hardened successor now runs that parser in a dedicated OCI container with
 no network, no repository mount, read-only root filesystem, zero capabilities,

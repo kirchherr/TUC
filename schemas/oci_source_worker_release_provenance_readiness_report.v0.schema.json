@@ -30,6 +30,7 @@
     "required_controls",
     "sbom_format",
     "schema_version",
+    "same_run_attestation_verification_configured",
     "workflow_digest"
   ],
   "properties": {
@@ -62,6 +63,8 @@
       "additionalProperties": false,
       "required": [
         "archive_verifier",
+        "attestation_receipt_schema",
+        "attestation_receipt_writer",
         "build_context_policy",
         "dockerfile",
         "requirements",
@@ -70,6 +73,8 @@
       ],
       "properties": {
         "archive_verifier": { "$ref": "#/$defs/digest" },
+        "attestation_receipt_schema": { "$ref": "#/$defs/digest" },
+        "attestation_receipt_writer": { "$ref": "#/$defs/digest" },
         "build_context_policy": { "$ref": "#/$defs/digest" },
         "dockerfile": { "$ref": "#/$defs/digest" },
         "requirements": { "$ref": "#/$defs/digest" },
@@ -82,7 +87,7 @@
     "production_source_ingestion": { "const": false },
     "production_source_sandbox": { "const": false },
     "published_worker_image_provenance": { "const": false },
-    "readiness_claim": { "const": "release_workflow_can_emit_verified_attested_oci_archive_and_worker_sbom" },
+    "readiness_claim": { "const": "release_workflow_can_emit_attest_and_policy_verify_oci_archive_and_worker_sbom" },
     "readiness_contract": { "const": "oci_source_worker.release_provenance_readiness.data_only.v0" },
     "readiness_status": { "const": "PASS" },
     "report_digest": { "$ref": "#/$defs/digest" },
@@ -99,15 +104,19 @@
         { "const": "buildx_version_pinned" },
         { "const": "checksum_manifest_configured" },
         { "const": "github_oidc_attestation_configured" },
+        { "const": "github_attestation_cli_policy_configured" },
+        { "const": "github_cli_version_recorded" },
         { "const": "requirements_hash_locked" },
+        { "const": "same_run_verification_receipt_configured" },
         { "const": "worker_sbom_attestation_configured" }
       ],
       "items": false,
-      "minItems": 12,
-      "maxItems": 12
+      "minItems": 15,
+      "maxItems": 15
     },
     "sbom_format": { "const": "CycloneDX-1.6" },
     "schema_version": { "const": "tuc.oci_source_worker_release_provenance_readiness_report.v0" },
+    "same_run_attestation_verification_configured": { "const": true },
     "workflow_digest": { "$ref": "#/$defs/digest" }
   },
   "$defs": {

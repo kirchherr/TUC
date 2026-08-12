@@ -1,6 +1,6 @@
 {
   "artifact_status": "review_gate",
-  "catalog_admission_gate_report_digest": "sha256:cff2e6b0d795794e3810c610ccac4fc33a6bfff09a5e83abb9ef83dddbba94a9",
+  "catalog_admission_gate_report_digest": "sha256:9868c58bae92633c425778556c6518d2ee4a7130fb7da2921eac766998a5ee5e",
   "catalog_entry_count": 9,
   "catalog_entry_ids": [
     "objective_alpha_evidence_extension_policy",
@@ -14,7 +14,7 @@
     "oci_source_worker_release_provenance_readiness"
   ],
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_report_digest": "sha256:0463c4f9e0399ca0c0bb503d63e0b0684ac0e482976a6aef56fd7880da07486b",
+  "catalog_report_digest": "sha256:e03cf1ec4145def6750d46188983ed8598ec999fb577ecce0c0ba1088766e25d",
   "cycle_count": 0,
   "detected_cycles": [],
   "entry_scan_results": [
@@ -69,7 +69,7 @@
     {
       "evidence_id": "oci_source_worker_release_provenance_readiness",
       "forbidden_downstream_dependency_hits": [],
-      "report_digest": "sha256:cdfb98df2be4b194bb360aca8cff2f18cc918ec35b8d43c397b77983ee4db7f3",
+      "report_digest": "sha256:55d7d989498330bfd2512821354af9b993130763096c0c9e32ce8bece1f6d916",
       "source_free": true
     }
   ],

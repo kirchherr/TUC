@@ -48,6 +48,7 @@ def test_release_provenance_readiness_contract_passes() -> None:
     assert report["required_controls"] == list(REQUIRED_CONTROLS)
     assert report["blocked_claims"] == list(BLOCKED_CLAIMS)
     assert report["attested_release_artifact_configured"] is True
+    assert report["same_run_attestation_verification_configured"] is True
     assert report["external_attestation_verified"] is False
     assert report["published_worker_image_provenance"] is False
     assert report["production_source_sandbox"] is False
@@ -63,6 +64,7 @@ def test_release_provenance_readiness_contract_passes() -> None:
         ("production_source_sandbox", True),
         ("execution_permission", True),
         ("attested_release_artifact_configured", False),
+        ("same_run_attestation_verification_configured", False),
     ],
 )
 def test_release_provenance_readiness_rejects_claim_drift(

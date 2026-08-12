@@ -71,6 +71,13 @@ gh attestation verify dist/tuc-0.1.0.tar.gz -R kirchherr/TUC
 gh attestation verify dist/tuc-source-ingestion-worker.oci.tar -R kirchherr/TUC
 ```
 
+The release workflow also performs policy-bound, same-run provenance
+verification for the worker archive and adds a bounded verification receipt to
+the checksum manifest. This confirms that the attestation fetched by that run
+matches the archive digest, repository, signer workflow, commit, ref, OIDC
+issuer, SLSA predicate, and GitHub-hosted runner policy. It does not replace the
+consumer-side commands above or prove tag-ruleset enforcement.
+
 The checksum manifest can be checked locally:
 
 ```bash
@@ -91,8 +98,8 @@ artifacts must extend this SBOM model before release.
 ## Non-Goals
 
 - Publishing the worker to a public container registry.
-- Claiming an externally verified attestation before a protected release run is
-  independently checked.
+- Treating same-run verification as independent consumer verification or
+  protected tag-ruleset evidence.
 - Long-lived signing keys.
 - Executing generated backend artifacts during release.
 - Claiming reproducible builds.

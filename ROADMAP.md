@@ -355,10 +355,12 @@ Completed evidence:
 - [OCI Source Worker Release Provenance](docs/OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md)
   adds a protected release path for a verified `linux/amd64` OCI Image Layout
   archive, worker CycloneDX SBOM, SHA-256 checksums, and GitHub OIDC provenance
-  and SBOM attestations. Its readiness report remains data-only and explicitly
-  blocks external-attestation verification, public registry publication,
-  byte-identical reproducibility, production ingestion, and production sandbox
-  claims. RFC: `rfcs/0290-oci-source-worker-release-provenance.md`.
+  and SBOM attestations. The workflow now policy-verifies worker provenance in
+  the same GitHub-hosted run and emits a bounded digest-bound receipt. Its
+  readiness report remains data-only and explicitly blocks claims of an
+  executed run, external consumer verification, public registry publication,
+  byte-identical reproducibility, production ingestion, and production
+  sandbox. RFC: `rfcs/0290-oci-source-worker-release-provenance.md`.
 - Objective Alpha Public Evidence Catalog Entry Admission Pattern derives the
   catalog's expected IDs, entry points, artifact kinds, extension tiers, digest
   sources, and raw-output policies from typed data-only specs, reducing drift in

@@ -70,6 +70,180 @@ def test_write_artifact_checksums_excludes_output_file(tmp_path: Path) -> None:
     assert "SHA256SUMS" not in output.read_text(encoding="utf-8")
 
 
+def test_write_attestation_verification_receipt_is_bounded_and_digest_bound(
+    tmp_path: Path,
+) -> None:
+    artifact_dir = tmp_path / "dist"
+    artifact_dir.mkdir()
+    artifact = artifact_dir / "tuc-source-ingestion-worker.oci.tar"
+    artifact.write_bytes(b"verified OCI archive")
+    output = artifact_dir / "tuc-source-ingestion-worker.attestation-verification.json"
+    result_path = tmp_path / "verification.json"
+    result_path.write_text(
+        json.dumps(_attestation_verification_result(artifact)),
+        encoding="utf-8",
+    )
+    writer = _load_module("write_github_attestation_verification_receipt.py")
+
+    report = writer.write_receipt(
+        artifact,
+        output,
+        verification_result_path=result_path,
+        **_attestation_context(),
+    )
+
+    expected_digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    assert report["artifact_digest"] == f"sha256:{expected_digest}"
+    assert report["artifact_size_bytes"] == artifact.stat().st_size
+    assert report["attestation_verified"] is True
+    assert report["verified_attestation_count"] == 1
+    assert report["release_tag_trigger"] is False
+    assert report["protected_tag_policy_verified"] is False
+    assert report["external_consumer_verification"] is False
+    assert report["public_registry_image"] is False
+    assert report["production_source_ingestion"] is False
+    assert report["execution_permission"] is False
+    assert output.stat().st_size <= writer.MAX_RECEIPT_BYTES
+    assert json.loads(output.read_text(encoding="utf-8")) == report
+    unsigned = dict(report)
+    report_digest = unsigned.pop("report_digest")
+    canonical = json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    assert report_digest == f"sha256:{hashlib.sha256(canonical).hexdigest()}"
+
+
+def test_attestation_verification_receipt_marks_only_push_v_tag_as_release_trigger(
+    tmp_path: Path,
+) -> None:
+    artifact = tmp_path / "tuc-source-ingestion-worker.oci.tar"
+    artifact.write_bytes(b"verified OCI archive")
+    writer = _load_module("write_github_attestation_verification_receipt.py")
+    context = _attestation_context()
+    context.update(event_name="push", source_ref="refs/tags/v0.1.0")
+
+    report = writer.build_receipt(
+        artifact,
+        verification_result=_attestation_verification_result(artifact),
+        **context,
+    )
+
+    assert report["release_tag_trigger"] is True
+    assert report["protected_tag_policy_verified"] is False
+    assert report["external_consumer_verification"] is False
+    assert report["public_registry_image"] is False
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("repository", "kirchherr/TUC\nleak", "repository"),
+        ("source_commit", "0" * 39, "source commit"),
+        ("source_ref", "refs/heads/../main", "source ref"),
+        ("event_name", "pull_request", "event"),
+        ("run_id", 0, "run id"),
+        ("run_attempt", 101, "run attempt"),
+        ("runner_environment", "self-hosted", "runner environment"),
+        ("gh_version", "gh version 2.83.0\nsecret", "GitHub CLI version"),
+    ],
+)
+def test_attestation_verification_receipt_rejects_untrusted_context(
+    tmp_path: Path,
+    field: str,
+    value: object,
+    message: str,
+) -> None:
+    artifact = tmp_path / "tuc-source-ingestion-worker.oci.tar"
+    artifact.write_bytes(b"verified OCI archive")
+    writer = _load_module("write_github_attestation_verification_receipt.py")
+    context = _attestation_context()
+    context[field] = value
+
+    with pytest.raises(ValueError, match=message):
+        writer.build_receipt(
+            artifact,
+            verification_result=_attestation_verification_result(artifact),
+            **context,
+        )
+
+
+def test_attestation_verification_receipt_rejects_output_escape(tmp_path: Path) -> None:
+    artifact_dir = tmp_path / "dist"
+    artifact_dir.mkdir()
+    artifact = artifact_dir / "tuc-source-ingestion-worker.oci.tar"
+    artifact.write_bytes(b"verified OCI archive")
+    writer = _load_module("write_github_attestation_verification_receipt.py")
+    result_path = tmp_path / "verification.json"
+    result_path.write_text(
+        json.dumps(_attestation_verification_result(artifact)),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="output path"):
+        writer.write_receipt(
+            artifact,
+            tmp_path / "tuc-source-ingestion-worker.attestation-verification.json",
+            verification_result_path=result_path,
+            **_attestation_context(),
+        )
+
+
+@pytest.mark.parametrize("result", [[], {}, [{"verificationResult": {}}]])
+def test_attestation_verification_receipt_rejects_malformed_verifier_result(
+    tmp_path: Path,
+    result: object,
+) -> None:
+    artifact = tmp_path / "tuc-source-ingestion-worker.oci.tar"
+    artifact.write_bytes(b"verified OCI archive")
+    writer = _load_module("write_github_attestation_verification_receipt.py")
+
+    with pytest.raises(ValueError, match="result"):
+        writer.build_receipt(
+            artifact,
+            verification_result=result,
+            **_attestation_context(),
+        )
+
+
+def test_attestation_verification_receipt_rejects_verifier_digest_drift(
+    tmp_path: Path,
+) -> None:
+    artifact = tmp_path / "tuc-source-ingestion-worker.oci.tar"
+    artifact.write_bytes(b"verified OCI archive")
+    writer = _load_module("write_github_attestation_verification_receipt.py")
+    result = _attestation_verification_result(artifact)
+    result[0]["verificationResult"]["statement"]["subject"][0]["digest"]["sha256"] = (
+        "0" * 64
+    )
+
+    with pytest.raises(ValueError, match="subject digest"):
+        writer.build_receipt(
+            artifact,
+            verification_result=result,
+            **_attestation_context(),
+        )
+
+
+def test_attestation_verification_receipt_schema_matches_report(tmp_path: Path) -> None:
+    artifact = tmp_path / "tuc-source-ingestion-worker.oci.tar"
+    artifact.write_bytes(b"verified OCI archive")
+    writer = _load_module("write_github_attestation_verification_receipt.py")
+    schema = json.loads(
+        Path("schemas/github_attestation_verification_receipt.v0.schema.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    report = writer.build_receipt(
+        artifact,
+        verification_result=_attestation_verification_result(artifact),
+        **_attestation_context(),
+    )
+
+    assert schema["additionalProperties"] is False
+    assert schema["properties"]["schema_version"]["const"] == writer.SCHEMA_VERSION
+    assert set(schema["required"]) == set(report)
+    assert set(schema["properties"]) == set(report)
+
+
 def test_release_workflow_actions_are_sha_pinned() -> None:
     workflow_path = (
         Path(__file__).resolve().parents[1] / ".github" / "workflows" / "release-artifacts.yml"
@@ -235,8 +409,68 @@ def test_release_workflow_attests_worker_archive_and_sbom() -> None:
     assert "scripts/generate_source_worker_sbom.py" in workflow
     assert workflow.count("subject-path: dist/tuc-source-ingestion-worker.oci.tar") == 2
     assert "sbom-path: dist/tuc-source-ingestion-worker.cdx.json" in workflow
+    assert workflow.count("gh attestation verify") == 1
+    assert '--repo "$GITHUB_REPOSITORY"' in workflow
+    assert '--signer-repo "$GITHUB_REPOSITORY"' in workflow
+    assert (
+        '--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-artifacts.yml"'
+        in workflow
+    )
+    assert '--source-digest "$GITHUB_SHA"' in workflow
+    assert '--source-ref "$GITHUB_REF"' in workflow
+    assert '--cert-oidc-issuer "https://token.actions.githubusercontent.com"' in workflow
+    assert '--predicate-type "https://slsa.dev/provenance/v1"' in workflow
+    assert "--deny-self-hosted-runners" in workflow
+    assert "--limit 8" in workflow
+    assert (
+        '--format json >"$RUNNER_TEMP/tuc-worker-attestation-verification.json"'
+        in workflow
+    )
+    assert "scripts/write_github_attestation_verification_receipt.py" in workflow
+    assert (
+        '--verification-result "$RUNNER_TEMP/tuc-worker-attestation-verification.json"'
+        in workflow
+    )
+    assert "dist/*.attestation-verification.json" in workflow
     assert "dist/*.oci-verification.json" in workflow
     assert "dist/*.oci.tar" in workflow
+    assert workflow.index("gh attestation verify") < workflow.index(
+        "scripts/write_artifact_checksums.py"
+    )
+    assert 'echo "$GH_TOKEN"' not in workflow
+
+
+def _attestation_context() -> dict[str, object]:
+    return {
+        "repository": "kirchherr/TUC",
+        "source_commit": "8c9cc155d6d19c827cac8472892681c58a91a335",
+        "source_ref": "refs/heads/codex/neutral-runtime-defaults",
+        "event_name": "workflow_dispatch",
+        "run_id": 123456789,
+        "run_attempt": 1,
+        "runner_environment": "github-hosted",
+        "gh_version": "gh version 2.83.0 (2026-08-01)",
+    }
+
+
+def _attestation_verification_result(artifact: Path) -> list[dict[str, object]]:
+    digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    return [
+        {
+            "attestation": {"bundle": "verified-but-omitted-from-receipt"},
+            "verificationResult": {
+                "statement": {
+                    "predicateType": "https://slsa.dev/provenance/v1",
+                    "subject": [
+                        {
+                            "name": artifact.name,
+                            "digest": {"sha256": digest},
+                        }
+                    ],
+                }
+            },
+        }
+    ]
 
 
 def _write_worker_oci_archive(

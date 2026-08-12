@@ -12,7 +12,7 @@ SCHEMA_VERSION = "tuc.oci_source_worker_release_provenance_readiness_report.v0"
 READINESS_CONTRACT = "oci_source_worker.release_provenance_readiness.data_only.v0"
 READINESS_STATUS = "PASS"
 READINESS_CLAIM = (
-    "release_workflow_can_emit_verified_attested_oci_archive_and_worker_sbom"
+    "release_workflow_can_emit_attest_and_policy_verify_oci_archive_and_worker_sbom"
 )
 ARTIFACT_NAME = "tuc-source-ingestion-worker.oci.tar"
 ARTIFACT_FORMAT = "oci_image_layout_tar"
@@ -45,7 +45,10 @@ REQUIRED_CONTROLS = (
     "buildx_version_pinned",
     "checksum_manifest_configured",
     "github_oidc_attestation_configured",
+    "github_attestation_cli_policy_configured",
+    "github_cli_version_recorded",
     "requirements_hash_locked",
+    "same_run_verification_receipt_configured",
     "worker_sbom_attestation_configured",
 )
 _ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +60,12 @@ _MATERIALS = {
     "sbom_generator": _ROOT / "scripts/generate_source_worker_sbom.py",
     "worker_source": _ROOT / "src/tuc/frontend/_isolated_source_ingestion_worker.py",
     "archive_verifier": _ROOT / "scripts/verify_source_worker_oci_archive.py",
+    "attestation_receipt_writer": (
+        _ROOT / "scripts/write_github_attestation_verification_receipt.py"
+    ),
+    "attestation_receipt_schema": (
+        _ROOT / "schemas/github_attestation_verification_receipt.v0.schema.json"
+    ),
 }
 _OCI_PROOF = _ROOT / "tests/golden/frontend/oci_source_ingestion_research_proof_report.json"
 _SHA256_RE = re.compile(r"^sha256:[a-f0-9]{64}$")
@@ -96,6 +105,7 @@ _TOP_LEVEL_KEYS = frozenset(
         "required_controls",
         "sbom_format",
         "schema_version",
+        "same_run_attestation_verification_configured",
         "workflow_digest",
     }
 )
@@ -140,6 +150,7 @@ def build_report() -> str:
         "required_controls": list(REQUIRED_CONTROLS),
         "sbom_format": SBOM_FORMAT,
         "schema_version": SCHEMA_VERSION,
+        "same_run_attestation_verification_configured": True,
         "workflow_digest": _digest(workflow.encode("utf-8")),
     }
     report["report_digest"] = _digest(_canonical_json(report).encode("utf-8"))
@@ -175,6 +186,7 @@ def assert_report_contract(report: object) -> None:
         "required_controls": list(REQUIRED_CONTROLS),
         "sbom_format": SBOM_FORMAT,
         "schema_version": SCHEMA_VERSION,
+        "same_run_attestation_verification_configured": True,
     }
     for key, value in expected.items():
         if report.get(key) != value:
@@ -224,6 +236,20 @@ def _assert_release_workflow(workflow: str) -> None:
         "type=oci,dest=dist/tuc-source-ingestion-worker.oci.tar",
         "scripts/verify_source_worker_oci_archive.py",
         "scripts/generate_source_worker_sbom.py",
+        "gh attestation verify dist/tuc-source-ingestion-worker.oci.tar",
+        '--repo "$GITHUB_REPOSITORY"',
+        '--signer-repo "$GITHUB_REPOSITORY"',
+        '--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-artifacts.yml"',
+        '--source-digest "$GITHUB_SHA"',
+        '--source-ref "$GITHUB_REF"',
+        '--cert-oidc-issuer "https://token.actions.githubusercontent.com"',
+        '--predicate-type "https://slsa.dev/provenance/v1"',
+        "--deny-self-hosted-runners",
+        "--limit 8",
+        '--format json >"$RUNNER_TEMP/tuc-worker-attestation-verification.json"',
+        "scripts/write_github_attestation_verification_receipt.py",
+        '--verification-result "$RUNNER_TEMP/tuc-worker-attestation-verification.json"',
+        "dist/*.attestation-verification.json",
         "subject-path: dist/tuc-source-ingestion-worker.oci.tar",
         "sbom-path: dist/tuc-source-ingestion-worker.cdx.json",
         "dist/*.oci-verification.json",
@@ -233,6 +259,17 @@ def _assert_release_workflow(workflow: str) -> None:
         raise ValueError("release workflow OCI provenance control missing")
     if workflow.count("subject-path: dist/tuc-source-ingestion-worker.oci.tar") != 2:
         raise ValueError("release workflow OCI attestation cardinality drift")
+    if workflow.count("gh attestation verify") != 1:
+        raise ValueError("release workflow OCI verification cardinality drift")
+    if not (
+        workflow.index("scripts/verify_source_worker_oci_archive.py")
+        < workflow.index("Attest source-worker OCI provenance")
+        < workflow.index("gh attestation verify")
+        < workflow.index("scripts/write_github_attestation_verification_receipt.py")
+        < workflow.index("scripts/write_artifact_checksums.py")
+        < workflow.index("Upload release artifact bundle")
+    ):
+        raise ValueError("release workflow OCI verification order drift")
     if "--allow-insecure-entitlement" in workflow:
         raise ValueError("release workflow insecure BuildKit entitlement rejected")
     if "pull_request_target:" in workflow or "pull_request:" in workflow:

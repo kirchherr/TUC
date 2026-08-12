@@ -9,6 +9,8 @@ the protected release workflow. Before attestation, repository-owned code must
 validate the archive descriptor graph and the fixed runtime configuration. The
 workflow then generates a worker-specific CycloneDX SBOM, writes checksums,
 and uses GitHub OIDC artifact attestations for both provenance and SBOM.
+After attestation, the same GitHub-hosted run must verify worker provenance
+through GitHub CLI policy enforcement and emit a bounded metadata-only receipt.
 
 ## Security Invariants
 
@@ -24,16 +26,27 @@ and uses GitHub OIDC artifact attestations for both provenance and SBOM.
   digest-pinned, CDI is disabled, and insecure BuildKit entitlements are not
   enabled.
 - Attestation uses GitHub OIDC; no long-lived signing secret is introduced.
+- Verification binds repository, signer workflow, source commit, source ref,
+  OIDC issuer, SLSA provenance predicate, and GitHub-hosted runner policy.
+- The verification receipt is generated only after the verifier exits zero,
+  is included in the checksum manifest, and remains non-authorizing.
 - The archive, source, generated layers, host paths, and command lines are not
   serialized into public TUC evidence.
+- Raw verifier output and attestation bundles are not uploaded in the release
+  artifact bundle.
+- A release-tag trigger is not treated as evidence that external repository
+  ruleset protection was verified.
+- The runner-provided GitHub CLI version is recorded; pinning that tool remains
+  release-hardening work.
 
 ## Claim Boundary
 
-The repository can prove that its release workflow is configured to emit and
-attest a verified OCI archive. Until a release run exists and its attestation
-is independently verified, TUC does not claim published image provenance,
-byte-identical reproducible images, a public registry image, production source
-ingestion, or a production sandbox.
+The repository can prove that its release workflow is configured to emit,
+attest, and same-run verify an OCI archive. Until a release run exists, this is
+configuration readiness rather than executed release evidence. Same-run
+verification is also not independent consumer verification. TUC does not claim
+published image provenance, byte-identical reproducible images, a public
+registry image, production source ingestion, or a production sandbox.
 
 Independent security review remains a separate admission requirement.
 

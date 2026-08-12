@@ -123,10 +123,13 @@ claimed.
 The protected release path now builds the same worker as a `linux/amd64` OCI
 Image Layout archive, verifies its descriptor graph and fixed non-root runtime
 configuration without extraction, generates a dedicated CycloneDX SBOM, and
-configures GitHub OIDC provenance and SBOM attestations. This closes release
-configuration readiness for the research artifact. A protected release run,
-independent attestation verification, public registry publication, production
-source ingestion, and a production sandbox remain outside the claim.
+configures GitHub OIDC provenance and SBOM attestations. The same GitHub-hosted
+run must independently execute GitHub CLI verification against a policy-bound
+repository, signer workflow, commit, ref, issuer, predicate, and runner class,
+then emit a bounded receipt. This closes release-path verification readiness
+for the research artifact. An executed protected release run, external
+consumer verification, public registry publication, production source
+ingestion, and a production sandbox remain outside the claim.
 
 ## Non-Negotiable Principles
 

@@ -80,7 +80,7 @@
   ],
   "catalog_growth_policy": "append_only_rfc_bound",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "57f8739867fa341e7c8b8343d453a700a72b3a7863d44d0165d5a2a39f721a77",
+  "catalog_metadata_digest": "bc187d5ff73683fb5cae874927d805863081b6fa4af055c024434aee232a3e49",
   "catalog_missing_extension_tiers": [],
   "catalog_raw_output_policies": [
     "digest_only",
@@ -112,7 +112,7 @@
   "gate_status": "PASS",
   "issues": [],
   "oci_source_ingestion_research_proof_metadata_digest": "ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
-  "oci_source_worker_release_provenance_readiness_metadata_digest": "cdfb98df2be4b194bb360aca8cff2f18cc918ec35b8d43c397b77983ee4db7f3",
+  "oci_source_worker_release_provenance_readiness_metadata_digest": "55d7d989498330bfd2512821354af9b993130763096c0c9e32ce8bece1f6d916",
   "real_triton_first_slice_evidence_portfolio_metadata_digest": "6576001cbdc1693464b1ceff6f07f32007fe5e2bc72ae63d112e59f7ddbe7000",
   "required_controls": [
     "schema_versioned_extension_artifacts",

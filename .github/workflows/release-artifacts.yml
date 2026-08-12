@@ -62,8 +62,6 @@ jobs:
         run: python scripts/generate_sbom.py --output dist/tuc.cdx.json
       - name: Generate source-worker CycloneDX SBOM
         run: python scripts/generate_source_worker_sbom.py --output dist/tuc-source-ingestion-worker.cdx.json
-      - name: Write SHA-256 checksums
-        run: python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
       - name: Attest distribution provenance
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         with:
@@ -86,6 +84,36 @@ jobs:
         with:
           subject-path: dist/tuc-source-ingestion-worker.oci.tar
           sbom-path: dist/tuc-source-ingestion-worker.cdx.json
+      - name: Verify source-worker provenance attestation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh attestation verify dist/tuc-source-ingestion-worker.oci.tar \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-artifacts.yml" \
+            --source-digest "$GITHUB_SHA" \
+            --source-ref "$GITHUB_REF" \
+            --cert-oidc-issuer "https://token.actions.githubusercontent.com" \
+            --predicate-type "https://slsa.dev/provenance/v1" \
+            --deny-self-hosted-runners \
+            --limit 8 \
+            --format json >"$RUNNER_TEMP/tuc-worker-attestation-verification.json"
+          python scripts/write_github_attestation_verification_receipt.py \
+            dist/tuc-source-ingestion-worker.oci.tar \
+            --output dist/tuc-source-ingestion-worker.attestation-verification.json \
+            --verification-result "$RUNNER_TEMP/tuc-worker-attestation-verification.json" \
+            --repository "$GITHUB_REPOSITORY" \
+            --source-commit "$GITHUB_SHA" \
+            --source-ref "$GITHUB_REF" \
+            --event-name "$GITHUB_EVENT_NAME" \
+            --run-id "$GITHUB_RUN_ID" \
+            --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --runner-environment "$RUNNER_ENVIRONMENT" \
+            --gh-version "$(gh --version | sed -n '1p')"
+      - name: Write SHA-256 checksums
+        run: python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
       - name: Upload release artifact bundle
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -94,6 +122,7 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
             dist/*.cdx.json
+            dist/*.attestation-verification.json
             dist/*.oci-verification.json
             dist/*.oci.tar
             dist/SHA256SUMS

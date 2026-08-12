@@ -19,6 +19,8 @@
   "long_lived_signing_secret_required": false,
   "material_digests": {
     "archive_verifier": "sha256:08b7eaefd32e2366c50f9727e8d73ca7a6405b1c084803b5abfb9ebac081a33c",
+    "attestation_receipt_schema": "sha256:d6b6fb26642f3a71a2dac8be0163c3416370163311842087b191f34613d890c9",
+    "attestation_receipt_writer": "sha256:76b43e133a3005bd78643ac563da8976c290c1f74222b8009f86ee6be590ca0e",
     "build_context_policy": "sha256:a12ac0d015628ca51fc4b59dd275f29ac8177cd8c5f53f2e473a7e535579d339",
     "dockerfile": "sha256:6dfcafc0be2563377331f62db66052b7cdd2a1e2cad60f4889d93943effe659c",
     "requirements": "sha256:68be807613300c9c5932f2c970e251a15974718fc38df68d03faf41efcac0602",
@@ -30,10 +32,10 @@
   "production_source_ingestion": false,
   "production_source_sandbox": false,
   "published_worker_image_provenance": false,
-  "readiness_claim": "release_workflow_can_emit_verified_attested_oci_archive_and_worker_sbom",
+  "readiness_claim": "release_workflow_can_emit_attest_and_policy_verify_oci_archive_and_worker_sbom",
   "readiness_contract": "oci_source_worker.release_provenance_readiness.data_only.v0",
   "readiness_status": "PASS",
-  "report_digest": "sha256:5984b2f6063c0987011c4703769837a61ad1dac8c2d8de3c3057d85de3361b98",
+  "report_digest": "sha256:39ed65c4ec07c3f184ce49084671e7cd7a53764ae266885ee107922454aa8f34",
   "required_controls": [
     "archive_verified_before_attestation",
     "base_image_digest_pinned",
@@ -45,10 +47,14 @@
     "buildx_version_pinned",
     "checksum_manifest_configured",
     "github_oidc_attestation_configured",
+    "github_attestation_cli_policy_configured",
+    "github_cli_version_recorded",
     "requirements_hash_locked",
+    "same_run_verification_receipt_configured",
     "worker_sbom_attestation_configured"
   ],
+  "same_run_attestation_verification_configured": true,
   "sbom_format": "CycloneDX-1.6",
   "schema_version": "tuc.oci_source_worker_release_provenance_readiness_report.v0",
-  "workflow_digest": "sha256:9a57f97fc29d1f190af9010856094e24f69a08929aca0727e148e74f0da00a96"
+  "workflow_digest": "sha256:e39c99cef6c4277553ec5925f40949de461c42038285733d0c6244696425a26a"
 }
