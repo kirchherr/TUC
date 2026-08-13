@@ -296,6 +296,37 @@ benchmark methodology, benchmark artifacts, and executable-backend security
 review before TUC may claim competitive hardware speed. Until those exist, the
 Performance Proof Readiness report remains blocked.
 
+### Objective Gamma
+
+Prove installed external integration without opening executable plugin trust.
+
+Target:
+
+```text
+built TUC wheel
+    ->
+external data-only backend package
+    ->
+stable public API and CLI
+    ->
+capability and planning conformance
+    ->
+deterministic PASS
+```
+
+Current result: **PASS** for the Backend Integration Package v0 boundary. The
+consumer in `integration/objective_gamma` is copied outside the repository and
+run against a force-installed wheel in an isolated temporary environment. Both
+`tuc.integration` and `tuc-backend-verify` must reproduce the same report while
+the verifier proves that TUC was not imported from the source tree. The design
+and claim boundary are documented in
+`docs/OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md` and
+`rfcs/0291-objective-gamma-external-integration.md`.
+
+This is Level 4 integration evidence for data-only capability and planning. It
+does not admit external code, plugins, devices, native execution, or performance
+claims.
+
 ## Critical Milestones
 
 ### Milestone 1: Proof Of Abstraction
@@ -361,7 +392,8 @@ TUC core?
 
 If no, the architecture is not ready.
 
-Current result: **PASS for capability and planning integration; executable
+Current result: **PASS for capability and planning integration through both
+the repository proof and an installed-wheel external consumer; executable
 backend admission remains blocked.** The data-only contract is documented in
 `docs/BACKEND_INTEGRATION_PACKAGE.md`. The runnable proof
 `examples/backend_integration_package.py` consumes the portable reference
@@ -372,6 +404,14 @@ change or plugin import. Its fail-closed contracts are
 result is frozen at
 `tests/golden/backend_integration_package/external_vector_report.json` and the
 decision is recorded in `rfcs/0282-backend-integration-package.md`.
+
+The Level 4 distribution boundary is closed by
+`docs/OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md`, the public `tuc.integration`
+API, the installed `tuc-backend-verify` command, and the standalone consumer at
+`integration/objective_gamma`. The standard suite builds and installs the wheel
+outside the source tree and rejects any source-import escape or report drift;
+the unchanged CI and release workflows both require that suite. Decision:
+`rfcs/0291-objective-gamma-external-integration.md`.
 
 This proves the external ownership boundary for capability declaration,
 negative conformance, and compiler selection. It does not prove a native ABI,

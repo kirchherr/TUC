@@ -1,5 +1,15 @@
 # Roadmap Status
 
+- [Objective Gamma External Integration](OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md)
+  now proves the Backend Integration Package v0 through a built TUC wheel, a
+  stable public `tuc.integration` API, the installed `tuc-backend-verify` CLI,
+  and a standalone consumer copied outside the source tree. The standard CI-
+  and release-required test suite strips import-path overrides, uses isolated
+  Python, rejects any source-tree import, and requires API and CLI output to
+  match one golden report byte for byte. Decision:
+  `rfcs/0291-objective-gamma-external-integration.md`. Executable plugins,
+  native code, devices, and performance claims remain blocked.
+
 - [Source Intent Elementwise Semantics](SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md)
   now preserves the fixed Triton research slice's value semantics from exact
   `tl.where` syntax through Source Intent `elementwise_kind`, Metadata and
@@ -1426,7 +1436,7 @@ Current slice:
 - Capability-schema negative examples for invalid or misleading backend claims.
 - Branch protection policy for `main` and expanded required CI smoke surface.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, wheel import
-  check, and GitHub provenance/SBOM attestations.
+  and external-consumer checks, plus GitHub provenance/SBOM attestations.
 - Release governance policy with SHA-pinned release actions, release-action pin
   tests, and required GitHub/PyPI publishing controls.
 - PyPI Trusted Publishing job gated by protected `v*` tags, artifact-build
@@ -1491,6 +1501,11 @@ Current focus:
   `schemas/backend_integration_package_report.v0.schema.json`,
   `tests/golden/backend_integration_package/external_vector_report.json`, and
   `rfcs/0282-backend-integration-package.md`.
+- Keep Objective Gamma's installed-wheel boundary passing through
+  `docs/OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md`, `tuc.integration`,
+  `tuc-backend-verify`, `integration/objective_gamma`, and
+  `scripts/verify_external_backend_consumer.py`. The copied consumer must not
+  import from repository source, examples, tests, or internal TUC modules.
 - Treat this as proof of capability and planning portability only; executable
   backend admission remains a separate blocked trust decision.
 

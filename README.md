@@ -824,6 +824,14 @@ are documented in `docs/BACKEND_INTEGRATION_PACKAGE.md`, specified by
 accepted by `rfcs/0282-backend-integration-package.md`. No backend code is
 loaded and a passing report grants no execution permission.
 
+Objective Gamma now verifies that same contract as an installed product
+surface: `tuc.integration` and `tuc-backend-verify` are exercised by the
+standalone `integration/objective_gamma` consumer against a built wheel outside
+the source tree. See
+[Objective Gamma External Integration](docs/OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md)
+and [RFC 0291](rfcs/0291-objective-gamma-external-integration.md). This extends
+capability-and-planning portability only; executable plugins remain blocked.
+
 Backend Package Execution Admission v0 provides the first controlled bridge.
 The digest-bound proof in `examples/backend_package_execution_proof.py`
 preserves `reference-cpu -> external-vector`, projects it to
