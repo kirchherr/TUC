@@ -240,6 +240,7 @@ def _assert_release_workflow(workflow: str) -> None:
         "scripts/generate_source_worker_sbom.py",
         "python -m pip install --require-hashes -r requirements/ci.txt",
         "python -m pip install --no-deps --no-build-isolation -e .",
+        "PYTHONPATH: ${{ github.workspace }}",
         "gh attestation verify dist/tuc-source-ingestion-worker.oci.tar",
         '--repo "$GITHUB_REPOSITORY"',
         '--signer-repo "$GITHUB_REPOSITORY"',

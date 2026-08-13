@@ -13,6 +13,8 @@ jobs:
   build:
     name: build-attested-artifacts
     runs-on: ubuntu-24.04
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     permissions:
       contents: read
       id-token: write

@@ -331,11 +331,15 @@ def test_ci_and_release_use_locked_toolchain_without_build_isolation() -> None:
         assert workflow.count("run: pytest -q -n 4") == 1
 
 
-def test_ci_declares_repository_example_import_path() -> None:
-    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+def test_ci_and_release_declare_repository_example_import_path() -> None:
     pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
 
-    assert "PYTHONPATH: ${{ github.workspace }}" in workflow
+    for workflow_path in (
+        Path(".github/workflows/ci.yml"),
+        Path(".github/workflows/release-artifacts.yml"),
+    ):
+        workflow = workflow_path.read_text(encoding="utf-8")
+        assert workflow.count("PYTHONPATH: ${{ github.workspace }}") == 1
     assert 'pythonpath = [".", "src"]' in pyproject
 
 
