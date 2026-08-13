@@ -114,9 +114,9 @@ def test_objective_gamma_files_are_plain_non_symlink_files() -> None:
 def test_wheel_registers_public_backend_verifier_console_script() -> None:
     pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
 
-    assert pyproject["project"]["scripts"] == {
-        BACKEND_INTEGRATION_CLI_NAME: "tuc.integration:main"
-    }
+    assert pyproject["project"]["scripts"][BACKEND_INTEGRATION_CLI_NAME] == (
+        "tuc.integration:main"
+    )
 
 
 def test_built_wheel_runs_standalone_external_consumer(tmp_path: Path) -> None:

@@ -1399,8 +1399,9 @@ Go/No-Go:
 
 ## Phase Eta: External Integration And Governance
 
-Status: in progress. Installed external consumption is proven; organizational
-adoption and executable plugin admission remain future work.
+Status: in progress. Installed external planning and one bounded end-to-end
+portable-compute slice are proven; organizational adoption and executable
+plugin admission remain future work.
 
 Purpose: make TUC usable by people who are not the original authors.
 
@@ -1411,6 +1412,9 @@ Deliverables:
 - Backend author onboarding guide with a reproducible certification path.
 - Stable installed-wheel API and CLI for the data-only backend integration
   package, verified by a standalone consumer outside the source tree.
+- Stable installed-wheel API and CLI for one bounded Source Intent plus
+  two-package trusted heterogeneous execution proof, verified outside the
+  source tree with correctness and backend equivalence.
 - Versioned capability and runtime-plan schemas.
 - Release artifacts with SBOM, checksums, and provenance.
 - PyPI Trusted Publishing and protected tag governance.
@@ -1419,6 +1423,9 @@ Go/No-Go:
 
 - An external developer can add and test a toy backend without modifying TUC
   core. **PASS for data-only capability and planning integration.**
+- An installed external consumer can drive one bounded intent through two
+  external capability packages and trusted heterogeneous execution.
+  **PASS for Objective Delta v0 semantic integration.**
 - Governance protects HAC-IR neutrality from vendor capture.
 - Release and supply-chain controls are in place before broad adoption.
 
@@ -1435,12 +1442,14 @@ Go/No-Go:
    [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
 5. Keep HAC-IR neutrality and reserved-attribute rejection hardened as new
    proof and frontend surfaces appear.
-6. Keep Objective Gamma's installed-wheel external-consumer proof passing while
-   strengthening backend capability and conformance tooling.
-7. Extend planning explanation coverage only when new proof slices add
+6. Keep Objective Gamma's installed planning proof and Objective Delta's
+   installed portable-compute proof passing as distinct public boundaries.
+7. Seek independent reproduction of Objective Delta before expanding its fixed
+   Source Intent or trusted executor set.
+8. Extend planning explanation coverage only when new proof slices add
    distinct placement, fallback, or movement evidence.
-8. Integrate real Triton intent only after the abstraction proof remains stable.
-9. Expand to specialized hardware simulators only when they strengthen the
+9. Integrate real Triton intent only after the abstraction proof remains stable.
+10. Expand to specialized hardware simulators only when they strengthen the
    universal compute claim.
 
 ## Success Metrics

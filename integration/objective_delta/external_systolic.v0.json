@@ -1,0 +1,44 @@
+{
+  "schema_version": "tuc.backend_integration_package.v0",
+  "package_id": "external-systolic-reference-package",
+  "package_version": "0.1.0",
+  "interface_contract": "backend_integration.data_only.v0",
+  "package_policy": "capability_and_planning_conformance_only",
+  "import_policy": "no_import_or_plugin_discovery",
+  "backend_code_included": false,
+  "execution_permission": false,
+  "capability_manifest": {
+    "schema_version": "tuc.backend_capability.v0",
+    "name": "external-systolic",
+    "supported_ops": ["matmul"],
+    "supports_noise_model": false,
+    "supports_calibration": false,
+    "preferred_for": ["matmul"],
+    "memory_domain": "device_sram",
+    "supported_layouts": ["row_major"],
+    "produced_layouts": ["blocked"]
+  },
+  "conformance_cases": [
+    {
+      "case_id": "matmul_row_major_accept",
+      "operation_kind": "matmul",
+      "layout": "row_major",
+      "expected_supported": true,
+      "expected_reason": "accepted"
+    },
+    {
+      "case_id": "elementwise_row_major_reject",
+      "operation_kind": "elementwise",
+      "layout": "row_major",
+      "expected_supported": false,
+      "expected_reason": "unsupported_operation_kind"
+    },
+    {
+      "case_id": "matmul_blocked_reject",
+      "operation_kind": "matmul",
+      "layout": "blocked",
+      "expected_supported": false,
+      "expected_reason": "unsupported_layout"
+    }
+  ]
+}
