@@ -480,11 +480,12 @@ def test_release_workflow_attests_worker_archive_and_sbom() -> None:
     assert "sbom-path: dist/tuc-source-ingestion-worker.cdx.json" in workflow
     assert workflow.count("gh attestation verify") == 1
     assert '--repo "$GITHUB_REPOSITORY"' in workflow
-    assert '--signer-repo "$GITHUB_REPOSITORY"' in workflow
+    assert "--signer-repo" not in workflow
     assert (
         '--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-artifacts.yml"'
         in workflow
     )
+    assert workflow.count("--signer-workflow") == 1
     assert '--source-digest "$GITHUB_SHA"' in workflow
     assert '--source-ref "$GITHUB_REF"' in workflow
     assert '--cert-oidc-issuer "https://token.actions.githubusercontent.com"' in workflow

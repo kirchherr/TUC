@@ -5,9 +5,10 @@ first-class release artifact. It builds a `linux/amd64` OCI Image Layout tar,
 verifies it without extraction, generates a dedicated CycloneDX 1.6 SBOM,
 writes SHA-256 checksums, and requests GitHub OIDC-backed provenance and SBOM
 attestations. The same GitHub-hosted run then verifies the worker provenance
-with `gh attestation verify` while binding the repository, signer repository,
-signer workflow, source commit, source ref, OIDC issuer, predicate type, and
-runner class.
+with `gh attestation verify` while binding the repository, exact signer
+workflow, source commit, source ref, OIDC issuer, predicate type, and runner
+class. The mutually exclusive, less precise `--signer-repo` selector is not
+combined with `--signer-workflow`.
 
 The release toolchain is fixed to Buildx `v0.34.1` and digest-pinned BuildKit
 `v0.30.0`. BuildKit starts with CDI disabled and without the setup action's

@@ -36,7 +36,7 @@
   "readiness_claim": "release_workflow_can_emit_attest_and_policy_verify_oci_archive_and_worker_sbom",
   "readiness_contract": "oci_source_worker.release_provenance_readiness.data_only.v0",
   "readiness_status": "PASS",
-  "report_digest": "sha256:5ae1da01005c6776a8958f1b9feb78fc9d293e3f044f347cf20c70b66035bec5",
+  "report_digest": "sha256:e2a6e95f4bd47c658604dfbfb909a3935340bf6a79b8c1253370c9842d05015e",
   "required_controls": [
     "archive_verified_before_attestation",
     "base_image_digest_pinned",
@@ -58,5 +58,5 @@
   "same_run_attestation_verification_configured": true,
   "sbom_format": "CycloneDX-1.6",
   "schema_version": "tuc.oci_source_worker_release_provenance_readiness_report.v0",
-  "workflow_digest": "sha256:2f391bce0d2a91d458a35a0d8b5fd01a74a34c73c1086e579141bbac4a70a18b"
+  "workflow_digest": "sha256:a7737a5a7cccccadb243836f48339ef5c85a04e9822f1012a47d7c83b9024a62"
 }

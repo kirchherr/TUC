@@ -243,7 +243,6 @@ def _assert_release_workflow(workflow: str) -> None:
         "PYTHONPATH: ${{ github.workspace }}",
         "gh attestation verify dist/tuc-source-ingestion-worker.oci.tar",
         '--repo "$GITHUB_REPOSITORY"',
-        '--signer-repo "$GITHUB_REPOSITORY"',
         '--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-artifacts.yml"',
         '--source-digest "$GITHUB_SHA"',
         '--source-ref "$GITHUB_REF"',
@@ -266,6 +265,10 @@ def _assert_release_workflow(workflow: str) -> None:
         raise ValueError("release workflow OCI attestation cardinality drift")
     if workflow.count("gh attestation verify") != 1:
         raise ValueError("release workflow OCI verification cardinality drift")
+    if "--signer-repo" in workflow:
+        raise ValueError("release workflow incompatible signer identity flags")
+    if workflow.count("--signer-workflow") != 1:
+        raise ValueError("release workflow signer identity cardinality drift")
     if not (
         workflow.index("scripts/verify_source_worker_oci_archive.py")
         < workflow.index("Attest source-worker OCI provenance")

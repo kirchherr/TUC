@@ -95,7 +95,6 @@ jobs:
           set -euo pipefail
           gh attestation verify dist/tuc-source-ingestion-worker.oci.tar \
             --repo "$GITHUB_REPOSITORY" \
-            --signer-repo "$GITHUB_REPOSITORY" \
             --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-artifacts.yml" \
             --source-digest "$GITHUB_SHA" \
             --source-ref "$GITHUB_REF" \
