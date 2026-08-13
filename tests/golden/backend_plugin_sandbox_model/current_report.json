@@ -1,0 +1,84 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "control_count": 12,
+  "controls": [
+    {
+      "control_id": "explicit_opt_in_enablement",
+      "protects_surface": "backend_plugin_discovery",
+      "status": "required"
+    },
+    {
+      "control_id": "capability_manifest_pre_review",
+      "protects_surface": "backend_plugin_discovery",
+      "status": "required"
+    },
+    {
+      "control_id": "content_digest_artifact_binding",
+      "protects_surface": "generated_artifact_execution",
+      "status": "required"
+    },
+    {
+      "control_id": "no_compile_time_plugin_execution",
+      "protects_surface": "dynamic_import",
+      "status": "required"
+    },
+    {
+      "control_id": "deny_host_path_access",
+      "protects_surface": "generated_artifact_execution",
+      "status": "required"
+    },
+    {
+      "control_id": "deny_environment_secret_access",
+      "protects_surface": "subprocess_execution",
+      "status": "required"
+    },
+    {
+      "control_id": "deny_network_access",
+      "protects_surface": "network_access",
+      "status": "required"
+    },
+    {
+      "control_id": "deny_device_access_by_default",
+      "protects_surface": "device_access",
+      "status": "required"
+    },
+    {
+      "control_id": "deny_dynamic_library_loading_by_default",
+      "protects_surface": "dynamic_library_loading",
+      "status": "required"
+    },
+    {
+      "control_id": "bounded_resource_budget",
+      "protects_surface": "generated_artifact_execution",
+      "status": "required"
+    },
+    {
+      "control_id": "content_addressed_cache_scope",
+      "protects_surface": "generated_artifact_execution",
+      "status": "required"
+    },
+    {
+      "control_id": "metadata_only_diagnostics",
+      "protects_surface": "generated_artifact_execution",
+      "status": "required"
+    }
+  ],
+  "execution_allowed": false,
+  "execution_permission": "not_granted",
+  "isolation_strategy": "separate_worker_process_or_container_required",
+  "issues": [],
+  "model_ready": true,
+  "sandbox_contract": "backend_plugin_sandbox_model.data_only.v0",
+  "sandbox_model_id": "backend_plugin_sandbox_model_v0",
+  "sandbox_model_status": "accepted_data_only_model",
+  "schema_version": "tuc.backend_plugin_sandbox_model_report.v0"
+}

@@ -1,0 +1,263 @@
+{
+  "artifact_policy": "metadata_only_values_omitted",
+  "binding_contract": "source_to_intent_research_kernel_ingress_workload_scope.performance_boundary.v0",
+  "blocked_claims": [
+    "native_performance_claim",
+    "native_performance_parity",
+    "dynamic_shape_performance_claim",
+    "planner_benefit_claim"
+  ],
+  "case_count": 10,
+  "claim": "shape_profile_evidence_bounds_future_performance_workload_scope",
+  "claim_boundary": "performance_proof_boundary.blocking.v0",
+  "issues": [
+    "native_performance_claim_blocked"
+  ],
+  "native_performance_claim": false,
+  "operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "performance_claim_status": "blocked",
+  "profile_count": 2,
+  "profile_ids": [
+    "base",
+    "alternate"
+  ],
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_workload_scope_report.v0",
+  "scope_count": 24,
+  "scopes": [
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "elementwise",
+      "problem_size_max": 8,
+      "problem_size_min": 8,
+      "scope_id": "kernel_ingress_matmul_elementwise_base_elementwise",
+      "shape_profile_id": "kernel_ingress_matmul_elementwise_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "matmul",
+      "problem_size_max": 64,
+      "problem_size_min": 64,
+      "scope_id": "kernel_ingress_matmul_elementwise_base_matmul",
+      "shape_profile_id": "kernel_ingress_matmul_elementwise_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "elementwise",
+      "problem_size_max": 12,
+      "problem_size_min": 12,
+      "scope_id": "kernel_ingress_matmul_elementwise_alternate_elementwise",
+      "shape_profile_id": "kernel_ingress_matmul_elementwise_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "matmul",
+      "problem_size_max": 60,
+      "problem_size_min": 60,
+      "scope_id": "kernel_ingress_matmul_elementwise_alternate_matmul",
+      "shape_profile_id": "kernel_ingress_matmul_elementwise_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "reduction",
+      "problem_size_max": 32,
+      "problem_size_min": 32,
+      "scope_id": "kernel_ingress_softmax_reduction_base_reduction",
+      "shape_profile_id": "kernel_ingress_softmax_reduction_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "softmax",
+      "problem_size_max": 32,
+      "problem_size_min": 32,
+      "scope_id": "kernel_ingress_softmax_reduction_base_softmax",
+      "shape_profile_id": "kernel_ingress_softmax_reduction_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "reduction",
+      "problem_size_max": 15,
+      "problem_size_min": 15,
+      "scope_id": "kernel_ingress_softmax_reduction_alternate_reduction",
+      "shape_profile_id": "kernel_ingress_softmax_reduction_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "softmax",
+      "problem_size_max": 15,
+      "problem_size_min": 15,
+      "scope_id": "kernel_ingress_softmax_reduction_alternate_softmax",
+      "shape_profile_id": "kernel_ingress_softmax_reduction_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "matmul",
+      "problem_size_max": 64,
+      "problem_size_min": 64,
+      "scope_id": "kernel_ingress_matmul_reduction_base_matmul",
+      "shape_profile_id": "kernel_ingress_matmul_reduction_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "reduction",
+      "problem_size_max": 8,
+      "problem_size_min": 8,
+      "scope_id": "kernel_ingress_matmul_reduction_base_reduction",
+      "shape_profile_id": "kernel_ingress_matmul_reduction_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "matmul",
+      "problem_size_max": 60,
+      "problem_size_min": 60,
+      "scope_id": "kernel_ingress_matmul_reduction_alternate_matmul",
+      "shape_profile_id": "kernel_ingress_matmul_reduction_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "reduction",
+      "problem_size_max": 12,
+      "problem_size_min": 12,
+      "scope_id": "kernel_ingress_matmul_reduction_alternate_reduction",
+      "shape_profile_id": "kernel_ingress_matmul_reduction_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "elementwise",
+      "problem_size_max": 32,
+      "problem_size_min": 32,
+      "scope_id": "kernel_ingress_softmax_elementwise_base_elementwise",
+      "shape_profile_id": "kernel_ingress_softmax_elementwise_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "softmax",
+      "problem_size_max": 32,
+      "problem_size_min": 32,
+      "scope_id": "kernel_ingress_softmax_elementwise_base_softmax",
+      "shape_profile_id": "kernel_ingress_softmax_elementwise_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "elementwise",
+      "problem_size_max": 15,
+      "problem_size_min": 15,
+      "scope_id": "kernel_ingress_softmax_elementwise_alternate_elementwise",
+      "shape_profile_id": "kernel_ingress_softmax_elementwise_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "softmax",
+      "problem_size_max": 15,
+      "problem_size_min": 15,
+      "scope_id": "kernel_ingress_softmax_elementwise_alternate_softmax",
+      "shape_profile_id": "kernel_ingress_softmax_elementwise_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "elementwise",
+      "problem_size_max": 4,
+      "problem_size_min": 4,
+      "scope_id": "kernel_ingress_mvp_pipeline_base_elementwise",
+      "shape_profile_id": "kernel_ingress_mvp_pipeline_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "matmul",
+      "problem_size_max": 128,
+      "problem_size_min": 128,
+      "scope_id": "kernel_ingress_mvp_pipeline_base_matmul",
+      "shape_profile_id": "kernel_ingress_mvp_pipeline_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "reduction",
+      "problem_size_max": 16,
+      "problem_size_min": 16,
+      "scope_id": "kernel_ingress_mvp_pipeline_base_reduction",
+      "shape_profile_id": "kernel_ingress_mvp_pipeline_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "softmax",
+      "problem_size_max": 16,
+      "problem_size_min": 16,
+      "scope_id": "kernel_ingress_mvp_pipeline_base_softmax",
+      "shape_profile_id": "kernel_ingress_mvp_pipeline_base"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "elementwise",
+      "problem_size_max": 3,
+      "problem_size_min": 3,
+      "scope_id": "kernel_ingress_mvp_pipeline_alternate_elementwise",
+      "shape_profile_id": "kernel_ingress_mvp_pipeline_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "matmul",
+      "problem_size_max": 45,
+      "problem_size_min": 45,
+      "scope_id": "kernel_ingress_mvp_pipeline_alternate_matmul",
+      "shape_profile_id": "kernel_ingress_mvp_pipeline_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "reduction",
+      "problem_size_max": 9,
+      "problem_size_min": 9,
+      "scope_id": "kernel_ingress_mvp_pipeline_alternate_reduction",
+      "shape_profile_id": "kernel_ingress_mvp_pipeline_alternate"
+    },
+    {
+      "correctness_reference_id": "kernel_ingress_reference_correctness",
+      "dtype_policy_id": "float64_reference",
+      "operation_family": "softmax",
+      "problem_size_max": 9,
+      "problem_size_min": 9,
+      "scope_id": "kernel_ingress_mvp_pipeline_alternate_softmax",
+      "shape_profile_id": "kernel_ingress_mvp_pipeline_alternate"
+    }
+  ],
+  "source_boundary": "kernel_ingress_shape_profile_evidence_to_workload_scope_review",
+  "source_evidence_contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
+  "source_evidence_digest": "sha256:9267b39546c800c68c701acbee9efa3e80109bf4769e62cf0c45793bd6a0b2a1",
+  "source_schema_version": "tuc.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles_report.v0",
+  "status": "PASS",
+  "trusted_runtime_backends": [
+    "linear-sim",
+    "reference-cpu",
+    "vector-sim"
+  ],
+  "workload_scope_artifact_status": "diagnostic_only",
+  "workload_scope_digest": "sha256:15426f76acb66ed68280abf1eef87fc7a9df4aa705248a6f0a78cb772d0ae5d3",
+  "workload_scope_ready": true,
+  "workload_scope_schema_version": "tuc.workload_scope_report.v0"
+}

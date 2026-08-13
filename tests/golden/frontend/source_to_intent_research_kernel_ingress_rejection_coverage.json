@@ -1,0 +1,154 @@
+{
+  "artifact_policy": "metadata_only_source_free",
+  "blocked_compiler_outputs": [
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "environment_dependent_behavior",
+    "file_system_access",
+    "frontend_module_import",
+    "generated_artifact_execution",
+    "module_import_execution",
+    "module_top_level_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_inspection",
+    "python_function_object_ingestion",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "boundary_budget_contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
+  "boundary_budget_digest": "sha256:94cb99e0373dc542021ecda323212b0f51318fa69b0a05997627a0097e3674f5",
+  "budget_rejection_reasons": [
+    "module_byte_budget",
+    "module_line_budget",
+    "module_ast_node_budget",
+    "module_ast_depth_budget"
+  ],
+  "coverage_contract": "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0",
+  "coverage_matrix": [
+    {
+      "case_id": "reject_unsupported_import",
+      "coverage_source": "diagnostics",
+      "reason_id": "unsupported_import",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_import_from_statement",
+      "coverage_source": "diagnostics",
+      "reason_id": "import_from_statement",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_import_after_kernel_function",
+      "coverage_source": "diagnostics",
+      "reason_id": "import_after_kernel_function",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_missing_triton_jit_decorator",
+      "coverage_source": "diagnostics",
+      "reason_id": "missing_triton_jit_decorator",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_annotated_signature",
+      "coverage_source": "diagnostics",
+      "reason_id": "preflight_annotation",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_decorator_call",
+      "coverage_source": "diagnostics",
+      "reason_id": "decorator_call",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_unsupported_decorator",
+      "coverage_source": "diagnostics",
+      "reason_id": "unsupported_decorator",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_multiple_kernel_functions",
+      "coverage_source": "diagnostics",
+      "reason_id": "multiple_kernel_functions",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_top_level_side_effect",
+      "coverage_source": "diagnostics",
+      "reason_id": "top_level_side_effect",
+      "status": "covered"
+    },
+    {
+      "case_id": "reject_kernel_name_mismatch",
+      "coverage_source": "diagnostics",
+      "reason_id": "kernel_name_mismatch",
+      "status": "covered"
+    },
+    {
+      "case_id": "module_byte_budget",
+      "coverage_source": "boundary_budget",
+      "reason_id": "module_byte_budget",
+      "status": "covered"
+    },
+    {
+      "case_id": "module_line_budget",
+      "coverage_source": "boundary_budget",
+      "reason_id": "module_line_budget",
+      "status": "covered"
+    },
+    {
+      "case_id": "module_ast_node_budget",
+      "coverage_source": "boundary_budget",
+      "reason_id": "module_ast_node_budget",
+      "status": "covered"
+    },
+    {
+      "case_id": "module_ast_depth_budget",
+      "coverage_source": "boundary_budget",
+      "reason_id": "module_ast_depth_budget",
+      "status": "covered"
+    }
+  ],
+  "coverage_policy": "all_current_rejections_are_source_free_and_fail_closed",
+  "covered_rejection_count": 14,
+  "default_parser_status": "default_parser_blocked",
+  "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
+  "diagnostics_digest": "sha256:332bff41658b96428c3eaf0353ff776d0078e463afbcfeb8af975c61ff966506",
+  "diagnostics_rejection_reasons": [
+    "decorator_call",
+    "import_after_kernel_function",
+    "import_from_statement",
+    "kernel_name_mismatch",
+    "missing_triton_jit_decorator",
+    "multiple_kernel_functions",
+    "preflight_annotation",
+    "top_level_side_effect",
+    "unsupported_decorator",
+    "unsupported_import"
+  ],
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "required_coverage_sources": [
+    "diagnostics",
+    "boundary_budget"
+  ],
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_rejection_coverage_report.v0",
+  "source_boundary": "triton_module_source_buffer_as_untrusted_data",
+  "status": "PASS"
+}

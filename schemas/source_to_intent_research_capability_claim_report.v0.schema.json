@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_capability_claim_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Capability Claim Report v0",
+  "description": "Digest-only claim report for the current bounded Source-to-Intent Universal Compute research slice.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_kernel_count",
+    "accepted_operation_families",
+    "artifact_policy",
+    "blocked_claims",
+    "claim_boundary",
+    "claim_contract",
+    "claim_id",
+    "claim_scope",
+    "claim_status",
+    "backend_equivalence_case_count",
+    "backend_equivalence_shape_profile_case_count",
+    "baseline_runtime_backend",
+    "combined_pipeline_kernel",
+    "combined_pipeline_operation_path",
+    "default_parser_status",
+    "evidence",
+    "evidence_count",
+    "minimum_acceptance_checks",
+    "parser_status",
+    "runtime_case_count",
+    "schema_version",
+    "status",
+    "supported_claims",
+    "trusted_runtime_backends"
+  ],
+  "properties": {
+    "accepted_kernel_count": {
+      "const": 5
+    },
+    "accepted_operation_families": {
+      "$ref": "#/$defs/operation_families"
+    },
+    "artifact_policy": {
+      "const": "digest_only_source_free"
+    },
+    "blocked_claims": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "arbitrary_backend_execution"
+        },
+        {
+          "const": "general_triton_source_ingestion"
+        },
+        {
+          "const": "hardware_certification"
+        },
+        {
+          "const": "native_performance_claim"
+        },
+        {
+          "const": "production_parser"
+        },
+        {
+          "const": "vendor_compiler_replacement"
+        }
+      ],
+      "items": false,
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "claim_boundary": {
+      "const": "static_research_sources_to_capability_selected_trusted_runtime"
+    },
+    "claim_contract": {
+      "const": "source_to_intent_research_capability_claim.review.v0"
+    },
+    "claim_id": {
+      "const": "bounded_universal_compute_research_slice"
+    },
+    "claim_scope": {
+      "const": "accepted_source_to_intent_kernel_ingress_mvp_pipeline"
+    },
+    "claim_status": {
+      "const": "supported_for_current_research_scope"
+    },
+    "backend_equivalence_case_count": {
+      "const": 5
+    },
+    "backend_equivalence_shape_profile_case_count": {
+      "const": 10
+    },
+    "baseline_runtime_backend": {
+      "const": "reference-cpu"
+    },
+    "combined_pipeline_kernel": {
+      "const": "mvp_pipeline"
+    },
+    "combined_pipeline_operation_path": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "matmul"
+        },
+        {
+          "const": "softmax"
+        },
+        {
+          "const": "reduction"
+        },
+        {
+          "const": "elementwise"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "default_parser_status": {
+      "const": "default_parser_blocked"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      },
+      "minItems": 13,
+      "maxItems": 13
+    },
+    "evidence_count": {
+      "const": 13
+    },
+    "minimum_acceptance_checks": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "global_proof_bundle_passes"
+        },
+        {
+          "const": "global_evidence_gate_passes"
+        },
+        {
+          "const": "kernel_ingress_proof_bundle_passes"
+        },
+        {
+          "const": "kernel_ingress_evidence_gate_passes"
+        },
+        {
+          "const": "runtime_matrix_has_combined_mvp_pipeline"
+        },
+        {
+          "const": "runtime_step_trace_binds_mvp_operation_path"
+        },
+        {
+          "const": "runtime_evidence_bundle_index_binds_standard_execution_evidence"
+        },
+        {
+          "const": "runtime_output_closure_index_closes_public_outputs"
+        },
+        {
+          "const": "runtime_replay_verifier_index_replays_serialized_evidence"
+        },
+        {
+          "const": "runtime_backend_equivalence_preserves_outputs"
+        },
+        {
+          "const": "runtime_backend_equivalence_shape_profiles_preserve_outputs"
+        },
+        {
+          "const": "runtime_coverage_policy_requires_exact_trace_counts"
+        },
+        {
+          "const": "runtime_backend_alignment_uses_trusted_executors"
+        }
+      ],
+      "items": false,
+      "minItems": 13,
+      "maxItems": 13
+    },
+    "parser_status": {
+      "const": "research_explicit_only"
+    },
+    "runtime_case_count": {
+      "const": 5
+    },
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_capability_claim_report.v0"
+    },
+    "status": {
+      "const": "PASS"
+    },
+    "supported_claims": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "bounded_source_to_intent_ingress"
+        },
+        {
+          "const": "mvp_operation_family_pipeline"
+        },
+        {
+          "const": "source_intent_backend_portability"
+        },
+        {
+          "const": "source_intent_shape_profile_portability"
+        },
+        {
+          "const": "capability_selected_simulator_execution"
+        },
+        {
+          "const": "digest_bound_evidence_chain"
+        },
+        {
+          "const": "source_free_review_artifacts"
+        }
+      ],
+      "items": false,
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "trusted_runtime_backends": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "linear-sim"
+        },
+        {
+          "const": "vector-sim"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "artifact_kind",
+        "contract",
+        "digest",
+        "status"
+      ],
+      "properties": {
+        "artifact_id": {
+          "enum": [
+            "source_to_intent_research_proof_bundle",
+            "source_to_intent_research_evidence_gate",
+            "source_to_intent_research_kernel_ingress_proof_bundle",
+            "source_to_intent_research_kernel_ingress_evidence_gate",
+            "source_to_intent_research_kernel_ingress_runtime_matrix",
+            "source_to_intent_research_kernel_ingress_runtime_step_trace",
+            "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+            "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
+            "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index",
+            "source_to_intent_research_kernel_ingress_backend_equivalence",
+            "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
+            "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
+            "source_to_intent_research_kernel_ingress_runtime_backend_alignment"
+          ]
+        },
+        "artifact_kind": {
+          "enum": [
+            "json_report",
+            "text_gate"
+          ]
+        },
+        "contract": {
+          "$ref": "#/$defs/report_text"
+        },
+        "digest": {
+          "$ref": "#/$defs/sha256_digest"
+        },
+        "status": {
+          "const": "accepted"
+        }
+      }
+    },
+    "operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "elementwise"
+        },
+        {
+          "const": "matmul"
+        },
+        {
+          "const": "reduction"
+        },
+        {
+          "const": "softmax"
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

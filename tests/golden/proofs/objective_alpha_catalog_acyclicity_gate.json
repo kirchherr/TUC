@@ -1,0 +1,102 @@
+{
+  "artifact_status": "review_gate",
+  "catalog_admission_gate_report_digest": "sha256:cac8a0ade988c44cb39dd2ddc59937c4a2e7939d258da98e95ffddfa871dee57",
+  "catalog_entry_count": 9,
+  "catalog_entry_ids": [
+    "objective_alpha_evidence_extension_policy",
+    "runtime_backend_equivalence_portfolio",
+    "source_to_intent_research_kernel_ingress_proof_bundle",
+    "source_intent_mixed_runtime_public_proof_bundle",
+    "source_to_intent_research_capability_claim_gate",
+    "first_real_triton_kernel_path",
+    "real_triton_first_slice_evidence_portfolio",
+    "oci_source_ingestion_research_proof",
+    "oci_source_worker_release_provenance_readiness"
+  ],
+  "catalog_id": "objective_alpha_public_evidence_catalog",
+  "catalog_report_digest": "sha256:0ceb60a40fe7fd871b1290f728123852cf01dd4fe4cf4e29d1ea4e75ba9f4e9d",
+  "cycle_count": 0,
+  "detected_cycles": [],
+  "entry_scan_results": [
+    {
+      "evidence_id": "objective_alpha_evidence_extension_policy",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:4c8dc9cd62201e414cf653c9f2e64a773d54df83835167df4e224791394e3cdf",
+      "source_free": true
+    },
+    {
+      "evidence_id": "runtime_backend_equivalence_portfolio",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
+      "source_free": true
+    },
+    {
+      "evidence_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
+      "source_free": true
+    },
+    {
+      "evidence_id": "source_intent_mixed_runtime_public_proof_bundle",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:baf6d1b6939d7653378a9ad44415865db94532b46242e45a07216adab4f3f05a",
+      "source_free": true
+    },
+    {
+      "evidence_id": "source_to_intent_research_capability_claim_gate",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:4b3d8514ad2855a6ee5968c6d4814cd18a48c3bb6543def61f8f11383ab10327",
+      "source_free": true
+    },
+    {
+      "evidence_id": "first_real_triton_kernel_path",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
+      "source_free": true
+    },
+    {
+      "evidence_id": "real_triton_first_slice_evidence_portfolio",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
+      "source_free": true
+    },
+    {
+      "evidence_id": "oci_source_ingestion_research_proof",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
+      "source_free": true
+    },
+    {
+      "evidence_id": "oci_source_worker_release_provenance_readiness",
+      "forbidden_downstream_dependency_hits": [],
+      "report_digest": "sha256:731df67576bd172f9833bf92a18ca4af452b8c8af3ca33c7f48616e9305e2e36",
+      "source_free": true
+    }
+  ],
+  "evidence_policy": "digest_only_source_free_report_scan",
+  "forbidden_downstream_dependency_count": 5,
+  "forbidden_downstream_dependency_ids": [
+    "objective_alpha_public_evidence_catalog",
+    "objective_alpha_public_evidence_catalog_admission_gate",
+    "objective_alpha_research_claim",
+    "objective_alpha_research_claim_gate",
+    "research_scope_claim_gate"
+  ],
+  "gate_contract": "objective_alpha.catalog_acyclicity_gate.data_only.v0",
+  "gate_id": "objective_alpha_catalog_acyclicity_gate",
+  "gate_passed": true,
+  "gate_scope": "objective_alpha_catalog_entries_below_claim_gates",
+  "gate_status": "PASS",
+  "issues": [],
+  "required_invariants": [
+    "catalog_report_passed",
+    "catalog_admission_gate_passed",
+    "catalog_entries_do_not_bind_catalog_or_claim_gates",
+    "catalog_entry_reports_source_free",
+    "forbidden_downstream_ids_absent",
+    "dependency_cycle_count_zero"
+  ],
+  "schema_version": "tuc.objective_alpha_catalog_acyclicity_gate_report.v0",
+  "source_free": true,
+  "surface_opened": false
+}

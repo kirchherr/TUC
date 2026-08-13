@@ -1,0 +1,341 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_layout_conversion_trace_index_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "conversion_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "conversion_scope": {
+      "const": "planned_logical_layout_only"
+    },
+    "execution_policy": {
+      "const": "does_not_execute_conversions"
+    },
+    "execution_trace_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/record"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "residency_claim_status": {
+      "const": "not_physical_residency_evidence"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_layout_conversion_trace_index_report.v0"
+    },
+    "source_evidence_contract": {
+      "const": "runtime_layout_conversion_evidence.data_only.v0"
+    },
+    "source_layout_conversion_evidence_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "source_partition_plan_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "status": {
+      "const": "PASS"
+    },
+    "trace_index_contract": {
+      "const": "runtime_layout_conversion_trace_index.data_only.v0"
+    },
+    "trace_index_scope": {
+      "const": "planned_conversion_trace_alignment_only"
+    },
+    "trace_materialization_policy": {
+      "const": "conversion_not_materialized_as_runtime_step"
+    },
+    "trace_step_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "trusted_executor_registry": {
+      "const": "trusted_runtime_executor_registry.v0"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "conversion_count",
+    "conversion_scope",
+    "execution_policy",
+    "execution_trace_digest",
+    "executor_contract",
+    "graph_name",
+    "issues",
+    "passed",
+    "raw_value_policy",
+    "records",
+    "residency_claim_status",
+    "schema_version",
+    "source_evidence_contract",
+    "source_layout_conversion_evidence_digest",
+    "source_partition_plan_digest",
+    "status",
+    "trace_index_contract",
+    "trace_index_scope",
+    "trace_materialization_policy",
+    "trace_step_count",
+    "trusted_executor_registry"
+  ],
+  "type": "object",
+  "$defs": {
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "layout": {
+      "enum": [
+        "row_major",
+        "column_major",
+        "blocked",
+        "vector",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "memory_domain": {
+      "enum": [
+        "host_ram",
+        "gpu_hbm",
+        "device_sram",
+        "analog_weight_bank",
+        "neuromorphic_synapse_array",
+        "persistent_nvm",
+        "stream_buffer",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "record": {
+      "additionalProperties": false,
+      "properties": {
+        "consumer_executor_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "consumer_input_tensors": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "consumer_operation": {
+          "$ref": "#/$defs/report_text"
+        },
+        "consumer_operation_kind": {
+          "$ref": "#/$defs/operation_kind"
+        },
+        "consumer_planned_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "consumer_step_index": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "conversion_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "conversion_status": {
+          "const": "planned_not_executed"
+        },
+        "from_layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "from_memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "planned_bytes": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "planner_reason": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_executor_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_operation": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_operation_kind": {
+          "$ref": "#/$defs/operation_kind"
+        },
+        "producer_output_tensors": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "producer_planned_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "producer_step_index": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "to_layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "to_memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "trace_alignment_status": {
+          "const": "producer_before_consumer"
+        }
+      },
+      "required": [
+        "consumer_executor_backend",
+        "consumer_input_tensors",
+        "consumer_operation",
+        "consumer_operation_kind",
+        "consumer_planned_backend",
+        "consumer_step_index",
+        "conversion_id",
+        "conversion_status",
+        "from_layout",
+        "from_memory_domain",
+        "planned_bytes",
+        "planner_reason",
+        "producer_executor_backend",
+        "producer_operation",
+        "producer_operation_kind",
+        "producer_output_tensors",
+        "producer_planned_backend",
+        "producer_step_index",
+        "tensor_name",
+        "to_layout",
+        "to_memory_domain",
+        "trace_alignment_status"
+      ],
+      "type": "object"
+    },
+    "operation_kind": {
+      "enum": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "type": "string"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "allocation_handle",
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "device_pointer",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "memory_address",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "pointer",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

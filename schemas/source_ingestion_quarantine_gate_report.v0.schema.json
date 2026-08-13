@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_ingestion_quarantine_gate_report.v0.schema.json",
+  "title": "TUC Source Ingestion Quarantine Gate Report v0",
+  "description": "Data-only gate schema establishing a quarantine boundary for future source ingestion without admitting source-to-ComputeGraph, HAC-IR, runtime-plan, import, JIT, device, or generated-artifact execution surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "all_required_evidence_present",
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "direct_source_ingestion",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "function_object_inspection",
+    "gate_contract",
+    "gate_id",
+    "gate_status",
+    "generated_artifact_execution",
+    "python_import",
+    "quarantine_boundary_established",
+    "raw_source_serialization",
+    "required_control_count",
+    "required_controls",
+    "required_evidence_ids",
+    "schema_version",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_runtime_plan",
+    "surface_id",
+    "triton_jit_execution"
+  ],
+  "properties": {
+    "admission_effect": {"const": "does_not_admit_direct_source_ingestion"},
+    "all_required_evidence_present": {"const": true},
+    "artifact_status": {"const": "review_gate"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/blocked_execution_surface"},
+      "uniqueItems": true
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/blocked_output"},
+      "uniqueItems": true
+    },
+    "direct_source_ingestion": {"const": false},
+    "evidence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "evidence_count": {"const": 4},
+    "evidence_policy": {"const": "digest_only"},
+    "function_object_inspection": {"const": false},
+    "gate_contract": {"const": "source_ingestion_quarantine_gate.data_only.v0"},
+    "gate_id": {"const": "source_ingestion_quarantine_gate"},
+    "gate_status": {"const": "quarantine_only"},
+    "generated_artifact_execution": {"const": false},
+    "python_import": {"const": false},
+    "quarantine_boundary_established": {"const": true},
+    "raw_source_serialization": {"const": false},
+    "required_control_count": {"const": 14},
+    "required_controls": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {"$ref": "#/$defs/required_control"},
+      "uniqueItems": true
+    },
+    "required_evidence_ids": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/required_evidence_id"},
+      "uniqueItems": true
+    },
+    "schema_version": {"const": "tuc.source_ingestion_quarantine_gate_report.v0"},
+    "source_to_compute_graph": {"const": false},
+    "source_to_hac_ir": {"const": false},
+    "source_to_runtime_plan": {"const": false},
+    "surface_id": {"const": "direct_source_ingestion"},
+    "triton_jit_execution": {"const": false}
+  },
+  "$defs": {
+    "blocked_execution_surface": {
+      "enum": [
+        "device_access",
+        "direct_source_ingestion",
+        "frontend_package_import",
+        "generated_artifact_execution",
+        "plugin_discovery",
+        "python_function_object_inspection",
+        "python_import",
+        "triton_jit_execution"
+      ]
+    },
+    "blocked_output": {
+      "enum": [
+        "compute_graph",
+        "generated_artifact",
+        "hac_ir",
+        "hs_ir",
+        "python_function_object",
+        "runtime_plan",
+        "tlir"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_digest", "evidence_id", "required"],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"$ref": "#/$defs/required_evidence_id"},
+        "required": {"const": true}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_control": {
+      "enum": [
+        "bounded_source_buffer",
+        "decode_only_before_preflight",
+        "digest_only_evidence",
+        "execution_free_ast_preflight",
+        "fail_closed_on_violation",
+        "input_treated_as_untrusted",
+        "no_compute_graph_from_source",
+        "no_device_access",
+        "no_generated_artifacts",
+        "no_hac_ir_from_source",
+        "no_python_import",
+        "no_raw_source_serialization",
+        "no_triton_jit",
+        "sanitized_diagnostics_only"
+      ]
+    },
+    "required_evidence_id": {
+      "enum": [
+        "real_triton_integration_admission_gate",
+        "source_to_intent_parser_gate",
+        "triton_source_preflight",
+        "triton_source_threat_model"
+      ]
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

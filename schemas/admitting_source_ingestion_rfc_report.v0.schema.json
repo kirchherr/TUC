@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/admitting_source_ingestion_rfc_report.v0.schema.json",
+  "title": "TUC Admitting Source Ingestion RFC Report v0",
+  "description": "Requirements-only RFC report for the first possible admitting direct source ingestion slice.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_status",
+    "admitted",
+    "allowed_inputs",
+    "allowed_outputs",
+    "artifact_policy",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "denied_outputs",
+    "implementation_status",
+    "issues",
+    "proposal_name",
+    "proposal_status",
+    "remaining_evidence",
+    "remaining_evidence_count",
+    "required_controls",
+    "required_controls_count",
+    "rfc_contract",
+    "rfc_digest",
+    "rfc_id",
+    "schema_version",
+    "source_ingestion_admission_ready",
+    "target_slice",
+    "target_surface"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.admitting_source_ingestion_rfc_report.v0"},
+    "rfc_contract": {"const": "admitting_source_ingestion_rfc.data_only.v0"},
+    "rfc_id": {"const": "admitting_source_ingestion_rfc"},
+    "rfc_digest": {"$ref": "#/$defs/sha256_text"},
+    "proposal_name": {"const": "direct_source_ingestion_first_slice"},
+    "proposal_status": {"const": "accepted_requirements_only"},
+    "implementation_status": {"const": "not_implemented"},
+    "admission_status": {"const": "blocked"},
+    "admitted": {"const": false},
+    "source_ingestion_admission_ready": {"const": false},
+    "target_surface": {"const": "direct_source_ingestion"},
+    "target_slice": {"const": "bounded_source_buffer_to_source_intent_plain_data"},
+    "artifact_policy": {"const": "digest_only_source_free"},
+    "remaining_evidence_count": {"const": 1},
+    "required_controls_count": {"const": 14},
+    "issues": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "allowed_inputs": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {"const": "bounded_source_buffer"},
+        {"const": "declared_source_name"},
+        {"const": "declared_shape_profile"}
+      ],
+      "items": false
+    },
+    "allowed_outputs": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {"const": "source_intent_plain_data"},
+        {"const": "sanitized_diagnostics"},
+        {"const": "metadata_digest"}
+      ],
+      "items": false
+    },
+    "denied_outputs": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {"const": "compute_graph"},
+        {"const": "hac_ir"},
+        {"const": "hs_ir"},
+        {"const": "runtime_plan"},
+        {"const": "generated_artifact"},
+        {"const": "python_function_object"},
+        {"const": "backend_artifact"}
+      ],
+      "items": false
+    },
+    "remaining_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [
+        {"const": "maintainer_security_review_approval"}
+      ],
+      "items": false
+    },
+    "required_controls": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "prefixItems": [
+        {"const": "bounded_source_buffer"},
+        {"const": "decode_only_before_validation"},
+        {"const": "source_buffer_size_limit"},
+        {"const": "ast_node_limit"},
+        {"const": "ast_depth_limit"},
+        {"const": "fail_closed_diagnostics"},
+        {"const": "no_python_import"},
+        {"const": "no_triton_jit"},
+        {"const": "no_device_access"},
+        {"const": "no_generated_artifacts"},
+        {"const": "no_source_to_hac_ir_shortcut"},
+        {"const": "source_intent_plain_data_only"},
+        {"const": "digest_only_public_evidence"},
+        {"const": "maintainer_security_review_required"}
+      ],
+      "items": false
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "prefixItems": [
+        {"const": "frontend_package_import"},
+        {"const": "plugin_discovery"},
+        {"const": "triton_jit_execution"},
+        {"const": "device_access"},
+        {"const": "generated_artifact_execution"},
+        {"const": "native_backend_execution"},
+        {"const": "python_import"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"},
+        {"const": "dynamic_library_loading"}
+      ],
+      "items": false
+    },
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {"const": "accepts_arbitrary_triton_source"},
+        {"const": "production_parser"},
+        {"const": "executes_generated_artifacts"},
+        {"const": "executes_native_backends"},
+        {"const": "imports_external_frontend_packages"},
+        {"const": "runs_triton_jit"},
+        {"const": "uses_real_devices"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact_path",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_tensor_value",
+          "runtime_handle",
+          "source_intent_payload",
+          "source_text",
+          "url"
+        ]
+      }
+    }
+  }
+}

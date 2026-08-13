@@ -1,0 +1,94 @@
+{
+  "backend_sequence": [
+    "systolic-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_score_count": 4,
+  "candidate_score_mode": "recorded",
+  "explanation_contract": "runtime_planning_explanation.data_only.v0",
+  "explanation_status": "passed",
+  "fallback_count": 0,
+  "graph_name": "runtime_mixed_backend_equivalence",
+  "issues": [],
+  "layout_conversion_count": 1,
+  "operation_count": 4,
+  "passed": true,
+  "schema_version": "tuc.runtime_planning_explanation_report.v0",
+  "selection_kinds": [
+    "preferred_for"
+  ],
+  "steps": [
+    {
+      "backend_name": "systolic-sim",
+      "candidate_score_count": 1,
+      "layout_conversion_bytes": 0,
+      "memory_domain": "device_sram",
+      "movement_bytes": 0,
+      "operation_name": "projection",
+      "produced_layout": "blocked",
+      "reason": "preferred_for:matmul;domain=device_sram;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=blocked",
+      "rejected_candidate_score_count": 0,
+      "selected_candidate_score_count": 1,
+      "selection_kind": "preferred_for",
+      "transfer_bytes": 0
+    },
+    {
+      "backend_name": "vector-sim",
+      "candidate_score_count": 1,
+      "layout_conversion_bytes": 24,
+      "memory_domain": "device_sram",
+      "movement_bytes": 24,
+      "operation_name": "normalize",
+      "produced_layout": "row_major",
+      "reason": "preferred_for:softmax;domain=device_sram;transfer_bytes=0;layout_conversion_bytes=24;produced_layout=row_major;actual_transfer_bytes=0;actual_layout_conversion_bytes=24",
+      "rejected_candidate_score_count": 0,
+      "selected_candidate_score_count": 1,
+      "selection_kind": "preferred_for",
+      "transfer_bytes": 0
+    },
+    {
+      "backend_name": "vector-sim",
+      "candidate_score_count": 1,
+      "layout_conversion_bytes": 0,
+      "memory_domain": "device_sram",
+      "movement_bytes": 0,
+      "operation_name": "sum_rows",
+      "produced_layout": "row_major",
+      "reason": "preferred_for:reduction;domain=device_sram;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major",
+      "rejected_candidate_score_count": 0,
+      "selected_candidate_score_count": 1,
+      "selection_kind": "preferred_for",
+      "transfer_bytes": 0
+    },
+    {
+      "backend_name": "vector-sim",
+      "candidate_score_count": 1,
+      "layout_conversion_bytes": 0,
+      "memory_domain": "device_sram",
+      "movement_bytes": 0,
+      "operation_name": "activation",
+      "produced_layout": "row_major",
+      "reason": "preferred_for:elementwise;domain=device_sram;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major",
+      "rejected_candidate_score_count": 0,
+      "selected_candidate_score_count": 1,
+      "selection_kind": "preferred_for",
+      "transfer_bytes": 0
+    }
+  ],
+  "total_data_movement_bytes": 24,
+  "total_layout_conversion_bytes": 24,
+  "total_transfer_bytes": 0,
+  "transfer_edge_count": 0
+}

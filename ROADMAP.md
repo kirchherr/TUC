@@ -1,4 +1,4 @@
-# TUC Roadmap
+﻿# TUC Roadmap
 
 ## Strategic Priority
 
@@ -94,8 +94,18 @@ Required artifacts:
 - `examples/proof_of_systolic_execution.py`
 - `examples/systolic_manifest_path.py`
 - `examples/runtime_backend_equivalence.py`
+- `examples/runtime_backend_equivalence_portfolio.py`
+- `examples/runtime_backend_equivalence_portfolio_policy.py`
 - `examples/runtime_vector_backend_equivalence.py`
 - `examples/runtime_mixed_backend_equivalence.py`
+- `examples/runtime_hs_ir_plan_alignment.py`
+- `examples/runtime_transfer_evidence.py`
+- `examples/runtime_transfer_trace_index.py`
+- `examples/runtime_transfer_trace_replay_verifier.py`
+- `examples/runtime_backend_equivalence_transfer_binding.py`
+- `examples/runtime_layout_conversion_trace_index.py`
+- `examples/runtime_layout_conversion_trace_replay_verifier.py`
+- `examples/runtime_backend_equivalence_layout_binding.py`
 - `tests/golden/proofs/proof_of_abstraction.txt`
 - `tests/golden/proofs/proof_of_reduction.txt`
 - `tests/golden/proofs/proof_of_softmax.txt`
@@ -105,6 +115,16 @@ Required artifacts:
 - `tests/golden/runtime_backend_equivalence/current_report.json`
 - `tests/golden/runtime_backend_equivalence/vector_sim_report.json`
 - `tests/golden/runtime_backend_equivalence/mixed_accelerators.json`
+- `tests/golden/runtime_backend_equivalence/portfolio_report.json`
+- `tests/golden/runtime_backend_equivalence/portfolio_policy_report.json`
+- `tests/golden/runtime_hs_ir_plan_alignment/mixed_report.json`
+- `tests/golden/runtime_transfer_evidence/current_report.json`
+- `tests/golden/runtime_transfer_trace_index/current_report.json`
+- `tests/golden/runtime_transfer_trace_replay_verifier/current_report.json`
+- `tests/golden/runtime_backend_equivalence_transfer_binding/current_report.json`
+- `tests/golden/runtime_layout_conversion_trace_index/current_report.json`
+- `tests/golden/runtime_layout_conversion_trace_replay_verifier/current_report.json`
+- `tests/golden/runtime_backend_equivalence_layout_binding/current_report.json`
 - `tests/golden/execution_traces/proof_of_execution.txt`
 - `docs/PROOF_OF_ABSTRACTION.md`
 - `docs/PROOF_OF_REDUCTION.md`
@@ -112,6 +132,22 @@ Required artifacts:
 - `docs/PROOF_OF_EXECUTION.md`
 - `docs/SYSTOLIC_SIMULATOR.md`
 - `docs/RUNTIME_EXECUTOR.md`
+- `docs/RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO.md`
+- `docs/RUNTIME_HS_IR_PLAN_ALIGNMENT.md`
+- `docs/RUNTIME_TRANSFER_EVIDENCE.md`
+- `docs/RUNTIME_TRANSFER_TRACE_INDEX.md`
+- `docs/RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER.md`
+- `docs/RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING.md`
+- `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md`
+- `docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md`
+- `docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md`
+- `schemas/runtime_transfer_evidence_report.v0.schema.json`
+- `schemas/runtime_transfer_trace_index_report.v0.schema.json`
+- `schemas/runtime_transfer_trace_replay_verifier_report.v0.schema.json`
+- `schemas/runtime_backend_equivalence_transfer_binding_report.v0.schema.json`
+- `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json`
+- `schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json`
+- `schemas/runtime_backend_equivalence_layout_binding_report.v0.schema.json`
 
 Completed evidence:
 
@@ -191,6 +227,179 @@ Completed evidence:
   as a `systolic-sim -> vector-sim -> vector-sim -> vector-sim` candidate,
   proving two non-CPU trusted accelerator families can compose in one plan
   while preserving terminal output semantics.
+- Runtime Evidence Matrix now supports graph-scoped required evidence kinds,
+  so backend-equivalence fixtures are inventoried honestly under the
+  `backend_equivalence` requirement instead of pretending to own full
+  proof/readiness/trace evidence.
+- Runtime Evidence Gate binds backend-equivalence reports back to their Matrix
+  graph entries, so report-level pass status and proof-inventory coverage
+  cannot drift apart.
+- Mixed Runtime Tensor Store Evidence now records the accepted
+  `systolic-sim -> vector-sim -> vector-sim -> vector-sim` plan as read-only
+  Runtime Value Record placement metadata, giving the mixed accelerator slice
+  an inspectable tensor-store proof without serialized tensor values.
+- Runtime Backend Equivalence Portfolio aggregates the systolic, vector, and
+  mixed accelerator equivalence reports into one backend-diversity artifact and
+  Runtime Evidence Gate binds that aggregate back to the exact reports checked
+  in the same invocation.
+- Runtime Evidence Matrix inventories the Backend Equivalence Portfolio under
+  scoped `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` requirements, and Runtime Evidence
+  Gate verifies that matrix coverage before accepting portfolio evidence.
+- Runtime Backend Equivalence Portfolio Policy declares the accepted portfolio
+  slice membership, backend sequences, minimum comparison counts, and required
+  backend families as data-only evidence, with Runtime Evidence Gate binding
+  the policy to the portfolio before accepting backend-diversity evidence.
+- Runtime Evidence Gate now binds backend-equivalence and portfolio Matrix
+  coverage to exact artifact IDs, so a complete Matrix with the right
+  artifact kinds cannot silently point at a different evidence artifact.
+- Runtime Evidence Gate Matrix Coverage emits those exact Matrix graph/artifact
+  bindings as a schema-versioned JSON audit and the Runtime Evidence Gate
+  requires that audit to pass.
+- Runtime Evidence Replay Verifier v0 (`examples/runtime_evidence_replay_verifier.py`)
+  replay-checks serialized Runtime Execution Evidence Bundle and Runtime
+  Execution Output Closure reports by metadata digest without re-running source,
+  JIT, plugins, devices, or backend artifacts.
+- Runtime Transfer Evidence v0 (`examples/runtime_transfer_evidence.py`)
+  records the planned `device_sram -> host_ram` transfer from the systolic
+  backend-equivalence candidate as data-only evidence with deterministic
+  planning-cost estimates while keeping device residency, runtime handles, raw
+  values, and native performance claims blocked.
+- Runtime Transfer Trace Index v0 (`examples/runtime_transfer_trace_index.py`)
+  binds that planned transfer to producer and consumer runtime trace steps,
+  proving trace-order alignment while keeping real transfer execution,
+  residency, runtime handles, raw values, and native performance claims blocked;
+  it is now required by Runtime Evidence Matrix and Runtime Evidence Gate for
+  the systolic backend-equivalence proof slice.
+- Runtime Transfer Trace Replay Verifier v0
+  (`examples/runtime_transfer_trace_replay_verifier.py`) replay-checks
+  serialized Transfer Evidence and Trace Index reports by metadata digest
+  without re-running runtime execution or materializing transfer steps; it is
+  now required by Runtime Evidence Matrix and Runtime Evidence Gate for the
+  systolic backend-equivalence proof slice.
+- Runtime Backend Equivalence Transfer Binding v0
+  (`examples/runtime_backend_equivalence_transfer_binding.py`) binds the
+  systolic backend-equivalence report to verified transfer trace replay by
+  metadata digest, so terminal-output equivalence and transfer-boundary
+  evidence cannot drift apart; it is now required by Runtime Evidence Matrix
+  and Runtime Evidence Gate for the systolic proof slice.
+- Objective Alpha Public Proof Bundle now exposes Proof Of Backend Equivalence,
+  transfer-boundary trace index, replay, and binding, layout-transition trace
+  index, replay, and binding, allocation reconciliation, Source-To-Intent
+  Research Proof Bundle, and Kernel Ingress Evidence Gate as fixed digest-only
+  public entries, with the
+  [Objective Alpha Public Proof Bundle Gate](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE_GATE.md)
+  keeping the top-level review surface fixed and claim-safe.
+- [Objective Alpha Evidence Extension Policy](docs/OBJECTIVE_ALPHA_EVIDENCE_EXTENSION_POLICY.md)
+  keeps the now-full 16-entry public proof bundle stable and blocks future
+  public evidence growth without a deliberate RFC, separate public evidence
+  catalog, or successor objective.
+- [Objective Alpha Public Evidence Catalog](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG.md)
+  provides that separate digest-only, RFC-bound growth surface, binding the
+  extension policy, first Runtime Backend Equivalence Portfolio `runtime_proof`
+  entry, Source-To-Intent Kernel Ingress, Source Intent Mixed Runtime Public
+  Proof Bundle, First Real Triton Kernel Path, and Real Triton First Slice
+  Evidence Portfolio `frontend_runtime_proof` entries, and Source-To-Intent
+  Capability Claim Gate `claim_boundary` entry, OCI Source Ingestion Research
+  Proof `isolation_proof` entry, and OCI Source Worker Release Provenance
+  Readiness `supply_chain_readiness` entry by
+  metadata digest without adding entries to the fixed Objective Alpha Public
+  Proof Bundle.
+- [Objective Alpha Public Evidence Catalog Admission Gate](docs/OBJECTIVE_ALPHA_PUBLIC_EVIDENCE_CATALOG_ADMISSION_GATE.md)
+  machine-checks that catalog admission remains append-only, RFC-bound,
+  digest-only, source-free, and free of new execution surfaces.
+- [Objective Alpha Catalog Acyclicity Gate](docs/OBJECTIVE_ALPHA_CATALOG_ACYCLICITY_GATE.md)
+  (`examples/objective_alpha_catalog_acyclicity_gate.py`) scans fixed catalog-entry
+  evidence artifacts and verifies they do not bind downstream catalog or claim
+  gates. Schema: `schemas/objective_alpha_catalog_acyclicity_gate_report.v0.schema.json`;
+  golden: `tests/golden/proofs/objective_alpha_catalog_acyclicity_gate.json`;
+  RFC: `rfcs/0276-objective-alpha-catalog-acyclicity-gate.md`.
+- [Objective Alpha Research Claim](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM.md)
+  binds the public proof bundle, bundle gate, extension policy, public evidence
+  catalog, catalog admission gate, and Source Intent mixed-runtime proof into
+  one digest-only current research-claim snapshot without expanding parser,
+  plugin, device, generated-artifact, native-backend, or native-performance
+  surfaces; the public evidence surface is now 16 fixed bundle entries plus 9
+  catalog entries, for 25 entries total.
+- [Objective Alpha Research Claim Gate](docs/OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE.md)
+  makes that snapshot CI-checkable by binding the claim digest, metadata
+  digest, evidence IDs, public counts, supported claims, blocked claims, and
+  required invariants without serializing source, runtime handles, tensor
+  values, backend artifacts, or device details.
+- [Objective Beta Research Claim](docs/OBJECTIVE_BETA_RESEARCH_CLAIM.md)
+  (`examples/objective_beta_research_claim.py`) binds Objective Alpha, Kernel
+  Ingress, First Real Triton Kernel Path, first-slice evidence portfolio,
+  admission readiness, maintainer approval request, Research Scope Gate, OCI
+  kernel-isolation proof, and OCI worker release-provenance readiness evidence
+  by digest while keeping source ingestion, production sandbox, external
+  attestation, native performance, and vendor replacement claims blocked.
+- [Objective Beta Research Claim Gate](docs/OBJECTIVE_BETA_RESEARCH_CLAIM_GATE.md)
+  (`examples/objective_beta_research_claim_gate.py`) validates the Beta claim
+  digest, evidence order, fail-closed source-ingestion state, and blocked
+  product/performance claims.
+- [Objective Beta Reproducibility Capsule](docs/OBJECTIVE_BETA_REPRODUCIBILITY_CAPSULE.md)
+  (`examples/objective_beta_reproducibility_capsule.py`) binds the nine Beta
+  dependencies, Beta claim, and claim gate as a fixed eleven-entry digest-only
+  manifest; schema
+  `schemas/objective_beta_reproducibility_capsule_report.v0.schema.json`, golden
+  `tests/golden/proofs/objective_beta_reproducibility_capsule.json`, and RFC
+  `rfcs/0281-objective-beta-reproducibility-capsule.md` make the closure
+  independently reviewable without publishing paths or payloads.
+- [Objective Beta Reproducibility Gate](docs/OBJECTIVE_BETA_REPRODUCIBILITY_GATE.md)
+  (`examples/objective_beta_reproducibility_gate.py`) replays all eleven fixed
+  artifact digests, the claim-to-gate link, and direct claim evidence links
+  without source, compiler, runtime, backend, plugin, device, subprocess,
+  network, or generated-artifact execution. Schema:
+  `schemas/objective_beta_reproducibility_gate_report.v0.schema.json`; golden:
+  `tests/golden/proofs/objective_beta_reproducibility_gate.json`.
+- [OCI Source Worker Release Provenance](docs/OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md)
+  adds a protected release path for a verified `linux/amd64` OCI Image Layout
+  archive, worker CycloneDX SBOM, SHA-256 checksums, and GitHub OIDC provenance
+  and SBOM attestations. The workflow now policy-verifies worker provenance in
+  the same GitHub-hosted run and emits a bounded digest-bound receipt. Its
+  readiness report remains data-only and explicitly blocks claims of an
+  executed run, external consumer verification, public registry publication,
+  byte-identical reproducibility, production ingestion, and production
+  sandbox. RFC: `rfcs/0290-oci-source-worker-release-provenance.md`.
+- Objective Alpha Public Evidence Catalog Entry Admission Pattern derives the
+  catalog's expected IDs, entry points, artifact kinds, extension tiers, digest
+  sources, and raw-output policies from typed data-only specs, reducing drift in
+  future catalog additions without adding execution or source-ingress surfaces.
+- Objective Alpha Public Evidence Catalog now binds the Source-To-Intent Kernel
+  Ingress Proof Bundle as a `frontend_runtime_proof` entry, connecting
+  realistic source-intent ingress evidence to the public Universal Compute proof
+  surface by digest only.
+- Objective Alpha Public Evidence Catalog now also binds the Source Intent
+  Mixed Runtime Public Proof Bundle as a `frontend_runtime_proof` entry,
+  connecting Source Intent plain data, mixed backend placement, trusted runtime
+  execution, public output closure, reference correctness, and backend
+  equivalence to the public proof surface by digest only.
+- Objective Alpha Public Evidence Catalog now binds the First Real Triton Kernel
+  Path and Real Triton First Slice Evidence Portfolio as `frontend_runtime_proof`
+  entries, exposing the bounded `mvp_pipeline` path and its source-ingestion
+  boundary evidence by digest only without admitting broader source parsing or
+  JIT execution.
+- Objective Alpha Public Evidence Catalog Extension-Tier Coverage now emits and
+  gates required coverage for `governance`, `runtime_proof`,
+  `frontend_runtime_proof`, and `claim_boundary`, making the current public
+  proof-role balance machine-reviewable.
+- Runtime Layout Conversion Trace Replay Verifier v0
+  (`examples/runtime_layout_conversion_trace_replay_verifier.py`) replay-checks
+  serialized Layout Conversion Evidence and Trace Index reports by metadata
+  digest without re-running runtime execution or materializing converter steps.
+- Runtime Backend Equivalence Layout Binding v0
+  (`examples/runtime_backend_equivalence_layout_binding.py`) binds the mixed
+  backend-equivalence report to verified layout trace replay by metadata digest,
+  so terminal-output equivalence and layout-transition evidence cannot drift
+  apart for the mixed accelerator proof slice.
+- Runtime HS-IR Plan Alignment binds HS-IR backend/layout decisions to the
+  accepted `PartitionPlan` and observed `RuntimeExecutionTrace` for the mixed
+  accelerator proof slice without serializing tensor values or adding
+  execution surfaces.
+- Runtime Evidence Matrix and Runtime Evidence Gate now require Runtime HS-IR
+  Plan Alignment for the mixed accelerator proof slice, binding the exact
+  `runtime_hs_ir_plan_alignment_mixed` artifact ID before the slice can count
+  as merge evidence.
 - Systolic capability manifest path loads `systolic-sim` from explicit JSON
   capability data for planning while execution remains authorized only through
   the trusted Runtime Executor registry.
@@ -228,6 +437,53 @@ Completed evidence:
 - Workload-scope reports bound future performance claims to explicit operation
   families, shape profiles, dtype policies, problem-size ranges, and correctness
   references.
+- Performance-readiness evidence now marks `performance_proof_rfc`,
+  `performance_claim_threshold_policy`, and `performance_acceptance_criteria`
+  present only when every accepted Kernel Ingress workload scope is bound to
+  accepted, digest-pinned governance metadata while benchmark artifacts,
+  executable-surface review, and native performance claims remain separate
+  gates.
+- Kernel Ingress performance-readiness evidence now marks workload-scope and
+  planner-overhead report evidence present by contract-checking the
+  shape-profile-derived workload scopes and a bounded planner-overhead report
+  for the accepted MVP pipeline graph while keeping native performance claims
+  blocked.
+- Kernel Ingress performance-readiness evidence now also marks correctness
+  goldens, runtime-plan goldens, and compiler-decision report goldens present
+  only when the deterministic Kernel Ingress golden matches the generated
+  report and every accepted case exposes the corresponding SHA-256 digest.
+- Performance-readiness evidence now marks `benchmark_report_schema` present
+  only when the baseline benchmark report schema is fail-closed,
+  diagnostic-only, native-claim-blocked, and bound to the performance proof
+  boundary.
+- Performance-readiness evidence now marks `benchmark_report_artifacts` present
+  only when all required benchmark artifact kinds are bound to digest-pinned
+  repository-golden descriptors while raw output loading, timing validation,
+  and native performance claims remain blocked.
+- Performance-readiness evidence now marks `benchmark_methodology` present only
+  when methodology entries are derived from the accepted Kernel Ingress
+  workload scopes and remain policy-only, with no benchmark execution or raw
+  timing samples.
+- Performance-readiness evidence now marks `versioned_toolchain_environment`
+  present only when repository-controlled CI, dependency, Docker, compiler, and
+  compose declarations are represented as bounded Toolchain Environment Report
+  components with `sha256:` digests and no host discovery.
+- Performance-readiness evidence now marks `native_baseline_provenance` present
+  only when each accepted Kernel Ingress workload scope is bound to a bounded,
+  data-only native baseline candidate while reproduction, artifact digests,
+  comparisons, and native claims remain blocked.
+- Performance-readiness evidence now marks `native_baseline_comparison` present
+  only when each accepted Kernel Ingress workload scope is bound to a bounded,
+  data-only comparison reference while measurement, digest validation, artifact
+  loading, and native claims remain blocked.
+- Performance-readiness evidence now marks `break_even_workload_size` present
+  only when each accepted Kernel Ingress workload scope is bound to a bounded,
+  `estimated_not_validated` amortization entry while digest validation, timing
+  comparison, artifact loading, and planner-benefit claims remain blocked.
+- Performance-readiness evidence now marks `leaky_abstraction_report` present
+  only when the accepted Kernel Ingress MVP pipeline keeps performance-critical
+  facts out of HAC-IR and assigns them to backend capability,
+  backend implementation, runtime plan, or compiler decision-report homes.
 - Benchmark-methodology reports define measurement clocks, iteration policies,
   statistic policy, isolation, outlier handling, and reproducibility policy
   before benchmark numbers can become evidence.
@@ -236,9 +492,20 @@ Completed evidence:
 - Executable-backend security review reports identify future executable
   surfaces, threat models, sandbox models, budgets, provenance, fuzzing
   evidence, and maintainer approval without approving execution.
+- Performance-readiness evidence now marks `executable_backend_security_review`
+  present only when every tracked executable surface is bound to accepted,
+  digest-pinned security-review metadata; readiness can be metadata-complete
+  while native performance claims remain blocked.
+- Performance Proof Interpretation now separates that metadata-complete
+  readiness state from native benchmark interpretation, proving that a green
+  readiness report still leaves native performance claims blocked until accepted
+  measurement-interpretation artifacts exist.
 
 Next work:
 
+- Add accepted measurement-interpretation artifacts only after benchmark
+  outputs, timing summaries, planner overhead, and native comparison semantics
+  are separately reviewed as data-only evidence.
 - Expand future proof graph families only when the existing proof contracts
   remain stable.
 
@@ -273,6 +540,10 @@ Completed evidence:
 - `docs/HAC_IR_NEUTRALITY.md` defines the reviewer-facing neutrality checklist.
 - `HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES` rejects known high-risk vendor, device,
   plugin, backend-artifact, and specialized-placement leakage.
+- The forbidden attribute baseline now also blocks vendor execution units,
+  warp/wavefront sizes, cache-line and memory-bank details, device UUIDs,
+  hardware serials, runtime handles, FPGA bitstreams, vendor libraries, and
+  TPU/NPU/ROCm/Metal-family target leaks from HAC-IR.
 - Negative tests verify that hardware-specific `tuc.*` attributes fail closed
   before backend assignment or lowering can treat them as valid facts.
 - Deterministic HAC-IR golden dumps cover the Objective Alpha proof graph and
@@ -316,11 +587,25 @@ Deliverables:
 
 Completed evidence:
 
+- Backend Integration Package v0 gives external authors one portable,
+  data-only capability-and-planning artifact and proves compiler assignment
+  without core changes or executable plugin admission. See
+  `docs/BACKEND_INTEGRATION_PACKAGE.md`,
+  `examples/backend_integration_package.py`,
+  `examples/backend_packages/external_vector.v0.json`,
+  `schemas/backend_integration_package.v0.schema.json`,
+  `schemas/backend_integration_package_report.v0.schema.json`,
+  `tests/golden/backend_integration_package/external_vector_report.json`, and
+  `rfcs/0282-backend-integration-package.md`.
+
 - External-style backend author path demonstrates manifest loading, explicit
   registry diagnostics, compiler planning, reusable conformance, and trusted
   lowering without modifying TUC core.
 - Backend conformance reports can be emitted as deterministic JSON artifacts
   for maintainer review.
+- Backend Capability Coverage emits a schema-versioned pure-data matrix showing
+  which simulator capability descriptions cover current MVP operation families
+  before conformance or execution begins.
 - Backend capability schema assumptions for error budgets, latency, energy,
   calibration, and noise modeling are documented separately from HAC-IR and
   executable backend behavior.
@@ -346,18 +631,76 @@ Completed evidence:
 - Golden compiler decision-report fixtures cover the softmax proof graph's
   explicit fallback and rejected backend support evidence.
 
-Next work:
+Completed controlled execution evidence:
+
+- Backend Package Execution Admission binds the exact portable package and
+  capability digests to a pre-registered trusted executor, projects
+  `reference-cpu -> external-vector` to `reference-cpu -> vector-sim`,
+  preserves the transfer edge, executes the graph, and requires semantic
+  equivalence against the CPU baseline. Evidence:
+  `docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md`,
+  `examples/backend_package_execution_proof.py`,
+  `schemas/backend_package_execution_admission_report.v0.schema.json`,
+  `schemas/backend_package_execution_proof_report.v0.schema.json`,
+  `tests/golden/backend_package_execution/admission_report.json`,
+  `tests/golden/backend_package_execution/proof_report.json`, and
+  `rfcs/0283-backend-package-execution-admission.md`.
+- Backend Package Execution Portfolio composes two exact data-only packages,
+  plans `external-systolic -> external-vector` with no fallback, retains the
+  `blocked -> row_major` conversion, projects to
+  `systolic-sim -> vector-sim`, and requires CPU-baseline equivalence. Evidence:
+  `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
+  `examples/backend_package_execution_portfolio.py`,
+  `examples/backend_packages/external_systolic.v0.json`,
+  `schemas/backend_package_execution_portfolio_report.v0.schema.json`,
+  `tests/golden/backend_integration_package/external_systolic_report.json`,
+  `tests/golden/backend_package_execution_portfolio/proof_report.json`, and
+  `rfcs/0284-multi-package-execution-portfolio.md`.
+- Source Intent Backend Package Portfolio closes the previously separate
+  frontend and package paths in one live no-fallback proof: Source Intent plain
+  data reaches `external-systolic -> external-vector`, retains the explicit
+  layout conversion, projects to trusted simulators, resolves its public
+  return, and passes both independent reference correctness and backend
+  equivalence. Evidence: `docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md`,
+  `examples/source_intent_backend_package_portfolio.py`,
+  `schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
+  `tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+  and `rfcs/0285-source-intent-backend-package-portfolio.md`.
+- Triton Research Backend Package Portfolio extends that vertical path to the
+  fixed realistic module-source slice: bounded AST ingress emits Source Intent
+  plain data, every operation is assigned to the exact external two-package
+  set without fallback, trusted simulators execute, and reference correctness
+  plus backend equivalence pass. Evidence:
+  `docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md`,
+  `examples/triton_research_backend_package_portfolio.py`,
+  `schemas/triton_research_backend_package_portfolio_report.v0.schema.json`,
+  `tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+  and `rfcs/0286-triton-research-backend-package-portfolio.md`.
+- Source Intent Elementwise Semantics closes the first source-value semantic
+  gap by carrying exact ReLU or identity meaning from the bounded `tl.where`
+  slice through Metadata, ComputeGraph, trusted Runtime Executor, and
+  independent reference evidence. Unsupported `where` forms fail closed.
+  Evidence: `docs/SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md` and
+  `rfcs/0287-source-intent-elementwise-semantics.md`.
+- External plugin code, physical devices, and native artifacts remain blocked;
+  this is trusted reference projection rather than native backend execution.
 
 - Add future decision-report fixtures only when new proof graph families or
   capability claims introduce new backend-selection evidence.
 
 Go/No-Go:
 
+- An external backend author can submit one bounded JSON package and receive a
+  deterministic capability, rejection, and compiler-selection report without
+  modifying TUC core or supplying executable code.
+
 - A toy backend can be described through capability data.
 - Unsupported operations and layouts are rejected explicitly.
 - Specialized accelerator manifests pass claim review before acceptance.
 - External backend author onboarding fails closed when claim review blocks a
   manifest.
+- Current simulator capability data covers `matmul`, `elementwise`,
+  `reduction`, and `softmax` in one deterministic coverage artifact.
 - External backend author onboarding has one deterministic readiness report.
 - External backend author onboarding evidence is checked by CI.
 - Capability checks never import backend code, run subprocesses, load dynamic
@@ -412,13 +755,35 @@ Completed evidence:
   allocation.
 - Runtime Allocation Request Manifest reports expose bounded, data-only future
   allocator admission requests without runtime handles.
+- Runtime Allocation Admission reports bind those requests to current Memory
+  Budget evidence before any real allocator, memory pool, device allocation, or
+  runtime handle can be accepted.
+- Runtime Allocation Receipt reports transform admitted requests into
+  deterministic dry-run allocation ledger entries without pointers, handles,
+  memory pools, or device access.
 - Runtime Memory Planning Gate verifies allocation-plan, memory-budget,
-  allocation-request-manifest, and lifetime/allocation/budget/request digest
-  binding evidence before allocator behavior can be accepted.
+  allocation-request-manifest, allocation-admission, allocation-receipt, and
+  lifetime/allocation/budget/request/admission/receipt digest binding evidence
+  before allocator behavior can be accepted. Runtime Evidence Matrix and
+  Runtime Evidence Gate now require the memory-planning artifact set by exact
+  artifact ID before the central runtime gate can pass.
 - Softmax operation-family planning defines the review gate for future
   nonlinear proof graphs and softmax-specific score components.
 - Runtime-plan goldens cover the softmax proof graph's fallback assignment and
   cross-domain transfer bytes.
+- Runtime Transfer Evidence records planned cross-domain transfer edges as
+  data-only planning evidence before any real transfer execution, memory
+  residency, or hardware timing claim is accepted.
+- Runtime HS-IR Plan Alignment proves the current mixed accelerator HS-IR,
+  runtime plan, and trusted execution trace agree on backend sequence,
+  produced layouts, and layout-conversion accounting.
+- Runtime Evidence Gate checks the Runtime HS-IR Plan Alignment report and
+  Matrix artifact binding before accepting the mixed accelerator slice.
+- Runtime Planning Explanation reports summarize accepted `PartitionPlan`
+  selection kinds, backend sequence, fallback count, candidate-score visibility,
+  and movement bytes; Runtime Evidence Matrix and Runtime Evidence Gate now
+  bind those reports to the systolic and mixed backend-equivalence slices by
+  exact artifact ID.
 
 Next work:
 
@@ -463,6 +828,287 @@ Deliverables:
 - Source Intent Frontend Conformance report JSON Schema.
 - Source-To-Intent Parser Gate for future source parser proposals.
 - Source-To-Intent Readiness report for parser proposal evidence.
+- Explicit Source-To-Intent Research Parser for the first tiny source-buffer to
+  `source_intent.v0` proof slice.
+- Source-To-Intent Research Parser Conformance Gate binding parser output to
+  the reusable Source Intent Frontend Conformance path.
+- Source-To-Intent Research Diagnostics for source-free accepted/rejected
+  parser diagnostic evidence.
+- Source-To-Intent Research Preflight Bridge proving accepted/rejected parser
+  diagnostics remain layered behind execution-free Triton Source Preflight.
+- Source-To-Intent Research Evidence Gate binding readiness, conformance, and
+  diagnostics by digest.
+- Source-To-Intent Research Execution Bridge proving accepted parser output can
+  reach controlled runtime execution only after Source Intent plain-data
+  re-intake.
+- Source-To-Intent Research Idiom Alignment proving accepted parser slices stay
+  inside already covered Triton-like MVP idioms before broader source syntax
+  work can claim coverage.
+- Source-To-Intent Research Proof Bundle giving reviewers one digest-only
+  source-free artifact for the current safe source-to-runtime research slice.
+- Source-To-Intent Research Capability Claim
+  (`examples/source_to_intent_research_capability_claim.py`) summarizing the
+  currently supported bounded Universal Compute research slice above the proof
+  bundle and evidence gates while keeping production parser, native
+  performance, hardware certification, arbitrary backend execution, and vendor
+  compiler replacement claims blocked.
+- Source-To-Intent Research Capability Claim Gate
+  (`examples/source_to_intent_research_capability_claim_gate.py`) binding that
+  high-level claim into CI, exposing the exact thirteen evidence IDs, and
+  failing closed on claim drift, evidence digest drift, source leakage, or
+  unreviewed claim expansion.
+- Source-To-Intent Research Source Runtime Smoke proving accepted source buffers
+  can run end-to-end through Preflight, parser, Source Intent, runtime, and
+  reference correctness.
+- Source-To-Intent Research Kernel Ingress proving realistic Triton
+  module-shaped source buffers can be validated as data, reduced to one
+  explicitly selected kernel function, and executed through the controlled
+  source-to-runtime research path.
+- Source-To-Intent Research Kernel Ingress Fixture Expansion proving a third
+  accepted module-shaped kernel, `matmul_reduction`, through the same
+  source-free runtime, conformance, diagnostics, and evidence gates.
+- Source-To-Intent Research Kernel Ingress Combined MVP Pipeline proving one
+  accepted module-shaped kernel can carry `matmul -> softmax -> reduction ->
+  elementwise` through Kernel Ingress, Source Intent, runtime planning,
+  trusted execution, reference correctness, and evidence gates without
+  widening the default parser path.
+- Source-To-Intent Research Kernel Ingress Runtime Matrix
+  (`examples/source_to_intent_research_kernel_ingress_runtime_matrix.py`)
+  proving accepted realistic module-shaped inputs have explicit runtime
+  evidence inventory by backend sequence, terminal output, trace-step count,
+  and digest.
+- Source-To-Intent Research Kernel Ingress Runtime Step Trace
+  (`examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py`)
+  proving accepted Kernel Ingress runtime cases expose source-free
+  operation-level execution order, planned backend, executor backend, public
+  tensor names, output dtype/shape metadata, and plan/trace digests.
+- Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index
+  (`examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py`)
+  proving accepted Kernel Ingress runtime cases also build and bind standard
+  Runtime Execution Evidence Bundles with tensor-store, input-manifest,
+  output-manifest, reference-correctness, and execution-receipt evidence.
+- Source-To-Intent Research Kernel Ingress Runtime Output Closure Index
+  (`examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py`)
+  proving accepted Kernel Ingress runtime cases also close their public output
+  boundary through Runtime Execution Output Closure before they can strengthen
+  the bounded research claim.
+- Source-To-Intent Research Kernel Ingress Runtime Replay Verifier Index
+  (`examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py`)
+  proving accepted Kernel Ingress runtime evidence can be replay-verified from
+  serialized, source-free Runtime Evidence Bundle and Output Closure reports.
+- Source-To-Intent Research Kernel Ingress Backend Equivalence
+  (`examples/source_to_intent_research_kernel_ingress_backend_equivalence.py`)
+  proving accepted Kernel Ingress Source Intent preserves public outputs under
+  a neutral `reference-cpu` baseline and capability-selected trusted
+  `linear-sim`/`vector-sim` simulator placements.
+- Source-To-Intent Research Kernel Ingress Backend Equivalence Shape Profiles
+  (`examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py`)
+  proving the same accepted Kernel Ingress Source Intent preserves public
+  outputs and reference correctness across `base` and `alternate` declared
+  tensor shape profiles without widening the parser or making performance
+  claims.
+- Source-To-Intent Research Kernel Ingress Workload Scope
+  (`examples/source_to_intent_research_kernel_ingress_workload_scope.py`)
+  binding those proven shape profiles to diagnostic `workload_scope_report.v0`
+  data so future performance proposals have bounded operation-family and
+  shape-profile scopes while native performance claims remain blocked.
+- Performance Proof Readiness now treats performance RFC, threshold-policy, and
+  acceptance-criteria governance as present only after binding all accepted
+  Kernel Ingress workload scopes to accepted, digest-pinned metadata;
+  benchmark artifacts, executable-surface review, and native performance claims
+  remain separate gates.
+- Performance Proof Readiness now derives current `workload_scope` and
+  `planner_overhead_report` evidence from accepted Kernel Ingress contracts
+  instead of hand-coded booleans, and binds correctness, runtime-plan, and
+  compiler-decision golden evidence to the deterministic Kernel Ingress golden
+  report while all native performance claims remain blocked.
+- Performance Proof Readiness now treats the baseline benchmark report schema
+  as present only after a fail-closed schema contract check.
+- Performance Proof Readiness now treats benchmark report artifacts as present
+  only after all required artifact kinds are listed through a digest-bound
+  repository-golden manifest; artifact loading, timing validation, and native
+  performance claims remain blocked.
+- Performance Proof Readiness now treats benchmark methodology as present only
+  after binding measurement policy to the accepted Kernel Ingress workload
+  scopes; benchmark execution and artifact evidence remain blocked.
+- Performance Proof Readiness now treats versioned toolchain environment
+  evidence as present only after binding repository-controlled CI, dependency,
+  Docker, compiler, and compose declarations to Toolchain Environment Report
+  components with SHA-256 digests; host discovery remains blocked.
+- Performance Proof Readiness now treats native baseline provenance as present
+  only after binding all accepted Kernel Ingress workload scopes to data-only
+  native baseline candidates; native reproduction, artifact digests,
+  comparison evidence, and native claims remain blocked.
+- Performance Proof Readiness now treats native baseline comparison as present
+  only after binding all accepted Kernel Ingress workload scopes to data-only
+  comparison references; benchmark artifact loading, digest validation, timing
+  comparison, and native claims remain blocked.
+- Performance Proof Readiness now treats break-even workload size as present
+  only after binding all accepted Kernel Ingress workload scopes to bounded,
+  estimated amortization entries; CI validation, evidence digests, benchmark
+  artifact loading, and planner-benefit claims remain blocked.
+- Performance Proof Readiness now treats leaky-abstraction evidence as present
+  only after the Kernel Ingress MVP pipeline proves HAC-IR is contract-valid
+  and free of forbidden hardware-specific performance facts.
+- Source-To-Intent Research Kernel Ingress Runtime Coverage Policy
+  (`examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py`)
+  requiring current accepted runtime cases, backend sequences, terminal outputs,
+  trace-step counts, and runtime digest fields before the Kernel Ingress proof
+  slice can pass.
+- Source-To-Intent Research Kernel Ingress Runtime Backend Alignment
+  (`examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py`)
+  binding accepted backend sequences to trusted Runtime Executor conformance
+  before the Kernel Ingress proof slice can pass.
+- Source-To-Intent Research Kernel Ingress Boundary Budget proving accepted
+  realistic module-shaped source buffers stay inside byte, line, AST-node, and
+  AST-depth budgets, and that budget overflow rejects before extraction or
+  lowering.
+- Source-To-Intent Research Kernel Ingress Rejection Coverage proving current
+  diagnostics and boundary-budget rejection surfaces are source-free,
+  deterministic, and covered before future ingress syntax can expand.
+- Source-To-Intent Research Kernel Ingress Conformance Gate proving accepted
+  module-shaped source outputs pass the reusable Source Intent Frontend
+  Conformance path before future ingress syntax can expand.
+- Source-To-Intent Research Kernel Ingress Diagnostics proving accepted and
+  rejected realistic module-shaped source cases remain source-free, bounded,
+  and fail-closed before future ingress syntax can expand.
+- Source-To-Intent Research Kernel Ingress Idiom Alignment proving accepted
+  module-shaped source outputs remain inside already covered Triton MVP idioms
+  before future ingress syntax can expand.
+- Source-To-Intent Research Kernel Ingress Proof Bundle giving reviewers one
+  digest-only source-free artifact for the realistic Kernel Ingress research
+  slice before future ingress syntax can expand.
+- Source-To-Intent Research Kernel Ingress Evidence Gate proving the focused
+  Kernel Ingress proof slice is CI-bound before the global Source-To-Intent
+  Research Evidence Gate accepts it.
+- [First Real Triton Kernel Path](docs/FIRST_REAL_TRITON_KERNEL_PATH.md)
+  (`examples/first_real_triton_kernel_path.py`) giving reviewers a compact,
+  digest-bound proof for the single `mvp_pipeline` research case across Kernel
+  Ingress, Source Intent re-intake, trusted runtime execution, backend
+  equivalence, and fail-closed source-ingestion admission boundaries. Schema:
+  `schemas/first_real_triton_kernel_path_report.v0.schema.json`; golden:
+  `tests/golden/frontend/first_real_triton_kernel_path.json`; RFC:
+  `rfcs/0272-first-real-triton-kernel-path.md`.
+- [Real Triton First Slice Evidence Portfolio](docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md)
+  (`examples/real_triton_first_slice_evidence_portfolio.py`) binding Real
+  Triton First Slice Plan, Source Ingestion Maintainer Security Review Packet,
+  missing Maintainer Approval Artifact, Source Ingestion Admission Gate,
+  Source Ingestion Pre-Claim Acyclicity Gate, and First Real Triton Kernel Path
+  into one digest-only, catalog-safe portfolio while preserving
+  `admitted = false`, `direct_source_ingestion = false`,
+  `surface_opened = false`, native performance claims false, and vendor
+  replacement claims false. Schema:
+  `schemas/real_triton_first_slice_evidence_portfolio_report.v0.schema.json`;
+  golden:
+  `tests/golden/frontend/real_triton_first_slice_evidence_portfolio_report.json`;
+  RFC: `rfcs/0274-real-triton-first-slice-evidence-portfolio.md`.
+- [Real Triton First Slice Plan](docs/REAL_TRITON_FIRST_SLICE_PLAN.md)
+  (`examples/real_triton_first_slice_plan.py`) binding Admission, Surface Gate
+  Completion, Source Ingestion Quarantine, Admitting Source Ingestion RFC,
+  Bounded Source Buffer API, Source Ingestion Sandbox Implementation, Parser
+  Fuzz Negative Corpus, Source-Free Diagnostics Admission Tests,
+  Source-To-Intent Plain-Data Output Golden, CI Replay For Admitted Slice,
+  Source Ingestion Approval Criteria, Source Runtime Smoke, and Kernel Ingress
+  Proof Bundle evidence by digest while identifying maintainer security review
+  as the remaining missing admission evidence before `direct_source_ingestion`
+  can become the first admitting Real Triton slice. Downstream maintainer
+  review, approval-artifact, and admission-gate reports bind this plan by
+  digest instead of being bound back into it, keeping the evidence graph
+  acyclic.
+- [Real Triton First Slice Admission Readiness Gate](docs/REAL_TRITON_FIRST_SLICE_ADMISSION_READINESS_GATE.md)
+  (`examples/real_triton_first_slice_admission_readiness_gate.py`) binds the
+  first-slice plan, maintainer review packet, missing approval artifact,
+  admission gate, First Real Triton Kernel Path, first-slice evidence
+  portfolio, and Objective Alpha Catalog Acyclicity Gate by digest while
+  keeping admission blocked until external maintainer security review approval
+  exists. Schema:
+  `schemas/real_triton_first_slice_admission_readiness_gate_report.v0.schema.json`;
+  golden:
+  `tests/golden/frontend/real_triton_first_slice_admission_readiness_gate_report.json`;
+  RFC: `rfcs/0277-real-triton-first-slice-admission-readiness-gate.md`.
+- [Real Triton First Slice Maintainer Approval Request](docs/REAL_TRITON_FIRST_SLICE_MAINTAINER_APPROVAL_REQUEST.md)
+  (`examples/real_triton_first_slice_maintainer_approval_request.py`) packages
+  the readiness gate, maintainer review packet, missing approval artifact, and
+  admission gate by digest for external maintainer review while keeping the
+  request non-approving, source-free, and non-admitting. Schema:
+  `schemas/real_triton_first_slice_maintainer_approval_request_report.v0.schema.json`;
+  golden:
+  `tests/golden/frontend/real_triton_first_slice_maintainer_approval_request_report.json`;
+  RFC: `rfcs/0278-real-triton-first-slice-maintainer-approval-request.md`.
+- [Admitting Source Ingestion RFC](docs/ADMITTING_SOURCE_INGESTION_RFC.md)
+  (`examples/admitting_source_ingestion_rfc.py`) defining the requirements-only
+  first `direct_source_ingestion` slice boundary while keeping source ingestion
+  implementation and admission blocked.
+- [Bounded Source Buffer API](docs/BOUNDED_SOURCE_BUFFER_API.md)
+  (`examples/bounded_source_buffer_api.py`) validating source text as untrusted
+  bounded data and emitting source-free metadata records while keeping
+  source-to-Intent, source-to-ComputeGraph, source-to-HAC-IR, and
+  source-to-runtime-plan admission blocked.
+- [Source Ingestion Sandbox Implementation](docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
+  (`examples/source_ingestion_sandbox_implementation.py`) wrapping the bounded
+  source buffer as an execution-free non-admitting sandbox while keeping Source
+  Intent plain-data, ComputeGraph, HAC-IR, and runtime-plan outputs blocked.
+- [Isolated Source Ingestion Research Worker](docs/ISOLATED_SOURCE_INGESTION_RESEARCH_WORKER.md)
+  (`examples/isolated_source_ingestion_research_proof.py`) now moves the narrow
+  research parser into a fixed resource-limited Linux worker, revalidates its
+  Source Intent in the parent, and completes the no-fallback external package
+  proof with reference correctness and backend equivalence. Production source
+  ingestion, filesystem namespace isolation, and kernel network isolation
+  remain false. Parent and worker:
+  `src/tuc/frontend/isolated_source_ingestion.py` and
+  `src/tuc/frontend/_isolated_source_ingestion_worker.py`; schema:
+  `schemas/isolated_source_ingestion_research_proof_report.v0.schema.json`;
+  golden:
+  `tests/golden/frontend/isolated_source_ingestion_research_proof_report.json`;
+  tests: `tests/test_isolated_source_ingestion_research_proof.py`; RFC:
+  `rfcs/0288-isolated-source-ingestion-research-worker.md`.
+- [OCI Source Ingestion Research Worker](docs/OCI_SOURCE_INGESTION_RESEARCH_WORKER.md)
+  (`examples/oci_source_ingestion_research_proof.py`) closes the next process
+  isolation obligation for the narrow research slice: a dedicated digest-pinned
+  image runs with no network or repository mount, read-only RootFS, zero
+  capabilities, no-new-privileges, seccomp, and cgroup limits; observed worker
+  facts and the Compose contract must match before its Source Intent digest can
+  bind to the no-fallback Systolic/Vector proof. Schema:
+  `schemas/oci_source_ingestion_research_proof_report.v0.schema.json`; golden:
+  `tests/golden/frontend/oci_source_ingestion_research_proof_report.json`;
+  tests: `tests/test_oci_source_ingestion_research_proof.py`; RFC:
+  `rfcs/0289-oci-source-ingestion-research-worker.md`. Production admission and
+  production sandbox claims remain blocked pending published image provenance
+  and independent security review.
+- [Parser Fuzz Negative Corpus For Admitting Slice](docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
+  (`examples/parser_fuzz_negative_corpus_for_admitting_slice.py`) defining
+  deterministic source-free negative/fuzz seeds for the future admitting parser
+  path while keeping Source Intent plain-data, ComputeGraph, HAC-IR, and
+  runtime-plan outputs blocked.
+- [Source-Free Diagnostics Admission Tests](docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md)
+  (`examples/source_free_diagnostics_admission_tests.py`) proving parser
+  rejection diagnostics stay source-free, reason-code based, bounded, and
+  non-admitting while Source Intent plain-data output remains blocked.
+- [Source-To-Intent Plain-Data Output Golden For Admitted Slice](docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md)
+  (`examples/source_to_intent_plain_data_output_golden_for_admitted_slice.py`)
+  proving the future admitting source slice has reviewable `source_intent.v0`
+  plain-data goldens while direct source ingestion remains blocked.
+- [CI Replay For Admitted Slice](docs/CI_REPLAY_FOR_ADMITTED_SLICE.md)
+  (`examples/ci_replay_for_admitted_slice.py`) binding the admitted-slice prerequisite artifacts to read-only GitHub Actions replay while keeping source ingestion blocked until maintainer security review approval.
+- [Source Ingestion Approval Criteria](docs/SOURCE_INGESTION_APPROVAL_CRITERIA.md)
+  (`examples/source_ingestion_approval_criteria.py`) defining objective, data-only approval criteria while keeping `approval_status = not_approved` and `admitted = false`.
+- [Source Ingestion Maintainer Security Review Packet](docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md)
+  (`examples/source_ingestion_maintainer_security_review_packet.py`) collecting the admitted-slice evidence chain and approval criteria into a digest-only review packet with `approval_status = not_approved`, leaving maintainer security review approval as the only external admission evidence.
+- [Source Ingestion Maintainer Approval Artifact](docs/SOURCE_INGESTION_MAINTAINER_APPROVAL_ARTIFACT.md)
+  (`examples/source_ingestion_maintainer_approval_artifact.py`) binding the review packet and recording `external_approval_not_supplied` while keeping source ingestion blocked.
+- [Source Ingestion Admission Gate](docs/SOURCE_INGESTION_ADMISSION_GATE.md)
+  (`examples/source_ingestion_admission_gate.py`) binding the review packet and missing-approval artifact into a fail-closed admission decision with `admitted = false` and `approval_artifact_present = false` until external maintainer approval exists.
+- [Source Ingestion Pre-Claim Acyclicity Gate](docs/SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE.md)
+  (`examples/source_ingestion_preclaim_acyclicity_gate.py`) proving the source-ingestion First-Slice -> Review -> Approval -> Admission digest graph is acyclic before Research Scope binds it, while explicitly excluding Research Scope from the pre-claim graph.
+- [Evidence Graph Acyclicity Gate](docs/EVIDENCE_GRAPH_ACYCLICITY_GATE.md)
+  (`examples/evidence_graph_acyclicity_gate.py`) proving the current source-ingestion First-Slice -> Review -> Approval -> Admission -> Pre-Claim Acyclicity -> Research-Scope digest graph is acyclic, source-free, and edge-digest-only before source-ingestion readiness can be claimed.
+- [Research Scope Claim Gate](docs/RESEARCH_SCOPE_CLAIM_GATE.md)
+  (`examples/research_scope_claim_gate.py`) binding Objective Alpha,
+  Source-To-Intent capability, performance-boundary interpretation, missing
+  source-ingestion approval artifact, source-ingestion admission evidence, and pre-claim acyclicity evidence
+  by digest while explicitly blocking production compiler, vendor replacement,
+  native performance, source ingestion, plugin execution, generated artifact
+  execution, and timeline claims.
 - First real Triton kernel ingestion path.
 - MVP kernel family coverage: matmul, elementwise, reduction, softmax-like.
 - Correctness tests against deterministic references.
@@ -494,6 +1140,8 @@ Deliverables:
   before native performance claims.
 - Performance Proof Readiness report for future native performance proposal
   evidence.
+- Performance Proof Interpretation report for the post-readiness gate that
+  blocks native claims until accepted measurement interpretation exists.
 
 Go/No-Go:
 
@@ -503,9 +1151,9 @@ Go/No-Go:
   source parser, Python import, or `@triton.jit` handling is accepted.
 - MVP operation-family coverage is demonstrated through frontend-originated
   metadata goldens before direct Triton syntax support is attempted.
-- Direct Triton source parsing is blocked until a threat model, parser budgets,
-  negative tests, fuzzing or property-test corpus, deterministic diagnostics,
-  and sandboxing gates are in place.
+- General Triton source parsing is blocked until a threat model, parser
+  budgets, negative tests, fuzzing or property-test corpus, deterministic
+  diagnostics, and sandboxing gates are in place.
 - Source preflight may inspect syntax as data, but it must not produce
   `ComputeGraph`, TLIR, HAC-IR, HS-IR, runtime plans, or backend decisions.
 - Preflight fuzz/property tests must keep arbitrary decoded source, invalid
@@ -526,14 +1174,143 @@ Go/No-Go:
   `source_intent_to_metadata.execution_free.v0` adapter and its goldens.
 - Source Intent IR to metadata conversion may start only from an already
   constructed `SourceIntentModule`; source text and preflight reports remain
-  disconnected until a separate source-to-intent security gate is accepted.
+  disconnected except for explicitly accepted research parser slices whose
+  output is still only `source_intent.v0` plain data.
 - External frontend authors must first provide Source Intent Frontend
   Conformance evidence for accepted plain data and rejected hostile cases,
   using the versioned conformance report schema.
 - Source-to-intent parser proposals must satisfy the Source-To-Intent Parser
-  Gate before source text can create `source_intent.v0` plain data.
+  Gate before source text can create `source_intent.v0` plain data, except for
+  explicitly scoped research parser slices accepted as evidence with default
+  parser intake still blocked.
 - Source-to-intent parser proposals must pass the Source-To-Intent Readiness
   report before source text can influence compiler artifacts.
+- Parser expansions must extend Source-To-Intent Research Diagnostics with
+  source-free accepted and rejected evidence before the expanded syntax counts
+  as accepted research parser scope.
+- Source-To-Intent Research Readiness now tracks the first narrow parser
+  research proposal as complete proposal evidence while keeping the default
+  parser block intact.
+- Source-To-Intent Corpus Evidence now defines accepted and rejected
+  source-buffer fixtures for the first parser proof, covers all MVP operation
+  families in accepted cases, and keeps the report data-only with no raw source
+  or compiler artifacts.
+- Source-To-Intent Property Corpus now defines the fuzz/property obligations
+  for the first parser proof and binds them to the source corpus report digest.
+- Source-To-Intent Parser Report now provides that final proposal-only golden,
+  making the research proposal evidence complete while keeping
+  `parser_enabled = false` and source parsing outside the compiler input path.
+- Source-To-Intent Research Parser v0 now parses a tiny caller-provided
+  Triton-like source subset into validated `source_intent.v0` plain data while
+  keeping the default parser path blocked and avoiding metadata, graph,
+  runtime-plan, or backend-decision output.
+- Source-To-Intent Research Parser Conformance Gate now proves the
+  `matmul -> elementwise` parser output slice passes Source Intent Frontend
+  Conformance, and Source Intent axis attributes now allow the
+  `softmax -> reduction` parser output slice to pass the same gate.
+- Source Intent Axis Attributes now define neutral `attributes.axis` semantics
+  for `softmax` and `reduction`, including intake validation, metadata
+  conversion, schema documentation, and parser-conformance evidence.
+- Source-To-Intent Research Diagnostics now binds the accepted parser slices
+  and whitelisted rejected source cases to deterministic source-free diagnostic
+  evidence with stable rejection reason IDs.
+- Source-To-Intent Research Preflight Bridge now separates accepted pipeline,
+  preflight rejection, and parser semantic rejection evidence for the same
+  diagnostic cases before the parser proof can count as CI-facing evidence.
+- Source-To-Intent Research Evidence Gate now binds Research Readiness,
+  Research Parser Conformance Gate, and Research Diagnostics by SHA-256 digest
+  before the current research parser scope counts as CI-facing proof evidence.
+- Source-To-Intent Research Execution Bridge now executes the accepted
+  `matmul -> elementwise` and `softmax -> reduction` parser slices through
+  Source Intent re-intake, metadata conversion, runtime planning, Runtime
+  Executor, and Runtime Reference Correctness without exposing raw values or
+  parser compiler shortcuts.
+- Source-To-Intent Research Idiom Alignment now binds those accepted parser
+  slices to existing Triton Idiom Coverage and the Execution Bridge by digest,
+  so parser scope cannot silently expand beyond proven MVP operation families.
+- Source-To-Intent Research Proof Bundle now indexes the current readiness,
+  conformance, diagnostics, Preflight Bridge, Execution Bridge, Idiom
+  Alignment, Source Runtime Smoke, Kernel Ingress, Kernel Ingress Runtime
+  Matrix, Kernel Ingress Conformance, Kernel Ingress Diagnostics, Kernel
+  Ingress Idiom Alignment, Kernel Ingress Proof Bundle, and Evidence Gate
+  artifacts by digest for review.
+- Source-To-Intent Research Source Runtime Smoke now proves the accepted
+  `matmul -> elementwise` and `softmax -> reduction` source buffers can execute
+  end-to-end through the controlled research parser path without opening
+  general Triton source ingestion.
+- Source-To-Intent Research Kernel Ingress now proves realistic Triton
+  module-shaped source buffers with the accepted Triton import prelude and one
+  explicitly selected `@triton.jit` kernel can execute end-to-end through the
+  controlled research path without evaluating imports, decorators, JIT, files,
+  devices, plugins, or general module execution.
+- Source-To-Intent Research Kernel Ingress Boundary Budget now records ingress
+  byte, line, AST-node, AST-depth, and diagnostics budgets; accepted module
+  observations stay within budget and byte/line budget overflows reject before
+  extraction or lowering.
+- Source-To-Intent Research Kernel Ingress Rejection Coverage now binds
+  diagnostics rejection IDs and boundary-budget rejection IDs into one
+  source-free coverage matrix before the Kernel Ingress Proof Bundle can pass.
+- Source-To-Intent Research Kernel Ingress Runtime Matrix now binds accepted
+  module-shaped source cases to backend sequences, terminal output names,
+  trace-step counts, runtime plan digests, execution trace digests, reference
+  correctness digests, and the Kernel Ingress E2E digest.
+- Source-To-Intent Research Kernel Ingress Runtime Step Trace now binds
+  accepted runtime matrix cases to operation-level planned/executed backend
+  steps, public tensor names, output dtype/shape metadata, and the combined
+  `mvp_pipeline` path without exposing raw source or tensor values.
+- Source-To-Intent Research Kernel Ingress Runtime Evidence Bundle Index now
+  binds accepted runtime step-trace cases to the standard Runtime Execution
+  Evidence Bundle sections, including tensor store, manifests, reference
+  correctness, and execution receipt digests.
+- Source-To-Intent Research Kernel Ingress Runtime Output Closure Index now
+  binds accepted Kernel Ingress runtime cases to Runtime Execution Output
+  Closure, requiring public output metadata to close across Output Contract,
+  Public Output Bundle, Runtime Execution Receipt, and Runtime Execution
+  Evidence Bundle before the Kernel Ingress claim can pass.
+- Source Intent Mixed Runtime Public Proof Bundle
+  (`examples/source_intent_mixed_runtime_public_proof_bundle.py`) binds Source
+  Intent plain data to mixed `systolic-sim + vector-sim` trusted execution,
+  Runtime Public Output Bundle, Reference Correctness, and Backend Equivalence
+  through schema `schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json`
+  and golden evidence at
+  `tests/golden/frontend/source_intent_mixed_runtime_public_proof_bundle.json`.
+  See `docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md`.
+- Source-To-Intent Research Kernel Ingress Backend Equivalence now compares
+  accepted Kernel Ingress Source Intent cases under a neutral `reference-cpu`
+  baseline and capability-selected `linear-sim`/`vector-sim` placements,
+  proving terminal public output metadata is preserved without exposing raw
+  source or tensor values.
+- Source-To-Intent Research Kernel Ingress Runtime Coverage Policy now binds
+  the runtime matrix to required accepted cases, operation families, backend
+  sequences, terminal outputs, trace-step count policy, and runtime digest
+  fields before Kernel Ingress proof evidence can pass.
+- Source-To-Intent Research Kernel Ingress Runtime Backend Alignment now binds
+  the runtime matrix and coverage policy to trusted Runtime Executor
+  conformance for `linear-sim` and `vector-sim`, so accepted backend sequences
+  are not merely unchecked string labels.
+- Source-To-Intent Research Kernel Ingress Conformance Gate now proves accepted
+  module-shaped source outputs are ordinary Source Intent frontend payloads that
+  pass accepted-case conformance and rejected backend-hint/source-text escape
+  checks.
+- Source-To-Intent Research Kernel Ingress Diagnostics now binds accepted
+  module-shaped source cases and rejected module surfaces to stable source-free
+  reason IDs for unsupported imports, import-from statements, multiple kernel
+  functions, top-level side effects, and kernel-name mismatches.
+- Source-To-Intent Research Kernel Ingress Idiom Alignment now binds accepted
+  module-shaped Kernel Ingress outputs to existing Triton Idiom Coverage and
+  the Kernel Ingress Conformance Gate by digest, so realistic input shape does
+  not silently expand beyond proven MVP operation families.
+- Source-To-Intent Research Kernel Ingress Proof Bundle now gives reviewers one
+  digest-only source-free index for Kernel Ingress E2E, runtime-matrix,
+  runtime-coverage-policy, runtime-backend-alignment, boundary-budget,
+  rejection-coverage, diagnostics, conformance, and idiom-alignment evidence
+  before the global proof bundle accepts the realistic module-shaped ingress
+  claim.
+- Source-To-Intent Research Kernel Ingress Evidence Gate now validates Kernel
+  Ingress E2E, runtime-matrix, runtime-coverage-policy,
+  runtime-backend-alignment, boundary-budget, rejection-coverage, diagnostics,
+  conformance, idiom-alignment, and proof-bundle digest bindings as CI-facing
+  evidence.
 - Existing Triton compatibility is preserved within MVP scope.
 - The integration strengthens the hardware-independent interface rather than
   turning TUC into a Triton fork.
@@ -645,12 +1422,21 @@ Go/No-Go:
 ## Current Priority Order
 
 1. Keep the master plan and roadmap aligned.
-2. Maintain the proof-of-abstraction validation as the first public proof.
-3. Harden HAC-IR neutrality and reserved-attribute rejection.
-4. Strengthen backend capability and conformance tooling.
-5. Make runtime planning explanations richer and golden-tested.
-6. Integrate real Triton intent only after the abstraction proof remains stable.
-7. Expand to specialized hardware simulators only when they strengthen the
+2. Keep the first public entry path short through
+   [Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md) and
+   [Research Onboarding Evidence](docs/RESEARCH_ONBOARDING_EVIDENCE.md).
+3. Apply external feedback through bounded triage, starting with
+   [External Review Triage 2026-06-22](docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md).
+4. Maintain the proof-of-abstraction validation as the first public proof,
+   including the
+   [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
+5. Keep HAC-IR neutrality and reserved-attribute rejection hardened as new
+   proof and frontend surfaces appear.
+6. Strengthen backend capability and conformance tooling.
+7. Extend planning explanation coverage only when new proof slices add
+   distinct placement, fallback, or movement evidence.
+8. Integrate real Triton intent only after the abstraction proof remains stable.
+9. Expand to specialized hardware simulators only when they strengthen the
    universal compute claim.
 
 ## Success Metrics

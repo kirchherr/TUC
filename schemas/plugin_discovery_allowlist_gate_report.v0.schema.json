@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/plugin_discovery_allowlist_gate_report.v0.schema.json",
+  "title": "TUC Plugin Discovery Allowlist Gate Report v0",
+  "description": "Data-only gate schema establishing allowlist requirements for future frontend plugin discovery without admitting discovery, entrypoint inspection, registry scans, imports, plugin execution, network, subprocess, dynamic-library, or device surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "all_required_evidence_present",
+    "allowlist_boundary_established",
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "capability_claims_from_code",
+    "device_access",
+    "dynamic_library_loading",
+    "entrypoint_discovery",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "filesystem_scan",
+    "frontend_package_import",
+    "gate_contract",
+    "gate_id",
+    "gate_status",
+    "network_access",
+    "plugin_code_execution",
+    "plugin_discovery",
+    "plugin_loaded",
+    "python_import",
+    "registry_scan",
+    "required_control_count",
+    "required_controls",
+    "required_evidence_ids",
+    "schema_version",
+    "subprocess_execution",
+    "surface_id"
+  ],
+  "properties": {
+    "admission_effect": {"const": "does_not_admit_plugin_discovery"},
+    "all_required_evidence_present": {"const": true},
+    "allowlist_boundary_established": {"const": true},
+    "artifact_status": {"const": "review_gate"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/blocked_execution_surface"},
+      "uniqueItems": true
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/blocked_output"},
+      "uniqueItems": true
+    },
+    "capability_claims_from_code": {"const": false},
+    "device_access": {"const": false},
+    "dynamic_library_loading": {"const": false},
+    "entrypoint_discovery": {"const": false},
+    "evidence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "evidence_count": {"const": 4},
+    "evidence_policy": {"const": "digest_only"},
+    "filesystem_scan": {"const": false},
+    "frontend_package_import": {"const": false},
+    "gate_contract": {"const": "plugin_discovery_allowlist_gate.data_only.v0"},
+    "gate_id": {"const": "plugin_discovery_allowlist_gate"},
+    "gate_status": {"const": "allowlist_requirements_only"},
+    "network_access": {"const": false},
+    "plugin_code_execution": {"const": false},
+    "plugin_discovery": {"const": false},
+    "plugin_loaded": {"const": false},
+    "python_import": {"const": false},
+    "registry_scan": {"const": false},
+    "required_control_count": {"const": 18},
+    "required_controls": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "items": {"$ref": "#/$defs/required_control"},
+      "uniqueItems": true
+    },
+    "required_evidence_ids": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/required_evidence_id"},
+      "uniqueItems": true
+    },
+    "schema_version": {"const": "tuc.plugin_discovery_allowlist_gate_report.v0"},
+    "subprocess_execution": {"const": false},
+    "surface_id": {"const": "plugin_discovery"}
+  },
+  "$defs": {
+    "blocked_execution_surface": {
+      "enum": [
+        "device_access",
+        "dynamic_library_loading",
+        "entrypoint_discovery",
+        "file_system_access",
+        "frontend_package_import",
+        "network_access",
+        "plugin_code_execution",
+        "plugin_discovery",
+        "python_import",
+        "registry_scan",
+        "subprocess_execution"
+      ]
+    },
+    "blocked_output": {
+      "enum": [
+        "discovered_plugin",
+        "entrypoint_record",
+        "imported_module",
+        "plugin_capability_from_code",
+        "plugin_handle",
+        "plugin_registry_record"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_digest", "evidence_id", "required"],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"$ref": "#/$defs/required_evidence_id"},
+        "required": {"const": true}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_control": {
+      "enum": [
+        "allowlist_entries_are_manifest_ids",
+        "capability_claims_are_data_only",
+        "digest_only_evidence",
+        "entrypoints_not_discovered",
+        "fail_closed_on_violation",
+        "no_device_access",
+        "no_dynamic_library_loading",
+        "no_entrypoint_discovery",
+        "no_filesystem_scan",
+        "no_frontend_package_import",
+        "no_network_access",
+        "no_plugin_code_execution",
+        "no_plugin_discovery",
+        "no_python_import",
+        "no_registry_scan",
+        "no_subprocess_execution",
+        "plugin_treated_as_untrusted",
+        "sanitized_diagnostics_only"
+      ]
+    },
+    "required_evidence_id": {
+      "enum": [
+        "external_frontend_package_conformance",
+        "package_import_sandbox_gate",
+        "plugin_discovery_allowlist_model",
+        "real_triton_integration_admission_gate"
+      ]
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Runtime Replay Verifier Index Report v0",
+  "description": "Digest-only index over Runtime Evidence Replay Verifier reports for Kernel Ingress research cases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "default_parser_status",
+    "executor_contract",
+    "frontend_ingress_contract",
+    "input_policy",
+    "output_closure_contract",
+    "output_closure_index_contract",
+    "output_closure_index_digest",
+    "parser_status",
+    "raw_source_policy",
+    "raw_value_policy",
+    "reexecution_policy",
+    "replay_required_inputs",
+    "replay_verifier_contract",
+    "replay_verifier_index_contract",
+    "replay_verifier_replay_mode",
+    "replay_verifier_schema_version",
+    "runtime_evidence_bundle_contract",
+    "runtime_evidence_bundle_index_contract",
+    "runtime_evidence_bundle_index_digest",
+    "runtime_matrix_contract",
+    "runtime_matrix_digest",
+    "runtime_step_trace_contract",
+    "runtime_step_trace_digest",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "trusted_executor_registry"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "digest_only_values_omitted"},
+    "blocked_execution_surfaces": {"$ref": "#/$defs/blocked_execution_surfaces"},
+    "case_count": {"const": 5},
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case"},
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "executor_contract": {"const": "runtime_executor.trusted_backend.v0"},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "input_policy": {"const": "serialized_json_reports_only"},
+    "output_closure_contract": {
+      "const": "runtime_execution_output_closure.data_only.v0"
+    },
+    "output_closure_index_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_output_closure_index.review.v0"
+    },
+    "output_closure_index_digest": {"$ref": "#/$defs/sha256_digest"},
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "reexecution_policy": {"const": "runtime_reexecution_not_required"},
+    "replay_required_inputs": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "runtime_execution_evidence_bundle"},
+        {"const": "runtime_execution_output_closure"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "replay_verifier_contract": {
+      "const": "runtime_evidence_replay_verifier.review.v0"
+    },
+    "replay_verifier_index_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.review.v0"
+    },
+    "replay_verifier_replay_mode": {"const": "metadata_digest_replay_only"},
+    "replay_verifier_schema_version": {
+      "const": "tuc.runtime_evidence_replay_verifier_report.v0"
+    },
+    "runtime_evidence_bundle_contract": {
+      "const": "runtime_execution_evidence_bundle.data_only.v0"
+    },
+    "runtime_evidence_bundle_index_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0"
+    },
+    "runtime_evidence_bundle_index_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_matrix_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0"
+    },
+    "runtime_matrix_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_step_trace_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0"
+    },
+    "runtime_step_trace_digest": {"$ref": "#/$defs/sha256_digest"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_runtime_replay_verifier_index_report.v0"
+    },
+    "source_boundary": {
+      "const": "kernel_ingress_runtime_to_replay_verifier_index"
+    },
+    "status": {"const": "PASS"},
+    "trusted_executor_registry": {"const": "trusted_runtime_executor_registry.v0"}
+  },
+  "$defs": {
+    "backend": {"enum": ["linear-sim", "vector-sim"]},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_sequence",
+        "bundle_metadata_digest",
+        "bundle_report_digest",
+        "case_id",
+        "execution_receipt_digest",
+        "graph_name",
+        "kernel_name",
+        "operation_path",
+        "output_closure_metadata_digest",
+        "output_closure_report_digest",
+        "output_contract_metadata_digest",
+        "passed",
+        "public_output_bundle_digest",
+        "raw_value_policy",
+        "replay_check_count",
+        "replay_contract",
+        "replay_metadata_digest",
+        "replay_mode",
+        "replay_report_digest",
+        "status",
+        "step_count",
+        "terminal_outputs"
+      ],
+      "properties": {
+        "backend_sequence": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/backend"},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "bundle_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "bundle_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "case_id": {
+          "enum": [
+            "research_module_matmul_elementwise",
+            "research_module_softmax_reduction",
+            "research_module_matmul_reduction",
+            "research_module_softmax_elementwise",
+            "research_module_mvp_pipeline"
+          ]
+        },
+        "execution_receipt_digest": {"$ref": "#/$defs/sha256_digest"},
+        "graph_name": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction",
+            "research_matmul_reduction",
+            "research_softmax_elementwise",
+            "research_mvp_pipeline"
+          ]
+        },
+        "kernel_name": {
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction",
+            "matmul_reduction",
+            "softmax_elementwise",
+            "mvp_pipeline"
+          ]
+        },
+        "operation_path": {
+          "type": "array",
+          "items": {"enum": ["elementwise", "matmul", "reduction", "softmax"]},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "output_closure_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "output_closure_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "output_contract_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "passed": {"const": true},
+        "public_output_bundle_digest": {"$ref": "#/$defs/sha256_digest"},
+        "raw_value_policy": {"const": "omitted_by_policy"},
+        "replay_check_count": {"const": 8},
+        "replay_contract": {"const": "runtime_evidence_replay_verifier.review.v0"},
+        "replay_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "replay_mode": {"const": "metadata_digest_replay_only"},
+        "replay_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "status": {"const": "runtime_replay_verifier_bound"},
+        "step_count": {"enum": [2, 4]},
+        "terminal_outputs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "maxItems": 1
+        }
+      }
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

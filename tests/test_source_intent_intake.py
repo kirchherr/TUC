@@ -40,6 +40,98 @@ def test_source_intent_intake_report_preserves_contracts() -> None:
     assert "metadata" in report.blocked_compiler_outputs
 
 
+def test_source_intent_intake_accepts_axis_attributes_for_axis_ops() -> None:
+    module = source_intent_from_mapping(
+        {
+            "name": "source_intent_axis_ops",
+            "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+            "tensors": [
+                {"name": "x", "shape": [4, 8]},
+                {"name": "normalized", "shape": [4, 8]},
+                {"name": "row_sum", "shape": [4]},
+            ],
+            "operations": [
+                {
+                    "name": "normalized",
+                    "family": "softmax",
+                    "inputs": ["x"],
+                    "outputs": ["normalized"],
+                    "attributes": {"axis": 1},
+                },
+                {
+                    "name": "row_sum",
+                    "family": "reduction",
+                    "inputs": ["normalized"],
+                    "outputs": ["row_sum"],
+                    "attributes": {"axis": 1},
+                },
+            ],
+        }
+    )
+
+    assert module.operations[0].attributes["axis"] == 1
+    assert module.operations[1].attributes["axis"] == 1
+
+
+def test_source_intent_intake_accepts_bounded_elementwise_semantics() -> None:
+    module = source_intent_from_mapping(
+        {
+            "name": "source_intent_relu",
+            "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+            "tensors": [
+                {"name": "x", "shape": [4, 8]},
+                {"name": "activated", "shape": [4, 8]},
+            ],
+            "operations": [
+                {
+                    "name": "activated",
+                    "family": "elementwise",
+                    "inputs": ["x"],
+                    "outputs": ["activated"],
+                    "attributes": {"elementwise_kind": "relu"},
+                }
+            ],
+        }
+    )
+
+    assert module.operations[0].attributes["elementwise_kind"] == "relu"
+
+
+@pytest.mark.parametrize(
+    ("family", "value"),
+    (
+        ("elementwise", "sigmoid"),
+        ("elementwise", "attacker.module:run"),
+        ("elementwise", 1),
+        ("matmul", "relu"),
+    ),
+)
+def test_source_intent_intake_rejects_invalid_elementwise_semantics(
+    family: str,
+    value: object,
+) -> None:
+    with pytest.raises((TypeError, ValueError)):
+        source_intent_from_mapping(
+            {
+                "name": "invalid_elementwise_kind",
+                "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+                "tensors": [
+                    {"name": "x", "shape": [4, 8]},
+                    {"name": "y", "shape": [4, 8]},
+                ],
+                "operations": [
+                    {
+                        "name": "op",
+                        "family": family,
+                        "inputs": ["x"],
+                        "outputs": ["y"],
+                        "attributes": {"elementwise_kind": value},
+                    }
+                ],
+            }
+        )
+
+
 @pytest.mark.parametrize(
     "payload",
     [
@@ -68,6 +160,37 @@ def test_source_intent_intake_report_preserves_contracts() -> None:
                     "inputs": ["a"],
                     "outputs": ["a"],
                     "hints": {"backend": "gpu"},
+                }
+            ],
+        },
+        {
+            "name": "bad",
+            "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+            "tensors": [{"name": "a", "shape": [2]}],
+            "operations": [
+                {
+                    "name": "op",
+                    "family": "elementwise",
+                    "inputs": ["a"],
+                    "outputs": ["a"],
+                    "attributes": {"axis": 0},
+                }
+            ],
+        },
+        {
+            "name": "bad",
+            "schema_version": SOURCE_INTENT_SCHEMA_VERSION,
+            "tensors": [
+                {"name": "x", "shape": [4, 8]},
+                {"name": "y", "shape": [4]},
+            ],
+            "operations": [
+                {
+                    "name": "softmax",
+                    "family": "softmax",
+                    "inputs": ["x"],
+                    "outputs": ["y"],
+                    "attributes": {"axis": 2},
                 }
             ],
         },

@@ -25,8 +25,10 @@ The readiness report does not claim native performance parity.
 - Example: `examples/performance_proof_readiness.py`
 - Golden: `tests/golden/proofs/performance_proof_readiness_report.json`
 - Tests: `tests/test_performance_proof_readiness.py`
+- Next gate: [Performance Proof Interpretation](PERFORMANCE_PROOF_INTERPRETATION.md)
+- Next gate schema: `schemas/performance_proof_interpretation_report.v0.schema.json`
 
-The report is ready only when every required evidence ID is present.
+The report is ready only when every required evidence ID is present. A ready report is metadata-complete; it is not a benchmark interpretation, execution grant, or native performance proof. The next review step is the data-only Performance Proof Interpretation report.
 
 ## Required Evidence
 
@@ -70,6 +72,14 @@ only the existence of a bounded acceptance-criteria metadata contract. It does
 not run benchmarks, evaluate raw timing samples, grant execution permission, or
 prove native performance parity.
 
+The current readiness example marks `performance_proof_rfc`,
+`performance_claim_threshold_policy`, and `performance_acceptance_criteria`
+present only after binding every accepted Kernel Ingress workload scope to
+accepted, digest-pinned governance reports. Those reports define proposal,
+threshold, and pass/fail metadata before benchmark artifacts can be interpreted.
+They keep `native_performance_claim` false and do not load evidence, run
+benchmarks, grant execution permission, or approve executable backend surfaces.
+
 The current diagnostic CPU baseline report schema is
 `schemas/baseline_benchmark_report.v0.schema.json`. It can satisfy only the
 existence of a bounded report schema for the baseline harness. It does not
@@ -83,6 +93,17 @@ existence of a bounded workload-scope contract. It does not satisfy benchmark
 methodology, native baseline comparison, benchmark artifacts, execution timing,
 or native performance parity.
 
+The current Kernel Ingress workload-scope binding is
+`examples/source_to_intent_research_kernel_ingress_workload_scope.py`. It can
+mark `workload_scope` as present for readiness review by binding accepted
+Kernel Ingress shape-profile evidence to diagnostic workload scopes.
+
+The readiness example derives `benchmark_methodology` from those same Kernel
+Ingress workload scopes. It builds bounded methodology entries that define the
+clock, warmup and measurement iteration policy, statistic policy, isolation,
+outlier policy, and reproducibility policy before any benchmark artifact can
+count as evidence. This does not run benchmarks or ingest timing samples.
+
 The current diagnostic benchmark methodology report schema is
 `schemas/benchmark_methodology_report.v0.schema.json`. It can satisfy only the
 existence of a bounded benchmark methodology contract. It does not run
@@ -95,11 +116,51 @@ existence of a bounded versioned toolchain environment contract. It does not
 inspect the host, read environment variables, run discovery commands, access
 devices, or prove native performance parity.
 
+The current readiness example marks `versioned_toolchain_environment` present
+only after building a Toolchain Environment Report from repository-controlled
+version declarations and file digests: the GitHub Actions Python runtime policy,
+`pyproject.toml` package metadata, `requirements/dev.txt` development dependency
+metadata, the dev Dockerfile, the native compiler policy declared by that
+Dockerfile, and `docker-compose.yml`. Each component must carry a `sha256:`
+digest of its repository file. The check does not collect host package versions,
+read environment variables, inspect devices, run discovery commands, or turn
+unlocked dependency declarations into native baseline provenance.
+
 The current diagnostic planner-overhead report schema is
 `schemas/planner_overhead_report.v0.schema.json`. It can satisfy only the
 existence of a bounded planner phase-separation report. It does not satisfy
 break-even workload-size evidence, execution timing evidence, native baseline
 comparison, or native performance parity.
+
+The current readiness example builds a bounded planner-overhead report for the
+accepted Kernel Ingress MVP pipeline graph and checks the report contract before
+marking `planner_overhead_report` present. It verifies that planner overhead is
+not hidden inside execution time, execution timing remains unmeasured, and
+break-even evidence remains not established. It does not publish raw timings,
+run benchmarks, execute backend artifacts, or create a native performance
+claim.
+
+The broader [Planner Overhead Portfolio](PLANNER_OVERHEAD_PORTFOLIO.md) at
+`examples/planner_overhead_portfolio.py` applies the same diagnostic boundary
+to all accepted Kernel Ingress cases through
+`schemas/planner_overhead_portfolio_report.v0.schema.json`. It is supporting
+portfolio evidence; readiness can still use the MVP pipeline graph as its
+minimal current planner-overhead binding.
+
+The same readiness example also verifies the deterministic Kernel Ingress
+golden at `tests/golden/frontend/source_to_intent_research_kernel_ingress.json`
+before marking `correctness_goldens`, `runtime_plan_goldens`, and
+`compiler_decision_report_goldens` present. The check requires each accepted
+case to expose the corresponding SHA-256 digest field while keeping raw source
+and raw tensor values out of the readiness output.
+
+The readiness example verifies
+`schemas/baseline_benchmark_report.v0.schema.json` before marking
+`benchmark_report_schema` present. The schema must remain fail-closed,
+diagnostic-only, bound to `performance_proof_boundary.blocking.v0`, and must
+forbid native performance claims. This schema check is separate from benchmark
+artifact inventory and does not accept measured benchmark results as proof
+evidence.
 
 The current diagnostic break-even workload-size report schema is
 `schemas/break_even_workload_size_report.v0.schema.json`. It can satisfy only
@@ -107,10 +168,28 @@ the existence of a bounded break-even workload-size metadata contract. It does
 not run benchmarks, load benchmark artifacts, ingest raw timing samples, or
 prove native performance parity.
 
+The current readiness example marks `break_even_workload_size` present only
+after binding every accepted Kernel Ingress workload scope to an
+`estimated_not_validated` break-even entry. The entry uses the workload scope's
+bounded maximum problem size as the estimate, references the Kernel Ingress
+planner-overhead report ID, omits evidence digests, and keeps
+`break_even_workload_size_ready` false. This proves only that future benchmark
+artifacts have an amortization review surface; it does not validate break-even
+sizes, compare timing samples, load benchmark artifacts, or claim planner
+benefit.
+
 The current diagnostic leaky-abstraction report schema is
 `schemas/leaky_abstraction_report.v0.schema.json`. It can satisfy only the
 existence of a bounded HAC-IR boundary review report. It does not satisfy
 native baseline comparison, benchmark artifacts, or native performance parity.
+
+The readiness example derives `leaky_abstraction_report` from the accepted
+Kernel Ingress MVP pipeline graph. It verifies that HAC-IR remains contract
+valid, no forbidden hardware-specific attributes enter HAC-IR, and performance
+facts such as tile shape, vector width, transfer latency, and backend sequence
+choice stay in backend capabilities, backend implementations, runtime plans, or
+compiler decision reports. Native baseline and native performance claims remain
+separate blockers.
 
 The current diagnostic native baseline provenance report schema is
 `schemas/native_baseline_provenance_report.v0.schema.json`. It can satisfy only
@@ -118,11 +197,27 @@ the existence of a bounded native baseline provenance contract. It does not
 satisfy native baseline comparison, benchmark report artifacts, execution
 timing, or native performance parity.
 
+The current readiness example marks `native_baseline_provenance` present only
+after binding every accepted Kernel Ingress workload scope to a data-only native
+baseline candidate. The candidates use a portable CPU native-library target ID,
+are marked `documented_not_executed`, omit artifact digests, and keep
+`native_baseline_ready` false. This proves only that future comparisons have a
+bounded provenance surface; it does not reproduce native baselines, load native
+artifacts, compare benchmark results, or make a native performance claim.
+
 The current diagnostic native baseline comparison report schema is
 `schemas/native_baseline_comparison_report.v0.schema.json`. It can satisfy only
 the existence of a bounded native comparison metadata contract. It does not
 load benchmark artifacts, parse raw benchmark output, store timing samples, or
 prove native performance parity.
+
+The current readiness example marks `native_baseline_comparison` present only
+after binding every accepted Kernel Ingress workload scope to a data-only native
+comparison reference. Each comparison is `not_measured`, carries no comparison
+digest, and keeps `native_baseline_comparison_ready` false. This proves only
+that future benchmark artifacts have a bounded comparison surface; it does not
+load artifacts, validate CI benchmark output, compare timing samples, or make a
+native performance claim.
 
 The current diagnostic benchmark artifact manifest report schema is
 `schemas/benchmark_artifact_manifest_report.v0.schema.json`. It can satisfy only
@@ -130,12 +225,27 @@ the existence of a bounded benchmark artifact inventory contract. It does not
 load benchmark artifacts, satisfy benchmark result acceptance, validate raw
 native output, or prove native performance parity.
 
+The current readiness example marks `benchmark_report_artifacts` present only
+after binding all required benchmark artifact kinds to repository-golden
+descriptors with SHA-256 digests. Those descriptors are inventory review
+objects, not raw benchmark reports. The readiness example does not parse
+benchmark artifact contents, load raw output, validate native timings, or accept
+benchmark results as proof.
+
 The current diagnostic executable backend security review report schema is
 `schemas/executable_backend_security_review_report.v0.schema.json`. It can
 satisfy only the existence of a bounded executable-surface security review
 metadata contract. It does not execute backend artifacts, access devices, load
-dynamic libraries, run subprocesses, discover plugins, or approve native
-performance parity.
+dynamic libraries, run subprocesses, discover plugins, approve execution, or
+approve native performance parity.
+
+The current readiness example marks `executable_backend_security_review`
+present only after building a complete Executable Backend Security Review
+Report over every tracked executable surface, binding each entry to threat
+model, sandbox model, resource budget, provenance, negative-test evidence, and
+a repository RFC digest. This makes the readiness report metadata-complete for
+the current Kernel Ingress proof slice, but it does not grant runtime execution
+permission or prove native performance parity.
 
 ## Blocked Claims
 
@@ -227,15 +337,21 @@ which is data-only and remains separate from execution permission.
 
 ## Evidence
 
-The current golden report intentionally remains blocked:
+The current golden report is metadata-complete for the Kernel Ingress proof
+slice:
 
 ```text
 tests/golden/proofs/performance_proof_readiness_report.json
 ```
 
 This makes the current roadmap state explicit: TUC has a performance proof
-boundary and a readiness report, but no native performance proof proposal has
-supplied the required evidence.
+boundary, a readiness report, accepted governance metadata, bounded Kernel
+Ingress workload-scope evidence, digest-bound benchmark artifact inventory, and
+a digest-bound executable backend security review. Native performance claims
+remain blocked because readiness is not a benchmark result, execution grant, or
+native performance proof. `examples/performance_proof_interpretation.py` records
+that next gate explicitly: readiness is true, but measurement interpretation is
+not supplied.
 
 ## Still Blocked
 

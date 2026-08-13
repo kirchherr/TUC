@@ -1,0 +1,79 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "policy_contract": "runtime_backend_equivalence_portfolio_policy.data_only.v0",
+  "policy_id": "runtime_backend_equivalence_portfolio_policy",
+  "policy_metadata_digest": "sha256:3044964af1cbf414b30e984800c410df272f7b60fd21f1a07bece0671f90d57c",
+  "policy_status": "accepted",
+  "portfolio_id": "runtime_backend_equivalence_portfolio",
+  "raw_value_policy": "omitted_by_policy",
+  "required_candidate_backend_families": [
+    "systolic-sim",
+    "vector-sim"
+  ],
+  "requirement_count": 3,
+  "requirements": [
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "candidate_backend_sequence": [
+        "systolic-sim",
+        "reference-cpu"
+      ],
+      "candidate_run_id": "systolic_sim",
+      "graph_name": "runtime_backend_equivalence",
+      "min_comparison_count": 1,
+      "slice_id": "runtime_backend_equivalence"
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "vector_sim",
+      "graph_name": "runtime_vector_backend_equivalence",
+      "min_comparison_count": 1,
+      "slice_id": "runtime_vector_backend_equivalence"
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "candidate_backend_sequence": [
+        "systolic-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "mixed_accelerators",
+      "graph_name": "runtime_mixed_backend_equivalence",
+      "min_comparison_count": 1,
+      "slice_id": "runtime_mixed_backend_equivalence"
+    }
+  ],
+  "schema_version": "tuc.runtime_backend_equivalence_portfolio_policy_report.v0",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

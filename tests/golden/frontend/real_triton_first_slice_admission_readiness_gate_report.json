@@ -1,0 +1,128 @@
+{
+  "admission_decision": "deny_until_external_approval",
+  "admission_ready": false,
+  "admitted": false,
+  "already_satisfied": [
+    "first_slice_plan_bound",
+    "maintainer_review_packet_ready",
+    "maintainer_approval_absence_bound",
+    "source_ingestion_admission_gate_fail_closed",
+    "first_real_triton_kernel_path_passed",
+    "first_slice_evidence_portfolio_passed",
+    "objective_alpha_catalog_acyclicity_passed"
+  ],
+  "already_satisfied_count": 7,
+  "artifact_status": "review_gate",
+  "blocked_claims": [
+    "arbitrary_triton_source_ingestion",
+    "production_parser",
+    "source_to_compute_graph_admission",
+    "native_backend_execution",
+    "native_performance_parity",
+    "vendor_replacement"
+  ],
+  "blocked_execution_surfaces": [
+    "direct_source_ingestion",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_runtime_plan",
+    "frontend_package_import",
+    "plugin_discovery",
+    "triton_jit_execution",
+    "device_access",
+    "generated_artifact_execution",
+    "native_backend_execution"
+  ],
+  "blocking_reasons": [
+    "maintainer_security_review_approval_missing"
+  ],
+  "checked_evidence": [
+    {
+      "artifact_id": "real_triton_first_admissible_slice_plan",
+      "contract": "real_triton_first_slice_plan.data_only.v0",
+      "digest": "sha256:6aeee2a1e2020eec61a99e98f57296545af685e57c279dfcee94de2f136707bf",
+      "source_free": true,
+      "status": "blocked_until_admitting_source_ingestion_evidence",
+      "supports_readiness_gate": true
+    },
+    {
+      "artifact_id": "source_ingestion_maintainer_security_review_packet",
+      "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
+      "digest": "sha256:463d286eb97f84d3eba4ff7938fe9bca0838545bc0cbd8b425f4ba3db6f38ef2",
+      "source_free": true,
+      "status": "ready_for_maintainer_review",
+      "supports_readiness_gate": true
+    },
+    {
+      "artifact_id": "source_ingestion_maintainer_approval_artifact",
+      "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
+      "digest": "sha256:e725a83191f56aaabffcefebd2917acd987c671db046005a138bd30d0024b591",
+      "source_free": true,
+      "status": "external_approval_not_supplied",
+      "supports_readiness_gate": true
+    },
+    {
+      "artifact_id": "source_ingestion_admission_gate",
+      "contract": "source_ingestion_admission_gate.fail_closed.v0",
+      "digest": "sha256:ba8a22de6469c641c2808d500427d3c4da3d32d54342d596a601c93dba16559c",
+      "source_free": true,
+      "status": "blocked_missing_maintainer_security_review_approval",
+      "supports_readiness_gate": true
+    },
+    {
+      "artifact_id": "first_real_triton_kernel_path",
+      "contract": "first_real_triton_kernel_path.digest_bound.v0",
+      "digest": "sha256:3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
+      "source_free": true,
+      "status": "PASS",
+      "supports_readiness_gate": true
+    },
+    {
+      "artifact_id": "real_triton_first_slice_evidence_portfolio",
+      "contract": "real_triton_first_slice_evidence_portfolio.research_boundary.v0",
+      "digest": "sha256:b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
+      "source_free": true,
+      "status": "PASS",
+      "supports_readiness_gate": true
+    },
+    {
+      "artifact_id": "objective_alpha_catalog_acyclicity_gate",
+      "contract": "objective_alpha.catalog_acyclicity_gate.data_only.v0",
+      "digest": "sha256:ae855671d8987b05fa39228a2c8f15774bf56f1b77c6d2eaf5722c7dd6c7d8dd",
+      "source_free": true,
+      "status": "PASS",
+      "supports_readiness_gate": true
+    }
+  ],
+  "checked_evidence_count": 7,
+  "evidence_policy": "digest_only_fixed_artifact_scan",
+  "gate_contract": "real_triton_first_slice_admission_readiness_gate.data_only.v0",
+  "gate_id": "real_triton_first_slice_admission_readiness_gate",
+  "gate_passed": false,
+  "gate_status": "blocked_missing_maintainer_security_review_approval",
+  "issues": [],
+  "remaining_external_evidence": [
+    "maintainer_security_review_approval"
+  ],
+  "remaining_external_evidence_count": 1,
+  "required_invariants": [
+    "first_slice_plan_bound",
+    "maintainer_review_packet_ready",
+    "external_approval_artifact_absent",
+    "source_ingestion_admission_gate_fail_closed",
+    "first_real_kernel_path_passed",
+    "first_slice_evidence_portfolio_passed",
+    "catalog_acyclicity_passed",
+    "direct_source_ingestion_false",
+    "source_to_compute_graph_false",
+    "source_to_hac_ir_false",
+    "source_to_runtime_plan_false",
+    "surface_opened_false",
+    "digest_only_source_free_evidence"
+  ],
+  "schema_version": "tuc.real_triton_first_slice_admission_readiness_gate_report.v0",
+  "source_free": true,
+  "surface_opened": false,
+  "target_slice": "bounded_source_buffer_to_source_intent_plain_data",
+  "target_surface": "direct_source_ingestion"
+}

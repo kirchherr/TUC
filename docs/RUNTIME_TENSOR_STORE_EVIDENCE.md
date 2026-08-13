@@ -39,6 +39,12 @@ The systolic placement example is:
 python examples/runtime_systolic_tensor_store_evidence.py
 ```
 
+The mixed accelerator placement example is:
+
+```bash
+python examples/runtime_mixed_tensor_store_evidence.py
+```
+
 The CI-facing composition point is:
 
 ```bash
@@ -55,6 +61,12 @@ The systolic placement golden is:
 
 ```text
 tests/golden/runtime_tensor_store_evidence/proof_of_systolic_execution.json
+```
+
+The mixed accelerator placement golden is:
+
+```text
+tests/golden/runtime_tensor_store_evidence/runtime_mixed_backend_equivalence.json
 ```
 
 The Runtime Evidence Matrix inventories `tensor_store_evidence` for every

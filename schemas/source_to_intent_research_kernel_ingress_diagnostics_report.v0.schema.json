@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_diagnostics_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Diagnostics Report v0",
+  "description": "Source-free diagnostics for accepted and rejected explicit kernel ingress module sources.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_case_count",
+    "blocked_claims",
+    "blocked_compiler_outputs",
+    "blocked_execution_surfaces",
+    "cases",
+    "default_parser_status",
+    "diagnostics_contract",
+    "ingress_contract",
+    "input_policy",
+    "output_policy",
+    "parser_output_policy",
+    "parser_status",
+    "raw_source_policy",
+    "raw_value_policy",
+    "rejected_case_count",
+    "rejection_reasons",
+    "schema_version"
+  ],
+  "properties": {
+    "accepted_case_count": {"const": 5},
+    "blocked_claims": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "general_triton_source_ingestion"},
+        {"const": "native_performance_claim"},
+        {"const": "production_parser"}
+      ],
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "blocked_compiler_outputs": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 17,
+      "maxItems": 17,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "items": {"$ref": "#/$defs/case"}
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "diagnostics_contract": {
+      "const": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0"
+    },
+    "ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "input_policy": {"const": "single_triton_module_source_buffer_only"},
+    "output_policy": {
+      "const": "extracted_kernel_source_to_source_intent.v0_plain_data"
+    },
+    "parser_output_policy": {"const": "source_intent.v0_plain_data_only"},
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "rejected_case_count": {"const": 10},
+    "rejection_reasons": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "decorator_call"},
+        {"const": "import_after_kernel_function"},
+        {"const": "import_from_statement"},
+        {"const": "kernel_name_mismatch"},
+        {"const": "missing_triton_jit_decorator"},
+        {"const": "multiple_kernel_functions"},
+        {"const": "preflight_annotation"},
+        {"const": "top_level_side_effect"},
+        {"const": "unsupported_decorator"},
+        {"const": "unsupported_import"}
+      ],
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_diagnostics_report.v0"
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "expectation",
+        "ingress_report_digest",
+        "kernel_name",
+        "module_bytes",
+        "module_digest",
+        "operation_families",
+        "outcome",
+        "rejection_reason",
+        "source_name"
+      ],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/report_text"},
+        "expectation": {"enum": ["accepted", "rejected"]},
+        "ingress_report_digest": {
+          "oneOf": [
+            {"const": ""},
+            {"$ref": "#/$defs/sha256_digest"}
+          ]
+        },
+        "kernel_name": {"$ref": "#/$defs/identifier"},
+        "module_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65536
+        },
+        "module_digest": {"$ref": "#/$defs/sha256_digest"},
+        "operation_families": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "enum": ["elementwise", "matmul", "reduction", "softmax"]
+          },
+          "uniqueItems": true
+        },
+        "outcome": {"enum": ["accepted", "rejected"]},
+        "rejection_reason": {
+          "oneOf": [
+            {"const": ""},
+            {
+              "enum": [
+                "decorator_call",
+                "import_after_kernel_function",
+                "import_from_statement",
+                "kernel_name_mismatch",
+                "missing_triton_jit_decorator",
+                "multiple_kernel_functions",
+                "preflight_annotation",
+                "top_level_side_effect",
+                "unsupported_decorator",
+                "unsupported_import"
+              ]
+            }
+          ]
+        },
+        "source_name": {"$ref": "#/$defs/identifier"}
+      }
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+      "maxLength": 256
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

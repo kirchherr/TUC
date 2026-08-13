@@ -73,6 +73,7 @@ The implementation adds:
 
 - `schemas/workload_scope_report.v0.schema.json`
 - `examples/workload_scope_report.py`
+- `examples/source_to_intent_research_kernel_ingress_workload_scope.py`
 - `docs/WORKLOAD_SCOPE_REPORT.md`
 - `tests/test_workload_scope_report.py`
 - `tests/test_workload_scope_schema.py`
@@ -85,6 +86,8 @@ The implementation adds:
 - Raw tensor data and hardware details remain outside the compiler boundary.
 - Native performance claims remain blocked until the rest of the performance
   proof evidence exists.
+- Kernel Ingress shape-profile evidence can be mapped into diagnostic workload
+  scopes without turning it into benchmark or performance evidence.
 
 ## Rejected Alternatives
 

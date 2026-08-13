@@ -96,6 +96,12 @@ The compiler decision report has its own golden contract:
 tests/golden/compiler_decisions/proof_of_softmax.txt
 ```
 
+The public output closure has its own metadata-only golden contract:
+
+```text
+tests/golden/runtime_execution_output_closure/proof_of_softmax.json
+```
+
 Together these artifacts let reviewers inspect compute intent, movement facts,
 backend support diagnostics, fallback assignment, transfer bytes, and numerical
 correctness independently.

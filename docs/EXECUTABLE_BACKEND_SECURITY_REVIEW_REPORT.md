@@ -26,7 +26,12 @@ variables, or approve native performance claims.
 - Schema tests: `tests/test_executable_backend_security_review_schema.py`
 
 The report is not an execution approval. It records bounded review metadata that
-future native performance proposals can reference.
+future native performance proposals can reference. Executable backend plugin
+surfaces also remain blocked by
+[Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) even
+though its sandbox model, artifact provenance, resource budget,
+fuzz/negative-test evidence, and maintainer approval are now bound as data-only
+lifecycle evidence.
 
 ## Review Fields
 
@@ -65,8 +70,8 @@ names threat-model, sandbox, resource-budget, provenance, and fuzzing evidence,
 and every entry supplies a digest.
 
 It does not mean TUC may execute backend artifacts or make native performance
-claims. Execution remains blocked until a dedicated implementation RFC,
-sandboxing model, tests, and maintainer approval are accepted.
+claims. Execution remains blocked until a dedicated implementation RFC, concrete sandbox
+enforcement, tests, and lifecycle policy changes are accepted.
 
 ## Still Blocked
 
@@ -78,6 +83,9 @@ These remain blocked after this report exists:
 - subprocess execution
 - network access
 - plugin auto-discovery
+- turning complete lifecycle evidence into executable enablement without a
+  dedicated implementation RFC, concrete sandbox enforcement, tests, and
+  lifecycle policy changes
 - native code execution
 - generated-code execution
 - treating a security review as benchmark proof

@@ -1,0 +1,98 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "entries": [
+    {
+      "allowed_operations": [
+        "matmul"
+      ],
+      "binding_id": "external_systolic_reference_projection_v0",
+      "capability_manifest_digest": "sha256:7a282b30b775cca5b826019ee1652ce221a85eef6878c7266febc2202293bbf0",
+      "package_admission_status": "ADMITTED",
+      "package_backend_name": "external-systolic",
+      "package_digest": "sha256:806813974dfde16b46f694566d751b18780d5e43d8455467bf4e5d7ea38b452c",
+      "package_id": "external-systolic-reference-package",
+      "projection_execution_allowed": true,
+      "trusted_executor_backend": "systolic-sim",
+      "trusted_executor_contract_digest": "sha256:8fa2768b1531ae842d95e05ed6a2c5587516716bef6b50aa21894214d6b7f472"
+    },
+    {
+      "allowed_operations": [
+        "elementwise"
+      ],
+      "binding_id": "external_vector_reference_projection_v0",
+      "capability_manifest_digest": "sha256:ca1de79c1935a08617343687a06816821b77e4837ac7ac8430998c746bd60d3a",
+      "package_admission_status": "ADMITTED",
+      "package_backend_name": "external-vector",
+      "package_digest": "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee",
+      "package_id": "external-vector-reference-package",
+      "projection_execution_allowed": true,
+      "trusted_executor_backend": "vector-sim",
+      "trusted_executor_contract_digest": "sha256:89a8be02144416cd98c7aa0e14b1e6cd16dbce7b900da80143756e456cf24d45"
+    }
+  ],
+  "equivalence_comparison_metadata_digest": "sha256:4a51a055dbcbbd87d7fbdbcec4f0ee6a7fa95b79c253cff5d2dcbcf69537e539",
+  "equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "equivalence_passed": true,
+  "execution_mode": "trusted_reference_projection_only",
+  "execution_step_count": 2,
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "external_plugin_execution": false,
+  "fallback_assignment_count": 0,
+  "graph_name": "backend_package_execution_portfolio",
+  "layout_conversion_count": 1,
+  "layout_conversions": [
+    {
+      "bytes_converted": 32,
+      "source_layout": "blocked",
+      "target_layout": "row_major",
+      "target_operation": "activation",
+      "tensor_name": "projection"
+    }
+  ],
+  "output_dtypes": [
+    "float64"
+  ],
+  "output_shapes": [
+    [
+      2,
+      2
+    ]
+  ],
+  "output_tensor_names": [
+    "activated"
+  ],
+  "package_admission_contract": "backend_package_execution_admission.trusted_projection.v0",
+  "package_backend_count": 2,
+  "package_backend_implementation_executed": false,
+  "physical_device_execution": false,
+  "portfolio_admission_digest": "sha256:73eb17ce441c8864bf469bfde8faf6fb51eace3d6284e6b5eafd0dc46436a3ab",
+  "portfolio_contract": "backend_package_execution_portfolio.trusted_projection.v0",
+  "portfolio_policy": "all_assignments_package_bound_no_fallback",
+  "portfolio_status": "PASS",
+  "projected_backend_sequence": [
+    "systolic-sim",
+    "vector-sim"
+  ],
+  "projected_operation_count": 2,
+  "projected_plan_digest": "sha256:93ca3cdbb716de729524b3e0160a60bf4e0b417cd96b939d1097f08fc7ab06c8",
+  "raw_tensor_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.backend_package_execution_portfolio_report.v0",
+  "source_all_assignments_package_bound": true,
+  "source_backend_sequence": [
+    "external-systolic",
+    "external-vector"
+  ],
+  "source_plan_digest": "sha256:07e8d89f89defc556e9fbabe3c6dad386cf332d4952bbd2aeb6cfceb2d1846d6",
+  "transfer_edge_count": 0,
+  "trusted_executor_count": 2,
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

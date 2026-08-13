@@ -25,23 +25,40 @@ _BACKEND_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
 HAC_IR_FORBIDDEN_HARDWARE_ATTRIBUTES: Mapping[str, str] = MappingProxyType(
     {
         "tuc.assigned_backend": "backend assignment belongs to HS-IR",
+        "tuc.backend_artifact": "compiled backend artifacts belong outside HAC-IR",
         "tuc.backend_binary": "compiled backend artifacts belong outside HAC-IR",
         "tuc.backend_config": "backend configuration belongs to capabilities or HS-IR",
         "tuc.backend_kernel": "backend kernel names belong outside HAC-IR",
+        "tuc.cache_line_bytes": (
+            "hardware cache details belong to backend capabilities or performance evidence"
+        ),
         "tuc.cuda_arch": "vendor target details belong to backend capabilities",
         "tuc.cuda_device": "device selection belongs to runtime planning",
         "tuc.cuda_launch_grid": "launch configuration belongs to backend lowering",
         "tuc.cuda_stream": "runtime stream handles belong outside HAC-IR",
+        "tuc.device_uuid": "device identifiers belong to runtime inventory outside HAC-IR",
         "tuc.device_path": "host device paths are not compute intent",
         "tuc.dynamic_library": "dynamic libraries are not HAC-IR data",
+        "tuc.fpga_bitstream": "compiled hardware configuration belongs outside HAC-IR",
         "tuc.generated_artifact": "generated artifacts must not enter HAC-IR",
+        "tuc.hardware_serial": "hardware identifiers belong outside HAC-IR",
         "tuc.hip_target": "vendor target details belong to backend capabilities",
+        "tuc.memory_bank": "hardware memory-bank details belong to backend capabilities or HS-IR",
         "tuc.metal_device": "device selection belongs to runtime planning",
+        "tuc.metal_family": "vendor target details belong to backend capabilities",
         "tuc.neuromorphic_core": "specialized placement belongs to backend capabilities",
+        "tuc.npu_target": "vendor target details belong to backend capabilities",
         "tuc.photonic_mesh": "specialized placement belongs to backend capabilities",
         "tuc.plugin_entrypoint": "plugin entrypoints are not HAC-IR data",
         "tuc.produced_layout": "backend-produced layout belongs to HS-IR",
+        "tuc.rocm_target": "vendor target details belong to backend capabilities",
+        "tuc.runtime_handle": "runtime handles belong outside HAC-IR",
+        "tuc.tensor_core": "vendor execution-unit details belong to backend capabilities",
+        "tuc.tpu_target": "vendor target details belong to backend capabilities",
         "tuc.vendor": "vendor identity belongs to backend capabilities",
+        "tuc.vendor_library": "vendor implementation details belong to benchmark provenance",
+        "tuc.warp_size": "vendor execution model details belong to backend capabilities",
+        "tuc.wavefront_size": "vendor execution model details belong to backend capabilities",
     }
 )
 

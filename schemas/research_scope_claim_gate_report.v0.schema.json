@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/research_scope_claim_gate_report.v0.schema.json",
+  "title": "TUC Research Scope Claim Gate Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "adoption_status",
+    "arbitrary_source_ingestion_claim",
+    "arbitrary_third_party_backend_execution_claim",
+    "artifact_policy",
+    "blocked_claims",
+    "claim_id",
+    "claim_statement",
+    "claim_status",
+    "cuda_replacement_claim",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "external_plugin_execution_claim",
+    "gate_contract",
+    "gate_id",
+    "gate_passed",
+    "gate_status",
+    "generated_artifact_execution_claim",
+    "iree_replacement_claim",
+    "issues",
+    "native_performance_claim",
+    "production_compiler_claim",
+    "real_hardware_backend_execution_claim",
+    "research_scope_claim",
+    "required_invariants",
+    "rocm_replacement_claim",
+    "schema_version",
+    "scope_boundary",
+    "scope_report_digest",
+    "source_ingestion_admitted",
+    "supported_claims",
+    "time_horizon_claim",
+    "tvm_replacement_claim",
+    "xla_replacement_claim"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.research_scope_claim_gate_report.v0"},
+    "gate_contract": {"const": "research_scope.claim_gate.data_only.v0"},
+    "gate_id": {"const": "research_scope_claim_gate"},
+    "gate_passed": {"const": true},
+    "gate_status": {"const": "PASS"},
+    "claim_id": {"const": "the_universal_compute_research_scope"},
+    "claim_statement": {"const": "hardware_independent_compute_intent_research_proof"},
+    "claim_status": {"const": "supported_for_current_research_scope"},
+    "scope_boundary": {"const": "research_proof_not_compiler_replacement"},
+    "adoption_status": {"const": "pre_alpha_research"},
+    "time_horizon_claim": {"const": "no_timeline_claim"},
+    "artifact_policy": {"const": "digest_only_source_free"},
+    "evidence_policy": {"const": "top_level_gate_digest_only_source_free"},
+    "research_scope_claim": {"const": true},
+    "production_compiler_claim": {"const": false},
+    "cuda_replacement_claim": {"const": false},
+    "rocm_replacement_claim": {"const": false},
+    "xla_replacement_claim": {"const": false},
+    "tvm_replacement_claim": {"const": false},
+    "iree_replacement_claim": {"const": false},
+    "native_performance_claim": {"const": false},
+    "real_hardware_backend_execution_claim": {"const": false},
+    "arbitrary_source_ingestion_claim": {"const": false},
+    "arbitrary_third_party_backend_execution_claim": {"const": false},
+    "generated_artifact_execution_claim": {"const": false},
+    "external_plugin_execution_claim": {"const": false},
+    "source_ingestion_admitted": {"const": false},
+    "evidence_count": {"const": 6},
+    "scope_report_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "issues": {"type": "array", "maxItems": 0},
+    "supported_claims": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"const": "hardware_independent_compute_intent_current_research_scope"},
+        {"const": "capability_driven_runtime_planning_current_slice"},
+        {"const": "trusted_prototype_backend_execution_current_slice"},
+        {"const": "backend_equivalence_metadata_checked"},
+        {"const": "source_intent_to_runtime_research_path_bounded"},
+        {"const": "secure_by_design_admission_boundaries"}
+      ]
+    },
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "prefixItems": [
+        {"const": "cuda_replacement"},
+        {"const": "rocm_replacement"},
+        {"const": "xla_replacement"},
+        {"const": "tvm_replacement"},
+        {"const": "iree_replacement"},
+        {"const": "production_compiler"},
+        {"const": "arbitrary_triton_source_ingestion"},
+        {"const": "arbitrary_pytorch_model_support"},
+        {"const": "native_performance_parity"},
+        {"const": "real_hardware_backend_execution"},
+        {"const": "external_plugin_execution"},
+        {"const": "generated_artifact_execution"}
+      ]
+    },
+    "required_invariants": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "prefixItems": [
+        {"const": "objective_alpha_research_claim_gate_passed"},
+        {"const": "source_to_intent_research_capability_claim_gate_passed"},
+        {"const": "performance_interpretation_blocks_native_claims"},
+        {"const": "source_ingestion_maintainer_approval_artifact_absent"},
+        {"const": "source_ingestion_admission_gate_blocks_direct_source_ingestion"},
+        {"const": "source_ingestion_preclaim_evidence_graph_acyclic"},
+        {"const": "top_level_evidence_digest_bound"},
+        {"const": "metadata_only_source_free_artifacts"},
+        {"const": "production_compiler_claim_false"},
+        {"const": "vendor_replacement_claims_false"},
+        {"const": "native_performance_claim_false"}
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract",
+            "digest",
+            "evidence_id",
+            "source_free",
+            "status",
+            "supports_scope"
+          ],
+          "properties": {
+            "evidence_id": {"const": "objective_alpha_research_claim_gate"},
+            "contract": {"const": "objective_alpha.research_claim_gate.ci.v0"},
+            "status": {"const": "PASS"},
+            "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+            "source_free": {"const": true},
+            "supports_scope": {"const": true}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract",
+            "digest",
+            "evidence_id",
+            "source_free",
+            "status",
+            "supports_scope"
+          ],
+          "properties": {
+            "evidence_id": {"const": "source_to_intent_research_capability_claim_gate"},
+            "contract": {"const": "source_to_intent_research_capability_claim_gate.ci.v0"},
+            "status": {"const": "PASS"},
+            "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+            "source_free": {"const": true},
+            "supports_scope": {"const": true}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract",
+            "digest",
+            "evidence_id",
+            "source_free",
+            "status",
+            "supports_scope"
+          ],
+          "properties": {
+            "evidence_id": {"const": "performance_proof_interpretation"},
+            "contract": {"const": "performance_proof_boundary.blocking.v0"},
+            "status": {"const": "blocked"},
+            "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+            "source_free": {"const": true},
+            "supports_scope": {"const": true}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract",
+            "digest",
+            "evidence_id",
+            "source_free",
+            "status",
+            "supports_scope"
+          ],
+          "properties": {
+            "evidence_id": {"const": "source_ingestion_maintainer_approval_artifact"},
+            "contract": {"const": "source_ingestion_maintainer_approval_artifact.absent.v0"},
+            "status": {"const": "external_approval_not_supplied"},
+            "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+            "source_free": {"const": true},
+            "supports_scope": {"const": true}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract",
+            "digest",
+            "evidence_id",
+            "source_free",
+            "status",
+            "supports_scope"
+          ],
+          "properties": {
+            "evidence_id": {"const": "source_ingestion_admission_gate"},
+            "contract": {"const": "source_ingestion_admission_gate.fail_closed.v0"},
+            "status": {"const": "blocked_missing_maintainer_security_review_approval"},
+            "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+            "source_free": {"const": true},
+            "supports_scope": {"const": true}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract",
+            "digest",
+            "evidence_id",
+            "source_free",
+            "status",
+            "supports_scope"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "source_ingestion_preclaim_evidence_graph_acyclicity_gate"
+            },
+            "contract": {
+              "const": "source_ingestion_preclaim_acyclicity_gate.data_only.v0"
+            },
+            "status": {"const": "PASS"},
+            "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+            "source_free": {"const": true},
+            "supports_scope": {"const": true}
+          }
+        }
+      ]
+    }
+  }
+}

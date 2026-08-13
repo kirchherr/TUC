@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/backend_package_execution_admission_report.v0.schema.json",
+  "title": "TUC Backend Package Execution Admission Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_contract",
+    "admission_policy",
+    "admission_status",
+    "allowed_operations",
+    "binding_id",
+    "blocked_execution_surfaces",
+    "capability_manifest_digest",
+    "declared_operations",
+    "execution_mode",
+    "external_plugin_execution",
+    "integration_report_matches",
+    "integration_status",
+    "issues",
+    "memory_domain",
+    "package_backend_implementation_executed",
+    "package_backend_name",
+    "package_digest",
+    "package_id",
+    "package_version",
+    "physical_device_execution",
+    "produced_layouts",
+    "projection_execution_allowed",
+    "schema_version",
+    "supported_layouts",
+    "trusted_executor_backend",
+    "trusted_executor_contract_digest",
+    "trusted_executor_registry"
+  ],
+  "properties": {
+    "schema_version": { "const": "tuc.backend_package_execution_admission_report.v0" },
+    "admission_contract": { "const": "backend_package_execution_admission.trusted_projection.v0" },
+    "admission_policy": { "const": "digest_bound_pre_registered_executor_only" },
+    "admission_status": { "enum": ["ADMITTED", "BLOCKED"] },
+    "execution_mode": { "const": "trusted_reference_projection_only" },
+    "package_id": { "$ref": "#/$defs/identifier" },
+    "package_version": { "$ref": "#/$defs/identifier" },
+    "package_digest": { "$ref": "#/$defs/digest" },
+    "capability_manifest_digest": { "$ref": "#/$defs/digest" },
+    "package_backend_name": { "$ref": "#/$defs/identifier" },
+    "integration_report_matches": { "type": "boolean" },
+    "integration_status": { "enum": ["PASS", "FAIL"] },
+    "declared_operations": { "$ref": "#/$defs/operations" },
+    "memory_domain": { "enum": ["analog_weight_bank", "device_sram", "gpu_hbm", "host_ram"] },
+    "supported_layouts": { "$ref": "#/$defs/layouts" },
+    "produced_layouts": { "$ref": "#/$defs/layouts" },
+    "binding_id": { "$ref": "#/$defs/identifier" },
+    "trusted_executor_backend": { "$ref": "#/$defs/identifier" },
+    "trusted_executor_contract_digest": { "$ref": "#/$defs/digest" },
+    "allowed_operations": { "$ref": "#/$defs/operations" },
+    "projection_execution_allowed": { "type": "boolean" },
+    "issues": {
+      "type": "array",
+      "maxItems": 32,
+      "items": { "$ref": "#/$defs/issue" }
+    },
+    "trusted_executor_registry": { "const": "trusted_runtime_executor_registry.v0" },
+    "external_plugin_execution": { "const": false },
+    "package_backend_implementation_executed": { "const": false },
+    "physical_device_execution": { "const": false },
+    "blocked_execution_surfaces": {
+      "const": [
+        "backend_plugin_discovery",
+        "device_access",
+        "dynamic_import",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "jit_execution",
+        "network_access",
+        "subprocess_execution"
+      ]
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,255}$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "operations": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 4,
+      "items": { "enum": ["elementwise", "matmul", "reduction", "softmax"] }
+    },
+    "layouts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "maxItems": 5,
+      "items": { "enum": ["blocked", "column_major", "row_major", "unknown", "vector"] }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issue_code", "subject"],
+      "properties": {
+        "issue_code": { "$ref": "#/$defs/identifier" },
+        "subject": { "$ref": "#/$defs/identifier" }
+      }
+    }
+  }
+}

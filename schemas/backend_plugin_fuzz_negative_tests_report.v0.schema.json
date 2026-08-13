@@ -1,0 +1,224 @@
+{
+  "$id": "https://tuc.dev/schemas/backend_plugin_fuzz_negative_tests_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_provenance_contract": {"const": "backend_plugin_artifact_provenance.data_only.v0"},
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "type": "array"
+    },
+    "case_count": {"const": 5},
+    "cases": {
+      "items": false,
+      "maxItems": 32,
+      "minItems": 5,
+      "prefixItems": [
+        {"$ref": "#/$defs/forbidden_execution_surface_case"},
+        {"$ref": "#/$defs/invalid_digest_case"},
+        {"$ref": "#/$defs/oversized_resource_budget_case"},
+        {"$ref": "#/$defs/duplicate_record_case"},
+        {"$ref": "#/$defs/schema_fail_closed_case"}
+      ],
+      "type": "array"
+    },
+    "evidence_ready": {"const": true},
+    "execution_allowed": {"const": false},
+    "execution_permission": {"const": "not_granted"},
+    "issues": {
+      "items": {"$ref": "#/$defs/negative_test_issue"},
+      "maxItems": 64,
+      "type": "array"
+    },
+    "negative_tests_contract": {"const": "backend_plugin_fuzz_negative_tests.data_only.v0"},
+    "negative_tests_policy": {"const": "fuzz_negative_tests.required_cases.no_execution.v0"},
+    "negative_tests_status": {"const": "accepted_data_only_test_evidence"},
+    "required_bindings": {
+      "items": false,
+      "maxItems": 5,
+      "minItems": 5,
+      "prefixItems": [
+        {"const": "sandbox_model"},
+        {"const": "artifact_provenance"},
+        {"const": "resource_budget"},
+        {"const": "negative_case_inventory"},
+        {"const": "fuzz_seed_policy"}
+      ],
+      "type": "array"
+    },
+    "resource_budget_contract": {"const": "backend_plugin_resource_budget.data_only.v0"},
+    "sandbox_model_contract": {"const": "backend_plugin_sandbox_model.data_only.v0"},
+    "schema_version": {"const": "tuc.backend_plugin_fuzz_negative_tests_report.v0"},
+    "seed_policy": {"const": "deterministic_seed_ids_only"}
+  },
+  "required": [
+    "artifact_provenance_contract",
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "evidence_ready",
+    "execution_allowed",
+    "execution_permission",
+    "issues",
+    "negative_tests_contract",
+    "negative_tests_policy",
+    "negative_tests_status",
+    "required_bindings",
+    "resource_budget_contract",
+    "sandbox_model_contract",
+    "schema_version",
+    "seed_policy"
+  ],
+  "type": "object",
+  "$defs": {
+    "base_case": {
+      "additionalProperties": false,
+      "properties": {
+        "blocked_surface": {"$ref": "#/$defs/blocked_surface"},
+        "case_id": {"$ref": "#/$defs/report_text"},
+        "case_kind": {"$ref": "#/$defs/case_kind"},
+        "case_status": {"const": "covered_by_repository_tests"},
+        "evidence_id": {"$ref": "#/$defs/report_text"},
+        "expected_result": {"const": "rejects_before_execution"},
+        "seed_id": {"$ref": "#/$defs/report_text"}
+      },
+      "required": [
+        "blocked_surface",
+        "case_id",
+        "case_kind",
+        "case_status",
+        "evidence_id",
+        "expected_result",
+        "seed_id"
+      ],
+      "type": "object"
+    },
+    "blocked_surface": {
+      "enum": [
+        "backend_plugin_discovery",
+        "device_access",
+        "dynamic_import",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "jit_execution",
+        "network_access",
+        "subprocess_execution"
+      ],
+      "type": "string"
+    },
+    "case_kind": {
+      "enum": [
+        "duplicate_record",
+        "forbidden_execution_surface",
+        "invalid_digest",
+        "oversized_resource_budget",
+        "schema_fail_closed"
+      ],
+      "type": "string"
+    },
+    "duplicate_record_case": {
+      "$ref": "#/$defs/base_case",
+      "properties": {
+        "case_id": {"const": "duplicate_evidence_record"},
+        "case_kind": {"const": "duplicate_record"}
+      }
+    },
+    "forbidden_execution_surface_case": {
+      "$ref": "#/$defs/base_case",
+      "properties": {
+        "case_id": {"const": "forbidden_execution_surface_identifier"},
+        "case_kind": {"const": "forbidden_execution_surface"}
+      }
+    },
+    "invalid_digest_case": {
+      "$ref": "#/$defs/base_case",
+      "properties": {
+        "case_id": {"const": "invalid_artifact_digest"},
+        "case_kind": {"const": "invalid_digest"}
+      }
+    },
+    "issue_code": {
+      "enum": [
+        "artifact_provenance_binding_mismatch",
+        "blocked_surface_invalid",
+        "case_kind_invalid",
+        "case_status_invalid",
+        "duplicate_case_id",
+        "execution_permission_granted",
+        "expected_result_invalid",
+        "missing_required_binding",
+        "missing_required_case_kind",
+        "resource_budget_binding_mismatch",
+        "sandbox_binding_mismatch",
+        "seed_policy_mismatch"
+      ],
+      "type": "string"
+    },
+    "negative_test_issue": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {"$ref": "#/$defs/report_text"},
+        "issue_code": {"$ref": "#/$defs/issue_code"}
+      },
+      "required": ["case_id", "issue_code"],
+      "type": "object"
+    },
+    "oversized_resource_budget_case": {
+      "$ref": "#/$defs/base_case",
+      "properties": {
+        "case_id": {"const": "oversized_resource_budget"},
+        "case_kind": {"const": "oversized_resource_budget"}
+      }
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "schema_fail_closed_case": {
+      "$ref": "#/$defs/base_case",
+      "properties": {
+        "case_id": {"const": "schema_forbidden_surface_keys"},
+        "case_kind": {"const": "schema_fail_closed"}
+      }
+    }
+  }
+}

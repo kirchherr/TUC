@@ -1,0 +1,323 @@
+from __future__ import annotations
+
+import subprocess
+import sys
+from dataclasses import replace
+from pathlib import Path
+
+import pytest
+
+from examples.source_to_intent_research_diagnostics import (
+    build_source_to_intent_research_diagnostic_cases,
+)
+from examples.source_to_intent_research_evidence_gate import (
+    FRONTEND_CONFORMANCE_GATE_EVIDENCE_ID,
+    RESEARCH_DIAGNOSTICS_EVIDENCE_ID,
+    SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE_CONTRACT,
+    SourceToIntentResearchEvidenceGateError,
+    build_gate_report,
+)
+from examples.source_to_intent_research_kernel_ingress_diagnostics import (
+    build_source_to_intent_research_kernel_ingress_diagnostic_cases,
+)
+from tuc.frontend import (
+    SOURCE_TO_INTENT_BLOCKED_EXECUTION_SURFACES,
+    SOURCE_TO_INTENT_PARSER_GATE_CONTRACT,
+    SOURCE_TO_INTENT_REQUIRED_EVIDENCE,
+    SourceToIntentReadinessEvidence,
+    SourceToIntentReadinessReport,
+    build_source_to_intent_research_diagnostics_report,
+    build_source_to_intent_research_kernel_ingress_diagnostics_report,
+)
+
+_GOLDEN = Path("tests/golden/frontend/source_to_intent_research_evidence_gate.txt")
+
+
+def test_source_to_intent_research_evidence_gate_matches_golden() -> None:
+    report = build_gate_report()
+
+    assert report == _GOLDEN.read_text(encoding="utf-8")
+    assert (
+        f'gate_contract = "{SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE_CONTRACT}"'
+        in report
+    )
+    assert 'readiness = "ready"' in report
+    assert 'conformance_gate = "passed"' in report
+    assert 'diagnostics = "passed"' in report
+    assert 'preflight_bridge = "passed"' in report
+    assert 'execution_bridge = "passed"' in report
+    assert 'idiom_alignment = "passed"' in report
+    assert 'kernel_ingress_diagnostics = "passed"' in report
+    assert 'kernel_ingress_conformance_gate = "passed"' in report
+    assert 'kernel_ingress_idiom_alignment = "passed"' in report
+    assert 'kernel_ingress_proof_bundle = "passed"' in report
+    assert 'kernel_ingress_evidence_gate = "passed"' in report
+    assert 'kernel_ingress = "passed"' in report
+    assert 'source_runtime_smoke = "passed"' in report
+    assert 'status = "PASS"' in report
+
+
+def test_source_to_intent_research_evidence_gate_example_runs() -> None:
+    completed = subprocess.run(
+        [sys.executable, "examples/source_to_intent_research_evidence_gate.py"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.stdout == _GOLDEN.read_text(encoding="utf-8")
+    assert "sha256:" in completed.stdout
+    assert RESEARCH_DIAGNOSTICS_EVIDENCE_ID in completed.stdout
+    assert "preflight_bridge_digest" in completed.stdout
+    assert "execution_bridge_digest" in completed.stdout
+    assert "idiom_alignment_digest" in completed.stdout
+    assert "kernel_ingress_diagnostics_digest" in completed.stdout
+    assert "kernel_ingress_conformance_gate_digest" in completed.stdout
+    assert "kernel_ingress_idiom_alignment_digest" in completed.stdout
+    assert "kernel_ingress_proof_bundle_digest" in completed.stdout
+    assert "kernel_ingress_evidence_gate_digest" in completed.stdout
+    assert "kernel_ingress_digest" in completed.stdout
+    assert "source_runtime_smoke_digest" in completed.stdout
+    assert "@triton.jit" not in completed.stdout
+    assert "import triton" not in completed.stdout
+    assert "python_source" not in completed.stdout
+    assert "source_intent_payload" not in completed.stdout
+
+
+def test_source_to_intent_research_evidence_gate_rejects_incomplete_readiness() -> None:
+    readiness = SourceToIntentReadinessReport(
+        proposal_name="research-source-to-intent-parser-proposal",
+        gate_contract=SOURCE_TO_INTENT_PARSER_GATE_CONTRACT,
+        checked_evidence=tuple(
+            SourceToIntentReadinessEvidence(
+                evidence_id=evidence_id,
+                present=evidence_id != RESEARCH_DIAGNOSTICS_EVIDENCE_ID,
+            )
+            for evidence_id in SOURCE_TO_INTENT_REQUIRED_EVIDENCE
+        ),
+        blocked_execution_surfaces=SOURCE_TO_INTENT_BLOCKED_EXECUTION_SURFACES,
+        issues=(),
+    )
+
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="diagnostics evidence missing",
+    ):
+        build_gate_report(readiness_report=readiness)
+
+
+def test_source_to_intent_research_evidence_gate_requires_frontend_conformance() -> None:
+    readiness = SourceToIntentReadinessReport(
+        proposal_name="research-source-to-intent-parser-proposal",
+        gate_contract=SOURCE_TO_INTENT_PARSER_GATE_CONTRACT,
+        checked_evidence=tuple(
+            SourceToIntentReadinessEvidence(
+                evidence_id=evidence_id,
+                present=evidence_id != FRONTEND_CONFORMANCE_GATE_EVIDENCE_ID,
+            )
+            for evidence_id in SOURCE_TO_INTENT_REQUIRED_EVIDENCE
+        ),
+        blocked_execution_surfaces=SOURCE_TO_INTENT_BLOCKED_EXECUTION_SURFACES,
+        issues=(),
+    )
+
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="frontend conformance gate evidence missing",
+    ):
+        build_gate_report(readiness_report=readiness)
+
+
+def test_source_to_intent_research_evidence_gate_rejects_tampered_conformance() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="conformance gate binding missing",
+    ):
+        build_gate_report(conformance_gate_text='status = "PASS"\n')
+
+
+def test_source_to_intent_research_evidence_gate_rejects_tampered_execution_bridge() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="execution bridge binding missing",
+    ):
+        build_gate_report(execution_bridge_text='{"status": "PASS"}\n')
+
+
+def test_source_to_intent_research_evidence_gate_rejects_tampered_preflight_bridge() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="preflight bridge binding missing",
+    ):
+        build_gate_report(preflight_bridge_text='{"status": "PASS"}\n')
+
+
+def test_source_to_intent_research_evidence_gate_rejects_tampered_idiom_alignment() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="idiom alignment binding missing",
+    ):
+        build_gate_report(idiom_alignment_text='{"status": "PASS"}\n')
+
+
+def test_source_to_intent_research_evidence_gate_rejects_tampered_kernel_ingress() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="kernel ingress binding missing",
+    ):
+        build_gate_report(kernel_ingress_text='{"status": "PASS"}\n')
+
+
+def test_research_evidence_gate_rejects_tampered_kernel_ingress_conformance() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="kernel ingress conformance binding missing",
+    ):
+        build_gate_report(kernel_ingress_conformance_gate_text='status = "PASS"\n')
+
+
+def test_research_evidence_gate_rejects_tampered_kernel_ingress_idiom_alignment() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="kernel ingress idiom alignment binding missing",
+    ):
+        build_gate_report(kernel_ingress_idiom_alignment_text='{"status": "PASS"}\n')
+
+
+def test_research_evidence_gate_rejects_tampered_kernel_ingress_proof_bundle() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="kernel ingress proof bundle binding missing",
+    ):
+        build_gate_report(kernel_ingress_proof_bundle_text='{"status": "PASS"}\n')
+
+
+def test_research_evidence_gate_rejects_tampered_kernel_ingress_evidence_gate() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="kernel ingress evidence gate binding missing",
+    ):
+        build_gate_report(kernel_ingress_evidence_gate_text='status = "PASS"\n')
+
+
+def test_source_to_intent_research_evidence_gate_rejects_kernel_ingress_diagnostic_drift() -> None:
+    diagnostics = build_source_to_intent_research_kernel_ingress_diagnostics_report(
+        build_source_to_intent_research_kernel_ingress_diagnostic_cases()
+    )
+    tampered_case = replace(diagnostics.cases[0], source_name="wrong_source")
+    tampered_report = replace(
+        diagnostics,
+        cases=(tampered_case, *diagnostics.cases[1:]),
+    )
+
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="kernel ingress source binding changed",
+    ):
+        build_gate_report(kernel_ingress_diagnostics_report=tampered_report)
+
+
+def test_source_to_intent_research_evidence_gate_rejects_tampered_source_runtime_smoke() -> None:
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="source runtime smoke binding missing",
+    ):
+        build_gate_report(source_runtime_smoke_text='{"status": "PASS"}\n')
+
+
+def test_source_to_intent_research_evidence_gate_rejects_source_leakage() -> None:
+    leaky_conformance = (
+        'source_intent_frontend_conformance = "passed"\n'
+        'parser_sources = "research_matmul_elementwise,research_softmax_reduction"\n'
+        'status = "PASS"\n'
+        "@triton.jit\n"
+    )
+
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="forbidden source fragment",
+    ):
+        build_gate_report(conformance_gate_text=leaky_conformance)
+
+
+def test_source_to_intent_research_evidence_gate_rejects_source_binding_drift() -> None:
+    diagnostics = build_source_to_intent_research_diagnostics_report(
+        build_source_to_intent_research_diagnostic_cases()
+    )
+    tampered_case = replace(diagnostics.cases[0], source_name="wrong_source")
+    tampered_report = replace(
+        diagnostics,
+        cases=(tampered_case, *diagnostics.cases[1:]),
+    )
+
+    with pytest.raises(
+        SourceToIntentResearchEvidenceGateError,
+        match="parser source binding changed",
+    ):
+        build_gate_report(diagnostics_report=tampered_report)
+
+
+def test_source_to_intent_research_evidence_gate_is_documented_and_in_ci() -> None:
+    gate_path = "examples/source_to_intent_research_evidence_gate.py"
+    doc_path = "SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md"
+
+    for path in (
+        Path(".github/workflows/ci.yml"),
+        Path("README.md"),
+        Path("docs/ROADMAP_STATUS.md"),
+        Path("docs/SOURCE_TO_INTENT_READINESS.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_IDIOM_ALIGNMENT.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_CONFORMANCE_GATE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_IDIOM_ALIGNMENT.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_EVIDENCE_GATE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_PROOF_BUNDLE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_PREFLIGHT_BRIDGE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_SOURCE_RUNTIME_SMOKE.md"),
+        Path("rfcs/0159-source-to-intent-research-evidence-gate.md"),
+        Path("rfcs/0161-source-to-intent-research-idiom-alignment.md"),
+        Path("rfcs/0162-source-to-intent-research-preflight-bridge.md"),
+        Path("rfcs/0164-source-to-intent-research-source-runtime-smoke.md"),
+        Path("rfcs/0165-source-to-intent-research-kernel-ingress.md"),
+        Path("rfcs/0166-source-to-intent-research-kernel-ingress-diagnostics.md"),
+        Path("rfcs/0167-source-to-intent-research-kernel-ingress-conformance-gate.md"),
+        Path("rfcs/0168-source-to-intent-research-kernel-ingress-idiom-alignment.md"),
+        Path("rfcs/0169-source-to-intent-research-kernel-ingress-proof-bundle.md"),
+        Path("rfcs/0172-source-to-intent-research-kernel-ingress-evidence-gate.md"),
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert gate_path in text
+    for path in (
+        Path("README.md"),
+        Path("docs/SOURCE_TO_INTENT_READINESS.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS.md"),
+        Path("rfcs/0159-source-to-intent-research-evidence-gate.md"),
+    ):
+        assert doc_path in path.read_text(encoding="utf-8")
+
+
+def test_source_to_intent_research_evidence_gate_docs_include_bound_replay_index() -> None:
+    replay_path = (
+        "examples/"
+        "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py"
+    )
+    replay_doc = "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_REPLAY_VERIFIER_INDEX.md"
+
+    for path in (
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md"),
+        Path("docs/SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS.md"),
+        Path(
+            "docs/"
+            "SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_RUNTIME_OUTPUT_CLOSURE_INDEX.md"
+        ),
+        Path("rfcs/0209-source-to-intent-research-kernel-ingress-runtime-output-closure-index.md"),
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert replay_path in text
+        assert "Follow-Up Evidence" not in text
+
+    evidence_gate_doc = Path("docs/SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE.md")
+    assert replay_doc in evidence_gate_doc.read_text(encoding="utf-8")

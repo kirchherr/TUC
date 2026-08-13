@@ -1,0 +1,114 @@
+{
+  "artifact_policy": "allowlisted_repository_goldens_digest_only_source_free",
+  "blocked_claims": [
+    "arbitrary_triton_source_ingestion",
+    "production_source_parser",
+    "broad_source_code_parsing",
+    "source_to_compute_graph_admission",
+    "native_backend_execution",
+    "native_performance_parity",
+    "real_hardware_backend_execution",
+    "external_plugin_execution",
+    "generated_artifact_execution",
+    "vendor_compiler_replacement",
+    "cuda_replacement",
+    "production_source_sandbox",
+    "external_release_attestation_verified",
+    "public_registry_worker_image"
+  ],
+  "capsule_contract": "objective_beta.reproducibility_capsule.digest_manifest.v0",
+  "capsule_id": "objective_beta_reproducibility_capsule",
+  "capsule_metadata_digest": "151e525e26c403c42e7a5db56e38e13a38bbb7e401da569143ea643b42bbd518",
+  "capsule_status": "reproducible_from_repository_goldens",
+  "claim_digest": "62068f98733ce98c204950dc330db5097dd409bbb1a3147e63e13953b3cd0ec9",
+  "claim_gate_digest": "848077abba5bcbeefa98b2fd0410152a88576646b1223ecc539ab8759c0b209a",
+  "claim_gate_id": "objective_beta_research_claim_gate",
+  "claim_id": "objective_beta_universal_compute_research_claim",
+  "claim_metadata_digest": "73141d48c541f34ddbd3597512e95b2e337c638140bddad05917f7f2a7bad65a",
+  "evidence": [
+    {
+      "artifact_id": "objective_alpha_research_claim_gate",
+      "content_type": "application/json",
+      "digest": "4bcb5b7e2a0c448f6fc5bc08e5940e292bfbb025d11bc8338d2d02ac5b26e017",
+      "role": "predecessor_claim_gate",
+      "source_free": true
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "content_type": "application/json",
+      "digest": "afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
+      "role": "kernel_ingress_proof",
+      "source_free": true
+    },
+    {
+      "artifact_id": "first_real_triton_kernel_path",
+      "content_type": "application/json",
+      "digest": "3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
+      "role": "bounded_kernel_path",
+      "source_free": true
+    },
+    {
+      "artifact_id": "real_triton_first_slice_evidence_portfolio",
+      "content_type": "application/json",
+      "digest": "b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
+      "role": "first_slice_portfolio",
+      "source_free": true
+    },
+    {
+      "artifact_id": "real_triton_first_slice_admission_readiness_gate",
+      "content_type": "application/json",
+      "digest": "6ad675e07d4be4720af23239483967b6fe1392bb55a574d4c391d6770c3ac041",
+      "role": "fail_closed_admission_readiness",
+      "source_free": true
+    },
+    {
+      "artifact_id": "real_triton_first_slice_maintainer_approval_request",
+      "content_type": "application/json",
+      "digest": "c12b3a88aeeaaf09db136e46e97cb8336d643d3b870fc856701f53a9dd5cd794",
+      "role": "external_review_request",
+      "source_free": true
+    },
+    {
+      "artifact_id": "research_scope_claim_gate",
+      "content_type": "application/json",
+      "digest": "1477335ebd5cb3ca072829f4a6eafd6549c71c369fb0eefe650ab8200ff78b2a",
+      "role": "research_scope_boundary",
+      "source_free": true
+    },
+    {
+      "artifact_id": "oci_source_ingestion_research_proof",
+      "content_type": "application/json",
+      "digest": "ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
+      "role": "kernel_isolation_proof",
+      "source_free": true
+    },
+    {
+      "artifact_id": "oci_source_worker_release_provenance_readiness",
+      "content_type": "application/json",
+      "digest": "731df67576bd172f9833bf92a18ca4af452b8c8af3ca33c7f48616e9305e2e36",
+      "role": "release_provenance_readiness",
+      "source_free": true
+    },
+    {
+      "artifact_id": "objective_beta_research_claim",
+      "content_type": "application/json",
+      "digest": "62068f98733ce98c204950dc330db5097dd409bbb1a3147e63e13953b3cd0ec9",
+      "role": "research_claim",
+      "source_free": true
+    },
+    {
+      "artifact_id": "objective_beta_research_claim_gate",
+      "content_type": "application/json",
+      "digest": "848077abba5bcbeefa98b2fd0410152a88576646b1223ecc539ab8759c0b209a",
+      "role": "research_claim_gate",
+      "source_free": true
+    }
+  ],
+  "evidence_count": 11,
+  "external_approval_required": true,
+  "native_performance_claim": false,
+  "replay_policy": "no_source_compiler_runtime_or_backend_execution",
+  "schema_version": "tuc.objective_beta_reproducibility_capsule_report.v0",
+  "source_ingestion_admitted": false,
+  "vendor_replacement_claim": false
+}

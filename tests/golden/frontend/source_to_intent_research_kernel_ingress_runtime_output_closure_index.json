@@ -1,0 +1,216 @@
+{
+  "artifact_policy": "digest_only_values_omitted",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_count": 5,
+  "cases": [
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:3bf16c20ab722477e9242ea5f900f4adae0ab2b2a86d01bbb851b666f2264500",
+      "bundle_report_digest": "sha256:950f584c7f739bf38a556eedbed1d8d2c5f7b364b6af140254bd904091a32b42",
+      "case_id": "research_module_matmul_elementwise",
+      "execution_receipt_digest": "sha256:1809c9674a5f533071b7694d046ccc4d6d7e22e0db42e1c22a3aed7aa1a4c94a",
+      "graph_name": "research_matmul_elementwise",
+      "kernel_name": "matmul_elementwise",
+      "operation_path": [
+        "matmul",
+        "elementwise"
+      ],
+      "output_closure_check_count": 2,
+      "output_closure_contract": "runtime_execution_output_closure.data_only.v0",
+      "output_closure_metadata_digest": "sha256:694eb7efaf7142f757da34459b674ff846fa6adfe81e519f37f30ab815171552",
+      "output_closure_policy_id": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0",
+      "output_closure_report_digest": "sha256:abf2e1b45161a58a929f4f91666d17bbfa356585969b6ffbc867766f2ffb32a0",
+      "output_closure_status": "closed_by_metadata_digest",
+      "output_count": 1,
+      "passed": true,
+      "public_output_bundle_digest": "sha256:9d686592a5f753eae3cb4ff8509f1899947584092ba88af1f815ebe7711abbb1",
+      "raw_value_policy": "omitted_by_policy",
+      "source_output_contract_digest": "sha256:2b44f807c5ddfb087ff977452bb91efa83a276fe0775e0ce9fd3ef53280568bf",
+      "source_output_contract_item_count": 1,
+      "source_public_output_bundle_item_count": 1,
+      "status": "runtime_output_closure_bound",
+      "step_count": 2,
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:38f7c85fceefaab22bbdc0f32d5cf354e98f13b81baa179886fee342d59df49f",
+      "bundle_report_digest": "sha256:9948865203b175d3816697d57be728f2aae4dd13e7ac525434397c0586ad5aa4",
+      "case_id": "research_module_softmax_reduction",
+      "execution_receipt_digest": "sha256:db848b2dea5fe804bada102667e5e7c3d72745d01e9deb914d8728a1102da6bd",
+      "graph_name": "research_softmax_reduction",
+      "kernel_name": "softmax_reduction",
+      "operation_path": [
+        "softmax",
+        "reduction"
+      ],
+      "output_closure_check_count": 2,
+      "output_closure_contract": "runtime_execution_output_closure.data_only.v0",
+      "output_closure_metadata_digest": "sha256:5fbb1741d573932dcd5967734884f37d18b05b331a6a44761af14f1228f9366c",
+      "output_closure_policy_id": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0",
+      "output_closure_report_digest": "sha256:095e18be5df92bd1dab0415c2a1b8a7738ffcb9ec97675e5aa352af8be690e4b",
+      "output_closure_status": "closed_by_metadata_digest",
+      "output_count": 1,
+      "passed": true,
+      "public_output_bundle_digest": "sha256:2b5f0fe805c255964993ade0cd4f4144a4a816dc79836037a561e5b3bc0f0804",
+      "raw_value_policy": "omitted_by_policy",
+      "source_output_contract_digest": "sha256:3f5c8e3622b45112dd51d0d7132d7d4ebc10f5f595dc1e3c0f35b6560174e243",
+      "source_output_contract_item_count": 1,
+      "source_public_output_bundle_item_count": 1,
+      "status": "runtime_output_closure_bound",
+      "step_count": 2,
+      "terminal_outputs": [
+        "row_sum"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:367eb6db42b75dc124537611afaefc0ddc30179e69556c5176f8b679d7568a22",
+      "bundle_report_digest": "sha256:a8b1117a718d193cdd760d9c1b1b2a4a92a6a1e45292663d8ef46327e28faa0b",
+      "case_id": "research_module_matmul_reduction",
+      "execution_receipt_digest": "sha256:c6411093f76357eb4020b48b2157bb50e875df1626eca1613ef5f2a43c05440f",
+      "graph_name": "research_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "operation_path": [
+        "matmul",
+        "reduction"
+      ],
+      "output_closure_check_count": 2,
+      "output_closure_contract": "runtime_execution_output_closure.data_only.v0",
+      "output_closure_metadata_digest": "sha256:78d0171626d2716f4937b596895c1f7aef351ba443f86b81d726d3453464e0f9",
+      "output_closure_policy_id": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0",
+      "output_closure_report_digest": "sha256:0c9330007bbb78698d229b80dae3b239cf88d508863a2e08f87fb1ff5a98a954",
+      "output_closure_status": "closed_by_metadata_digest",
+      "output_count": 1,
+      "passed": true,
+      "public_output_bundle_digest": "sha256:2441348900f187a54584453b5e983de87ad0e8f1fb7f74d6a29c81048dcac9da",
+      "raw_value_policy": "omitted_by_policy",
+      "source_output_contract_digest": "sha256:fb46d9c458865353ce49b5952941a4c929c4f869b36bd8c13bd4a85b1fdf9198",
+      "source_output_contract_item_count": 1,
+      "source_public_output_bundle_item_count": 1,
+      "status": "runtime_output_closure_bound",
+      "step_count": 2,
+      "terminal_outputs": [
+        "column_sum"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:7c1eca768a457010ff2996d4ca8e76ca54b8f599dad908fab722c22de6dbab88",
+      "bundle_report_digest": "sha256:9c4bdf8b7878796d1cf3cf5877b8b3012a33704ef9b53e7218be385b96b48956",
+      "case_id": "research_module_softmax_elementwise",
+      "execution_receipt_digest": "sha256:43a010316b363892a091151730924bfff884f89b60fd08a6fe74e541022b5e45",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_path": [
+        "softmax",
+        "elementwise"
+      ],
+      "output_closure_check_count": 2,
+      "output_closure_contract": "runtime_execution_output_closure.data_only.v0",
+      "output_closure_metadata_digest": "sha256:123602d1718288f59f71c04095edb6cb4b31d67b3c7a482e865bb12954edb9c4",
+      "output_closure_policy_id": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0",
+      "output_closure_report_digest": "sha256:2a063e514d81ad3f96b18b6849cee3824e4d984c0abe5defd1e6923ff147c5af",
+      "output_closure_status": "closed_by_metadata_digest",
+      "output_count": 1,
+      "passed": true,
+      "public_output_bundle_digest": "sha256:091512a300d483edab62a9c0d79b9fab8a2fe3b1ccc48fa2a1c31b4715a14507",
+      "raw_value_policy": "omitted_by_policy",
+      "source_output_contract_digest": "sha256:b65991e2e6309c28bf0806bdb1639805a255b178d1dfb5a08dde96e9b0d64c23",
+      "source_output_contract_item_count": 1,
+      "source_public_output_bundle_item_count": 1,
+      "status": "runtime_output_closure_bound",
+      "step_count": 2,
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "bundle_metadata_digest": "sha256:571607255989fcbfd4527213ff7c3fe6eb2d7a3f674e9f69324ac7b34e3519de",
+      "bundle_report_digest": "sha256:7180d27c599e6690448fa8c2f7e901f3bdb06d5ac9ecbe75bb4e65f14efc1a0e",
+      "case_id": "research_module_mvp_pipeline",
+      "execution_receipt_digest": "sha256:6a3b2cf7d2990077a7b79324fd28ab04f127b14be03ccd096388bb7f0c80062a",
+      "graph_name": "research_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "operation_path": [
+        "matmul",
+        "softmax",
+        "reduction",
+        "elementwise"
+      ],
+      "output_closure_check_count": 2,
+      "output_closure_contract": "runtime_execution_output_closure.data_only.v0",
+      "output_closure_metadata_digest": "sha256:0b69a48ecd143505d304f55aa2bf80c31e4adfe13bc5c2c28a5921a30b2c8832",
+      "output_closure_policy_id": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0",
+      "output_closure_report_digest": "sha256:c3ee1a5dafa05483b1d12e8e1557d42180447fbef2b021a3fd5f7c9b6c7714ca",
+      "output_closure_status": "closed_by_metadata_digest",
+      "output_count": 1,
+      "passed": true,
+      "public_output_bundle_digest": "sha256:788665d5a1bbdd33ee0fe7e87b88e98666f9f657ce7e99aa5de70b670be404c8",
+      "raw_value_policy": "omitted_by_policy",
+      "source_output_contract_digest": "sha256:09da0bcc23c6de1f673cf31db59243cfcda85c734b9f4933e13a4093400836fe",
+      "source_output_contract_item_count": 1,
+      "source_public_output_bundle_item_count": 1,
+      "status": "runtime_output_closure_bound",
+      "step_count": 4,
+      "terminal_outputs": [
+        "stable"
+      ]
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "output_closure_contract": "runtime_execution_output_closure.data_only.v0",
+  "output_closure_index_contract": "source_to_intent_research_kernel_ingress_runtime_output_closure_index.review.v0",
+  "output_closure_policy_id": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0",
+  "output_closure_required_evidence_kinds": [
+    "output_contract",
+    "public_output_bundle"
+  ],
+  "output_closure_schema_version": "tuc.runtime_execution_output_closure_report.v0",
+  "output_closure_status": "closed_by_metadata_digest",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "runtime_evidence_bundle_contract": "runtime_execution_evidence_bundle.data_only.v0",
+  "runtime_evidence_bundle_index_contract": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0",
+  "runtime_evidence_bundle_index_digest": "sha256:11742c03cf15a2599682ea08289a0868c98b66853de5bb08d2d0a32c2d3ac53f",
+  "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+  "runtime_matrix_digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
+  "runtime_step_trace_contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
+  "runtime_step_trace_digest": "sha256:642defa2dde723a98ddcb781e7f31cf01ab8e8b0f07f7d971a42a94eacd55ff1",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_output_closure_index_report.v0",
+  "source_boundary": "kernel_ingress_runtime_to_output_closure_index",
+  "status": "PASS",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

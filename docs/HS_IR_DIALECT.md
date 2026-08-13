@@ -78,6 +78,20 @@ All numeric totals must be finite, non-negative, and internally consistent:
 `total_data_movement_bytes` must equal transfer bytes plus layout-conversion
 bytes.
 
+## Runtime Alignment Evidence
+
+Runtime HS-IR Plan Alignment checks that HS-IR backend assignments, produced
+layouts, and runtime-transfer summary totals match the accepted `PartitionPlan`
+and observed `RuntimeExecutionTrace` for the current mixed accelerator slice.
+
+Run it with:
+
+```bash
+python examples/runtime_hs_ir_plan_alignment.py
+```
+
+See [Runtime HS-IR Plan Alignment](RUNTIME_HS_IR_PLAN_ALIGNMENT.md).
+
 ## Security Rules
 
 The HS-IR contract is declarative validation only:

@@ -1,0 +1,77 @@
+{
+  "admission_status": "blocked",
+  "admitted": false,
+  "allowed_inputs": [
+    "bounded_source_buffer",
+    "declared_source_name",
+    "declared_shape_profile"
+  ],
+  "allowed_outputs": [
+    "source_intent_plain_data",
+    "sanitized_diagnostics",
+    "metadata_digest"
+  ],
+  "artifact_policy": "digest_only_source_free",
+  "blocked_claims": [
+    "accepts_arbitrary_triton_source",
+    "production_parser",
+    "executes_generated_artifacts",
+    "executes_native_backends",
+    "imports_external_frontend_packages",
+    "runs_triton_jit",
+    "uses_real_devices"
+  ],
+  "blocked_execution_surfaces": [
+    "frontend_package_import",
+    "plugin_discovery",
+    "triton_jit_execution",
+    "device_access",
+    "generated_artifact_execution",
+    "native_backend_execution",
+    "python_import",
+    "network_access",
+    "subprocess_execution",
+    "dynamic_library_loading"
+  ],
+  "denied_outputs": [
+    "compute_graph",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "generated_artifact",
+    "python_function_object",
+    "backend_artifact"
+  ],
+  "implementation_status": "not_implemented",
+  "issues": [],
+  "proposal_name": "direct_source_ingestion_first_slice",
+  "proposal_status": "accepted_requirements_only",
+  "remaining_evidence": [
+    "maintainer_security_review_approval"
+  ],
+  "remaining_evidence_count": 1,
+  "required_controls": [
+    "bounded_source_buffer",
+    "decode_only_before_validation",
+    "source_buffer_size_limit",
+    "ast_node_limit",
+    "ast_depth_limit",
+    "fail_closed_diagnostics",
+    "no_python_import",
+    "no_triton_jit",
+    "no_device_access",
+    "no_generated_artifacts",
+    "no_source_to_hac_ir_shortcut",
+    "source_intent_plain_data_only",
+    "digest_only_public_evidence",
+    "maintainer_security_review_required"
+  ],
+  "required_controls_count": 14,
+  "rfc_contract": "admitting_source_ingestion_rfc.data_only.v0",
+  "rfc_digest": "sha256:16b2189b60b71642d116f601b559a67aaa11ae198dbf364abda207a4e976ea53",
+  "rfc_id": "admitting_source_ingestion_rfc",
+  "schema_version": "tuc.admitting_source_ingestion_rfc_report.v0",
+  "source_ingestion_admission_ready": false,
+  "target_slice": "bounded_source_buffer_to_source_intent_plain_data",
+  "target_surface": "direct_source_ingestion"
+}

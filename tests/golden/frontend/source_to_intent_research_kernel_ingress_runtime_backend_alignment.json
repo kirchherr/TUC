@@ -1,0 +1,152 @@
+{
+  "alignment_contract": "source_to_intent_research_kernel_ingress_runtime_backend_alignment.trusted_executor.v0",
+  "artifact_policy": "metadata_only_source_free",
+  "backend_support_matrix": [
+    {
+      "backend_name": "linear-sim",
+      "status": "trusted_conformant",
+      "supported_operation_families": [
+        "matmul",
+        "reduction"
+      ]
+    },
+    {
+      "backend_name": "vector-sim",
+      "status": "trusted_conformant",
+      "supported_operation_families": [
+        "elementwise",
+        "reduction",
+        "softmax"
+      ]
+    }
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "case_alignments": [
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_elementwise",
+      "kernel_name": "matmul_elementwise",
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "status": "aligned",
+      "supported_operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_reduction",
+      "kernel_name": "softmax_reduction",
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "status": "aligned",
+      "supported_operation_families": [
+        "elementwise",
+        "reduction",
+        "softmax"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "status": "aligned",
+      "supported_operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "status": "aligned",
+      "supported_operation_families": [
+        "elementwise",
+        "reduction",
+        "softmax"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "status": "aligned",
+      "supported_operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ]
+    }
+  ],
+  "observed_backend_names": [
+    "linear-sim",
+    "vector-sim"
+  ],
+  "required_backend_names": [
+    "linear-sim",
+    "vector-sim"
+  ],
+  "runtime_coverage_policy_contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
+  "runtime_coverage_policy_digest": "sha256:4a81e92b00569a56b9753914311b0908b4ea9d98071146df5feec2990d30e83a",
+  "runtime_executor_conformance_contract": "runtime_executor_conformance.trusted.v0",
+  "runtime_executor_conformance_digest": "sha256:7b4a2c74ccc805fbca6e5452ae7da27b907ac9e40a606f30501aabef981b88ae",
+  "runtime_executor_conformance_schema_version": "tuc.runtime_executor_conformance_report.v0",
+  "runtime_executor_contract": "runtime_executor.trusted_backend.v0",
+  "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+  "runtime_matrix_digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_backend_alignment_report.v0",
+  "source_boundary": "kernel_ingress_runtime_matrix_to_trusted_executor_conformance",
+  "status": "PASS",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

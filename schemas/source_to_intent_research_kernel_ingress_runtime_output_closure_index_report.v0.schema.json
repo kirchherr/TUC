@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_runtime_output_closure_index_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Runtime Output Closure Index Report v0",
+  "description": "Digest-only index over Runtime Execution Output Closure reports for Kernel Ingress research cases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "default_parser_status",
+    "executor_contract",
+    "frontend_ingress_contract",
+    "output_closure_contract",
+    "output_closure_index_contract",
+    "output_closure_policy_id",
+    "output_closure_required_evidence_kinds",
+    "output_closure_schema_version",
+    "output_closure_status",
+    "parser_status",
+    "raw_source_policy",
+    "raw_value_policy",
+    "runtime_evidence_bundle_contract",
+    "runtime_evidence_bundle_index_contract",
+    "runtime_evidence_bundle_index_digest",
+    "runtime_matrix_contract",
+    "runtime_matrix_digest",
+    "runtime_step_trace_contract",
+    "runtime_step_trace_digest",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "trusted_executor_registry"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "digest_only_values_omitted"},
+    "blocked_execution_surfaces": {"$ref": "#/$defs/blocked_execution_surfaces"},
+    "case_count": {"const": 5},
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case"},
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "executor_contract": {"const": "runtime_executor.trusted_backend.v0"},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "output_closure_contract": {
+      "const": "runtime_execution_output_closure.data_only.v0"
+    },
+    "output_closure_index_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_output_closure_index.review.v0"
+    },
+    "output_closure_policy_id": {
+      "const": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0"
+    },
+    "output_closure_required_evidence_kinds": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "output_contract"},
+        {"const": "public_output_bundle"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "output_closure_schema_version": {
+      "const": "tuc.runtime_execution_output_closure_report.v0"
+    },
+    "output_closure_status": {"const": "closed_by_metadata_digest"},
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "runtime_evidence_bundle_contract": {
+      "const": "runtime_execution_evidence_bundle.data_only.v0"
+    },
+    "runtime_evidence_bundle_index_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0"
+    },
+    "runtime_evidence_bundle_index_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_matrix_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0"
+    },
+    "runtime_matrix_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_step_trace_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0"
+    },
+    "runtime_step_trace_digest": {"$ref": "#/$defs/sha256_digest"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_runtime_output_closure_index_report.v0"
+    },
+    "source_boundary": {
+      "const": "kernel_ingress_runtime_to_output_closure_index"
+    },
+    "status": {"const": "PASS"},
+    "trusted_executor_registry": {"const": "trusted_runtime_executor_registry.v0"}
+  },
+  "$defs": {
+    "backend": {"enum": ["linear-sim", "vector-sim"]},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_sequence",
+        "bundle_metadata_digest",
+        "bundle_report_digest",
+        "case_id",
+        "execution_receipt_digest",
+        "graph_name",
+        "kernel_name",
+        "operation_path",
+        "output_closure_check_count",
+        "output_closure_contract",
+        "output_closure_metadata_digest",
+        "output_closure_policy_id",
+        "output_closure_report_digest",
+        "output_closure_status",
+        "output_count",
+        "passed",
+        "public_output_bundle_digest",
+        "raw_value_policy",
+        "source_output_contract_digest",
+        "source_output_contract_item_count",
+        "source_public_output_bundle_item_count",
+        "status",
+        "step_count",
+        "terminal_outputs"
+      ],
+      "properties": {
+        "backend_sequence": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/backend"},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "bundle_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "bundle_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "case_id": {
+          "enum": [
+            "research_module_matmul_elementwise",
+            "research_module_softmax_reduction",
+            "research_module_matmul_reduction",
+            "research_module_softmax_elementwise",
+            "research_module_mvp_pipeline"
+          ]
+        },
+        "execution_receipt_digest": {"$ref": "#/$defs/sha256_digest"},
+        "graph_name": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction",
+            "research_matmul_reduction",
+            "research_softmax_elementwise",
+            "research_mvp_pipeline"
+          ]
+        },
+        "kernel_name": {
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction",
+            "matmul_reduction",
+            "softmax_elementwise",
+            "mvp_pipeline"
+          ]
+        },
+        "operation_path": {
+          "type": "array",
+          "items": {"enum": ["elementwise", "matmul", "reduction", "softmax"]},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "output_closure_check_count": {"const": 2},
+        "output_closure_contract": {
+          "const": "runtime_execution_output_closure.data_only.v0"
+        },
+        "output_closure_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "output_closure_policy_id": {
+          "const": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0"
+        },
+        "output_closure_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "output_closure_status": {"const": "closed_by_metadata_digest"},
+        "output_count": {"const": 1},
+        "passed": {"const": true},
+        "public_output_bundle_digest": {"$ref": "#/$defs/sha256_digest"},
+        "raw_value_policy": {"const": "omitted_by_policy"},
+        "source_output_contract_digest": {"$ref": "#/$defs/sha256_digest"},
+        "source_output_contract_item_count": {"const": 1},
+        "source_public_output_bundle_item_count": {"const": 1},
+        "status": {"const": "runtime_output_closure_bound"},
+        "step_count": {"enum": [2, 4]},
+        "terminal_outputs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "maxItems": 1
+        }
+      }
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

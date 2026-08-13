@@ -1,0 +1,72 @@
+{
+  "allocation_mode": "dry_run_only",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "graph_name": "runtime_buffer_lifetime",
+  "handle_policy": "no_runtime_handles",
+  "issues": [],
+  "operation_count": 4,
+  "passed": true,
+  "receipt_contract": "runtime_allocation_receipt.data_only.v0",
+  "receipt_count": 3,
+  "receipt_metadata_digest": "sha256:72dd23f73383d7283222f439bde0f4210f83ed4f9f91a0f51be2a81e7ed96187",
+  "receipts": [
+    {
+      "allocation_mode": "dry_run_only",
+      "allocation_status": "dry_run_recorded",
+      "budget_id": "host_ram_alpha_budget",
+      "bytes_reserved": 64,
+      "domain_max_reserved_bytes": 192,
+      "domain_offset_bytes": 0,
+      "domain_total_reserved_bytes": 192,
+      "handle_policy": "no_runtime_handles",
+      "memory_domain": "host_ram",
+      "receipt_id": "allocation_receipt_001",
+      "request_id": "alloc_request_001",
+      "slot_id": "slot_001"
+    },
+    {
+      "allocation_mode": "dry_run_only",
+      "allocation_status": "dry_run_recorded",
+      "budget_id": "host_ram_alpha_budget",
+      "bytes_reserved": 64,
+      "domain_max_reserved_bytes": 192,
+      "domain_offset_bytes": 64,
+      "domain_total_reserved_bytes": 192,
+      "handle_policy": "no_runtime_handles",
+      "memory_domain": "host_ram",
+      "receipt_id": "allocation_receipt_002",
+      "request_id": "alloc_request_002",
+      "slot_id": "slot_002"
+    },
+    {
+      "allocation_mode": "dry_run_only",
+      "allocation_status": "dry_run_recorded",
+      "budget_id": "host_ram_alpha_budget",
+      "bytes_reserved": 64,
+      "domain_max_reserved_bytes": 192,
+      "domain_offset_bytes": 128,
+      "domain_total_reserved_bytes": 192,
+      "handle_policy": "no_runtime_handles",
+      "memory_domain": "host_ram",
+      "receipt_id": "allocation_receipt_003",
+      "request_id": "alloc_request_003",
+      "slot_id": "slot_003"
+    }
+  ],
+  "schema_version": "tuc.runtime_allocation_receipt_report.v0",
+  "source_admission_contract": "runtime_allocation_admission.data_only.v0",
+  "source_admission_issue_count": 0,
+  "source_admission_metadata_digest": "sha256:aad1a5938234aa4269272e681d63c5e5b08aea7ac607d4ffb643d008a5e076b6",
+  "source_admission_schema_version": "tuc.runtime_allocation_admission_report.v0",
+  "source_admission_total_admitted_bytes": 192,
+  "total_receipted_bytes": 192
+}

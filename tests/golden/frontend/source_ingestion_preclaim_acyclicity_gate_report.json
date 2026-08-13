@@ -1,0 +1,338 @@
+{
+  "cycle_count": 0,
+  "detected_cycles": [],
+  "edge_count": 25,
+  "edge_direction": "dependent_report_to_bound_evidence",
+  "edges": [
+    {
+      "bound_digest": "sha256:193037f8eda3c7fa47754af5a2b024c6642c6a7df407255bfe59a8f507639d11",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "real_triton_integration_admission_gate"
+    },
+    {
+      "bound_digest": "sha256:78a27e524e8c0d953e43c453a7536f7363e8484d610ae8738389e4da3495dc6a",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "real_triton_surface_gate_completion"
+    },
+    {
+      "bound_digest": "sha256:2031c9801dc03523a5cb0789ada6fbc21772916d72c13698efd1651ae256d712",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "source_ingestion_quarantine_gate"
+    },
+    {
+      "bound_digest": "sha256:357fe0021fc50c6d143cb22654a7897024e832455bbc25c00e20cb7cb0e4851f",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "admitting_source_ingestion_rfc"
+    },
+    {
+      "bound_digest": "sha256:f452052ad0b010257c63dcb7dfb1e006b0b9bd2f9dd49dcb03f14a6f8ded117d",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "bounded_source_buffer_api"
+    },
+    {
+      "bound_digest": "sha256:453f0efe70a8cc1ffc7e9af753cb83e4234aab3f6cae86a1b7e7718aa9d16804",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "source_ingestion_sandbox_implementation"
+    },
+    {
+      "bound_digest": "sha256:a46d4cecf2892c29b5cbc94cc8726e0408e9c05d7906d3d34a49613da9dcaa9b",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "parser_fuzz_negative_corpus_for_admitting_slice"
+    },
+    {
+      "bound_digest": "sha256:8c67eceb982ab47e2e609503f1ffe7fe4ca52794278b69b04bba58329afe09a7",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "source_free_diagnostics_admission_tests"
+    },
+    {
+      "bound_digest": "sha256:d12dc4765799564f2422f1fc8e64588c35c4769427fde894858334cfdbf2ded4",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice"
+    },
+    {
+      "bound_digest": "sha256:5f3abcabd22e5dfa51ccfcdb84051a844f57ba2f26436cc1f58a1ffca99c3bf9",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "ci_replay_for_admitted_slice"
+    },
+    {
+      "bound_digest": "sha256:5e04b1a5bb2997975ac4b5e06299be856ec401dd8dc687354e39caae727fd229",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "source_ingestion_approval_criteria"
+    },
+    {
+      "bound_digest": "sha256:84866ee323974afacfb68dbfec6192873220b89182113737768368d498d2583a",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "source_to_intent_research_source_runtime_smoke"
+    },
+    {
+      "bound_digest": "sha256:b21df339aa9ad48b7e32454a25f440d2d6f16112161575bbeea8a81bee4ca424",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "real_triton_first_admissible_slice_plan",
+      "source_free": true,
+      "to_evidence_id": "source_to_intent_research_kernel_ingress_proof_bundle"
+    },
+    {
+      "bound_digest": "sha256:357fe0021fc50c6d143cb22654a7897024e832455bbc25c00e20cb7cb0e4851f",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "admitting_source_ingestion_rfc"
+    },
+    {
+      "bound_digest": "sha256:f452052ad0b010257c63dcb7dfb1e006b0b9bd2f9dd49dcb03f14a6f8ded117d",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "bounded_source_buffer_api"
+    },
+    {
+      "bound_digest": "sha256:453f0efe70a8cc1ffc7e9af753cb83e4234aab3f6cae86a1b7e7718aa9d16804",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "source_ingestion_sandbox_implementation"
+    },
+    {
+      "bound_digest": "sha256:a46d4cecf2892c29b5cbc94cc8726e0408e9c05d7906d3d34a49613da9dcaa9b",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "parser_fuzz_negative_corpus_for_admitting_slice"
+    },
+    {
+      "bound_digest": "sha256:8c67eceb982ab47e2e609503f1ffe7fe4ca52794278b69b04bba58329afe09a7",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "source_free_diagnostics_admission_tests"
+    },
+    {
+      "bound_digest": "sha256:d12dc4765799564f2422f1fc8e64588c35c4769427fde894858334cfdbf2ded4",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice"
+    },
+    {
+      "bound_digest": "sha256:5f3abcabd22e5dfa51ccfcdb84051a844f57ba2f26436cc1f58a1ffca99c3bf9",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "ci_replay_for_admitted_slice"
+    },
+    {
+      "bound_digest": "sha256:5e04b1a5bb2997975ac4b5e06299be856ec401dd8dc687354e39caae727fd229",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "source_ingestion_approval_criteria"
+    },
+    {
+      "bound_digest": "sha256:65214f077055807d5c796ee6cc668f48fc93b7b8e85c568b9214b78b6466efb0",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "source_free": true,
+      "to_evidence_id": "real_triton_first_admissible_slice_plan"
+    },
+    {
+      "bound_digest": "sha256:6b046dec85320fd63aad7c47cb299e88bfbea30796efca74b2fa9c1e24ae6f62",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_maintainer_approval_artifact",
+      "source_free": true,
+      "to_evidence_id": "source_ingestion_maintainer_security_review_packet"
+    },
+    {
+      "bound_digest": "sha256:6b046dec85320fd63aad7c47cb299e88bfbea30796efca74b2fa9c1e24ae6f62",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_admission_gate",
+      "source_free": true,
+      "to_evidence_id": "source_ingestion_maintainer_security_review_packet"
+    },
+    {
+      "bound_digest": "sha256:a224ed736022c9979b96629e05c138722cd9055539f7a3f9d7187d1f23c3c56c",
+      "edge_kind": "digest_binding",
+      "from_evidence_id": "source_ingestion_admission_gate",
+      "source_free": true,
+      "to_evidence_id": "source_ingestion_maintainer_approval_artifact"
+    }
+  ],
+  "evidence_policy": "edge_digest_only_source_free",
+  "gate_contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
+  "gate_id": "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
+  "gate_status": "PASS",
+  "graph_scope": "source_ingestion_first_slice_to_admission_gate",
+  "node_count": 17,
+  "nodes": [
+    {
+      "contract": "real_triton_integration_admission.data_only.v0",
+      "evidence_id": "real_triton_integration_admission_gate",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "blocked"
+    },
+    {
+      "contract": "real_triton_surface_gate_completion.data_only.v0",
+      "evidence_id": "real_triton_surface_gate_completion",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "complete"
+    },
+    {
+      "contract": "source_ingestion_quarantine_gate.data_only.v0",
+      "evidence_id": "source_ingestion_quarantine_gate",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "quarantine_only"
+    },
+    {
+      "contract": "admitting_source_ingestion_rfc.data_only.v0",
+      "evidence_id": "admitting_source_ingestion_rfc",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "accepted_requirements_only"
+    },
+    {
+      "contract": "bounded_source_buffer_api.execution_free.v0",
+      "evidence_id": "bounded_source_buffer_api",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "implemented_non_admitting"
+    },
+    {
+      "contract": "source_ingestion_sandbox_implementation.execution_free.v0",
+      "evidence_id": "source_ingestion_sandbox_implementation",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "implemented_non_admitting"
+    },
+    {
+      "contract": "parser_fuzz_negative_corpus_for_admitting_slice.data_only.v0",
+      "evidence_id": "parser_fuzz_negative_corpus_for_admitting_slice",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "complete_non_admitting"
+    },
+    {
+      "contract": "source_free_diagnostics_admission_tests.data_only.v0",
+      "evidence_id": "source_free_diagnostics_admission_tests",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "complete_non_admitting"
+    },
+    {
+      "contract": "source_to_intent_plain_data_output_golden_for_admitted_slice.data_only.v0",
+      "evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "complete_non_admitting"
+    },
+    {
+      "contract": "ci_replay_for_admitted_slice.ci.v0",
+      "evidence_id": "ci_replay_for_admitted_slice",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "contract": "source_ingestion_approval_criteria.data_only.v0",
+      "evidence_id": "source_ingestion_approval_criteria",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "criteria_defined_not_approved"
+    },
+    {
+      "contract": "source_to_intent_research_source_runtime_smoke.e2e.v0",
+      "evidence_id": "source_to_intent_research_source_runtime_smoke",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
+      "evidence_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "node_kind": "leaf_evidence",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "contract": "real_triton_first_slice_plan.data_only.v0",
+      "evidence_id": "real_triton_first_admissible_slice_plan",
+      "node_kind": "evidence_report",
+      "source_free": true,
+      "status": "blocked_until_admitting_source_ingestion_evidence"
+    },
+    {
+      "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
+      "evidence_id": "source_ingestion_maintainer_security_review_packet",
+      "node_kind": "evidence_report",
+      "source_free": true,
+      "status": "ready_for_maintainer_review"
+    },
+    {
+      "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
+      "evidence_id": "source_ingestion_maintainer_approval_artifact",
+      "node_kind": "evidence_report",
+      "source_free": true,
+      "status": "external_approval_not_supplied"
+    },
+    {
+      "contract": "source_ingestion_admission_gate.fail_closed.v0",
+      "evidence_id": "source_ingestion_admission_gate",
+      "node_kind": "evidence_report",
+      "source_free": true,
+      "status": "blocked_missing_maintainer_security_review_approval"
+    }
+  ],
+  "required_invariants": [
+    "edge_endpoints_declared",
+    "graph_is_acyclic",
+    "dependency_first_topological_order_emitted",
+    "digest_only_source_free_edges",
+    "research_scope_claim_not_in_preclaim_graph"
+  ],
+  "schema_version": "tuc.source_ingestion_preclaim_acyclicity_gate_report.v0",
+  "source_free": true,
+  "topological_order": [
+    "admitting_source_ingestion_rfc",
+    "bounded_source_buffer_api",
+    "ci_replay_for_admitted_slice",
+    "parser_fuzz_negative_corpus_for_admitting_slice",
+    "real_triton_integration_admission_gate",
+    "real_triton_surface_gate_completion",
+    "source_free_diagnostics_admission_tests",
+    "source_ingestion_approval_criteria",
+    "source_ingestion_quarantine_gate",
+    "source_ingestion_sandbox_implementation",
+    "source_to_intent_plain_data_output_golden_for_admitted_slice",
+    "source_to_intent_research_kernel_ingress_proof_bundle",
+    "source_to_intent_research_source_runtime_smoke",
+    "real_triton_first_admissible_slice_plan",
+    "source_ingestion_maintainer_security_review_packet",
+    "source_ingestion_maintainer_approval_artifact",
+    "source_ingestion_admission_gate"
+  ]
+}

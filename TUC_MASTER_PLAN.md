@@ -79,6 +79,58 @@ TUC is:
 - an execution orchestration layer
 - an experiment in hardware independence
 
+## Research Claim Boundary
+
+TUC's near-term objective is not to replace CUDA, ROCm, XLA, TVM, IREE, MLIR,
+or production vendor compiler stacks.
+
+The research objective is narrower and falsifiable: prove that a
+hardware-independent compute interface can preserve source intent, expose
+capability-driven planning decisions, and attach enough evidence that frontend
+intake, runtime execution, and performance-boundary claims can be reviewed
+without trusting opaque backend behavior.
+
+Open proof obligations include:
+
+- a narrow Source-to-Intent parser that turns caller-provided source buffers
+  into `source_intent.v0` plain data without importing, evaluating decorators,
+  executing `@triton.jit`, or producing `ComputeGraph` directly
+- leaky-abstraction evidence showing which performance facts stay outside
+  HAC-IR and which backend decisions are allowed in HS-IR/runtime planning
+- planner-overhead and performance-boundary evidence before any native
+  performance claim is accepted
+- external review and conformance evidence before claiming ecosystem
+  compatibility
+
+The narrow Source-to-Intent obligation now has a stronger research prototype:
+one realistic bounded module is parsed in a fixed, resource-limited Linux
+worker, independently revalidated in the parent, and carried through the
+no-fallback Systolic/Vector package portfolio with reference correctness and
+backend equivalence. This closes process isolation for the current research
+slice, not production admission. Filesystem namespaces, kernel network
+isolation, syscall filtering, broader parser coverage, and independent
+security approval remain open before any production source-ingestion claim.
+
+The current narrow slice now also crosses a dedicated OCI boundary with
+kernel-observed network and filesystem isolation, seccomp,
+no-new-privileges, zero capabilities, non-root identity, and cgroup limits.
+Its Source Intent digest is bound to the no-fallback Systolic/Vector execution
+proof. This establishes a practical kernel-isolated research path while
+retaining an explicit boundary: published image provenance, independent
+security review, broader syntax coverage, and production admission are not yet
+claimed.
+
+The protected release path now builds the same worker as a `linux/amd64` OCI
+Image Layout archive, verifies its descriptor graph and fixed non-root runtime
+configuration without extraction, generates a dedicated CycloneDX SBOM, and
+configures GitHub OIDC provenance and SBOM attestations. The same GitHub-hosted
+run must independently execute GitHub CLI verification against a policy-bound
+repository, signer workflow, commit, ref, issuer, predicate, and runner class,
+then emit a bounded receipt. This closes release-path verification readiness
+for the research artifact. An executed protected release run, external
+consumer verification, public registry publication, production source
+ingestion, and a production sandbox remain outside the claim.
+
 ## Non-Negotiable Principles
 
 ### Principle 1
@@ -290,12 +342,17 @@ Transition:
 ```text
 Real Triton Kernel
         ->
+bounded Source-to-Intent parser
+        ->
+Source Intent IR
+        ->
 Frontend Adapter
         ->
 HAC-IR
 ```
 
-After this milestone, TUC becomes significantly more credible.
+After this milestone, TUC becomes significantly more credible as a research
+proof. It still does not become a CUDA replacement.
 
 ### Milestone 3: Backend Author Test
 
@@ -303,6 +360,22 @@ Question: can an external developer integrate a backend without modifying the
 TUC core?
 
 If no, the architecture is not ready.
+
+Current result: **PASS for capability and planning integration; executable
+backend admission remains blocked.** The data-only contract is documented in
+`docs/BACKEND_INTEGRATION_PACKAGE.md`. The runnable proof
+`examples/backend_integration_package.py` consumes the portable reference
+package `examples/backend_packages/external_vector.v0.json` without a core
+change or plugin import. Its fail-closed contracts are
+`schemas/backend_integration_package.v0.schema.json` and
+`schemas/backend_integration_package_report.v0.schema.json`; the deterministic
+result is frozen at
+`tests/golden/backend_integration_package/external_vector_report.json` and the
+decision is recorded in `rfcs/0282-backend-integration-package.md`.
+
+This proves the external ownership boundary for capability declaration,
+negative conformance, and compiler selection. It does not prove a native ABI,
+vendor code execution, device access, or performance.
 
 ### Milestone 4: Heterogeneous Execution Proof
 
@@ -315,6 +388,90 @@ Specialized Backend
 ```
 
 working together.
+
+Backend Package Execution Admission first proved the transition from one
+external capability package to a digest-bound trusted executor projection. Its
+historical evidence remains
+`docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md`,
+`examples/backend_package_execution_proof.py`,
+`schemas/backend_package_execution_admission_report.v0.schema.json`,
+`schemas/backend_package_execution_proof_report.v0.schema.json`,
+`tests/golden/backend_package_execution/admission_report.json`,
+`tests/golden/backend_package_execution/proof_report.json`, and
+`rfcs/0283-backend-package-execution-admission.md`.
+
+Backend Package Execution Portfolio now proves the stronger no-fallback
+composition path:
+
+```text
+external-systolic -> external-vector
+        |                  |
+        v                  v
+  systolic-sim ------> vector-sim
+```
+
+The package boundary is exact and data-only, the intermediate
+`blocked -> row_major` layout conversion remains explicit, execution uses only
+fixed trusted simulators, and Runtime Backend Equivalence passes against the
+all-CPU baseline.
+
+Evidence:
+
+`docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
+`examples/backend_package_execution_portfolio.py`,
+`examples/backend_packages/external_systolic.v0.json`,
+`schemas/backend_package_execution_portfolio_report.v0.schema.json`,
+`tests/golden/backend_integration_package/external_systolic_report.json`,
+`tests/golden/backend_package_execution_portfolio/proof_report.json`, and
+`rfcs/0284-multi-package-execution-portfolio.md`.
+
+This materially advances Milestones 3 and 4 but does not close the native
+target: external package code, GPU kernels, specialized physical devices, and
+native performance remain unexecuted and unproven.
+
+The Source Intent Backend Package Portfolio now closes the frontend-to-package
+gap in the same milestone:
+
+```text
+Source Intent -> HAC-IR -> external package portfolio
+              -> trusted heterogeneous execution
+              -> public outputs + reference correctness + equivalence
+```
+
+It runs from `examples/source_intent_backend_package_portfolio.py` and is
+documented by `docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md`, with
+`schemas/source_intent_backend_package_portfolio_report.v0.schema.json`,
+`tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+and `rfcs/0285-source-intent-backend-package-portfolio.md`. This is the first
+single live proof connecting neutral frontend intent to independently declared
+heterogeneous capability ownership without fallback or external code
+execution.
+
+The Triton Research Backend Package Portfolio now advances that result from
+plain frontend data to the fixed realistic syntax slice:
+
+```text
+bounded Triton module text -> Source Intent -> HAC-IR
+  -> external package portfolio -> trusted heterogeneous execution
+  -> public output + independent correctness + equivalence
+```
+
+Evidence is provided by
+`docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md`,
+`examples/triton_research_backend_package_portfolio.py`,
+`schemas/triton_research_backend_package_portfolio_report.v0.schema.json`,
+`tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+and `rfcs/0286-triton-research-backend-package-portfolio.md`. Source remains a
+bounded research input: module imports, decorators, JIT, external packages, and
+native backends are not executed, and production source ingestion remains
+unadmitted.
+
+RFC 0287 closes the first source-value semantic gap: the fixed Triton
+`tl.where(x > 0, x, 0)` form is represented as neutral
+`elementwise_kind=relu`, mapped to the bounded runtime kernel, and checked with
+negative-valued inputs against an independent reference. Exact redundant
+`tl.where(x > 0, x, x)` is modeled as identity; every other `where` form fails
+closed. This keeps the research proof honest without widening source admission.
 
 ## Strategic Risks
 

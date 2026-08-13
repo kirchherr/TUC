@@ -1,0 +1,321 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/real_triton_first_slice_maintainer_approval_request_report.v0.schema.json",
+  "title": "TUC Real Triton First Slice Maintainer Approval Request Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_decision",
+    "admission_ready",
+    "admitted",
+    "approval_artifact_present",
+    "approval_request_is_approval",
+    "approval_request_scope",
+    "approval_status",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "direct_source_ingestion",
+    "evidence_policy",
+    "external_approval_evidence",
+    "external_approval_evidence_count",
+    "external_approval_required",
+    "issues",
+    "request_contract",
+    "request_id",
+    "request_status",
+    "required_invariants",
+    "review_checklist",
+    "review_checklist_count",
+    "review_packet_count",
+    "review_packets",
+    "schema_version",
+    "source_free",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_runtime_plan",
+    "surface_opened",
+    "target_slice",
+    "target_surface"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.real_triton_first_slice_maintainer_approval_request_report.v0"
+    },
+    "request_id": {
+      "const": "real_triton_first_slice_maintainer_approval_request"
+    },
+    "request_contract": {
+      "const": "real_triton_first_slice_maintainer_approval_request.data_only.v0"
+    },
+    "request_status": {
+      "const": "ready_for_external_review"
+    },
+    "approval_request_scope": {
+      "const": "external_maintainer_security_review_only"
+    },
+    "approval_request_is_approval": {
+      "const": false
+    },
+    "approval_status": {
+      "const": "not_approved"
+    },
+    "approval_artifact_present": {
+      "const": false
+    },
+    "external_approval_required": {
+      "const": true
+    },
+    "external_approval_evidence_count": {
+      "const": 1
+    },
+    "external_approval_evidence": {
+      "const": ["maintainer_security_review_approval"]
+    },
+    "admission_decision": {
+      "const": "request_external_review_keep_blocked"
+    },
+    "admission_ready": {
+      "const": false
+    },
+    "admitted": {
+      "const": false
+    },
+    "target_surface": {
+      "const": "direct_source_ingestion"
+    },
+    "target_slice": {
+      "const": "bounded_source_buffer_to_source_intent_plain_data"
+    },
+    "evidence_policy": {
+      "const": "digest_only_fixed_artifact_request"
+    },
+    "review_packet_count": {
+      "const": 4
+    },
+    "review_packets": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_id",
+            "contract",
+            "digest",
+            "source_free",
+            "status",
+            "supports_approval_request"
+          ],
+          "properties": {
+            "artifact_id": {
+              "const": "real_triton_first_slice_admission_readiness_gate"
+            },
+            "contract": {
+              "const": "real_triton_first_slice_admission_readiness_gate.data_only.v0"
+            },
+            "digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "source_free": {
+              "const": true
+            },
+            "status": {
+              "const": "blocked_missing_maintainer_security_review_approval"
+            },
+            "supports_approval_request": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_id",
+            "contract",
+            "digest",
+            "source_free",
+            "status",
+            "supports_approval_request"
+          ],
+          "properties": {
+            "artifact_id": {
+              "const": "source_ingestion_maintainer_security_review_packet"
+            },
+            "contract": {
+              "const": "source_ingestion_maintainer_security_review_packet.review.v0"
+            },
+            "digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "source_free": {
+              "const": true
+            },
+            "status": {
+              "const": "ready_for_maintainer_review"
+            },
+            "supports_approval_request": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_id",
+            "contract",
+            "digest",
+            "source_free",
+            "status",
+            "supports_approval_request"
+          ],
+          "properties": {
+            "artifact_id": {
+              "const": "source_ingestion_maintainer_approval_artifact"
+            },
+            "contract": {
+              "const": "source_ingestion_maintainer_approval_artifact.absent.v0"
+            },
+            "digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "source_free": {
+              "const": true
+            },
+            "status": {
+              "const": "external_approval_not_supplied"
+            },
+            "supports_approval_request": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_id",
+            "contract",
+            "digest",
+            "source_free",
+            "status",
+            "supports_approval_request"
+          ],
+          "properties": {
+            "artifact_id": {
+              "const": "source_ingestion_admission_gate"
+            },
+            "contract": {
+              "const": "source_ingestion_admission_gate.fail_closed.v0"
+            },
+            "digest": {
+              "$ref": "#/$defs/digest"
+            },
+            "source_free": {
+              "const": true
+            },
+            "status": {
+              "const": "blocked_missing_maintainer_security_review_approval"
+            },
+            "supports_approval_request": {
+              "const": true
+            }
+          }
+        }
+      ]
+    },
+    "review_checklist_count": {
+      "const": 14
+    },
+    "review_checklist": {
+      "const": [
+        "admission_readiness_gate_reviewed",
+        "maintainer_security_review_packet_reviewed",
+        "approval_artifact_absence_reviewed",
+        "source_ingestion_admission_gate_reviewed",
+        "bounded_source_buffer_reviewed",
+        "sandbox_boundary_reviewed",
+        "negative_corpus_reviewed",
+        "source_free_diagnostics_reviewed",
+        "plain_data_golden_reviewed",
+        "ci_replay_reviewed",
+        "no_source_text_serialization",
+        "no_runtime_handle_serialization",
+        "no_generated_artifact_execution",
+        "direct_source_ingestion_remains_blocked_until_approval"
+      ]
+    },
+    "blocked_claims": {
+      "const": [
+        "arbitrary_triton_source_ingestion",
+        "production_parser",
+        "source_to_compute_graph_admission",
+        "native_backend_execution",
+        "native_performance_parity",
+        "vendor_replacement"
+      ]
+    },
+    "blocked_execution_surfaces": {
+      "const": [
+        "direct_source_ingestion",
+        "source_to_compute_graph",
+        "source_to_hac_ir",
+        "source_to_runtime_plan",
+        "frontend_package_import",
+        "plugin_discovery",
+        "triton_jit_execution",
+        "device_access",
+        "generated_artifact_execution",
+        "native_backend_execution"
+      ]
+    },
+    "required_invariants": {
+      "const": [
+        "approval_request_is_not_approval",
+        "external_approval_required",
+        "external_approval_artifact_absent",
+        "admission_readiness_gate_bound",
+        "admission_readiness_gate_fail_closed",
+        "maintainer_review_packet_ready",
+        "source_ingestion_admission_gate_fail_closed",
+        "direct_source_ingestion_false",
+        "source_to_compute_graph_false",
+        "source_to_hac_ir_false",
+        "source_to_runtime_plan_false",
+        "surface_opened_false",
+        "digest_only_source_free_evidence"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "direct_source_ingestion": {
+      "const": false
+    },
+    "source_to_compute_graph": {
+      "const": false
+    },
+    "source_to_hac_ir": {
+      "const": false
+    },
+    "source_to_runtime_plan": {
+      "const": false
+    },
+    "source_free": {
+      "const": true
+    },
+    "surface_opened": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

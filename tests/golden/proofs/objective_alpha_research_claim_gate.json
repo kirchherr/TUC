@@ -1,0 +1,59 @@
+{
+  "artifact_policy": "digest_only_source_free",
+  "backend_equivalence_passed": true,
+  "blocked_claims": [
+    "native_performance_parity",
+    "vendor_compiler_replacement",
+    "broad_source_code_parsing",
+    "arbitrary_third_party_backend_execution",
+    "device_access",
+    "generated_artifact_execution",
+    "production_triton_integration"
+  ],
+  "broad_source_parser_claim": false,
+  "catalog_entry_count": 9,
+  "claim_contract": "objective_alpha.research_claim.digest_snapshot.v0",
+  "claim_digest": "c857a70a91fdfa7f9d5e0446f1d01b64b6e7824837f88f2f2722814f92f8ab34",
+  "claim_id": "objective_alpha_universal_compute_research_claim",
+  "claim_metadata_digest": "c7d473165e80a79d3ab82670d8cf8ce27225eab05829b3832188ab2b2fbbd5b9",
+  "claim_scope": "objective_alpha_public_bundle_catalog_and_mixed_runtime_proof",
+  "claim_status": "supported_for_objective_alpha_research_scope",
+  "evidence_count": 6,
+  "evidence_ids": [
+    "objective_alpha_public_proof_bundle",
+    "objective_alpha_public_proof_bundle_gate",
+    "objective_alpha_evidence_extension_policy",
+    "objective_alpha_public_evidence_catalog",
+    "objective_alpha_public_evidence_catalog_admission_gate",
+    "source_intent_mixed_runtime_public_proof_bundle"
+  ],
+  "gate_contract": "objective_alpha.research_claim_gate.ci.v0",
+  "gate_id": "objective_alpha_research_claim_gate",
+  "gate_passed": true,
+  "gate_status": "PASS",
+  "issues": [],
+  "native_performance_claim": false,
+  "public_bundle_entry_count": 16,
+  "public_evidence_entry_count": 25,
+  "reference_correctness_passed": true,
+  "required_invariants": [
+    "public_proof_bundle_full",
+    "public_proof_bundle_gate_passed",
+    "extension_policy_passed",
+    "public_evidence_catalog_passed",
+    "public_evidence_catalog_admission_gate_passed",
+    "source_intent_mixed_runtime_public_proof_passed",
+    "backend_equivalence_passed",
+    "reference_correctness_passed",
+    "digest_only_source_free_claim"
+  ],
+  "schema_version": "tuc.objective_alpha_research_claim_gate_report.v0",
+  "supported_claims": [
+    "hardware_independent_compute_intent_current_research_slice",
+    "capability_planned_trusted_runtime_execution",
+    "mixed_backend_public_semantics_preserved",
+    "digest_only_reviewable_public_evidence",
+    "rfc_bound_public_evidence_growth"
+  ],
+  "vendor_replacement_claim": false
+}

@@ -1,0 +1,98 @@
+{
+  "artifact_status": "review_evidence_only",
+  "blocked_compiler_outputs": [
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "environment_dependent_behavior",
+    "file_system_access",
+    "frontend_module_import",
+    "generated_artifact_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_inspection",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "case_count": 1,
+  "cases": [
+    {
+      "case_id": "branched_multi_return_semantic_mapping",
+      "operation_count": 4,
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "return_count": 2,
+      "source_bytes": 266,
+      "source_digest": "sha256:7d87417bf11dfe2935fff23e75623d3868a3bd0bf53d7cdd818be8bdff07231a",
+      "source_intent_payload_digest": "sha256:9a59d358057f910a119283ea6c7bbeec5a359f22553b7af0457cd6e063741aea",
+      "source_name": "next_syntax_branched_multi_return",
+      "syntax_features": [
+        "branched_dataflow",
+        "elementwise_where_to_source_intent",
+        "explicit_public_return_aliases",
+        "fanout_value_reuse",
+        "matmul_to_source_intent",
+        "multiple_terminal_stores",
+        "reduction_explicit_axis_to_source_intent",
+        "softmax_explicit_axis_to_source_intent"
+      ],
+      "tensor_count": 6
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "direct_source_ingestion": false,
+  "golden_policy": "source_intent_plain_data_digest_bound",
+  "mapping_contract": "source_to_intent_next_syntax.semantic_mapping.v0",
+  "parser_contract": "source_to_intent_research_parser.execution_free.v0",
+  "parser_output_policy": "source_intent.v0_plain_data_only",
+  "parser_rfc": "rfcs.0242_source_to_intent_next_syntax_slice",
+  "parser_status": "research_explicit_only",
+  "properties": [
+    {
+      "property_id": "branched_dataflow_preserves_symbolic_dependencies",
+      "status": "satisfied"
+    },
+    {
+      "property_id": "direct_source_ingestion_remains_blocked",
+      "status": "satisfied"
+    },
+    {
+      "property_id": "multiple_stores_emit_explicit_public_returns",
+      "status": "satisfied"
+    },
+    {
+      "property_id": "nonterminal_return_mapping_fails_closed",
+      "status": "satisfied"
+    },
+    {
+      "property_id": "semantic_mapping_report_omits_raw_source",
+      "status": "satisfied"
+    },
+    {
+      "property_id": "source_intent_payload_validates_through_intake",
+      "status": "satisfied"
+    }
+  ],
+  "property_count": 6,
+  "property_coverage_complete": true,
+  "schema_version": "tuc.source_to_intent_next_syntax_report.v0",
+  "source_intent_contract": "source_intent_ir.canonical.v0",
+  "source_intent_schema_version": "source_intent.v0",
+  "syntax_slice": "phase_epsilon_branched_multi_return",
+  "triton_jit_execution": false
+}

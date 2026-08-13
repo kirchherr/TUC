@@ -48,6 +48,18 @@ Pull requests that change critical paths should explain:
 - Which trust boundary changed.
 - Which invariants are validated before lowering, planning, or publishing.
 - Which tests or golden artifacts cover the behavior.
+
+When a change intentionally alters `.github/workflows/ci.yml`,
+`.github/workflows/release-artifacts.yml`, or evidence transitively bound to
+those workflows, refresh the fixed evidence chain in the development container:
+
+```bash
+python scripts/refresh_ci_bound_evidence_goldens.py --write
+```
+
+Running the command without `--write` performs a read-only stale check. The
+tool accepts no caller-selected modules or output paths and atomically replaces
+only its checked-in golden allowlist.
 - Whether the change adds imports, subprocesses, dynamic libraries, network
   access, generated-code execution, or filesystem writes.
 

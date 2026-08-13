@@ -290,6 +290,11 @@ Implemented now:
 - Pre-publish release artifact workflow with least-privilege OIDC-backed
   GitHub attestations, CycloneDX SBOM generation, SHA-256 checksums, and no
   registry publishing permissions.
+- Verified source-worker OCI Image Layout release artifact with bounded
+  no-extraction descriptor validation, worker-specific CycloneDX SBOM, pinned
+  base image, hash-locked requirements, allowlisted build context, and separate
+  provenance/SBOM attestations; external verification and production admission
+  remain blocked.
 - Release workflow action SHA pinning and release governance policy for tag
   rulesets, publishing environments, and PyPI Trusted Publishing.
 - Isolated PyPI publishing job with OIDC Trusted Publishing, no stored PyPI
@@ -303,6 +308,12 @@ Implemented now:
 Development:
 
 - Use the Docker environment for repeatable local tooling.
+- Run the narrow OCI source-ingestion proof only through the fixed
+  `source-ingestion-worker` service. Its runtime contract requires no network,
+  no repository mount, read-only RootFS, zero capabilities,
+  no-new-privileges, seccomp, and bounded CPU, memory, PIDs, output, and wall
+  time. Production admission remains blocked until published image provenance
+  and independent security review exist.
 - Keep CI read-only unless a job must write security results.
 - Do not use `pull_request_target` without a dedicated threat model.
 - Do not expose deploy keys or repository secrets to untrusted pull requests.

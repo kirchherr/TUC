@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/objective_beta_research_claim_report.v0.schema.json",
+  "title": "TUC Objective Beta Research Claim Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_kernel_count",
+    "admission_readiness_status",
+    "admission_ready",
+    "artifact_policy",
+    "blocked_claims",
+    "broad_source_parser_claim",
+    "claim_contract",
+    "claim_id",
+    "claim_metadata_digest",
+    "claim_passed",
+    "claim_scope",
+    "claim_status",
+    "evidence",
+    "evidence_count",
+    "external_approval_required",
+    "first_real_path_status",
+    "first_slice_portfolio_status",
+    "kernel_ingress_artifact_count",
+    "native_performance_claim",
+    "operation_families",
+    "predecessor_claim_id",
+    "production_compiler_claim",
+    "realistic_ingress_case_count",
+    "research_scope_gate_status",
+    "required_invariants",
+    "schema_version",
+    "source_ingestion_admitted",
+    "supported_claims",
+    "surface_opened",
+    "trusted_runtime_backends",
+    "vendor_replacement_claim"
+  ],
+  "properties": {
+    "schema_version": { "const": "tuc.objective_beta_research_claim_report.v0" },
+    "claim_contract": { "const": "objective_beta.research_claim.digest_snapshot.v0" },
+    "claim_id": { "const": "objective_beta_universal_compute_research_claim" },
+    "claim_status": { "const": "supported_for_objective_beta_research_scope" },
+    "claim_scope": { "const": "objective_beta_kernel_ingress_first_slice_review_readiness" },
+    "predecessor_claim_id": { "const": "objective_alpha_universal_compute_research_claim" },
+    "artifact_policy": { "const": "digest_only_source_free" },
+    "claim_passed": { "const": true },
+    "evidence_count": { "const": 9 },
+    "evidence": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "prefixItems": [
+        { "$ref": "#/$defs/evidence_objective_alpha" },
+        { "$ref": "#/$defs/evidence_kernel_ingress" },
+        { "$ref": "#/$defs/evidence_first_real" },
+        { "$ref": "#/$defs/evidence_first_slice_portfolio" },
+        { "$ref": "#/$defs/evidence_admission_readiness" },
+        { "$ref": "#/$defs/evidence_approval_request" },
+        { "$ref": "#/$defs/evidence_research_scope" },
+        { "$ref": "#/$defs/evidence_oci_ingestion" },
+        { "$ref": "#/$defs/evidence_oci_release_readiness" }
+      ]
+    },
+    "supported_claims": {
+      "const": [
+        "objective_alpha_research_claim_preserved",
+        "realistic_kernel_ingress_research_slice_bound",
+        "source_intent_to_runtime_mixed_backend_path_bound",
+        "first_real_triton_kernel_path_bound",
+        "first_slice_review_readiness_bound",
+        "external_approval_request_packaged",
+        "research_scope_boundaries_preserved",
+        "kernel_isolated_source_ingestion_proof_bound",
+        "oci_worker_release_provenance_readiness_bound"
+      ]
+    },
+    "blocked_claims": {
+      "const": [
+        "arbitrary_triton_source_ingestion",
+        "production_source_parser",
+        "broad_source_code_parsing",
+        "source_to_compute_graph_admission",
+        "native_backend_execution",
+        "native_performance_parity",
+        "real_hardware_backend_execution",
+        "external_plugin_execution",
+        "generated_artifact_execution",
+        "vendor_compiler_replacement",
+        "cuda_replacement",
+        "production_source_sandbox",
+        "external_release_attestation_verified",
+        "public_registry_worker_image"
+      ]
+    },
+    "required_invariants": {
+      "const": [
+        "objective_alpha_claim_gate_passed",
+        "kernel_ingress_proof_bundle_passed",
+        "first_real_kernel_path_passed",
+        "first_slice_evidence_portfolio_passed",
+        "admission_readiness_fail_closed",
+        "maintainer_approval_request_non_approving",
+        "research_scope_gate_passed",
+        "oci_kernel_isolation_proof_passed",
+        "oci_release_provenance_readiness_passed",
+        "production_source_sandbox_false",
+        "external_attestation_unverified",
+        "source_ingestion_admitted_false",
+        "external_approval_still_required",
+        "native_performance_claim_false",
+        "vendor_replacement_claim_false",
+        "digest_only_source_free_claim"
+      ]
+    },
+    "operation_families": { "const": ["elementwise", "matmul", "reduction", "softmax"] },
+    "trusted_runtime_backends": {
+      "const": ["reference-cpu", "systolic-sim", "linear-sim", "vector-sim"]
+    },
+    "kernel_ingress_artifact_count": { "const": 15 },
+    "accepted_kernel_count": { "const": 5 },
+    "realistic_ingress_case_count": { "const": 5 },
+    "first_real_path_status": { "const": "PASS" },
+    "first_slice_portfolio_status": { "const": "PASS" },
+    "admission_readiness_status": { "const": "blocked_missing_maintainer_security_review_approval" },
+    "research_scope_gate_status": { "const": "PASS" },
+    "external_approval_required": { "const": true },
+    "admission_ready": { "const": false },
+    "source_ingestion_admitted": { "const": false },
+    "surface_opened": { "const": false },
+    "native_performance_claim": { "const": false },
+    "production_compiler_claim": { "const": false },
+    "broad_source_parser_claim": { "const": false },
+    "vendor_replacement_claim": { "const": false },
+    "claim_metadata_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "evidence_base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "contract", "digest", "source_free", "status"],
+      "properties": {
+        "artifact_id": { "type": "string" },
+        "contract": { "type": "string" },
+        "digest": { "$ref": "#/$defs/digest" },
+        "source_free": { "const": true },
+        "status": { "type": "string" }
+      }
+    },
+    "evidence_objective_alpha": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "objective_alpha_research_claim_gate" }, "contract": { "const": "objective_alpha.research_claim_gate.ci.v0" }, "status": { "const": "PASS" } } }
+      ]
+    },
+    "evidence_kernel_ingress": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "source_to_intent_research_kernel_ingress_proof_bundle" }, "contract": { "const": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0" }, "status": { "const": "PASS" } } }
+      ]
+    },
+    "evidence_first_real": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "first_real_triton_kernel_path" }, "contract": { "const": "first_real_triton_kernel_path.digest_bound.v0" }, "status": { "const": "PASS" } } }
+      ]
+    },
+    "evidence_first_slice_portfolio": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "real_triton_first_slice_evidence_portfolio" }, "contract": { "const": "real_triton_first_slice_evidence_portfolio.research_boundary.v0" }, "status": { "const": "PASS" } } }
+      ]
+    },
+    "evidence_admission_readiness": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "real_triton_first_slice_admission_readiness_gate" }, "contract": { "const": "real_triton_first_slice_admission_readiness_gate.data_only.v0" }, "status": { "const": "blocked_missing_maintainer_security_review_approval" } } }
+      ]
+    },
+    "evidence_approval_request": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "real_triton_first_slice_maintainer_approval_request" }, "contract": { "const": "real_triton_first_slice_maintainer_approval_request.data_only.v0" }, "status": { "const": "ready_for_external_review" } } }
+      ]
+    },
+    "evidence_research_scope": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "research_scope_claim_gate" }, "contract": { "const": "research_scope.claim_gate.data_only.v0" }, "status": { "const": "PASS" } } }
+      ]
+    },
+    "evidence_oci_ingestion": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "oci_source_ingestion_research_proof" }, "contract": { "const": "oci_source_ingestion_research_proof.kernel_isolated.v0" }, "status": { "const": "PASS" } } }
+      ]
+    },
+    "evidence_oci_release_readiness": {
+      "allOf": [
+        { "$ref": "#/$defs/evidence_base" },
+        { "properties": { "artifact_id": { "const": "oci_source_worker_release_provenance_readiness" }, "contract": { "const": "oci_source_worker.release_provenance_readiness.data_only.v0" }, "status": { "const": "PASS" } } }
+      ]
+    }
+  }
+}

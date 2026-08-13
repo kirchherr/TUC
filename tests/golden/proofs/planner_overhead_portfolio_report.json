@@ -1,0 +1,249 @@
+{
+  "artifact_status": "diagnostic_only",
+  "break_even_status": "not_established",
+  "case_count": 5,
+  "cases": [
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "break_even_status": "not_established",
+      "case_id": "research_module_matmul_elementwise",
+      "execution_time_status": "not_measured",
+      "graph_name": "research_matmul_elementwise",
+      "kernel_name": "matmul_elementwise",
+      "measured_compiler_phase_count": 5,
+      "native_performance_claim": false,
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "phase_contract": [
+        "graph_construction",
+        "frontend_intake",
+        "tlir_module_construction",
+        "tlir_to_hac_lowering",
+        "runtime_planning",
+        "backend_selection_report",
+        "hs_ir_generation",
+        "execution"
+      ],
+      "planner_overhead_hidden_in_execution_time": false,
+      "source_name": "research_matmul_elementwise",
+      "status": "planner_overhead_bound",
+      "timing_policy": "measured_compiler_phase_durations_omitted_for_deterministic_evidence",
+      "unmeasured_issues": [
+        "graph_construction_not_measured",
+        "frontend_intake_not_measured",
+        "execution_time_not_measured",
+        "break_even_not_established"
+      ],
+      "unmeasured_phase_count": 3,
+      "unmeasured_phases": [
+        "graph_construction",
+        "frontend_intake",
+        "execution"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "break_even_status": "not_established",
+      "case_id": "research_module_softmax_reduction",
+      "execution_time_status": "not_measured",
+      "graph_name": "research_softmax_reduction",
+      "kernel_name": "softmax_reduction",
+      "measured_compiler_phase_count": 5,
+      "native_performance_claim": false,
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "phase_contract": [
+        "graph_construction",
+        "frontend_intake",
+        "tlir_module_construction",
+        "tlir_to_hac_lowering",
+        "runtime_planning",
+        "backend_selection_report",
+        "hs_ir_generation",
+        "execution"
+      ],
+      "planner_overhead_hidden_in_execution_time": false,
+      "source_name": "research_softmax_reduction",
+      "status": "planner_overhead_bound",
+      "timing_policy": "measured_compiler_phase_durations_omitted_for_deterministic_evidence",
+      "unmeasured_issues": [
+        "graph_construction_not_measured",
+        "frontend_intake_not_measured",
+        "execution_time_not_measured",
+        "break_even_not_established"
+      ],
+      "unmeasured_phase_count": 3,
+      "unmeasured_phases": [
+        "graph_construction",
+        "frontend_intake",
+        "execution"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "break_even_status": "not_established",
+      "case_id": "research_module_matmul_reduction",
+      "execution_time_status": "not_measured",
+      "graph_name": "research_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "measured_compiler_phase_count": 5,
+      "native_performance_claim": false,
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "phase_contract": [
+        "graph_construction",
+        "frontend_intake",
+        "tlir_module_construction",
+        "tlir_to_hac_lowering",
+        "runtime_planning",
+        "backend_selection_report",
+        "hs_ir_generation",
+        "execution"
+      ],
+      "planner_overhead_hidden_in_execution_time": false,
+      "source_name": "research_matmul_reduction",
+      "status": "planner_overhead_bound",
+      "timing_policy": "measured_compiler_phase_durations_omitted_for_deterministic_evidence",
+      "unmeasured_issues": [
+        "graph_construction_not_measured",
+        "frontend_intake_not_measured",
+        "execution_time_not_measured",
+        "break_even_not_established"
+      ],
+      "unmeasured_phase_count": 3,
+      "unmeasured_phases": [
+        "graph_construction",
+        "frontend_intake",
+        "execution"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "break_even_status": "not_established",
+      "case_id": "research_module_softmax_elementwise",
+      "execution_time_status": "not_measured",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "measured_compiler_phase_count": 5,
+      "native_performance_claim": false,
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "phase_contract": [
+        "graph_construction",
+        "frontend_intake",
+        "tlir_module_construction",
+        "tlir_to_hac_lowering",
+        "runtime_planning",
+        "backend_selection_report",
+        "hs_ir_generation",
+        "execution"
+      ],
+      "planner_overhead_hidden_in_execution_time": false,
+      "source_name": "research_softmax_elementwise",
+      "status": "planner_overhead_bound",
+      "timing_policy": "measured_compiler_phase_durations_omitted_for_deterministic_evidence",
+      "unmeasured_issues": [
+        "graph_construction_not_measured",
+        "frontend_intake_not_measured",
+        "execution_time_not_measured",
+        "break_even_not_established"
+      ],
+      "unmeasured_phase_count": 3,
+      "unmeasured_phases": [
+        "graph_construction",
+        "frontend_intake",
+        "execution"
+      ]
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "break_even_status": "not_established",
+      "case_id": "research_module_mvp_pipeline",
+      "execution_time_status": "not_measured",
+      "graph_name": "research_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "measured_compiler_phase_count": 5,
+      "native_performance_claim": false,
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "phase_contract": [
+        "graph_construction",
+        "frontend_intake",
+        "tlir_module_construction",
+        "tlir_to_hac_lowering",
+        "runtime_planning",
+        "backend_selection_report",
+        "hs_ir_generation",
+        "execution"
+      ],
+      "planner_overhead_hidden_in_execution_time": false,
+      "source_name": "research_mvp_pipeline",
+      "status": "planner_overhead_bound",
+      "timing_policy": "measured_compiler_phase_durations_omitted_for_deterministic_evidence",
+      "unmeasured_issues": [
+        "graph_construction_not_measured",
+        "frontend_intake_not_measured",
+        "execution_time_not_measured",
+        "break_even_not_established"
+      ],
+      "unmeasured_phase_count": 3,
+      "unmeasured_phases": [
+        "graph_construction",
+        "frontend_intake",
+        "execution"
+      ]
+    }
+  ],
+  "claim_boundary": "performance_proof_boundary.blocking.v0",
+  "covered_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "e2e_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
+  "execution_time_status": "not_measured",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "kernel_ingress_digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
+  "native_performance_claim": false,
+  "parser_status": "research_explicit_only",
+  "planner_overhead_contract": "tuc.planner_overhead_report.v0",
+  "planner_overhead_hidden_in_execution_time": false,
+  "planner_overhead_schema_version": "tuc.planner_overhead_report.v0",
+  "portfolio_contract": "planner_overhead_portfolio.kernel_ingress.v0",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_timing_policy": "measured_compiler_phase_durations_omitted_for_deterministic_evidence",
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.planner_overhead_portfolio_report.v0",
+  "source_boundary": "kernel_ingress_compute_graphs_after_source_intent",
+  "status": "PASS"
+}

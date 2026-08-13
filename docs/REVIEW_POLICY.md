@@ -58,6 +58,11 @@ Owner review should answer:
   generated-code execution, or filesystem writes?
 - Are diagnostics bounded and free of secrets or misleading fallbacks?
 - Which tests or golden artifacts prove the intended behavior?
+- If claims, proof gates, public evidence, source ingestion, or performance
+  boundaries changed, does `python examples/research_scope_claim_gate.py` still
+  pass, bind missing source-ingestion approval, and keep production compiler,
+  vendor replacement, native performance, source-ingestion, plugin-execution,
+  and generated-artifact claims blocked?
 - If placement overrides are involved, does the PR follow
   [Runtime manual override policy](RUNTIME_OVERRIDE_POLICY.md)?
 - If proof artifacts changed, does the PR answer

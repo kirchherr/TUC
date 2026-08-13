@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/objective_alpha_public_proof_bundle.v0.schema.json",
+  "title": "TUC Objective Alpha Public Proof Bundle v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "broad_source_parser_claim",
+    "bundle_contract",
+    "bundle_id",
+    "bundle_metadata_digest",
+    "claim_status",
+    "entry_capacity",
+    "entry_count",
+    "evidence_entries",
+    "native_performance_claim",
+    "raw_output_policy",
+    "schema_version",
+    "vendor_replacement_claim"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.objective_alpha_public_proof_bundle.v0"
+    },
+    "bundle_id": {
+      "const": "objective_alpha_public_proof_bundle"
+    },
+    "bundle_contract": {
+      "const": "objective_alpha.public_proof_bundle.v0"
+    },
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "claim_status": {
+      "const": "correctness_and_inspectability_only"
+    },
+    "raw_output_policy": {
+      "const": "digest_only"
+    },
+    "native_performance_claim": {
+      "const": false
+    },
+    "broad_source_parser_claim": {
+      "const": false
+    },
+    "vendor_replacement_claim": {
+      "const": false
+    },
+    "bundle_metadata_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "entry_capacity": {
+      "const": 16
+    },
+    "entry_count": {
+      "const": 16
+    },
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": { "type": "string" },
+      "prefixItems": [
+        { "const": "native_performance_parity" },
+        { "const": "vendor_compiler_replacement" },
+        { "const": "broad_source_code_parsing" },
+        { "const": "arbitrary_third_party_backend_execution" },
+        { "const": "device_access" },
+        { "const": "generated_artifact_execution" }
+      ]
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": { "type": "string" }
+    },
+    "evidence_entries": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifact_kind",
+          "entry_point",
+          "evidence_id",
+          "metadata_digest",
+          "raw_output_policy",
+          "status"
+        ],
+        "properties": {
+          "artifact_kind": {
+            "enum": [
+              "deterministic_proof_output",
+              "schema_versioned_matrix_report",
+              "deterministic_gate_output",
+              "schema_versioned_backend_equivalence_proof_report",
+              "schema_versioned_output_closure_report",
+              "schema_versioned_transfer_trace_index_report",
+              "schema_versioned_transfer_trace_replay_verifier_report",
+              "schema_versioned_backend_equivalence_transfer_binding_report",
+              "schema_versioned_layout_conversion_trace_index_report",
+              "schema_versioned_layout_conversion_trace_replay_verifier_report",
+              "schema_versioned_backend_equivalence_layout_binding_report",
+              "schema_versioned_allocation_reconciliation_report",
+              "deterministic_memory_planning_gate_output",
+              "schema_versioned_onboarding_report",
+              "schema_versioned_source_to_intent_research_proof_bundle_report",
+              "deterministic_source_to_intent_kernel_ingress_evidence_gate_output"
+            ]
+          },
+          "entry_point": {
+            "enum": [
+              "python examples/proof_of_execution.py",
+              "python examples/runtime_evidence_matrix.py",
+              "python examples/runtime_evidence_gate.py",
+              "python examples/proof_of_backend_equivalence.py",
+              "python examples/runtime_execution_output_closure.py",
+              "python examples/runtime_transfer_trace_index.py",
+              "python examples/runtime_transfer_trace_replay_verifier.py",
+              "python examples/runtime_backend_equivalence_transfer_binding.py",
+              "python examples/runtime_layout_conversion_trace_index.py",
+              "python examples/runtime_layout_conversion_trace_replay_verifier.py",
+              "python examples/runtime_backend_equivalence_layout_binding.py",
+              "python examples/runtime_allocation_reconciliation.py",
+              "python examples/runtime_memory_planning_gate.py",
+              "python examples/research_onboarding_evidence.py",
+              "python examples/source_to_intent_research_proof_bundle.py",
+              "python examples/source_to_intent_research_kernel_ingress_evidence_gate.py"
+            ]
+          },
+          "evidence_id": {
+            "enum": [
+              "proof_of_execution",
+              "runtime_evidence_matrix",
+              "runtime_evidence_gate",
+              "proof_of_backend_equivalence",
+              "runtime_execution_output_closure",
+              "runtime_transfer_trace_index",
+              "runtime_transfer_trace_replay_verifier",
+              "runtime_backend_equivalence_transfer_binding",
+              "runtime_layout_conversion_trace_index",
+              "runtime_layout_conversion_trace_replay_verifier",
+              "runtime_backend_equivalence_layout_binding",
+              "runtime_allocation_reconciliation",
+              "runtime_memory_planning_gate",
+              "research_onboarding_evidence",
+              "source_to_intent_research_proof_bundle",
+              "source_to_intent_research_kernel_ingress_evidence_gate"
+            ]
+          },
+          "metadata_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "raw_output_policy": {
+            "const": "digest_only"
+          },
+          "status": {
+            "const": "passed"
+          }
+        }
+      }
+    }
+  }
+}

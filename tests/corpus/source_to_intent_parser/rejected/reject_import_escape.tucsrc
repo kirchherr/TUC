@@ -1,0 +1,5 @@
+import os
+
+@triton.jit
+def import_escape(x, y):
+    tl.store(y, x)

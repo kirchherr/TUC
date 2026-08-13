@@ -1,0 +1,4 @@
+@triton.jit
+def ambiguous_softmax_axis(x, y):
+    normalized = tl.softmax(x)
+    tl.store(y, normalized)

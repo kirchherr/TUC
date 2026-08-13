@@ -1,0 +1,12 @@
+{
+  "artifact_descriptor_schema": "tuc.benchmark_artifact_descriptor.v0",
+  "artifact_id": "kernel_ingress_baseline_benchmark_report",
+  "artifact_kind": "baseline_benchmark_report",
+  "claim_boundary": "performance_proof_boundary.blocking.v0",
+  "content_policy": "not_loaded_by_performance_readiness",
+  "native_performance_claim": false,
+  "raw_benchmark_output_included": false,
+  "raw_timing_samples_included": false,
+  "referenced_schema_version": "tuc.baseline_benchmark_report.v0",
+  "storage_scope": "repository_golden"
+}

@@ -23,6 +23,15 @@ PROOF_REPORT_SCHEMA_VERSION = "proof-report.v0"
 PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION = (
     "tuc.performance_proof_readiness_report.v0"
 )
+PERFORMANCE_PROOF_INTERPRETATION_REPORT_SCHEMA_VERSION = (
+    "tuc.performance_proof_interpretation_report.v0"
+)
+PERFORMANCE_PROOF_INTERPRETATION_ARTIFACT_STATUS = "diagnostic_only"
+PERFORMANCE_PROOF_INTERPRETATION_CLAIM_STATUS = "blocked"
+PERFORMANCE_PROOF_INTERPRETATION_DEFAULT_ISSUES = (
+    "measurement_interpretation_artifacts_not_supplied",
+    "native_performance_claim_blocked",
+)
 PERFORMANCE_PROOF_RFC_REPORT_SCHEMA_VERSION = "tuc.performance_proof_rfc_report.v0"
 PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS = "diagnostic_only"
 PERFORMANCE_PROOF_RFC_CLAIM_STATUS = "blocked"
@@ -269,10 +278,20 @@ RUNTIME_EVIDENCE_MATRIX_REPORT_SCHEMA_VERSION = (
 )
 RUNTIME_EVIDENCE_MATRIX_CONTRACT = "runtime_evidence_matrix.data_only.v0"
 RUNTIME_EVIDENCE_MATRIX_ARTIFACT_STATUS = "review_evidence"
+RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_REPORT_SCHEMA_VERSION = (
+    "tuc.runtime_evidence_gate_matrix_coverage_report.v0"
+)
+RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_CONTRACT = (
+    "runtime_evidence_gate_matrix_coverage.data_only.v0"
+)
+RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ARTIFACT_STATUS = "review_evidence"
+RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_STATUSES = ("covered", "failed")
 RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES = (
     "typed_compute_graph",
     "triton_metadata",
     "source_intent_metadata",
+    "runtime_backend_equivalence",
+    "runtime_memory_planning",
 )
 RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "proof_report_golden",
@@ -290,6 +309,25 @@ RUNTIME_EVIDENCE_ARTIFACT_KINDS = (
     "public_output_bundle",
     "reference_correctness",
     "execution_receipt",
+    "backend_equivalence",
+    "runtime_planning_explanation",
+    "runtime_transfer_trace_index",
+    "runtime_transfer_trace_replay_verifier",
+    "runtime_backend_equivalence_transfer_binding",
+    "backend_equivalence_portfolio",
+    "backend_equivalence_portfolio_policy",
+    "runtime_hs_ir_plan_alignment",
+    "runtime_layout_conversion_evidence",
+    "runtime_layout_conversion_trace_index",
+    "runtime_layout_conversion_trace_replay_verifier",
+    "runtime_backend_equivalence_layout_binding",
+    "runtime_buffer_lifetime",
+    "runtime_allocation_plan",
+    "runtime_memory_budget",
+    "runtime_allocation_request_manifest",
+    "runtime_allocation_admission",
+    "runtime_allocation_receipt",
+    "runtime_allocation_reconciliation",
 )
 RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS = (
     "hac_ir_golden",
@@ -310,9 +348,15 @@ MAX_RUNTIME_EVIDENCE_MATRIX_REPORT_BYTES = 64 * 1024
 MAX_RUNTIME_EVIDENCE_MATRIX_FIELD_BYTES = 512
 MAX_RUNTIME_EVIDENCE_GRAPHS = 64
 MAX_RUNTIME_EVIDENCE_ARTIFACTS_PER_GRAPH = 32
+MAX_RUNTIME_EVIDENCE_GATE_MATRIX_BINDINGS = 16
+MAX_RUNTIME_EVIDENCE_GATE_MATRIX_ISSUES = 64
+MAX_RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_READINESS_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES = 512
 MAX_PERFORMANCE_PROOF_READINESS_ISSUES = 128
+MAX_PERFORMANCE_PROOF_INTERPRETATION_REPORT_BYTES = 64 * 1024
+MAX_PERFORMANCE_PROOF_INTERPRETATION_FIELD_BYTES = 512
+MAX_PERFORMANCE_PROOF_INTERPRETATION_ARTIFACTS = 128
 MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES = 64 * 1024
 MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES = 512
 MAX_PERFORMANCE_PROOF_RFCS = 128
@@ -403,6 +447,7 @@ class RuntimeEvidenceGraph:
     graph_family: str
     source_boundary: str
     artifacts: tuple[RuntimeEvidenceArtifact, ...]
+    required_artifact_kinds: tuple[str, ...] = RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
 
     @property
     def present_artifact_kinds(self) -> frozenset[str]:
@@ -413,7 +458,7 @@ class RuntimeEvidenceGraph:
         present = self.present_artifact_kinds
         return tuple(
             artifact_kind
-            for artifact_kind in RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
+            for artifact_kind in self.required_artifact_kinds
             if artifact_kind not in present
         )
 
@@ -437,6 +482,84 @@ class RuntimeEvidenceMatrixReport:
     @property
     def runtime_evidence_matrix_complete(self) -> bool:
         return not self.issues
+
+
+@dataclass(frozen=True)
+class RuntimeEvidenceGateMatrixBinding:
+    """One Matrix graph/artifact binding required by Runtime Evidence Gate."""
+
+    binding_id: str
+    graph_id: str
+    graph_family: str
+    source_boundary: str
+    required_artifact_kinds: tuple[str, ...]
+    artifact_ids: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        _validate_runtime_evidence_text(self.binding_id, "binding_id")
+        _validate_runtime_evidence_text(self.graph_id, "graph_id")
+        _validate_runtime_evidence_text(self.graph_family, "graph_family")
+        if self.source_boundary not in RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES:
+            raise ValueError("unsupported runtime evidence binding source boundary")
+        required_artifacts = _normalize_runtime_evidence_required_artifact_kinds(
+            self.required_artifact_kinds
+        )
+        artifact_ids = tuple(self.artifact_ids)
+        if not artifact_ids:
+            raise ValueError("runtime evidence gate binding artifact IDs required")
+        if len(artifact_ids) != len(required_artifacts):
+            raise ValueError(
+                "runtime evidence gate binding artifact IDs must match kinds"
+            )
+        for artifact_id in artifact_ids:
+            _validate_runtime_evidence_text(artifact_id, "binding artifact_id")
+        object.__setattr__(self, "required_artifact_kinds", required_artifacts)
+        object.__setattr__(self, "artifact_ids", artifact_ids)
+
+
+@dataclass(frozen=True)
+class RuntimeEvidenceGateMatrixCoverage:
+    """Observed Matrix coverage for one gate-required binding."""
+
+    binding_id: str
+    graph_id: str
+    graph_family: str
+    source_boundary: str
+    required_artifact_kinds: tuple[str, ...]
+    expected_artifact_ids: tuple[str, ...]
+    observed_artifact_ids: tuple[str, ...]
+    coverage_status: str
+    issues: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class RuntimeEvidenceGateMatrixCoverageReport:
+    """Data-only audit of Runtime Evidence Gate Matrix bindings."""
+
+    coverage_id: str
+    matrix_id: str
+    matrix_complete: bool
+    bindings: tuple[RuntimeEvidenceGateMatrixCoverage, ...]
+    issues: tuple[str, ...]
+    coverage_contract: str = RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_CONTRACT
+    artifact_status: str = RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ARTIFACT_STATUS
+    blocked_execution_surfaces: tuple[str, ...] = (
+        RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+    )
+
+    @property
+    def binding_count(self) -> int:
+        """Return the number of gate Matrix bindings audited."""
+
+        return len(self.bindings)
+
+    @property
+    def coverage_passed(self) -> bool:
+        """Return whether every Matrix binding is exact and complete."""
+
+        return self.matrix_complete and not self.issues and all(
+            binding.coverage_status == "covered" for binding in self.bindings
+        )
 
 
 @dataclass(frozen=True)
@@ -469,6 +592,34 @@ class PerformanceProofReadinessReport:
     def ready(self) -> bool:
         return not self.issues
 
+
+@dataclass(frozen=True)
+class PerformanceProofInterpretationReport:
+    """Data-only interpretation gate after performance readiness passes."""
+
+    proposal_name: str
+    readiness_proposal_name: str
+    readiness_ready: bool
+    readiness_boundary_contract: str
+    readiness_issue_count: int
+    measurement_interpretation_artifacts: tuple[str, ...]
+    blocked_claims: tuple[str, ...]
+    issues: tuple[str, ...]
+
+    @property
+    def performance_proof_interpretation_ready(self) -> bool:
+        """Return whether measurement interpretation metadata is complete."""
+
+        blocking_issues = tuple(
+            issue
+            for issue in self.issues
+            if issue != "native_performance_claim_blocked"
+        )
+        return (
+            self.readiness_ready
+            and bool(self.measurement_interpretation_artifacts)
+            and not blocking_issues
+        )
 
 class PerformanceProofReadinessError(AssertionError):
     """Raised when a performance proof proposal is not ready."""
@@ -1266,7 +1417,191 @@ def build_current_runtime_evidence_matrix_report() -> RuntimeEvidenceMatrixRepor
                     ),
                 ),
             ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_backend_equivalence",
+                graph_family="backend_equivalence",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "backend_equivalence",
+                        "runtime_backend_equivalence_systolic",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_planning_explanation",
+                        "runtime_planning_explanation_systolic",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_transfer_trace_index",
+                        "runtime_transfer_trace_index_systolic",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_transfer_trace_replay_verifier",
+                        "runtime_transfer_trace_replay_verifier_systolic",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_backend_equivalence_transfer_binding",
+                        "runtime_backend_equivalence_transfer_binding_systolic",
+                    ),
+                ),
+                required_artifact_kinds=(
+                    "backend_equivalence",
+                    "runtime_planning_explanation",
+                    "runtime_transfer_trace_index",
+                    "runtime_transfer_trace_replay_verifier",
+                    "runtime_backend_equivalence_transfer_binding",
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_vector_backend_equivalence",
+                graph_family="backend_equivalence",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "backend_equivalence",
+                        "runtime_backend_equivalence_vector",
+                    ),
+                ),
+                required_artifact_kinds=("backend_equivalence",),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_mixed_backend_equivalence",
+                graph_family="backend_equivalence",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "backend_equivalence",
+                        "runtime_backend_equivalence_mixed",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_planning_explanation",
+                        "runtime_planning_explanation_mixed",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_hs_ir_plan_alignment",
+                        "runtime_hs_ir_plan_alignment_mixed",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_layout_conversion_evidence",
+                        "runtime_layout_conversion_evidence_mixed",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_layout_conversion_trace_index",
+                        "runtime_layout_conversion_trace_index_mixed",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_layout_conversion_trace_replay_verifier",
+                        "runtime_layout_conversion_trace_replay_verifier_mixed",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_backend_equivalence_layout_binding",
+                        "runtime_backend_equivalence_layout_binding_mixed",
+                    ),
+                ),
+                required_artifact_kinds=(
+                    "backend_equivalence",
+                    "runtime_planning_explanation",
+                    "runtime_hs_ir_plan_alignment",
+                    "runtime_layout_conversion_evidence",
+                    "runtime_layout_conversion_trace_index",
+                    "runtime_layout_conversion_trace_replay_verifier",
+                    "runtime_backend_equivalence_layout_binding",
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_backend_equivalence_portfolio",
+                graph_family="backend_equivalence_portfolio",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "backend_equivalence_portfolio",
+                        "runtime_backend_equivalence_portfolio",
+                    ),
+                    _runtime_evidence_artifact(
+                        "backend_equivalence_portfolio_policy",
+                        "runtime_backend_equivalence_portfolio_policy",
+                    ),
+                ),
+                required_artifact_kinds=(
+                    "backend_equivalence_portfolio",
+                    "backend_equivalence_portfolio_policy",
+                ),
+            ),
+            RuntimeEvidenceGraph(
+                graph_id="runtime_memory_planning",
+                graph_family="runtime_memory_planning",
+                source_boundary="runtime_memory_planning",
+                artifacts=(
+                    _runtime_evidence_artifact(
+                        "runtime_buffer_lifetime",
+                        "runtime_buffer_lifetime_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_allocation_plan",
+                        "runtime_allocation_plan_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_memory_budget",
+                        "runtime_memory_budget_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_allocation_request_manifest",
+                        "runtime_allocation_request_manifest_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_allocation_admission",
+                        "runtime_allocation_admission_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_allocation_receipt",
+                        "runtime_allocation_receipt_current",
+                    ),
+                    _runtime_evidence_artifact(
+                        "runtime_allocation_reconciliation",
+                        "runtime_allocation_reconciliation_current",
+                    ),
+                ),
+                required_artifact_kinds=(
+                    "runtime_buffer_lifetime",
+                    "runtime_allocation_plan",
+                    "runtime_memory_budget",
+                    "runtime_allocation_request_manifest",
+                    "runtime_allocation_admission",
+                    "runtime_allocation_receipt",
+                    "runtime_allocation_reconciliation",
+                ),
+            ),
         ),
+    )
+
+
+def build_runtime_evidence_gate_matrix_coverage_report(
+    coverage_id: str,
+    matrix: RuntimeEvidenceMatrixReport,
+    bindings: Iterable[RuntimeEvidenceGateMatrixBinding],
+) -> RuntimeEvidenceGateMatrixCoverageReport:
+    """Audit exact Matrix graph/artifact bindings required by the gate."""
+
+    _validate_runtime_evidence_text(coverage_id, "coverage_id")
+    _validate_runtime_evidence_matrix_report(matrix)
+    normalized_bindings = _normalize_runtime_evidence_gate_matrix_bindings(bindings)
+    graphs = {graph.graph_id: graph for graph in matrix.graphs}
+    coverage_entries = tuple(
+        _runtime_evidence_gate_matrix_coverage_entry(
+            binding,
+            graphs.get(binding.graph_id),
+        )
+        for binding in normalized_bindings
+    )
+    issues = _runtime_evidence_gate_matrix_coverage_issues(
+        matrix,
+        coverage_entries,
+    )
+    return RuntimeEvidenceGateMatrixCoverageReport(
+        coverage_id=coverage_id,
+        matrix_id=matrix.matrix_id,
+        matrix_complete=matrix.runtime_evidence_matrix_complete,
+        bindings=coverage_entries,
+        issues=issues,
     )
 
 
@@ -1301,6 +1636,35 @@ def build_performance_proof_readiness_report(
         issues=issues,
     )
 
+
+def build_performance_proof_interpretation_report(
+    proposal_name: str,
+    readiness_report: PerformanceProofReadinessReport,
+    measurement_interpretation_artifacts: Iterable[str] = (),
+) -> PerformanceProofInterpretationReport:
+    """Build a data-only interpretation gate for performance-proof claims."""
+
+    _validate_performance_proof_interpretation_text(proposal_name, "proposal_name")
+    _validate_performance_readiness_report(readiness_report)
+    artifacts = _normalize_performance_proof_interpretation_artifacts(
+        measurement_interpretation_artifacts,
+    )
+    issues = list(PERFORMANCE_PROOF_INTERPRETATION_DEFAULT_ISSUES)
+    if artifacts:
+        issues.remove("measurement_interpretation_artifacts_not_supplied")
+    if not readiness_report.ready:
+        issues.append("performance_proof_readiness_not_ready")
+
+    return PerformanceProofInterpretationReport(
+        proposal_name=proposal_name,
+        readiness_proposal_name=readiness_report.proposal_name,
+        readiness_ready=readiness_report.ready,
+        readiness_boundary_contract=readiness_report.boundary_contract,
+        readiness_issue_count=len(readiness_report.issues),
+        measurement_interpretation_artifacts=artifacts,
+        blocked_claims=PERFORMANCE_PROOF_BLOCKED_CLAIMS,
+        issues=tuple(dict.fromkeys(issues)),
+    )
 
 def build_performance_proof_rfc_report(
     proposal_name: str,
@@ -1714,6 +2078,7 @@ def runtime_evidence_matrix_report_to_dict(
                 "missing_required_artifact_kinds": list(
                     graph.missing_required_artifact_kinds
                 ),
+                "required_artifact_kinds": list(graph.required_artifact_kinds),
                 "runtime_evidence_complete": graph.runtime_evidence_complete,
                 "source_boundary": graph.source_boundary,
             }
@@ -1724,6 +2089,43 @@ def runtime_evidence_matrix_report_to_dict(
         "required_artifact_kinds": list(RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS),
         "runtime_evidence_matrix_complete": report.runtime_evidence_matrix_complete,
         "schema_version": RUNTIME_EVIDENCE_MATRIX_REPORT_SCHEMA_VERSION,
+    }
+
+
+def runtime_evidence_gate_matrix_coverage_report_to_dict(
+    report: RuntimeEvidenceGateMatrixCoverageReport,
+) -> dict[str, object]:
+    """Return deterministic JSON-compatible Runtime Evidence Gate coverage."""
+
+    _validate_runtime_evidence_gate_matrix_coverage_report(report)
+    bindings = _normalize_runtime_evidence_gate_matrix_coverage_entries(
+        report.bindings,
+    )
+    return {
+        "artifact_status": report.artifact_status,
+        "binding_count": len(bindings),
+        "bindings": [
+            {
+                "binding_id": binding.binding_id,
+                "coverage_status": binding.coverage_status,
+                "expected_artifact_ids": list(binding.expected_artifact_ids),
+                "graph_family": binding.graph_family,
+                "graph_id": binding.graph_id,
+                "issues": list(binding.issues),
+                "observed_artifact_ids": list(binding.observed_artifact_ids),
+                "required_artifact_kinds": list(binding.required_artifact_kinds),
+                "source_boundary": binding.source_boundary,
+            }
+            for binding in bindings
+        ],
+        "blocked_execution_surfaces": list(report.blocked_execution_surfaces),
+        "coverage_contract": report.coverage_contract,
+        "coverage_id": report.coverage_id,
+        "coverage_passed": report.coverage_passed,
+        "issues": list(report.issues),
+        "matrix_complete": report.matrix_complete,
+        "matrix_id": report.matrix_id,
+        "schema_version": RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_REPORT_SCHEMA_VERSION,
     }
 
 
@@ -1755,6 +2157,36 @@ def performance_proof_readiness_report_to_dict(
         "schema_version": PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION,
     }
 
+
+def performance_proof_interpretation_report_to_dict(
+    report: PerformanceProofInterpretationReport,
+) -> dict[str, object]:
+    """Return a deterministic JSON-compatible performance interpretation report."""
+
+    _validate_performance_proof_interpretation_report(report)
+    measurement_status = (
+        "interpreted" if report.measurement_interpretation_artifacts else "not_supplied"
+    )
+    return {
+        "artifact_status": PERFORMANCE_PROOF_INTERPRETATION_ARTIFACT_STATUS,
+        "blocked_claims": list(report.blocked_claims),
+        "claim_boundary": report.readiness_boundary_contract,
+        "issues": list(report.issues),
+        "measurement_interpretation_artifacts": list(
+            report.measurement_interpretation_artifacts
+        ),
+        "measurement_interpretation_status": measurement_status,
+        "native_performance_claim": False,
+        "performance_claim_status": PERFORMANCE_PROOF_INTERPRETATION_CLAIM_STATUS,
+        "performance_proof_interpretation_ready": (
+            report.performance_proof_interpretation_ready
+        ),
+        "proposal_name": report.proposal_name,
+        "readiness_issue_count": report.readiness_issue_count,
+        "readiness_proposal_name": report.readiness_proposal_name,
+        "readiness_ready": report.readiness_ready,
+        "schema_version": PERFORMANCE_PROOF_INTERPRETATION_REPORT_SCHEMA_VERSION,
+    }
 
 def performance_proof_rfc_report_to_dict(
     report: PerformanceProofRFCReport,
@@ -2168,6 +2600,20 @@ def dump_performance_proof_readiness_report(
     return text + "\n"
 
 
+def dump_performance_proof_interpretation_report(
+    report: PerformanceProofInterpretationReport,
+) -> str:
+    """Render a stable performance-proof interpretation artifact."""
+
+    text = json.dumps(
+        performance_proof_interpretation_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if len(text.encode("utf-8")) > MAX_PERFORMANCE_PROOF_INTERPRETATION_REPORT_BYTES:
+        raise ValueError("performance proof interpretation report exceeds byte limit")
+    return text + "\n"
+
 def dump_runtime_evidence_matrix_report(
     report: RuntimeEvidenceMatrixReport,
 ) -> str:
@@ -2180,6 +2626,24 @@ def dump_runtime_evidence_matrix_report(
     )
     if len(text.encode("utf-8")) > MAX_RUNTIME_EVIDENCE_MATRIX_REPORT_BYTES:
         raise ValueError("runtime evidence matrix report exceeds byte limit")
+    return text + "\n"
+
+
+def dump_runtime_evidence_gate_matrix_coverage_report(
+    report: RuntimeEvidenceGateMatrixCoverageReport,
+) -> str:
+    """Render a stable Runtime Evidence Gate Matrix coverage report."""
+
+    text = json.dumps(
+        runtime_evidence_gate_matrix_coverage_report_to_dict(report),
+        indent=2,
+        sort_keys=True,
+    )
+    if (
+        len(text.encode("utf-8"))
+        > MAX_RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_REPORT_BYTES
+    ):
+        raise ValueError("runtime evidence gate matrix coverage report exceeds limit")
     return text + "\n"
 
 
@@ -2410,9 +2874,129 @@ def _normalize_runtime_evidence_graphs(
                 graph_family=graph.graph_family,
                 source_boundary=graph.source_boundary,
                 artifacts=_normalize_runtime_evidence_artifacts(graph.artifacts),
+                required_artifact_kinds=(
+                    _normalize_runtime_evidence_required_artifact_kinds(
+                        graph.required_artifact_kinds
+                    )
+                ),
             )
         )
     return tuple(checked)
+
+
+def _normalize_runtime_evidence_gate_matrix_bindings(
+    bindings: Iterable[RuntimeEvidenceGateMatrixBinding],
+) -> tuple[RuntimeEvidenceGateMatrixBinding, ...]:
+    normalized = tuple(bindings)
+    if not normalized:
+        raise ValueError("runtime evidence gate matrix bindings required")
+    if len(normalized) > MAX_RUNTIME_EVIDENCE_GATE_MATRIX_BINDINGS:
+        raise ValueError("runtime evidence gate matrix binding count exceeds limit")
+    seen: set[str] = set()
+    checked: list[RuntimeEvidenceGateMatrixBinding] = []
+    for binding in normalized:
+        if not isinstance(binding, RuntimeEvidenceGateMatrixBinding):
+            raise TypeError(
+                "runtime evidence gate matrix bindings must be binding objects"
+            )
+        if binding.binding_id in seen:
+            raise ValueError("duplicate runtime evidence gate matrix binding id")
+        seen.add(binding.binding_id)
+        checked.append(
+            RuntimeEvidenceGateMatrixBinding(
+                binding_id=binding.binding_id,
+                graph_id=binding.graph_id,
+                graph_family=binding.graph_family,
+                source_boundary=binding.source_boundary,
+                required_artifact_kinds=binding.required_artifact_kinds,
+                artifact_ids=binding.artifact_ids,
+            )
+        )
+    return tuple(checked)
+
+
+def _runtime_evidence_gate_matrix_coverage_entry(
+    binding: RuntimeEvidenceGateMatrixBinding,
+    graph: RuntimeEvidenceGraph | None,
+) -> RuntimeEvidenceGateMatrixCoverage:
+    issues: list[str] = []
+    observed_artifact_ids: tuple[str, ...] = ()
+    if graph is None:
+        issues.append("graph_missing")
+        return RuntimeEvidenceGateMatrixCoverage(
+            binding_id=binding.binding_id,
+            graph_id=binding.graph_id,
+            graph_family=binding.graph_family,
+            source_boundary=binding.source_boundary,
+            required_artifact_kinds=binding.required_artifact_kinds,
+            expected_artifact_ids=binding.artifact_ids,
+            observed_artifact_ids=observed_artifact_ids,
+            coverage_status="failed",
+            issues=tuple(issues),
+        )
+
+    if graph.graph_family != binding.graph_family:
+        issues.append("graph_family_mismatch")
+    if graph.source_boundary != binding.source_boundary:
+        issues.append("source_boundary_mismatch")
+    if graph.required_artifact_kinds != binding.required_artifact_kinds:
+        issues.append("required_artifacts_mismatch")
+    if not graph.runtime_evidence_complete:
+        issues.append("runtime_evidence_incomplete")
+    missing_artifact_kinds = tuple(
+        artifact_kind
+        for artifact_kind in binding.required_artifact_kinds
+        if artifact_kind not in graph.present_artifact_kinds
+    )
+    issues.extend(f"missing_{artifact_kind}" for artifact_kind in missing_artifact_kinds)
+    observed_artifact_ids = tuple(
+        artifact.artifact_id
+        for artifact in graph.artifacts
+        if artifact.artifact_kind in binding.required_artifact_kinds
+    )
+    if observed_artifact_ids != binding.artifact_ids:
+        issues.append("artifact_id_mismatch")
+    return RuntimeEvidenceGateMatrixCoverage(
+        binding_id=binding.binding_id,
+        graph_id=binding.graph_id,
+        graph_family=binding.graph_family,
+        source_boundary=binding.source_boundary,
+        required_artifact_kinds=binding.required_artifact_kinds,
+        expected_artifact_ids=binding.artifact_ids,
+        observed_artifact_ids=observed_artifact_ids,
+        coverage_status="failed" if issues else "covered",
+        issues=tuple(issues),
+    )
+
+
+def _runtime_evidence_gate_matrix_coverage_issues(
+    matrix: RuntimeEvidenceMatrixReport,
+    coverage_entries: tuple[RuntimeEvidenceGateMatrixCoverage, ...],
+) -> tuple[str, ...]:
+    issues: list[str] = []
+    if not matrix.runtime_evidence_matrix_complete:
+        issues.append("matrix_incomplete")
+    for entry in coverage_entries:
+        issues.extend(f"{entry.binding_id}.{issue}" for issue in entry.issues)
+    if len(issues) > MAX_RUNTIME_EVIDENCE_GATE_MATRIX_ISSUES:
+        raise ValueError("runtime evidence gate matrix coverage issue count exceeds limit")
+    return tuple(issues)
+
+
+def _normalize_runtime_evidence_required_artifact_kinds(
+    artifact_kinds: Iterable[str],
+) -> tuple[str, ...]:
+    normalized = tuple(artifact_kinds)
+    if not normalized:
+        raise ValueError("runtime evidence required artifact kinds must not be empty")
+    seen: set[str] = set()
+    for artifact_kind in normalized:
+        if artifact_kind not in RUNTIME_EVIDENCE_ARTIFACT_KINDS:
+            raise ValueError("unsupported runtime evidence required artifact kind")
+        if artifact_kind in seen:
+            raise ValueError("duplicate runtime evidence required artifact kind")
+        seen.add(artifact_kind)
+    return normalized
 
 
 def _normalize_runtime_evidence_artifacts(
@@ -2918,6 +3502,23 @@ def _normalize_performance_evidence(
     return evidence_by_id
 
 
+def _normalize_performance_proof_interpretation_artifacts(
+    artifacts: Iterable[str],
+) -> tuple[str, ...]:
+    normalized = tuple(artifacts)
+    if len(normalized) > MAX_PERFORMANCE_PROOF_INTERPRETATION_ARTIFACTS:
+        raise ValueError("performance proof interpretation artifact count exceeds limit")
+    seen: set[str] = set()
+    for artifact_id in normalized:
+        _validate_performance_proof_interpretation_text(
+            artifact_id,
+            "measurement_interpretation_artifact",
+        )
+        if artifact_id in seen:
+            raise ValueError("duplicate performance proof interpretation artifact id")
+        seen.add(artifact_id)
+    return normalized
+
 def _normalize_leaky_abstraction_facts(
     performance_facts: Iterable[LeakyAbstractionFact],
 ) -> tuple[LeakyAbstractionFact, ...]:
@@ -2988,6 +3589,40 @@ def _validate_performance_readiness_report(
         _validate_performance_report_text(issue.evidence_id, "issue evidence_id")
         _validate_performance_report_text(issue.message, "issue message")
 
+
+def _validate_performance_proof_interpretation_report(
+    report: PerformanceProofInterpretationReport,
+) -> None:
+    if not isinstance(report, PerformanceProofInterpretationReport):
+        raise TypeError("performance proof interpretation report must be report object")
+    _validate_performance_proof_interpretation_text(
+        report.proposal_name,
+        "proposal_name",
+    )
+    _validate_performance_proof_interpretation_text(
+        report.readiness_proposal_name,
+        "readiness_proposal_name",
+    )
+    if type(report.readiness_ready) is not bool:
+        raise TypeError("performance proof interpretation readiness flag must be bool")
+    if report.readiness_boundary_contract != PERFORMANCE_PROOF_BOUNDARY_CONTRACT:
+        raise ValueError(
+            "performance proof interpretation boundary contract must be "
+            f"{PERFORMANCE_PROOF_BOUNDARY_CONTRACT!r}"
+        )
+    if (
+        not isinstance(report.readiness_issue_count, int)
+        or report.readiness_issue_count < 0
+        or report.readiness_issue_count > MAX_PERFORMANCE_PROOF_READINESS_ISSUES
+    ):
+        raise ValueError("performance proof interpretation readiness issue count invalid")
+    _normalize_performance_proof_interpretation_artifacts(
+        report.measurement_interpretation_artifacts,
+    )
+    if tuple(report.blocked_claims) != PERFORMANCE_PROOF_BLOCKED_CLAIMS:
+        raise ValueError("performance proof interpretation blocked claims must match")
+    for issue in report.issues:
+        _validate_performance_proof_interpretation_text(issue, "issue")
 
 def _validate_performance_proof_rfc_report(
     report: PerformanceProofRFCReport,
@@ -3160,6 +3795,99 @@ def _validate_runtime_evidence_matrix_report(
         _validate_runtime_evidence_text(issue, "runtime evidence issue")
 
 
+def _validate_runtime_evidence_gate_matrix_coverage_report(
+    report: RuntimeEvidenceGateMatrixCoverageReport,
+) -> None:
+    if not isinstance(report, RuntimeEvidenceGateMatrixCoverageReport):
+        raise TypeError(
+            "runtime evidence gate matrix coverage report must be report object"
+        )
+    _validate_runtime_evidence_text(report.coverage_id, "coverage_id")
+    _validate_runtime_evidence_text(report.matrix_id, "matrix_id")
+    if report.coverage_contract != RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_CONTRACT:
+        raise ValueError("runtime evidence gate matrix coverage contract mismatch")
+    if report.artifact_status != RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ARTIFACT_STATUS:
+        raise ValueError("runtime evidence gate matrix coverage artifact mismatch")
+    if (
+        tuple(report.blocked_execution_surfaces)
+        != RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
+    ):
+        raise ValueError(
+            "runtime evidence gate matrix coverage blocked surfaces mismatch"
+        )
+    entries = _normalize_runtime_evidence_gate_matrix_coverage_entries(
+        report.bindings,
+    )
+    expected_issues: list[str] = []
+    if not report.matrix_complete:
+        expected_issues.append("matrix_incomplete")
+    for entry in entries:
+        expected_issues.extend(f"{entry.binding_id}.{issue}" for issue in entry.issues)
+    if tuple(report.issues) != tuple(expected_issues):
+        raise ValueError("runtime evidence gate matrix coverage issues must be derived")
+    if len(report.issues) > MAX_RUNTIME_EVIDENCE_GATE_MATRIX_ISSUES:
+        raise ValueError("runtime evidence gate matrix coverage issue count exceeds limit")
+    if report.coverage_passed != (
+        report.matrix_complete
+        and not report.issues
+        and all(entry.coverage_status == "covered" for entry in entries)
+    ):
+        raise ValueError("runtime evidence gate matrix coverage status mismatch")
+    for issue in report.issues:
+        _validate_runtime_evidence_text(issue, "coverage issue")
+
+
+def _normalize_runtime_evidence_gate_matrix_coverage_entries(
+    entries: Iterable[RuntimeEvidenceGateMatrixCoverage],
+) -> tuple[RuntimeEvidenceGateMatrixCoverage, ...]:
+    normalized = tuple(entries)
+    if len(normalized) > MAX_RUNTIME_EVIDENCE_GATE_MATRIX_BINDINGS:
+        raise ValueError("runtime evidence gate matrix coverage entry count exceeds limit")
+    seen: set[str] = set()
+    checked: list[RuntimeEvidenceGateMatrixCoverage] = []
+    for entry in normalized:
+        if not isinstance(entry, RuntimeEvidenceGateMatrixCoverage):
+            raise TypeError(
+                "runtime evidence gate matrix coverage entries must be coverage objects"
+            )
+        if entry.binding_id in seen:
+            raise ValueError("duplicate runtime evidence gate matrix coverage binding")
+        seen.add(entry.binding_id)
+        _validate_runtime_evidence_text(entry.binding_id, "binding_id")
+        _validate_runtime_evidence_text(entry.graph_id, "graph_id")
+        _validate_runtime_evidence_text(entry.graph_family, "graph_family")
+        if entry.source_boundary not in RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES:
+            raise ValueError("unsupported runtime evidence coverage source boundary")
+        required_artifact_kinds = _normalize_runtime_evidence_required_artifact_kinds(
+            entry.required_artifact_kinds
+        )
+        expected_artifact_ids = tuple(entry.expected_artifact_ids)
+        observed_artifact_ids = tuple(entry.observed_artifact_ids)
+        for artifact_id in (*expected_artifact_ids, *observed_artifact_ids):
+            _validate_runtime_evidence_text(artifact_id, "coverage artifact_id")
+        if entry.coverage_status not in RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_STATUSES:
+            raise ValueError("unsupported runtime evidence gate matrix coverage status")
+        issues = tuple(entry.issues)
+        if (entry.coverage_status == "covered") != (not issues):
+            raise ValueError("runtime evidence gate coverage status must match issues")
+        for issue in issues:
+            _validate_runtime_evidence_text(issue, "coverage entry issue")
+        checked.append(
+            RuntimeEvidenceGateMatrixCoverage(
+                binding_id=entry.binding_id,
+                graph_id=entry.graph_id,
+                graph_family=entry.graph_family,
+                source_boundary=entry.source_boundary,
+                required_artifact_kinds=required_artifact_kinds,
+                expected_artifact_ids=expected_artifact_ids,
+                observed_artifact_ids=observed_artifact_ids,
+                coverage_status=entry.coverage_status,
+                issues=issues,
+            )
+        )
+    return tuple(checked)
+
+
 def _validate_proof_identifier(value: str, label: str) -> None:
     if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
         raise ValueError(f"{label} must be a safe proof identifier")
@@ -3208,6 +3936,12 @@ def _validate_performance_report_text(value: str, label: str) -> None:
         raise ValueError(f"{label} must be a non-empty string")
     if len(value.encode("utf-8")) > MAX_PERFORMANCE_PROOF_READINESS_FIELD_BYTES:
         raise ValueError(f"{label} exceeds performance proof readiness field limit")
+
+def _validate_performance_proof_interpretation_text(value: str, label: str) -> None:
+    if not isinstance(value, str) or not _PROOF_IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{label} must be a safe performance proof interpretation identifier")
+    if len(value.encode("utf-8")) > MAX_PERFORMANCE_PROOF_INTERPRETATION_FIELD_BYTES:
+        raise ValueError(f"{label} exceeds performance proof interpretation field limit")
 
 
 def _validate_performance_proof_rfc_text(value: str, label: str) -> None:
@@ -3472,6 +4206,9 @@ __all__ = [
     "LeakyAbstractionLeak",
     "LeakyAbstractionReport",
     "MAX_PERFORMANCE_PROOF_READINESS_ISSUES",
+    "MAX_PERFORMANCE_PROOF_INTERPRETATION_ARTIFACTS",
+    "MAX_PERFORMANCE_PROOF_INTERPRETATION_FIELD_BYTES",
+    "MAX_PERFORMANCE_PROOF_INTERPRETATION_REPORT_BYTES",
     "MAX_PERFORMANCE_PROOF_RFC_FIELD_BYTES",
     "MAX_PERFORMANCE_PROOF_RFC_REPORT_BYTES",
     "MAX_PERFORMANCE_PROOF_RFCS",
@@ -3520,6 +4257,10 @@ __all__ = [
     "PERFORMANCE_CLAIM_THRESHOLD_POLICY_KINDS",
     "PERFORMANCE_CLAIM_THRESHOLD_POLICY_REPORT_SCHEMA_VERSION",
     "PERFORMANCE_CLAIM_THRESHOLD_POLICY_STATUSES",
+    "PERFORMANCE_PROOF_INTERPRETATION_ARTIFACT_STATUS",
+    "PERFORMANCE_PROOF_INTERPRETATION_CLAIM_STATUS",
+    "PERFORMANCE_PROOF_INTERPRETATION_DEFAULT_ISSUES",
+    "PERFORMANCE_PROOF_INTERPRETATION_REPORT_SCHEMA_VERSION",
     "PERFORMANCE_PROOF_READINESS_REPORT_SCHEMA_VERSION",
     "PERFORMANCE_PROOF_RFC_ARTIFACT_STATUS",
     "PERFORMANCE_PROOF_RFC_CLAIM_STATUS",
@@ -3531,6 +4272,7 @@ __all__ = [
     "PerformanceClaimThresholdPolicyReport",
     "PerformanceAcceptanceCriteria",
     "PerformanceAcceptanceCriteriaReport",
+    "PerformanceProofInterpretationReport",
     "PerformanceProofReadinessError",
     "PerformanceProofReadinessEvidence",
     "PerformanceProofReadinessIssue",
@@ -3540,12 +4282,19 @@ __all__ = [
     "PROOF_REPORT_SCHEMA_VERSION",
     "ProofReportMetadata",
     "RUNTIME_EVIDENCE_ARTIFACT_KINDS",
+    "RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_ARTIFACT_STATUS",
+    "RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_CONTRACT",
+    "RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_REPORT_SCHEMA_VERSION",
+    "RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE_STATUSES",
     "RUNTIME_EVIDENCE_MATRIX_ARTIFACT_STATUS",
     "RUNTIME_EVIDENCE_MATRIX_CONTRACT",
     "RUNTIME_EVIDENCE_MATRIX_REPORT_SCHEMA_VERSION",
     "RUNTIME_EVIDENCE_MATRIX_SOURCE_BOUNDARIES",
     "RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS",
     "RuntimeEvidenceArtifact",
+    "RuntimeEvidenceGateMatrixBinding",
+    "RuntimeEvidenceGateMatrixCoverage",
+    "RuntimeEvidenceGateMatrixCoverageReport",
     "RuntimeEvidenceGraph",
     "RuntimeEvidenceMatrixReport",
     "assert_performance_proof_readiness",
@@ -3562,9 +4311,11 @@ __all__ = [
     "build_leaky_abstraction_report",
     "build_native_baseline_comparison_report",
     "build_native_baseline_provenance_report",
+    "build_performance_proof_interpretation_report",
     "build_performance_proof_readiness_report",
     "build_performance_proof_rfc_report",
     "build_current_runtime_evidence_matrix_report",
+    "build_runtime_evidence_gate_matrix_coverage_report",
     "build_runtime_evidence_matrix_report",
     "build_workload_scope_report",
     "dump_benchmark_artifact_manifest_report",
@@ -3577,8 +4328,10 @@ __all__ = [
     "dump_leaky_abstraction_report",
     "dump_native_baseline_comparison_report",
     "dump_native_baseline_provenance_report",
+    "dump_performance_proof_interpretation_report",
     "dump_performance_proof_readiness_report",
     "dump_performance_proof_rfc_report",
+    "dump_runtime_evidence_gate_matrix_coverage_report",
     "dump_runtime_evidence_matrix_report",
     "dump_workload_scope_report",
     "leaky_abstraction_report_to_dict",
@@ -3586,10 +4339,12 @@ __all__ = [
     "native_baseline_provenance_report_to_dict",
     "performance_acceptance_criteria_report_to_dict",
     "performance_claim_threshold_policy_report_to_dict",
+    "performance_proof_interpretation_report_to_dict",
     "performance_proof_readiness_report_to_dict",
     "performance_proof_rfc_report_to_dict",
     "proof_metadata_from_partition_plan",
     "runtime_evidence_matrix_report_to_dict",
+    "runtime_evidence_gate_matrix_coverage_report_to_dict",
     "executable_backend_security_review_report_to_dict",
     "toolchain_environment_report_to_dict",
     "workload_scope_report_to_dict",

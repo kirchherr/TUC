@@ -1,0 +1,72 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "cost_claim_status": "planning_estimate_not_measurement",
+  "execution_policy": "does_not_execute_transfers",
+  "execution_trace_digest": "sha256:418bd3238f436c80b8d40f9a7ef6003401b675cc1baa8263f673745ba46a7af0",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "runtime_backend_equivalence",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "records": [
+    {
+      "consumer_executor_backend": "reference-cpu",
+      "consumer_input_id": "activation:projection",
+      "consumer_input_tensors": [
+        "projection"
+      ],
+      "consumer_operation": "activation",
+      "consumer_operation_kind": "elementwise",
+      "consumer_planned_backend": "reference-cpu",
+      "consumer_step_index": 1,
+      "cost_model": "prototype_transfer_cost_profile",
+      "estimated_energy_pj": 1600.0,
+      "estimated_latency_ns": 20001.0,
+      "from_layout": "blocked",
+      "from_memory_domain": "device_sram",
+      "planned_bytes": 16,
+      "producer_executor_backend": "systolic-sim",
+      "producer_operation": "projection",
+      "producer_operation_kind": "matmul",
+      "producer_output_tensors": [
+        "projection"
+      ],
+      "producer_planned_backend": "systolic-sim",
+      "producer_step_index": 0,
+      "source_transfer_status": "planned",
+      "source_value_record_id": "projection:projection",
+      "tensor_name": "projection",
+      "to_layout": "row_major",
+      "to_memory_domain": "host_ram",
+      "trace_alignment_status": "producer_before_consumer",
+      "trace_record_status": "planned_not_executed",
+      "transfer_id": "runtime_transfer_0000"
+    }
+  ],
+  "residency_claim_status": "not_physical_residency_evidence",
+  "schema_version": "tuc.runtime_transfer_trace_index_report.v0",
+  "source_evidence_contract": "runtime_transfer_evidence.data_only.v0",
+  "source_partition_plan_digest": "sha256:7434b13995b92ab97bdefcf3dae71eb57fa7d070b11da36611cc02ce87ef379e",
+  "source_transfer_evidence_digest": "sha256:c3c905b3de3cbc8ba94de1d1df81d541f67694ed7192f7ff456b1efbc8b4d711",
+  "status": "PASS",
+  "total_estimated_energy_pj": 1600.0,
+  "total_estimated_latency_ns": 20001.0,
+  "total_planned_bytes": 16,
+  "trace_index_contract": "runtime_transfer_trace_index.data_only.v0",
+  "trace_index_scope": "planned_transfer_trace_alignment_only",
+  "trace_materialization_policy": "transfer_not_materialized_as_runtime_step",
+  "trace_step_count": 2,
+  "transfer_count": 1,
+  "transfer_scope": "planned_logical_transfer_only",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

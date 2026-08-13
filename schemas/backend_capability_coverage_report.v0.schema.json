@@ -1,0 +1,220 @@
+{
+  "$id": "https://tuc.dev/schemas/backend_capability_coverage_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "backend_count": {
+      "maximum": 32,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "backend_names": {
+      "items": {
+        "$ref": "#/$defs/report_text"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "type": "array"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "complete": {
+      "type": "boolean"
+    },
+    "coverage_contract": {
+      "const": "backend_capability_coverage.data_only.v0"
+    },
+    "coverage_status": {
+      "enum": [
+        "complete",
+        "partial"
+      ],
+      "type": "string"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "operation_count": {
+      "maximum": 16,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "required_operation_kinds": {
+      "items": {
+        "$ref": "#/$defs/operation_kind"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "type": "array"
+    },
+    "rows": {
+      "items": {
+        "$ref": "#/$defs/coverage_row"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.backend_capability_coverage_report.v0"
+    }
+  },
+  "required": [
+    "backend_count",
+    "backend_names",
+    "blocked_execution_surfaces",
+    "complete",
+    "coverage_contract",
+    "coverage_status",
+    "issues",
+    "operation_count",
+    "required_operation_kinds",
+    "rows",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "coverage_row": {
+      "additionalProperties": false,
+      "properties": {
+        "accepting_backends": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "maxItems": 32,
+          "type": "array"
+        },
+        "memory_domains": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "maxItems": 32,
+          "type": "array"
+        },
+        "operation_kind": {
+          "$ref": "#/$defs/operation_kind"
+        },
+        "preferred_backends": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "maxItems": 32,
+          "type": "array"
+        },
+        "produced_layouts": {
+          "items": {
+            "$ref": "#/$defs/report_text"
+          },
+          "maxItems": 32,
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "covered",
+            "missing"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "accepting_backends",
+        "memory_domains",
+        "operation_kind",
+        "preferred_backends",
+        "produced_layouts",
+        "status"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "const": "operation_kind_not_covered"
+        },
+        "operation_kind": {
+          "$ref": "#/$defs/operation_kind"
+        }
+      },
+      "required": [
+        "issue_code",
+        "operation_kind"
+      ],
+      "type": "object"
+    },
+    "operation_kind": {
+      "enum": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "type": "string"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

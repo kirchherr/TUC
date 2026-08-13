@@ -1,0 +1,121 @@
+{
+  "admission_contract": "real_triton_integration_admission.data_only.v0",
+  "admission_decision": "blocked_until_surface_gates_exist",
+  "admission_status": "blocked",
+  "admitted": false,
+  "all_required_evidence_present": true,
+  "artifact_status": "review_gate",
+  "blocked_claims": [
+    "accepts_arbitrary_triton_source",
+    "executes_generated_artifacts",
+    "executes_native_backends",
+    "imports_external_frontend_packages",
+    "runs_triton_jit",
+    "uses_real_devices"
+  ],
+  "blocked_surface_count": 12,
+  "device_access": false,
+  "direct_source_ingestion": false,
+  "evidence": [
+    {
+      "evidence_digest": "sha256:bd0ed6c655cf31899e2b3f0e3b03dd530b07481e40cd8e3aefabecde7d414dc1",
+      "evidence_id": "external_frontend_package_conformance",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:e1b6e4a526423ab8cc1ae9689cfd70103f74146a1e151c0de6faa9998fe772a3",
+      "evidence_id": "real_triton_integration_threat_model",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:50f264ce3c138f19a10ab21a0b46b793286407bea2b50709e265a92c5bcccb68",
+      "evidence_id": "triton_integration_readiness",
+      "required": true
+    }
+  ],
+  "evidence_count": 3,
+  "evidence_policy": "digest_only",
+  "frontend_package_import": false,
+  "generated_artifact_execution": false,
+  "integration_scope": "real_triton_integration_phase_zeta",
+  "native_backend_execution": false,
+  "plugin_discovery": false,
+  "required_evidence_ids": [
+    "external_frontend_package_conformance",
+    "real_triton_integration_threat_model",
+    "triton_integration_readiness"
+  ],
+  "required_surface_gates": [
+    "device_access_sandbox_gate",
+    "generated_artifact_quarantine_gate",
+    "native_backend_execution_security_gate",
+    "package_import_sandbox_gate",
+    "plugin_discovery_allowlist_gate",
+    "source_ingestion_quarantine_gate",
+    "triton_jit_execution_sandbox_gate"
+  ],
+  "schema_version": "tuc.real_triton_integration_admission_gate_report.v0",
+  "surfaces": [
+    {
+      "required_gate": "device_access_sandbox_gate",
+      "status": "blocked",
+      "surface_id": "device_access"
+    },
+    {
+      "required_gate": "source_ingestion_quarantine_gate",
+      "status": "blocked",
+      "surface_id": "direct_source_ingestion"
+    },
+    {
+      "required_gate": "native_backend_execution_security_gate",
+      "status": "blocked",
+      "surface_id": "dynamic_library_loading"
+    },
+    {
+      "required_gate": "package_import_sandbox_gate",
+      "status": "blocked",
+      "surface_id": "frontend_package_import"
+    },
+    {
+      "required_gate": "generated_artifact_quarantine_gate",
+      "status": "blocked",
+      "surface_id": "generated_artifact_execution"
+    },
+    {
+      "required_gate": "native_backend_execution_security_gate",
+      "status": "blocked",
+      "surface_id": "native_backend_execution"
+    },
+    {
+      "required_gate": "package_import_sandbox_gate",
+      "status": "blocked",
+      "surface_id": "network_access"
+    },
+    {
+      "required_gate": "plugin_discovery_allowlist_gate",
+      "status": "blocked",
+      "surface_id": "plugin_discovery"
+    },
+    {
+      "required_gate": "source_ingestion_quarantine_gate",
+      "status": "blocked",
+      "surface_id": "python_function_object_inspection"
+    },
+    {
+      "required_gate": "package_import_sandbox_gate",
+      "status": "blocked",
+      "surface_id": "python_import"
+    },
+    {
+      "required_gate": "generated_artifact_quarantine_gate",
+      "status": "blocked",
+      "surface_id": "subprocess_execution"
+    },
+    {
+      "required_gate": "triton_jit_execution_sandbox_gate",
+      "status": "blocked",
+      "surface_id": "triton_jit_execution"
+    }
+  ],
+  "triton_jit_execution": false
+}

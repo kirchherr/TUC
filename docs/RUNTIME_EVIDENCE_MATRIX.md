@@ -36,8 +36,32 @@ A graph is runtime-evidence complete only when it has:
 - `execution_receipt`
 
 Additional evidence, such as `proof_report_golden`, `frontend_intake_golden`,
-`source_intent_return_semantics`, and `source_intent_runtime_returns`, can be
-listed without changing completeness.
+`source_intent_return_semantics`, `source_intent_runtime_returns`,
+`backend_equivalence`, `backend_equivalence_portfolio`,
+`backend_equivalence_portfolio_policy`, `runtime_hs_ir_plan_alignment`,
+`runtime_transfer_trace_index`, `runtime_layout_conversion_evidence`, and
+`runtime_layout_conversion_trace_index`, can be listed without changing default
+full-runtime completeness.
+
+Each graph records its own `required_artifact_kinds`. Standard runtime proof
+graphs use the full required list above. Backend-equivalence fixtures use the
+scoped requirement `backend_equivalence`, because their review artifact is a
+data-only equivalence report rather than a full proof-report/readiness/trace
+bundle. The systolic backend-equivalence fixture additionally requires
+`runtime_planning_explanation` and `runtime_transfer_trace_index`, because its
+fallback plan and planned transfer edge must be bound to the accepted plan and
+observed trace before the slice counts as gate evidence. The mixed
+backend-equivalence fixture additionally requires
+`runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`, and
+`runtime_layout_conversion_trace_index`, because its HS-IR backend/layout
+decisions, planned layout transitions, and producer-consumer trace indexes must
+be bound to the accepted plan and observed trace before the mixed accelerator
+slice counts as gate evidence.
+The backend-equivalence portfolio uses the scoped requirement
+`backend_equivalence_portfolio` plus
+`backend_equivalence_portfolio_policy`, because it is an aggregate data-only
+review artifact over equivalence reports and an accepted membership policy
+rather than a full runtime execution bundle.
 
 For Runtime Executor v0, `reference_correctness` is backed by the
 schema-versioned [Runtime Reference Correctness](RUNTIME_REFERENCE_CORRECTNESS.md)
@@ -51,7 +75,8 @@ report at `schemas/runtime_reference_correctness_report.v0.schema.json`.
 The matrix records this as an evidence kind and artifact identifier; it does
 not claim that every identifier maps to a standalone checked-in JSON file.
 Standalone tensor-store goldens currently cover the executable runtime slices
-that produce Runtime Tensor Store reports.
+that produce Runtime Tensor Store reports, including the mixed accelerator
+slice.
 `output_contract` is backed by the schema-versioned
 [Runtime Output Contract](RUNTIME_OUTPUT_CONTRACT.md) report at
 `schemas/runtime_output_contract_report.v0.schema.json`.
@@ -61,6 +86,18 @@ that produce Runtime Tensor Store reports.
 `source_intent_runtime_returns` is backed by
 [Source Intent Runtime Returns](SOURCE_INTENT_RUNTIME_RETURNS.md) evidence at
 `schemas/source_intent_runtime_returns_report.v0.schema.json`.
+`runtime_layout_conversion_evidence` is backed by the schema-versioned
+[Runtime Layout Conversion Evidence](RUNTIME_LAYOUT_CONVERSION_EVIDENCE.md)
+report at `schemas/runtime_layout_conversion_evidence_report.v0.schema.json`.
+It is Runtime Evidence Gate-required Matrix evidence for the mixed
+backend-equivalence fixture. `runtime_transfer_trace_index` is backed by the
+schema-versioned [Runtime Transfer Trace Index](RUNTIME_TRANSFER_TRACE_INDEX.md)
+report at `schemas/runtime_transfer_trace_index_report.v0.schema.json` and is
+required as `runtime_transfer_trace_index_systolic` for the systolic
+backend-equivalence fixture. `runtime_layout_conversion_trace_index` is backed
+by the schema-versioned [Runtime Layout Conversion Trace Index](RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
+report at `schemas/runtime_layout_conversion_trace_index_report.v0.schema.json` and is
+required as `runtime_layout_conversion_trace_index_mixed` for the same fixture.
 `execution_receipt` is backed by the schema-versioned
 [Runtime Execution Receipt](RUNTIME_EXECUTION_RECEIPT.md) report at
 `schemas/runtime_execution_receipt_report.v0.schema.json`.
@@ -89,16 +126,67 @@ The current matrix is complete across every accepted graph fixture:
 - `source_intent_return_mlp` is complete across required runtime evidence and
   also records Source Intent return semantics plus Source Intent Runtime
   Returns evidence.
+- `runtime_backend_equivalence`, `runtime_vector_backend_equivalence`, and
+  `runtime_mixed_backend_equivalence` are complete under their scoped
+  backend-equivalence evidence requirements. The systolic fixture also requires
+  `runtime_planning_explanation` and `runtime_transfer_trace_index` evidence.
+  The mixed fixture also requires `runtime_planning_explanation`,
+  `runtime_hs_ir_plan_alignment`, `runtime_layout_conversion_evidence`, and
+  `runtime_layout_conversion_trace_index` evidence.
+- `runtime_backend_equivalence_portfolio` is complete under its scoped
+  `backend_equivalence_portfolio` and
+  `backend_equivalence_portfolio_policy` evidence requirements, inventorying
+  both the aggregate backend-diversity artifact and its accepted membership
+  policy.
+- `runtime_memory_planning` is complete under scoped Buffer Lifetime,
+  Allocation Plan, Memory Budget, Allocation Request Manifest, Allocation
+  Admission, and Allocation Receipt evidence requirements.
 
 Future graph fixtures must either make every required evidence kind present or
 show missing evidence as explicit matrix issues.
 
 The CI-facing [Runtime Evidence Gate](RUNTIME_EVIDENCE_GATE.md) requires this
 matrix to be complete before runtime executor conformance can count as passing
-merge evidence. It also requires `source_intent_return_mlp` to remain present
-with the `source_intent_metadata` source boundary and the
+merge evidence. It also requires the three backend-equivalence graph entries
+to remain present with the `runtime_backend_equivalence` source boundary and
+`backend_equivalence` artifact kind before backend-equivalence reports can
+count as passing gate evidence; the gate binds each checked equivalence report
+to its matrix graph by graph ID and exact artifact ID. The systolic
+backend-equivalence graph must additionally keep the
+`runtime_planning_explanation` and `runtime_transfer_trace_index` artifact
+kinds with exact `runtime_planning_explanation_systolic` and
+`runtime_transfer_trace_index_systolic` artifact IDs before its planning
+explanation and transfer trace-index reports can count as passing gate
+evidence. The mixed backend-equivalence graph must additionally keep the
+`runtime_planning_explanation`, `runtime_hs_ir_plan_alignment`,
+`runtime_layout_conversion_evidence`, and
+`runtime_layout_conversion_trace_index` artifact kinds with exact
+`runtime_planning_explanation_mixed`, `runtime_hs_ir_plan_alignment_mixed`,
+`runtime_layout_conversion_evidence_mixed`, and
+`runtime_layout_conversion_trace_index_mixed` artifact IDs before its planning
+explanation, HS-IR alignment, layout-conversion, and trace-index reports can
+count as passing gate evidence.
+Separately, the gate also requires the `runtime_backend_equivalence_portfolio`
+graph to remain present with the
+`runtime_backend_equivalence` source boundary and
+`backend_equivalence_portfolio` plus
+`backend_equivalence_portfolio_policy` artifact kinds before portfolio evidence
+can count as passing gate evidence; the gate binds the portfolio matrix coverage
+to the exact portfolio and policy artifact IDs. The runtime-memory-planning
+graph must remain present with the `runtime_memory_planning` source boundary
+and exact Buffer Lifetime, Allocation Plan, Memory Budget, and Allocation
+Request Manifest artifact IDs before Memory Planning Gate evidence can count as
+central runtime gate evidence. It also requires
+`source_intent_return_mlp` to
+remain present with the `source_intent_metadata` source boundary and the
 `source_intent_return_semantics` plus `source_intent_runtime_returns` artifact
 kinds before Source Intent Runtime Returns can count as passing gate evidence.
+
+[Runtime Evidence Gate Matrix Coverage](RUNTIME_EVIDENCE_GATE_MATRIX_COVERAGE.md)
+serializes the gate-required backend-equivalence, transfer trace-index, HS-IR
+alignment, layout-conversion, trace-index, and portfolio Matrix bindings as a
+deterministic JSON audit, so reviewers can inspect the exact graph and artifact
+IDs that the gate accepts.
 
 ## Security Boundary
 
@@ -118,3 +206,5 @@ It keeps the following surfaces blocked:
 - subprocess execution
 
 The matrix is therefore a proof inventory, not an execution mechanism.
+
+Runtime Memory Planning matrix coverage now includes `runtime_allocation_reconciliation` as the policy artifact that binds Allocation Admission and Allocation Receipt before future allocator implementations.

@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_intent_mixed_runtime_public_proof_bundle_report.v0.schema.json",
+  "title": "TUC Source Intent Mixed Runtime Public Proof Bundle Report v0",
+  "description": "Digest-only proof evidence binding Source Intent plain data to mixed trusted runtime placement, public outputs, reference correctness, and backend equivalence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_count",
+    "artifact_policy",
+    "artifacts",
+    "backend_equivalence_contract",
+    "backend_equivalence_passed",
+    "baseline_backend_sequence",
+    "baseline_run_id",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "bundle_contract",
+    "candidate_backend_sequence",
+    "candidate_run_id",
+    "comparison_count",
+    "equivalence_claim",
+    "executor_contract",
+    "graph_name",
+    "metadata_contract",
+    "module_name",
+    "operation_families",
+    "output_contract",
+    "output_manifest_contract",
+    "public_output_bundle_contract",
+    "public_output_bundle_passed",
+    "public_output_names",
+    "raw_value_policy",
+    "reference_correctness_contract",
+    "reference_correctness_passed",
+    "review_claims",
+    "schema_version",
+    "source_boundary",
+    "source_intent_contract",
+    "status",
+    "terminal_outputs",
+    "trusted_executor_registry",
+    "trusted_runtime_backends"
+  ],
+  "properties": {
+    "artifact_count": {"const": 9},
+    "artifact_policy": {"const": "digest_only_values_omitted"},
+    "artifacts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/artifact"},
+      "minItems": 9,
+      "maxItems": 9
+    },
+    "backend_equivalence_contract": {"const": "runtime_backend_equivalence.data_only.v0"},
+    "backend_equivalence_passed": {"const": true},
+    "baseline_backend_sequence": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "reference-cpu"},
+        {"const": "reference-cpu"},
+        {"const": "reference-cpu"},
+        {"const": "reference-cpu"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "baseline_run_id": {"const": "reference_cpu"},
+    "blocked_claims": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "general_source_parser"},
+        {"const": "real_triton_source_ingestion"},
+        {"const": "native_backend_execution"},
+        {"const": "native_performance_claim"},
+        {"const": "runtime_handle_serialization"}
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "blocked_execution_surfaces": {"$ref": "#/$defs/blocked_execution_surfaces"},
+    "bundle_contract": {"const": "source_intent_mixed_runtime_public_proof_bundle.e2e.v0"},
+    "candidate_backend_sequence": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "systolic-sim"},
+        {"const": "vector-sim"},
+        {"const": "vector-sim"},
+        {"const": "vector-sim"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "candidate_run_id": {"const": "source_intent_mixed_accelerators"},
+    "comparison_count": {"const": 1},
+    "equivalence_claim": {
+      "const": "source_intent_preserves_public_outputs_across_mixed_backend_placements"
+    },
+    "executor_contract": {"const": "runtime_executor.trusted_backend.v0"},
+    "graph_name": {"const": "source_intent_mixed_runtime_public_proof"},
+    "metadata_contract": {"const": "source_intent_to_metadata.execution_free.v0"},
+    "module_name": {"const": "source_intent_mixed_runtime_public_proof"},
+    "operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "matmul"},
+        {"const": "softmax"},
+        {"const": "reduction"},
+        {"const": "elementwise"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "output_contract": {"const": "runtime_output_contract.data_only.v0"},
+    "output_manifest_contract": {"const": "runtime_output_manifest.data_only.v0"},
+    "public_output_bundle_contract": {
+      "const": "runtime_public_output_bundle.readonly_values.v0"
+    },
+    "public_output_bundle_passed": {"const": true},
+    "public_output_names": {
+      "type": "array",
+      "prefixItems": [{"const": "api_activated"}],
+      "items": false,
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "reference_correctness_contract": {"const": "runtime_reference_correctness.data_only.v0"},
+    "reference_correctness_passed": {"const": true},
+    "review_claims": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "source_intent_plain_data_bound"},
+        {"const": "metadata_conversion_bound"},
+        {"const": "mixed_backend_placement_bound"},
+        {"const": "trusted_runtime_execution_bound"},
+        {"const": "public_output_bundle_bound"},
+        {"const": "reference_correctness_passed"},
+        {"const": "backend_equivalence_passed"},
+        {"const": "values_omitted"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "schema_version": {
+      "const": "tuc.source_intent_mixed_runtime_public_proof_bundle_report.v0"
+    },
+    "source_boundary": {"const": "source_intent_plain_data_to_mixed_runtime_public_outputs"},
+    "source_intent_contract": {"const": "source_intent_ir.canonical.v0"},
+    "status": {"const": "PASS"},
+    "terminal_outputs": {
+      "type": "array",
+      "prefixItems": [{"const": "activated"}],
+      "items": false,
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "trusted_executor_registry": {"const": "trusted_runtime_executor_registry.v0"},
+    "trusted_runtime_backends": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "reference-cpu"},
+        {"const": "systolic-sim"},
+        {"const": "vector-sim"}
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "artifact_kind",
+        "contract",
+        "digest",
+        "status"
+      ],
+      "properties": {
+        "artifact_id": {
+          "enum": [
+            "source_intent_module",
+            "source_intent_metadata",
+            "candidate_execution_readiness",
+            "candidate_execution_trace",
+            "candidate_output_manifest",
+            "candidate_output_contract",
+            "candidate_public_output_bundle",
+            "candidate_reference_correctness",
+            "runtime_backend_equivalence"
+          ]
+        },
+        "artifact_kind": {"enum": ["json_report", "text_dump", "text_report", "text_trace"]},
+        "contract": {
+          "enum": [
+            "source_intent_ir.canonical.v0",
+            "source_intent_to_metadata.execution_free.v0",
+            "runtime_executor.trusted_backend.v0",
+            "runtime_output_manifest.data_only.v0",
+            "runtime_output_contract.data_only.v0",
+            "runtime_public_output_bundle.readonly_values.v0",
+            "runtime_reference_correctness.data_only.v0",
+            "runtime_backend_equivalence.data_only.v0"
+          ]
+        },
+        "digest": {"$ref": "#/$defs/sha256_digest"},
+        "status": {"const": "accepted"}
+      }
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

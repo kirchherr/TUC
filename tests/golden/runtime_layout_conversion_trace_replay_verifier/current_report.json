@@ -1,0 +1,80 @@
+{
+  "artifact_status": "review_verification",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "check_count": 6,
+  "checks": [
+    {
+      "check_id": "graph_name_match",
+      "expected": "runtime_mixed_backend_equivalence",
+      "observed": "runtime_mixed_backend_equivalence",
+      "row_status": "verified",
+      "subject": "runtime_layout_conversion_trace_index"
+    },
+    {
+      "check_id": "layout_conversion_evidence_digest_replayed",
+      "expected": "sha256:c58d06b90ba1512637a053ad0edfa15f4defbb12db2534dce5c93121d8074dd4",
+      "observed": "sha256:c58d06b90ba1512637a053ad0edfa15f4defbb12db2534dce5c93121d8074dd4",
+      "row_status": "verified",
+      "subject": "runtime_layout_conversion_evidence"
+    },
+    {
+      "check_id": "partition_plan_digest_bound",
+      "expected": "sha256:11ccb6e40e3403fd3ec9eeef0e4721bf993a1459bf67c994872d306db16ee0a3",
+      "observed": "sha256:11ccb6e40e3403fd3ec9eeef0e4721bf993a1459bf67c994872d306db16ee0a3",
+      "row_status": "verified",
+      "subject": "runtime_layout_conversion_trace_index"
+    },
+    {
+      "check_id": "conversion_count_bound",
+      "expected": "1",
+      "observed": "1",
+      "row_status": "verified",
+      "subject": "runtime_layout_conversion_trace_index"
+    },
+    {
+      "check_id": "conversion_metadata_digest_replayed",
+      "expected": "sha256:9d07f000336e1150dced149fc2c5a5ef8a88467cdac15b3c6297ecfb6e8b1839",
+      "observed": "sha256:9d07f000336e1150dced149fc2c5a5ef8a88467cdac15b3c6297ecfb6e8b1839",
+      "row_status": "verified",
+      "subject": "runtime_layout_conversion_trace_index"
+    },
+    {
+      "check_id": "trace_materialization_policy_bound",
+      "expected": "conversion_not_materialized_as_runtime_step",
+      "observed": "conversion_not_materialized_as_runtime_step",
+      "row_status": "verified",
+      "subject": "runtime_layout_conversion_trace_index"
+    }
+  ],
+  "conversion_metadata_digest": "sha256:9d07f000336e1150dced149fc2c5a5ef8a88467cdac15b3c6297ecfb6e8b1839",
+  "execution_policy": "does_not_execute_conversions",
+  "graph_name": "runtime_mixed_backend_equivalence",
+  "input_policy": "serialized_json_reports_only",
+  "issues": [],
+  "layout_conversion_evidence_report_digest": "sha256:c58d06b90ba1512637a053ad0edfa15f4defbb12db2534dce5c93121d8074dd4",
+  "layout_conversion_trace_index_report_digest": "sha256:855477f6ba581cdb5782cbb64b27237c1b7b7e5b3504e49b3bac2743ee6e11ba",
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "reexecution_policy": "runtime_reexecution_not_required",
+  "replay_contract": "runtime_layout_conversion_trace_replay_verifier.review.v0",
+  "replay_metadata_digest": "sha256:967b65d1eedbf785ab268e34cab73a99d31a8fe29cae7788c15d82d7ed79bf99",
+  "replay_mode": "metadata_digest_replay_only",
+  "required_inputs": [
+    "runtime_layout_conversion_evidence",
+    "runtime_layout_conversion_trace_index"
+  ],
+  "schema_version": "tuc.runtime_layout_conversion_trace_replay_verifier_report.v0",
+  "source_layout_conversion_evidence_digest": "sha256:c58d06b90ba1512637a053ad0edfa15f4defbb12db2534dce5c93121d8074dd4",
+  "source_partition_plan_digest": "sha256:11ccb6e40e3403fd3ec9eeef0e4721bf993a1459bf67c994872d306db16ee0a3",
+  "trace_index_conversion_metadata_digest": "sha256:9d07f000336e1150dced149fc2c5a5ef8a88467cdac15b3c6297ecfb6e8b1839",
+  "trace_materialization_policy": "conversion_not_materialized_as_runtime_step"
+}

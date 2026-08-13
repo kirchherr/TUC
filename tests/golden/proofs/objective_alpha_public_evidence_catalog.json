@@ -1,0 +1,170 @@
+{
+  "artifact_status": "review_evidence_catalog",
+  "blocked_changes": [
+    "increase_public_bundle_capacity_without_rfc",
+    "replace_public_bundle_entries_without_rfc",
+    "add_source_buffers_to_public_artifacts",
+    "add_tensor_values_to_public_artifacts",
+    "authorize_execution_handles",
+    "authorize_device_access",
+    "authorize_generated_artifact_execution",
+    "claim_native_performance"
+  ],
+  "blocked_claims": [
+    "native_performance_parity",
+    "vendor_compiler_replacement",
+    "broad_source_code_parsing",
+    "arbitrary_third_party_backend_execution",
+    "device_access",
+    "generated_artifact_execution"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "catalog_contract": "objective_alpha.public_evidence_catalog.data_only.v0",
+  "catalog_entries": [
+    {
+      "artifact_kind": "schema_versioned_extension_policy_report",
+      "entry_point": "python examples/objective_alpha_evidence_extension_policy.py",
+      "evidence_id": "objective_alpha_evidence_extension_policy",
+      "extension_tier": "governance",
+      "metadata_digest": "4c8dc9cd62201e414cf653c9f2e64a773d54df83835167df4e224791394e3cdf",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_backend_equivalence_portfolio_report",
+      "entry_point": "python examples/runtime_backend_equivalence_portfolio.py",
+      "evidence_id": "runtime_backend_equivalence_portfolio",
+      "extension_tier": "runtime_proof",
+      "metadata_digest": "46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_source_to_intent_kernel_ingress_proof_bundle_report",
+      "entry_point": "python examples/source_to_intent_research_kernel_ingress_proof_bundle.py",
+      "evidence_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "extension_tier": "frontend_runtime_proof",
+      "metadata_digest": "afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_source_intent_mixed_runtime_public_proof_bundle_report",
+      "entry_point": "python examples/source_intent_mixed_runtime_public_proof_bundle.py",
+      "evidence_id": "source_intent_mixed_runtime_public_proof_bundle",
+      "extension_tier": "frontend_runtime_proof",
+      "metadata_digest": "baf6d1b6939d7653378a9ad44415865db94532b46242e45a07216adab4f3f05a",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "deterministic_source_to_intent_research_capability_claim_gate_output",
+      "entry_point": "python examples/source_to_intent_research_capability_claim_gate.py",
+      "evidence_id": "source_to_intent_research_capability_claim_gate",
+      "extension_tier": "claim_boundary",
+      "metadata_digest": "4b3d8514ad2855a6ee5968c6d4814cd18a48c3bb6543def61f8f11383ab10327",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_first_real_triton_kernel_path_report",
+      "entry_point": "python examples/first_real_triton_kernel_path.py",
+      "evidence_id": "first_real_triton_kernel_path",
+      "extension_tier": "frontend_runtime_proof",
+      "metadata_digest": "3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_real_triton_first_slice_evidence_portfolio_report",
+      "entry_point": "python examples/real_triton_first_slice_evidence_portfolio.py",
+      "evidence_id": "real_triton_first_slice_evidence_portfolio",
+      "extension_tier": "frontend_runtime_proof",
+      "metadata_digest": "b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_oci_source_ingestion_research_proof_report",
+      "entry_point": "python examples/oci_source_ingestion_research_proof.py",
+      "evidence_id": "oci_source_ingestion_research_proof",
+      "extension_tier": "isolation_proof",
+      "metadata_digest": "ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_oci_worker_release_provenance_readiness_report",
+      "entry_point": "python examples/oci_source_worker_release_provenance_readiness.py",
+      "evidence_id": "oci_source_worker_release_provenance_readiness",
+      "extension_tier": "supply_chain_readiness",
+      "metadata_digest": "731df67576bd172f9833bf92a18ca4af452b8c8af3ca33c7f48616e9305e2e36",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    }
+  ],
+  "catalog_entry_capacity": 32,
+  "catalog_entry_count": 9,
+  "catalog_extension_tier_coverage_status": "complete",
+  "catalog_id": "objective_alpha_public_evidence_catalog",
+  "catalog_metadata_digest": "ada2114ce543d41b7bacbea3caa5e10adc5a9949b6ca28a2167a35caddafca0a",
+  "catalog_missing_extension_tiers": [],
+  "catalog_passed": true,
+  "catalog_required_extension_tiers": [
+    "governance",
+    "runtime_proof",
+    "frontend_runtime_proof",
+    "claim_boundary",
+    "isolation_proof",
+    "supply_chain_readiness"
+  ],
+  "catalog_scope": "objective_alpha_extensions_after_public_bundle_capacity",
+  "catalog_status": "PASS",
+  "digest_policy": "sha256_hex_only",
+  "extension_policy_contract": "objective_alpha.evidence_extension_policy.data_only.v0",
+  "extension_policy_metadata_digest": "4c8dc9cd62201e414cf653c9f2e64a773d54df83835167df4e224791394e3cdf",
+  "first_real_triton_kernel_path_metadata_digest": "3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
+  "growth_policy": "append_only_rfc_bound",
+  "issues": [],
+  "oci_source_ingestion_research_proof_metadata_digest": "ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
+  "oci_source_worker_release_provenance_readiness_metadata_digest": "731df67576bd172f9833bf92a18ca4af452b8c8af3ca33c7f48616e9305e2e36",
+  "real_triton_first_slice_evidence_portfolio_metadata_digest": "b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
+  "required_controls": [
+    "schema_versioned_extension_artifacts",
+    "sha256_metadata_digests",
+    "source_free_public_reports",
+    "digest_only_public_links",
+    "no_execution_handles",
+    "no_device_access",
+    "no_generated_artifact_execution",
+    "no_native_performance_claim"
+  ],
+  "required_invariants": [
+    "stable_public_bundle_anchor",
+    "passing_extension_policy_anchor",
+    "fixed_initial_catalog_entries",
+    "append_only_rfc_bound_growth",
+    "digest_only_catalog_entries",
+    "source_free_public_reports",
+    "blocked_execution_surfaces_preserved",
+    "blocked_claims_preserved"
+  ],
+  "runtime_backend_equivalence_portfolio_metadata_digest": "46214f99d0ded1f09b8462316471bebb85a38a553d935b879d488eacdd140f9b",
+  "schema_version": "tuc.objective_alpha_public_evidence_catalog_report.v0",
+  "source_intent_mixed_runtime_public_proof_bundle_metadata_digest": "baf6d1b6939d7653378a9ad44415865db94532b46242e45a07216adab4f3f05a",
+  "source_to_intent_research_capability_claim_gate_metadata_digest": "4b3d8514ad2855a6ee5968c6d4814cd18a48c3bb6543def61f8f11383ab10327",
+  "source_to_intent_research_kernel_ingress_proof_bundle_metadata_digest": "afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
+  "stable_bundle_metadata_digest": "e86a3fb8dbe50802444d9e24ecf52a32b25931c54f660c8c90099e3b362624c6",
+  "stable_entry_capacity": 16,
+  "stable_entry_count": 16,
+  "stable_entrypoint": "objective_alpha_public_proof_bundle"
+}

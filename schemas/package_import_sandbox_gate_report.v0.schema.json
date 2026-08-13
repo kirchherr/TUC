@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/package_import_sandbox_gate_report.v0.schema.json",
+  "title": "TUC Package Import Sandbox Gate Report v0",
+  "description": "Data-only gate schema establishing sandbox requirements for future frontend package imports without admitting Python import, package code execution, entrypoint discovery, network, filesystem, subprocess, or dynamic-library surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "all_required_evidence_present",
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "dynamic_library_loading",
+    "entrypoint_discovery",
+    "environment_access",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "external_package_loaded",
+    "filesystem_access",
+    "frontend_package_import",
+    "gate_contract",
+    "gate_id",
+    "gate_status",
+    "network_access",
+    "package_code_execution",
+    "plugin_discovery",
+    "python_import",
+    "required_control_count",
+    "required_controls",
+    "required_evidence_ids",
+    "sandbox_boundary_established",
+    "schema_version",
+    "source_intent_from_import",
+    "subprocess_execution",
+    "surface_id"
+  ],
+  "properties": {
+    "admission_effect": {"const": "does_not_admit_frontend_package_import"},
+    "all_required_evidence_present": {"const": true},
+    "artifact_status": {"const": "review_gate"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {"$ref": "#/$defs/blocked_execution_surface"},
+      "uniqueItems": true
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/blocked_output"},
+      "uniqueItems": true
+    },
+    "dynamic_library_loading": {"const": false},
+    "entrypoint_discovery": {"const": false},
+    "environment_access": {"const": false},
+    "evidence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "evidence_count": {"const": 4},
+    "evidence_policy": {"const": "digest_only"},
+    "external_package_loaded": {"const": false},
+    "filesystem_access": {"const": false},
+    "frontend_package_import": {"const": false},
+    "gate_contract": {"const": "package_import_sandbox_gate.data_only.v0"},
+    "gate_id": {"const": "package_import_sandbox_gate"},
+    "gate_status": {"const": "sandbox_requirements_only"},
+    "network_access": {"const": false},
+    "package_code_execution": {"const": false},
+    "plugin_discovery": {"const": false},
+    "python_import": {"const": false},
+    "required_control_count": {"const": 16},
+    "required_controls": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "items": {"$ref": "#/$defs/required_control"},
+      "uniqueItems": true
+    },
+    "required_evidence_ids": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/required_evidence_id"},
+      "uniqueItems": true
+    },
+    "sandbox_boundary_established": {"const": true},
+    "schema_version": {"const": "tuc.package_import_sandbox_gate_report.v0"},
+    "source_intent_from_import": {"const": false},
+    "subprocess_execution": {"const": false},
+    "surface_id": {"const": "frontend_package_import"}
+  },
+  "$defs": {
+    "blocked_execution_surface": {
+      "enum": [
+        "device_access",
+        "dynamic_library_loading",
+        "environment_access",
+        "file_system_access",
+        "frontend_package_import",
+        "network_access",
+        "plugin_discovery",
+        "python_import",
+        "subprocess_execution"
+      ]
+    },
+    "blocked_output": {
+      "enum": [
+        "import_side_effect",
+        "imported_module",
+        "package_entrypoint",
+        "python_function_object",
+        "source_intent_from_import"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_digest", "evidence_id", "required"],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"$ref": "#/$defs/required_evidence_id"},
+        "required": {"const": true}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_control": {
+      "enum": [
+        "deterministic_manifest_only",
+        "digest_only_evidence",
+        "entrypoints_not_discovered",
+        "fail_closed_on_violation",
+        "import_side_effects_blocked",
+        "network_access_blocked",
+        "no_dynamic_library_loading",
+        "no_environment_access",
+        "no_filesystem_access",
+        "no_frontend_package_import",
+        "no_plugin_discovery",
+        "no_python_import",
+        "no_subprocess_execution",
+        "package_treated_as_untrusted",
+        "sanitized_diagnostics_only",
+        "source_intent_fixtures_only"
+      ]
+    },
+    "required_evidence_id": {
+      "enum": [
+        "external_frontend_package_conformance",
+        "package_import_sandbox_model",
+        "real_triton_integration_admission_gate",
+        "source_ingestion_quarantine_gate"
+      ]
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

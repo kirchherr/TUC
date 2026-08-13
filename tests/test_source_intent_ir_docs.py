@@ -75,6 +75,28 @@ def test_source_intent_metadata_doc_preserves_adapter_boundary() -> None:
         assert expected in text
 
 
+def test_source_intent_elementwise_semantics_are_explicit_and_fail_closed() -> None:
+    text = Path("docs/SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md").read_text(
+        encoding="utf-8"
+    )
+    rfc = Path("rfcs/0287-source-intent-elementwise-semantics.md").read_text(
+        encoding="utf-8"
+    )
+
+    for expected in (
+        "elementwise_kind",
+        "gelu`, `identity`, `relu",
+        "tl.where(x > 0, x, 0)",
+        "tl.where(x > 0, x, x)",
+        "This is not general `tl.where` support",
+        "Unknown semantics are rejected",
+        "Production source ingestion remains blocked",
+    ):
+        assert expected in text
+    assert "proof-validity defect" in rfc
+    assert "Failing closed" in rfc
+
+
 def test_source_intent_intake_doc_preserves_plain_data_boundary() -> None:
     text = Path("docs/SOURCE_INTENT_INTAKE.md").read_text(encoding="utf-8")
 
@@ -222,11 +244,11 @@ def test_source_to_intent_parser_gate_doc_blocks_parser_work() -> None:
     )
 
     for expected in (
-        "TUC still does not implement source text to Source Intent IR",
-        "Source-to-intent parsing is blocked",
-        "No source text or preflight report may produce Source Intent IR today",
+        "TUC now has one explicit source text to Source Intent research parser slice",
+        "Default source-to-intent parsing is blocked",
+        "No default compiler path accepts source text today",
         "source_intent.v0 plain data",
-        "A future parser must not produce metadata",
+        "A parser must not produce metadata",
         "must not import user modules",
         "must not evaluate decorators",
         "must not execute `@triton.jit`",
@@ -237,6 +259,7 @@ def test_source_to_intent_parser_gate_doc_blocks_parser_work() -> None:
         "Source Intent Frontend Conformance report",
         "Source Intent Frontend Conformance Gate output",
         "Source-To-Intent Readiness report",
+        "Source-To-Intent Research Parser",
         "Source-To-Intent Parser Block Gate",
         "SOURCE_TO_INTENT_READINESS.md",
         "The parser report must not contain raw source text",
@@ -260,7 +283,7 @@ def test_source_to_intent_readiness_doc_is_report_only() -> None:
         "Source Intent Frontend Conformance Gate output",
         "examples/source_to_intent_parser_block_gate.py",
         "tests/golden/frontend/source_to_intent_readiness_report.json",
-        "Missing evidence keeps parser implementation blocked",
+        "Missing evidence keeps default parser intake",
         "must not include raw source text",
         "Unknown evidence IDs and duplicate evidence IDs fail closed",
         "must not import user modules",

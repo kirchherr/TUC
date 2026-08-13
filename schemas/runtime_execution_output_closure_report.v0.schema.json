@@ -1,0 +1,283 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_execution_output_closure_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "check_count": {
+      "const": 2
+    },
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/check"
+      },
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "closure_contract": {
+      "const": "runtime_execution_output_closure.data_only.v0"
+    },
+    "closure_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "closure_policy_id": {
+      "const": "runtime_execution_output_closure.receipt_bundle_public_outputs.v0"
+    },
+    "closure_status": {
+      "const": "closed_by_metadata_digest"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_execution_output_closure_report.v0"
+    },
+    "source_bundle_execution_receipt_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_execution_evidence_bundle_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_execution_evidence_bundle_passed": {
+      "type": "boolean"
+    },
+    "source_execution_evidence_bundle_schema_version": {
+      "const": "tuc.runtime_execution_evidence_bundle_report.v0"
+    },
+    "source_execution_receipt_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_execution_receipt_passed": {
+      "type": "boolean"
+    },
+    "source_execution_receipt_schema_version": {
+      "const": "tuc.runtime_execution_receipt_report.v0"
+    },
+    "source_output_contract_item_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "source_output_contract_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_output_contract_passed": {
+      "type": "boolean"
+    },
+    "source_output_contract_schema_version": {
+      "const": "tuc.runtime_output_contract_report.v0"
+    },
+    "source_public_output_bundle_item_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "source_public_output_bundle_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_public_output_bundle_passed": {
+      "type": "boolean"
+    },
+    "source_public_output_bundle_schema_version": {
+      "const": "tuc.runtime_public_output_bundle_report.v0"
+    }
+  },
+  "required": [
+    "blocked_execution_surfaces",
+    "check_count",
+    "checks",
+    "closure_contract",
+    "closure_metadata_digest",
+    "closure_policy_id",
+    "closure_status",
+    "graph_name",
+    "issues",
+    "passed",
+    "raw_value_policy",
+    "schema_version",
+    "source_bundle_execution_receipt_metadata_digest",
+    "source_execution_evidence_bundle_metadata_digest",
+    "source_execution_evidence_bundle_passed",
+    "source_execution_evidence_bundle_schema_version",
+    "source_execution_receipt_metadata_digest",
+    "source_execution_receipt_passed",
+    "source_execution_receipt_schema_version",
+    "source_output_contract_item_count",
+    "source_output_contract_metadata_digest",
+    "source_output_contract_passed",
+    "source_output_contract_schema_version",
+    "source_public_output_bundle_item_count",
+    "source_public_output_bundle_metadata_digest",
+    "source_public_output_bundle_passed",
+    "source_public_output_bundle_schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "check": {
+      "additionalProperties": false,
+      "properties": {
+        "bundle_contract": {
+          "$ref": "#/$defs/report_text"
+        },
+        "bundle_item_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "bundle_metadata_digest": {
+          "$ref": "#/$defs/sha256_digest"
+        },
+        "evidence_kind": {
+          "$ref": "#/$defs/evidence_kind"
+        },
+        "receipt_contract": {
+          "$ref": "#/$defs/report_text"
+        },
+        "receipt_item_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "receipt_metadata_digest": {
+          "$ref": "#/$defs/sha256_digest"
+        },
+        "row_status": {
+          "const": "closed"
+        },
+        "source_contract": {
+          "$ref": "#/$defs/report_text"
+        },
+        "source_item_count": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "source_metadata_digest": {
+          "$ref": "#/$defs/sha256_digest"
+        }
+      },
+      "required": [
+        "bundle_contract",
+        "bundle_item_count",
+        "bundle_metadata_digest",
+        "evidence_kind",
+        "receipt_contract",
+        "receipt_item_count",
+        "receipt_metadata_digest",
+        "row_status",
+        "source_contract",
+        "source_item_count",
+        "source_metadata_digest"
+      ],
+      "type": "object"
+    },
+    "evidence_kind": {
+      "enum": [
+        "output_contract",
+        "public_output_bundle"
+      ]
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "input_value",
+          "jit_function",
+          "module",
+          "network",
+          "output_value",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_output_value",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "reference_value",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "tensor_values",
+          "url",
+          "value",
+          "values"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  }
+}

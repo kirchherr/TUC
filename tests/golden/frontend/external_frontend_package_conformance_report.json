@@ -1,0 +1,116 @@
+{
+  "accepted_case_count": 2,
+  "artifact_status": "review_evidence_only",
+  "blocked_artifacts": [
+    "backend_artifact",
+    "command_line",
+    "device_id",
+    "environment",
+    "generated_code",
+    "host_path",
+    "plugin_entrypoint",
+    "python_source",
+    "raw_source_text",
+    "raw_timing_samples",
+    "runtime_handle"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "direct_source_ingestion",
+    "dynamic_library_loading",
+    "frontend_package_import",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_object_inspection",
+    "python_import",
+    "subprocess_execution"
+  ],
+  "capability_coverage_complete": true,
+  "checked_cases": [
+    "valid_source_intent_mlp",
+    "valid_source_intent_return_mlp",
+    "reject_source_text_escape",
+    "reject_backend_hint_escape",
+    "reject_unknown_tensor_reference",
+    "reject_return_unknown_tensor",
+    "reject_return_intermediate_tensor",
+    "reject_duplicate_public_returns"
+  ],
+  "conformance_contract": "external_frontend_package_conformance.data_only.v0",
+  "conformance_passed": true,
+  "conformance_report_digest": "sha256:e033c876b025cbab3fa4dfd29f4b6a2ffbdae7877ad1de893693392b91c18e17",
+  "conformance_status": "pass",
+  "direct_source_ingestion": false,
+  "fixture_digests": [
+    {
+      "case_name": "valid_source_intent_mlp",
+      "payload_digest": "sha256:933d9736025a3e22d877d3c40428db8a03d5f1045b1fcf901073919ba92c5d33",
+      "should_accept": true
+    },
+    {
+      "case_name": "valid_source_intent_return_mlp",
+      "payload_digest": "sha256:a3c3e40446080879ee4c0bc51bf4075efd46c70ae3dae6b99a34c66023a093cc",
+      "should_accept": true
+    },
+    {
+      "case_name": "reject_source_text_escape",
+      "payload_digest": "sha256:0e8e086bea31ed1794079b4341335a4cc707dbe5f20ae19e5dc81b7b13c398a8",
+      "should_accept": false
+    },
+    {
+      "case_name": "reject_backend_hint_escape",
+      "payload_digest": "sha256:f21452df59e3e7903e89d73b6909e36b55b7405389f4308c4adbd8f30a397162",
+      "should_accept": false
+    },
+    {
+      "case_name": "reject_unknown_tensor_reference",
+      "payload_digest": "sha256:e0a8ebf12159c1f91bbff5e0075b86ba79ff31f053b97e1344421c6b58868894",
+      "should_accept": false
+    },
+    {
+      "case_name": "reject_return_unknown_tensor",
+      "payload_digest": "sha256:f89c1f580778393fa8a315ae583f46af9b8a19ca4fd10c12d8521d7fc719f701",
+      "should_accept": false
+    },
+    {
+      "case_name": "reject_return_intermediate_tensor",
+      "payload_digest": "sha256:72cf95fbad0359cd30da7196e00bd0ab16cdc81c35c1310fa470f3dd5838da51",
+      "should_accept": false
+    },
+    {
+      "case_name": "reject_duplicate_public_returns",
+      "payload_digest": "sha256:ac84b1a612ae929bcd390a4f2035b01676d3b34f6d2d69c7b11de80997c196e8",
+      "should_accept": false
+    }
+  ],
+  "fixture_policy": "digest_only_plain_data_fixtures",
+  "frontend_conformance_schema_version": "tuc.source_intent_frontend_conformance_report.v0",
+  "package_imported": false,
+  "package_manifest": {
+    "declared_capabilities": [
+      "does_not_require_package_import",
+      "emits_source_intent_plain_data",
+      "fails_closed_on_invalid_payloads",
+      "omits_raw_source_from_reports",
+      "supports_explicit_public_returns",
+      "supports_mvp_operation_families"
+    ],
+    "emitted_schema_version": "source_intent.v0",
+    "execution_permission": false,
+    "import_policy": "not_imported",
+    "interface_contract": "external_frontend.source_intent_plain_data.v0",
+    "package_name": "reference_external_source_intent_frontend",
+    "package_version": "v0.0.0_research"
+  },
+  "package_manifest_digest": "sha256:fe530109f5861f66ec471893c9f62a573ac9be2579cd2a70bc7d5ff700b063ae",
+  "plugin_discovery": false,
+  "rejected_case_count": 6,
+  "schema_version": "tuc.external_frontend_package_conformance_report.v0",
+  "source_intent_schema_version": "source_intent.v0",
+  "triton_jit_execution": false
+}

@@ -1,0 +1,189 @@
+{
+  "$id": "https://tuc.dev/schemas/backend_plugin_maintainer_approval_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approval_contract": {"const": "backend_plugin_maintainer_approval.data_only.v0"},
+    "approval_count": {"const": 1},
+    "approval_policy": {"const": "maintainer_approval.review_record.no_execution.v0"},
+    "approval_ready": {"const": true},
+    "approval_status": {"const": "accepted_data_only_approval"},
+    "approvals": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 1,
+      "prefixItems": [
+        {"$ref": "#/$defs/lifecycle_approval_record"}
+      ],
+      "type": "array"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "type": "array"
+    },
+    "execution_allowed": {"const": false},
+    "execution_permission": {"const": "not_granted"},
+    "issues": {
+      "items": {"$ref": "#/$defs/approval_issue"},
+      "maxItems": 64,
+      "type": "array"
+    },
+    "required_bindings": {
+      "items": false,
+      "maxItems": 6,
+      "minItems": 6,
+      "prefixItems": [
+        {"const": "sandbox_model"},
+        {"const": "artifact_provenance"},
+        {"const": "resource_budget"},
+        {"const": "fuzz_negative_tests"},
+        {"const": "blocked_execution_surfaces"},
+        {"const": "implementation_rfc_required"}
+      ],
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.backend_plugin_maintainer_approval_report.v0"
+    }
+  },
+  "required": [
+    "approval_contract",
+    "approval_count",
+    "approval_policy",
+    "approval_ready",
+    "approval_status",
+    "approvals",
+    "blocked_execution_surfaces",
+    "execution_allowed",
+    "execution_permission",
+    "issues",
+    "required_bindings",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "approval_decision": {
+      "const": "approved_for_proposal_gate"
+    },
+    "approval_issue": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {"$ref": "#/$defs/report_text"},
+        "issue_code": {"$ref": "#/$defs/issue_code"}
+      },
+      "required": ["approval_id", "issue_code"],
+      "type": "object"
+    },
+    "approval_scope": {
+      "const": "lifecycle_evidence_gate"
+    },
+    "approval_status": {
+      "const": "reviewed_by_maintainers"
+    },
+    "base_approval": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_decision": {"$ref": "#/$defs/approval_decision"},
+        "approval_id": {"$ref": "#/$defs/report_text"},
+        "approval_scope": {"$ref": "#/$defs/approval_scope"},
+        "approval_status": {"$ref": "#/$defs/approval_status"},
+        "artifact_provenance_contract": {
+          "const": "backend_plugin_artifact_provenance.data_only.v0"
+        },
+        "fuzz_negative_tests_contract": {
+          "const": "backend_plugin_fuzz_negative_tests.data_only.v0"
+        },
+        "implementation_rfc_required": {"const": true},
+        "maintainer_group_id": {"$ref": "#/$defs/report_text"},
+        "resource_budget_contract": {
+          "const": "backend_plugin_resource_budget.data_only.v0"
+        },
+        "review_record_id": {"$ref": "#/$defs/report_text"},
+        "sandbox_model_contract": {
+          "const": "backend_plugin_sandbox_model.data_only.v0"
+        }
+      },
+      "required": [
+        "approval_decision",
+        "approval_id",
+        "approval_scope",
+        "approval_status",
+        "artifact_provenance_contract",
+        "fuzz_negative_tests_contract",
+        "implementation_rfc_required",
+        "maintainer_group_id",
+        "resource_budget_contract",
+        "review_record_id",
+        "sandbox_model_contract"
+      ],
+      "type": "object"
+    },
+    "issue_code": {
+      "enum": [
+        "approval_decision_invalid",
+        "approval_execution_permission_granted",
+        "approval_missing_required_binding",
+        "approval_scope_invalid",
+        "approval_status_invalid",
+        "artifact_provenance_binding_mismatch",
+        "duplicate_approval_id",
+        "fuzz_negative_tests_binding_mismatch",
+        "implementation_rfc_not_required",
+        "resource_budget_binding_mismatch",
+        "sandbox_binding_mismatch"
+      ],
+      "type": "string"
+    },
+    "lifecycle_approval_record": {
+      "$ref": "#/$defs/base_approval",
+      "properties": {
+        "approval_id": {"const": "backend_plugin_lifecycle_maintainer_approval"},
+        "review_record_id": {"const": "rfc_0222_backend_plugin_maintainer_approval"}
+      }
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "subprocess",
+          "token",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

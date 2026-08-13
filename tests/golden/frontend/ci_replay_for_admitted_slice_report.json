@@ -1,0 +1,103 @@
+{
+  "admission_effect": "does_not_admit_direct_source_ingestion",
+  "all_replayed": true,
+  "artifact_policy": "digest_only_source_free",
+  "blocked_execution_surfaces": [
+    "frontend_package_import",
+    "plugin_discovery",
+    "triton_jit_execution",
+    "device_access",
+    "generated_artifact_execution",
+    "native_backend_execution",
+    "python_import",
+    "network_access",
+    "subprocess_execution",
+    "dynamic_library_loading"
+  ],
+  "ci_binding_policy": "github_actions_read_only_replay",
+  "ci_checkout_credentials": "persist_credentials_false",
+  "ci_replay_step_bound": true,
+  "ci_workflow_digest": "sha256:97a38d7d2a38a365ebeaf7b29b53697c0c0f539a41bc02be84d015f34ef97280",
+  "ci_workflow_permissions": "contents_read",
+  "contract": "ci_replay_for_admitted_slice.ci.v0",
+  "direct_source_ingestion": false,
+  "evidence_id": "ci_replay_for_admitted_slice",
+  "issues": [],
+  "maintainer_security_review_required": true,
+  "remaining_external_evidence": [
+    "maintainer_security_review_approval"
+  ],
+  "remaining_external_evidence_count": 1,
+  "replay_mode": "deterministic_digest_replay_only",
+  "replayed_evidence": [
+    {
+      "contract": "bounded_source_buffer_api.execution_free.v0",
+      "digest": "sha256:fa96666bfbeabee84f18cf9c0b622ae1f369bce03b76343e0fca6791b476e0c6",
+      "evidence_id": "bounded_source_buffer_api",
+      "replayed": true,
+      "source_free": true,
+      "status": "implemented_non_admitting"
+    },
+    {
+      "contract": "source_ingestion_sandbox_implementation.execution_free.v0",
+      "digest": "sha256:dd5cc7ccc3d089793b2e73a116039a4d5491bcee139de7bcd017400d4fb77fd3",
+      "evidence_id": "source_ingestion_sandbox_implementation",
+      "replayed": true,
+      "source_free": true,
+      "status": "implemented_non_admitting"
+    },
+    {
+      "contract": "parser_fuzz_negative_corpus_for_admitting_slice.data_only.v0",
+      "digest": "sha256:2848534ad8b9d42297b8413ca8ac3200ee0a0a4f072e38f5a6b950c2d943d120",
+      "evidence_id": "parser_fuzz_negative_corpus_for_admitting_slice",
+      "replayed": true,
+      "source_free": true,
+      "status": "complete_non_admitting"
+    },
+    {
+      "contract": "source_free_diagnostics_admission_tests.data_only.v0",
+      "digest": "sha256:15d7299df650e6778c6fa005ab1d7aa68aa8251ecc940598d8af6d44e3d6b868",
+      "evidence_id": "source_free_diagnostics_admission_tests",
+      "replayed": true,
+      "source_free": true,
+      "status": "complete_non_admitting"
+    },
+    {
+      "contract": "source_to_intent_plain_data_output_golden_for_admitted_slice.data_only.v0",
+      "digest": "sha256:80461795a7df91ccb17bc2d3d78546222a95c7b0338be8c5eaea2143abf76aec",
+      "evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice",
+      "replayed": true,
+      "source_free": true,
+      "status": "complete_non_admitting"
+    }
+  ],
+  "replayed_evidence_count": 5,
+  "report_digest": "sha256:75b89097db951a665e55a11add9f1b24969eb91932bfeb9d2d6323e3b92eaa3e",
+  "required_control_count": 17,
+  "required_controls": [
+    "github_actions_permissions_contents_read",
+    "checkout_persist_credentials_false",
+    "ruff_required",
+    "mypy_required",
+    "pytest_required",
+    "admitted_slice_replay_step_required",
+    "deterministic_report_goldens_bound",
+    "source_intent_plain_data_golden_bound",
+    "digest_only_report",
+    "source_free_report",
+    "direct_source_ingestion_remains_blocked",
+    "no_source_to_compute_graph",
+    "no_source_to_hac_ir",
+    "no_source_to_runtime_plan",
+    "no_triton_jit",
+    "no_device_access",
+    "no_generated_artifacts"
+  ],
+  "schema_version": "tuc.ci_replay_for_admitted_slice_report.v0",
+  "source_ingestion_admission_ready": false,
+  "source_to_compute_graph": false,
+  "source_to_hac_ir": false,
+  "source_to_runtime_plan": false,
+  "status": "PASS",
+  "target_slice": "bounded_source_buffer_to_source_intent_plain_data"
+}

@@ -30,6 +30,7 @@ requires:
 - checked evidence IDs match `SOURCE_TO_INTENT_REQUIRED_EVIDENCE`
 - every required evidence item is missing in the default blocked report
 - `source_intent_frontend_conformance_gate` is among the missing evidence
+- `source_to_intent_research_diagnostics` is among the missing evidence
 - blocked execution surfaces match the Source-To-Intent parser gate contract
 
 The gate emits deterministic text evidence:

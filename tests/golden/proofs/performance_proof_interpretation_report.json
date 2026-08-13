@@ -1,0 +1,27 @@
+{
+  "artifact_status": "diagnostic_only",
+  "blocked_claims": [
+    "native_performance_parity",
+    "hundred_percent_native_performance",
+    "fixed_vendor_performance_percentage",
+    "near_native_without_threshold",
+    "planner_overhead_hidden_in_execution_time",
+    "transfer_estimates_as_measured_hardware_performance",
+    "hardware_specific_hac_ir_knobs"
+  ],
+  "claim_boundary": "performance_proof_boundary.blocking.v0",
+  "issues": [
+    "measurement_interpretation_artifacts_not_supplied",
+    "native_performance_claim_blocked"
+  ],
+  "measurement_interpretation_artifacts": [],
+  "measurement_interpretation_status": "not_supplied",
+  "native_performance_claim": false,
+  "performance_claim_status": "blocked",
+  "performance_proof_interpretation_ready": false,
+  "proposal_name": "current-kernel-ingress-performance-proof-interpretation",
+  "readiness_issue_count": 0,
+  "readiness_proposal_name": "current-kernel-ingress-performance-proof-readiness",
+  "readiness_ready": true,
+  "schema_version": "tuc.performance_proof_interpretation_report.v0"
+}

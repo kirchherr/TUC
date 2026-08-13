@@ -1,0 +1,89 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_backend_families": [
+    "systolic-sim",
+    "vector-sim"
+  ],
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "issues": [],
+  "passed": true,
+  "portfolio_contract": "runtime_backend_equivalence_portfolio.data_only.v0",
+  "portfolio_id": "runtime_backend_equivalence_portfolio",
+  "portfolio_metadata_digest": "sha256:2119b27730429ee15de3df6f05ae61ea87bd26134b4a3d2bae19746fe8afbbab",
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.runtime_backend_equivalence_portfolio_report.v0",
+  "slice_count": 3,
+  "slices": [
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "candidate_backend_sequence": [
+        "systolic-sim",
+        "reference-cpu"
+      ],
+      "candidate_run_id": "systolic_sim",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:4db7b049c183fdb6b51b0b81570d78331f674ee7ca718dc2329b92577258679c",
+      "graph_name": "runtime_backend_equivalence",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "slice_id": "runtime_backend_equivalence"
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "vector_sim",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:a8dfb3d7807af13c6b686265a7afd81ce7068d03fa4e8c898b538f2b20dd6ce1",
+      "graph_name": "runtime_vector_backend_equivalence",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "slice_id": "runtime_vector_backend_equivalence"
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_run_id": "reference_cpu",
+      "candidate_backend_sequence": [
+        "systolic-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_run_id": "mixed_accelerators",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:ed3fb85e2e4f20f468ca27e2bc8770310ea3ea8bab476975b3efd7032a8248bf",
+      "graph_name": "runtime_mixed_backend_equivalence",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy",
+      "slice_id": "runtime_mixed_backend_equivalence"
+    }
+  ],
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

@@ -100,6 +100,8 @@
         "tensor_store_evidence",
         "input_manifest",
         "output_manifest",
+        "output_contract",
+        "public_output_bundle",
         "reference_correctness"
       ]
     },
@@ -133,6 +135,8 @@
         "tensor_store_evidence",
         "input_manifest",
         "output_manifest",
+        "output_contract",
+        "public_output_bundle",
         "reference_correctness"
       ]
     },

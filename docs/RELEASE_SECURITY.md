@@ -9,12 +9,22 @@ The release workflow builds:
 - Python source distribution.
 - Python wheel.
 - CycloneDX JSON SBOM.
+- `linux/amd64` source-worker OCI Image Layout archive.
+- Source-worker OCI verification report.
+- Source-worker CycloneDX JSON SBOM.
 - SHA-256 checksum manifest.
 - GitHub artifact attestations for build provenance and the SBOM.
 
 The workflow uploads these files as GitHub Actions artifacts. On protected `v*`
 tag pushes, it can also publish wheel and source distribution files to PyPI
 after `pypi` environment approval.
+
+CI and release tooling for Linux x86_64 / CPython 3.12 is resolved in
+`requirements/ci.txt`. Every wheel is version- and SHA-256-pinned, installation
+uses `--require-hashes`, and TUC's editable install disables dependency
+resolution and build isolation. CI and release tests use four fixed isolated
+workers from the locked `pytest-xdist` wheel. Lock updates require normal
+dependency review.
 
 ## Trust Boundary
 
@@ -25,15 +35,24 @@ more sensitive than ordinary CI.
 Current controls:
 
 - Release workflow permissions are least-privilege by default.
-- Only the artifact-build job receives `attestations: write`.
-- Only the PyPI publishing job receives `id-token: write`.
+- Only the artifact-build job receives `attestations: write`; its OIDC token is
+  used only for GitHub artifact attestations.
+- The PyPI publishing job receives a separate OIDC token and no attestation
+  permission.
 - The PyPI publishing job is isolated from artifact building and test execution.
 - Release workflow actions are pinned to reviewed commit SHAs.
+- Buildx is version-pinned and BuildKit is version- and digest-pinned with CDI
+  disabled and no insecure build entitlement allowlist.
 - The workflow uses GitHub OIDC-backed artifact attestations rather than stored
   signing secrets.
 - The workflow builds artifacts from repository source and does not run dynamic
   plugin, backend, or generated-artifact execution.
 - SBOM generation is repository-owned Python code, not a third-party action.
+- The source-worker base image is digest-pinned, Python requirements are
+  hash-locked, and the Docker build context is allowlisted.
+- Repository-owned code verifies the OCI descriptor graph, platform, non-root
+  identity, working directory, entrypoint, command policy, and rootfs digests
+  before attestation.
 - Manual workflow runs are dry-runs. Publishing is restricted to `v*` tag pushes.
 
 ## Required For Publishing
@@ -56,7 +75,15 @@ CLI once release artifacts are produced:
 ```bash
 gh attestation verify dist/tuc-0.1.0-py3-none-any.whl -R kirchherr/TUC
 gh attestation verify dist/tuc-0.1.0.tar.gz -R kirchherr/TUC
+gh attestation verify dist/tuc-source-ingestion-worker.oci.tar -R kirchherr/TUC
 ```
+
+The release workflow also performs policy-bound, same-run provenance
+verification for the worker archive and adds a bounded verification receipt to
+the checksum manifest. This confirms that the attestation fetched by that run
+matches the archive digest, repository, signer workflow, commit, ref, OIDC
+issuer, SLSA predicate, and GitHub-hosted runner policy. It does not replace the
+consumer-side commands above or prove tag-ruleset enforcement.
 
 The checksum manifest can be checked locally:
 
@@ -67,15 +94,22 @@ sha256sum -c SHA256SUMS
 
 ## SBOM Format
 
-The SBOM format is CycloneDX JSON 1.6. The current SBOM describes the Python
-project package and direct runtime dependencies from `pyproject.toml`.
+The SBOM format is CycloneDX JSON 1.6. The package SBOM describes the Python
+project and direct runtime dependencies from `pyproject.toml`. The worker SBOM
+separately binds its digest-pinned Python base image, hash-locked NumPy wheel,
+Dockerfile, requirements, worker source, and target platform.
 
 Future native backends, bundled binaries, generated compiler plugins, or runtime
 artifacts must extend this SBOM model before release.
 
 ## Non-Goals
 
-- Publishing container images.
+- Publishing the worker to a public container registry.
+- Treating same-run verification as independent consumer verification or
+  protected tag-ruleset evidence.
 - Long-lived signing keys.
 - Executing generated backend artifacts during release.
 - Claiming reproducible builds.
+
+See [OCI Source Worker Release Provenance](OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md)
+for the archive contract and remaining claim boundary.

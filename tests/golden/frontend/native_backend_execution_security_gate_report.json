@@ -1,0 +1,106 @@
+{
+  "admission_effect": "does_not_admit_native_backend_execution",
+  "all_required_evidence_present": true,
+  "artifact_status": "review_gate",
+  "backend_plugin_execution": false,
+  "blocked_execution_surfaces": [
+    "backend_plugin_execution",
+    "device_access",
+    "dynamic_library_loading",
+    "ffi_call",
+    "generated_artifact_execution",
+    "kernel_launch",
+    "native_backend_execution",
+    "native_plugin_abi_loading",
+    "subprocess_execution",
+    "symbol_resolution",
+    "unsafe_memory_access"
+  ],
+  "blocked_outputs": [
+    "driver_context",
+    "ffi_callable",
+    "loaded_symbol",
+    "native_backend_handle",
+    "native_execution_receipt",
+    "native_plugin_handle"
+  ],
+  "capability_claims_from_native_code": false,
+  "device_access": false,
+  "dynamic_library_loading": false,
+  "evidence": [
+    {
+      "evidence_digest": "sha256:193037f8eda3c7fa47754af5a2b024c6642c6a7df407255bfe59a8f507639d11",
+      "evidence_id": "real_triton_integration_admission_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:9b010df036df3d1a6c070b3dc3a6cfedc2de6cb6a6ba85409f13f9cb255efe49",
+      "evidence_id": "generated_artifact_quarantine_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:6ccf0486867e0217d5cc45c4aaf247df2fa77146611cb93c846de666c2edaef8",
+      "evidence_id": "device_access_sandbox_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:1e311a0d5e4b9dd4cf8dd8fbe0d3f59dd1bcc57e6009295cf66b5f0a2e186788",
+      "evidence_id": "backend_plugin_lifecycle_policy",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:227dc3031e7ec89e0bcff373dbc3ccbcc17a9e18ff0b3abda58a58c115dca653",
+      "evidence_id": "native_backend_execution_security_model",
+      "required": true
+    }
+  ],
+  "evidence_count": 5,
+  "evidence_policy": "digest_only",
+  "executable_permission_granted": false,
+  "ffi_call": false,
+  "gate_contract": "native_backend_execution_security_gate.data_only.v0",
+  "gate_id": "native_backend_execution_security_gate",
+  "gate_status": "security_requirements_only",
+  "generated_artifact_execution": false,
+  "kernel_launch": false,
+  "native_backend_execution": false,
+  "native_backend_handle_emitted": false,
+  "native_backend_loaded": false,
+  "native_plugin_abi_loading": false,
+  "required_control_count": 20,
+  "required_controls": [
+    "abi_loading_blocked",
+    "artifact_execution_blocked",
+    "backend_plugin_execution_blocked",
+    "capability_checks_are_data_only",
+    "device_access_blocked",
+    "digest_only_evidence",
+    "dynamic_library_loading_blocked",
+    "executable_permissions_blocked",
+    "fail_closed_on_violation",
+    "ffi_call_blocked",
+    "generated_artifact_execution_blocked",
+    "maintainer_approval_required",
+    "native_backend_execution_blocked",
+    "native_plugin_abi_blocked",
+    "no_dynamic_library_loading",
+    "no_native_backend_execution",
+    "no_subprocess_execution",
+    "sandbox_required",
+    "sanitized_diagnostics_only",
+    "symbol_resolution_blocked"
+  ],
+  "required_evidence_ids": [
+    "real_triton_integration_admission_gate",
+    "generated_artifact_quarantine_gate",
+    "device_access_sandbox_gate",
+    "backend_plugin_lifecycle_policy",
+    "native_backend_execution_security_model"
+  ],
+  "schema_version": "tuc.native_backend_execution_security_gate_report.v0",
+  "security_boundary_established": true,
+  "subprocess_execution": false,
+  "surface_id": "native_backend_execution",
+  "symbol_resolution": false,
+  "unsafe_memory_access": false
+}

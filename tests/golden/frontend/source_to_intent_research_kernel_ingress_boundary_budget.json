@@ -1,0 +1,170 @@
+{
+  "accepted_case_count": 5,
+  "accepted_observations": [
+    {
+      "case_id": "accepted_research_matmul_elementwise",
+      "import_count": 2,
+      "kernel_name": "matmul_elementwise",
+      "module_ast_depth": 7,
+      "module_ast_node_count": 52,
+      "module_bytes": 206,
+      "module_line_count": 8,
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "source_name": "research_matmul_elementwise",
+      "status": "within_budget",
+      "top_level_function_count": 1
+    },
+    {
+      "case_id": "accepted_research_softmax_reduction",
+      "import_count": 2,
+      "kernel_name": "softmax_reduction",
+      "module_ast_depth": 7,
+      "module_ast_node_count": 47,
+      "module_bytes": 190,
+      "module_line_count": 8,
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "source_name": "research_softmax_reduction",
+      "status": "within_budget",
+      "top_level_function_count": 1
+    },
+    {
+      "case_id": "accepted_research_matmul_reduction",
+      "import_count": 2,
+      "kernel_name": "matmul_reduction",
+      "module_ast_depth": 7,
+      "module_ast_node_count": 48,
+      "module_bytes": 189,
+      "module_line_count": 8,
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "source_name": "research_matmul_reduction",
+      "status": "within_budget",
+      "top_level_function_count": 1
+    },
+    {
+      "case_id": "accepted_research_softmax_elementwise",
+      "import_count": 2,
+      "kernel_name": "softmax_elementwise",
+      "module_ast_depth": 7,
+      "module_ast_node_count": 52,
+      "module_bytes": 220,
+      "module_line_count": 8,
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "source_name": "research_softmax_elementwise",
+      "status": "within_budget",
+      "top_level_function_count": 1
+    },
+    {
+      "case_id": "accepted_research_mvp_pipeline",
+      "import_count": 2,
+      "kernel_name": "mvp_pipeline",
+      "module_ast_depth": 7,
+      "module_ast_node_count": 77,
+      "module_bytes": 281,
+      "module_line_count": 10,
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "source_name": "research_mvp_pipeline",
+      "status": "within_budget",
+      "top_level_function_count": 1
+    }
+  ],
+  "artifact_policy": "metadata_only_values_omitted",
+  "blocked_compiler_outputs": [
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "environment_dependent_behavior",
+    "file_system_access",
+    "frontend_module_import",
+    "generated_artifact_execution",
+    "module_import_execution",
+    "module_top_level_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_inspection",
+    "python_function_object_ingestion",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "boundary_contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
+  "budget_policy": "fail_closed_before_extraction_or_lowering",
+  "budget_rejection_case_count": 4,
+  "budget_rejection_cases": [
+    {
+      "case_id": "module_byte_budget",
+      "limit": 65536,
+      "observed": 65537,
+      "reason_fragment": "module source byte budget exceeded",
+      "status": "rejected"
+    },
+    {
+      "case_id": "module_line_budget",
+      "limit": 2048,
+      "observed": 2049,
+      "reason_fragment": "module source line budget exceeded",
+      "status": "rejected"
+    },
+    {
+      "case_id": "module_ast_node_budget",
+      "limit": 8192,
+      "observed": 8193,
+      "reason_fragment": "module AST node budget exceeded",
+      "status": "rejected"
+    },
+    {
+      "case_id": "module_ast_depth_budget",
+      "limit": 64,
+      "observed": 65,
+      "reason_fragment": "module AST depth budget exceeded",
+      "status": "rejected"
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "diagnostics_budget_limits": {
+    "case_count": 32,
+    "module_bytes": 65536,
+    "report_bytes": 131072
+  },
+  "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "ingress_budget_limits": {
+    "module_ast_depth": 64,
+    "module_ast_nodes": 8192,
+    "module_bytes": 65536,
+    "module_lines": 2048
+  },
+  "input_policy": "single_triton_module_source_buffer_only",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_boundary_budget_report.v0",
+  "source_boundary": "triton_module_source_buffer_as_untrusted_data",
+  "status": "PASS"
+}

@@ -17,15 +17,42 @@ compatibility on day one.
 
 | Feature | Level | Notes |
 | --- | --- | --- |
-| `@triton.jit` syntax | L0 | Preserved as a design goal; source text can pass execution-free preflight only, with no source-to-IR ingestion yet. |
+| `@triton.jit` syntax | L1 | Preserved as a design goal; source text can pass execution-free preflight, and one explicit research parser slice accepts a tiny subset without executing decorators or JIT. General syntax support remains blocked. |
 | Triton source preflight | L0 | Bounded source syntax report rejects imports, decorator calls, dangerous builtins, host/device/network surfaces, unsupported calls, and HAC-IR leakage without producing a `ComputeGraph`; fuzz/property tests cover arbitrary decoded bytes and malicious seed cases. |
+| Triton Integration Readiness | L0 | Data-only readiness report for the Real Triton Integration milestone; it records satisfied and missing prerequisites while direct source ingestion and `@triton.jit` execution remain blocked. Schema: `schemas/triton_integration_readiness_report.v0.schema.json`; example: `examples/triton_integration_readiness.py`. |
+| Real Triton Integration Admission Gate | L0 | Fail-closed admission report binding readiness, external frontend conformance, and the real integration threat model by digest while source ingestion, package import, plugin discovery, JIT, device access, generated artifacts, and native backend execution remain blocked. Schema: `schemas/real_triton_integration_admission_gate_report.v0.schema.json`; example: `examples/real_triton_integration_admission_gate.py`; docs: `docs/REAL_TRITON_INTEGRATION_ADMISSION_GATE.md`, `docs/REAL_TRITON_INTEGRATION_THREAT_MODEL.md`. |
+| Source Ingestion Quarantine Gate | L0 | First dedicated Real Triton Integration surface gate for `direct_source_ingestion`; it binds admission, parser-gate, preflight, and threat-model evidence by digest while source-to-ComputeGraph, source-to-HAC-IR, source-to-runtime-plan, import, JIT, and generated-artifact execution remain blocked. Schema: `schemas/source_ingestion_quarantine_gate_report.v0.schema.json`; example: `examples/source_ingestion_quarantine_gate.py`; doc: `docs/SOURCE_INGESTION_QUARANTINE_GATE.md`. |
+| Package Import Sandbox Gate | L0 | Dedicated Real Triton Integration surface gate for `frontend_package_import`; it binds admission, external frontend conformance, source-ingestion quarantine, and sandbox-model evidence by digest while Python import, package code execution, entrypoint discovery, network, filesystem, environment, subprocess, dynamic-library, plugin discovery, and Source Intent from import remain blocked. Schema: `schemas/package_import_sandbox_gate_report.v0.schema.json`; example: `examples/package_import_sandbox_gate.py`; doc: `docs/PACKAGE_IMPORT_SANDBOX_GATE.md`. |
+| Plugin Discovery Allowlist Gate | L0 | Dedicated Real Triton Integration surface gate for `plugin_discovery`; it binds admission, external frontend conformance, package-import sandbox, and allowlist-model evidence by digest while plugin discovery, entrypoint discovery, registry scans, filesystem scans, frontend package import, Python import, plugin code execution, network, subprocess, dynamic-library, device access, and capability claims from code remain blocked. Schema: `schemas/plugin_discovery_allowlist_gate_report.v0.schema.json`; example: `examples/plugin_discovery_allowlist_gate.py`; doc: `docs/PLUGIN_DISCOVERY_ALLOWLIST_GATE.md`. |
+| Triton JIT Execution Sandbox Gate | L0 | Dedicated Real Triton Integration surface gate for `triton_jit_execution`; it binds admission, source-ingestion quarantine, package-import sandbox, plugin-discovery allowlist, and sandbox-model evidence by digest while Triton JIT, kernel launch, generated artifact execution, device access, kernel-cache access, backend binary emission, package import, Python import, plugin discovery, network, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json`; example: `examples/triton_jit_execution_sandbox_gate.py`; doc: `docs/TRITON_JIT_EXECUTION_SANDBOX_GATE.md`. |
+| Device Access Sandbox Gate | L0 | Dedicated Real Triton Integration surface gate for `device_access`; it binds admission, Triton-JIT sandbox, and device sandbox-model evidence by digest while device discovery, enumeration, driver calls, device handles, device memory allocation, memory mapping, direct memory access, kernel launch, generated artifact execution, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/device_access_sandbox_gate_report.v0.schema.json`; example: `examples/device_access_sandbox_gate.py`; doc: `docs/DEVICE_ACCESS_SANDBOX_GATE.md`. |
+| Generated Artifact Quarantine Gate | L0 | Dedicated Real Triton Integration surface gate for `generated_artifact_execution`; it binds admission, Triton-JIT sandbox, device-access sandbox, and quarantine-model evidence by digest while artifact emission, writes, loads, executable permissions, artifact-cache access, backend binary emission, generated artifact execution, device access, kernel launch, subprocess, and dynamic-library surfaces remain blocked. Schema: `schemas/generated_artifact_quarantine_gate_report.v0.schema.json`; example: `examples/generated_artifact_quarantine_gate.py`; doc: `docs/GENERATED_ARTIFACT_QUARANTINE_GATE.md`. |
+| Native Backend Execution Security Gate | L0 | Dedicated Real Triton Integration surface gate for `native_backend_execution`; it binds admission, generated-artifact quarantine, device-access sandbox, backend plugin lifecycle policy, and security-model evidence by digest while native backend execution, native plugin ABI loading, backend plugin execution, symbol resolution, FFI calls, unsafe memory access, dynamic-library loading, generated artifact execution, device access, kernel launch, and subprocess surfaces remain blocked. Schema: `schemas/native_backend_execution_security_gate_report.v0.schema.json`; example: `examples/native_backend_execution_security_gate.py`; doc: `docs/NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md`. |
+| Real Triton Surface Gate Completion | L0 | Compact data-only review artifact binding admission and all seven dedicated surface gates by digest; it proves the surface-gate set is complete while Real Triton admission remains blocked and all surface gates remain non-admitting. Schema: `schemas/real_triton_surface_gate_completion_report.v0.schema.json`; example: `examples/real_triton_surface_gate_completion.py`; doc: `docs/REAL_TRITON_SURFACE_GATE_COMPLETION.md`. |
+| Real Triton First Slice Plan | L0 | Data-only plan for the first possible admitting slice; it binds Admission, Surface Gate Completion, Source Ingestion Quarantine, Admitting Source Ingestion RFC, Bounded Source Buffer API, Source Ingestion Sandbox Implementation, Parser Fuzz Negative Corpus, Source-Free Diagnostics Admission Tests, Source-To-Intent Plain-Data Output Golden, CI Replay For Admitted Slice, Source Ingestion Approval Criteria, Source Runtime Smoke, and Kernel Ingress Proof Bundle evidence by digest while keeping `admitted = false` and listing maintainer security review as the remaining admission evidence before `direct_source_ingestion` can open; downstream review/approval gates bind this plan without circular evidence. Schema: `schemas/real_triton_first_slice_plan_report.v0.schema.json`; example: `examples/real_triton_first_slice_plan.py`; doc: `docs/REAL_TRITON_FIRST_SLICE_PLAN.md`. |
+| Real Triton First Slice Evidence Portfolio | L0 | Digest-only research milestone binding the first-slice plan, maintainer review packet, missing approval artifact, fail-closed admission gate, pre-claim acyclicity, and First Real Triton Kernel Path while keeping `admitted = false`, direct source ingestion blocked, native performance claims false, and vendor replacement claims false. Schema: `schemas/real_triton_first_slice_evidence_portfolio_report.v0.schema.json`; example: `examples/real_triton_first_slice_evidence_portfolio.py`; doc: `docs/REAL_TRITON_FIRST_SLICE_EVIDENCE_PORTFOLIO.md`. |
+| Bounded Source Buffer API | L1 | Execution-free API and report for validating source text as untrusted bounded data and emitting source-free metadata records without admitting source-to-IR or source-to-runtime paths. Schema: `schemas/bounded_source_buffer_api_report.v0.schema.json`; example: `examples/bounded_source_buffer_api.py`; doc: `docs/BOUNDED_SOURCE_BUFFER_API.md`. |
+| Source Ingestion Sandbox Implementation | L1 | Execution-free non-admitting wrapper around the bounded source buffer; it binds bounded-buffer evidence by digest and returns source-free accepted/rejected metadata while keeping Source Intent plain-data, graph, HAC-IR, and runtime-plan outputs blocked. Schema: `schemas/source_ingestion_sandbox_implementation_report.v0.schema.json`; example: `examples/source_ingestion_sandbox_implementation.py`; doc: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`. |
+| Parser Fuzz Negative Corpus For Admitting Slice | L1 | Source-free deterministic negative/fuzz corpus for the future admitting parser slice; it covers rejection categories and mutation families while binding sandbox evidence by digest and keeping parser output blocked. Schema: `schemas/parser_fuzz_negative_corpus_for_admitting_slice_report.v0.schema.json`; example: `examples/parser_fuzz_negative_corpus_for_admitting_slice.py`; doc: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`. |
+| Source-Free Diagnostics Admission Tests | L1 | Source-free diagnostic metadata proof for the future admitting parser slice; it binds Parser Fuzz Negative Corpus evidence by digest and proves rejection diagnostics stay reason-code based, bounded, and non-admitting. Schema: `schemas/source_free_diagnostics_admission_tests_report.v0.schema.json`; example: `examples/source_free_diagnostics_admission_tests.py`; doc: `docs/SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md`. |
+| Source-To-Intent Plain-Data Output Golden For Admitted Slice | L1 | Reviewable plain-data golden proof for the future admitting source slice; it validates `source_intent.v0` outputs for MVP operation-family coverage while keeping direct source ingestion and compiler artifact paths blocked. Schema: `schemas/source_to_intent_plain_data_output_golden_for_admitted_slice_report.v0.schema.json`; example: `examples/source_to_intent_plain_data_output_golden_for_admitted_slice.py`; doc: `docs/SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md`. |
+| CI Replay For Admitted Slice | L1 | Read-only GitHub Actions replay proof for the future admitted source slice; it binds bounded buffer, sandbox, negative corpus, source-free diagnostics, and plain-data golden evidence by digest while leaving admission blocked until maintainer security review. Schema: `schemas/ci_replay_for_admitted_slice_report.v0.schema.json`; example: `examples/ci_replay_for_admitted_slice.py`; doc: `docs/CI_REPLAY_FOR_ADMITTED_SLICE.md`. |
+| Source Ingestion Maintainer Security Review Packet | L1 | Digest-only review packet for the first source-ingestion slice; it binds the admitted-slice evidence chain for human security review while recording `approval_status = not_approved` and keeping direct source ingestion blocked. Schema: `schemas/source_ingestion_maintainer_security_review_packet_report.v0.schema.json`; example: `examples/source_ingestion_maintainer_security_review_packet.py`; doc: `docs/SOURCE_INGESTION_MAINTAINER_SECURITY_REVIEW_PACKET.md`. |
+| Source Ingestion Admission Gate | L1 | Fail-closed admission gate for the first source-ingestion slice; it binds the maintainer-review packet while recording `admitted = false`, `approval_artifact_present = false`, and `source_ingestion_admission_ready = false`. Schema: `schemas/source_ingestion_admission_gate_report.v0.schema.json`; example: `examples/source_ingestion_admission_gate.py`; doc: `docs/SOURCE_INGESTION_ADMISSION_GATE.md`. |
+| Source Ingestion Pre-Claim Acyclicity Gate | L1 | Data-only DAG gate for the source-ingestion evidence chain through Admission; it proves the First-Slice -> Review -> Approval -> Admission digest graph has `cycle_count = 0` before Research Scope binds it and explicitly excludes `research_scope_claim_gate`. Schema: `schemas/source_ingestion_preclaim_acyclicity_gate_report.v0.schema.json`; example: `examples/source_ingestion_preclaim_acyclicity_gate.py`; doc: `docs/SOURCE_INGESTION_PRECLAIM_ACYCLICITY_GATE.md`. |
+| Evidence Graph Acyclicity Gate | L1 | Data-only DAG gate for the current source-ingestion evidence chain; it proves the First-Slice -> Review -> Approval -> Admission -> Pre-Claim Acyclicity -> Research-Scope digest graph has `cycle_count = 0` while remaining source-free and edge-digest-only. Schema: `schemas/evidence_graph_acyclicity_gate_report.v0.schema.json`; example: `examples/evidence_graph_acyclicity_gate.py`; doc: `docs/EVIDENCE_GRAPH_ACYCLICITY_GATE.md`. |
+| Source-To-Intent Next Syntax Slice | L1 | Branched dataflow, fanout reuse, all current MVP operation families, and multiple public returns are bound by source-free semantic mapping evidence. Schema: `schemas/source_to_intent_next_syntax_report.v0.schema.json`; example: `examples/source_to_intent_next_syntax_slice.py`. |
+| External Frontend Package Conformance | L1 | External frontend packages are reviewed as data-only manifests plus digest-only Source Intent fixtures, without package import, plugin discovery, direct source ingestion, or JIT execution. Schema: `schemas/external_frontend_package_conformance_report.v0.schema.json`; example: `examples/external_frontend_package_conformance.py`. |
 | Source Intent Intake | L1 | Schema-versioned plain-data intake builds `SourceIntentModule` from already decoded mappings; it rejects source text, preflight reports, unknown fields, and execution-surface keys. |
 | Source Intent JSON Schema | L1 | Machine-readable `source_intent.v0` schema documents the plain-data contract for external frontend authors while runtime validation remains in Source Intent Intake. |
+| Source Intent Axis Attributes | L2 | Neutral `attributes.axis` semantics for `softmax` and `reduction` pass through Source Intent Intake, Metadata Conversion, and parser conformance evidence without backend/device facts. |
 | Canonical Source Intent IR | L1 | Data-only frontend contract exists with deterministic dump and negative hardware-leakage tests; conversion is exposed only through a separate Source Intent Metadata adapter. |
 | Source Intent Metadata Conversion | L2 | Execution-free adapter converts already constructed Source Intent IR to schema-versioned metadata, with source-intake, HAC-IR, runtime-plan, and compiler decision-report goldens. |
 | Source Intent Frontend Conformance | L2 | In-memory conformance fixtures certify external frontend plain-data output through intake, optional public return semantics, metadata conversion, graph construction, return-alias preservation, and neutral planning while rejected cases fail closed at intake; report artifacts have a JSON Schema. |
-| Source-To-Intent Parser Gate | L0 | Parser implementation remains blocked, but the required future RFC, budgets, corpus, diagnostics, goldens, neutrality review, and conformance evidence are defined. |
-| Source-To-Intent Readiness Report | L0 | Parser implementation remains blocked, with deterministic readiness evidence showing which required gate artifacts are still missing. |
+| Source-To-Intent Parser Gate | L0 | Default parser intake remains blocked, while the required RFC, budgets, corpus, diagnostics, goldens, neutrality review, and conformance evidence are defined for broader parser work. |
+| Source-To-Intent Readiness Report | L0 | Default parser intake remains blocked, while deterministic research readiness evidence now shows the proposal evidence set is complete. |
+| Source-To-Intent Research Parser | L1 | Explicit-only parser slice converts a tiny caller-provided Triton-like source subset into validated `source_intent.v0` plain data with metadata-only report evidence and no compiler artifacts. |
+| Source-To-Intent Research Parser Conformance Gate | L2 | Binds the `matmul -> elementwise` parser output slice to Source Intent Frontend Conformance while keeping default parser intake blocked. |
 | Source-To-Intent Parser Block Gate | L0 | CI-facing gate asserts the default source-to-intent parser path remains blocked and all required parser-readiness evidence is missing. |
 | Triton-like metadata adapter | L3 | Schema-versioned declarative metadata can be converted into `ComputeGraph`; intake, HAC-IR, runtime-plan, and decision-report goldens prove no source parsing or code execution. |
 | Hardware-agnostic hints | L1 | Implemented as `CompilationHints` metadata. |
@@ -45,11 +72,64 @@ compatibility on day one.
 - Unsupported operations must remain visible and explainable.
 - Fallback backend assignment must be explicit in HS-IR.
 - Compatibility claims must be backed by tests or examples.
-- Real Triton-facing intake must remain execution-free until a separate parser
-  and sandbox RFC exists.
-- Direct source parsing must satisfy
+- Real Triton-facing intake must remain execution-free; broader parser work
+  requires separate review and sandbox evidence.
+- Real Triton Integration Admission is documented in
+  [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
+  and [Real Triton Integration Threat Model](REAL_TRITON_INTEGRATION_THREAT_MODEL.md).
+  It is an admission blocker, not permission to execute source, imports,
+  plugins, JIT, devices, generated artifacts, or native backends.
+- Source Ingestion Quarantine is documented in
+  [Source Ingestion Quarantine Gate](SOURCE_INGESTION_QUARANTINE_GATE.md).
+  It establishes the quarantine boundary for source buffers while keeping
+  direct source ingestion and source-to-compiler-artifact paths blocked.
+- Package Import Sandbox is documented in
+  [Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md). It establishes
+  sandbox requirements for package-shaped frontend integration while keeping
+  actual package import, Python import, and package code execution blocked.
+- Plugin Discovery Allowlist is documented in
+  [Plugin Discovery Allowlist Gate](PLUGIN_DISCOVERY_ALLOWLIST_GATE.md). It
+  establishes allowlist requirements for plugin-shaped frontend integration
+  while keeping actual plugin discovery, entrypoint discovery, registry scans,
+  filesystem scans, and plugin code execution blocked.
+- Triton JIT Execution Sandbox is documented in
+  [Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md). It
+  establishes sandbox requirements for future JIT integration while keeping
+  actual Triton JIT execution, kernel launch, cache access, device access, and
+  executable artifacts blocked.
+- Device Access Sandbox is documented in
+  [Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md). It establishes
+  sandbox requirements for future device integration while keeping actual
+  device discovery, driver calls, device memory, direct memory access, and
+  device handles blocked.
+- Generated Artifact Quarantine is documented in
+  [Generated Artifact Quarantine Gate](GENERATED_ARTIFACT_QUARANTINE_GATE.md).
+  It establishes quarantine requirements for future generated artifacts while
+  keeping artifact emission, artifact writes, executable permissions, and
+  generated artifact execution blocked.
+- Native Backend Execution Security is documented in
+  [Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md).
+  It establishes security requirements for future native backend execution
+  while keeping native backend loading, native plugin ABI loading, backend
+  plugin execution, symbol resolution, FFI calls, unsafe memory access, devices,
+  kernels, subprocesses, and generated artifacts blocked.
+- Real Triton Surface Gate Completion is documented in
+  [Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md).
+  It binds all seven dedicated surface gates by digest while keeping Real
+  Triton admission blocked.
+- Real Triton First Slice Plan is documented in
+  [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md). It names
+  `direct_source_ingestion` as the first candidate target surface, binds
+  Source Ingestion Approval Criteria, and keeps admission blocked until
+  maintainer security review evidence exists. Downstream review/approval gates
+  bind this plan without circular evidence.
+- Source-To-Intent Plain-Data Output Golden For Admitted Slice is documented in
+  [Source-To-Intent Plain-Data Output Golden For Admitted Slice](SOURCE_TO_INTENT_PLAIN_DATA_OUTPUT_GOLDEN_FOR_ADMITTED_SLICE.md). It proves the future admitting source slice has reviewable `source_intent.v0` plain-data goldens without opening direct source ingestion.
+- Source-Free Diagnostics Admission Tests are documented in
+  [Source-Free Diagnostics Admission Tests](SOURCE_FREE_DIAGNOSTICS_ADMISSION_TESTS.md). They prove public parser rejection diagnostics stay source-free before any parser admission.
+- General source parsing must satisfy
   [Triton Source Threat Model](TRITON_SOURCE_THREAT_MODEL.md) before moving
-  beyond L0.
+  beyond the explicit research slice.
 - Source-text preflight is documented in
   [Triton Source Preflight](TRITON_SOURCE_PREFLIGHT.md), but it is not source
   ingestion.
@@ -60,6 +140,8 @@ compatibility on day one.
   source text or preflight reports.
 - Source Intent JSON Schema is documented in
   [Source Intent JSON Schema](SOURCE_INTENT_SCHEMA.md).
+- Source Intent Axis Attributes are documented in
+  [Source Intent Axis Attributes](SOURCE_INTENT_AXIS_ATTRIBUTES.md).
 - Source Intent Metadata Conversion is documented in
   [Source Intent Metadata Conversion](SOURCE_INTENT_METADATA.md). It starts
   from an already constructed `SourceIntentModule`, not source text.
@@ -72,20 +154,117 @@ compatibility on day one.
   The schema covers report artifacts, not frontend payload semantics.
 - Source-To-Intent Parser Gate is documented in
   [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md). It keeps
-  parser implementation blocked until source text can produce Source Intent
-  plain data without bypassing intake, conformance, metadata conversion, HAC-IR
-  neutrality review, runtime-plan goldens, or decision-report goldens.
+  default parser intake blocked and governs broader parser work so source text
+  cannot bypass intake, conformance, metadata conversion, HAC-IR neutrality
+  review, runtime-plan goldens, or decision-report goldens.
 - Source-To-Intent Readiness Report is documented in
   [Source-To-Intent Readiness Report](SOURCE_TO_INTENT_READINESS.md). It is a
   review artifact for parser proposals, not a source parser or ingestion path.
 - Source-To-Intent Parser Block Gate is documented in
   [Source-To-Intent Parser Block Gate](SOURCE_TO_INTENT_PARSER_BLOCK_GATE.md).
   It keeps the default source-to-intent parser path closed in CI.
+- Source-To-Intent Research Parser is documented in
+  [Source-To-Intent Research Parser](SOURCE_TO_INTENT_RESEARCH_PARSER.md). It
+  emits only `source_intent.v0` plain data for a tiny explicit subset and does
+  not produce metadata, `ComputeGraph`, IR, runtime plans, or backend
+  decisions.
+- Source-To-Intent Research Parser Conformance Gate is documented in
+  [Source-To-Intent Research Parser Conformance Gate](SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md).
+  It proves the first parser output slice passes the reusable Source Intent
+  Frontend Conformance path.
 
 ## Next Step
 
-Design source-text to Source Intent IR only after parser budgets, a semantic
-mapping corpus, source-intent goldens, deterministic diagnostics, HAC-IR review
-evidence, runtime-plan goldens, compiler decision-report goldens, and a
-security review are accepted. External frontend proposals should first publish
-a Source Intent Frontend Conformance report.
+Use [Triton Integration Readiness](TRITON_INTEGRATION_READINESS.md) before
+treating Real Triton Integration as roadmap progress. The current report at
+`examples/triton_integration_readiness.py` is now `ready` as data-only review
+evidence and is validated by
+`schemas/triton_integration_readiness_report.v0.schema.json`.
+
+Then use [Real Triton Integration Admission Gate](REAL_TRITON_INTEGRATION_ADMISSION_GATE.md)
+with [Real Triton Integration Threat Model](REAL_TRITON_INTEGRATION_THREAT_MODEL.md).
+The current gate at `examples/real_triton_integration_admission_gate.py` is
+validated by `schemas/real_triton_integration_admission_gate_report.v0.schema.json`,
+binds readiness and external frontend conformance by digest, and keeps real
+admission blocked until dedicated surface gates exist.
+
+The first dedicated surface gate is
+[Source Ingestion Quarantine Gate](SOURCE_INGESTION_QUARANTINE_GATE.md). The
+current report at `examples/source_ingestion_quarantine_gate.py` is validated by
+`schemas/source_ingestion_quarantine_gate_report.v0.schema.json` and keeps
+source-to-ComputeGraph, source-to-HAC-IR, source-to-runtime-plan, import, JIT,
+and generated artifacts blocked.
+
+The next dedicated surface gate is
+[Package Import Sandbox Gate](PACKAGE_IMPORT_SANDBOX_GATE.md). The current
+report at `examples/package_import_sandbox_gate.py` is validated by
+`schemas/package_import_sandbox_gate_report.v0.schema.json` and keeps package
+import, Python import, package code execution, entrypoint discovery, network,
+filesystem, environment, subprocess, dynamic-library, plugin discovery, and
+Source Intent from import blocked.
+
+The third dedicated surface gate is
+[Plugin Discovery Allowlist Gate](PLUGIN_DISCOVERY_ALLOWLIST_GATE.md). The
+current report at `examples/plugin_discovery_allowlist_gate.py` is validated by
+`schemas/plugin_discovery_allowlist_gate_report.v0.schema.json` and keeps
+plugin discovery, entrypoint discovery, registry scans, filesystem scans,
+frontend package import, Python import, plugin code execution, network,
+subprocess, dynamic-library, device access, and capability claims from code
+blocked.
+
+The fourth dedicated surface gate is
+[Triton JIT Execution Sandbox Gate](TRITON_JIT_EXECUTION_SANDBOX_GATE.md). The
+current report at `examples/triton_jit_execution_sandbox_gate.py` is validated
+by `schemas/triton_jit_execution_sandbox_gate_report.v0.schema.json` and keeps
+Triton JIT execution, kernel launch, generated artifact execution, device
+access, kernel-cache access, backend binary emission, frontend package import,
+Python import, plugin discovery, network, subprocess, and dynamic-library
+surfaces blocked.
+
+The fifth dedicated surface gate is
+[Device Access Sandbox Gate](DEVICE_ACCESS_SANDBOX_GATE.md). The current report
+at `examples/device_access_sandbox_gate.py` is validated by
+`schemas/device_access_sandbox_gate_report.v0.schema.json` and keeps device
+discovery, enumeration, driver calls, device handles, device memory allocation,
+memory mapping, direct memory access, kernel launch, generated artifact
+execution, subprocess, and dynamic-library surfaces blocked.
+
+The sixth dedicated surface gate is
+[Generated Artifact Quarantine Gate](GENERATED_ARTIFACT_QUARANTINE_GATE.md). The
+current report at `examples/generated_artifact_quarantine_gate.py` is validated
+by `schemas/generated_artifact_quarantine_gate_report.v0.schema.json` and keeps
+artifact emission, writes, loads, executable permissions, artifact-cache access,
+backend binary emission, generated artifact execution, device access, kernel
+launch, subprocess, and dynamic-library surfaces blocked.
+The seventh dedicated surface gate is
+[Native Backend Execution Security Gate](NATIVE_BACKEND_EXECUTION_SECURITY_GATE.md).
+The current report at `examples/native_backend_execution_security_gate.py` is
+validated by `schemas/native_backend_execution_security_gate_report.v0.schema.json`
+and keeps native backend execution, native plugin ABI loading, backend plugin
+execution, symbol resolution, FFI calls, unsafe memory access, dynamic-library
+loading, generated artifact execution, device access, kernel launch, and
+subprocess surfaces blocked.
+The compact full-perimeter artifact is
+[Real Triton Surface Gate Completion](REAL_TRITON_SURFACE_GATE_COMPLETION.md).
+The current report at `examples/real_triton_surface_gate_completion.py` is
+validated by `schemas/real_triton_surface_gate_completion_report.v0.schema.json`
+and binds admission plus all seven dedicated surface gates by digest while
+keeping Real Triton admission blocked.
+
+The [Source-To-Intent Next Syntax Slice](SOURCE_TO_INTENT_NEXT_SYNTAX_SLICE.md)
+now satisfies the parser RFC, next-syntax semantic corpus, Source Intent golden,
+and semantic mapping fuzz/property prerequisites through
+`examples/source_to_intent_next_syntax_slice.py` and
+`schemas/source_to_intent_next_syntax_report.v0.schema.json`.
+
+The [External Frontend Package Conformance](EXTERNAL_FRONTEND_PACKAGE_CONFORMANCE.md)
+report satisfies the external package conformance prerequisite through
+`examples/external_frontend_package_conformance.py` and
+`schemas/external_frontend_package_conformance_report.v0.schema.json`, while
+keeping package import, plugin discovery, source ingestion, and JIT blocked.
+
+Expand source-text to Source Intent IR only by adding parser budgets, semantic
+mapping corpus cases, source-intent goldens, deterministic diagnostics, HAC-IR
+review evidence, runtime-plan goldens, compiler decision-report goldens, and
+security review evidence for the new syntax. External frontend proposals should
+first publish a Source Intent Frontend Conformance report.

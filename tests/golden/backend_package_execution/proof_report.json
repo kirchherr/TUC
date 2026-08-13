@@ -1,0 +1,60 @@
+{
+  "admission_contract": "backend_package_execution_admission.trusted_projection.v0",
+  "admission_status": "ADMITTED",
+  "binding_id": "external_vector_reference_projection_v0",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "capability_manifest_digest": "sha256:ca1de79c1935a08617343687a06816821b77e4837ac7ac8430998c746bd60d3a",
+  "equivalence_comparison_metadata_digest": "sha256:9fb9dd3c7030ad20e9b890db3f9d60c864ef575421cc5a8e845504499c327dde",
+  "equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "equivalence_passed": true,
+  "execution_mode": "trusted_reference_projection_only",
+  "execution_step_count": 2,
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "external_plugin_execution": false,
+  "graph_name": "backend_package_execution_proof",
+  "output_dtypes": [
+    "float64"
+  ],
+  "output_shapes": [
+    [
+      2,
+      2
+    ]
+  ],
+  "output_tensor_names": [
+    "activated"
+  ],
+  "package_backend_implementation_executed": false,
+  "package_backend_name": "external-vector",
+  "package_digest": "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee",
+  "package_id": "external-vector-reference-package",
+  "physical_device_execution": false,
+  "projected_backend_sequence": [
+    "reference-cpu",
+    "vector-sim"
+  ],
+  "projected_operation_count": 1,
+  "projected_plan_digest": "sha256:d8a6d7c064dd6535cea3427cca025236ea82e9f930fe5b79049ef8ae53a9b2d2",
+  "proof_contract": "backend_package_execution_proof.trusted_projection.v0",
+  "proof_status": "PASS",
+  "raw_tensor_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.backend_package_execution_proof_report.v0",
+  "source_backend_sequence": [
+    "reference-cpu",
+    "external-vector"
+  ],
+  "source_plan_digest": "sha256:4011271e72f025e064c3ba58b63b19d140da08bb42ac9805609722fddb3d0658",
+  "transfer_edge_count": 1,
+  "trusted_executor_backend": "vector-sim",
+  "trusted_executor_contract_digest": "sha256:89a8be02144416cd98c7aa0e14b1e6cd16dbce7b900da80143756e456cf24d45",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

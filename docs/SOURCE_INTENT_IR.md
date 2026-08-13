@@ -24,6 +24,8 @@ The v0 contract accepts only:
 - bounded tensor names, shapes, and dtypes
 - operation families: `matmul`, `elementwise`, `reduction`, `softmax`
 - symbolic input and output tensor references
+- neutral operation attributes: `axis` for `reduction` and `softmax`, plus
+  closed `elementwise_kind` value semantics for `elementwise`
 - neutral frontend hints: `prefer_linear_accelerator`, `prefer_sparsity`,
   `robust_to_noise`, and `max_error_budget`
 - deterministic dumps for review
@@ -77,6 +79,9 @@ Neutral operation intent belongs here. Hardware capability and placement
 evidence belong in backend capability data, HS-IR, runtime plans, and compiler
 decision reports.
 
+[Source Intent Elementwise Semantics](SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md)
+defines the fixed semantic enum and its fail-closed source-parser mapping.
+
 ## Relationship To Source Preflight
 
 Triton source preflight remains diagnostic only. It may report bounded syntax
@@ -99,8 +104,9 @@ ComputeGraph
 ```
 
 Only the plain-data to Source Intent IR and Source Intent IR to metadata arrows
-exist today. The source-text and preflight arrows around them remain future
-work.
+are default frontend intake paths today. Explicit research parser slices may
+create Source Intent plain data under their own gate, but source text is still
+not a default compiler input path.
 
 [Source-To-Intent Parser Gate](SOURCE_TO_INTENT_PARSER_GATE.md) defines the
 required future RFC, budgets, corpus, diagnostics, goldens, HAC-IR neutrality

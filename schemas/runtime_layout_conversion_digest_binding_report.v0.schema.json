@@ -1,0 +1,377 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_layout_conversion_digest_binding_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "const": "runtime_layout_conversion_digest_binding_mixed"
+    },
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "binding_contract": {
+      "const": "runtime_layout_conversion_digest_binding.data_only.v0"
+    },
+    "binding_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "binding_metadata_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "binding_scope": {
+      "const": "metadata_digest_and_record_id_binding"
+    },
+    "bindings": {
+      "items": {
+        "$ref": "#/$defs/binding"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_layout_conversion_digest_binding_report.v0"
+    },
+    "source_hs_ir_alignment_contract": {
+      "const": "runtime_hs_ir_plan_alignment.data_only.v0"
+    },
+    "source_hs_ir_alignment_metadata_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "source_hs_ir_alignment_passed": {
+      "type": "boolean"
+    },
+    "source_hs_ir_alignment_schema_version": {
+      "const": "tuc.runtime_hs_ir_plan_alignment_report.v0"
+    },
+    "source_hs_ir_graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "source_hs_ir_issue_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_hs_ir_layout_conversion_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_hs_ir_step_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_hs_ir_total_layout_conversion_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_layout_conversion_contract": {
+      "const": "runtime_layout_conversion_evidence.data_only.v0"
+    },
+    "source_layout_conversion_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_layout_conversion_issue_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_layout_conversion_metadata_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "source_layout_conversion_passed": {
+      "type": "boolean"
+    },
+    "source_layout_conversion_schema_version": {
+      "const": "tuc.runtime_layout_conversion_evidence_report.v0"
+    },
+    "source_layout_conversion_total_planned_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_partition_plan_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "source_tensor_store_evidence_contract": {
+      "const": "runtime_tensor_store_evidence.data_only.v0"
+    },
+    "source_tensor_store_evidence_schema_version": {
+      "const": "tuc.runtime_tensor_store_evidence_report.v0"
+    },
+    "source_tensor_store_graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "source_tensor_store_issue_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_tensor_store_passed": {
+      "type": "boolean"
+    },
+    "source_tensor_store_record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_tensor_store_record_metadata_digest": {
+      "$ref": "#/$defs/digest"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "artifact_status",
+    "binding_contract",
+    "binding_count",
+    "binding_metadata_digest",
+    "binding_scope",
+    "bindings",
+    "blocked_execution_surfaces",
+    "graph_name",
+    "issues",
+    "passed",
+    "raw_value_policy",
+    "schema_version",
+    "source_hs_ir_alignment_contract",
+    "source_hs_ir_alignment_metadata_digest",
+    "source_hs_ir_alignment_passed",
+    "source_hs_ir_alignment_schema_version",
+    "source_hs_ir_graph_name",
+    "source_hs_ir_issue_count",
+    "source_hs_ir_layout_conversion_count",
+    "source_hs_ir_step_count",
+    "source_hs_ir_total_layout_conversion_bytes",
+    "source_layout_conversion_contract",
+    "source_layout_conversion_count",
+    "source_layout_conversion_issue_count",
+    "source_layout_conversion_metadata_digest",
+    "source_layout_conversion_passed",
+    "source_layout_conversion_schema_version",
+    "source_layout_conversion_total_planned_bytes",
+    "source_partition_plan_digest",
+    "source_tensor_store_evidence_contract",
+    "source_tensor_store_evidence_schema_version",
+    "source_tensor_store_graph_name",
+    "source_tensor_store_issue_count",
+    "source_tensor_store_passed",
+    "source_tensor_store_record_count",
+    "source_tensor_store_record_metadata_digest"
+  ],
+  "type": "object",
+  "$defs": {
+    "binding": {
+      "additionalProperties": false,
+      "properties": {
+        "binding_status": {
+          "enum": [
+            "bound",
+            "failed"
+          ]
+        },
+        "consumer_input_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "conversion_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "hs_ir_source_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "hs_ir_source_layout": {
+          "$ref": "#/$defs/report_text"
+        },
+        "hs_ir_target_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "hs_ir_target_layout": {
+          "$ref": "#/$defs/report_text"
+        },
+        "hs_ir_target_layout_conversion_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout_conversion_from_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout_conversion_from_layout": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout_conversion_from_memory_domain": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout_conversion_to_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout_conversion_to_layout": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout_conversion_to_memory_domain": {
+          "$ref": "#/$defs/report_text"
+        },
+        "planned_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "source_operation": {
+          "$ref": "#/$defs/report_text"
+        },
+        "source_value_record_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "target_operation": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_store_source_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_store_source_layout": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_store_source_memory_domain": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_store_source_producer_id": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "binding_status",
+        "consumer_input_id",
+        "conversion_id",
+        "hs_ir_source_backend",
+        "hs_ir_source_layout",
+        "hs_ir_target_backend",
+        "hs_ir_target_layout",
+        "hs_ir_target_layout_conversion_bytes",
+        "issue_code",
+        "layout_conversion_from_backend",
+        "layout_conversion_from_layout",
+        "layout_conversion_from_memory_domain",
+        "layout_conversion_to_backend",
+        "layout_conversion_to_layout",
+        "layout_conversion_to_memory_domain",
+        "planned_bytes",
+        "source_operation",
+        "source_value_record_id",
+        "target_operation",
+        "tensor_name",
+        "tensor_store_source_backend",
+        "tensor_store_source_layout",
+        "tensor_store_source_memory_domain",
+        "tensor_store_source_producer_id"
+      ],
+      "type": "object"
+    },
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "allocation_handle",
+          "backend_artifact",
+          "callable",
+          "command",
+          "command_line",
+          "device_id",
+          "device_pointer",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "memory_address",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "pointer",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "tensor_values",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

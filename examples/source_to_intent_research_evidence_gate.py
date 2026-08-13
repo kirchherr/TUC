@@ -1,0 +1,719 @@
+"""Run the CI-facing Source-To-Intent Research Evidence Gate."""
+
+from __future__ import annotations
+
+import json
+from hashlib import sha256
+
+try:
+    from examples.source_to_intent_research_diagnostics import (
+        build_source_to_intent_research_diagnostic_cases,
+    )
+    from examples.source_to_intent_research_execution_bridge import (
+        assert_execution_bridge_report_contract,
+    )
+    from examples.source_to_intent_research_execution_bridge import (
+        build_report as build_execution_bridge_report,
+    )
+    from examples.source_to_intent_research_idiom_alignment import (
+        assert_research_idiom_alignment_report_contract,
+    )
+    from examples.source_to_intent_research_idiom_alignment import (
+        build_report as build_idiom_alignment_report,
+    )
+    from examples.source_to_intent_research_kernel_ingress import (
+        assert_kernel_ingress_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress import (
+        build_report as build_kernel_ingress_report,
+    )
+    from examples.source_to_intent_research_kernel_ingress_conformance_gate import (
+        REQUIRED_KERNEL_INGRESS_SOURCE_NAMES,
+    )
+    from examples.source_to_intent_research_kernel_ingress_conformance_gate import (
+        build_gate_report as build_kernel_ingress_conformance_gate_report,
+    )
+    from examples.source_to_intent_research_kernel_ingress_diagnostics import (
+        build_source_to_intent_research_kernel_ingress_diagnostic_cases,
+    )
+    from examples.source_to_intent_research_kernel_ingress_evidence_gate import (
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        assert_kernel_ingress_evidence_gate_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_evidence_gate import (
+        build_gate_report as build_kernel_ingress_evidence_gate_report,
+    )
+    from examples.source_to_intent_research_kernel_ingress_idiom_alignment import (
+        assert_kernel_ingress_idiom_alignment_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_idiom_alignment import (
+        build_report as build_kernel_ingress_idiom_alignment_report,
+    )
+    from examples.source_to_intent_research_kernel_ingress_proof_bundle import (
+        assert_kernel_ingress_proof_bundle_report_contract,
+    )
+    from examples.source_to_intent_research_kernel_ingress_proof_bundle import (
+        build_report as build_kernel_ingress_proof_bundle_report,
+    )
+    from examples.source_to_intent_research_parser_conformance_gate import (
+        REQUIRED_PARSER_SOURCE_NAMES,
+    )
+    from examples.source_to_intent_research_parser_conformance_gate import (
+        build_gate_report as build_conformance_gate_report,
+    )
+    from examples.source_to_intent_research_preflight_bridge import (
+        assert_preflight_bridge_report_contract,
+    )
+    from examples.source_to_intent_research_preflight_bridge import (
+        build_report as build_preflight_bridge_report,
+    )
+    from examples.source_to_intent_research_readiness import (
+        build_research_source_to_intent_readiness_report,
+    )
+    from examples.source_to_intent_research_source_runtime_smoke import (
+        assert_source_runtime_smoke_report_contract,
+    )
+    from examples.source_to_intent_research_source_runtime_smoke import (
+        build_report as build_source_runtime_smoke_report,
+    )
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path
+    from source_to_intent_research_diagnostics import (  # type: ignore[no-redef]
+        build_source_to_intent_research_diagnostic_cases,
+    )
+    from source_to_intent_research_execution_bridge import (  # type: ignore[no-redef]
+        assert_execution_bridge_report_contract,
+    )
+    from source_to_intent_research_execution_bridge import (
+        build_report as build_execution_bridge_report,
+    )
+    from source_to_intent_research_idiom_alignment import (  # type: ignore[no-redef]
+        assert_research_idiom_alignment_report_contract,
+    )
+    from source_to_intent_research_idiom_alignment import (
+        build_report as build_idiom_alignment_report,
+    )
+    from source_to_intent_research_kernel_ingress import (  # type: ignore[no-redef]
+        assert_kernel_ingress_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress import (
+        build_report as build_kernel_ingress_report,
+    )
+    from source_to_intent_research_kernel_ingress_conformance_gate import (
+        REQUIRED_KERNEL_INGRESS_SOURCE_NAMES,
+    )
+    from source_to_intent_research_kernel_ingress_conformance_gate import (
+        build_gate_report as build_kernel_ingress_conformance_gate_report,
+    )
+    from source_to_intent_research_kernel_ingress_diagnostics import (  # type: ignore[no-redef]
+        build_source_to_intent_research_kernel_ingress_diagnostic_cases,
+    )
+    from source_to_intent_research_kernel_ingress_evidence_gate import (  # type: ignore[no-redef]
+        SourceToIntentResearchKernelIngressEvidenceGateError,
+        assert_kernel_ingress_evidence_gate_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_evidence_gate import (
+        build_gate_report as build_kernel_ingress_evidence_gate_report,
+    )
+    from source_to_intent_research_kernel_ingress_idiom_alignment import (  # type: ignore[no-redef]
+        assert_kernel_ingress_idiom_alignment_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_idiom_alignment import (
+        build_report as build_kernel_ingress_idiom_alignment_report,
+    )
+    from source_to_intent_research_kernel_ingress_proof_bundle import (  # type: ignore[no-redef]
+        assert_kernel_ingress_proof_bundle_report_contract,
+    )
+    from source_to_intent_research_kernel_ingress_proof_bundle import (
+        build_report as build_kernel_ingress_proof_bundle_report,
+    )
+    from source_to_intent_research_parser_conformance_gate import (  # type: ignore[no-redef]
+        REQUIRED_PARSER_SOURCE_NAMES,
+    )
+    from source_to_intent_research_parser_conformance_gate import (
+        build_gate_report as build_conformance_gate_report,
+    )
+    from source_to_intent_research_preflight_bridge import (  # type: ignore[no-redef]
+        assert_preflight_bridge_report_contract,
+    )
+    from source_to_intent_research_preflight_bridge import (
+        build_report as build_preflight_bridge_report,
+    )
+    from source_to_intent_research_readiness import (  # type: ignore[no-redef]
+        build_research_source_to_intent_readiness_report,
+    )
+    from source_to_intent_research_source_runtime_smoke import (  # type: ignore[no-redef]
+        assert_source_runtime_smoke_report_contract,
+    )
+    from source_to_intent_research_source_runtime_smoke import (
+        build_report as build_source_runtime_smoke_report,
+    )
+
+from tuc.frontend import (
+    SOURCE_TO_INTENT_PARSER_GATE_CONTRACT,
+    SOURCE_TO_INTENT_REQUIRED_EVIDENCE,
+    SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_RAW_SOURCE_POLICY,
+    SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_REJECTION_REASONS,
+    SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT,
+    SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS,
+    SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_COMPILER_OUTPUTS,
+    SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_EXECUTION_SURFACES,
+    SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS,
+    SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY,
+    SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS,
+    SourceToIntentReadinessReport,
+    SourceToIntentResearchDiagnosticsReport,
+    SourceToIntentResearchKernelIngressDiagnosticsReport,
+    build_source_to_intent_research_diagnostics_report,
+    build_source_to_intent_research_kernel_ingress_diagnostics_report,
+    dump_source_to_intent_readiness_report,
+    dump_source_to_intent_research_diagnostics_report,
+    dump_source_to_intent_research_kernel_ingress_diagnostics_report,
+)
+
+SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE_CONTRACT = (
+    "source_to_intent_research_evidence_gate.ci.v0"
+)
+RESEARCH_DIAGNOSTICS_EVIDENCE_ID = "source_to_intent_research_diagnostics"
+FRONTEND_CONFORMANCE_GATE_EVIDENCE_ID = "source_intent_frontend_conformance_gate"
+FORBIDDEN_GATE_OUTPUT_FRAGMENTS = (
+    "@triton.jit",
+    "import triton",
+    "python_source",
+    "raw_source_text",
+    "source_intent_payload",
+    "tl.dot",
+    "tl.store",
+)
+
+
+class SourceToIntentResearchEvidenceGateError(AssertionError):
+    """Raised when research parser evidence binding is incomplete."""
+
+
+def build_gate_report(
+    *,
+    readiness_report: SourceToIntentReadinessReport | None = None,
+    conformance_gate_text: str | None = None,
+    diagnostics_report: SourceToIntentResearchDiagnosticsReport | None = None,
+    execution_bridge_text: str | None = None,
+    idiom_alignment_text: str | None = None,
+    kernel_ingress_diagnostics_report: (
+        SourceToIntentResearchKernelIngressDiagnosticsReport | None
+    ) = None,
+    kernel_ingress_conformance_gate_text: str | None = None,
+    kernel_ingress_evidence_gate_text: str | None = None,
+    kernel_ingress_idiom_alignment_text: str | None = None,
+    kernel_ingress_proof_bundle_text: str | None = None,
+    kernel_ingress_text: str | None = None,
+    preflight_bridge_text: str | None = None,
+    source_runtime_smoke_text: str | None = None,
+) -> str:
+    """Return stable CI-facing parser research evidence binding."""
+
+    readiness = (
+        build_research_source_to_intent_readiness_report()
+        if readiness_report is None
+        else readiness_report
+    )
+    conformance_text = (
+        build_conformance_gate_report()
+        if conformance_gate_text is None
+        else conformance_gate_text
+    )
+    diagnostics = (
+        build_source_to_intent_research_diagnostics_report(
+            build_source_to_intent_research_diagnostic_cases()
+        )
+        if diagnostics_report is None
+        else diagnostics_report
+    )
+    execution_bridge = (
+        build_execution_bridge_report()
+        if execution_bridge_text is None
+        else execution_bridge_text
+    )
+    idiom_alignment = (
+        build_idiom_alignment_report()
+        if idiom_alignment_text is None
+        else idiom_alignment_text
+    )
+    kernel_ingress = (
+        build_kernel_ingress_report()
+        if kernel_ingress_text is None
+        else kernel_ingress_text
+    )
+    kernel_ingress_diagnostics = (
+        build_source_to_intent_research_kernel_ingress_diagnostics_report(
+            build_source_to_intent_research_kernel_ingress_diagnostic_cases()
+        )
+        if kernel_ingress_diagnostics_report is None
+        else kernel_ingress_diagnostics_report
+    )
+    kernel_ingress_conformance = (
+        build_kernel_ingress_conformance_gate_report()
+        if kernel_ingress_conformance_gate_text is None
+        else kernel_ingress_conformance_gate_text
+    )
+    kernel_ingress_idiom_alignment = (
+        build_kernel_ingress_idiom_alignment_report()
+        if kernel_ingress_idiom_alignment_text is None
+        else kernel_ingress_idiom_alignment_text
+    )
+    kernel_ingress_proof_bundle = (
+        build_kernel_ingress_proof_bundle_report()
+        if kernel_ingress_proof_bundle_text is None
+        else kernel_ingress_proof_bundle_text
+    )
+    kernel_ingress_evidence_gate = (
+        build_kernel_ingress_evidence_gate_report()
+        if kernel_ingress_evidence_gate_text is None
+        else kernel_ingress_evidence_gate_text
+    )
+    preflight_bridge = (
+        build_preflight_bridge_report()
+        if preflight_bridge_text is None
+        else preflight_bridge_text
+    )
+    source_runtime_smoke = (
+        build_source_runtime_smoke_report()
+        if source_runtime_smoke_text is None
+        else source_runtime_smoke_text
+    )
+    _assert_readiness_bound(readiness)
+    _assert_conformance_gate_bound(conformance_text)
+    _assert_diagnostics_bound(diagnostics)
+    _assert_preflight_bridge_bound(preflight_bridge)
+    _assert_execution_bridge_bound(execution_bridge)
+    _assert_idiom_alignment_bound(idiom_alignment)
+    _assert_kernel_ingress_diagnostics_bound(kernel_ingress_diagnostics)
+    _assert_kernel_ingress_conformance_bound(kernel_ingress_conformance)
+    _assert_kernel_ingress_idiom_alignment_bound(kernel_ingress_idiom_alignment)
+    _assert_kernel_ingress_proof_bundle_bound(kernel_ingress_proof_bundle)
+    _assert_kernel_ingress_evidence_gate_bound(kernel_ingress_evidence_gate)
+    _assert_kernel_ingress_bound(kernel_ingress)
+    _assert_source_runtime_smoke_bound(source_runtime_smoke)
+    return _render_gate_report(
+        readiness,
+        conformance_text,
+        diagnostics,
+        preflight_bridge,
+        execution_bridge,
+        idiom_alignment,
+        kernel_ingress_diagnostics,
+        kernel_ingress_conformance,
+        kernel_ingress_idiom_alignment,
+        kernel_ingress_proof_bundle,
+        kernel_ingress_evidence_gate,
+        kernel_ingress,
+        source_runtime_smoke,
+    )
+
+
+def main() -> None:
+    print(build_gate_report(), end="")
+
+
+def _assert_readiness_bound(report: SourceToIntentReadinessReport) -> None:
+    if not isinstance(report, SourceToIntentReadinessReport):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: not a readiness report"
+        )
+    if report.gate_contract != SOURCE_TO_INTENT_PARSER_GATE_CONTRACT:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: parser gate mismatch"
+        )
+    if tuple(item.evidence_id for item in report.checked_evidence) != (
+        SOURCE_TO_INTENT_REQUIRED_EVIDENCE
+    ):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: readiness evidence drifted"
+        )
+    if not report.ready:
+        issues = ",".join(issue.evidence_id for issue in report.issues)
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            f"readiness incomplete: {issues}"
+        )
+    present = {item.evidence_id: item.present for item in report.checked_evidence}
+    if not present.get(FRONTEND_CONFORMANCE_GATE_EVIDENCE_ID):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "frontend conformance gate evidence missing"
+        )
+    if not present.get(RESEARCH_DIAGNOSTICS_EVIDENCE_ID):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: diagnostics evidence missing"
+        )
+
+
+def _assert_conformance_gate_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: conformance gate not text"
+        )
+    required_fragments = (
+        'source_intent_frontend_conformance = "passed"',
+        f'parser_sources = "{",".join(REQUIRED_PARSER_SOURCE_NAMES)}"',
+        'status = "PASS"',
+    )
+    for fragment in required_fragments:
+        if fragment not in text:
+            raise SourceToIntentResearchEvidenceGateError(
+                "source-to-intent research evidence gate failed: "
+                "conformance gate binding missing"
+            )
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_diagnostics_bound(report: SourceToIntentResearchDiagnosticsReport) -> None:
+    if not isinstance(report, SourceToIntentResearchDiagnosticsReport):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: not a diagnostics report"
+        )
+    if report.parser_status != SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: parser status changed"
+        )
+    if report.default_parser_status != SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: default status changed"
+        )
+    if report.output_policy != SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: output policy changed"
+        )
+    if report.raw_source_policy != SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_RAW_SOURCE_POLICY:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: diagnostics leaked source"
+        )
+    if (
+        tuple(report.blocked_compiler_outputs)
+        != SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_COMPILER_OUTPUTS
+    ):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: blocked outputs changed"
+        )
+    if (
+        tuple(report.blocked_execution_surfaces)
+        != SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_EXECUTION_SURFACES
+    ):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: blocked surfaces changed"
+        )
+    accepted_sources = tuple(
+        case.source_name for case in report.cases if case.outcome == "accepted"
+    )
+    if accepted_sources != REQUIRED_PARSER_SOURCE_NAMES:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: parser source binding changed"
+        )
+    if report.rejection_reasons != tuple(
+        sorted(SOURCE_TO_INTENT_RESEARCH_DIAGNOSTICS_REJECTION_REASONS)
+    ):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: rejection coverage changed"
+        )
+
+
+def _assert_execution_bridge_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: execution bridge not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_execution_bridge_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "execution bridge binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_preflight_bridge_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: preflight bridge not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_preflight_bridge_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "preflight bridge binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_idiom_alignment_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: idiom alignment not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_research_idiom_alignment_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "idiom alignment binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_kernel_ingress_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: kernel ingress not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_kernel_ingress_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_kernel_ingress_diagnostics_bound(
+    report: SourceToIntentResearchKernelIngressDiagnosticsReport,
+) -> None:
+    if not isinstance(report, SourceToIntentResearchKernelIngressDiagnosticsReport):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "not a kernel ingress diagnostics report"
+        )
+    if report.diagnostics_contract != (
+        SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_CONTRACT
+    ):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress diagnostics contract changed"
+        )
+    accepted_sources = tuple(
+        case.source_name for case in report.cases if case.outcome == "accepted"
+    )
+    if accepted_sources != REQUIRED_KERNEL_INGRESS_SOURCE_NAMES:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress source binding changed"
+        )
+    if report.rejection_reasons != tuple(
+        sorted(SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_DIAGNOSTICS_REJECTION_REASONS)
+    ):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress rejection coverage changed"
+        )
+
+
+def _assert_kernel_ingress_conformance_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress conformance not text"
+        )
+    required_fragments = (
+        'source_intent_frontend_conformance = "passed"',
+        (
+            'ingress_sources = "research_matmul_elementwise,'
+            'research_softmax_reduction,research_matmul_reduction,'
+            'research_softmax_elementwise,research_mvp_pipeline"'
+        ),
+        (
+            'kernel_names = "matmul_elementwise,softmax_reduction,'
+            'matmul_reduction,softmax_elementwise,mvp_pipeline"'
+        ),
+        'status = "PASS"',
+    )
+    for fragment in required_fragments:
+        if fragment not in text:
+            raise SourceToIntentResearchEvidenceGateError(
+                "source-to-intent research evidence gate failed: "
+                "kernel ingress conformance binding missing"
+            )
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_kernel_ingress_idiom_alignment_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress idiom alignment not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_kernel_ingress_idiom_alignment_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress idiom alignment binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_kernel_ingress_proof_bundle_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress proof bundle not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_kernel_ingress_proof_bundle_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress proof bundle binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_kernel_ingress_evidence_gate_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress evidence gate not text"
+        )
+    try:
+        assert_kernel_ingress_evidence_gate_report_contract(text)
+    except SourceToIntentResearchKernelIngressEvidenceGateError as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "kernel ingress evidence gate binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
+def _assert_source_runtime_smoke_bound(text: str) -> None:
+    if not isinstance(text, str):
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: source runtime smoke not text"
+        )
+    try:
+        report = json.loads(text)
+        assert_source_runtime_smoke_report_contract(report)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise SourceToIntentResearchEvidenceGateError(
+            "source-to-intent research evidence gate failed: "
+            "source runtime smoke binding missing"
+        ) from exc
+    _assert_gate_text_is_source_free(text)
+
+
+def _render_gate_report(
+    readiness: SourceToIntentReadinessReport,
+    conformance_text: str,
+    diagnostics: SourceToIntentResearchDiagnosticsReport,
+    preflight_bridge_text: str,
+    execution_bridge_text: str,
+    idiom_alignment_text: str,
+    kernel_ingress_diagnostics: SourceToIntentResearchKernelIngressDiagnosticsReport,
+    kernel_ingress_conformance_text: str,
+    kernel_ingress_idiom_alignment_text: str,
+    kernel_ingress_proof_bundle_text: str,
+    kernel_ingress_evidence_gate_text: str,
+    kernel_ingress_text: str,
+    source_runtime_smoke_text: str,
+) -> str:
+    readiness_text = dump_source_to_intent_readiness_report(readiness)
+    diagnostics_text = dump_source_to_intent_research_diagnostics_report(diagnostics)
+    kernel_ingress_diagnostics_text = (
+        dump_source_to_intent_research_kernel_ingress_diagnostics_report(
+            kernel_ingress_diagnostics
+        )
+    )
+    lines = [
+        "source_to_intent.research_evidence_gate "
+        "@source_to_intent_research_evidence_gate_v0 {"
+    ]
+    lines.append(
+        f'  gate_contract = "{SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE_CONTRACT}"'
+    )
+    lines.append('  readiness = "ready"')
+    lines.append(f'  readiness_digest = "{_digest(readiness_text)}"')
+    lines.append('  conformance_gate = "passed"')
+    lines.append(f'  conformance_gate_digest = "{_digest(conformance_text)}"')
+    lines.append('  diagnostics = "passed"')
+    lines.append(f'  diagnostics_digest = "{_digest(diagnostics_text)}"')
+    lines.append('  preflight_bridge = "passed"')
+    lines.append(f'  preflight_bridge_digest = "{_digest(preflight_bridge_text)}"')
+    lines.append('  execution_bridge = "passed"')
+    lines.append(f'  execution_bridge_digest = "{_digest(execution_bridge_text)}"')
+    lines.append('  idiom_alignment = "passed"')
+    lines.append(f'  idiom_alignment_digest = "{_digest(idiom_alignment_text)}"')
+    lines.append('  kernel_ingress_diagnostics = "passed"')
+    lines.append(
+        "  kernel_ingress_diagnostics_digest = "
+        f'"{_digest(kernel_ingress_diagnostics_text)}"'
+    )
+    lines.append('  kernel_ingress_conformance_gate = "passed"')
+    lines.append(
+        "  kernel_ingress_conformance_gate_digest = "
+        f'"{_digest(kernel_ingress_conformance_text)}"'
+    )
+    lines.append('  kernel_ingress_idiom_alignment = "passed"')
+    lines.append(
+        "  kernel_ingress_idiom_alignment_digest = "
+        f'"{_digest(kernel_ingress_idiom_alignment_text)}"'
+    )
+    lines.append('  kernel_ingress_proof_bundle = "passed"')
+    lines.append(
+        "  kernel_ingress_proof_bundle_digest = "
+        f'"{_digest(kernel_ingress_proof_bundle_text)}"'
+    )
+    lines.append('  kernel_ingress_evidence_gate = "passed"')
+    lines.append(
+        "  kernel_ingress_evidence_gate_digest = "
+        f'"{_digest(kernel_ingress_evidence_gate_text)}"'
+    )
+    lines.append('  kernel_ingress = "passed"')
+    lines.append(f'  kernel_ingress_digest = "{_digest(kernel_ingress_text)}"')
+    lines.append('  source_runtime_smoke = "passed"')
+    lines.append(f'  source_runtime_smoke_digest = "{_digest(source_runtime_smoke_text)}"')
+    lines.append(f'  diagnostics_evidence = "{RESEARCH_DIAGNOSTICS_EVIDENCE_ID}"')
+    lines.append(
+        f'  parser_sources = "{",".join(REQUIRED_PARSER_SOURCE_NAMES)}"'
+    )
+    lines.append(f'  accepted_diagnostic_cases = "{diagnostics.accepted_case_count}"')
+    lines.append(f'  rejected_diagnostic_cases = "{diagnostics.rejected_case_count}"')
+    lines.append(f'  rejection_reasons = "{",".join(diagnostics.rejection_reasons)}"')
+    lines.append(f'  parser_status = "{SOURCE_TO_INTENT_RESEARCH_PARSER_STATUS}"')
+    lines.append(
+        f'  default_parser_status = "{SOURCE_TO_INTENT_RESEARCH_PARSER_DEFAULT_STATUS}"'
+    )
+    lines.append(
+        f'  parser_output_policy = "{SOURCE_TO_INTENT_RESEARCH_PARSER_OUTPUT_POLICY}"'
+    )
+    lines.append(
+        "  blocked_compiler_outputs = "
+        f'"{",".join(SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_COMPILER_OUTPUTS)}"'
+    )
+    lines.append(
+        "  blocked_execution_surfaces = "
+        f'"{",".join(SOURCE_TO_INTENT_RESEARCH_PARSER_BLOCKED_EXECUTION_SURFACES)}"'
+    )
+    lines.append('  status = "PASS"')
+    lines.append("}")
+    return "\n".join(lines) + "\n"
+
+
+def _assert_gate_text_is_source_free(text: str) -> None:
+    for fragment in FORBIDDEN_GATE_OUTPUT_FRAGMENTS:
+        if fragment in text:
+            raise SourceToIntentResearchEvidenceGateError(
+                "source-to-intent research evidence gate failed: "
+                "gate output contains forbidden source fragment"
+            )
+
+
+def _digest(text: str) -> str:
+    return f"sha256:{sha256(text.encode('utf-8')).hexdigest()}"
+
+
+if __name__ == "__main__":
+    main()

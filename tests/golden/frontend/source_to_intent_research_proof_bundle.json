@@ -1,0 +1,144 @@
+{
+  "accepted_parser_sources": [
+    "research_matmul_elementwise",
+    "research_softmax_reduction"
+  ],
+  "artifact_count": 14,
+  "artifact_policy": "digest_only_source_free",
+  "artifacts": [
+    {
+      "artifact_id": "source_to_intent_research_readiness",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_parser_gate.blocking.v0",
+      "digest": "sha256:4acf2b1529094cc58e51179b7b0cd82a2fb3b881d8e445fb55820895605122f9",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_parser_conformance_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_parser_conformance_gate.ci.v0",
+      "digest": "sha256:09c269362a22294a5b8b48ea9dde4e28c0b033c0708261bf17b41fb1cc5b1190",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_diagnostics",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_diagnostics.execution_free.v0",
+      "digest": "sha256:766fb364225e84ffdbed608380ee6caa59b2a6788f13fe45558c31eda05b65e0",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_preflight_bridge",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_preflight_bridge.execution_free.v0",
+      "digest": "sha256:73e7845f8a23ba410ee6f4828da640725c34282c2597a188b7dadfd49d3b276c",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_execution_bridge",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_execution_bridge.explicit.v0",
+      "digest": "sha256:9aa34617f9e3cc805bc8de53375ef8e15c6a0edae1681976d90f410f58e1bcd6",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_idiom_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_idiom_alignment.scope.v0",
+      "digest": "sha256:ce07460b3ab1c0151c818640af00f90b374fbc026f7ec61d5c5f403f085fe94e",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_source_runtime_smoke",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_source_runtime_smoke.e2e.v0",
+      "digest": "sha256:71da714fe895d7c6b763f86ca2aaebbb3f13be99738af9ecf448690697c09dc5",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress.e2e.v0",
+      "digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_diagnostics",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
+      "digest": "sha256:332bff41658b96428c3eaf0353ff776d0078e463afbcfeb8af975c61ff966506",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_conformance_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
+      "digest": "sha256:2eb76bb53e517e7cbc7dd547b90c41c4fd969216e3579d734c8c2e1dbd5e0e96",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_idiom_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
+      "digest": "sha256:1b0d7c411ee424a21287d16dee655883ecba76ac881d986ecd4b830dc4af0d82",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
+      "digest": "sha256:afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
+      "digest": "sha256:edb449d918cbe5977b923bcab35c666e1f3801ce5fbcbf4fc557a1c9b9048d1a",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_evidence_gate.ci.v0",
+      "digest": "sha256:43fd2d1d912b0af77f5df353adc7fc982c76977f3390288b0984d2b3d71e6f02",
+      "status": "accepted"
+    }
+  ],
+  "blocked_claims": [
+    "general_triton_source_ingestion",
+    "native_performance_claim",
+    "production_parser"
+  ],
+  "bundle_contract": "source_to_intent_research_proof_bundle.review.v0",
+  "claim": "safe_source_to_runtime_research_slice",
+  "default_parser_status": "default_parser_blocked",
+  "parser_output_policy": "source_intent.v0_plain_data_only",
+  "parser_status": "research_explicit_only",
+  "required_artifacts": [
+    "source_to_intent_research_readiness",
+    "source_to_intent_research_parser_conformance_gate",
+    "source_to_intent_research_diagnostics",
+    "source_to_intent_research_preflight_bridge",
+    "source_to_intent_research_execution_bridge",
+    "source_to_intent_research_idiom_alignment",
+    "source_to_intent_research_source_runtime_smoke",
+    "source_to_intent_research_kernel_ingress",
+    "source_to_intent_research_kernel_ingress_diagnostics",
+    "source_to_intent_research_kernel_ingress_conformance_gate",
+    "source_to_intent_research_kernel_ingress_idiom_alignment",
+    "source_to_intent_research_kernel_ingress_proof_bundle",
+    "source_to_intent_research_kernel_ingress_evidence_gate",
+    "source_to_intent_research_evidence_gate"
+  ],
+  "review_claims": [
+    "default_parser_blocked",
+    "idiom_scope_bound",
+    "preflight_gated",
+    "runtime_execution_controlled",
+    "source_intent_plain_data_only"
+  ],
+  "schema_version": "tuc.source_to_intent_research_proof_bundle_report.v0",
+  "source_boundary": "preflight_to_source_intent_plain_data_to_runtime",
+  "status": "PASS"
+}

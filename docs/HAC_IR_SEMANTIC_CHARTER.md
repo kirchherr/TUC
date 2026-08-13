@@ -75,8 +75,12 @@ HAC-IR must not carry:
   targets.
 - Device identifiers, device paths, runtime handles, queues, streams, or launch
   grids.
+- Vendor execution units, warp sizes, wavefront sizes, cache-line sizes,
+  memory-bank placement, device UUIDs, hardware serials, TPU targets, NPU
+  targets, FPGA bitstreams, ROCm targets, or Metal families.
 - Plugin entrypoints, import paths, dynamic libraries, backend binaries,
-  generated artifacts, artifact output paths, or backend kernel names.
+  backend artifacts, vendor libraries, generated artifacts, artifact output
+  paths, or backend kernel names.
 - Calibration evidence, benchmark results, measured performance, hardware
   certificates, device serial numbers, or backend-specific noise-model modules.
 
@@ -101,6 +105,7 @@ or future sandboxed artifact/calibration schemas.
 | What transfer profile estimates movement cost? | no | Transfer-cost profile |
 | What generated artifact should execute? | no | Future sandboxed artifact contract |
 | What calibration file proves device behavior? | no | Future calibration-artifact schema |
+| What warp, wavefront, tensor-core, cache, or memory-bank detail is required? | no | Backend capability, backend contract, or performance evidence |
 | How should softmax be decomposed for one backend? | no | Runtime plan, HS-IR, backend contract, or proof artifact |
 
 ## Review Rules

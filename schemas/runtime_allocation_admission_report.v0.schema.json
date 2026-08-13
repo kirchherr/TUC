@@ -1,0 +1,250 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_allocation_admission_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "admission_contract": {
+      "const": "runtime_allocation_admission.data_only.v0"
+    },
+    "admission_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "admissions": {
+      "items": {
+        "$ref": "#/$defs/admission"
+      },
+      "maxItems": 8192,
+      "minItems": 1,
+      "type": "array"
+    },
+    "blocked_admission_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "handle_policy": {
+      "const": "no_runtime_handles"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "operation_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_allocation_admission_report.v0"
+    },
+    "source_memory_budget_allocation_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_memory_budget_contract": {
+      "const": "runtime_memory_budget.data_only.v0"
+    },
+    "source_memory_budget_issue_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_memory_budget_schema_version": {
+      "const": "tuc.runtime_memory_budget_report.v0"
+    },
+    "source_request_manifest_budget_allocation_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_request_manifest_contract": {
+      "const": "runtime_allocation_request_manifest.data_only.v0"
+    },
+    "source_request_manifest_issue_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_request_manifest_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_request_manifest_schema_version": {
+      "const": "tuc.runtime_allocation_request_manifest_report.v0"
+    },
+    "total_admitted_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "admission_contract",
+    "admission_count",
+    "admissions",
+    "blocked_admission_count",
+    "blocked_execution_surfaces",
+    "graph_name",
+    "handle_policy",
+    "issues",
+    "operation_count",
+    "passed",
+    "schema_version",
+    "source_memory_budget_allocation_digest",
+    "source_memory_budget_contract",
+    "source_memory_budget_issue_count",
+    "source_memory_budget_schema_version",
+    "source_request_manifest_budget_allocation_digest",
+    "source_request_manifest_contract",
+    "source_request_manifest_issue_count",
+    "source_request_manifest_metadata_digest",
+    "source_request_manifest_schema_version",
+    "total_admitted_bytes"
+  ],
+  "type": "object",
+  "$defs": {
+    "admission": {
+      "additionalProperties": false,
+      "properties": {
+        "admission_status": {
+          "enum": [
+            "admitted_by_budget_evidence",
+            "blocked_by_budget_evidence"
+          ]
+        },
+        "budget_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "bytes_reserved": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "domain_max_reserved_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "domain_total_reserved_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "handle_policy": {
+          "const": "no_runtime_handles"
+        },
+        "memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "request_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "slot_id": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "admission_status",
+        "budget_id",
+        "bytes_reserved",
+        "domain_max_reserved_bytes",
+        "domain_total_reserved_bytes",
+        "handle_policy",
+        "memory_domain",
+        "request_id",
+        "slot_id"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "memory_domain": {
+      "enum": [
+        "analog_weight_bank",
+        "device_sram",
+        "gpu_hbm",
+        "host_ram"
+      ]
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "runtime_handle",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  }
+}

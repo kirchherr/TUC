@@ -21,6 +21,7 @@ The v0.1 surface is:
 - `LoweringResult`
 - Schema-versioned backend capability manifests.
 - Schema-versioned transfer-cost profile manifests.
+- Schema-versioned backend capability coverage reports.
 - Explicit backend capability registry.
 - HAC-IR and HS-IR dialect contracts.
 - Trusted Runtime Backend Executor Contract for fixed in-process execution.
@@ -100,6 +101,19 @@ diagnostics = registry.diagnose_operation_support(operation)
 These diagnostics are suitable for compiler review, backend author feedback, and
 future partitioning reports because they state why a backend accepted or
 rejected an operation without executing backend code.
+
+Before running trusted backend conformance, maintainers can also emit a
+repository-level capability coverage matrix:
+
+```text
+examples/backend_capability_coverage.py
+```
+
+That report is schema-versioned at
+`schemas/backend_capability_coverage_report.v0.schema.json` and shows which
+neutral operation families are covered by current capability data. It does not
+load plugins, instantiate third-party backend objects, run lowering, touch
+devices, or execute artifacts.
 
 ## Capability Fields
 
@@ -210,14 +224,15 @@ It demonstrates the intended review flow for a toy backend author:
 
 1. Provide a schema-versioned manifest.
 2. Pass Manifest Claim Review for that explicit manifest path.
-3. Load it through `BackendRegistry.from_manifest_paths(...)`.
-4. Compile a graph using capability data only.
-5. Run `assert_backend_conformance(...)`.
-6. Lower only the HAC-IR subgraph assigned to the explicitly constructed
+3. Confirm operation-family coverage through Backend Capability Coverage.
+4. Load it through `BackendRegistry.from_manifest_paths(...)`.
+5. Compile a graph using capability data only.
+6. Run `assert_backend_conformance(...)`.
+7. Lower only the HAC-IR subgraph assigned to the explicitly constructed
    trusted backend object.
-7. Emit claim-review and conformance reports as deterministic review
+8. Emit claim-review and conformance reports as deterministic review
    artifact.
-8. Emit Backend Author Readiness as the top-level pass/fail authoring artifact.
+9. Emit Backend Author Readiness as the top-level pass/fail authoring artifact.
 
 ## Transfer-Cost Profiles
 
@@ -271,6 +286,15 @@ Backend API v0.1 follows these rules:
 - Backend lowering must validate `capability.supports(operation)` before
   emitting artifacts.
 - Backend artifacts are data until a later RFC defines an execution sandbox.
+- External executable backend plugins must remain blocked by
+  [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) until the accepted
+  [Backend Plugin Sandbox Model](BACKEND_PLUGIN_SANDBOX_MODEL.md) and
+  [Backend Plugin Artifact Provenance](BACKEND_PLUGIN_ARTIFACT_PROVENANCE.md),
+  and [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md), and
+  [Backend Plugin Fuzz Negative Tests](BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md)
+  and [Backend Plugin Maintainer Approval](BACKEND_PLUGIN_MAINTAINER_APPROVAL.md)
+  are bound as data-only lifecycle evidence. Execution still needs a separate
+  implementation RFC and policy change.
 
 ## Author Checklist
 
@@ -323,6 +347,100 @@ registry loading and stops if the manifest is blocked.
 It also emits [Backend Author Readiness](BACKEND_AUTHOR_READINESS.md), whose
 schema is `schemas/backend_author_readiness_report.v0.schema.json`.
 
+## Portable Integration Package
+
+The first vendor-facing portability contract is the data-only
+`docs/BACKEND_INTEGRATION_PACKAGE.md`. Its runnable proof is
+`examples/backend_integration_package.py`, using
+`examples/backend_packages/external_vector.v0.json`. Input and output are
+defined by `schemas/backend_integration_package.v0.schema.json` and
+`schemas/backend_integration_package_report.v0.schema.json`; the expected
+report is
+`tests/golden/backend_integration_package/external_vector_report.json`, and the
+decision is recorded in `rfcs/0282-backend-integration-package.md`.
+
+This path packages a capability manifest together with bounded positive and
+negative support expectations. TUC validates those claims and creates its own
+compiler planning probe. The package cannot provide source, an entry point, a
+library, a command, a device path, a runtime handle, or an artifact, and it
+cannot request execution. Passing the report is not executable-backend
+certification.
+
+## Package Execution Admission
+
+The controlled execution bridge is documented in
+`docs/BACKEND_PACKAGE_EXECUTION_ADMISSION.md` and implemented by
+`examples/backend_package_execution_proof.py`. Its fail-closed admission and
+proof schemas are
+`schemas/backend_package_execution_admission_report.v0.schema.json` and
+`schemas/backend_package_execution_proof_report.v0.schema.json`. Deterministic
+evidence is frozen in
+`tests/golden/backend_package_execution/admission_report.json` and
+`tests/golden/backend_package_execution/proof_report.json`; the trust decision
+is recorded by `rfcs/0283-backend-package-execution-admission.md`.
+
+Admission is package- and capability-digest-bound. It maps only to a fixed
+in-repository trusted executor after operation, memory-domain, layout, and
+executor-contract checks. It never imports or executes package code, and it
+does not grant general plugin or native-backend admission.
+
+## Multi-Package Execution Portfolio
+
+The no-fallback composition proof is documented by
+`docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md` and runs through
+`examples/backend_package_execution_portfolio.py`. It combines the package at
+`examples/backend_packages/external_systolic.v0.json` with the existing vector
+package, projects their complete source plan to fixed trusted executors, retains
+explicit layout-conversion evidence, and requires reference equivalence.
+
+The fail-closed report contract is
+`schemas/backend_package_execution_portfolio_report.v0.schema.json`.
+Deterministic package and portfolio evidence is frozen at
+`tests/golden/backend_integration_package/external_systolic_report.json` and
+`tests/golden/backend_package_execution_portfolio/proof_report.json`. The exact
+composition decision is recorded by
+`rfcs/0284-multi-package-execution-portfolio.md`.
+
+This is trusted semantic composition, not package implementation, plugin,
+native artifact, or physical device execution.
+
+## Source Intent To Package Portfolio
+
+The joined vertical proof is documented by
+`docs/SOURCE_INTENT_BACKEND_PACKAGE_PORTFOLIO.md` and runs through
+`examples/source_intent_backend_package_portfolio.py`. It starts from bounded
+Source Intent plain data, compiles against both exact external package
+capabilities, forbids fallback, projects to trusted simulators, and requires
+public-output closure, independent reference correctness, and backend
+equivalence.
+
+Its fail-closed public contract is
+`schemas/source_intent_backend_package_portfolio_report.v0.schema.json`, the
+deterministic report is
+`tests/golden/frontend/source_intent_backend_package_portfolio_report.json`,
+and the trust decision is recorded by
+`rfcs/0285-source-intent-backend-package-portfolio.md`. The proof does not add
+source execution, package implementation execution, plugin discovery, native
+artifacts, or device access to Backend API v0.1.
+
+## Triton Research Source To Package Portfolio
+
+The fixed source-syntax research path is documented by
+`docs/TRITON_RESEARCH_BACKEND_PACKAGE_PORTFOLIO.md` and runs through
+`examples/triton_research_backend_package_portfolio.py`. Bounded Kernel Ingress
+and the execution-free research parser emit canonical Source Intent before the
+same exact package admission and trusted projection used by the plain-data
+proof.
+
+Its nested fail-closed contract is
+`schemas/triton_research_backend_package_portfolio_report.v0.schema.json`, the
+deterministic report is
+`tests/golden/frontend/triton_research_backend_package_portfolio_report.json`,
+and the decision is recorded by
+`rfcs/0286-triton-research-backend-package-portfolio.md`. This path grants no
+general source-ingestion, import, decorator, JIT, package-code, plugin, native,
+or physical-device execution authority.
+
 ## Current Limitations
 
 Backend API v0.1 does not yet provide:
@@ -330,7 +448,13 @@ Backend API v0.1 does not yet provide:
 - Stable binary ABI.
 - Plugin packaging.
 - Auto-discovery.
-- Backend plugin lifecycle management.
+- Backend plugin lifecycle management beyond the current blocking policy in
+  [Backend Plugin Lifecycle Policy](BACKEND_PLUGIN_LIFECYCLE_POLICY.md) and the
+  data-only [Backend Plugin Sandbox Model](BACKEND_PLUGIN_SANDBOX_MODEL.md)
+  and [Backend Plugin Artifact Provenance](BACKEND_PLUGIN_ARTIFACT_PROVENANCE.md),
+  plus [Backend Plugin Resource Budget](BACKEND_PLUGIN_RESOURCE_BUDGET.md)
+  and [Backend Plugin Fuzz Negative Tests](BACKEND_PLUGIN_FUZZ_NEGATIVE_TESTS.md),
+  plus [Backend Plugin Maintainer Approval](BACKEND_PLUGIN_MAINTAINER_APPROVAL.md).
 - Device enumeration.
 - Artifact execution.
 - Sandboxing.

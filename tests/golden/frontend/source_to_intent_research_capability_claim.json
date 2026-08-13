@@ -1,0 +1,160 @@
+{
+  "accepted_kernel_count": 5,
+  "accepted_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "artifact_policy": "digest_only_source_free",
+  "backend_equivalence_case_count": 5,
+  "backend_equivalence_shape_profile_case_count": 10,
+  "baseline_runtime_backend": "reference-cpu",
+  "blocked_claims": [
+    "arbitrary_backend_execution",
+    "general_triton_source_ingestion",
+    "hardware_certification",
+    "native_performance_claim",
+    "production_parser",
+    "vendor_compiler_replacement"
+  ],
+  "claim_boundary": "static_research_sources_to_capability_selected_trusted_runtime",
+  "claim_contract": "source_to_intent_research_capability_claim.review.v0",
+  "claim_id": "bounded_universal_compute_research_slice",
+  "claim_scope": "accepted_source_to_intent_kernel_ingress_mvp_pipeline",
+  "claim_status": "supported_for_current_research_scope",
+  "combined_pipeline_kernel": "mvp_pipeline",
+  "combined_pipeline_operation_path": [
+    "matmul",
+    "softmax",
+    "reduction",
+    "elementwise"
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "evidence": [
+    {
+      "artifact_id": "source_to_intent_research_proof_bundle",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_proof_bundle.review.v0",
+      "digest": "sha256:03872b2b95fa6d66c37118cf6b3490a6c83cf92f1a020a41674f40d247d4c601",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_evidence_gate.ci.v0",
+      "digest": "sha256:43fd2d1d912b0af77f5df353adc7fc982c76977f3390288b0984d2b3d71e6f02",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
+      "digest": "sha256:afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
+      "digest": "sha256:edb449d918cbe5977b923bcab35c666e1f3801ce5fbcbf4fc557a1c9b9048d1a",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_matrix",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+      "digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_step_trace",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
+      "digest": "sha256:642defa2dde723a98ddcb781e7f31cf01ab8e8b0f07f7d971a42a94eacd55ff1",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0",
+      "digest": "sha256:11742c03cf15a2599682ea08289a0868c98b66853de5bb08d2d0a32c2d3ac53f",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_output_closure_index.review.v0",
+      "digest": "sha256:b99b7581b7f193de8c4043950c554fd2d200093c7c99abce8115722df25f07fe",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.review.v0",
+      "digest": "sha256:cb0d0ba368961d6d515dfa668b7f2b2e22d9d8e496dce54a13838af32f011c30",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
+      "digest": "sha256:865c3b899b09975e73005e6c8ad5ee594fb4f6601b8aadbf7948f4f09e9aa9ea",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
+      "digest": "sha256:9267b39546c800c68c701acbee9efa3e80109bf4769e62cf0c45793bd6a0b2a1",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
+      "digest": "sha256:4a81e92b00569a56b9753914311b0908b4ea9d98071146df5feec2990d30e83a",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_backend_alignment.trusted_executor.v0",
+      "digest": "sha256:258aa40f984633639b5660649b148a9f3899a3867a4d6a8b6ef3c3f1e8678818",
+      "status": "accepted"
+    }
+  ],
+  "evidence_count": 13,
+  "minimum_acceptance_checks": [
+    "global_proof_bundle_passes",
+    "global_evidence_gate_passes",
+    "kernel_ingress_proof_bundle_passes",
+    "kernel_ingress_evidence_gate_passes",
+    "runtime_matrix_has_combined_mvp_pipeline",
+    "runtime_step_trace_binds_mvp_operation_path",
+    "runtime_evidence_bundle_index_binds_standard_execution_evidence",
+    "runtime_output_closure_index_closes_public_outputs",
+    "runtime_replay_verifier_index_replays_serialized_evidence",
+    "runtime_backend_equivalence_preserves_outputs",
+    "runtime_backend_equivalence_shape_profiles_preserve_outputs",
+    "runtime_coverage_policy_requires_exact_trace_counts",
+    "runtime_backend_alignment_uses_trusted_executors"
+  ],
+  "parser_status": "research_explicit_only",
+  "runtime_case_count": 5,
+  "schema_version": "tuc.source_to_intent_research_capability_claim_report.v0",
+  "status": "PASS",
+  "supported_claims": [
+    "bounded_source_to_intent_ingress",
+    "mvp_operation_family_pipeline",
+    "source_intent_backend_portability",
+    "source_intent_shape_profile_portability",
+    "capability_selected_simulator_execution",
+    "digest_bound_evidence_chain",
+    "source_free_review_artifacts"
+  ],
+  "trusted_runtime_backends": [
+    "linear-sim",
+    "vector-sim"
+  ]
+}

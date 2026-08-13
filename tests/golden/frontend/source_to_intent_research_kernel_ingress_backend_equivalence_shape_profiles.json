@@ -1,0 +1,542 @@
+{
+  "artifact_policy": "metadata_only_values_omitted",
+  "baseline_backend_sequences": [
+    "reference-cpu->reference-cpu",
+    "reference-cpu->reference-cpu->reference-cpu->reference-cpu"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_backend_sequences": [
+    "linear-sim->vector-sim",
+    "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim"
+  ],
+  "case_count": 10,
+  "cases": [
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:a8f0678065842d149f2c819e36d92b4b7baa9064b2c76faefe489f75c96dfec6",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:a8f0678065842d149f2c819e36d92b4b7baa9064b2c76faefe489f75c96dfec6",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_matmul_elementwise",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:342657e13059f353106f3451462ec2f37ee1880330ce691cf3dcb03c744fc452",
+      "declared_tensor_shapes": {
+        "a": [
+          4,
+          8
+        ],
+        "b": [
+          8,
+          2
+        ],
+        "y": [
+          4,
+          2
+        ]
+      },
+      "equivalence_report_digest": "sha256:f28ddccf6afe497c0b3b54423bb9fac664ba75e491b4134c63fed8982eea06e1",
+      "graph_name": "research_matmul_elementwise",
+      "kernel_name": "matmul_elementwise",
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_matmul_elementwise:base",
+      "profile_id": "base",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:9481dfef83604e6d857aa2a87c7535f60ab65fd4482d15f8096d00207c7b0caa",
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:5a45dd824f674fcfec2ed99fe51fc1bfe413d1a31e94f009b93255bd825803bd",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:5a45dd824f674fcfec2ed99fe51fc1bfe413d1a31e94f009b93255bd825803bd",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_matmul_elementwise",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:a634b980c79ecacc014db145456e025819f9a693720f1852b3eaa5c6716bf7e9",
+      "declared_tensor_shapes": {
+        "a": [
+          3,
+          5
+        ],
+        "b": [
+          5,
+          4
+        ],
+        "y": [
+          3,
+          4
+        ]
+      },
+      "equivalence_report_digest": "sha256:9606336deb96271a9e08915719f1bcb723bfaddc1414810bf8c443407237f3f5",
+      "graph_name": "research_matmul_elementwise",
+      "kernel_name": "matmul_elementwise",
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_matmul_elementwise:alternate",
+      "profile_id": "alternate",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:8f2cdc03364754238e645997d14af3407bf380ce00900265aac331621662bab7",
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:b7822b1cff26e2926b9b4f726f7c734ac468325557a3067e5d8112dc530a2f51",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:b7822b1cff26e2926b9b4f726f7c734ac468325557a3067e5d8112dc530a2f51",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_softmax_reduction",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:e8ba1ed129150f8548fcb3da9988103d47cc4ce298080434cd7c22d9da2b86a7",
+      "declared_tensor_shapes": {
+        "x": [
+          4,
+          8
+        ],
+        "y": [
+          4
+        ]
+      },
+      "equivalence_report_digest": "sha256:6060ea86aed431c4808a356ec424a18a260a39d1e0fb4b410ff7ed0fd201135f",
+      "graph_name": "research_softmax_reduction",
+      "kernel_name": "softmax_reduction",
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_softmax_reduction:base",
+      "profile_id": "base",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:2616ed8b1a6608333d7c6f82db2a7666a1ef17979976d65bbbe1cc9c120e763f",
+      "terminal_outputs": [
+        "row_sum"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:d2fc317731d87672edd6d3894791f7b1627867d061cb803e834a4d8c67f907e5",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:d2fc317731d87672edd6d3894791f7b1627867d061cb803e834a4d8c67f907e5",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_softmax_reduction",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:bf241ea1b95ded7530d2c2ea41aa77b5dee43e7ce186f01e30bb734efcb4ee6f",
+      "declared_tensor_shapes": {
+        "x": [
+          3,
+          5
+        ],
+        "y": [
+          3
+        ]
+      },
+      "equivalence_report_digest": "sha256:a8ca4c88977414ef45e2f5ca50b7fb8a29e006bf05f600ed6581f1acb806172e",
+      "graph_name": "research_softmax_reduction",
+      "kernel_name": "softmax_reduction",
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_softmax_reduction:alternate",
+      "profile_id": "alternate",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:15e120111c9311dc7212dc002ac0e058becbaece364e2b8661540666bc9930a2",
+      "terminal_outputs": [
+        "row_sum"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:9514eab74294966fa28f71a4b38fe054454676208a92961518272a34b21ab9ef",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:9514eab74294966fa28f71a4b38fe054454676208a92961518272a34b21ab9ef",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_matmul_reduction",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:adb72fed1e0c092dcea07da0429ea558acaafedaba7a3dfccf08c272bb3681e6",
+      "declared_tensor_shapes": {
+        "a": [
+          4,
+          8
+        ],
+        "b": [
+          8,
+          2
+        ],
+        "y": [
+          4
+        ]
+      },
+      "equivalence_report_digest": "sha256:be9e635b78d89a3f998ad56cddf1476ddad2e7ed18ccfe06c378cd9d934b4911",
+      "graph_name": "research_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_matmul_reduction:base",
+      "profile_id": "base",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:e46ba19ae3c6d3edb5c6ea94515f018075a7bc7aec2ab8db6f873b80b660b946",
+      "terminal_outputs": [
+        "column_sum"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:c6eaa9e141ab8d5d6cedfdf2f33e53d653f956fb282cc62d128448ea57f13de1",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:c6eaa9e141ab8d5d6cedfdf2f33e53d653f956fb282cc62d128448ea57f13de1",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_matmul_reduction",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:8c4e2b3d2271c4a30acd3655e8e723d8026709a8cd5c8d4807eb8f946c5a6d64",
+      "declared_tensor_shapes": {
+        "a": [
+          3,
+          5
+        ],
+        "b": [
+          5,
+          4
+        ],
+        "y": [
+          3
+        ]
+      },
+      "equivalence_report_digest": "sha256:4f7b1773cdad6684cd6d3cbfb92fbbd9f377eaa3d738d7094ea1ee0be2cb123a",
+      "graph_name": "research_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_matmul_reduction:alternate",
+      "profile_id": "alternate",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:ee133fb67a8182fc3efae4003944b24f6b0af82e307ebe8024d1f70daf3a18d9",
+      "terminal_outputs": [
+        "column_sum"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:07b1233579b3936be504af62e7f05752065874d8cba3e40f0e5639046f81242e",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:07b1233579b3936be504af62e7f05752065874d8cba3e40f0e5639046f81242e",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_softmax_elementwise",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:133f14cc7e242027a31d827f32d68c6eef3ca5d1da27ea1fd127e19e4757c978",
+      "declared_tensor_shapes": {
+        "x": [
+          4,
+          8
+        ],
+        "y": [
+          4,
+          8
+        ]
+      },
+      "equivalence_report_digest": "sha256:8dc148c7c9342e45168845a93436ecab097eb30fe4f172a797ca7dbe67b0843c",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_softmax_elementwise:base",
+      "profile_id": "base",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:0fe0a155cb4ed924b24715dca79930ea89a5be4f3ecf35aa3c58553f08a8901e",
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:1b9d5f60cfe8fba957dcc8a55630778d904f16b37550f6aba882c397dc1c36fc",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 2,
+      "candidate_backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:1b9d5f60cfe8fba957dcc8a55630778d904f16b37550f6aba882c397dc1c36fc",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 2,
+      "case_id": "research_module_softmax_elementwise",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:0faf178085ac21b93d109ab49e47454a8755c253b0945f2336343490d5445d2f",
+      "declared_tensor_shapes": {
+        "x": [
+          3,
+          5
+        ],
+        "y": [
+          3,
+          5
+        ]
+      },
+      "equivalence_report_digest": "sha256:db5f85945f3eb4194e55c8473fc57eb03fc26b2c19c8b62fb876f2693b4375ef",
+      "graph_name": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_softmax_elementwise:alternate",
+      "profile_id": "alternate",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:7f9bb07874790100a56c693a68d8dfe49856760fa4e9938289a628b753b6775d",
+      "terminal_outputs": [
+        "activated"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:f08da54e302db8e65b8bcd147ad42e722a7a848619d32792100a05067f7481b9",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 4,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:f08da54e302db8e65b8bcd147ad42e722a7a848619d32792100a05067f7481b9",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 4,
+      "case_id": "research_module_mvp_pipeline",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:1f977166cbcbf42df4bd9c9489a526a5aefcb21865fd2c22df7e48922bde9e8c",
+      "declared_tensor_shapes": {
+        "a": [
+          4,
+          8
+        ],
+        "b": [
+          8,
+          4
+        ],
+        "y": [
+          4
+        ]
+      },
+      "equivalence_report_digest": "sha256:8c49ae30361bb186bfa678f3f50b04f155472b88d94304832a7d5c415e40e875",
+      "graph_name": "research_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_mvp_pipeline:base",
+      "profile_id": "base",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:6b338191a469efbcd8b46a3dba52b1a1c54606ece8ebd46f5303ea0a41860b90",
+      "terminal_outputs": [
+        "stable"
+      ]
+    },
+    {
+      "baseline_backend_sequence": [
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu",
+        "reference-cpu"
+      ],
+      "baseline_reference_correctness_digest": "sha256:d31f7e06b9ddc3ff238d5db91768d6c92d57c41bbbd232fa186440e3fd14ca22",
+      "baseline_run_id": "reference_cpu",
+      "baseline_trace_step_count": 4,
+      "candidate_backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "candidate_reference_correctness_digest": "sha256:d31f7e06b9ddc3ff238d5db91768d6c92d57c41bbbd232fa186440e3fd14ca22",
+      "candidate_run_id": "capability_selected_simulators",
+      "candidate_trace_step_count": 4,
+      "case_id": "research_module_mvp_pipeline",
+      "comparison_count": 1,
+      "comparison_metadata_digest": "sha256:b76590380ce1ea2722b2a6a4c7f5d116cfa82235c03990fb94afa8a6d08d3b23",
+      "declared_tensor_shapes": {
+        "a": [
+          3,
+          5
+        ],
+        "b": [
+          5,
+          3
+        ],
+        "y": [
+          3
+        ]
+      },
+      "equivalence_report_digest": "sha256:7ee53a957646ff1f94186843a17ea50351655110c3dada1d62d4eb7a66966dac",
+      "graph_name": "research_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "passed": true,
+      "profile_case_id": "research_module_mvp_pipeline:alternate",
+      "profile_id": "alternate",
+      "raw_value_policy": "omitted_by_policy",
+      "run_count": 2,
+      "status": "backend_equivalence_shape_profile_bound",
+      "tensor_shape_digest": "sha256:1e7e288a4eefa8c76f130cc7700dabb7677aab28dccff83c36521a18840abadd",
+      "terminal_outputs": [
+        "stable"
+      ]
+    }
+  ],
+  "comparison_count": 10,
+  "default_parser_status": "default_parser_blocked",
+  "equivalence_claim": "same_source_intent_preserves_public_outputs_across_backend_placements_and_shape_profiles",
+  "equivalence_contract": "runtime_backend_equivalence.data_only.v0",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "kernel_ingress_backend_equivalence_contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
+  "kernel_ingress_backend_equivalence_digest": "sha256:865c3b899b09975e73005e6c8ad5ee594fb4f6601b8aadbf7948f4f09e9aa9ea",
+  "kernel_ingress_backend_equivalence_shape_profiles_contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
+  "kernel_ingress_digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
+  "parser_status": "research_explicit_only",
+  "profile_count": 2,
+  "profile_ids": [
+    "base",
+    "alternate"
+  ],
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles_report.v0",
+  "source_boundary": "kernel_ingress_source_intent_shape_profiles_to_reference_cpu_and_trusted_simulators",
+  "status": "PASS",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0",
+  "trusted_runtime_backends": [
+    "linear-sim",
+    "reference-cpu",
+    "vector-sim"
+  ]
+}

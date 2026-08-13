@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from enum import StrEnum
 from math import isfinite
 from pathlib import Path
@@ -101,47 +101,62 @@ def load_json_manifest(
 def load_backend_capability_manifest(path: str | Path) -> BackendCapability:
     """Load a versioned backend capability manifest as pure data."""
 
-    manifest = load_json_manifest(path)
-    _reject_unknown_keys(manifest, _BACKEND_CAPABILITY_KEYS, "backend capability manifest")
+    return parse_backend_capability_manifest(load_json_manifest(path))
+
+
+def parse_backend_capability_manifest(
+    manifest: Mapping[str, object],
+) -> BackendCapability:
+    """Validate already-decoded backend capability data without executing code."""
+
+    if type(manifest) is not dict:
+        raise ManifestError("backend capability manifest must be a plain JSON object")
+    normalized = cast(dict[str, object], manifest)
+    _validate_json_value(normalized, depth=0)
+    _reject_unknown_keys(
+        normalized,
+        _BACKEND_CAPABILITY_KEYS,
+        "backend capability manifest",
+    )
     _require_schema_version(
-        manifest,
+        normalized,
         BACKEND_CAPABILITY_SCHEMA_VERSION,
         "backend capability manifest",
     )
     return BackendCapability(
-        name=_require_simple_string(manifest, "name", "backend capability manifest"),
+        name=_require_simple_string(normalized, "name", "backend capability manifest"),
         supported_ops=_required_enum_set(
-            manifest,
+            normalized,
             "supported_ops",
             OperationKind,
             "backend capability manifest",
         ),
-        supports_noise_model=_optional_bool(manifest, "supports_noise_model", False),
-        supports_calibration=_optional_bool(manifest, "supports_calibration", False),
+        supports_noise_model=_optional_bool(normalized, "supports_noise_model", False),
+        supports_calibration=_optional_bool(normalized, "supports_calibration", False),
         preferred_for=_optional_enum_set(
-            manifest,
+            normalized,
             "preferred_for",
             OperationKind,
             frozenset(),
             "backend capability manifest",
         ),
-        max_error_budget=_optional_number(manifest, "max_error_budget"),
+        max_error_budget=_optional_number(normalized, "max_error_budget"),
         memory_domain=_optional_enum(
-            manifest,
+            normalized,
             "memory_domain",
             MemoryDomainKind,
             MemoryDomainKind.GPU_HBM,
             "backend capability manifest",
         ),
         supported_layouts=_optional_enum_set(
-            manifest,
+            normalized,
             "supported_layouts",
             LayoutKind,
             frozenset({LayoutKind.ROW_MAJOR}),
             "backend capability manifest",
         ),
         produced_layouts=_optional_enum_set(
-            manifest,
+            normalized,
             "produced_layouts",
             LayoutKind,
             frozenset({LayoutKind.ROW_MAJOR}),
@@ -340,4 +355,5 @@ __all__ = [
     "load_backend_capability_manifest",
     "load_json_manifest",
     "load_transfer_cost_profile_manifest",
+    "parse_backend_capability_manifest",
 ]

@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_idiom_alignment_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Idiom Alignment Report v0",
+  "description": "Metadata-only report proving accepted Source-to-Intent research parser slices stay within covered Triton-like MVP idioms.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_source_count",
+    "alignment_contract",
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "cases",
+    "coverage_contract",
+    "coverage_policy",
+    "coverage_report_digest",
+    "covered_operation_families",
+    "default_parser_status",
+    "direct_triton_source_ingestion",
+    "execution_bridge_contract",
+    "execution_bridge_digest",
+    "input_policy",
+    "parser_sources",
+    "parser_status",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "unsupported_operation_families"
+  ],
+  "properties": {
+    "accepted_source_count": {"const": 2},
+    "alignment_contract": {
+      "const": "source_to_intent_research_idiom_alignment.scope.v0"
+    },
+    "artifact_policy": {"const": "metadata_only_values_omitted"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/case"}
+    },
+    "coverage_contract": {"const": "triton_idiom_coverage.execution_free.v0"},
+    "coverage_policy": {
+      "const": "parser_operation_families_must_match_covered_idioms"
+    },
+    "coverage_report_digest": {"$ref": "#/$defs/sha256_digest"},
+    "covered_operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "elementwise"},
+        {"const": "matmul"},
+        {"const": "reduction"},
+        {"const": "softmax"}
+      ],
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "direct_triton_source_ingestion": {"const": false},
+    "execution_bridge_contract": {
+      "const": "source_to_intent_research_execution_bridge.explicit.v0"
+    },
+    "execution_bridge_digest": {"$ref": "#/$defs/sha256_digest"},
+    "input_policy": {"const": "accepted_research_parser_results_only"},
+    "parser_sources": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "research_matmul_elementwise"},
+        {"const": "research_softmax_reduction"}
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "parser_status": {"const": "research_explicit_only"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_idiom_alignment_report.v0"
+    },
+    "source_boundary": {"const": "source_intent.v0_plain_data_reintake"},
+    "status": {"const": "PASS"},
+    "unsupported_operation_families": {
+      "type": "array",
+      "maxItems": 0
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "matched_idioms",
+        "operation_families",
+        "status"
+      ],
+      "properties": {
+        "case_id": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction"
+          ]
+        },
+        "matched_idioms": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "enum": [
+              "metadata_elementwise_activation",
+              "metadata_matmul_projection",
+              "metadata_reduction_axis",
+              "metadata_softmax_axis"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "operation_families": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "enum": ["elementwise", "matmul", "reduction", "softmax"]
+          },
+          "uniqueItems": true
+        },
+        "status": {"const": "covered"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

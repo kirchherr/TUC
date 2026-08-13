@@ -1,0 +1,17 @@
+source_to_intent.research_parser_conformance_gate @source_to_intent_research_parser_conformance_gate_v0 {
+  gate_contract = "source_to_intent_research_parser_conformance_gate.ci.v0"
+  parser_status = "research_explicit_only"
+  default_parser_status = "default_parser_blocked"
+  parser_output_policy = "source_intent.v0_plain_data_only"
+  source_intent_frontend_conformance = "passed"
+  frontend_name = "source-to-intent-research-parser"
+  parser_sources = "research_matmul_elementwise,research_softmax_reduction"
+  accepted_cases = "2"
+  rejected_cases = "2"
+  checked_cases = "4"
+  required_accepted_cases = "research_parser_matmul_elementwise,research_parser_softmax_reduction"
+  required_rejected_cases = "reject_parser_backend_hint_escape,reject_parser_source_text_escape"
+  blocked_compiler_outputs = "metadata,compute_graph,tlir,hac_ir,hs_ir,runtime_plan,backend_decision"
+  blocked_execution_surfaces = "backend_artifact_execution,bytecode_compilation,decorator_evaluation,device_access,dynamic_library_loading,environment_dependent_behavior,file_system_access,frontend_module_import,generated_artifact_execution,network_access,plugin_discovery,python_function_inspection,subprocess_execution,triton_jit_execution"
+  status = "PASS"
+}

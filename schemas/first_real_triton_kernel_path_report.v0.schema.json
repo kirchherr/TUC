@@ -1,0 +1,455 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/first_real_triton_kernel_path_report.v0.schema.json",
+  "title": "TUC First Real Triton Kernel Path Report v0",
+  "description": "Digest-bound, source-free proof report for the current MVP Triton-shaped Kernel Ingress path.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "backend_sequence",
+    "blocked_claims",
+    "blocked_surfaces",
+    "case_id",
+    "default_parser_status",
+    "evidence_binding_count",
+    "evidence_bindings",
+    "evidence_policy",
+    "kernel_name",
+    "observed_path",
+    "operation_families",
+    "parser_status",
+    "path_contract",
+    "proof_id",
+    "proven_claims",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "terminal_outputs",
+    "trace_step_count"
+  ],
+  "properties": {
+    "backend_sequence": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "linear-sim"
+        },
+        {
+          "const": "vector-sim"
+        },
+        {
+          "const": "vector-sim"
+        },
+        {
+          "const": "vector-sim"
+        }
+      ],
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "blocked_claims": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "arbitrary_triton_source_ingestion"
+        },
+        {
+          "const": "production_parser"
+        },
+        {
+          "const": "native_backend_execution"
+        },
+        {
+          "const": "native_performance_parity"
+        },
+        {
+          "const": "cuda_replacement"
+        },
+        {
+          "const": "runtime_handle_residency"
+        }
+      ],
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "blocked_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "direct_source_ingestion"
+        },
+        {
+          "const": "default_source_parser"
+        },
+        {
+          "const": "frontend_package_import"
+        },
+        {
+          "const": "plugin_discovery"
+        },
+        {
+          "const": "triton_jit_execution"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "native_backend_execution"
+        },
+        {
+          "const": "raw_tensor_serialization"
+        }
+      ],
+      "minItems": 9,
+      "maxItems": 9
+    },
+    "case_id": {
+      "const": "research_module_mvp_pipeline"
+    },
+    "default_parser_status": {
+      "const": "default_parser_blocked"
+    },
+    "evidence_binding_count": {
+      "const": 7
+    },
+    "evidence_bindings": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/kernel_ingress"
+        },
+        {
+          "$ref": "#/$defs/runtime_matrix"
+        },
+        {
+          "$ref": "#/$defs/shape_profiles"
+        },
+        {
+          "$ref": "#/$defs/proof_bundle"
+        },
+        {
+          "$ref": "#/$defs/evidence_gate"
+        },
+        {
+          "$ref": "#/$defs/preclaim_gate"
+        },
+        {
+          "$ref": "#/$defs/admission_gate"
+        }
+      ],
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "evidence_policy": {
+      "const": "digest_only_source_free"
+    },
+    "kernel_name": {
+      "const": "mvp_pipeline"
+    },
+    "observed_path": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "bounded_module_source_buffer"
+        },
+        {
+          "const": "controlled_kernel_extraction"
+        },
+        {
+          "const": "source_intent_plain_data_reintake"
+        },
+        {
+          "const": "compute_graph_compile"
+        },
+        {
+          "const": "trusted_prototype_runtime_execution"
+        },
+        {
+          "const": "backend_equivalence_metadata_check"
+        },
+        {
+          "const": "source_ingestion_admission_remains_closed"
+        }
+      ],
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "elementwise"
+        },
+        {
+          "const": "matmul"
+        },
+        {
+          "const": "reduction"
+        },
+        {
+          "const": "softmax"
+        }
+      ],
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "parser_status": {
+      "const": "research_explicit_only"
+    },
+    "path_contract": {
+      "const": "first_real_triton_kernel_path.digest_bound.v0"
+    },
+    "proof_id": {
+      "const": "first_real_triton_kernel_path"
+    },
+    "proven_claims": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "single_mvp_pipeline_kernel_path_bound"
+        },
+        {
+          "const": "mvp_operation_family_runtime_path_bound"
+        },
+        {
+          "const": "source_intent_plain_data_reintake_bound"
+        },
+        {
+          "const": "capability_selected_trusted_runtime_execution_bound"
+        },
+        {
+          "const": "backend_equivalence_metadata_bound"
+        },
+        {
+          "const": "admission_gate_remains_fail_closed"
+        }
+      ],
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "schema_version": {
+      "const": "tuc.first_real_triton_kernel_path_report.v0"
+    },
+    "source_boundary": {
+      "const": "module_shaped_triton_source_buffer_to_source_intent_to_trusted_runtime_evidence"
+    },
+    "status": {
+      "const": "PASS"
+    },
+    "terminal_outputs": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "stable"
+        }
+      ],
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "trace_step_count": {
+      "const": 4
+    }
+  },
+  "$defs": {
+    "admission_gate": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/binding"
+        },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "source_ingestion_admission_gate"
+            },
+            "artifact_kind": {
+              "const": "json_report"
+            },
+            "contract": {
+              "const": "source_ingestion_admission_gate.fail_closed.v0"
+            },
+            "status": {
+              "const": "blocked_missing_maintainer_security_review_approval"
+            }
+          }
+        }
+      ]
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "artifact_kind",
+        "contract",
+        "digest",
+        "source_free",
+        "status"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string"
+        },
+        "artifact_kind": {
+          "enum": [
+            "json_report",
+            "text_gate"
+          ]
+        },
+        "contract": {
+          "type": "string"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "source_free": {
+          "const": true
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "evidence_gate": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/binding"
+        },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "source_to_intent_research_kernel_ingress_evidence_gate"
+            },
+            "artifact_kind": {
+              "const": "text_gate"
+            },
+            "contract": {
+              "const": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0"
+            },
+            "status": {
+              "const": "PASS"
+            }
+          }
+        }
+      ]
+    },
+    "kernel_ingress": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/binding"
+        },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "source_to_intent_research_kernel_ingress"
+            },
+            "artifact_kind": {
+              "const": "json_report"
+            },
+            "contract": {
+              "const": "source_to_intent_research_kernel_ingress.e2e.v0"
+            },
+            "status": {
+              "const": "PASS"
+            }
+          }
+        }
+      ]
+    },
+    "preclaim_gate": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/binding"
+        },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "source_ingestion_preclaim_acyclicity_gate"
+            },
+            "artifact_kind": {
+              "const": "json_report"
+            },
+            "contract": {
+              "const": "source_ingestion_preclaim_acyclicity_gate.data_only.v0"
+            },
+            "status": {
+              "const": "PASS"
+            }
+          }
+        }
+      ]
+    },
+    "proof_bundle": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/binding"
+        },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "source_to_intent_research_kernel_ingress_proof_bundle"
+            },
+            "artifact_kind": {
+              "const": "json_report"
+            },
+            "contract": {
+              "const": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0"
+            },
+            "status": {
+              "const": "PASS"
+            }
+          }
+        }
+      ]
+    },
+    "runtime_matrix": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/binding"
+        },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "source_to_intent_research_kernel_ingress_runtime_matrix"
+            },
+            "artifact_kind": {
+              "const": "json_report"
+            },
+            "contract": {
+              "const": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0"
+            },
+            "status": {
+              "const": "PASS"
+            }
+          }
+        }
+      ]
+    },
+    "shape_profiles": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/binding"
+        },
+        {
+          "properties": {
+            "artifact_id": {
+              "const": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles"
+            },
+            "artifact_kind": {
+              "const": "json_report"
+            },
+            "contract": {
+              "const": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0"
+            },
+            "status": {
+              "const": "PASS"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

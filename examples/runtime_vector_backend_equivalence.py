@@ -16,6 +16,7 @@ from tuc import (
     dump_runtime_backend_equivalence_report,
     execute_graph,
 )
+from tuc.report_output import emit_public_json_report
 from tuc.runtime import RuntimeBackendEquivalenceReport
 
 FloatArray = NDArray[np.float64]
@@ -104,7 +105,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 if __name__ == "__main__":

@@ -1,0 +1,405 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_runtime_backend_alignment_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Runtime Backend Alignment Report v0",
+  "description": "Source-free binding between Kernel Ingress runtime plans and trusted runtime executor conformance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "alignment_contract",
+    "artifact_policy",
+    "backend_support_matrix",
+    "blocked_execution_surfaces",
+    "case_alignments",
+    "observed_backend_names",
+    "required_backend_names",
+    "runtime_coverage_policy_contract",
+    "runtime_coverage_policy_digest",
+    "runtime_executor_conformance_contract",
+    "runtime_executor_conformance_digest",
+    "runtime_executor_conformance_schema_version",
+    "runtime_executor_contract",
+    "runtime_matrix_contract",
+    "runtime_matrix_digest",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "trusted_executor_registry"
+  ],
+  "properties": {
+    "alignment_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_backend_alignment.trusted_executor.v0"
+    },
+    "artifact_policy": {"const": "metadata_only_source_free"},
+    "backend_support_matrix": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_name",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_name": {"const": "linear-sim"},
+            "status": {"const": "trusted_conformant"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "matmul"},
+                {"const": "reduction"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_name",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_name": {"const": "vector-sim"},
+            "status": {"const": "trusted_conformant"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "case_alignments": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_sequence",
+            "case_id",
+            "kernel_name",
+            "operation_families",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_sequence": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "linear-sim"},
+                {"const": "vector-sim"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "case_id": {"const": "research_module_matmul_elementwise"},
+            "kernel_name": {"const": "matmul_elementwise"},
+            "operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "matmul"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "status": {"const": "aligned"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "matmul"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 4,
+              "maxItems": 4
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_sequence",
+            "case_id",
+            "kernel_name",
+            "operation_families",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_sequence": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "vector-sim"},
+                {"const": "vector-sim"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "case_id": {"const": "research_module_softmax_reduction"},
+            "kernel_name": {"const": "softmax_reduction"},
+            "operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "status": {"const": "aligned"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_sequence",
+            "case_id",
+            "kernel_name",
+            "operation_families",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_sequence": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "linear-sim"},
+                {"const": "vector-sim"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "case_id": {"const": "research_module_matmul_reduction"},
+            "kernel_name": {"const": "matmul_reduction"},
+            "operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "matmul"},
+                {"const": "reduction"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "status": {"const": "aligned"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "matmul"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 4,
+              "maxItems": 4
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_sequence",
+            "case_id",
+            "kernel_name",
+            "operation_families",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_sequence": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "vector-sim"},
+                {"const": "vector-sim"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "case_id": {"const": "research_module_softmax_elementwise"},
+            "kernel_name": {"const": "softmax_elementwise"},
+            "operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "status": {"const": "aligned"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "backend_sequence",
+            "case_id",
+            "kernel_name",
+            "operation_families",
+            "status",
+            "supported_operation_families"
+          ],
+          "properties": {
+            "backend_sequence": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "linear-sim"},
+                {"const": "vector-sim"},
+                {"const": "vector-sim"},
+                {"const": "vector-sim"}
+              ],
+              "items": false,
+              "minItems": 4,
+              "maxItems": 4
+            },
+            "case_id": {"const": "research_module_mvp_pipeline"},
+            "kernel_name": {"const": "mvp_pipeline"},
+            "operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "matmul"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 4,
+              "maxItems": 4
+            },
+            "status": {"const": "aligned"},
+            "supported_operation_families": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "elementwise"},
+                {"const": "matmul"},
+                {"const": "reduction"},
+                {"const": "softmax"}
+              ],
+              "items": false,
+              "minItems": 4,
+              "maxItems": 4
+            }
+          }
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "observed_backend_names": {"$ref": "#/$defs/backend_names"},
+    "required_backend_names": {"$ref": "#/$defs/backend_names"},
+    "runtime_coverage_policy_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0"
+    },
+    "runtime_coverage_policy_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_executor_conformance_contract": {
+      "const": "runtime_executor_conformance.trusted.v0"
+    },
+    "runtime_executor_conformance_digest": {"$ref": "#/$defs/sha256_digest"},
+    "runtime_executor_conformance_schema_version": {
+      "const": "tuc.runtime_executor_conformance_report.v0"
+    },
+    "runtime_executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "runtime_matrix_contract": {
+      "const": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0"
+    },
+    "runtime_matrix_digest": {"$ref": "#/$defs/sha256_digest"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_runtime_backend_alignment_report.v0"
+    },
+    "source_boundary": {
+      "const": "kernel_ingress_runtime_matrix_to_trusted_executor_conformance"
+    },
+    "status": {"const": "PASS"},
+    "trusted_executor_registry": {"const": "trusted_runtime_executor_registry.v0"}
+  },
+  "$defs": {
+    "backend_names": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "linear-sim"},
+        {"const": "vector-sim"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

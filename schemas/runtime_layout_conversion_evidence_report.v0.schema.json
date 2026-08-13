@@ -1,0 +1,266 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_layout_conversion_evidence_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "type": "array"
+    },
+    "conversion_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "conversion_metadata_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "conversion_scope": {
+      "const": "planned_logical_layout_only"
+    },
+    "conversions": {
+      "items": {
+        "$ref": "#/$defs/conversion"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "evidence_contract": {
+      "const": "runtime_layout_conversion_evidence.data_only.v0"
+    },
+    "execution_policy": {
+      "const": "does_not_execute_conversions"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/issue"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "residency_claim_status": {
+      "const": "not_physical_residency_evidence"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_layout_conversion_evidence_report.v0"
+    },
+    "source_partition_plan_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "total_planned_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "conversion_count",
+    "conversion_metadata_digest",
+    "conversion_scope",
+    "conversions",
+    "evidence_contract",
+    "execution_policy",
+    "graph_name",
+    "issues",
+    "passed",
+    "raw_value_policy",
+    "residency_claim_status",
+    "schema_version",
+    "source_partition_plan_digest",
+    "total_planned_bytes"
+  ],
+  "type": "object",
+  "$defs": {
+    "conversion": {
+      "additionalProperties": false,
+      "properties": {
+        "consumer_input_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "conversion_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "conversion_status": {
+          "const": "planned"
+        },
+        "from_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "from_layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "from_memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        },
+        "planned_bytes": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "planner_reason": {
+          "$ref": "#/$defs/report_text"
+        },
+        "source_operation": {
+          "$ref": "#/$defs/report_text"
+        },
+        "source_value_record_id": {
+          "$ref": "#/$defs/report_text"
+        },
+        "target_operation": {
+          "$ref": "#/$defs/report_text"
+        },
+        "tensor_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "to_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "to_layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "to_memory_domain": {
+          "$ref": "#/$defs/memory_domain"
+        }
+      },
+      "required": [
+        "consumer_input_id",
+        "conversion_id",
+        "conversion_status",
+        "from_backend",
+        "from_layout",
+        "from_memory_domain",
+        "planned_bytes",
+        "planner_reason",
+        "source_operation",
+        "source_value_record_id",
+        "target_operation",
+        "tensor_name",
+        "to_backend",
+        "to_layout",
+        "to_memory_domain"
+      ],
+      "type": "object"
+    },
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      },
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "layout": {
+      "enum": [
+        "row_major",
+        "column_major",
+        "blocked",
+        "vector",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "memory_domain": {
+      "enum": [
+        "host_ram",
+        "gpu_hbm",
+        "device_sram",
+        "analog_weight_bank",
+        "neuromorphic_synapse_array",
+        "persistent_nvm",
+        "stream_buffer",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "allocation_handle",
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "device_pointer",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "memory_address",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "pointer",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    }
+  }
+}

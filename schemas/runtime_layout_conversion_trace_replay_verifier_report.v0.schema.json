@@ -1,0 +1,192 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_layout_conversion_trace_replay_verifier_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {"const": "review_verification"},
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "type": "array"
+    },
+    "check_count": {"const": 6},
+    "checks": {
+      "items": {"$ref": "#/$defs/check"},
+      "maxItems": 6,
+      "minItems": 6,
+      "type": "array"
+    },
+    "conversion_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+    "execution_policy": {"const": "does_not_execute_conversions"},
+    "graph_name": {"$ref": "#/$defs/report_text"},
+    "input_policy": {"const": "serialized_json_reports_only"},
+    "issues": {
+      "items": {"$ref": "#/$defs/issue"},
+      "maxItems": 64,
+      "type": "array"
+    },
+    "layout_conversion_evidence_report_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "layout_conversion_trace_index_report_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "passed": {"type": "boolean"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "reexecution_policy": {"const": "runtime_reexecution_not_required"},
+    "replay_contract": {
+      "const": "runtime_layout_conversion_trace_replay_verifier.review.v0"
+    },
+    "replay_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+    "replay_mode": {"const": "metadata_digest_replay_only"},
+    "required_inputs": {
+      "items": false,
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {"const": "runtime_layout_conversion_evidence"},
+        {"const": "runtime_layout_conversion_trace_index"}
+      ],
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_layout_conversion_trace_replay_verifier_report.v0"
+    },
+    "source_layout_conversion_evidence_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_partition_plan_digest": {"$ref": "#/$defs/sha256_digest"},
+    "trace_index_conversion_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+    "trace_materialization_policy": {
+      "const": "conversion_not_materialized_as_runtime_step"
+    }
+  },
+  "required": [
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "check_count",
+    "checks",
+    "conversion_metadata_digest",
+    "execution_policy",
+    "graph_name",
+    "input_policy",
+    "issues",
+    "layout_conversion_evidence_report_digest",
+    "layout_conversion_trace_index_report_digest",
+    "passed",
+    "raw_value_policy",
+    "reexecution_policy",
+    "replay_contract",
+    "replay_metadata_digest",
+    "replay_mode",
+    "required_inputs",
+    "schema_version",
+    "source_layout_conversion_evidence_digest",
+    "source_partition_plan_digest",
+    "trace_index_conversion_metadata_digest",
+    "trace_materialization_policy"
+  ],
+  "type": "object",
+  "$defs": {
+    "check": {
+      "additionalProperties": false,
+      "properties": {
+        "check_id": {
+          "enum": [
+            "graph_name_match",
+            "layout_conversion_evidence_digest_replayed",
+            "partition_plan_digest_bound",
+            "conversion_count_bound",
+            "conversion_metadata_digest_replayed",
+            "trace_materialization_policy_bound"
+          ]
+        },
+        "expected": {
+          "anyOf": [
+            {"$ref": "#/$defs/sha256_digest"},
+            {"$ref": "#/$defs/report_text"}
+          ]
+        },
+        "observed": {
+          "anyOf": [
+            {"$ref": "#/$defs/sha256_digest"},
+            {"$ref": "#/$defs/report_text"}
+          ]
+        },
+        "row_status": {"const": "verified"},
+        "subject": {
+          "enum": [
+            "runtime_layout_conversion_evidence",
+            "runtime_layout_conversion_trace_index"
+          ]
+        }
+      },
+      "required": [
+        "check_id",
+        "expected",
+        "observed",
+        "row_status",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": {"$ref": "#/$defs/report_text"},
+        "subject": {"$ref": "#/$defs/report_text"}
+      },
+      "required": ["issue_code", "subject"],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string",
+      "not": {
+        "enum": [
+          "allocation_handle",
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "device_pointer",
+          "dynamic_library",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "jit_function",
+          "memory_address",
+          "network",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "url"
+        ]
+      }
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  }
+}

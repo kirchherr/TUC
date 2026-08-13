@@ -1,18 +1,19 @@
 # Triton Source Threat Model
 
-TUC has a schema-versioned Triton-like metadata intake path. It does not yet
-accept Triton Python source, Python function objects, decorators, bytecode, or
-`@triton.jit` execution.
+TUC has a schema-versioned Triton-like metadata intake path and one explicit
+Source-To-Intent research parser slice. It does not accept Triton Python source
+as a default compiler input path, Python function objects, decorators,
+bytecode, or `@triton.jit` execution.
 
-This document defines the required security model before any direct Triton
-source ingestion can be implemented.
+This document defines the required security model before any broader direct
+Triton source ingestion can be implemented.
 
 ## Security Position
 
-Direct Triton source ingestion remains blocked until the parser is designed as
-a data-only boundary.
+General Triton source ingestion remains blocked until each parser expansion is
+designed as a data-only boundary.
 
-The future source path must:
+Any source path must:
 
 - parse source text into bounded data
 - must not import user modules
@@ -32,7 +33,7 @@ The future source path must:
 Any proposal that needs one of those surfaces requires a separate security RFC,
 sandboxing model, negative tests, and maintainer approval before implementation.
 
-In plain terms: Direct Triton source ingestion remains blocked; a future parser
+In plain terms: default Triton source ingestion remains blocked; parser work
 must not import user modules, must not evaluate decorators, and must not execute
 @triton.jit.
 

@@ -1,0 +1,93 @@
+{
+  "admission_effect": "does_not_admit_device_access",
+  "all_required_evidence_present": true,
+  "artifact_status": "review_gate",
+  "blocked_execution_surfaces": [
+    "device_access",
+    "device_discovery",
+    "device_memory_allocation",
+    "device_memory_mapping",
+    "direct_memory_access",
+    "driver_api_call",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "kernel_launch",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "blocked_outputs": [
+    "device_allocation",
+    "device_capability_record",
+    "device_handle",
+    "device_memory_mapping",
+    "driver_context",
+    "kernel_launch_receipt"
+  ],
+  "device_access": false,
+  "device_discovery": false,
+  "device_enumeration": false,
+  "device_handle_emitted": false,
+  "device_memory_allocation": false,
+  "device_memory_mapping": false,
+  "direct_memory_access": false,
+  "driver_api_call": false,
+  "dynamic_library_loading": false,
+  "evidence": [
+    {
+      "evidence_digest": "sha256:193037f8eda3c7fa47754af5a2b024c6642c6a7df407255bfe59a8f507639d11",
+      "evidence_id": "real_triton_integration_admission_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:54b5be668abaf656dd88295300a9dbc525b8917cc468085e22ae85d66f8890a2",
+      "evidence_id": "triton_jit_execution_sandbox_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:e32bcbf266728fb6ef00e14b4ffb77f997f6434bf3af057c791de539125b4c6e",
+      "evidence_id": "device_access_sandbox_model",
+      "required": true
+    }
+  ],
+  "evidence_count": 3,
+  "evidence_policy": "digest_only",
+  "gate_contract": "device_access_sandbox_gate.data_only.v0",
+  "gate_id": "device_access_sandbox_gate",
+  "gate_status": "sandbox_requirements_only",
+  "generated_artifact_execution": false,
+  "hardware_fingerprint_serialized": false,
+  "kernel_launch": false,
+  "required_control_count": 20,
+  "required_controls": [
+    "device_access_blocked",
+    "device_discovery_blocked",
+    "device_enumeration_blocked",
+    "device_handles_blocked",
+    "device_memory_allocation_blocked",
+    "device_memory_mapping_blocked",
+    "digest_only_evidence",
+    "direct_memory_access_blocked",
+    "driver_calls_blocked",
+    "fail_closed_on_violation",
+    "hardware_fingerprints_blocked",
+    "kernel_launch_blocked",
+    "no_device_access",
+    "no_device_discovery",
+    "no_device_memory_allocation",
+    "no_dynamic_library_loading",
+    "no_generated_artifact_execution",
+    "no_kernel_launch",
+    "no_subprocess_execution",
+    "sanitized_diagnostics_only"
+  ],
+  "required_evidence_ids": [
+    "real_triton_integration_admission_gate",
+    "triton_jit_execution_sandbox_gate",
+    "device_access_sandbox_model"
+  ],
+  "sandbox_boundary_established": true,
+  "schema_version": "tuc.device_access_sandbox_gate_report.v0",
+  "subprocess_execution": false,
+  "surface_id": "device_access",
+  "triton_jit_execution": false
+}

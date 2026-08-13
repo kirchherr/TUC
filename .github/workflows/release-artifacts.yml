@@ -13,6 +13,8 @@ jobs:
   build:
     name: build-attested-artifacts
     runs-on: ubuntu-24.04
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     permissions:
       contents: read
       id-token: write
@@ -24,14 +26,21 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.12"
+      - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+        with:
+          version: v0.34.1
+          driver-opts: image=moby/buildkit:v0.30.0@sha256:0168606be2315b7c807a03b3d8aa79beefdb31c98740cebdffdfeebf31190c9f
+          buildkitd-flags: --cdi-disabled
       - name: Install package
-        run: python -m pip install -e ".[dev]"
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
       - name: Ruff
         run: ruff check .
       - name: Mypy
         run: mypy src/tuc
       - name: Pytest
-        run: pytest -q
+        run: pytest -q -n 4
       - name: Build distributions
         run: python -m build
       - name: Verify wheel import
@@ -42,10 +51,21 @@ jobs:
           cd /tmp
           /tmp/tuc-release-check/bin/python -m pip install "${wheel_path}"
           /tmp/tuc-release-check/bin/python -c "import importlib.metadata; import tuc; print(importlib.metadata.version('tuc'))"
+      - name: Build source-worker OCI archive
+        run: |
+          docker buildx build \
+            --file docker/source-worker/Dockerfile \
+            --platform linux/amd64 \
+            --provenance=false \
+            --sbom=false \
+            --output type=oci,dest=dist/tuc-source-ingestion-worker.oci.tar \
+            .
+      - name: Verify source-worker OCI archive
+        run: python scripts/verify_source_worker_oci_archive.py dist/tuc-source-ingestion-worker.oci.tar
       - name: Generate CycloneDX SBOM
         run: python scripts/generate_sbom.py --output dist/tuc.cdx.json
-      - name: Write SHA-256 checksums
-        run: python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
+      - name: Generate source-worker CycloneDX SBOM
+        run: python scripts/generate_source_worker_sbom.py --output dist/tuc-source-ingestion-worker.cdx.json
       - name: Attest distribution provenance
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         with:
@@ -59,6 +79,44 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
           sbom-path: dist/tuc.cdx.json
+      - name: Attest source-worker OCI provenance
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        with:
+          subject-path: dist/tuc-source-ingestion-worker.oci.tar
+      - name: Attest source-worker SBOM
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        with:
+          subject-path: dist/tuc-source-ingestion-worker.oci.tar
+          sbom-path: dist/tuc-source-ingestion-worker.cdx.json
+      - name: Verify source-worker provenance attestation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh attestation verify dist/tuc-source-ingestion-worker.oci.tar \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-artifacts.yml" \
+            --source-digest "$GITHUB_SHA" \
+            --source-ref "$GITHUB_REF" \
+            --cert-oidc-issuer "https://token.actions.githubusercontent.com" \
+            --predicate-type "https://slsa.dev/provenance/v1" \
+            --deny-self-hosted-runners \
+            --limit 8 \
+            --format json >"$RUNNER_TEMP/tuc-worker-attestation-verification.json"
+          python scripts/write_github_attestation_verification_receipt.py \
+            dist/tuc-source-ingestion-worker.oci.tar \
+            --output dist/tuc-source-ingestion-worker.attestation-verification.json \
+            --verification-result "$RUNNER_TEMP/tuc-worker-attestation-verification.json" \
+            --repository "$GITHUB_REPOSITORY" \
+            --source-commit "$GITHUB_SHA" \
+            --source-ref "$GITHUB_REF" \
+            --event-name "$GITHUB_EVENT_NAME" \
+            --run-id "$GITHUB_RUN_ID" \
+            --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --runner-environment "$RUNNER_ENVIRONMENT" \
+            --gh-version "$(gh --version | sed -n '1p')"
+      - name: Write SHA-256 checksums
+        run: python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
       - name: Upload release artifact bundle
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -67,6 +125,9 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
             dist/*.cdx.json
+            dist/*.attestation-verification.json
+            dist/*.oci-verification.json
+            dist/*.oci.tar
             dist/SHA256SUMS
           if-no-files-found: error
           retention-days: 30

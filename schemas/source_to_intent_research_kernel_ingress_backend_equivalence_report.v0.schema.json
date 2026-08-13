@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_backend_equivalence_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Backend Equivalence Report v0",
+  "description": "Metadata-only portability evidence comparing accepted Kernel Ingress source-intent cases under reference-cpu baseline and capability-selected trusted simulator placements.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "baseline_backend_sequences",
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "candidate_backend_sequences",
+    "comparison_count",
+    "default_parser_status",
+    "equivalence_claim",
+    "equivalence_contract",
+    "executor_contract",
+    "frontend_ingress_contract",
+    "kernel_ingress_backend_equivalence_contract",
+    "kernel_ingress_digest",
+    "parser_status",
+    "raw_source_policy",
+    "raw_value_policy",
+    "schema_version",
+    "source_boundary",
+    "status",
+    "trusted_executor_registry",
+    "trusted_runtime_backends"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "metadata_only_values_omitted"},
+    "baseline_backend_sequences": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "reference-cpu->reference-cpu"},
+        {"const": "reference-cpu->reference-cpu->reference-cpu->reference-cpu"}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "blocked_execution_surfaces": {"$ref": "#/$defs/blocked_execution_surfaces"},
+    "case_count": {"const": 5},
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case"},
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "candidate_backend_sequences": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "linear-sim->vector-sim"},
+        {"const": "vector-sim->vector-sim"},
+        {"const": "linear-sim->vector-sim->vector-sim->vector-sim"}
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "comparison_count": {"const": 4},
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "equivalence_claim": {
+      "const": "same_source_intent_preserves_public_outputs_across_backend_placements"
+    },
+    "equivalence_contract": {"const": "runtime_backend_equivalence.data_only.v0"},
+    "executor_contract": {"const": "runtime_executor.trusted_backend.v0"},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "kernel_ingress_backend_equivalence_contract": {
+      "const": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0"
+    },
+    "kernel_ingress_digest": {"$ref": "#/$defs/sha256_digest"},
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_backend_equivalence_report.v0"
+    },
+    "source_boundary": {
+      "const": "kernel_ingress_source_intent_to_reference_cpu_and_trusted_simulators"
+    },
+    "status": {"const": "PASS"},
+    "trusted_executor_registry": {"const": "trusted_runtime_executor_registry.v0"},
+    "trusted_runtime_backends": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "linear-sim"},
+        {"const": "reference-cpu"},
+        {"const": "vector-sim"}
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  },
+  "$defs": {
+    "backend": {"enum": ["linear-sim", "reference-cpu", "vector-sim"]},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "baseline_backend_sequence",
+        "baseline_run_id",
+        "baseline_trace_step_count",
+        "candidate_backend_sequence",
+        "candidate_run_id",
+        "candidate_trace_step_count",
+        "case_id",
+        "comparison_count",
+        "comparison_metadata_digest",
+        "equivalence_report_digest",
+        "graph_name",
+        "kernel_name",
+        "operation_families",
+        "passed",
+        "raw_value_policy",
+        "run_count",
+        "status",
+        "terminal_outputs"
+      ],
+      "properties": {
+        "baseline_backend_sequence": {
+          "type": "array",
+          "items": {"const": "reference-cpu"},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "baseline_run_id": {"const": "reference_cpu"},
+        "baseline_trace_step_count": {"enum": [2, 4]},
+        "candidate_backend_sequence": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/backend"},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "candidate_run_id": {"const": "capability_selected_simulators"},
+        "candidate_trace_step_count": {"enum": [2, 4]},
+        "case_id": {
+          "enum": [
+            "research_module_matmul_elementwise",
+            "research_module_softmax_reduction",
+            "research_module_matmul_reduction",
+            "research_module_softmax_elementwise",
+            "research_module_mvp_pipeline"
+          ]
+        },
+        "comparison_count": {"const": 1},
+        "comparison_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "equivalence_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "graph_name": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction",
+            "research_matmul_reduction",
+            "research_softmax_elementwise",
+            "research_mvp_pipeline"
+          ]
+        },
+        "kernel_name": {
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction",
+            "matmul_reduction",
+            "softmax_elementwise",
+            "mvp_pipeline"
+          ]
+        },
+        "operation_families": {
+          "type": "array",
+          "items": {"enum": ["elementwise", "matmul", "reduction", "softmax"]},
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "passed": {"const": true},
+        "raw_value_policy": {"const": "omitted_by_policy"},
+        "run_count": {"const": 2},
+        "status": {"const": "backend_equivalence_bound"},
+        "terminal_outputs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "maxItems": 1
+        }
+      }
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

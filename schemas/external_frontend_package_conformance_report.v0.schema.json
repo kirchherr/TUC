@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/external_frontend_package_conformance_report.v0.schema.json",
+  "title": "TUC External Frontend Package Conformance Report v0",
+  "description": "Data-only conformance schema for external frontend packages that emit Source Intent plain data without package import, plugin discovery, direct source ingestion, or JIT execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_case_count",
+    "artifact_status",
+    "blocked_artifacts",
+    "blocked_execution_surfaces",
+    "capability_coverage_complete",
+    "checked_cases",
+    "conformance_contract",
+    "conformance_passed",
+    "conformance_report_digest",
+    "conformance_status",
+    "direct_source_ingestion",
+    "fixture_digests",
+    "fixture_policy",
+    "frontend_conformance_schema_version",
+    "package_imported",
+    "package_manifest",
+    "package_manifest_digest",
+    "plugin_discovery",
+    "rejected_case_count",
+    "schema_version",
+    "source_intent_schema_version",
+    "triton_jit_execution"
+  ],
+  "properties": {
+    "accepted_case_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 128
+    },
+    "artifact_status": {"const": "review_evidence_only"},
+    "blocked_artifacts": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/blocked_artifact"},
+      "uniqueItems": true
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {"$ref": "#/$defs/report_text"},
+      "uniqueItems": true
+    },
+    "capability_coverage_complete": {"const": true},
+    "checked_cases": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/report_text"},
+      "uniqueItems": true
+    },
+    "conformance_contract": {
+      "const": "external_frontend_package_conformance.data_only.v0"
+    },
+    "conformance_passed": {"const": true},
+    "conformance_report_digest": {"$ref": "#/$defs/sha256_text"},
+    "conformance_status": {"const": "pass"},
+    "direct_source_ingestion": {"const": false},
+    "fixture_digests": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/fixture_digest"}
+    },
+    "fixture_policy": {"const": "digest_only_plain_data_fixtures"},
+    "frontend_conformance_schema_version": {
+      "const": "tuc.source_intent_frontend_conformance_report.v0"
+    },
+    "package_imported": {"const": false},
+    "package_manifest": {"$ref": "#/$defs/package_manifest"},
+    "package_manifest_digest": {"$ref": "#/$defs/sha256_text"},
+    "plugin_discovery": {"const": false},
+    "rejected_case_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 128
+    },
+    "schema_version": {
+      "const": "tuc.external_frontend_package_conformance_report.v0"
+    },
+    "source_intent_schema_version": {"const": "source_intent.v0"},
+    "triton_jit_execution": {"const": false}
+  },
+  "$defs": {
+    "blocked_artifact": {
+      "enum": [
+        "backend_artifact",
+        "command_line",
+        "device_id",
+        "environment",
+        "generated_code",
+        "host_path",
+        "plugin_entrypoint",
+        "python_source",
+        "raw_source_text",
+        "raw_timing_samples",
+        "runtime_handle"
+      ]
+    },    "fixture_digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_name", "payload_digest", "should_accept"],
+      "properties": {
+        "case_name": {"$ref": "#/$defs/report_text"},
+        "payload_digest": {"$ref": "#/$defs/sha256_text"},
+        "should_accept": {"type": "boolean"}
+      }
+    },
+    "package_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declared_capabilities",
+        "emitted_schema_version",
+        "execution_permission",
+        "import_policy",
+        "interface_contract",
+        "package_name",
+        "package_version"
+      ],
+      "properties": {
+        "declared_capabilities": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": {
+            "enum": [
+              "does_not_require_package_import",
+              "emits_source_intent_plain_data",
+              "fails_closed_on_invalid_payloads",
+              "omits_raw_source_from_reports",
+              "supports_explicit_public_returns",
+              "supports_mvp_operation_families"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "emitted_schema_version": {"const": "source_intent.v0"},
+        "execution_permission": {"const": false},
+        "import_policy": {"const": "not_imported"},
+        "interface_contract": {
+          "const": "external_frontend.source_intent_plain_data.v0"
+        },
+        "package_name": {"$ref": "#/$defs/report_text"},
+        "package_version": {"$ref": "#/$defs/report_text"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

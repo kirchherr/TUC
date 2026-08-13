@@ -1,0 +1,162 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_claims": [
+    "native_performance_parity",
+    "vendor_compiler_replacement",
+    "broad_source_code_parsing",
+    "arbitrary_third_party_backend_execution",
+    "device_access",
+    "generated_artifact_execution"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "broad_source_parser_claim": false,
+  "bundle_contract": "objective_alpha.public_proof_bundle.v0",
+  "bundle_id": "objective_alpha_public_proof_bundle",
+  "bundle_metadata_digest": "e86a3fb8dbe50802444d9e24ecf52a32b25931c54f660c8c90099e3b362624c6",
+  "claim_status": "correctness_and_inspectability_only",
+  "entry_capacity": 16,
+  "entry_count": 16,
+  "evidence_entries": [
+    {
+      "artifact_kind": "deterministic_proof_output",
+      "entry_point": "python examples/proof_of_execution.py",
+      "evidence_id": "proof_of_execution",
+      "metadata_digest": "fd1f76d3d6c1f4015f9e4217c0031b5512f4f6ff8314fa6efb1d61a4ca3d7b59",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_matrix_report",
+      "entry_point": "python examples/runtime_evidence_matrix.py",
+      "evidence_id": "runtime_evidence_matrix",
+      "metadata_digest": "43b32fe5d3d85e9df45cf9631940f20936f12e45d2df0b16faf05f6e198b0016",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "deterministic_gate_output",
+      "entry_point": "python examples/runtime_evidence_gate.py",
+      "evidence_id": "runtime_evidence_gate",
+      "metadata_digest": "6708ec922e1d6135ded12ee5528a07f5900160f1e01949c44effcc6758ef9387",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_backend_equivalence_proof_report",
+      "entry_point": "python examples/proof_of_backend_equivalence.py",
+      "evidence_id": "proof_of_backend_equivalence",
+      "metadata_digest": "4408873a80c1306a7f15cad3fd6b0d84161f4e833bca232fb6d90b8dc3df1dc0",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_output_closure_report",
+      "entry_point": "python examples/runtime_execution_output_closure.py",
+      "evidence_id": "runtime_execution_output_closure",
+      "metadata_digest": "9d06b10a255223dd0b9a07ccb2f9ee5401ddeda6686341be792b3d5216d7c7d1",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_transfer_trace_index_report",
+      "entry_point": "python examples/runtime_transfer_trace_index.py",
+      "evidence_id": "runtime_transfer_trace_index",
+      "metadata_digest": "ac78842cb68e8f3c6fdc13d078c4a31f833b43db36026d54904d2ad2987c44ea",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_transfer_trace_replay_verifier_report",
+      "entry_point": "python examples/runtime_transfer_trace_replay_verifier.py",
+      "evidence_id": "runtime_transfer_trace_replay_verifier",
+      "metadata_digest": "e702783d6e7f8c19718f9206265b42cec21294c64de4d1157639484d25e0ccf1",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_backend_equivalence_transfer_binding_report",
+      "entry_point": "python examples/runtime_backend_equivalence_transfer_binding.py",
+      "evidence_id": "runtime_backend_equivalence_transfer_binding",
+      "metadata_digest": "6f855268bd99a74c8d2fe0b4c977e49c950fd4e5a2c559536ba3f2a902f45f34",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_layout_conversion_trace_index_report",
+      "entry_point": "python examples/runtime_layout_conversion_trace_index.py",
+      "evidence_id": "runtime_layout_conversion_trace_index",
+      "metadata_digest": "855477f6ba581cdb5782cbb64b27237c1b7b7e5b3504e49b3bac2743ee6e11ba",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_layout_conversion_trace_replay_verifier_report",
+      "entry_point": "python examples/runtime_layout_conversion_trace_replay_verifier.py",
+      "evidence_id": "runtime_layout_conversion_trace_replay_verifier",
+      "metadata_digest": "36ecb2d0f2f1236777dd6764c14d002833f86db28d414a51190cd27e90e05285",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_backend_equivalence_layout_binding_report",
+      "entry_point": "python examples/runtime_backend_equivalence_layout_binding.py",
+      "evidence_id": "runtime_backend_equivalence_layout_binding",
+      "metadata_digest": "6005eb4524dbeadf9647ef7c1a8523ea53d4ecc2d1626cca32286d718a11f5bf",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_allocation_reconciliation_report",
+      "entry_point": "python examples/runtime_allocation_reconciliation.py",
+      "evidence_id": "runtime_allocation_reconciliation",
+      "metadata_digest": "8600b94e23f90cb5b6cf27d74dd732adef821e4aa449af0f9718032887cb69a0",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "deterministic_memory_planning_gate_output",
+      "entry_point": "python examples/runtime_memory_planning_gate.py",
+      "evidence_id": "runtime_memory_planning_gate",
+      "metadata_digest": "e097b6b81e88d2461e4aebfc9ae847fb196563c8c84259c27c286bd67d15b80e",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_onboarding_report",
+      "entry_point": "python examples/research_onboarding_evidence.py",
+      "evidence_id": "research_onboarding_evidence",
+      "metadata_digest": "878f56330a092a8c9393e30fc6406db601702fc4c332a36971f3cd6c23bc527c",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "schema_versioned_source_to_intent_research_proof_bundle_report",
+      "entry_point": "python examples/source_to_intent_research_proof_bundle.py",
+      "evidence_id": "source_to_intent_research_proof_bundle",
+      "metadata_digest": "03872b2b95fa6d66c37118cf6b3490a6c83cf92f1a020a41674f40d247d4c601",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    },
+    {
+      "artifact_kind": "deterministic_source_to_intent_kernel_ingress_evidence_gate_output",
+      "entry_point": "python examples/source_to_intent_research_kernel_ingress_evidence_gate.py",
+      "evidence_id": "source_to_intent_research_kernel_ingress_evidence_gate",
+      "metadata_digest": "edb449d918cbe5977b923bcab35c666e1f3801ce5fbcbf4fc557a1c9b9048d1a",
+      "raw_output_policy": "digest_only",
+      "status": "passed"
+    }
+  ],
+  "native_performance_claim": false,
+  "raw_output_policy": "digest_only",
+  "schema_version": "tuc.objective_alpha_public_proof_bundle.v0",
+  "vendor_replacement_claim": false
+}

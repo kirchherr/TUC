@@ -26,7 +26,7 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     graphs = {graph.graph_id: graph for graph in report.graphs}
 
     assert report.evidence_contract == RUNTIME_EVIDENCE_MATRIX_CONTRACT
-    assert len(report.graphs) == 7
+    assert len(report.graphs) == 12
     assert report.runtime_evidence_matrix_complete
     assert graphs["proof_of_abstraction"].runtime_evidence_complete
     assert graphs["proof_of_reduction"].runtime_evidence_complete
@@ -35,31 +35,129 @@ def test_runtime_evidence_matrix_tracks_current_gaps() -> None:
     assert graphs["proof_of_systolic_execution"].runtime_evidence_complete
     assert graphs["triton_metadata_mvp_families"].runtime_evidence_complete
     assert graphs["source_intent_return_mlp"].runtime_evidence_complete
-    assert graphs["source_intent_return_mlp"].source_boundary == (
-        "source_intent_metadata"
-    )
+    assert graphs["runtime_backend_equivalence"].runtime_evidence_complete
+    assert graphs["runtime_vector_backend_equivalence"].runtime_evidence_complete
+    assert graphs["runtime_mixed_backend_equivalence"].runtime_evidence_complete
+    assert graphs["runtime_backend_equivalence_portfolio"].runtime_evidence_complete
+    assert graphs["runtime_memory_planning"].runtime_evidence_complete
+    assert graphs["source_intent_return_mlp"].source_boundary == ("source_intent_metadata")
     assert graphs["source_intent_return_mlp"].present_artifact_kinds >= {
         "source_intent_return_semantics",
         "source_intent_runtime_returns",
     }
-    assert all(
-        "input_manifest" in graph.present_artifact_kinds for graph in report.graphs
+    assert graphs["runtime_backend_equivalence"].source_boundary == ("runtime_backend_equivalence")
+    assert graphs["runtime_backend_equivalence"].required_artifact_kinds == (
+        "backend_equivalence",
+        "runtime_planning_explanation",
+        "runtime_transfer_trace_index",
+        "runtime_transfer_trace_replay_verifier",
+        "runtime_backend_equivalence_transfer_binding",
+    )
+    assert graphs["runtime_vector_backend_equivalence"].required_artifact_kinds == (
+        "backend_equivalence",
+    )
+    assert graphs["runtime_mixed_backend_equivalence"].required_artifact_kinds == (
+        "backend_equivalence",
+        "runtime_planning_explanation",
+        "runtime_hs_ir_plan_alignment",
+        "runtime_layout_conversion_evidence",
+        "runtime_layout_conversion_trace_index",
+        "runtime_layout_conversion_trace_replay_verifier",
+        "runtime_backend_equivalence_layout_binding",
+    )
+    assert graphs["runtime_backend_equivalence_portfolio"].required_artifact_kinds == (
+        "backend_equivalence_portfolio",
+        "backend_equivalence_portfolio_policy",
+    )
+    assert graphs["runtime_memory_planning"].source_boundary == ("runtime_memory_planning")
+    assert graphs["runtime_memory_planning"].required_artifact_kinds == (
+        "runtime_buffer_lifetime",
+        "runtime_allocation_plan",
+        "runtime_memory_budget",
+        "runtime_allocation_request_manifest",
+        "runtime_allocation_admission",
+        "runtime_allocation_receipt",
+        "runtime_allocation_reconciliation",
     )
     assert all(
-        "tensor_store_evidence" in graph.present_artifact_kinds
+        "backend_equivalence" in graphs[graph_id].present_artifact_kinds
+        for graph_id in (
+            "runtime_backend_equivalence",
+            "runtime_vector_backend_equivalence",
+            "runtime_mixed_backend_equivalence",
+        )
+    )
+    assert (
+        "runtime_planning_explanation"
+        in graphs["runtime_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_transfer_trace_index"
+        in graphs["runtime_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_transfer_trace_replay_verifier"
+        in graphs["runtime_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_backend_equivalence_transfer_binding"
+        in graphs["runtime_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_planning_explanation"
+        in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_hs_ir_plan_alignment"
+        in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_layout_conversion_evidence"
+        in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_layout_conversion_trace_index"
+        in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_layout_conversion_trace_replay_verifier"
+        in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "runtime_backend_equivalence_layout_binding"
+        in graphs["runtime_mixed_backend_equivalence"].present_artifact_kinds
+    )
+    assert (
+        "backend_equivalence_portfolio"
+        in graphs["runtime_backend_equivalence_portfolio"].present_artifact_kinds
+    )
+    assert (
+        "backend_equivalence_portfolio_policy"
+        in graphs["runtime_backend_equivalence_portfolio"].present_artifact_kinds
+    )
+    assert graphs["runtime_memory_planning"].present_artifact_kinds == {
+        "runtime_buffer_lifetime",
+        "runtime_allocation_plan",
+        "runtime_memory_budget",
+        "runtime_allocation_request_manifest",
+        "runtime_allocation_admission",
+        "runtime_allocation_receipt",
+        "runtime_allocation_reconciliation",
+    }
+    full_runtime_graphs = tuple(
+        graph
         for graph in report.graphs
+        if graph.required_artifact_kinds == RUNTIME_EVIDENCE_REQUIRED_ARTIFACT_KINDS
     )
+    assert all("input_manifest" in graph.present_artifact_kinds for graph in full_runtime_graphs)
     assert all(
-        "output_contract" in graph.present_artifact_kinds for graph in report.graphs
+        "tensor_store_evidence" in graph.present_artifact_kinds for graph in full_runtime_graphs
     )
+    assert all("output_contract" in graph.present_artifact_kinds for graph in full_runtime_graphs)
     assert all(
-        "public_output_bundle" in graph.present_artifact_kinds
-        for graph in report.graphs
+        "public_output_bundle" in graph.present_artifact_kinds for graph in full_runtime_graphs
     )
-    assert all(
-        "execution_receipt" in graph.present_artifact_kinds
-        for graph in report.graphs
-    )
+    assert all("execution_receipt" in graph.present_artifact_kinds for graph in full_runtime_graphs)
     assert report.issues == ()
     assert tuple(runtime_evidence_matrix_report_to_dict(report)) == (
         "artifact_status",
@@ -99,6 +197,26 @@ def test_runtime_evidence_matrix_example_runs() -> None:
     assert "triton_metadata_mvp_families" in completed.stdout
     assert "source_intent_return_mlp" in completed.stdout
     assert '"source_intent_runtime_returns"' in completed.stdout
+    assert "runtime_mixed_backend_equivalence" in completed.stdout
+    assert '"backend_equivalence"' in completed.stdout
+    assert '"runtime_planning_explanation"' in completed.stdout
+    assert '"runtime_transfer_trace_index"' in completed.stdout
+    assert '"runtime_transfer_trace_replay_verifier"' in completed.stdout
+    assert '"runtime_backend_equivalence_transfer_binding"' in completed.stdout
+    assert '"runtime_hs_ir_plan_alignment"' in completed.stdout
+    assert '"runtime_layout_conversion_evidence"' in completed.stdout
+    assert '"runtime_layout_conversion_trace_index"' in completed.stdout
+    assert '"runtime_layout_conversion_trace_replay_verifier"' in completed.stdout
+    assert '"runtime_backend_equivalence_layout_binding"' in completed.stdout
+    assert "runtime_backend_equivalence_portfolio" in completed.stdout
+    assert "runtime_memory_planning" in completed.stdout
+    assert '"runtime_buffer_lifetime"' in completed.stdout
+    assert '"runtime_allocation_request_manifest"' in completed.stdout
+    assert '"runtime_allocation_admission"' in completed.stdout
+    assert '"runtime_allocation_receipt"' in completed.stdout
+    assert '"runtime_allocation_reconciliation"' in completed.stdout
+    assert '"backend_equivalence_portfolio"' in completed.stdout
+    assert '"backend_equivalence_portfolio_policy"' in completed.stdout
 
 
 def test_runtime_evidence_matrix_rejects_unknown_artifact_kind() -> None:
@@ -154,6 +272,52 @@ def test_runtime_evidence_matrix_rejects_duplicate_artifact_kinds() -> None:
                             artifact_kind="hac_ir_golden",
                             artifact_id="second_hac_ir",
                         ),
+                    ),
+                ),
+            ),
+        )
+
+
+def test_runtime_evidence_matrix_supports_scoped_required_artifacts() -> None:
+    report = build_runtime_evidence_matrix_report(
+        "scoped_required_matrix",
+        (
+            RuntimeEvidenceGraph(
+                graph_id="scoped_backend_equivalence",
+                graph_family="backend_equivalence",
+                source_boundary="runtime_backend_equivalence",
+                artifacts=(
+                    RuntimeEvidenceArtifact(
+                        artifact_kind="backend_equivalence",
+                        artifact_id="scoped_backend_equivalence_report",
+                    ),
+                ),
+                required_artifact_kinds=("backend_equivalence",),
+            ),
+        ),
+    )
+
+    assert report.runtime_evidence_matrix_complete
+    assert report.graphs[0].runtime_evidence_complete
+    assert report.graphs[0].missing_required_artifact_kinds == ()
+
+
+def test_runtime_evidence_matrix_rejects_bad_scoped_required_artifacts() -> None:
+    with pytest.raises(
+        ValueError,
+        match="duplicate runtime evidence required artifact kind",
+    ):
+        build_runtime_evidence_matrix_report(
+            "duplicate_required_matrix",
+            (
+                RuntimeEvidenceGraph(
+                    graph_id="duplicate_required",
+                    graph_family="backend_equivalence",
+                    source_boundary="runtime_backend_equivalence",
+                    artifacts=(),
+                    required_artifact_kinds=(
+                        "backend_equivalence",
+                        "backend_equivalence",
                     ),
                 ),
             ),

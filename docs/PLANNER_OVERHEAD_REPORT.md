@@ -11,6 +11,7 @@ samples, or claim native performance parity.
 
 - Report schema: `schemas/planner_overhead_report.v0.schema.json`
 - Report schema version: `tuc.planner_overhead_report.v0`
+- Portfolio report: [Planner Overhead Portfolio](PLANNER_OVERHEAD_PORTFOLIO.md)
 - Artifact status: `diagnostic_only`
 - Claim boundary: `performance_proof_boundary.blocking.v0`
 - Execution time status: `not_measured`
@@ -18,6 +19,7 @@ samples, or claim native performance parity.
 - API: `measure_pipeline_planner_overhead(graph, backend_capabilities)`
 - Dump API: `dump_planner_overhead_report(report)`
 - Example: `examples/planner_overhead_report.py`
+- Portfolio example: `examples/planner_overhead_portfolio.py`
 - Tests: `tests/test_planner_overhead_report.py`
 - Schema tests: `tests/test_planner_overhead_report_schema.py`
 
@@ -62,6 +64,15 @@ The schema is fail-closed with `additionalProperties: false` on every object.
 The report stores only aggregate duration values for compiler/planner phases
 and explicit status markers for unmeasured phases.
 
+## Portfolio Evidence
+
+[Planner Overhead Portfolio](PLANNER_OVERHEAD_PORTFOLIO.md) binds the same
+diagnostic phase contract to all accepted Kernel Ingress research cases through
+`examples/planner_overhead_portfolio.py`.
+
+The portfolio uses `schemas/planner_overhead_portfolio_report.v0.schema.json`
+and emits deterministic metadata only. It validates planner-overhead reports
+internally, but omits raw duration values from its golden evidence.
 ## Still Blocked
 
 These remain blocked after this report exists:

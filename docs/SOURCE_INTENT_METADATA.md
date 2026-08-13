@@ -26,8 +26,17 @@ The adapter maps:
 
 - `SourceIntentTensor` to `TritonTensorMetadata`
 - source-intent operation families to metadata `OperationKind`
+- neutral source-intent operation attributes such as `axis` to metadata
+  operation attributes
+- neutral `elementwise_kind` value semantics to the existing bounded metadata
+  `kernel` attribute
 - neutral source-intent hints to `CompilationHints`
 - source-intent contract metadata to frontend graph metadata
+
+The elementwise mapping is specified by
+[Source Intent Elementwise Semantics](SOURCE_INTENT_ELEMENTWISE_SEMANTICS.md).
+It carries value semantics only; it grants no backend or implementation
+authority.
 
 ## Security Boundary
 
@@ -61,7 +70,7 @@ without weakening the direct source-ingestion gate.
 
 ## Still Blocked
 
-These remain future work:
+These remain blocked as default behavior:
 
 - source text to Source Intent IR
 - preflight report to Source Intent IR

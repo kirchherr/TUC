@@ -1,0 +1,98 @@
+{
+  "artifact_status": "review_binding",
+  "backend_equivalence_comparison_metadata_digest": "sha256:4db7b049c183fdb6b51b0b81570d78331f674ee7ca718dc2329b92577258679c",
+  "backend_equivalence_report_digest": "sha256:bd51a1faf2a0dde5e4955f09a0cb236259f0ecbe763c07e76e7d4bc69860b978",
+  "baseline_backend_sequence_digest": "sha256:4e77689009ef344e0b146fc2ddacfd401ba0961753b23b2cefe328dfd1ab643e",
+  "baseline_run_id": "reference_cpu",
+  "binding_contract": "runtime_backend_equivalence_transfer_binding.data_only.v0",
+  "binding_metadata_digest": "sha256:705e1c2782f5f854f3eac40b08c21dcc3214248460694c36bcd51dd763b3e804",
+  "binding_mode": "metadata_digest_binding_only",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_backend_count": 2,
+  "candidate_backend_sequence_digest": "sha256:4bd716c94e00ff9e37742f51d8a80fdf6e8c72c6160ce8659642581d60dfa798",
+  "candidate_run_id": "systolic_sim",
+  "check_count": 8,
+  "checks": [
+    {
+      "check_id": "backend_equivalence_contract_bound",
+      "expected": "runtime_backend_equivalence.data_only.v0",
+      "observed": "runtime_backend_equivalence.data_only.v0",
+      "row_status": "verified",
+      "subject": "runtime_backend_equivalence"
+    },
+    {
+      "check_id": "transfer_trace_replay_contract_bound",
+      "expected": "runtime_transfer_trace_replay_verifier.review.v0",
+      "observed": "runtime_transfer_trace_replay_verifier.review.v0",
+      "row_status": "verified",
+      "subject": "runtime_transfer_trace_replay_verifier"
+    },
+    {
+      "check_id": "graph_name_bound",
+      "expected": "runtime_backend_equivalence",
+      "observed": "runtime_backend_equivalence",
+      "row_status": "verified",
+      "subject": "runtime_backend_equivalence_transfer_binding"
+    },
+    {
+      "check_id": "backend_equivalence_passed_bound",
+      "expected": "passed",
+      "observed": "passed",
+      "row_status": "verified",
+      "subject": "runtime_backend_equivalence"
+    },
+    {
+      "check_id": "transfer_trace_replay_passed_bound",
+      "expected": "passed",
+      "observed": "passed",
+      "row_status": "verified",
+      "subject": "runtime_transfer_trace_replay_verifier"
+    },
+    {
+      "check_id": "raw_value_policy_bound",
+      "expected": "omitted_by_policy:omitted_by_policy",
+      "observed": "omitted_by_policy:omitted_by_policy",
+      "row_status": "verified",
+      "subject": "runtime_backend_equivalence_transfer_binding"
+    },
+    {
+      "check_id": "candidate_backend_diversity_bound",
+      "expected": "transfer_backend_boundary",
+      "observed": "transfer_backend_boundary",
+      "row_status": "verified",
+      "subject": "runtime_backend_equivalence"
+    },
+    {
+      "check_id": "transfer_replay_checks_bound",
+      "expected": "6",
+      "observed": "6",
+      "row_status": "verified",
+      "subject": "runtime_transfer_trace_replay_verifier"
+    }
+  ],
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "runtime_backend_equivalence",
+  "input_policy": "serialized_json_reports_only",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "reexecution_policy": "runtime_reexecution_not_required",
+  "required_inputs": [
+    "runtime_backend_equivalence",
+    "runtime_transfer_trace_replay_verifier"
+  ],
+  "schema_version": "tuc.runtime_backend_equivalence_transfer_binding_report.v0",
+  "transfer_replay_check_count": 6,
+  "transfer_trace_replay_metadata_digest": "sha256:68af97839ee43b1690a934d3c73e87492a4d95385da37b6aa778fa132123a6cc",
+  "transfer_trace_replay_report_digest": "sha256:e702783d6e7f8c19718f9206265b42cec21294c64de4d1157639484d25e0ccf1",
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

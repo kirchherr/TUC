@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/native_backend_execution_security_gate_report.v0.schema.json",
+  "title": "TUC Native Backend Execution Security Gate Report v0",
+  "description": "Data-only gate schema establishing security requirements for future native backend execution without admitting native backend execution, native plugin ABI loading, backend plugin execution, symbol resolution, FFI calls, unsafe memory access, dynamic-library loading, generated artifact execution, device access, kernel launch, or subprocess surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "all_required_evidence_present",
+    "artifact_status",
+    "backend_plugin_execution",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "capability_claims_from_native_code",
+    "device_access",
+    "dynamic_library_loading",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "executable_permission_granted",
+    "ffi_call",
+    "gate_contract",
+    "gate_id",
+    "gate_status",
+    "generated_artifact_execution",
+    "kernel_launch",
+    "native_backend_execution",
+    "native_backend_handle_emitted",
+    "native_backend_loaded",
+    "native_plugin_abi_loading",
+    "required_control_count",
+    "required_controls",
+    "required_evidence_ids",
+    "schema_version",
+    "security_boundary_established",
+    "subprocess_execution",
+    "surface_id",
+    "symbol_resolution",
+    "unsafe_memory_access"
+  ],
+  "properties": {
+    "admission_effect": {"const": "does_not_admit_native_backend_execution"},
+    "all_required_evidence_present": {"const": true},
+    "artifact_status": {"const": "review_gate"},
+    "backend_plugin_execution": {"const": false},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/blocked_execution_surface"},
+      "uniqueItems": true
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/blocked_output"},
+      "uniqueItems": true
+    },
+    "capability_claims_from_native_code": {"const": false},
+    "device_access": {"const": false},
+    "dynamic_library_loading": {"const": false},
+    "evidence": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "evidence_count": {"const": 5},
+    "evidence_policy": {"const": "digest_only"},
+    "executable_permission_granted": {"const": false},
+    "ffi_call": {"const": false},
+    "gate_contract": {"const": "native_backend_execution_security_gate.data_only.v0"},
+    "gate_id": {"const": "native_backend_execution_security_gate"},
+    "gate_status": {"const": "security_requirements_only"},
+    "generated_artifact_execution": {"const": false},
+    "kernel_launch": {"const": false},
+    "native_backend_execution": {"const": false},
+    "native_backend_handle_emitted": {"const": false},
+    "native_backend_loaded": {"const": false},
+    "native_plugin_abi_loading": {"const": false},
+    "required_control_count": {"const": 20},
+    "required_controls": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {"$ref": "#/$defs/required_control"},
+      "uniqueItems": true
+    },
+    "required_evidence_ids": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/required_evidence_id"},
+      "uniqueItems": true
+    },
+    "schema_version": {"const": "tuc.native_backend_execution_security_gate_report.v0"},
+    "security_boundary_established": {"const": true},
+    "subprocess_execution": {"const": false},
+    "surface_id": {"const": "native_backend_execution"},
+    "symbol_resolution": {"const": false},
+    "unsafe_memory_access": {"const": false}
+  },
+  "$defs": {
+    "blocked_execution_surface": {
+      "enum": [
+        "backend_plugin_execution",
+        "device_access",
+        "dynamic_library_loading",
+        "ffi_call",
+        "generated_artifact_execution",
+        "kernel_launch",
+        "native_backend_execution",
+        "native_plugin_abi_loading",
+        "subprocess_execution",
+        "symbol_resolution",
+        "unsafe_memory_access"
+      ]
+    },
+    "blocked_output": {
+      "enum": [
+        "driver_context",
+        "ffi_callable",
+        "loaded_symbol",
+        "native_backend_handle",
+        "native_execution_receipt",
+        "native_plugin_handle"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_digest", "evidence_id", "required"],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"$ref": "#/$defs/required_evidence_id"},
+        "required": {"const": true}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_control": {
+      "enum": [
+        "abi_loading_blocked",
+        "artifact_execution_blocked",
+        "backend_plugin_execution_blocked",
+        "capability_checks_are_data_only",
+        "device_access_blocked",
+        "digest_only_evidence",
+        "dynamic_library_loading_blocked",
+        "executable_permissions_blocked",
+        "fail_closed_on_violation",
+        "ffi_call_blocked",
+        "generated_artifact_execution_blocked",
+        "maintainer_approval_required",
+        "native_backend_execution_blocked",
+        "native_plugin_abi_blocked",
+        "no_dynamic_library_loading",
+        "no_native_backend_execution",
+        "no_subprocess_execution",
+        "sandbox_required",
+        "sanitized_diagnostics_only",
+        "symbol_resolution_blocked"
+      ]
+    },
+    "required_evidence_id": {
+      "enum": [
+        "real_triton_integration_admission_gate",
+        "generated_artifact_quarantine_gate",
+        "device_access_sandbox_gate",
+        "backend_plugin_lifecycle_policy",
+        "native_backend_execution_security_model"
+      ]
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

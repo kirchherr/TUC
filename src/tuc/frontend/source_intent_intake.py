@@ -25,7 +25,9 @@ _TOP_LEVEL_KEYS = frozenset(
     {"name", "schema_version", "tensors", "operations", "returns"}
 )
 _TENSOR_KEYS = frozenset({"name", "shape", "dtype"})
-_OPERATION_KEYS = frozenset({"name", "family", "inputs", "outputs", "hints"})
+_OPERATION_KEYS = frozenset(
+    {"attributes", "name", "family", "inputs", "outputs", "hints"}
+)
 _RETURN_KEYS = frozenset({"public_name", "tensor_name", "required"})
 _BLOCKED_EXECUTION_SURFACES = (
     "bytecode_inspection",
@@ -169,12 +171,16 @@ def _operation_from_mapping(data: object) -> SourceIntentOperation:
     hints = mapping.get("hints", {})
     if hints is None:
         hints = {}
+    attributes = mapping.get("attributes", {})
+    if attributes is None:
+        attributes = {}
     return SourceIntentOperation(
         name=_require_string(mapping, "name"),
         family=_require_string(mapping, "family"),
         inputs=_string_tuple(mapping, "inputs"),
         outputs=_string_tuple(mapping, "outputs"),
         hints=_require_plain_mapping(hints, "hints"),
+        attributes=_require_plain_mapping(attributes, "attributes"),
     )
 
 

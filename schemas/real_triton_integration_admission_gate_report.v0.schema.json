@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/real_triton_integration_admission_gate_report.v0.schema.json",
+  "title": "TUC Real Triton Integration Admission Gate Report v0",
+  "description": "Data-only admission gate schema for future real Triton integration. Readiness evidence may be complete, but source ingestion, package import, plugin discovery, JIT, device access, generated artifacts, and native backend execution remain blocked until dedicated surface gates exist.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_contract",
+    "admission_decision",
+    "admission_status",
+    "admitted",
+    "all_required_evidence_present",
+    "artifact_status",
+    "blocked_claims",
+    "blocked_surface_count",
+    "device_access",
+    "direct_source_ingestion",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "frontend_package_import",
+    "generated_artifact_execution",
+    "integration_scope",
+    "native_backend_execution",
+    "plugin_discovery",
+    "required_evidence_ids",
+    "required_surface_gates",
+    "schema_version",
+    "surfaces",
+    "triton_jit_execution"
+  ],
+  "properties": {
+    "admission_contract": {
+      "const": "real_triton_integration_admission.data_only.v0"
+    },
+    "admission_decision": {"const": "blocked_until_surface_gates_exist"},
+    "admission_status": {"const": "blocked"},
+    "admitted": {"const": false},
+    "all_required_evidence_present": {"const": true},
+    "artifact_status": {"const": "review_gate"},
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/blocked_claim"},
+      "uniqueItems": true
+    },
+    "blocked_surface_count": {"const": 12},
+    "device_access": {"const": false},
+    "direct_source_ingestion": {"const": false},
+    "evidence": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "evidence_count": {"const": 3},
+    "evidence_policy": {"const": "digest_only"},
+    "frontend_package_import": {"const": false},
+    "generated_artifact_execution": {"const": false},
+    "integration_scope": {"const": "real_triton_integration_phase_zeta"},
+    "native_backend_execution": {"const": false},
+    "plugin_discovery": {"const": false},
+    "required_evidence_ids": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/required_evidence_id"},
+      "uniqueItems": true
+    },
+    "required_surface_gates": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/required_surface_gate"},
+      "uniqueItems": true
+    },
+    "schema_version": {
+      "const": "tuc.real_triton_integration_admission_gate_report.v0"
+    },
+    "surfaces": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {"$ref": "#/$defs/surface"}
+    },
+    "triton_jit_execution": {"const": false}
+  },
+  "$defs": {
+    "blocked_claim": {
+      "enum": [
+        "accepts_arbitrary_triton_source",
+        "executes_generated_artifacts",
+        "executes_native_backends",
+        "imports_external_frontend_packages",
+        "runs_triton_jit",
+        "uses_real_devices"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_digest", "evidence_id", "required"],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"$ref": "#/$defs/required_evidence_id"},
+        "required": {"const": true}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_evidence_id": {
+      "enum": [
+        "external_frontend_package_conformance",
+        "real_triton_integration_threat_model",
+        "triton_integration_readiness"
+      ]
+    },
+    "required_surface_gate": {
+      "enum": [
+        "device_access_sandbox_gate",
+        "generated_artifact_quarantine_gate",
+        "native_backend_execution_security_gate",
+        "package_import_sandbox_gate",
+        "plugin_discovery_allowlist_gate",
+        "source_ingestion_quarantine_gate",
+        "triton_jit_execution_sandbox_gate"
+      ]
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_gate", "status", "surface_id"],
+      "properties": {
+        "required_gate": {"$ref": "#/$defs/required_surface_gate"},
+        "status": {"const": "blocked"},
+        "surface_id": {
+          "enum": [
+            "device_access",
+            "direct_source_ingestion",
+            "dynamic_library_loading",
+            "frontend_package_import",
+            "generated_artifact_execution",
+            "native_backend_execution",
+            "network_access",
+            "plugin_discovery",
+            "python_function_object_inspection",
+            "python_import",
+            "subprocess_execution",
+            "triton_jit_execution"
+          ]
+        }
+      }
+    }
+  }
+}

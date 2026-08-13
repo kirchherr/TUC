@@ -1,0 +1,115 @@
+{
+  "admission_decision": "request_external_review_keep_blocked",
+  "admission_ready": false,
+  "admitted": false,
+  "approval_artifact_present": false,
+  "approval_request_is_approval": false,
+  "approval_request_scope": "external_maintainer_security_review_only",
+  "approval_status": "not_approved",
+  "blocked_claims": [
+    "arbitrary_triton_source_ingestion",
+    "production_parser",
+    "source_to_compute_graph_admission",
+    "native_backend_execution",
+    "native_performance_parity",
+    "vendor_replacement"
+  ],
+  "blocked_execution_surfaces": [
+    "direct_source_ingestion",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_runtime_plan",
+    "frontend_package_import",
+    "plugin_discovery",
+    "triton_jit_execution",
+    "device_access",
+    "generated_artifact_execution",
+    "native_backend_execution"
+  ],
+  "direct_source_ingestion": false,
+  "evidence_policy": "digest_only_fixed_artifact_request",
+  "external_approval_evidence": [
+    "maintainer_security_review_approval"
+  ],
+  "external_approval_evidence_count": 1,
+  "external_approval_required": true,
+  "issues": [],
+  "request_contract": "real_triton_first_slice_maintainer_approval_request.data_only.v0",
+  "request_id": "real_triton_first_slice_maintainer_approval_request",
+  "request_status": "ready_for_external_review",
+  "required_invariants": [
+    "approval_request_is_not_approval",
+    "external_approval_required",
+    "external_approval_artifact_absent",
+    "admission_readiness_gate_bound",
+    "admission_readiness_gate_fail_closed",
+    "maintainer_review_packet_ready",
+    "source_ingestion_admission_gate_fail_closed",
+    "direct_source_ingestion_false",
+    "source_to_compute_graph_false",
+    "source_to_hac_ir_false",
+    "source_to_runtime_plan_false",
+    "surface_opened_false",
+    "digest_only_source_free_evidence"
+  ],
+  "review_checklist": [
+    "admission_readiness_gate_reviewed",
+    "maintainer_security_review_packet_reviewed",
+    "approval_artifact_absence_reviewed",
+    "source_ingestion_admission_gate_reviewed",
+    "bounded_source_buffer_reviewed",
+    "sandbox_boundary_reviewed",
+    "negative_corpus_reviewed",
+    "source_free_diagnostics_reviewed",
+    "plain_data_golden_reviewed",
+    "ci_replay_reviewed",
+    "no_source_text_serialization",
+    "no_runtime_handle_serialization",
+    "no_generated_artifact_execution",
+    "direct_source_ingestion_remains_blocked_until_approval"
+  ],
+  "review_checklist_count": 14,
+  "review_packet_count": 4,
+  "review_packets": [
+    {
+      "artifact_id": "real_triton_first_slice_admission_readiness_gate",
+      "contract": "real_triton_first_slice_admission_readiness_gate.data_only.v0",
+      "digest": "sha256:6ad675e07d4be4720af23239483967b6fe1392bb55a574d4c391d6770c3ac041",
+      "source_free": true,
+      "status": "blocked_missing_maintainer_security_review_approval",
+      "supports_approval_request": true
+    },
+    {
+      "artifact_id": "source_ingestion_maintainer_security_review_packet",
+      "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
+      "digest": "sha256:463d286eb97f84d3eba4ff7938fe9bca0838545bc0cbd8b425f4ba3db6f38ef2",
+      "source_free": true,
+      "status": "ready_for_maintainer_review",
+      "supports_approval_request": true
+    },
+    {
+      "artifact_id": "source_ingestion_maintainer_approval_artifact",
+      "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
+      "digest": "sha256:e725a83191f56aaabffcefebd2917acd987c671db046005a138bd30d0024b591",
+      "source_free": true,
+      "status": "external_approval_not_supplied",
+      "supports_approval_request": true
+    },
+    {
+      "artifact_id": "source_ingestion_admission_gate",
+      "contract": "source_ingestion_admission_gate.fail_closed.v0",
+      "digest": "sha256:ba8a22de6469c641c2808d500427d3c4da3d32d54342d596a601c93dba16559c",
+      "source_free": true,
+      "status": "blocked_missing_maintainer_security_review_approval",
+      "supports_approval_request": true
+    }
+  ],
+  "schema_version": "tuc.real_triton_first_slice_maintainer_approval_request_report.v0",
+  "source_free": true,
+  "source_to_compute_graph": false,
+  "source_to_hac_ir": false,
+  "source_to_runtime_plan": false,
+  "surface_opened": false,
+  "target_slice": "bounded_source_buffer_to_source_intent_plain_data",
+  "target_surface": "direct_source_ingestion"
+}

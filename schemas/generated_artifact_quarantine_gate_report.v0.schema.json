@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/generated_artifact_quarantine_gate_report.v0.schema.json",
+  "title": "TUC Generated Artifact Quarantine Gate Report v0",
+  "description": "Data-only gate schema establishing quarantine requirements for future generated artifacts without admitting artifact emission, artifact writes, artifact loads, executable permissions, backend binary emission, generated artifact execution, device access, kernel launch, subprocess, or dynamic-library surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "all_required_evidence_present",
+    "artifact_cache_access",
+    "artifact_load",
+    "artifact_provenance_verified",
+    "artifact_status",
+    "artifact_write",
+    "backend_binary_emitted",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "compiled_kernel_emitted",
+    "device_access",
+    "dynamic_library_loading",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "executable_permission_granted",
+    "file_system_access",
+    "gate_contract",
+    "gate_id",
+    "gate_status",
+    "generated_artifact_emission",
+    "generated_artifact_execution",
+    "kernel_launch",
+    "quarantine_boundary_established",
+    "required_control_count",
+    "required_controls",
+    "required_evidence_ids",
+    "schema_version",
+    "subprocess_execution",
+    "surface_id",
+    "triton_jit_execution"
+  ],
+  "properties": {
+    "admission_effect": {"const": "does_not_admit_generated_artifact_execution"},
+    "all_required_evidence_present": {"const": true},
+    "artifact_cache_access": {"const": false},
+    "artifact_load": {"const": false},
+    "artifact_provenance_verified": {"const": false},
+    "artifact_status": {"const": "review_gate"},
+    "artifact_write": {"const": false},
+    "backend_binary_emitted": {"const": false},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/blocked_execution_surface"},
+      "uniqueItems": true
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/blocked_output"},
+      "uniqueItems": true
+    },
+    "compiled_kernel_emitted": {"const": false},
+    "device_access": {"const": false},
+    "dynamic_library_loading": {"const": false},
+    "evidence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "evidence_count": {"const": 4},
+    "evidence_policy": {"const": "digest_only"},
+    "executable_permission_granted": {"const": false},
+    "file_system_access": {"const": false},
+    "gate_contract": {"const": "generated_artifact_quarantine_gate.data_only.v0"},
+    "gate_id": {"const": "generated_artifact_quarantine_gate"},
+    "gate_status": {"const": "quarantine_requirements_only"},
+    "generated_artifact_emission": {"const": false},
+    "generated_artifact_execution": {"const": false},
+    "kernel_launch": {"const": false},
+    "quarantine_boundary_established": {"const": true},
+    "required_control_count": {"const": 20},
+    "required_controls": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {"$ref": "#/$defs/required_control"},
+      "uniqueItems": true
+    },
+    "required_evidence_ids": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/required_evidence_id"},
+      "uniqueItems": true
+    },
+    "schema_version": {"const": "tuc.generated_artifact_quarantine_gate_report.v0"},
+    "subprocess_execution": {"const": false},
+    "surface_id": {"const": "generated_artifact_execution"},
+    "triton_jit_execution": {"const": false}
+  },
+  "$defs": {
+    "blocked_execution_surface": {
+      "enum": [
+        "artifact_cache_access",
+        "artifact_load",
+        "artifact_write",
+        "backend_binary_emission",
+        "device_access",
+        "dynamic_library_loading",
+        "file_system_access",
+        "generated_artifact_execution",
+        "kernel_launch",
+        "subprocess_execution",
+        "triton_jit_execution"
+      ]
+    },
+    "blocked_output": {
+      "enum": [
+        "backend_binary_record",
+        "compiled_kernel_record",
+        "executable_artifact",
+        "generated_artifact_record",
+        "kernel_cache_record",
+        "loadable_module"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_digest", "evidence_id", "required"],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"$ref": "#/$defs/required_evidence_id"},
+        "required": {"const": true}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_control": {
+      "enum": [
+        "artifact_cache_access_blocked",
+        "artifact_emission_blocked",
+        "artifact_load_blocked",
+        "artifact_provenance_required",
+        "artifact_writes_blocked",
+        "backend_binary_emission_blocked",
+        "device_access_blocked",
+        "digest_only_evidence",
+        "dynamic_library_loading_blocked",
+        "executable_permissions_blocked",
+        "fail_closed_on_violation",
+        "file_system_access_blocked",
+        "generated_artifact_execution_blocked",
+        "kernel_launch_blocked",
+        "no_backend_binary_emission",
+        "no_generated_artifact_execution",
+        "no_kernel_cache_access",
+        "no_subprocess_execution",
+        "quarantine_metadata_only",
+        "sanitized_diagnostics_only"
+      ]
+    },
+    "required_evidence_id": {
+      "enum": [
+        "real_triton_integration_admission_gate",
+        "triton_jit_execution_sandbox_gate",
+        "device_access_sandbox_gate",
+        "generated_artifact_quarantine_model"
+      ]
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

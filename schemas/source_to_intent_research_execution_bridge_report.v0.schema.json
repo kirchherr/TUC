@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_execution_bridge_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Execution Bridge Report v0",
+  "description": "Metadata-only execution bridge report for accepted explicit Source-to-Intent research parser output.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_compiler_shortcuts",
+    "blocked_execution_surfaces",
+    "bridge_contract",
+    "case_count",
+    "cases",
+    "default_parser_status",
+    "input_policy",
+    "parser_output_policy",
+    "parser_sources",
+    "parser_status",
+    "raw_value_policy",
+    "schema_version",
+    "source_boundary",
+    "status"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "metadata_only_values_omitted"},
+    "blocked_compiler_shortcuts": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "bridge_contract": {
+      "const": "source_to_intent_research_execution_bridge.explicit.v0"
+    },
+    "case_count": {"const": 2},
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/case"}
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "input_policy": {"const": "accepted_research_parser_results_only"},
+    "parser_output_policy": {"const": "source_intent.v0_plain_data_only"},
+    "parser_sources": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "enum": [
+          "research_matmul_elementwise",
+          "research_softmax_reduction"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_execution_bridge_report.v0"
+    },
+    "source_boundary": {"const": "source_intent.v0_plain_data_reintake"},
+    "status": {"const": "PASS"}
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_sequence",
+        "case_id",
+        "comparison_metadata_digest",
+        "compiler_decision_digest",
+        "execution_trace_digest",
+        "hac_ir_digest",
+        "metadata_intake_digest",
+        "metadata_report_digest",
+        "operation_count",
+        "operation_families",
+        "parser_report_digest",
+        "plain_data_digest",
+        "raw_value_policy",
+        "readiness_digest",
+        "reference_correctness_digest",
+        "runtime_plan_digest",
+        "terminal_outputs",
+        "trace_step_count"
+      ],
+      "properties": {
+        "backend_sequence": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {"enum": ["linear-sim", "reference-cpu", "vector-sim"]}
+        },
+        "case_id": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction"
+          ]
+        },
+        "comparison_metadata_digest": {"$ref": "#/$defs/sha256_digest"},
+        "compiler_decision_digest": {"$ref": "#/$defs/sha256_digest"},
+        "execution_trace_digest": {"$ref": "#/$defs/sha256_digest"},
+        "hac_ir_digest": {"$ref": "#/$defs/sha256_digest"},
+        "metadata_intake_digest": {"$ref": "#/$defs/sha256_digest"},
+        "metadata_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "operation_count": {"const": 2},
+        "operation_families": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "enum": ["elementwise", "matmul", "reduction", "softmax"]
+          },
+          "uniqueItems": true
+        },
+        "parser_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "plain_data_digest": {"$ref": "#/$defs/sha256_digest"},
+        "raw_value_policy": {"const": "omitted_by_policy"},
+        "readiness_digest": {"$ref": "#/$defs/sha256_digest"},
+        "reference_correctness_digest": {"$ref": "#/$defs/sha256_digest"},
+        "runtime_plan_digest": {"$ref": "#/$defs/sha256_digest"},
+        "terminal_outputs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"enum": ["activated", "row_sum"]}
+        },
+        "trace_step_count": {"const": 2}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

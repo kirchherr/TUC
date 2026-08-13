@@ -9,6 +9,9 @@ It runs:
 - `build_current_runtime_allocation_plan_report()`
 - `build_current_runtime_memory_budget_report()`
 - `build_runtime_allocation_request_manifest_report()`
+- `build_runtime_allocation_admission_report()`
+- `build_runtime_allocation_receipt_report()`
+- `build_runtime_allocation_reconciliation_report()`
 - `examples/runtime_memory_planning_gate.py`
 
 The gate passes only when:
@@ -23,11 +26,20 @@ The gate passes only when:
   Plan evaluated by the same gate invocation
 - the Runtime Allocation Request Manifest passes and is bound to the Allocation
   Plan and Memory Budget evaluated by the same gate invocation
+- Runtime Allocation Admission passes and is bound to the Request Manifest and
+  Memory Budget evaluated by the same gate invocation
+- Runtime Allocation Receipt passes and is bound to the Allocation Admission
+  evaluated by the same gate invocation
+- Runtime Allocation Reconciliation passes and is bound to the same Allocation
+  Admission and Allocation Receipt evaluated by the same gate invocation
 
 Schema coverage:
 
 ```text
 schemas/runtime_allocation_request_manifest_report.v0.schema.json
+schemas/runtime_allocation_admission_report.v0.schema.json
+schemas/runtime_allocation_receipt_report.v0.schema.json
+schemas/runtime_allocation_reconciliation_report.v0.schema.json
 ```
 
 Golden output:
@@ -45,7 +57,7 @@ CI entry:
 ## Security Boundary
 
 The gate composes bounded data-only reports. It does not allocate memory,
-expose runtime handles, discover plugins, import backend modules, load dynamic
+expose pointers, expose runtime handles, discover plugins, import backend modules, load dynamic
 libraries, spawn subprocesses outside the example process, access devices,
 touch the network, execute generated artifacts, run JIT code, read host paths,
 read environment variables, load raw benchmark output, or authorize executable
@@ -66,3 +78,11 @@ accepted for a different buffer-lifetime report.
 
 The allocation-request manifest binding prevents stale future allocator request
 evidence from being accepted for a different Allocation Plan or Memory Budget.
+
+The allocation-admission binding prevents allocator-admission evidence from being
+accepted unless it is tied to the same Request Manifest and Memory Budget.
+
+The allocation-receipt binding prevents dry-run allocator receipt evidence from
+being accepted unless it is tied to the same Allocation Admission.
+
+The allocation-reconciliation binding prevents stale or inconsistent Admission/Receipt ledgers from being accepted before any real allocator surface is introduced.

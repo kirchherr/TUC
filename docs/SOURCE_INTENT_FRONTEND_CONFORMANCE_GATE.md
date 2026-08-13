@@ -42,3 +42,8 @@ The output is a deterministic text report ending in `PASS`.
 This gate is a merge-time confidence check for the Source Intent frontend
 contract. It is not a production source ingestion path, parser approval, plugin
 certification runtime, backend execution gate, or native performance claim.
+
+The Source-to-Intent research parser has its own downstream gate documented in
+[Source-To-Intent Research Parser Conformance Gate](SOURCE_TO_INTENT_RESEARCH_PARSER_CONFORMANCE_GATE.md).
+That gate proves explicit parser output can pass this reusable conformance
+path without turning source text into a default compiler input.

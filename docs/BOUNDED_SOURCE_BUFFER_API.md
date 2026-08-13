@@ -1,0 +1,87 @@
+# Bounded Source Buffer API
+
+Bounded Source Buffer API v0 is the first concrete input-boundary API for a
+future admitting `direct_source_ingestion` slice.
+
+It validates caller-provided source text as untrusted data, measures bounded
+syntax metadata, binds a declared shape profile by digest, and emits only
+metadata records plus source-free rejection reason codes.
+
+It does not admit source ingestion. The current report keeps:
+
+```text
+direct_source_ingestion = false
+source_to_compute_graph = false
+source_to_hac_ir = false
+source_to_runtime_plan = false
+```
+
+Run it with:
+
+```bash
+python examples/bounded_source_buffer_api.py
+```
+
+## Scope
+
+The API accepts:
+
+- caller-provided source text as an untrusted in-memory value;
+- a report-safe source name;
+- a declared shape profile.
+
+The API emits:
+
+- source digest;
+- source byte and line counts;
+- AST node and depth counts;
+- declared shape-profile digest and bounds;
+- source-free rejection reason codes.
+
+It does not emit raw source text, Source Intent payloads, ComputeGraph, HAC-IR,
+HS-IR, runtime plans, Python function objects, generated artifacts, backend
+artifacts, host paths, commands, device identifiers, or runtime handles.
+
+## Security Boundary
+
+The API parses syntax as data only. It does not import packages, evaluate
+decorators, inspect function objects, run Triton JIT, access devices, discover
+plugins, spawn subprocesses, touch the network, load dynamic libraries, or
+produce compiler artifacts.
+
+Rejected buffers return source-free reason codes such as `empty_source`,
+`line_budget`, `syntax_error`, and `shape_profile`.
+
+## First Slice Role
+
+This closes the `bounded_source_buffer_api` prerequisite and is now wrapped by
+the Source Ingestion Sandbox Implementation. Parser Fuzz Negative Corpus,
+Source-Free Diagnostics Admission Tests, Source-To-Intent Plain-Data Output
+Golden, CI Replay, and the Maintainer Security Review Packet now cover
+the next non-admitting review prerequisites. The remaining blocker is
+maintainer security review approval.
+
+## Contract
+
+- API module: `src/tuc/frontend/bounded_source_buffer.py`
+- Example: `examples/bounded_source_buffer_api.py`
+- Schema: `schemas/bounded_source_buffer_api_report.v0.schema.json`
+- Golden: `tests/golden/frontend/bounded_source_buffer_api_report.json`
+- Tests: `tests/test_bounded_source_buffer_api.py`
+- RFC: `rfcs/0259-bounded-source-buffer-api.md`
+- First Slice Plan: [Real Triton First Slice Plan](REAL_TRITON_FIRST_SLICE_PLAN.md)
+- Admitting Source Ingestion RFC: [Admitting Source Ingestion RFC](ADMITTING_SOURCE_INGESTION_RFC.md)
+- Source Ingestion Sandbox Implementation: [Source Ingestion Sandbox Implementation](SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md)
+- Source Ingestion Sandbox Doc: `docs/SOURCE_INGESTION_SANDBOX_IMPLEMENTATION.md`
+- Source Ingestion Sandbox Module: `src/tuc/frontend/source_ingestion_sandbox.py`
+- Source Ingestion Sandbox Example: `examples/source_ingestion_sandbox_implementation.py`
+- Source Ingestion Sandbox Schema: `schemas/source_ingestion_sandbox_implementation_report.v0.schema.json`
+- Source Ingestion Sandbox Golden: `tests/golden/frontend/source_ingestion_sandbox_implementation_report.json`
+- Source Ingestion Sandbox RFC: `rfcs/0260-source-ingestion-sandbox-implementation.md`
+- Parser Fuzz Negative Corpus: [Parser Fuzz Negative Corpus For Admitting Slice](PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md)
+- Parser Fuzz Negative Corpus Doc: `docs/PARSER_FUZZ_NEGATIVE_CORPUS_FOR_ADMITTING_SLICE.md`
+- Parser Fuzz Negative Corpus Module: `src/tuc/frontend/parser_fuzz_negative_corpus.py`
+- Parser Fuzz Negative Corpus Example: `examples/parser_fuzz_negative_corpus_for_admitting_slice.py`
+- Parser Fuzz Negative Corpus Schema: `schemas/parser_fuzz_negative_corpus_for_admitting_slice_report.v0.schema.json`
+- Parser Fuzz Negative Corpus Golden: `tests/golden/frontend/parser_fuzz_negative_corpus_for_admitting_slice_report.json`
+- Parser Fuzz Negative Corpus RFC: `rfcs/0261-parser-fuzz-negative-corpus-for-admitting-slice.md`

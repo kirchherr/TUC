@@ -131,6 +131,21 @@ python examples/runtime_candidate_scoring_gate.py
 
 See [Runtime Candidate Scoring Gate](RUNTIME_CANDIDATE_SCORING_GATE.md).
 
+## HS-IR Plan Alignment
+
+Runtime HS-IR Plan Alignment binds backend-specific HS-IR facts to the accepted
+runtime plan and observed trusted execution trace:
+
+```bash
+python examples/runtime_hs_ir_plan_alignment.py
+```
+
+It verifies graph-name, backend-sequence, produced-layout, transfer-summary,
+layout-conversion, and trusted-executor support agreement without serializing
+tensor values or introducing plugin/device/native execution surfaces.
+
+See [Runtime HS-IR Plan Alignment](RUNTIME_HS_IR_PLAN_ALIGNMENT.md).
+
 ## Security Invariants
 
 Runtime plan objects are declarative data:
@@ -161,6 +176,9 @@ Runtime plan objects are declarative data:
   plugin/device access.
 - Candidate scoring gate is a read-only composition of score evidence, policy,
   and conformance for CI; it does not add new planning behavior.
+- Runtime HS-IR Plan Alignment is derived from validated in-memory HS-IR,
+  `PartitionPlan`, and `RuntimeExecutionResult` objects; it does not add parser,
+  plugin, path, device, or native execution behavior.
 
 ## Current Limitations
 

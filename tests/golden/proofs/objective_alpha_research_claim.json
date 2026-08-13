@@ -1,0 +1,101 @@
+{
+  "artifact_policy": "digest_only_source_free",
+  "backend_equivalence_passed": true,
+  "baseline_backend_sequence": [
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu",
+    "reference-cpu"
+  ],
+  "blocked_claims": [
+    "native_performance_parity",
+    "vendor_compiler_replacement",
+    "broad_source_code_parsing",
+    "arbitrary_third_party_backend_execution",
+    "device_access",
+    "generated_artifact_execution",
+    "production_triton_integration"
+  ],
+  "broad_source_parser_claim": false,
+  "catalog_entry_count": 9,
+  "claim_contract": "objective_alpha.research_claim.digest_snapshot.v0",
+  "claim_id": "objective_alpha_universal_compute_research_claim",
+  "claim_metadata_digest": "c7d473165e80a79d3ab82670d8cf8ce27225eab05829b3832188ab2b2fbbd5b9",
+  "claim_passed": true,
+  "claim_scope": "objective_alpha_public_bundle_catalog_and_mixed_runtime_proof",
+  "claim_status": "supported_for_objective_alpha_research_scope",
+  "evidence": [
+    {
+      "artifact_id": "objective_alpha_public_proof_bundle",
+      "digest": "911172ad9c54743af6ef69d08f269c5d43593825ecb49f90afd491d2fab38aa2",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "objective_alpha_public_proof_bundle_gate",
+      "digest": "04c3ff326065810f0c4440e65bde1587f59bb580803325df62744d87ab5c604b",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "objective_alpha_evidence_extension_policy",
+      "digest": "4c8dc9cd62201e414cf653c9f2e64a773d54df83835167df4e224791394e3cdf",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "objective_alpha_public_evidence_catalog",
+      "digest": "0ceb60a40fe7fd871b1290f728123852cf01dd4fe4cf4e29d1ea4e75ba9f4e9d",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "objective_alpha_public_evidence_catalog_admission_gate",
+      "digest": "cac8a0ade988c44cb39dd2ddc59937c4a2e7939d258da98e95ffddfa871dee57",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_intent_mixed_runtime_public_proof_bundle",
+      "digest": "baf6d1b6939d7653378a9ad44415865db94532b46242e45a07216adab4f3f05a",
+      "status": "accepted"
+    }
+  ],
+  "evidence_count": 6,
+  "mixed_backend_sequence": [
+    "systolic-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim"
+  ],
+  "native_performance_claim": false,
+  "operation_families": [
+    "matmul",
+    "softmax",
+    "reduction",
+    "elementwise"
+  ],
+  "public_bundle_entry_count": 16,
+  "public_evidence_entry_count": 25,
+  "reference_correctness_passed": true,
+  "required_invariants": [
+    "public_proof_bundle_full",
+    "public_proof_bundle_gate_passed",
+    "extension_policy_passed",
+    "public_evidence_catalog_passed",
+    "public_evidence_catalog_admission_gate_passed",
+    "source_intent_mixed_runtime_public_proof_passed",
+    "backend_equivalence_passed",
+    "reference_correctness_passed",
+    "digest_only_source_free_claim"
+  ],
+  "schema_version": "tuc.objective_alpha_research_claim_report.v0",
+  "supported_claims": [
+    "hardware_independent_compute_intent_current_research_slice",
+    "capability_planned_trusted_runtime_execution",
+    "mixed_backend_public_semantics_preserved",
+    "digest_only_reviewable_public_evidence",
+    "rfc_bound_public_evidence_growth"
+  ],
+  "trusted_runtime_backends": [
+    "reference-cpu",
+    "systolic-sim",
+    "vector-sim"
+  ],
+  "vendor_replacement_claim": false
+}

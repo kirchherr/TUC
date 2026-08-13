@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/backend_integration_package.v0.schema.json",
+  "title": "TUC Backend Integration Package v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "package_id",
+    "package_version",
+    "interface_contract",
+    "package_policy",
+    "import_policy",
+    "backend_code_included",
+    "execution_permission",
+    "capability_manifest",
+    "conformance_cases"
+  ],
+  "properties": {
+    "schema_version": { "const": "tuc.backend_integration_package.v0" },
+    "package_id": { "$ref": "#/$defs/identifier" },
+    "package_version": { "$ref": "#/$defs/identifier" },
+    "interface_contract": { "const": "backend_integration.data_only.v0" },
+    "package_policy": { "const": "capability_and_planning_conformance_only" },
+    "import_policy": { "const": "no_import_or_plugin_discovery" },
+    "backend_code_included": { "const": false },
+    "execution_permission": { "const": false },
+    "capability_manifest": { "$ref": "#/$defs/capability_manifest" },
+    "conformance_cases": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 32,
+      "items": { "$ref": "#/$defs/conformance_case" }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "capability_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "name", "supported_ops"],
+      "properties": {
+        "schema_version": { "const": "tuc.backend_capability.v0" },
+        "name": { "$ref": "#/$defs/identifier" },
+        "supported_ops": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["elementwise", "matmul", "reduction", "softmax"] }
+        },
+        "supports_noise_model": { "type": "boolean" },
+        "supports_calibration": { "type": "boolean" },
+        "preferred_for": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["elementwise", "matmul", "reduction", "softmax"] }
+        },
+        "max_error_budget": { "type": ["number", "null"], "minimum": 0 },
+        "memory_domain": {
+          "enum": ["analog_weight_bank", "device_sram", "gpu_hbm", "host_ram"]
+        },
+        "supported_layouts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["blocked", "column_major", "row_major", "unknown", "vector"] }
+        },
+        "produced_layouts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["blocked", "column_major", "row_major", "unknown", "vector"] }
+        }
+      }
+    },
+    "conformance_case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "operation_kind",
+        "layout",
+        "expected_supported",
+        "expected_reason"
+      ],
+      "properties": {
+        "case_id": { "$ref": "#/$defs/identifier" },
+        "operation_kind": { "enum": ["elementwise", "matmul", "reduction", "softmax"] },
+        "layout": { "enum": ["blocked", "column_major", "row_major", "unknown", "vector"] },
+        "expected_supported": { "type": "boolean" },
+        "expected_reason": {
+          "enum": [
+            "accepted",
+            "unsupported_layout",
+            "unsupported_operation_kind"
+          ]
+        }
+      }
+    }
+  }
+}

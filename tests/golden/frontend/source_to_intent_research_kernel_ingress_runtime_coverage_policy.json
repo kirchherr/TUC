@@ -1,0 +1,157 @@
+{
+  "artifact_policy": "metadata_only_source_free",
+  "case_requirements": [
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_elementwise",
+      "kernel_name": "matmul_elementwise",
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "status": "covered",
+      "terminal_outputs": [
+        "activated"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_reduction",
+      "kernel_name": "softmax_reduction",
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "status": "covered",
+      "terminal_outputs": [
+        "row_sum"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "status": "covered",
+      "terminal_outputs": [
+        "column_sum"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "status": "covered",
+      "terminal_outputs": [
+        "activated"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "status": "covered",
+      "terminal_outputs": [
+        "stable"
+      ],
+      "trace_step_count": 4
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "observed_backend_sequences": [
+    "linear-sim->vector-sim",
+    "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim"
+  ],
+  "observed_case_count": 5,
+  "observed_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "observed_terminal_outputs": [
+    "activated",
+    "row_sum",
+    "column_sum",
+    "activated",
+    "stable"
+  ],
+  "parser_status": "research_explicit_only",
+  "policy_contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
+  "policy_id": "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "required_backend_sequences": [
+    "linear-sim->vector-sim",
+    "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim"
+  ],
+  "required_case_count": 5,
+  "required_digest_fields": [
+    "runtime_plan_digest",
+    "execution_trace_digest",
+    "reference_correctness_digest"
+  ],
+  "required_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "required_terminal_outputs": [
+    "activated",
+    "row_sum",
+    "column_sum",
+    "activated",
+    "stable"
+  ],
+  "required_trace_step_count_per_case": {
+    "research_module_matmul_elementwise": 2,
+    "research_module_matmul_reduction": 2,
+    "research_module_mvp_pipeline": 4,
+    "research_module_softmax_elementwise": 2,
+    "research_module_softmax_reduction": 2
+  },
+  "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+  "runtime_matrix_digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_coverage_policy_report.v0",
+  "source_boundary": "triton_module_source_buffer_to_runtime_via_research_kernel_ingress",
+  "status": "PASS",
+  "trace_step_policy": "exact_current_trace_count_until_runtime_model_expands"
+}

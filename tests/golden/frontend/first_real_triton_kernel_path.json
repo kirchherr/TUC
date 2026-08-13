@@ -1,0 +1,123 @@
+{
+  "backend_sequence": [
+    "linear-sim",
+    "vector-sim",
+    "vector-sim",
+    "vector-sim"
+  ],
+  "blocked_claims": [
+    "arbitrary_triton_source_ingestion",
+    "production_parser",
+    "native_backend_execution",
+    "native_performance_parity",
+    "cuda_replacement",
+    "runtime_handle_residency"
+  ],
+  "blocked_surfaces": [
+    "direct_source_ingestion",
+    "default_source_parser",
+    "frontend_package_import",
+    "plugin_discovery",
+    "triton_jit_execution",
+    "device_access",
+    "generated_artifact_execution",
+    "native_backend_execution",
+    "raw_tensor_serialization"
+  ],
+  "case_id": "research_module_mvp_pipeline",
+  "default_parser_status": "default_parser_blocked",
+  "evidence_binding_count": 7,
+  "evidence_bindings": [
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress.e2e.v0",
+      "digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_matrix",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+      "digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
+      "digest": "sha256:9267b39546c800c68c701acbee9efa3e80109bf4769e62cf0c45793bd6a0b2a1",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_proof_bundle",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
+      "digest": "sha256:afb80e27b1ab949a9fcaf608a0d2faf05bd0c739a3563751480f12ac2b1a8dd6",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_evidence_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_evidence_gate.ci.v0",
+      "digest": "sha256:edb449d918cbe5977b923bcab35c666e1f3801ce5fbcbf4fc557a1c9b9048d1a",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "artifact_id": "source_ingestion_preclaim_acyclicity_gate",
+      "artifact_kind": "json_report",
+      "contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
+      "digest": "sha256:220af4025bc7da554fe8d1be6011c6aa45df7fe843f3885af9f7d742535a12ac",
+      "source_free": true,
+      "status": "PASS"
+    },
+    {
+      "artifact_id": "source_ingestion_admission_gate",
+      "artifact_kind": "json_report",
+      "contract": "source_ingestion_admission_gate.fail_closed.v0",
+      "digest": "sha256:ba8a22de6469c641c2808d500427d3c4da3d32d54342d596a601c93dba16559c",
+      "source_free": true,
+      "status": "blocked_missing_maintainer_security_review_approval"
+    }
+  ],
+  "evidence_policy": "digest_only_source_free",
+  "kernel_name": "mvp_pipeline",
+  "observed_path": [
+    "bounded_module_source_buffer",
+    "controlled_kernel_extraction",
+    "source_intent_plain_data_reintake",
+    "compute_graph_compile",
+    "trusted_prototype_runtime_execution",
+    "backend_equivalence_metadata_check",
+    "source_ingestion_admission_remains_closed"
+  ],
+  "operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "parser_status": "research_explicit_only",
+  "path_contract": "first_real_triton_kernel_path.digest_bound.v0",
+  "proof_id": "first_real_triton_kernel_path",
+  "proven_claims": [
+    "single_mvp_pipeline_kernel_path_bound",
+    "mvp_operation_family_runtime_path_bound",
+    "source_intent_plain_data_reintake_bound",
+    "capability_selected_trusted_runtime_execution_bound",
+    "backend_equivalence_metadata_bound",
+    "admission_gate_remains_fail_closed"
+  ],
+  "schema_version": "tuc.first_real_triton_kernel_path_report.v0",
+  "source_boundary": "module_shaped_triton_source_buffer_to_source_intent_to_trusted_runtime_evidence",
+  "status": "PASS",
+  "terminal_outputs": [
+    "stable"
+  ],
+  "trace_step_count": 4
+}

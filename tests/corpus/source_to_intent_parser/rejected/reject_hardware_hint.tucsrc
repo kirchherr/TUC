@@ -1,0 +1,4 @@
+@triton.jit
+def hardware_hint(x, y):
+    target = "cuda"
+    tl.store(y, x)

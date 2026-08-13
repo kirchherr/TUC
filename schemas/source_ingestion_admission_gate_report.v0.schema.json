@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_ingestion_admission_gate_report.v0.schema.json",
+  "title": "TUC Source Ingestion Admission Gate Report v0",
+  "description": "Fail-closed admission gate for direct source ingestion. It binds the maintainer-review packet and missing-approval artifact and remains blocked until external maintainer approval exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_status",
+    "admitted",
+    "approval_artifact_present",
+    "approval_required",
+    "approval_status",
+    "blocked_execution_surfaces",
+    "decision",
+    "direct_source_ingestion",
+    "evidence_policy",
+    "gate_contract",
+    "gate_id",
+    "gate_report_digest",
+    "gate_status",
+    "issues",
+    "maintainer_approval_artifact",
+    "maintainer_review_packet",
+    "required_control_count",
+    "required_controls",
+    "required_external_evidence",
+    "required_external_evidence_count",
+    "schema_version",
+    "source_ingestion_admission_ready",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_runtime_plan",
+    "target_slice",
+    "target_surface"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.source_ingestion_admission_gate_report.v0"},
+    "gate_id": {"const": "source_ingestion_admission_gate"},
+    "gate_contract": {"const": "source_ingestion_admission_gate.fail_closed.v0"},
+    "gate_status": {"const": "blocked_missing_maintainer_security_review_approval"},
+    "admission_status": {"const": "blocked"},
+    "admitted": {"const": false},
+    "approval_status": {"const": "not_approved"},
+    "approval_required": {"const": true},
+    "approval_artifact_present": {"const": false},
+    "target_surface": {"const": "direct_source_ingestion"},
+    "target_slice": {"const": "bounded_source_buffer_to_source_intent_plain_data"},
+    "evidence_policy": {"const": "digest_only_source_free"},
+    "decision": {"const": "deny_until_external_approval"},
+    "direct_source_ingestion": {"const": false},
+    "source_ingestion_admission_ready": {"const": false},
+    "source_to_compute_graph": {"const": false},
+    "source_to_hac_ir": {"const": false},
+    "source_to_runtime_plan": {"const": false},
+    "required_external_evidence_count": {"const": 1},
+    "required_control_count": {"const": 15},
+    "gate_report_digest": {"$ref": "#/$defs/sha256_text"},
+    "issues": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "required_external_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [
+        {"const": "maintainer_security_review_approval"}
+      ],
+      "items": false
+    },
+    "required_controls": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "prefixItems": [
+        {"const": "maintainer_review_packet_bound"},
+        {"const": "approval_criteria_bound_by_review_packet"},
+        {"const": "maintainer_approval_artifact_bound"},
+        {"const": "external_approval_artifact_required"},
+        {"const": "external_approval_artifact_absent"},
+        {"const": "maintainer_approval_artifact_not_supplied"},
+        {"const": "direct_source_ingestion_false"},
+        {"const": "source_to_compute_graph_false"},
+        {"const": "source_to_hac_ir_false"},
+        {"const": "source_to_runtime_plan_false"},
+        {"const": "no_source_text_serialization"},
+        {"const": "no_source_intent_payload_serialization"},
+        {"const": "no_runtime_handle_serialization"},
+        {"const": "no_generated_artifacts"},
+        {"const": "fail_closed_until_approval"}
+      ],
+      "items": false
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "prefixItems": [
+        {"const": "frontend_package_import"},
+        {"const": "plugin_discovery"},
+        {"const": "triton_jit_execution"},
+        {"const": "device_access"},
+        {"const": "generated_artifact_execution"},
+        {"const": "native_backend_execution"},
+        {"const": "python_import"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"},
+        {"const": "dynamic_library_loading"}
+      ],
+      "items": false
+    },
+    "maintainer_review_packet": {
+      "$ref": "#/$defs/gate_evidence_maintainer_review_packet"
+    },
+    "maintainer_approval_artifact": {
+      "$ref": "#/$defs/gate_evidence_maintainer_approval_artifact"
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "gate_evidence_base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "digest",
+        "evidence_id",
+        "source_free",
+        "status",
+        "supports_gate"
+      ],
+      "properties": {
+        "contract": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"},
+        "digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"},
+        "source_free": {"const": true},
+        "status": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"},
+        "supports_gate": {"const": true}
+      }
+    },
+    "gate_evidence_maintainer_review_packet": {
+      "allOf": [
+        {"$ref": "#/$defs/gate_evidence_base"},
+        {
+          "properties": {
+            "contract": {
+              "const": "source_ingestion_maintainer_security_review_packet.review.v0"
+            },
+            "evidence_id": {
+              "const": "source_ingestion_maintainer_security_review_packet"
+            },
+            "status": {"const": "ready_for_maintainer_review"}
+          }
+        }
+      ]
+    },
+    "gate_evidence_maintainer_approval_artifact": {
+      "allOf": [
+        {"$ref": "#/$defs/gate_evidence_base"},
+        {
+          "properties": {
+            "contract": {
+              "const": "source_ingestion_maintainer_approval_artifact.absent.v0"
+            },
+            "evidence_id": {
+              "const": "source_ingestion_maintainer_approval_artifact"
+            },
+            "status": {"const": "external_approval_not_supplied"}
+          }
+        }
+      ]
+    }
+  }
+}

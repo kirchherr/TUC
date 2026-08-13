@@ -33,7 +33,9 @@ docs/BENCHMARK_ARTIFACT_MANIFEST.md
 docs/WORKLOAD_SCOPE_REPORT.md
 docs/BENCHMARK_METHODOLOGY_REPORT.md
 docs/TOOLCHAIN_ENVIRONMENT_REPORT.md
+docs/RESEARCH_SCOPE_CLAIM_GATE.md
 src/tuc/proof.py
+src/tuc/research_scope_claim_gate.py
 ```
 
 ## Required Reviewer Checks
@@ -82,6 +84,10 @@ Before approving a proof artifact change, reviewers should confirm:
   [Performance Acceptance Criteria Report](PERFORMANCE_ACCEPTANCE_CRITERIA_REPORT.md)
   before benchmark artifacts are treated as passing evidence.
 - The proof does not claim 100 percent native performance.
+- The Research Scope Claim Gate still binds the current top-level proof gates
+  plus the missing source-ingestion approval artifact, and keeps production
+  compiler, vendor replacement, native performance, source-ingestion,
+  plugin-execution, generated-artifact execution, and timeline claims blocked.
 
 ## Security Checks
 
@@ -134,7 +140,8 @@ the performance proof boundary and readiness report supply:
 Run the narrow proof checks first:
 
 ```bash
-python -m pytest tests/test_proof_metadata.py tests/test_proof_of_abstraction.py tests/test_proof_of_reduction.py tests/test_proof_of_softmax.py tests/test_proof_of_execution.py tests/test_runtime_executor.py tests/test_hac_ir_golden_dumps.py tests/test_runtime_plan_golden.py tests/test_compiler_decision_report_golden.py -q
+python -m pytest tests/test_proof_metadata.py tests/test_proof_of_abstraction.py tests/test_proof_of_reduction.py tests/test_proof_of_softmax.py tests/test_proof_of_execution.py tests/test_runtime_executor.py tests/test_hac_ir_golden_dumps.py tests/test_runtime_plan_golden.py tests/test_compiler_decision_report_golden.py tests/test_research_scope_claim_gate.py -q
+python examples/research_scope_claim_gate.py
 ```
 
 Then run the normal project checks:

@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_free_diagnostics_admission_tests_report.v0.schema.json",
+  "title": "TUC Source-Free Diagnostics Admission Tests Report v0",
+  "description": "Source-free evidence that diagnostics for the future admitting source-to-Intent parser slice stay bounded, reason-code based, and non-admitting.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "corpus_contract",
+    "corpus_status",
+    "diagnostic_class_coverage",
+    "diagnostic_class_coverage_complete",
+    "diagnostic_count",
+    "diagnostics",
+    "diagnostics_contract",
+    "diagnostics_status",
+    "evidence_id",
+    "expected_outcome",
+    "issues",
+    "location_policy",
+    "message_policy",
+    "message_template_coverage",
+    "message_template_coverage_complete",
+    "parser_fuzz_evidence",
+    "payload_policy",
+    "reason_code_coverage",
+    "report_digest",
+    "required_control_count",
+    "required_controls",
+    "required_reason_coverage_complete",
+    "schema_version",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_intent_plain_data",
+    "source_to_runtime_plan",
+    "target_slice"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.source_free_diagnostics_admission_tests_report.v0"},
+    "evidence_id": {"const": "source_free_diagnostics_admission_tests"},
+    "diagnostics_contract": {"const": "source_free_diagnostics_admission_tests.data_only.v0"},
+    "diagnostics_status": {"const": "complete_non_admitting"},
+    "target_slice": {"const": "bounded_source_buffer_to_source_intent_plain_data"},
+    "artifact_policy": {"const": "digest_only_source_free"},
+    "message_policy": {"const": "message_template_id_only"},
+    "location_policy": {"const": "no_source_locations"},
+    "payload_policy": {"const": "reason_code_digest_only"},
+    "expected_outcome": {"const": "diagnostics_source_free_before_lowering"},
+    "corpus_contract": {"const": "parser_fuzz_negative_corpus_for_admitting_slice.data_only.v0"},
+    "corpus_status": {"const": "complete_non_admitting"},
+    "source_to_compute_graph": {"const": false},
+    "source_to_hac_ir": {"const": false},
+    "source_to_intent_plain_data": {"const": false},
+    "source_to_runtime_plan": {"const": false},
+    "diagnostic_count": {"const": 8},
+    "required_control_count": {"const": 18},
+    "diagnostic_class_coverage_complete": {"const": true},
+    "required_reason_coverage_complete": {"const": true},
+    "message_template_coverage_complete": {"const": true},
+    "report_digest": {"$ref": "#/$defs/sha256_text"},
+    "issues": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "parser_fuzz_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "digest",
+        "evidence_id",
+        "source_free",
+        "status",
+        "supports_diagnostics"
+      ],
+      "properties": {
+        "contract": {"const": "parser_fuzz_negative_corpus_for_admitting_slice.data_only.v0"},
+        "digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"const": "parser_fuzz_negative_corpus_for_admitting_slice"},
+        "source_free": {"const": true},
+        "status": {"const": "complete_non_admitting"},
+        "supports_diagnostics": {"const": true}
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/diagnostic_record"}
+    },
+    "diagnostic_class_coverage": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"const": "hardware_specific_source"},
+        {"const": "invalid_shape_profile"},
+        {"const": "malformed_syntax"},
+        {"const": "resource_budget"},
+        {"const": "unsafe_execution_surface"},
+        {"const": "unsupported_semantics"}
+      ],
+      "items": false
+    },
+    "reason_code_coverage": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "prefixItems": [
+        {"const": "decorator_call"},
+        {"const": "dynamic_dispatch"},
+        {"const": "hardware_specific_hint"},
+        {"const": "import_statement"},
+        {"const": "line_budget"},
+        {"const": "report_safe_name"},
+        {"const": "shape_profile"},
+        {"const": "syntax_error"}
+      ],
+      "items": false
+    },
+    "message_template_coverage": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "prefixItems": [
+        {"const": "diagnostic.decorator_call"},
+        {"const": "diagnostic.dynamic_dispatch"},
+        {"const": "diagnostic.hardware_specific_hint"},
+        {"const": "diagnostic.import_statement"},
+        {"const": "diagnostic.line_budget"},
+        {"const": "diagnostic.report_safe_name"},
+        {"const": "diagnostic.shape_profile"},
+        {"const": "diagnostic.syntax_error"}
+      ],
+      "items": false
+    },
+    "required_controls": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "prefixItems": [
+        {"const": "parser_fuzz_negative_corpus_bound"},
+        {"const": "diagnostic_code_manifest"},
+        {"const": "message_template_id_only"},
+        {"const": "source_digest_only"},
+        {"const": "source_free_diagnostic_payload"},
+        {"const": "bounded_diagnostic_count"},
+        {"const": "bounded_diagnostic_bytes"},
+        {"const": "no_source_excerpt"},
+        {"const": "no_line_column_locations"},
+        {"const": "fail_closed_before_lowering"},
+        {"const": "no_source_to_intent_plain_data"},
+        {"const": "no_source_to_compute_graph"},
+        {"const": "no_source_to_hac_ir"},
+        {"const": "no_source_to_runtime_plan"},
+        {"const": "no_python_import"},
+        {"const": "no_triton_jit"},
+        {"const": "no_device_access"},
+        {"const": "no_generated_artifacts"}
+      ],
+      "items": false
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "prefixItems": [
+        {"const": "backend_artifact"},
+        {"const": "compute_graph"},
+        {"const": "generated_artifact"},
+        {"const": "hac_ir"},
+        {"const": "hs_ir"},
+        {"const": "python_function_object"},
+        {"const": "runtime_plan"},
+        {"const": "source_intent_plain_data"},
+        {"const": "tlir"}
+      ],
+      "items": false
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "prefixItems": [
+        {"const": "decorator_evaluation"},
+        {"const": "device_access"},
+        {"const": "dynamic_library_loading"},
+        {"const": "frontend_package_import"},
+        {"const": "generated_artifact_execution"},
+        {"const": "native_backend_execution"},
+        {"const": "network_access"},
+        {"const": "plugin_discovery"},
+        {"const": "python_import"},
+        {"const": "subprocess_execution"},
+        {"const": "triton_jit_execution"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"
+    },
+    "diagnostic_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "diagnostic_bytes",
+        "diagnostic_class",
+        "diagnostic_code",
+        "emits_compute_graph",
+        "emits_hac_ir",
+        "emits_runtime_plan",
+        "emits_source_intent_plain_data",
+        "expected_outcome",
+        "includes_source_excerpt",
+        "includes_source_location",
+        "message_template_id",
+        "reason_code",
+        "source_digest",
+        "source_free"
+      ],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/report_text"},
+        "diagnostic_bytes": {"type": "integer", "minimum": 1, "maximum": 1024},
+        "diagnostic_class": {
+          "enum": [
+            "hardware_specific_source",
+            "invalid_shape_profile",
+            "malformed_syntax",
+            "resource_budget",
+            "unsafe_execution_surface",
+            "unsupported_semantics"
+          ]
+        },
+        "diagnostic_code": {"$ref": "#/$defs/report_text"},
+        "emits_compute_graph": {"const": false},
+        "emits_hac_ir": {"const": false},
+        "emits_runtime_plan": {"const": false},
+        "emits_source_intent_plain_data": {"const": false},
+        "expected_outcome": {"const": "diagnostics_source_free_before_lowering"},
+        "includes_source_excerpt": {"const": false},
+        "includes_source_location": {"const": false},
+        "message_template_id": {"$ref": "#/$defs/report_text"},
+        "reason_code": {
+          "enum": [
+            "decorator_call",
+            "dynamic_dispatch",
+            "hardware_specific_hint",
+            "import_statement",
+            "line_budget",
+            "report_safe_name",
+            "shape_profile",
+            "syntax_error"
+          ]
+        },
+        "source_digest": {"$ref": "#/$defs/sha256_text"},
+        "source_free": {"const": true}
+      }
+    }
+  }
+}

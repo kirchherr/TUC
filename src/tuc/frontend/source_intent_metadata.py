@@ -148,7 +148,18 @@ def _operation_to_metadata(operation: SourceIntentOperation) -> TritonOperationM
         inputs=operation.inputs,
         outputs=operation.outputs,
         hints=_hints_to_compilation_hints(operation),
+        attributes=_operation_attributes_to_metadata(operation),
     )
+
+
+def _operation_attributes_to_metadata(
+    operation: SourceIntentOperation,
+) -> dict[str, object]:
+    attributes = dict(operation.attributes)
+    elementwise_kind = attributes.pop("elementwise_kind", None)
+    if elementwise_kind is not None:
+        attributes["kernel"] = elementwise_kind
+    return attributes
 
 
 def _hints_to_compilation_hints(operation: SourceIntentOperation) -> CompilationHints:

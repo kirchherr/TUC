@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/device_access_sandbox_gate_report.v0.schema.json",
+  "title": "TUC Device Access Sandbox Gate Report v0",
+  "description": "Data-only gate schema establishing sandbox requirements for future device access without admitting device discovery, driver calls, device memory allocation, memory mapping, direct memory access, kernel launch, generated artifact execution, subprocess, or dynamic-library surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "all_required_evidence_present",
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "blocked_outputs",
+    "device_access",
+    "device_discovery",
+    "device_enumeration",
+    "device_handle_emitted",
+    "device_memory_allocation",
+    "device_memory_mapping",
+    "direct_memory_access",
+    "driver_api_call",
+    "dynamic_library_loading",
+    "evidence",
+    "evidence_count",
+    "evidence_policy",
+    "gate_contract",
+    "gate_id",
+    "gate_status",
+    "generated_artifact_execution",
+    "hardware_fingerprint_serialized",
+    "kernel_launch",
+    "required_control_count",
+    "required_controls",
+    "required_evidence_ids",
+    "sandbox_boundary_established",
+    "schema_version",
+    "subprocess_execution",
+    "surface_id",
+    "triton_jit_execution"
+  ],
+  "properties": {
+    "admission_effect": {"const": "does_not_admit_device_access"},
+    "all_required_evidence_present": {"const": true},
+    "artifact_status": {"const": "review_gate"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/blocked_execution_surface"},
+      "uniqueItems": true
+    },
+    "blocked_outputs": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/blocked_output"},
+      "uniqueItems": true
+    },
+    "device_access": {"const": false},
+    "device_discovery": {"const": false},
+    "device_enumeration": {"const": false},
+    "device_handle_emitted": {"const": false},
+    "device_memory_allocation": {"const": false},
+    "device_memory_mapping": {"const": false},
+    "direct_memory_access": {"const": false},
+    "driver_api_call": {"const": false},
+    "dynamic_library_loading": {"const": false},
+    "evidence": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "evidence_count": {"const": 3},
+    "evidence_policy": {"const": "digest_only"},
+    "gate_contract": {"const": "device_access_sandbox_gate.data_only.v0"},
+    "gate_id": {"const": "device_access_sandbox_gate"},
+    "gate_status": {"const": "sandbox_requirements_only"},
+    "generated_artifact_execution": {"const": false},
+    "hardware_fingerprint_serialized": {"const": false},
+    "kernel_launch": {"const": false},
+    "required_control_count": {"const": 20},
+    "required_controls": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {"$ref": "#/$defs/required_control"},
+      "uniqueItems": true
+    },
+    "required_evidence_ids": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/required_evidence_id"},
+      "uniqueItems": true
+    },
+    "sandbox_boundary_established": {"const": true},
+    "schema_version": {"const": "tuc.device_access_sandbox_gate_report.v0"},
+    "subprocess_execution": {"const": false},
+    "surface_id": {"const": "device_access"},
+    "triton_jit_execution": {"const": false}
+  },
+  "$defs": {
+    "blocked_execution_surface": {
+      "enum": [
+        "device_access",
+        "device_discovery",
+        "device_memory_allocation",
+        "device_memory_mapping",
+        "direct_memory_access",
+        "driver_api_call",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "kernel_launch",
+        "subprocess_execution",
+        "triton_jit_execution"
+      ]
+    },
+    "blocked_output": {
+      "enum": [
+        "device_allocation",
+        "device_capability_record",
+        "device_handle",
+        "device_memory_mapping",
+        "driver_context",
+        "kernel_launch_receipt"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_digest", "evidence_id", "required"],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"$ref": "#/$defs/required_evidence_id"},
+        "required": {"const": true}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_control": {
+      "enum": [
+        "device_access_blocked",
+        "device_discovery_blocked",
+        "device_enumeration_blocked",
+        "device_handles_blocked",
+        "device_memory_allocation_blocked",
+        "device_memory_mapping_blocked",
+        "digest_only_evidence",
+        "direct_memory_access_blocked",
+        "driver_calls_blocked",
+        "fail_closed_on_violation",
+        "hardware_fingerprints_blocked",
+        "kernel_launch_blocked",
+        "no_device_access",
+        "no_device_discovery",
+        "no_device_memory_allocation",
+        "no_dynamic_library_loading",
+        "no_generated_artifact_execution",
+        "no_kernel_launch",
+        "no_subprocess_execution",
+        "sanitized_diagnostics_only"
+      ]
+    },
+    "required_evidence_id": {
+      "enum": [
+        "real_triton_integration_admission_gate",
+        "triton_jit_execution_sandbox_gate",
+        "device_access_sandbox_model"
+      ]
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

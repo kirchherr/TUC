@@ -1,0 +1,86 @@
+{
+  "admission_effect": "does_not_admit_direct_source_ingestion",
+  "all_required_evidence_present": true,
+  "artifact_status": "review_gate",
+  "blocked_execution_surfaces": [
+    "device_access",
+    "direct_source_ingestion",
+    "frontend_package_import",
+    "generated_artifact_execution",
+    "plugin_discovery",
+    "python_function_object_inspection",
+    "python_import",
+    "triton_jit_execution"
+  ],
+  "blocked_outputs": [
+    "compute_graph",
+    "generated_artifact",
+    "hac_ir",
+    "hs_ir",
+    "python_function_object",
+    "runtime_plan",
+    "tlir"
+  ],
+  "direct_source_ingestion": false,
+  "evidence": [
+    {
+      "evidence_digest": "sha256:193037f8eda3c7fa47754af5a2b024c6642c6a7df407255bfe59a8f507639d11",
+      "evidence_id": "real_triton_integration_admission_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:3a63064f7d231d23d6e1550bbcb39f015ae4ca7db3d98147401ffac2c1959c96",
+      "evidence_id": "source_to_intent_parser_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:90e7b7312be1b7e2c538374b03283170169ab3bf88cc4b94135db73f0dd32af9",
+      "evidence_id": "triton_source_preflight",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:a57a0de382cce4e28bd877ede884b3d56e695abc5a62f4b77d00d3025ca9e34e",
+      "evidence_id": "triton_source_threat_model",
+      "required": true
+    }
+  ],
+  "evidence_count": 4,
+  "evidence_policy": "digest_only",
+  "function_object_inspection": false,
+  "gate_contract": "source_ingestion_quarantine_gate.data_only.v0",
+  "gate_id": "source_ingestion_quarantine_gate",
+  "gate_status": "quarantine_only",
+  "generated_artifact_execution": false,
+  "python_import": false,
+  "quarantine_boundary_established": true,
+  "raw_source_serialization": false,
+  "required_control_count": 14,
+  "required_controls": [
+    "bounded_source_buffer",
+    "decode_only_before_preflight",
+    "digest_only_evidence",
+    "execution_free_ast_preflight",
+    "fail_closed_on_violation",
+    "input_treated_as_untrusted",
+    "no_compute_graph_from_source",
+    "no_device_access",
+    "no_generated_artifacts",
+    "no_hac_ir_from_source",
+    "no_python_import",
+    "no_raw_source_serialization",
+    "no_triton_jit",
+    "sanitized_diagnostics_only"
+  ],
+  "required_evidence_ids": [
+    "real_triton_integration_admission_gate",
+    "source_to_intent_parser_gate",
+    "triton_source_preflight",
+    "triton_source_threat_model"
+  ],
+  "schema_version": "tuc.source_ingestion_quarantine_gate_report.v0",
+  "source_to_compute_graph": false,
+  "source_to_hac_ir": false,
+  "source_to_runtime_plan": false,
+  "surface_id": "direct_source_ingestion",
+  "triton_jit_execution": false
+}

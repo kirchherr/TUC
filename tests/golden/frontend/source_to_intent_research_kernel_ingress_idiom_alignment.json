@@ -1,0 +1,125 @@
+{
+  "accepted_source_count": 5,
+  "alignment_contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
+  "artifact_policy": "metadata_only_values_omitted",
+  "blocked_execution_surfaces": [
+    "bytecode_inspection",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_import",
+    "source_parsing",
+    "subprocess_execution"
+  ],
+  "cases": [
+    {
+      "case_id": "research_matmul_elementwise",
+      "kernel_name": "matmul_elementwise",
+      "matched_idioms": [
+        "metadata_elementwise_activation",
+        "metadata_matmul_projection"
+      ],
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "status": "covered"
+    },
+    {
+      "case_id": "research_softmax_reduction",
+      "kernel_name": "softmax_reduction",
+      "matched_idioms": [
+        "metadata_reduction_axis",
+        "metadata_softmax_axis"
+      ],
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "status": "covered"
+    },
+    {
+      "case_id": "research_matmul_reduction",
+      "kernel_name": "matmul_reduction",
+      "matched_idioms": [
+        "metadata_matmul_projection",
+        "metadata_reduction_axis"
+      ],
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "status": "covered"
+    },
+    {
+      "case_id": "research_softmax_elementwise",
+      "kernel_name": "softmax_elementwise",
+      "matched_idioms": [
+        "metadata_elementwise_activation",
+        "metadata_softmax_axis"
+      ],
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "status": "covered"
+    },
+    {
+      "case_id": "research_mvp_pipeline",
+      "kernel_name": "mvp_pipeline",
+      "matched_idioms": [
+        "metadata_elementwise_activation",
+        "metadata_matmul_projection",
+        "metadata_reduction_axis",
+        "metadata_softmax_axis"
+      ],
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "status": "covered"
+    }
+  ],
+  "coverage_contract": "triton_idiom_coverage.execution_free.v0",
+  "coverage_policy": "kernel_ingress_operation_families_must_match_covered_idioms",
+  "coverage_report_digest": "sha256:6c0040f3d8f8a2464d57cce7573f9616cbea892d0c88cd4882769f0d63dea237",
+  "covered_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "direct_general_triton_source_ingestion": false,
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "input_policy": "accepted_kernel_ingress_results_only",
+  "kernel_ingress_conformance_gate_contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
+  "kernel_ingress_conformance_gate_digest": "sha256:2eb76bb53e517e7cbc7dd547b90c41c4fd969216e3579d734c8c2e1dbd5e0e96",
+  "kernel_ingress_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
+  "kernel_ingress_digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
+  "kernel_names": [
+    "matmul_elementwise",
+    "softmax_reduction",
+    "matmul_reduction",
+    "softmax_elementwise",
+    "mvp_pipeline"
+  ],
+  "parser_status": "research_explicit_only",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_idiom_alignment_report.v0",
+  "source_boundary": "kernel_ingress_to_source_intent.v0_plain_data",
+  "source_names": [
+    "research_matmul_elementwise",
+    "research_softmax_reduction",
+    "research_matmul_reduction",
+    "research_softmax_elementwise",
+    "research_mvp_pipeline"
+  ],
+  "status": "PASS",
+  "unsupported_operation_families": []
+}

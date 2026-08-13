@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/evidence_graph_acyclicity_gate_report.v0.schema.json",
+  "title": "TUC Evidence Graph Acyclicity Gate Report v0",
+  "description": "Data-only report proving the current source-ingestion evidence digest graph is acyclic.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "cycle_count",
+    "detected_cycles",
+    "edge_count",
+    "edge_direction",
+    "edges",
+    "evidence_policy",
+    "gate_contract",
+    "gate_id",
+    "gate_status",
+    "graph_scope",
+    "node_count",
+    "nodes",
+    "required_invariants",
+    "schema_version",
+    "source_free",
+    "topological_order"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.evidence_graph_acyclicity_gate_report.v0"
+    },
+    "gate_contract": {"const": "evidence_graph_acyclicity_gate.data_only.v0"},
+    "gate_id": {"const": "source_ingestion_evidence_graph_acyclicity_gate"},
+    "gate_status": {"const": "PASS"},
+    "graph_scope": {"const": "source_ingestion_first_slice_to_research_scope"},
+    "edge_direction": {"const": "dependent_report_to_bound_evidence"},
+    "evidence_policy": {"const": "edge_digest_only_source_free"},
+    "source_free": {"const": true},
+    "node_count": {"const": 19},
+    "edge_count": {"const": 28},
+    "cycle_count": {"const": 0},
+    "detected_cycles": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 19,
+      "maxItems": 19,
+      "items": {"$ref": "#/$defs/node"}
+    },
+    "edges": {
+      "type": "array",
+      "minItems": 28,
+      "maxItems": 28,
+      "items": {"$ref": "#/$defs/edge"}
+    },
+    "required_invariants": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "prefixItems": [
+        {"const": "edge_endpoints_declared"},
+        {"const": "graph_is_acyclic"},
+        {"const": "dependency_first_topological_order_emitted"},
+        {"const": "digest_only_source_free_edges"},
+        {
+          "const": "source_ingestion_downstream_gates_do_not_cycle_into_first_slice"
+        }
+      ],
+      "items": false
+    },
+    "topological_order": {
+      "type": "array",
+      "minItems": 19,
+      "maxItems": 19,
+      "items": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"}
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "evidence_id",
+        "node_kind",
+        "source_free",
+        "status"
+      ],
+      "properties": {
+        "contract": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"},
+        "evidence_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"
+        },
+        "node_kind": {
+          "enum": ["evidence_report", "leaf_evidence"]
+        },
+        "source_free": {"const": true},
+        "status": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"}
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bound_digest",
+        "edge_kind",
+        "from_evidence_id",
+        "source_free",
+        "to_evidence_id"
+      ],
+      "properties": {
+        "bound_digest": {"$ref": "#/$defs/sha256_text"},
+        "edge_kind": {"const": "digest_binding"},
+        "from_evidence_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"
+        },
+        "source_free": {"const": true},
+        "to_evidence_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.:-]*$"
+        }
+      }
+    }
+  }
+}

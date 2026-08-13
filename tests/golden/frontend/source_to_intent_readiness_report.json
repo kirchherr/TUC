@@ -57,6 +57,10 @@
       "present": false
     },
     {
+      "evidence_id": "source_to_intent_research_diagnostics",
+      "present": false
+    },
+    {
       "evidence_id": "metadata_intake_report_golden",
       "present": false
     },
@@ -125,6 +129,10 @@
     },
     {
       "evidence_id": "source_intent_metadata_report_golden",
+      "message": "required source-to-intent parser gate evidence is missing"
+    },
+    {
+      "evidence_id": "source_to_intent_research_diagnostics",
       "message": "required source-to-intent parser gate evidence is missing"
     },
     {

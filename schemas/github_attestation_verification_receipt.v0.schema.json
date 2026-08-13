@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuc.dev/schemas/github_attestation_verification_receipt.v0.schema.json",
+  "title": "TUC GitHub Attestation Verification Receipt v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_bytes_omitted",
+    "artifact_digest",
+    "artifact_name",
+    "artifact_size_bytes",
+    "attestation_bundle_omitted",
+    "attestation_verified",
+    "event_name",
+    "execution_permission",
+    "external_consumer_verification",
+    "gh_version",
+    "oidc_issuer",
+    "predicate_type",
+    "production_source_ingestion",
+    "production_source_sandbox",
+    "protected_tag_policy_verified",
+    "public_registry_image",
+    "raw_verification_output_omitted",
+    "receipt_trust_boundary",
+    "report_digest",
+    "repository",
+    "release_tag_trigger",
+    "run_attempt",
+    "run_id",
+    "runner_environment",
+    "schema_version",
+    "signer_repository",
+    "signer_workflow",
+    "source_commit",
+    "source_ref",
+    "verification_contract",
+    "verification_policy",
+    "verification_scope",
+    "verification_status",
+    "verified_attestation_count",
+    "workflow_run_url"
+  ],
+  "properties": {
+    "artifact_bytes_omitted": { "const": true },
+    "artifact_digest": { "$ref": "#/$defs/sha256" },
+    "artifact_name": { "const": "tuc-source-ingestion-worker.oci.tar" },
+    "artifact_size_bytes": { "type": "integer", "minimum": 1, "maximum": 4294967296 },
+    "attestation_bundle_omitted": { "const": true },
+    "attestation_verified": { "const": true },
+    "event_name": { "enum": ["push", "workflow_dispatch"] },
+    "execution_permission": { "const": false },
+    "external_consumer_verification": { "const": false },
+    "gh_version": {
+      "type": "string",
+      "pattern": "^gh version [0-9]+\\.[0-9]+\\.[0-9]+[^\\r\\n]{0,120}$"
+    },
+    "oidc_issuer": { "const": "https://token.actions.githubusercontent.com" },
+    "predicate_type": { "const": "https://slsa.dev/provenance/v1" },
+    "production_source_ingestion": { "const": false },
+    "production_source_sandbox": { "const": false },
+    "protected_tag_policy_verified": { "const": false },
+    "public_registry_image": { "const": false },
+    "raw_verification_output_omitted": { "const": true },
+    "receipt_trust_boundary": {
+      "const": "generated_only_after_cli_exit_zero_not_self_authenticating"
+    },
+    "report_digest": { "$ref": "#/$defs/sha256" },
+    "repository": { "$ref": "#/$defs/repository" },
+    "release_tag_trigger": { "type": "boolean" },
+    "run_attempt": { "type": "integer", "minimum": 1, "maximum": 100 },
+    "run_id": { "type": "integer", "minimum": 1, "maximum": 9223372036854775807 },
+    "runner_environment": { "const": "github-hosted" },
+    "schema_version": { "const": "tuc.github_attestation_verification_receipt.v0" },
+    "signer_repository": { "$ref": "#/$defs/repository" },
+    "signer_workflow": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]{1,100}/[A-Za-z0-9_.-]{1,100}/\\.github/workflows/release-artifacts\\.yml$"
+    },
+    "source_commit": { "type": "string", "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$" },
+    "source_ref": {
+      "type": "string",
+      "pattern": "^refs/(?:heads|tags)/[A-Za-z0-9._/-]{1,240}$"
+    },
+    "verification_contract": {
+      "const": "github_attestation.same_run.provenance_verified.v0"
+    },
+    "verification_policy": {
+      "const": "repository_signer_workflow_source_commit_source_ref_oidc_issuer_github_hosted_runner_bound"
+    },
+    "verification_scope": { "const": "same_run_repository_attestation_api" },
+    "verification_status": { "const": "PASS" },
+    "verified_attestation_count": { "type": "integer", "minimum": 1, "maximum": 8 },
+    "workflow_run_url": {
+      "type": "string",
+      "pattern": "^https://github\\.com/[A-Za-z0-9_.-]{1,100}/[A-Za-z0-9_.-]{1,100}/actions/runs/[1-9][0-9]{0,18}$"
+    }
+  },
+  "$defs": {
+    "repository": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]{1,100}/[A-Za-z0-9_.-]{1,100}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

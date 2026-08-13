@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_source_runtime_smoke_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Source Runtime Smoke Report v0",
+  "description": "Metadata-only end-to-end smoke report for accepted research source buffers through preflight, Source Intent, runtime execution, and reference correctness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_claims",
+    "case_count",
+    "cases",
+    "default_parser_status",
+    "input_policy",
+    "parser_output_policy",
+    "parser_sources",
+    "parser_status",
+    "raw_source_policy",
+    "raw_value_policy",
+    "schema_version",
+    "smoke_contract",
+    "source_boundary",
+    "status"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "metadata_only_values_omitted"},
+    "blocked_claims": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "general_triton_source_ingestion"},
+        {"const": "native_performance_claim"},
+        {"const": "production_parser"}
+      ],
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "case_count": {"const": 2},
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/case"}
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "input_policy": {"const": "accepted_research_source_buffers_only"},
+    "parser_output_policy": {"const": "source_intent.v0_plain_data_only"},
+    "parser_sources": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "research_matmul_elementwise"},
+        {"const": "research_softmax_reduction"}
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_source_runtime_smoke_report.v0"
+    },
+    "smoke_contract": {
+      "const": "source_to_intent_research_source_runtime_smoke.e2e.v0"
+    },
+    "source_boundary": {
+      "const": "caller_provided_source_buffer_to_runtime_via_research_parser"
+    },
+    "status": {"const": "PASS"}
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_sequence",
+        "case_id",
+        "compiler_decision_digest",
+        "execution_trace_digest",
+        "hac_ir_digest",
+        "metadata_intake_digest",
+        "metadata_report_digest",
+        "operation_families",
+        "parser_report_digest",
+        "plain_data_digest",
+        "preflight_digest",
+        "preflight_status",
+        "readiness_digest",
+        "reference_correctness_digest",
+        "runtime_plan_digest",
+        "source_digest",
+        "terminal_outputs",
+        "trace_step_count"
+      ],
+      "properties": {
+        "backend_sequence": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {"enum": ["linear-sim", "reference-cpu", "vector-sim"]}
+        },
+        "case_id": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction"
+          ]
+        },
+        "compiler_decision_digest": {"$ref": "#/$defs/sha256_digest"},
+        "execution_trace_digest": {"$ref": "#/$defs/sha256_digest"},
+        "hac_ir_digest": {"$ref": "#/$defs/sha256_digest"},
+        "metadata_intake_digest": {"$ref": "#/$defs/sha256_digest"},
+        "metadata_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "operation_families": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "enum": ["elementwise", "matmul", "reduction", "softmax"]
+          },
+          "uniqueItems": true
+        },
+        "parser_report_digest": {"$ref": "#/$defs/sha256_digest"},
+        "plain_data_digest": {"$ref": "#/$defs/sha256_digest"},
+        "preflight_digest": {"$ref": "#/$defs/sha256_digest"},
+        "preflight_status": {"const": "accepted"},
+        "readiness_digest": {"$ref": "#/$defs/sha256_digest"},
+        "reference_correctness_digest": {"$ref": "#/$defs/sha256_digest"},
+        "runtime_plan_digest": {"$ref": "#/$defs/sha256_digest"},
+        "source_digest": {"$ref": "#/$defs/sha256_digest"},
+        "terminal_outputs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"enum": ["activated", "row_sum"]}
+        },
+        "trace_step_count": {"const": 2}
+      }
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

@@ -10,7 +10,7 @@
     "network_access",
     "subprocess_execution"
   ],
-  "evidence_link_count": 4,
+  "evidence_link_count": 6,
   "evidence_links": [
     {
       "evidence_contract": "runtime_tensor_store_evidence.data_only.v0",
@@ -36,6 +36,24 @@
       "graph_name": "proof_of_execution",
       "item_count": 1,
       "metadata_digest": "sha256:39d09e42752ab1232ee50253b9cfc3f1f83a3f5f417c754f30af090c0291ad11",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy"
+    },
+    {
+      "evidence_contract": "runtime_output_contract.data_only.v0",
+      "evidence_kind": "output_contract",
+      "graph_name": "proof_of_execution",
+      "item_count": 1,
+      "metadata_digest": "sha256:3ccd79419dd0dd3dcaa7728710b12c860d3a00f832d065e359dc5b0a09959f70",
+      "passed": true,
+      "raw_value_policy": "omitted_by_policy"
+    },
+    {
+      "evidence_contract": "runtime_public_output_bundle.readonly_values.v0",
+      "evidence_kind": "public_output_bundle",
+      "graph_name": "proof_of_execution",
+      "item_count": 1,
+      "metadata_digest": "sha256:b8bb4e0b3e15e45a69eada3b9722ea54512bbb793a33211e99cc32af918ea6dc",
       "passed": true,
       "raw_value_policy": "omitted_by_policy"
     },
@@ -116,11 +134,13 @@
   "passed": true,
   "raw_value_policy": "omitted_by_policy",
   "receipt_contract": "runtime_execution_receipt.data_only.v0",
-  "receipt_metadata_digest": "sha256:f871dd6ec2234272380d9551468abf90899d44eb00d47b5f84cc91a4208dde72",
+  "receipt_metadata_digest": "sha256:e40452abd09937b93bc87ea14477072e28d5587d8030045bd71ec39488c8adca",
   "required_evidence_kinds": [
     "tensor_store_evidence",
     "input_manifest",
     "output_manifest",
+    "output_contract",
+    "public_output_bundle",
     "reference_correctness"
   ],
   "schema_version": "tuc.runtime_execution_receipt_report.v0"

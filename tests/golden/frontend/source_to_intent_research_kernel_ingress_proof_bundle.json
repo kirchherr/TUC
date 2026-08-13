@@ -1,0 +1,178 @@
+{
+  "accepted_kernel_names": [
+    "matmul_elementwise",
+    "softmax_reduction",
+    "matmul_reduction",
+    "softmax_elementwise",
+    "mvp_pipeline"
+  ],
+  "accepted_source_names": [
+    "research_matmul_elementwise",
+    "research_softmax_reduction",
+    "research_matmul_reduction",
+    "research_softmax_elementwise",
+    "research_mvp_pipeline"
+  ],
+  "artifact_count": 15,
+  "artifact_policy": "digest_only_source_free",
+  "artifacts": [
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress.e2e.v0",
+      "digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_matrix",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+      "digest": "sha256:c76897002d8ad049c2695c5ad34a62b3711735e3be8a67be290c238cd9188eff",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_step_trace",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_step_trace.execution.v0",
+      "digest": "sha256:642defa2dde723a98ddcb781e7f31cf01ab8e8b0f07f7d971a42a94eacd55ff1",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.review.v0",
+      "digest": "sha256:11742c03cf15a2599682ea08289a0868c98b66853de5bb08d2d0a32c2d3ac53f",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_output_closure_index.review.v0",
+      "digest": "sha256:b99b7581b7f193de8c4043950c554fd2d200093c7c99abce8115722df25f07fe",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.review.v0",
+      "digest": "sha256:cb0d0ba368961d6d515dfa668b7f2b2e22d9d8e496dce54a13838af32f011c30",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_backend_equivalence.portability.v0",
+      "digest": "sha256:865c3b899b09975e73005e6c8ad5ee594fb4f6601b8aadbf7948f4f09e9aa9ea",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.portability.v0",
+      "digest": "sha256:9267b39546c800c68c701acbee9efa3e80109bf4769e62cf0c45793bd6a0b2a1",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_coverage_policy.review.v0",
+      "digest": "sha256:4a81e92b00569a56b9753914311b0908b4ea9d98071146df5feec2990d30e83a",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_runtime_backend_alignment.trusted_executor.v0",
+      "digest": "sha256:258aa40f984633639b5660649b148a9f3899a3867a4d6a8b6ef3c3f1e8678818",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_boundary_budget",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0",
+      "digest": "sha256:94cb99e0373dc542021ecda323212b0f51318fa69b0a05997627a0097e3674f5",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_rejection_coverage",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0",
+      "digest": "sha256:ae8bbfc1e454ca00f963cd4ec97a4eec32d1ed1b58bfbc1962e5a85bba2801d5",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_diagnostics",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
+      "digest": "sha256:332bff41658b96428c3eaf0353ff776d0078e463afbcfeb8af975c61ff966506",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_conformance_gate",
+      "artifact_kind": "text_gate",
+      "contract": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0",
+      "digest": "sha256:2eb76bb53e517e7cbc7dd547b90c41c4fd969216e3579d734c8c2e1dbd5e0e96",
+      "status": "accepted"
+    },
+    {
+      "artifact_id": "source_to_intent_research_kernel_ingress_idiom_alignment",
+      "artifact_kind": "json_report",
+      "contract": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0",
+      "digest": "sha256:1b0d7c411ee424a21287d16dee655883ecba76ac881d986ecd4b830dc4af0d82",
+      "status": "accepted"
+    }
+  ],
+  "blocked_claims": [
+    "general_triton_source_ingestion",
+    "native_performance_claim",
+    "production_parser"
+  ],
+  "bundle_contract": "source_to_intent_research_kernel_ingress_proof_bundle.review.v0",
+  "claim": "realistic_triton_module_ingress_research_slice",
+  "covered_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "parser_status": "research_explicit_only",
+  "required_artifacts": [
+    "source_to_intent_research_kernel_ingress",
+    "source_to_intent_research_kernel_ingress_runtime_matrix",
+    "source_to_intent_research_kernel_ingress_runtime_step_trace",
+    "source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index",
+    "source_to_intent_research_kernel_ingress_runtime_output_closure_index",
+    "source_to_intent_research_kernel_ingress_runtime_replay_verifier_index",
+    "source_to_intent_research_kernel_ingress_backend_equivalence",
+    "source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles",
+    "source_to_intent_research_kernel_ingress_runtime_coverage_policy",
+    "source_to_intent_research_kernel_ingress_runtime_backend_alignment",
+    "source_to_intent_research_kernel_ingress_boundary_budget",
+    "source_to_intent_research_kernel_ingress_rejection_coverage",
+    "source_to_intent_research_kernel_ingress_diagnostics",
+    "source_to_intent_research_kernel_ingress_conformance_gate",
+    "source_to_intent_research_kernel_ingress_idiom_alignment"
+  ],
+  "review_claims": [
+    "conformance_bound",
+    "boundary_budget_bound",
+    "rejection_coverage_bound",
+    "diagnostics_bound",
+    "idiom_scope_bound",
+    "kernel_ingress_runtime_e2e",
+    "runtime_matrix_bound",
+    "runtime_step_trace_bound",
+    "runtime_evidence_bundle_index_bound",
+    "runtime_output_closure_index_bound",
+    "runtime_replay_verifier_index_bound",
+    "runtime_backend_equivalence_bound",
+    "runtime_backend_equivalence_shape_profiles_bound",
+    "runtime_coverage_policy_bound",
+    "runtime_backend_alignment_bound",
+    "source_free_metadata_only"
+  ],
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_proof_bundle_report.v0",
+  "source_boundary": "triton_module_source_buffer_to_source_intent_to_runtime_metadata_only",
+  "status": "PASS"
+}

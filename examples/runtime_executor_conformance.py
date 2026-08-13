@@ -5,6 +5,7 @@ from tuc import (
     dump_runtime_executor_conformance_report,
     run_runtime_executor_conformance,
 )
+from tuc.report_output import emit_public_json_report
 
 
 def build_conformance_report() -> RuntimeExecutorConformanceReport:
@@ -20,7 +21,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 if __name__ == "__main__":

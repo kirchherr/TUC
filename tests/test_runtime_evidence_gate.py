@@ -9,20 +9,65 @@ import pytest
 
 from examples.runtime_backend_equivalence import build_backend_equivalence_report
 from examples.runtime_evidence_gate import (
+    RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING_MATRIX_ARTIFACT_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID,
+    RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS,
+    RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING_MATRIX_ARTIFACT_ID,
+    RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID,
+    RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID,
+    RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER_MATRIX_ARTIFACT_ID,
+    RUNTIME_MEMORY_PLANNING_GRAPH_ID,
+    RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS,
+    RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS,
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID,
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
+    RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID,
+    RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID,
+    RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER_MATRIX_ARTIFACT_ID,
+    RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID,
     SOURCE_INTENT_RUNTIME_RETURNS_GRAPH_ID,
     RuntimeEvidenceGateError,
     build_gate_report,
 )
-from examples.runtime_execution_receipt import build_execution_receipt_report
+from examples.runtime_execution_receipt import (
+    build_execution_receipt_evidence_reports,
+    build_execution_receipt_report,
+)
+from examples.runtime_hs_ir_plan_alignment import build_alignment_report
 from examples.runtime_input_manifest import build_input_manifest_report
+from examples.runtime_layout_conversion_digest_binding import (
+    build_current_runtime_layout_conversion_digest_binding_report,
+)
+from examples.runtime_layout_conversion_evidence import (
+    build_current_runtime_layout_conversion_evidence_report,
+)
+from examples.runtime_layout_conversion_trace_index import (
+    build_current_runtime_layout_conversion_trace_index_report,
+)
 from examples.runtime_mixed_backend_equivalence import (
     build_mixed_backend_equivalence_report,
 )
+from examples.runtime_mixed_tensor_store_evidence import (
+    build_mixed_tensor_store_evidence_report,
+)
 from examples.runtime_output_contract import build_output_contract_report
 from examples.runtime_output_manifest import build_output_manifest_report
+from examples.runtime_planning_explanation import (
+    build_backend_equivalence_runtime_planning_explanation_report,
+    build_mixed_backend_equivalence_runtime_planning_explanation_report,
+    build_systolic_runtime_planning_explanation_report,
+)
 from examples.runtime_public_output_bundle import build_public_output_bundle
 from examples.runtime_reference_correctness import build_reference_correctness_report
 from examples.runtime_tensor_store_evidence import build_tensor_store_evidence_report
+from examples.runtime_transfer_trace_index import (
+    build_current_runtime_transfer_trace_index_report,
+)
 from examples.runtime_vector_backend_equivalence import (
     build_vector_backend_equivalence_report,
 )
@@ -31,31 +76,47 @@ from examples.source_intent_runtime_returns import (
 )
 from tuc import (
     RuntimeBackendEquivalenceIssue,
+    RuntimeBackendEquivalencePortfolioPolicyReport,
+    RuntimeBackendEquivalencePortfolioReport,
+    RuntimeBackendEquivalencePortfolioRequirement,
     RuntimeBackendEquivalenceReport,
     RuntimeEvidenceArtifact,
     RuntimeEvidenceGraph,
     RuntimeExecutionEvidenceBundleIssue,
     RuntimeExecutionEvidenceBundleReport,
+    RuntimeExecutionOutputClosureIssue,
+    RuntimeExecutionOutputClosureReport,
     RuntimeExecutionReceiptIssue,
     RuntimeExecutionReceiptReport,
     RuntimeExecutorConformanceCase,
     RuntimeExecutorConformanceIssue,
     RuntimeExecutorConformanceReport,
+    RuntimeHsIrPlanAlignmentIssue,
     RuntimeInputManifestIssue,
     RuntimeInputManifestReport,
     RuntimeOutputContractIssue,
     RuntimeOutputContractReport,
     RuntimeOutputManifestIssue,
     RuntimeOutputManifestReport,
+    RuntimePlanningExplanationIssue,
+    RuntimePlanningExplanationReport,
     RuntimeReferenceCorrectnessIssue,
     RuntimeReferenceCorrectnessReport,
     RuntimeTensorStoreEvidenceIssue,
     RuntimeTensorStoreEvidenceReport,
     build_current_runtime_evidence_matrix_report,
+    build_default_runtime_backend_equivalence_portfolio_policy_report,
+    build_runtime_backend_equivalence_portfolio_report,
     build_runtime_evidence_matrix_report,
     build_runtime_execution_evidence_bundle_report,
+    build_runtime_execution_output_closure_report,
+    build_runtime_execution_receipt_report,
 )
 from tuc.ir import OperationKind
+from tuc.runtime.transfer_trace_index import (
+    RuntimeTransferTraceIndexIssue,
+    RuntimeTransferTraceIndexReport,
+)
 
 _GOLDEN = Path("tests/golden/proofs/runtime_evidence_gate.txt")
 
@@ -75,15 +136,159 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'status = "PASS"' in completed.stdout
     assert 'runtime_evidence_matrix = "complete"' in completed.stdout
     assert 'runtime_executor_conformance = "passed"' in completed.stdout
+    assert 'runtime_evidence_gate_matrix_coverage = "passed"' in completed.stdout
+    assert 'runtime_evidence_gate_matrix_bindings = "5"' in completed.stdout
     assert 'runtime_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_backend_equivalence_binding = "verified"' in completed.stdout
-    assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
+    assert 'runtime_backend_equivalence_matrix = "covered"' in completed.stdout
     assert (
-        'runtime_vector_backend_equivalence_binding = "verified"'
-        in completed.stdout
-    )
+        "runtime_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_planning_explanation = "passed"' in completed.stdout
+    assert 'runtime_planning_explanation_binding = "verified"' in completed.stdout
+    assert 'runtime_planning_explanation_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_planning_explanation_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert (
+        'runtime_planning_explanation_backend_sequence = "systolic-sim,reference-cpu"'
+    ) in completed.stdout
+    assert (
+        'runtime_planning_explanation_selection_kinds = "fallback,preferred_for"'
+    ) in completed.stdout
+    assert 'runtime_planning_explanation_movement_bytes = "32"' in completed.stdout
+    assert 'runtime_transfer_trace_index = "passed"' in completed.stdout
+    assert 'runtime_transfer_trace_index_binding = "verified"' in completed.stdout
+    assert 'runtime_transfer_trace_index_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_transfer_trace_index_matrix_artifact = "
+        f'"{RUNTIME_TRANSFER_TRACE_INDEX_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_transfer_trace_index_records = "1"' in completed.stdout
+    assert 'runtime_transfer_trace_index_trace_steps = "2"' in completed.stdout
+    assert 'runtime_transfer_trace_index_planned_bytes = "16"' in completed.stdout
+    assert (
+        'runtime_transfer_trace_index_materialization = "'
+        'transfer_not_materialized_as_runtime_step"'
+    ) in completed.stdout
+    assert 'runtime_transfer_trace_replay_verifier = "passed"' in completed.stdout
+    assert 'runtime_transfer_trace_replay_binding = "verified"' in completed.stdout
+    assert 'runtime_transfer_trace_replay_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_transfer_trace_replay_matrix_artifact = "
+        f'"{RUNTIME_TRANSFER_TRACE_REPLAY_VERIFIER_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_transfer_trace_replay_checks = "6"' in completed.stdout
+    assert 'runtime_backend_equivalence_transfer_binding = "passed"' in completed.stdout
+    assert (
+        "runtime_backend_equivalence_transfer_binding_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_TRANSFER_BINDING_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_backend_equivalence_transfer_binding_checks = "8"' in completed.stdout
+    assert (
+        'runtime_backend_equivalence_transfer_binding_candidate_backends = "2"'
+    ) in completed.stdout
+    assert 'runtime_vector_backend_equivalence = "passed"' in completed.stdout
+    assert 'runtime_vector_backend_equivalence_binding = "verified"' in completed.stdout
+    assert 'runtime_vector_backend_equivalence_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_vector_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_VECTOR_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
     assert 'runtime_mixed_backend_equivalence = "passed"' in completed.stdout
     assert 'runtime_mixed_backend_equivalence_binding = "verified"' in completed.stdout
+    assert 'runtime_mixed_backend_equivalence_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_mixed_backend_equivalence_matrix_artifact = "
+        f'"{RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_mixed_planning_explanation = "passed"' in completed.stdout
+    assert 'runtime_mixed_planning_explanation_binding = "verified"' in completed.stdout
+    assert 'runtime_mixed_planning_explanation_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_mixed_planning_explanation_matrix_artifact = "
+        f'"{RUNTIME_MIXED_BACKEND_EQUIVALENCE_PLANNING_EXPLANATION_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert (
+        "runtime_mixed_planning_explanation_backend_sequence = "
+        '"systolic-sim,vector-sim,vector-sim,vector-sim"'
+    ) in completed.stdout
+    assert (
+        'runtime_mixed_planning_explanation_selection_kinds = "preferred_for"'
+    ) in completed.stdout
+    assert 'runtime_mixed_planning_explanation_movement_bytes = "24"' in completed.stdout
+    assert 'runtime_hs_ir_plan_alignment = "passed"' in completed.stdout
+    assert 'runtime_hs_ir_plan_alignment_binding = "verified"' in completed.stdout
+    assert 'runtime_hs_ir_plan_alignment_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_hs_ir_plan_alignment_matrix_artifact = "
+        f'"{RUNTIME_HS_IR_PLAN_ALIGNMENT_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_hs_ir_plan_alignment_steps = "4"' in completed.stdout
+    assert (
+        "runtime_hs_ir_plan_alignment_backend_sequence = "
+        '"systolic-sim,vector-sim,vector-sim,vector-sim"'
+    ) in completed.stdout
+    assert 'runtime_layout_conversion_evidence = "passed"' in completed.stdout
+    assert 'runtime_layout_conversion_evidence_binding = "verified"' in completed.stdout
+    assert 'runtime_layout_conversion_evidence_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_layout_conversion_evidence_matrix_artifact = "
+        f'"{RUNTIME_LAYOUT_CONVERSION_EVIDENCE_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_layout_conversion_count = "1"' in completed.stdout
+    assert 'runtime_layout_conversion_planned_bytes = "24"' in completed.stdout
+    assert 'runtime_layout_conversion_trace_index = "passed"' in completed.stdout
+    assert (
+        "runtime_layout_conversion_trace_index_matrix_artifact = "
+        f'"{RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_layout_conversion_trace_index_records = "1"' in completed.stdout
+    assert 'runtime_layout_conversion_trace_index_trace_steps = "4"' in completed.stdout
+    assert (
+        'runtime_layout_conversion_trace_index_materialization = "'
+        'conversion_not_materialized_as_runtime_step"'
+    ) in completed.stdout
+    assert 'runtime_layout_conversion_trace_replay_verifier = "passed"' in completed.stdout
+    assert 'runtime_layout_conversion_trace_replay_binding = "verified"' in completed.stdout
+    assert (
+        "runtime_layout_conversion_trace_replay_matrix_artifact = "
+        f'"{RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_layout_conversion_trace_replay_checks = "6"' in completed.stdout
+    assert 'runtime_backend_equivalence_layout_binding = "passed"' in completed.stdout
+    assert (
+        "runtime_backend_equivalence_layout_binding_matrix_artifact = "
+        f'"{RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING_MATRIX_ARTIFACT_ID}"'
+    ) in completed.stdout
+    assert 'runtime_backend_equivalence_layout_binding_checks = "8"' in completed.stdout
+    assert 'runtime_backend_equivalence_layout_binding_candidate_backends = "2"' in completed.stdout
+    assert 'runtime_layout_conversion_digest_binding = "passed"' in completed.stdout
+    assert 'runtime_layout_conversion_digest_binding_consistency = "verified"' in completed.stdout
+    assert 'runtime_layout_conversion_digest_binding_rows = "1"' in completed.stdout
+    assert 'runtime_layout_conversion_gate_readiness = "ready"' in completed.stdout
+    assert 'runtime_layout_conversion_promotion_policy = "accepted"' in completed.stdout
+    assert 'runtime_layout_conversion_gate_enforcement = "enabled"' in completed.stdout
+    assert 'runtime_backend_equivalence_portfolio = "passed"' in completed.stdout
+    assert 'runtime_backend_equivalence_portfolio_binding = "verified"' in completed.stdout
+    assert (
+        'runtime_backend_equivalence_portfolio_backend_families = "systolic-sim,vector-sim"'
+    ) in completed.stdout
+    assert 'runtime_backend_equivalence_portfolio_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_backend_equivalence_portfolio_matrix_artifacts = "
+        f'"{",".join(RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_MATRIX_ARTIFACT_IDS)}"'
+    ) in completed.stdout
+    assert 'runtime_backend_equivalence_portfolio_policy = "accepted"' in completed.stdout
+    assert 'runtime_backend_equivalence_portfolio_policy_binding = "verified"' in completed.stdout
+    assert 'runtime_memory_planning_gate = "passed"' in completed.stdout
+    assert 'runtime_memory_planning_matrix = "covered"' in completed.stdout
+    assert (
+        "runtime_memory_planning_matrix_artifacts = "
+        f'"{",".join(RUNTIME_MEMORY_PLANNING_MATRIX_ARTIFACT_IDS)}"'
+    ) in completed.stdout
     assert 'runtime_tensor_store_evidence = "passed"' in completed.stdout
     assert 'runtime_input_manifest = "passed"' in completed.stdout
     assert 'runtime_output_manifest = "passed"' in completed.stdout
@@ -94,6 +299,9 @@ def test_runtime_evidence_gate_example_runs() -> None:
     assert 'runtime_execution_receipt_binding = "verified"' in completed.stdout
     assert 'runtime_execution_evidence_bundle = "passed"' in completed.stdout
     assert 'runtime_execution_evidence_bundle_binding = "verified"' in completed.stdout
+    assert 'runtime_execution_output_closure = "passed"' in completed.stdout
+    assert 'runtime_execution_output_closure_binding = "verified"' in completed.stdout
+    assert 'runtime_execution_output_closure_checks = "2"' in completed.stdout
     assert 'source_intent_runtime_returns = "passed"' in completed.stdout
 
 
@@ -184,6 +392,146 @@ def test_runtime_evidence_gate_rejects_unbound_backend_equivalence() -> None:
 
     with pytest.raises(RuntimeEvidenceGateError, match="backend equivalence binding"):
         build_gate_report(backend_equivalence_report=mismatched_report)
+
+
+def test_runtime_evidence_gate_rejects_failed_runtime_planning_explanation() -> None:
+    report = build_backend_equivalence_runtime_planning_explanation_report()
+    unknown_step = replace(
+        report.steps[0],
+        reason="unclassified_reason",
+        selection_kind="unknown",
+    )
+    failed_report = RuntimePlanningExplanationReport(
+        graph_name=report.graph_name,
+        steps=(unknown_step, *report.steps[1:]),
+        transfer_edge_count=report.transfer_edge_count,
+        layout_conversion_count=report.layout_conversion_count,
+        total_transfer_bytes=report.total_transfer_bytes,
+        total_layout_conversion_bytes=report.total_layout_conversion_bytes,
+        total_data_movement_bytes=report.total_data_movement_bytes,
+        candidate_score_mode=report.candidate_score_mode,
+        issues=(
+            RuntimePlanningExplanationIssue(
+                operation_name="projection",
+                issue_code="unknown_selection_reason",
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="planning explanation failed",
+    ):
+        build_gate_report(runtime_planning_explanation_report=failed_report)
+
+
+def test_runtime_evidence_gate_rejects_unbound_runtime_planning_explanation() -> None:
+    unbound_report = build_systolic_runtime_planning_explanation_report()
+
+    assert unbound_report.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="planning explanation binding",
+    ):
+        build_gate_report(runtime_planning_explanation_report=unbound_report)
+
+
+def test_runtime_evidence_gate_rejects_wrong_runtime_planning_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_planning_explanation = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_planning_explanation_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_planning_explanation_other",
+                    )
+                    if artifact.artifact_kind == "runtime_planning_explanation"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_planning_explanation.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="planning explanation matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_planning_explanation)
+
+
+def test_runtime_evidence_gate_rejects_failed_runtime_transfer_trace_index() -> None:
+    report = build_current_runtime_transfer_trace_index_report()
+    failed_report = RuntimeTransferTraceIndexReport(
+        graph_name=report.graph_name,
+        source_partition_plan_digest=report.source_partition_plan_digest,
+        source_transfer_evidence_digest=report.source_transfer_evidence_digest,
+        execution_trace_digest=report.execution_trace_digest,
+        trace_step_count=report.trace_step_count,
+        records=(report.records[0], report.records[0]),
+        issues=(
+            RuntimeTransferTraceIndexIssue(
+                subject="runtime_transfer_0000",
+                issue_code="duplicate_transfer_id",
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="transfer trace index failed",
+    ):
+        build_gate_report(runtime_transfer_trace_index_report=failed_report)
+
+
+def test_runtime_evidence_gate_rejects_unbound_runtime_transfer_trace_index() -> None:
+    report = build_current_runtime_transfer_trace_index_report()
+    unbound = replace(report, graph_name="runtime_other_backend_equivalence")
+
+    assert unbound.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="transfer trace index binding",
+    ):
+        build_gate_report(runtime_transfer_trace_index_report=unbound)
+
+
+def test_runtime_evidence_gate_rejects_wrong_runtime_transfer_trace_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_transfer_trace = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_transfer_trace_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_transfer_trace_index_other",
+                    )
+                    if artifact.artifact_kind == "runtime_transfer_trace_index"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_transfer_trace.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="transfer trace index matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_transfer_trace)
 
 
 def test_runtime_evidence_gate_rejects_failed_vector_backend_equivalence() -> None:
@@ -280,6 +628,590 @@ def test_runtime_evidence_gate_rejects_unbound_mixed_backend_equivalence() -> No
         match="mixed backend equivalence binding",
     ):
         build_gate_report(mixed_backend_equivalence_report=mismatched_report)
+
+
+def test_runtime_evidence_gate_rejects_failed_mixed_runtime_planning_explanation() -> None:
+    report = build_mixed_backend_equivalence_runtime_planning_explanation_report()
+    unknown_step = replace(
+        report.steps[1],
+        reason="unclassified_reason",
+        selection_kind="unknown",
+    )
+    failed_report = RuntimePlanningExplanationReport(
+        graph_name=report.graph_name,
+        steps=(report.steps[0], unknown_step, *report.steps[2:]),
+        transfer_edge_count=report.transfer_edge_count,
+        layout_conversion_count=report.layout_conversion_count,
+        total_transfer_bytes=report.total_transfer_bytes,
+        total_layout_conversion_bytes=report.total_layout_conversion_bytes,
+        total_data_movement_bytes=report.total_data_movement_bytes,
+        candidate_score_mode=report.candidate_score_mode,
+        issues=(
+            RuntimePlanningExplanationIssue(
+                operation_name="normalize",
+                issue_code="unknown_selection_reason",
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="planning explanation failed",
+    ):
+        build_gate_report(mixed_runtime_planning_explanation_report=failed_report)
+
+
+def test_runtime_evidence_gate_rejects_unbound_mixed_runtime_planning_explanation() -> None:
+    unbound_report = build_backend_equivalence_runtime_planning_explanation_report()
+
+    assert unbound_report.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed planning explanation binding",
+    ):
+        build_gate_report(mixed_runtime_planning_explanation_report=unbound_report)
+
+
+def test_runtime_evidence_gate_rejects_wrong_mixed_runtime_planning_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_planning_explanation = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_mixed_planning_explanation_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_planning_explanation_other",
+                    )
+                    if artifact.artifact_kind == "runtime_planning_explanation"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_planning_explanation.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed planning explanation matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_planning_explanation)
+
+
+def test_runtime_evidence_gate_rejects_failed_hs_ir_plan_alignment() -> None:
+    report = build_alignment_report()
+    failed_alignment = replace(
+        report,
+        partition_backend_sequence=("reference-cpu", *report.partition_backend_sequence[1:]),
+        issues=(
+            RuntimeHsIrPlanAlignmentIssue(
+                subject="backend_sequence",
+                issue_code="hs_ir_partition_backend_mismatch",
+            ),
+            RuntimeHsIrPlanAlignmentIssue(
+                subject="backend_sequence",
+                issue_code="partition_trace_backend_mismatch",
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="HS-IR plan alignment failed",
+    ):
+        build_gate_report(runtime_hs_ir_plan_alignment_report=failed_alignment)
+
+
+def test_runtime_evidence_gate_rejects_unbound_hs_ir_plan_alignment() -> None:
+    report = build_alignment_report()
+    unbound_alignment = replace(
+        report,
+        graph_name="runtime_other_backend_equivalence",
+        partition_plan_graph_name="runtime_other_backend_equivalence",
+        execution_trace_graph_name="runtime_other_backend_equivalence",
+    )
+
+    assert unbound_alignment.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="HS-IR plan alignment binding",
+    ):
+        build_gate_report(runtime_hs_ir_plan_alignment_report=unbound_alignment)
+
+
+def test_runtime_evidence_gate_rejects_unbound_layout_conversion_evidence() -> None:
+    report = build_current_runtime_layout_conversion_evidence_report()
+    unbound = replace(report, graph_name="runtime_other_backend_equivalence")
+
+    assert unbound.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="layout conversion evidence binding",
+    ):
+        build_gate_report(runtime_layout_conversion_evidence_report=unbound)
+
+
+def test_runtime_evidence_gate_rejects_unbound_layout_conversion_trace_index() -> None:
+    report = build_current_runtime_layout_conversion_trace_index_report()
+    forged = replace(
+        report,
+        source_layout_conversion_evidence_digest=(
+            "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        ),
+    )
+
+    assert forged.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="layout conversion trace index binding failed",
+    ):
+        build_gate_report(runtime_layout_conversion_trace_index_report=forged)
+
+
+def test_runtime_evidence_gate_rejects_unbound_layout_conversion_digest_binding() -> None:
+    report = build_current_runtime_layout_conversion_digest_binding_report()
+    forged = replace(
+        report,
+        source_layout_conversion_metadata_digest=(
+            "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        ),
+    )
+
+    assert forged.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="layout conversion digest binding failed",
+    ):
+        build_gate_report(runtime_layout_conversion_digest_binding_report=forged)
+
+
+def test_runtime_evidence_gate_rejects_unbound_mixed_tensor_store() -> None:
+    report = build_mixed_tensor_store_evidence_report()
+    unbound = replace(report, graph_name="runtime_other_backend_equivalence")
+
+    assert unbound.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed tensor store evidence binding",
+    ):
+        build_gate_report(mixed_tensor_store_report=unbound)
+
+
+def test_runtime_evidence_gate_rejects_missing_backend_equivalence_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    without_mixed_equivalence = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_missing_mixed_backend_equivalence_graph",
+        tuple(
+            graph
+            for graph in report.graphs
+            if graph.graph_id != RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+        ),
+    )
+
+    assert without_mixed_equivalence.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed backend equivalence matrix coverage",
+    ):
+        build_gate_report(matrix_report=without_mixed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_malformed_backend_equivalence_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    malformed_mixed_equivalence = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_malformed_mixed_backend_equivalence_graph",
+        tuple(
+            replace(graph, source_boundary="typed_compute_graph")
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert malformed_mixed_equivalence.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed backend equivalence matrix coverage",
+    ):
+        build_gate_report(matrix_report=malformed_mixed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_broadened_backend_equivalence_matrix_scope() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    broadened_mixed_equivalence = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_broadened_mixed_backend_equivalence_graph",
+        tuple(
+            replace(
+                graph,
+                artifacts=(
+                    *graph.artifacts,
+                    RuntimeEvidenceArtifact(
+                        artifact_kind="input_manifest",
+                        artifact_id="runtime_mixed_backend_equivalence_input_manifest",
+                    ),
+                ),
+                required_artifact_kinds=(
+                    *RUNTIME_MIXED_BACKEND_EQUIVALENCE_MATRIX_REQUIRED_ARTIFACTS,
+                    "input_manifest",
+                ),
+            )
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert broadened_mixed_equivalence.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed backend equivalence matrix coverage",
+    ):
+        build_gate_report(matrix_report=broadened_mixed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_wrong_backend_equivalence_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_mixed_equivalence = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_mixed_backend_equivalence_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_backend_equivalence_other",
+                    )
+                    if artifact.artifact_kind == "backend_equivalence"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_mixed_equivalence.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="mixed backend equivalence matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_mixed_equivalence)
+
+
+def test_runtime_evidence_gate_rejects_wrong_hs_ir_alignment_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_alignment = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_hs_ir_alignment_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_hs_ir_plan_alignment_other",
+                    )
+                    if artifact.artifact_kind == "runtime_hs_ir_plan_alignment"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_MIXED_BACKEND_EQUIVALENCE_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_alignment.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="HS-IR plan alignment matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_alignment)
+
+
+def test_runtime_evidence_gate_rejects_failed_backend_equivalence_portfolio() -> None:
+    vector_report = build_vector_backend_equivalence_report()
+    candidate = replace(
+        vector_report.runs[1],
+        planned_backend_sequence=vector_report.runs[0].planned_backend_sequence,
+    )
+    failed_vector = RuntimeBackendEquivalenceReport(
+        graph_name=vector_report.graph_name,
+        baseline_run_id=vector_report.baseline_run_id,
+        candidate_run_id=vector_report.candidate_run_id,
+        runs=(vector_report.runs[0], candidate),
+        comparisons=vector_report.comparisons,
+        issues=(
+            RuntimeBackendEquivalenceIssue(
+                subject="backend_sequence",
+                issue_code="backend_sequences_not_distinct",
+            ),
+        ),
+    )
+    failed_portfolio = build_runtime_backend_equivalence_portfolio_report(
+        "runtime_backend_equivalence_portfolio",
+        (
+            build_backend_equivalence_report(),
+            failed_vector,
+            build_mixed_backend_equivalence_report(),
+        ),
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio failed",
+    ):
+        build_gate_report(backend_equivalence_portfolio_report=failed_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_unbound_backend_equivalence_portfolio() -> None:
+    subportfolio = build_runtime_backend_equivalence_portfolio_report(
+        "runtime_backend_equivalence_portfolio",
+        (
+            build_backend_equivalence_report(),
+            build_mixed_backend_equivalence_report(),
+        ),
+    )
+
+    assert subportfolio.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio binding",
+    ):
+        build_gate_report(backend_equivalence_portfolio_report=subportfolio)
+
+
+def test_runtime_evidence_gate_rejects_forged_backend_equivalence_portfolio_slice() -> None:
+    report = build_runtime_backend_equivalence_portfolio_report(
+        "runtime_backend_equivalence_portfolio",
+        (
+            build_backend_equivalence_report(),
+            build_vector_backend_equivalence_report(),
+            build_mixed_backend_equivalence_report(),
+        ),
+    )
+    forged = RuntimeBackendEquivalencePortfolioReport(
+        portfolio_id=report.portfolio_id,
+        slices=(
+            replace(report.slices[0], graph_name="other_backend_equivalence"),
+            *report.slices[1:],
+        ),
+        issues=(),
+    )
+
+    assert forged.passed
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio binding",
+    ):
+        build_gate_report(backend_equivalence_portfolio_report=forged)
+
+
+def test_runtime_evidence_gate_rejects_missing_backend_equivalence_portfolio_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    without_portfolio = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_missing_backend_equivalence_portfolio_graph",
+        tuple(
+            graph
+            for graph in report.graphs
+            if graph.graph_id != RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID
+        ),
+    )
+
+    assert without_portfolio.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio matrix coverage",
+    ):
+        build_gate_report(matrix_report=without_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_malformed_backend_portfolio_matrix() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    malformed_portfolio = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_malformed_backend_equivalence_portfolio_graph",
+        tuple(
+            replace(graph, source_boundary="typed_compute_graph")
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert malformed_portfolio.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio matrix coverage",
+    ):
+        build_gate_report(matrix_report=malformed_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_broadened_backend_portfolio_matrix_scope() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    broadened_portfolio = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_broadened_backend_equivalence_portfolio_graph",
+        tuple(
+            replace(
+                graph,
+                artifacts=(
+                    *graph.artifacts,
+                    RuntimeEvidenceArtifact(
+                        artifact_kind="input_manifest",
+                        artifact_id="runtime_backend_equivalence_portfolio_input_manifest",
+                    ),
+                ),
+                required_artifact_kinds=(
+                    "backend_equivalence_portfolio",
+                    "input_manifest",
+                ),
+            )
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert broadened_portfolio.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio matrix coverage",
+    ):
+        build_gate_report(matrix_report=broadened_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_wrong_backend_portfolio_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_portfolio = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_backend_equivalence_portfolio_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_backend_equivalence_other_policy",
+                    )
+                    if artifact.artifact_kind == "backend_equivalence_portfolio_policy"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_portfolio.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_portfolio)
+
+
+def test_runtime_evidence_gate_rejects_failed_runtime_memory_planning_gate() -> None:
+    failed_gate = (
+        "runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {\n"
+        '  buffer_lifetime = "passed"\n'
+        '  allocation_plan = "passed"\n'
+        '  memory_budget = "passed"\n'
+        '  status = "WARN"\n'
+        "}\n"
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="runtime memory planning gate failed",
+    ):
+        build_gate_report(memory_planning_gate_text=failed_gate)
+
+
+def test_runtime_evidence_gate_rejects_missing_memory_planning_matrix_graph() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    without_memory_planning = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_missing_memory_planning_graph",
+        tuple(
+            graph for graph in report.graphs if graph.graph_id != RUNTIME_MEMORY_PLANNING_GRAPH_ID
+        ),
+    )
+
+    assert without_memory_planning.runtime_evidence_matrix_complete
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="runtime evidence gate matrix coverage",
+    ):
+        build_gate_report(matrix_report=without_memory_planning)
+
+
+def test_runtime_evidence_gate_rejects_wrong_memory_planning_matrix_artifact_id() -> None:
+    report = build_current_runtime_evidence_matrix_report()
+    mismatched_memory_planning = build_runtime_evidence_matrix_report(
+        "runtime_evidence_gate_wrong_memory_planning_artifact_id",
+        tuple(
+            replace(
+                graph,
+                artifacts=tuple(
+                    replace(
+                        artifact,
+                        artifact_id="runtime_memory_budget_other",
+                    )
+                    if artifact.artifact_kind == "runtime_memory_budget"
+                    else artifact
+                    for artifact in graph.artifacts
+                ),
+            )
+            if graph.graph_id == RUNTIME_MEMORY_PLANNING_GRAPH_ID
+            else graph
+            for graph in report.graphs
+        ),
+    )
+
+    assert mismatched_memory_planning.runtime_evidence_matrix_complete
+    assert RUNTIME_MEMORY_PLANNING_MATRIX_REQUIRED_ARTIFACTS == (
+        "runtime_buffer_lifetime",
+        "runtime_allocation_plan",
+        "runtime_memory_budget",
+        "runtime_allocation_request_manifest",
+        "runtime_allocation_admission",
+        "runtime_allocation_receipt",
+        "runtime_allocation_reconciliation",
+    )
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="runtime evidence gate matrix coverage",
+    ):
+        build_gate_report(matrix_report=mismatched_memory_planning)
+
+
+def test_runtime_evidence_gate_rejects_unbound_backend_equivalence_portfolio_policy() -> None:
+    policy = build_default_runtime_backend_equivalence_portfolio_policy_report()
+    forged_requirement = RuntimeBackendEquivalencePortfolioRequirement(
+        slice_id="runtime_backend_equivalence",
+        graph_name="runtime_backend_equivalence",
+        baseline_run_id="reference_cpu",
+        candidate_run_id="systolic_sim",
+        baseline_backend_sequence=("reference-cpu", "reference-cpu"),
+        candidate_backend_sequence=("vector-sim", "reference-cpu"),
+    )
+    forged_policy = RuntimeBackendEquivalencePortfolioPolicyReport(
+        portfolio_id=policy.portfolio_id,
+        requirements=(forged_requirement, *policy.requirements[1:]),
+        required_candidate_backend_families=policy.required_candidate_backend_families,
+    )
+
+    with pytest.raises(
+        RuntimeEvidenceGateError,
+        match="backend equivalence portfolio policy failed",
+    ):
+        build_gate_report(backend_equivalence_portfolio_policy_report=forged_policy)
 
 
 def test_runtime_evidence_gate_rejects_failed_tensor_store_evidence() -> None:
@@ -430,6 +1362,7 @@ def test_runtime_evidence_gate_rejects_unbound_execution_receipt_digest() -> Non
 
 def test_runtime_evidence_gate_rejects_failed_execution_evidence_bundle() -> None:
     receipt = build_execution_receipt_report()
+    execution_evidence = build_execution_receipt_evidence_reports()
     tensor_store = build_tensor_store_evidence_report()
     input_manifest = build_input_manifest_report()
     output_manifest = build_output_manifest_report()
@@ -453,6 +1386,8 @@ def test_runtime_evidence_gate_rejects_failed_execution_evidence_bundle() -> Non
         tensor_store_report=tensor_store,
         input_manifest_report=input_manifest,
         output_manifest_report=output_manifest,
+        output_contract_report=execution_evidence.output_contract,
+        public_output_bundle=execution_evidence.public_output_bundle,
         reference_correctness_report=reference_correctness,
         execution_receipt_report=forged_receipt,
         issues=(
@@ -469,6 +1404,7 @@ def test_runtime_evidence_gate_rejects_failed_execution_evidence_bundle() -> Non
 
 def test_runtime_evidence_gate_rejects_unbound_execution_evidence_bundle() -> None:
     receipt = build_execution_receipt_report()
+    execution_evidence = build_execution_receipt_evidence_reports()
     tensor_store = build_tensor_store_evidence_report()
     input_manifest = build_input_manifest_report()
     output_manifest = build_output_manifest_report()
@@ -483,12 +1419,84 @@ def test_runtime_evidence_gate_rejects_unbound_execution_evidence_bundle() -> No
         tensor_store,
         input_manifest,
         output_manifest,
+        execution_evidence.output_contract,
+        execution_evidence.public_output_bundle,
         reference_correctness,
         truncated_receipt,
     )
 
     with pytest.raises(RuntimeEvidenceGateError, match="evidence bundle binding failed"):
         build_gate_report(execution_evidence_bundle_report=stale_bundle)
+
+
+def test_runtime_evidence_gate_rejects_failed_execution_output_closure() -> None:
+    evidence = build_execution_receipt_evidence_reports()
+    receipt = build_runtime_execution_receipt_report(
+        evidence.execution,
+        evidence.tensor_store,
+        evidence.input_manifest,
+        evidence.output_manifest,
+        evidence.output_contract,
+        evidence.public_output_bundle,
+        evidence.reference_correctness,
+    )
+    bundle = build_runtime_execution_evidence_bundle_report(
+        evidence.tensor_store,
+        evidence.input_manifest,
+        evidence.output_manifest,
+        evidence.output_contract,
+        evidence.public_output_bundle,
+        evidence.reference_correctness,
+        receipt,
+    )
+    report = build_runtime_execution_output_closure_report(
+        evidence.output_contract,
+        evidence.public_output_bundle,
+        receipt,
+        bundle,
+    )
+    forged_check = replace(
+        report.checks[0],
+        receipt_metadata_digest="sha256:" + "1" * 64,
+    )
+    failed_report = RuntimeExecutionOutputClosureReport(
+        graph_name=report.graph_name,
+        source_output_contract_schema_version=(report.source_output_contract_schema_version),
+        source_output_contract_metadata_digest=(report.source_output_contract_metadata_digest),
+        source_output_contract_item_count=report.source_output_contract_item_count,
+        source_output_contract_passed=report.source_output_contract_passed,
+        source_public_output_bundle_schema_version=(
+            report.source_public_output_bundle_schema_version
+        ),
+        source_public_output_bundle_metadata_digest=(
+            report.source_public_output_bundle_metadata_digest
+        ),
+        source_public_output_bundle_item_count=(report.source_public_output_bundle_item_count),
+        source_public_output_bundle_passed=report.source_public_output_bundle_passed,
+        source_execution_receipt_schema_version=(report.source_execution_receipt_schema_version),
+        source_execution_receipt_metadata_digest=(report.source_execution_receipt_metadata_digest),
+        source_execution_receipt_passed=report.source_execution_receipt_passed,
+        source_execution_evidence_bundle_schema_version=(
+            report.source_execution_evidence_bundle_schema_version
+        ),
+        source_execution_evidence_bundle_metadata_digest=(
+            report.source_execution_evidence_bundle_metadata_digest
+        ),
+        source_execution_evidence_bundle_passed=(report.source_execution_evidence_bundle_passed),
+        source_bundle_execution_receipt_metadata_digest=(
+            report.source_bundle_execution_receipt_metadata_digest
+        ),
+        checks=(forged_check, *report.checks[1:]),
+        issues=(
+            RuntimeExecutionOutputClosureIssue(
+                subject="output_contract",
+                issue_code="receipt_metadata_digest_mismatch",
+            ),
+        ),
+    )
+
+    with pytest.raises(RuntimeEvidenceGateError, match="output closure failed"):
+        build_gate_report(execution_output_closure_report=failed_report)
 
 
 def test_runtime_evidence_gate_rejects_invalid_source_intent_runtime_returns() -> None:

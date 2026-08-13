@@ -1,0 +1,136 @@
+{
+  "artifact_status": "diagnostic_only",
+  "blocked_execution_surfaces": [
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "direct_compute_graph_from_source",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_object_inspection",
+    "python_import",
+    "subprocess_execution"
+  ],
+  "blocked_prerequisite_count": 2,
+  "direct_triton_source_ingestion": false,
+  "integration_status": "ready",
+  "integration_target": "real_triton_integration_phase_epsilon",
+  "issues": [
+    "direct_triton_source_ingestion_blocked",
+    "triton_jit_execution_blocked"
+  ],
+  "missing_prerequisite_count": 0,
+  "prerequisites": [
+    {
+      "evidence_id": "docs.TRITON_SOURCE_THREAT_MODEL",
+      "prerequisite_id": "triton_source_threat_model",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.triton_source_preflight",
+      "prerequisite_id": "triton_source_preflight",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.triton_idiom_coverage_report",
+      "prerequisite_id": "triton_idiom_coverage_report",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "docs.SOURCE_INTENT_IR",
+      "prerequisite_id": "source_intent_plain_data_contract",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.source_intent_frontend_conformance_gate",
+      "prerequisite_id": "source_intent_frontend_conformance_gate",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "docs.SOURCE_TO_INTENT_PARSER_GATE",
+      "prerequisite_id": "source_to_intent_parser_gate",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.source_to_intent_research_parser",
+      "prerequisite_id": "source_to_intent_research_parser",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.source_to_intent_research_kernel_ingress_evidence_gate",
+      "prerequisite_id": "source_to_intent_research_kernel_ingress",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.proof_of_backend_equivalence",
+      "prerequisite_id": "backend_equivalence_proof",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.runtime_layout_conversion_trace_replay_verifier",
+      "prerequisite_id": "layout_conversion_evidence",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "rfcs.0242_source_to_intent_next_syntax_slice",
+      "prerequisite_id": "broader_parser_implementation_rfc",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.source_to_intent_next_syntax_slice",
+      "prerequisite_id": "semantic_mapping_corpus_for_next_syntax",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "tests.golden.frontend.source_to_intent_next_syntax_source_intent",
+      "prerequisite_id": "source_intent_goldens_for_next_syntax",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "tests.test_source_to_intent_next_syntax_slice",
+      "prerequisite_id": "fuzz_semantic_mapping_for_next_syntax",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "examples.external_frontend_package_conformance",
+      "prerequisite_id": "external_frontend_package_conformance",
+      "required_for_readiness": true,
+      "status": "satisfied"
+    },
+    {
+      "evidence_id": "docs.SOURCE_TO_INTENT_PARSER_GATE",
+      "prerequisite_id": "direct_triton_source_ingestion",
+      "required_for_readiness": false,
+      "status": "blocked_by_policy"
+    },
+    {
+      "evidence_id": "docs.TRITON_SOURCE_THREAT_MODEL",
+      "prerequisite_id": "triton_jit_execution_permission",
+      "required_for_readiness": false,
+      "status": "blocked_by_policy"
+    }
+  ],
+  "proposal_name": "real_triton_integration_readiness_current",
+  "readiness_contract": "triton_integration_readiness.data_only.v0",
+  "readiness_ready": true,
+  "satisfied_prerequisite_count": 15,
+  "schema_version": "tuc.triton_integration_readiness_report.v0",
+  "triton_jit_execution": false
+}

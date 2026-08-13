@@ -1,0 +1,90 @@
+{
+  "admission_effect": "does_not_admit_frontend_package_import",
+  "all_required_evidence_present": true,
+  "artifact_status": "review_gate",
+  "blocked_execution_surfaces": [
+    "device_access",
+    "dynamic_library_loading",
+    "environment_access",
+    "file_system_access",
+    "frontend_package_import",
+    "network_access",
+    "plugin_discovery",
+    "python_import",
+    "subprocess_execution"
+  ],
+  "blocked_outputs": [
+    "import_side_effect",
+    "imported_module",
+    "package_entrypoint",
+    "python_function_object",
+    "source_intent_from_import"
+  ],
+  "dynamic_library_loading": false,
+  "entrypoint_discovery": false,
+  "environment_access": false,
+  "evidence": [
+    {
+      "evidence_digest": "sha256:bd0ed6c655cf31899e2b3f0e3b03dd530b07481e40cd8e3aefabecde7d414dc1",
+      "evidence_id": "external_frontend_package_conformance",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:5a3d5d137f03e5026a9e8df7cc638d739a4d12b2aad91e1fa2ce9c3d1428a385",
+      "evidence_id": "package_import_sandbox_model",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:193037f8eda3c7fa47754af5a2b024c6642c6a7df407255bfe59a8f507639d11",
+      "evidence_id": "real_triton_integration_admission_gate",
+      "required": true
+    },
+    {
+      "evidence_digest": "sha256:2031c9801dc03523a5cb0789ada6fbc21772916d72c13698efd1651ae256d712",
+      "evidence_id": "source_ingestion_quarantine_gate",
+      "required": true
+    }
+  ],
+  "evidence_count": 4,
+  "evidence_policy": "digest_only",
+  "external_package_loaded": false,
+  "filesystem_access": false,
+  "frontend_package_import": false,
+  "gate_contract": "package_import_sandbox_gate.data_only.v0",
+  "gate_id": "package_import_sandbox_gate",
+  "gate_status": "sandbox_requirements_only",
+  "network_access": false,
+  "package_code_execution": false,
+  "plugin_discovery": false,
+  "python_import": false,
+  "required_control_count": 16,
+  "required_controls": [
+    "deterministic_manifest_only",
+    "digest_only_evidence",
+    "entrypoints_not_discovered",
+    "fail_closed_on_violation",
+    "import_side_effects_blocked",
+    "network_access_blocked",
+    "no_dynamic_library_loading",
+    "no_environment_access",
+    "no_filesystem_access",
+    "no_frontend_package_import",
+    "no_plugin_discovery",
+    "no_python_import",
+    "no_subprocess_execution",
+    "package_treated_as_untrusted",
+    "sanitized_diagnostics_only",
+    "source_intent_fixtures_only"
+  ],
+  "required_evidence_ids": [
+    "external_frontend_package_conformance",
+    "package_import_sandbox_model",
+    "real_triton_integration_admission_gate",
+    "source_ingestion_quarantine_gate"
+  ],
+  "sandbox_boundary_established": true,
+  "schema_version": "tuc.package_import_sandbox_gate_report.v0",
+  "source_intent_from_import": false,
+  "subprocess_execution": false,
+  "surface_id": "frontend_package_import"
+}

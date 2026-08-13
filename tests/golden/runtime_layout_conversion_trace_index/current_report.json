@@ -1,0 +1,63 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "conversion_count": 1,
+  "conversion_scope": "planned_logical_layout_only",
+  "execution_policy": "does_not_execute_conversions",
+  "execution_trace_digest": "sha256:8a8c5796324b1e3c541ef81643b7163db88674a3e8ff2aa9df506e9118b0242b",
+  "executor_contract": "runtime_executor.trusted_backend.v0",
+  "graph_name": "runtime_mixed_backend_equivalence",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "records": [
+    {
+      "consumer_executor_backend": "vector-sim",
+      "consumer_input_tensors": [
+        "projection"
+      ],
+      "consumer_operation": "normalize",
+      "consumer_operation_kind": "softmax",
+      "consumer_planned_backend": "vector-sim",
+      "consumer_step_index": 1,
+      "conversion_id": "layout_conversion_0000",
+      "conversion_status": "planned_not_executed",
+      "from_layout": "blocked",
+      "from_memory_domain": "device_sram",
+      "planned_bytes": 24,
+      "planner_reason": "layout_mismatch",
+      "producer_executor_backend": "systolic-sim",
+      "producer_operation": "projection",
+      "producer_operation_kind": "matmul",
+      "producer_output_tensors": [
+        "projection"
+      ],
+      "producer_planned_backend": "systolic-sim",
+      "producer_step_index": 0,
+      "tensor_name": "projection",
+      "to_layout": "row_major",
+      "to_memory_domain": "device_sram",
+      "trace_alignment_status": "producer_before_consumer"
+    }
+  ],
+  "residency_claim_status": "not_physical_residency_evidence",
+  "schema_version": "tuc.runtime_layout_conversion_trace_index_report.v0",
+  "source_evidence_contract": "runtime_layout_conversion_evidence.data_only.v0",
+  "source_layout_conversion_evidence_digest": "sha256:c58d06b90ba1512637a053ad0edfa15f4defbb12db2534dce5c93121d8074dd4",
+  "source_partition_plan_digest": "sha256:11ccb6e40e3403fd3ec9eeef0e4721bf993a1459bf67c994872d306db16ee0a3",
+  "status": "PASS",
+  "trace_index_contract": "runtime_layout_conversion_trace_index.data_only.v0",
+  "trace_index_scope": "planned_conversion_trace_alignment_only",
+  "trace_materialization_policy": "conversion_not_materialized_as_runtime_step",
+  "trace_step_count": 4,
+  "trusted_executor_registry": "trusted_runtime_executor_registry.v0"
+}

@@ -20,18 +20,37 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path
     )
 
 from tuc import (
+    RUNTIME_ALLOCATION_ADMISSION_CONTRACT,
+    RUNTIME_ALLOCATION_ADMISSION_REPORT_SCHEMA_VERSION,
+    RUNTIME_ALLOCATION_ADMISSION_STATUS,
     RUNTIME_ALLOCATION_PLAN_REPORT_SCHEMA_VERSION,
+    RUNTIME_ALLOCATION_RECEIPT_ALLOCATION_MODE,
+    RUNTIME_ALLOCATION_RECEIPT_CONTRACT,
+    RUNTIME_ALLOCATION_RECEIPT_STATUS,
+    RUNTIME_ALLOCATION_RECONCILIATION_CONTRACT,
+    RUNTIME_ALLOCATION_RECONCILIATION_POLICY_ID,
+    RUNTIME_ALLOCATION_RECONCILIATION_STATUS,
+    RUNTIME_ALLOCATION_REQUEST_MANIFEST_REPORT_SCHEMA_VERSION,
     RUNTIME_BUFFER_LIFETIME_REPORT_SCHEMA_VERSION,
     RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES,
     RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION,
+    RuntimeAllocationAdmissionReport,
     RuntimeAllocationPlanReport,
+    RuntimeAllocationReceiptReport,
+    RuntimeAllocationReconciliationReport,
     RuntimeAllocationRequestManifestReport,
     RuntimeBufferLifetimeReport,
     RuntimeMemoryBudgetReport,
+    assert_runtime_allocation_admission,
     assert_runtime_allocation_plan,
+    assert_runtime_allocation_receipt,
+    assert_runtime_allocation_reconciliation,
     assert_runtime_allocation_request_manifest,
     assert_runtime_buffer_lifetime,
     assert_runtime_memory_budget,
+    build_runtime_allocation_admission_report,
+    build_runtime_allocation_receipt_report,
+    build_runtime_allocation_reconciliation_report,
     build_runtime_allocation_request_manifest_report,
 )
 
@@ -46,6 +65,11 @@ def build_gate_report(
     lifetime_report: RuntimeBufferLifetimeReport | None = None,
     memory_budget_report: RuntimeMemoryBudgetReport | None = None,
     request_manifest_report: RuntimeAllocationRequestManifestReport | None = None,
+    allocation_admission_report: RuntimeAllocationAdmissionReport | None = None,
+    allocation_receipt_report: RuntimeAllocationReceiptReport | None = None,
+    allocation_reconciliation_report: (
+        RuntimeAllocationReconciliationReport | None
+    ) = None,
 ) -> str:
     """Return the stable CI-facing runtime memory planning gate report."""
 
@@ -80,7 +104,50 @@ def build_gate_report(
         memory_budget,
         request_manifest,
     )
-    return _render_gate_report(lifetime, allocation, memory_budget, request_manifest)
+    allocation_admission = (
+        build_runtime_allocation_admission_report(request_manifest, memory_budget)
+        if allocation_admission_report is None
+        else allocation_admission_report
+    )
+    _assert_allocation_admission_passed(allocation_admission)
+    _assert_allocation_admission_matches_sources(
+        request_manifest,
+        memory_budget,
+        allocation_admission,
+    )
+    allocation_receipt = (
+        build_runtime_allocation_receipt_report(allocation_admission)
+        if allocation_receipt_report is None
+        else allocation_receipt_report
+    )
+    _assert_allocation_receipt_passed(allocation_receipt)
+    _assert_allocation_receipt_matches_source(
+        allocation_admission,
+        allocation_receipt,
+    )
+    allocation_reconciliation = (
+        build_runtime_allocation_reconciliation_report(
+            allocation_admission,
+            allocation_receipt,
+        )
+        if allocation_reconciliation_report is None
+        else allocation_reconciliation_report
+    )
+    _assert_allocation_reconciliation_passed(allocation_reconciliation)
+    _assert_allocation_reconciliation_matches_sources(
+        allocation_admission,
+        allocation_receipt,
+        allocation_reconciliation,
+    )
+    return _render_gate_report(
+        lifetime,
+        allocation,
+        memory_budget,
+        request_manifest,
+        allocation_admission,
+        allocation_receipt,
+        allocation_reconciliation,
+    )
 
 
 def main() -> None:
@@ -122,6 +189,39 @@ def _assert_allocation_request_manifest_passed(
     except AssertionError as exc:
         raise RuntimeMemoryPlanningGateError(
             f"runtime allocation request manifest failed: {exc}"
+        ) from exc
+
+
+def _assert_allocation_admission_passed(
+    report: RuntimeAllocationAdmissionReport,
+) -> None:
+    try:
+        assert_runtime_allocation_admission(report)
+    except AssertionError as exc:
+        raise RuntimeMemoryPlanningGateError(
+            f"runtime allocation admission failed: {exc}"
+        ) from exc
+
+
+def _assert_allocation_receipt_passed(
+    report: RuntimeAllocationReceiptReport,
+) -> None:
+    try:
+        assert_runtime_allocation_receipt(report)
+    except AssertionError as exc:
+        raise RuntimeMemoryPlanningGateError(
+            f"runtime allocation receipt failed: {exc}"
+        ) from exc
+
+
+def _assert_allocation_reconciliation_passed(
+    report: RuntimeAllocationReconciliationReport,
+) -> None:
+    try:
+        assert_runtime_allocation_reconciliation(report)
+    except AssertionError as exc:
+        raise RuntimeMemoryPlanningGateError(
+            f"runtime allocation reconciliation failed: {exc}"
         ) from exc
 
 
@@ -261,6 +361,319 @@ def _assert_request_manifest_matches_sources(
         )
 
 
+def _assert_allocation_admission_matches_sources(
+    request_manifest: RuntimeAllocationRequestManifestReport,
+    memory_budget: RuntimeMemoryBudgetReport,
+    allocation_admission: RuntimeAllocationAdmissionReport,
+) -> None:
+    if request_manifest.graph_name != allocation_admission.graph_name:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission graph mismatch"
+        )
+    if request_manifest.operation_count != allocation_admission.operation_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission operation count mismatch"
+        )
+    if allocation_admission.admission_contract != RUNTIME_ALLOCATION_ADMISSION_CONTRACT:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission contract mismatch"
+        )
+    if (
+        allocation_admission.source_request_manifest_contract
+        != request_manifest.manifest_contract
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest contract mismatch"
+        )
+    if (
+        allocation_admission.source_request_manifest_schema_version
+        != RUNTIME_ALLOCATION_REQUEST_MANIFEST_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest schema mismatch"
+        )
+    if allocation_admission.source_request_manifest_issue_count != len(
+        request_manifest.issues
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest issue count mismatch"
+        )
+    if (
+        allocation_admission.source_request_manifest_metadata_digest
+        != request_manifest.manifest_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest digest mismatch"
+        )
+    if (
+        allocation_admission.source_request_manifest_budget_allocation_digest
+        != request_manifest.source_memory_budget_allocation_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission manifest budget mismatch"
+        )
+    if allocation_admission.source_memory_budget_contract != memory_budget.budget_contract:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission budget contract mismatch"
+        )
+    if (
+        allocation_admission.source_memory_budget_schema_version
+        != RUNTIME_MEMORY_BUDGET_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission budget schema mismatch"
+        )
+    if allocation_admission.source_memory_budget_issue_count != len(memory_budget.issues):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission budget issue count mismatch"
+        )
+    if (
+        allocation_admission.source_memory_budget_allocation_digest
+        != memory_budget.source_allocation_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission budget digest mismatch"
+        )
+    if allocation_admission.admission_count != request_manifest.request_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission count mismatch"
+        )
+    if allocation_admission.blocked_admission_count != 0:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission blocked"
+        )
+    if allocation_admission.total_admitted_bytes != request_manifest.total_reserved_bytes:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission bytes mismatch"
+        )
+    if tuple(admission.request_id for admission in allocation_admission.admissions) != tuple(
+        request.request_id for request in request_manifest.requests
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission request binding mismatch"
+        )
+    if tuple(admission.slot_id for admission in allocation_admission.admissions) != tuple(
+        request.slot_id for request in request_manifest.requests
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission slot binding mismatch"
+        )
+    if {
+        admission.admission_status for admission in allocation_admission.admissions
+    } != {RUNTIME_ALLOCATION_ADMISSION_STATUS}:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation admission status mismatch"
+        )
+
+
+def _assert_allocation_receipt_matches_source(
+    allocation_admission: RuntimeAllocationAdmissionReport,
+    allocation_receipt: RuntimeAllocationReceiptReport,
+) -> None:
+    if allocation_admission.graph_name != allocation_receipt.graph_name:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt graph mismatch"
+        )
+    if allocation_admission.operation_count != allocation_receipt.operation_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt operation count mismatch"
+        )
+    if allocation_receipt.receipt_contract != RUNTIME_ALLOCATION_RECEIPT_CONTRACT:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt contract mismatch"
+        )
+    if allocation_receipt.allocation_mode != RUNTIME_ALLOCATION_RECEIPT_ALLOCATION_MODE:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt mode mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_contract
+        != allocation_admission.admission_contract
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admission contract mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_schema_version
+        != RUNTIME_ALLOCATION_ADMISSION_REPORT_SCHEMA_VERSION
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admission schema mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_issue_count
+        != len(allocation_admission.issues)
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admission issue count mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_metadata_digest
+        != allocation_admission.admission_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admission digest mismatch"
+        )
+    if (
+        allocation_receipt.source_admission_total_admitted_bytes
+        != allocation_admission.total_admitted_bytes
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt admitted bytes mismatch"
+        )
+    if allocation_receipt.receipt_count != allocation_admission.admission_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt count mismatch"
+        )
+    if allocation_receipt.total_receipted_bytes != allocation_admission.total_admitted_bytes:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt bytes mismatch"
+        )
+    if tuple(receipt.request_id for receipt in allocation_receipt.receipts) != tuple(
+        admission.request_id for admission in allocation_admission.admissions
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt request binding mismatch"
+        )
+    if tuple(receipt.slot_id for receipt in allocation_receipt.receipts) != tuple(
+        admission.slot_id for admission in allocation_admission.admissions
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt slot binding mismatch"
+        )
+    if {receipt.allocation_status for receipt in allocation_receipt.receipts} != {
+        RUNTIME_ALLOCATION_RECEIPT_STATUS
+    }:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation receipt status mismatch"
+        )
+
+
+def _assert_allocation_reconciliation_matches_sources(
+    allocation_admission: RuntimeAllocationAdmissionReport,
+    allocation_receipt: RuntimeAllocationReceiptReport,
+    allocation_reconciliation: RuntimeAllocationReconciliationReport,
+) -> None:
+    if allocation_admission.graph_name != allocation_reconciliation.graph_name:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation graph mismatch"
+        )
+    if allocation_admission.operation_count != allocation_reconciliation.operation_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation operation count mismatch"
+        )
+    if (
+        allocation_reconciliation.reconciliation_contract
+        != RUNTIME_ALLOCATION_RECONCILIATION_CONTRACT
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation contract mismatch"
+        )
+    if (
+        allocation_reconciliation.reconciliation_policy_id
+        != RUNTIME_ALLOCATION_RECONCILIATION_POLICY_ID
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation policy mismatch"
+        )
+    if (
+        allocation_reconciliation.reconciliation_status
+        != RUNTIME_ALLOCATION_RECONCILIATION_STATUS
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation status mismatch"
+        )
+    if (
+        allocation_reconciliation.source_admission_contract
+        != allocation_admission.admission_contract
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation admission contract mismatch"
+        )
+    if (
+        allocation_reconciliation.source_admission_metadata_digest
+        != allocation_admission.admission_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation admission digest mismatch"
+        )
+    if (
+        allocation_reconciliation.source_admission_count
+        != allocation_admission.admission_count
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation admission count mismatch"
+        )
+    if (
+        allocation_reconciliation.source_admission_total_admitted_bytes
+        != allocation_admission.total_admitted_bytes
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation admitted bytes mismatch"
+        )
+    if (
+        allocation_reconciliation.source_receipt_contract
+        != allocation_receipt.receipt_contract
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation receipt contract mismatch"
+        )
+    if (
+        allocation_reconciliation.source_receipt_metadata_digest
+        != allocation_receipt.receipt_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation receipt digest mismatch"
+        )
+    if (
+        allocation_reconciliation.source_receipt_source_admission_metadata_digest
+        != allocation_admission.admission_metadata_digest
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation source binding mismatch"
+        )
+    if allocation_reconciliation.source_receipt_count != allocation_receipt.receipt_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation receipt count mismatch"
+        )
+    if (
+        allocation_reconciliation.source_receipt_total_receipted_bytes
+        != allocation_receipt.total_receipted_bytes
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation receipted bytes mismatch"
+        )
+    if allocation_reconciliation.row_count != allocation_receipt.receipt_count:
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation row count mismatch"
+        )
+    if (
+        allocation_reconciliation.total_reconciled_bytes
+        != allocation_receipt.total_receipted_bytes
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation bytes mismatch"
+        )
+    if tuple(row.admission_request_id for row in allocation_reconciliation.rows) != tuple(
+        admission.request_id for admission in allocation_admission.admissions
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation request binding mismatch"
+        )
+    if tuple(row.receipt_request_id for row in allocation_reconciliation.rows) != tuple(
+        receipt.request_id for receipt in allocation_receipt.receipts
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation receipt request mismatch"
+        )
+    if tuple(row.receipt_id for row in allocation_reconciliation.rows) != tuple(
+        receipt.receipt_id for receipt in allocation_receipt.receipts
+    ):
+        raise RuntimeMemoryPlanningGateError(
+            "runtime memory planning allocation reconciliation receipt id mismatch"
+        )
+
+
 def _request_slot_payloads(
     request_manifest: RuntimeAllocationRequestManifestReport,
 ) -> tuple[tuple[object, ...], ...]:
@@ -302,6 +715,9 @@ def _render_gate_report(
     allocation: RuntimeAllocationPlanReport,
     memory_budget: RuntimeMemoryBudgetReport,
     request_manifest: RuntimeAllocationRequestManifestReport,
+    allocation_admission: RuntimeAllocationAdmissionReport,
+    allocation_receipt: RuntimeAllocationReceiptReport,
+    allocation_reconciliation: RuntimeAllocationReconciliationReport,
 ) -> str:
     lines = ["runtime.memory_planning_gate @runtime_memory_planning_gate_v0 {"]
     lines.append('  buffer_lifetime = "passed"')
@@ -323,6 +739,39 @@ def _render_gate_report(
     lines.append(f'  allocation_requests = "{request_manifest.request_count}"')
     lines.append(
         f'  allocation_request_handle_policy = "{request_manifest.handle_policy}"'
+    )
+    lines.append('  allocation_admission = "passed"')
+    lines.append('  allocation_admission_binding = "verified"')
+    lines.append(f'  allocation_admissions = "{allocation_admission.admission_count}"')
+    lines.append(
+        '  allocation_admission_blocked = '
+        f'"{allocation_admission.blocked_admission_count}"'
+    )
+    lines.append(
+        '  allocation_admitted_bytes = '
+        f'"{allocation_admission.total_admitted_bytes}"'
+    )
+    lines.append('  allocation_receipt = "passed"')
+    lines.append('  allocation_receipt_binding = "verified"')
+    lines.append(f'  allocation_receipts = "{allocation_receipt.receipt_count}"')
+    lines.append(f'  allocation_receipt_mode = "{allocation_receipt.allocation_mode}"')
+    lines.append(
+        '  allocation_receipted_bytes = '
+        f'"{allocation_receipt.total_receipted_bytes}"'
+    )
+    lines.append('  allocation_reconciliation = "passed"')
+    lines.append('  allocation_reconciliation_binding = "verified"')
+    lines.append(
+        '  allocation_reconciliation_policy = '
+        f'"{allocation_reconciliation.reconciliation_policy_id}"'
+    )
+    lines.append(
+        '  allocation_reconciliation_rows = '
+        f'"{allocation_reconciliation.row_count}"'
+    )
+    lines.append(
+        '  allocation_reconciled_bytes = '
+        f'"{allocation_reconciliation.total_reconciled_bytes}"'
     )
     lines.append(
         "  blocked_execution_surfaces = "

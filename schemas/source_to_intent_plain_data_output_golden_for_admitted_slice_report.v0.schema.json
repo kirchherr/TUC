@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_plain_data_output_golden_for_admitted_slice_report.v0.schema.json",
+  "title": "TUC Source Intent Plain Data Output Golden For Admitted Slice Report v0",
+  "description": "Digest-only, source-free report proving the future admitted source slice has reviewable Source Intent plain-data goldens without admitting direct source ingestion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "artifact_policy",
+    "blocked_compiler_outputs",
+    "blocked_execution_surfaces",
+    "case_count",
+    "cases",
+    "direct_source_ingestion",
+    "evidence_id",
+    "golden_contract",
+    "golden_status",
+    "issues",
+    "operation_family_coverage",
+    "operation_family_coverage_complete",
+    "output_policy",
+    "plain_data_schema_version",
+    "raw_source_policy",
+    "report_digest",
+    "required_control_count",
+    "required_controls",
+    "schema_version",
+    "source_free_diagnostics_evidence",
+    "source_intent_contract",
+    "source_intent_schema_version",
+    "source_to_compute_graph",
+    "source_to_hac_ir",
+    "source_to_intent_plain_data_output_golden",
+    "source_to_runtime_plan",
+    "target_slice"
+  ],
+  "properties": {
+    "schema_version": {"const": "tuc.source_to_intent_plain_data_output_golden_for_admitted_slice_report.v0"},
+    "evidence_id": {"const": "source_to_intent_plain_data_output_golden_for_admitted_slice"},
+    "golden_contract": {"const": "source_to_intent_plain_data_output_golden_for_admitted_slice.data_only.v0"},
+    "golden_status": {"const": "complete_non_admitting"},
+    "target_slice": {"const": "bounded_source_buffer_to_source_intent_plain_data"},
+    "artifact_policy": {"const": "digest_only_report_with_reviewable_plain_data_golden"},
+    "output_policy": {"const": "source_intent.v0_plain_data_only"},
+    "admission_effect": {"const": "does_not_admit_direct_source_ingestion"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "plain_data_schema_version": {"const": "tuc.source_to_intent_plain_data_output_golden_for_admitted_slice_plain_data.v0"},
+    "source_intent_schema_version": {"const": "source_intent.v0"},
+    "source_intent_contract": {"const": "source_intent_ir.canonical.v0"},
+    "direct_source_ingestion": {"const": false},
+    "source_to_compute_graph": {"const": false},
+    "source_to_hac_ir": {"const": false},
+    "source_to_intent_plain_data_output_golden": {"const": true},
+    "source_to_runtime_plan": {"const": false},
+    "operation_family_coverage_complete": {"const": true},
+    "case_count": {"const": 2},
+    "required_control_count": {"const": 17},
+    "report_digest": {"$ref": "#/$defs/sha256_text"},
+    "issues": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "operation_family_coverage": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {"const": "elementwise"},
+        {"const": "matmul"},
+        {"const": "reduction"},
+        {"const": "softmax"}
+      ],
+      "items": false
+    },
+    "required_controls": {
+      "type": "array",
+      "minItems": 17,
+      "maxItems": 17,
+      "prefixItems": [
+        {"const": "bounded_source_buffer_api_bound"},
+        {"const": "source_ingestion_sandbox_implementation_bound"},
+        {"const": "parser_fuzz_negative_corpus_bound"},
+        {"const": "source_free_diagnostics_admission_tests_bound"},
+        {"const": "source_intent_plain_data_validates_through_intake"},
+        {"const": "source_intent_plain_data_digest_bound"},
+        {"const": "source_intent_plain_data_only"},
+        {"const": "reviewable_plain_data_golden"},
+        {"const": "raw_source_omitted"},
+        {"const": "direct_source_ingestion_remains_blocked"},
+        {"const": "no_source_to_compute_graph"},
+        {"const": "no_source_to_hac_ir"},
+        {"const": "no_source_to_runtime_plan"},
+        {"const": "no_python_import"},
+        {"const": "no_triton_jit"},
+        {"const": "no_device_access"},
+        {"const": "no_generated_artifacts"}
+      ],
+      "items": false
+    },
+    "blocked_compiler_outputs": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {"const": "metadata"},
+        {"const": "compute_graph"},
+        {"const": "tlir"},
+        {"const": "hac_ir"},
+        {"const": "hs_ir"},
+        {"const": "runtime_plan"},
+        {"const": "backend_decision"}
+      ],
+      "items": false
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "prefixItems": [
+        {"const": "backend_artifact_execution"},
+        {"const": "bytecode_compilation"},
+        {"const": "decorator_evaluation"},
+        {"const": "device_access"},
+        {"const": "dynamic_library_loading"},
+        {"const": "environment_dependent_behavior"},
+        {"const": "file_system_access"},
+        {"const": "frontend_module_import"},
+        {"const": "generated_artifact_execution"},
+        {"const": "network_access"},
+        {"const": "plugin_discovery"},
+        {"const": "python_function_inspection"},
+        {"const": "subprocess_execution"},
+        {"const": "triton_jit_execution"}
+      ],
+      "items": false
+    },
+    "source_free_diagnostics_evidence": {"$ref": "#/$defs/source_free_diagnostics_evidence"},
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/plain_data_golden_case"}
+    }
+  },
+  "$defs": {
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(sha256:[a-f0-9]{64}|[A-Za-z][A-Za-z0-9_.:-]*)$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "backend_artifact_path",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source",
+          "raw_source_text",
+          "raw_tensor_value",
+          "runtime_handle",
+          "source_intent_payload",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "source_free_diagnostics_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "digest",
+        "evidence_id",
+        "source_free",
+        "status",
+        "supports_golden"
+      ],
+      "properties": {
+        "contract": {"const": "source_free_diagnostics_admission_tests.data_only.v0"},
+        "digest": {"$ref": "#/$defs/sha256_text"},
+        "evidence_id": {"const": "source_free_diagnostics_admission_tests"},
+        "source_free": {"const": true},
+        "status": {"const": "complete_non_admitting"},
+        "supports_golden": {"const": true}
+      }
+    },
+    "plain_data_golden_case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "default_parser_status",
+        "line_count",
+        "operation_count",
+        "operation_families",
+        "parser_contract",
+        "parser_output_policy",
+        "parser_status",
+        "plain_data_digest",
+        "public_returns",
+        "return_count",
+        "source_bytes",
+        "source_digest",
+        "source_intent_contract",
+        "source_intent_schema_version",
+        "source_name",
+        "tensor_count"
+      ],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/report_text"},
+        "source_name": {"$ref": "#/$defs/report_text"},
+        "source_digest": {"$ref": "#/$defs/sha256_text"},
+        "source_bytes": {"type": "integer", "minimum": 1},
+        "line_count": {"type": "integer", "minimum": 1},
+        "plain_data_digest": {"$ref": "#/$defs/sha256_text"},
+        "tensor_count": {"type": "integer", "minimum": 1},
+        "operation_count": {"type": "integer", "minimum": 1},
+        "return_count": {"type": "integer", "minimum": 1},
+        "operation_families": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "enum": ["elementwise", "matmul", "reduction", "softmax"]
+          },
+          "uniqueItems": true
+        },
+        "public_returns": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {"$ref": "#/$defs/report_text"},
+          "uniqueItems": true
+        },
+        "source_intent_schema_version": {"const": "source_intent.v0"},
+        "source_intent_contract": {"const": "source_intent_ir.canonical.v0"},
+        "parser_contract": {"const": "source_to_intent_research_parser.execution_free.v0"},
+        "parser_status": {"const": "research_explicit_only"},
+        "default_parser_status": {"const": "default_parser_blocked"},
+        "parser_output_policy": {"const": "source_intent.v0_plain_data_only"}
+      }
+    }
+  }
+}

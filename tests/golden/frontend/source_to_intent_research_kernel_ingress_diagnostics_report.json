@@ -1,0 +1,258 @@
+{
+  "accepted_case_count": 5,
+  "blocked_claims": [
+    "general_triton_source_ingestion",
+    "native_performance_claim",
+    "production_parser"
+  ],
+  "blocked_compiler_outputs": [
+    "metadata",
+    "compute_graph",
+    "tlir",
+    "hac_ir",
+    "hs_ir",
+    "runtime_plan",
+    "backend_decision"
+  ],
+  "blocked_execution_surfaces": [
+    "backend_artifact_execution",
+    "bytecode_compilation",
+    "decorator_evaluation",
+    "device_access",
+    "dynamic_library_loading",
+    "environment_dependent_behavior",
+    "file_system_access",
+    "frontend_module_import",
+    "generated_artifact_execution",
+    "module_import_execution",
+    "module_top_level_execution",
+    "network_access",
+    "plugin_discovery",
+    "python_function_inspection",
+    "python_function_object_ingestion",
+    "subprocess_execution",
+    "triton_jit_execution"
+  ],
+  "cases": [
+    {
+      "case_id": "accepted_module_matmul_elementwise",
+      "expectation": "accepted",
+      "ingress_report_digest": "sha256:5608e21f317835c6e64dc5128ed29b8fed300c7d769c1c5ba2a83e26caeb5a86",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 206,
+      "module_digest": "sha256:eb599f41b7abee29e06c0842db8ba43fc8e8b710f668532a767c31fd81d7f7a0",
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "outcome": "accepted",
+      "rejection_reason": "",
+      "source_name": "research_matmul_elementwise"
+    },
+    {
+      "case_id": "accepted_module_softmax_reduction",
+      "expectation": "accepted",
+      "ingress_report_digest": "sha256:88727681c95fadaf1f870a034447d997b2a3b12b9c89f77bf92fa24b4f4a701b",
+      "kernel_name": "softmax_reduction",
+      "module_bytes": 190,
+      "module_digest": "sha256:ef66d918fd544639684a3b8dfca53fad9d4f9048cffd7d3fa7cef8b51e2dffd5",
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "outcome": "accepted",
+      "rejection_reason": "",
+      "source_name": "research_softmax_reduction"
+    },
+    {
+      "case_id": "accepted_module_matmul_reduction",
+      "expectation": "accepted",
+      "ingress_report_digest": "sha256:26336180ff64a5f3d46ea4eb548bbf6c07082a6ad1d72dfb9ef279f727824d63",
+      "kernel_name": "matmul_reduction",
+      "module_bytes": 189,
+      "module_digest": "sha256:a89fa59436fec099776603ffead3fda935dff77a05308572bcd049fd1cda338f",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "outcome": "accepted",
+      "rejection_reason": "",
+      "source_name": "research_matmul_reduction"
+    },
+    {
+      "case_id": "accepted_module_softmax_elementwise",
+      "expectation": "accepted",
+      "ingress_report_digest": "sha256:b2f4afca4cd9fa329eecc811899f2c2f1247afea3574a1bfc0bbf665654876f0",
+      "kernel_name": "softmax_elementwise",
+      "module_bytes": 220,
+      "module_digest": "sha256:47880aa48401a979fb09bf64accbc9ea65b91fabb51b545ef29782e828f93af2",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "outcome": "accepted",
+      "rejection_reason": "",
+      "source_name": "research_softmax_elementwise"
+    },
+    {
+      "case_id": "accepted_module_mvp_pipeline",
+      "expectation": "accepted",
+      "ingress_report_digest": "sha256:10fb94d312a55edf71fb03c3b7645445e83514e18ca5e77a54d7e29511c59103",
+      "kernel_name": "mvp_pipeline",
+      "module_bytes": 281,
+      "module_digest": "sha256:47f230b1ac25994fb6a2a63ac703c2f78451b1d37349fb113b6e2081b0f43f78",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "outcome": "accepted",
+      "rejection_reason": "",
+      "source_name": "research_mvp_pipeline"
+    },
+    {
+      "case_id": "reject_unsupported_import",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 198,
+      "module_digest": "sha256:5854c745c7a740497cc65daca09f1f57e8b2757e6e795edb2612528097da8f7f",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "unsupported_import",
+      "source_name": "reject_unsupported_import"
+    },
+    {
+      "case_id": "reject_import_from_statement",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 211,
+      "module_digest": "sha256:d415919207313e08fa89aad507fffe451e4f47a5d415379a8984e549b817467e",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "import_from_statement",
+      "source_name": "reject_import_from_statement"
+    },
+    {
+      "case_id": "reject_import_after_kernel_function",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 207,
+      "module_digest": "sha256:2545df9ae9a0361ab210d119610e5f8fde53b4c5ebf8fe3b7766216246a8c41c",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "import_after_kernel_function",
+      "source_name": "reject_import_after_kernel_function"
+    },
+    {
+      "case_id": "reject_missing_triton_jit_decorator",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 194,
+      "module_digest": "sha256:55094ecd434f5fdf4457144cca19e2e1f9386c06ad3000c31fc4dc6b0b79fe78",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "missing_triton_jit_decorator",
+      "source_name": "reject_missing_triton_jit_decorator"
+    },
+    {
+      "case_id": "reject_annotated_signature",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 230,
+      "module_digest": "sha256:777780e3ae8aa587075444f1ba56f25563d4cf01be3206f981f728735fa30fbc",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "preflight_annotation",
+      "source_name": "reject_annotated_signature"
+    },
+    {
+      "case_id": "reject_decorator_call",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 219,
+      "module_digest": "sha256:a3dd3e800438a0238e2af52803dd33cad29976dd96f3f48e0e9aadbfee07f90a",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "decorator_call",
+      "source_name": "reject_decorator_call"
+    },
+    {
+      "case_id": "reject_unsupported_decorator",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 210,
+      "module_digest": "sha256:78c9e22cac80f665b181785c6ad91381e68a1cb9ef40a90bab02884cf0fe6dc0",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "unsupported_decorator",
+      "source_name": "reject_unsupported_decorator"
+    },
+    {
+      "case_id": "reject_multiple_kernel_functions",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 262,
+      "module_digest": "sha256:c0a2c572dd4a85784a96f879ea8cc9b17c5648d95dfc054c49e55d2429e9bba9",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "multiple_kernel_functions",
+      "source_name": "reject_multiple_kernel_functions"
+    },
+    {
+      "case_id": "reject_top_level_side_effect",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "matmul_elementwise",
+      "module_bytes": 240,
+      "module_digest": "sha256:15b4867b73fe78aa6504e2ec91bbc2cae85b97f7aeec14dc627e3afc2d6317e0",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "top_level_side_effect",
+      "source_name": "reject_top_level_side_effect"
+    },
+    {
+      "case_id": "reject_kernel_name_mismatch",
+      "expectation": "rejected",
+      "ingress_report_digest": "",
+      "kernel_name": "not_the_kernel",
+      "module_bytes": 237,
+      "module_digest": "sha256:781162cea1fd8861152d950a28fedc8bb5732533668d5318fdb059e640add062",
+      "operation_families": [],
+      "outcome": "rejected",
+      "rejection_reason": "kernel_name_mismatch",
+      "source_name": "reject_kernel_name_mismatch"
+    }
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "diagnostics_contract": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0",
+  "ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "input_policy": "single_triton_module_source_buffer_only",
+  "output_policy": "extracted_kernel_source_to_source_intent.v0_plain_data",
+  "parser_output_policy": "source_intent.v0_plain_data_only",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "rejected_case_count": 10,
+  "rejection_reasons": [
+    "decorator_call",
+    "import_after_kernel_function",
+    "import_from_statement",
+    "kernel_name_mismatch",
+    "missing_triton_jit_decorator",
+    "multiple_kernel_functions",
+    "preflight_annotation",
+    "top_level_side_effect",
+    "unsupported_decorator",
+    "unsupported_import"
+  ],
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_diagnostics_report.v0"
+}

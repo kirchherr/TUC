@@ -1,0 +1,75 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "checks": [
+    {
+      "check_name": "layout_conversion_evidence_report_passes",
+      "detail": "source_report_passed",
+      "evidence_id": "runtime_layout_conversion_evidence_mixed",
+      "status": "passed"
+    },
+    {
+      "check_name": "layout_conversion_schema_and_golden_stable",
+      "detail": "schema_and_current_golden_present",
+      "evidence_id": "runtime_layout_conversion_evidence_schema_and_golden",
+      "status": "passed"
+    },
+    {
+      "check_name": "layout_conversion_negative_tests_present",
+      "detail": "negative_tests_cover_malformed_inputs",
+      "evidence_id": "tests.test_runtime_layout_conversion_evidence",
+      "status": "passed"
+    },
+    {
+      "check_name": "runtime_evidence_matrix_required_inventory",
+      "detail": "matrix_inventory_required",
+      "evidence_id": "runtime_layout_conversion_evidence_mixed",
+      "status": "passed"
+    },
+    {
+      "check_name": "second_independent_layout_conversion_slice",
+      "detail": "second_slice_report_passed",
+      "evidence_id": "runtime_layout_conversion_evidence_reduction_slice",
+      "status": "passed"
+    },
+    {
+      "check_name": "gate_exact_artifact_binding",
+      "detail": "exact_artifact_binding_verified",
+      "evidence_id": "runtime_layout_conversion_evidence_mixed",
+      "status": "passed"
+    },
+    {
+      "check_name": "hs_ir_and_tensor_store_digest_binding",
+      "detail": "exact_digest_binding_verified",
+      "evidence_id": "runtime_layout_conversion_digest_binding_mixed",
+      "status": "passed"
+    }
+  ],
+  "issues": [],
+  "proposal_name": "runtime_layout_conversion_gate_required_evidence",
+  "readiness_contract": "runtime_layout_conversion_gate_readiness.data_only.v0",
+  "readiness_metadata_digest": "sha256:09699133621f51c9d918fdb872baacbded47ff8ab37ee0d1970bd51bd42b5bcf",
+  "readiness_status": "ready",
+  "ready": true,
+  "schema_version": "tuc.runtime_layout_conversion_gate_readiness_report.v0",
+  "source_conversion_count": 1,
+  "source_conversion_metadata_digest": "sha256:9d07f000336e1150dced149fc2c5a5ef8a88467cdac15b3c6297ecfb6e8b1839",
+  "source_evidence_contract": "runtime_layout_conversion_evidence.data_only.v0",
+  "source_evidence_issue_count": 0,
+  "source_evidence_schema_version": "tuc.runtime_layout_conversion_evidence_report.v0",
+  "source_graph_name": "runtime_mixed_backend_equivalence",
+  "source_partition_plan_digest": "sha256:11ccb6e40e3403fd3ec9eeef0e4721bf993a1459bf67c994872d306db16ee0a3",
+  "target_artifact_id": "runtime_layout_conversion_evidence_mixed",
+  "target_artifact_kind": "runtime_layout_conversion_evidence",
+  "target_gate_status": "runtime_evidence_gate_required",
+  "target_graph_id": "runtime_mixed_backend_equivalence"
+}

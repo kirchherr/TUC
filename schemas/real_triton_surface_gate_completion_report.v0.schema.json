@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/real_triton_surface_gate_completion_report.v0.schema.json",
+  "title": "TUC Real Triton Surface Gate Completion Report v0",
+  "description": "Data-only completion report binding all dedicated Real Triton surface gates by digest while keeping Real Triton integration non-admitting.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_effect",
+    "admission_gate_digest",
+    "admission_status",
+    "admitted",
+    "all_required_surface_gates_present",
+    "all_surface_gates_non_admitting",
+    "artifact_status",
+    "blocked_claim_count",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "blocked_surface_count",
+    "completion_contract",
+    "completion_status",
+    "evidence_policy",
+    "expected_surface_gate_count",
+    "missing_surface_gate_ids",
+    "required_surface_gate_ids",
+    "schema_version",
+    "security_boundary_established",
+    "surface_gate_count",
+    "surface_gates"
+  ],
+  "properties": {
+    "admission_effect": {"const": "does_not_admit_real_triton_integration"},
+    "admission_gate_digest": {"$ref": "#/$defs/sha256_text"},
+    "admission_status": {"const": "blocked"},
+    "admitted": {"const": false},
+    "all_required_surface_gates_present": {"const": true},
+    "all_surface_gates_non_admitting": {"const": true},
+    "artifact_status": {"const": "review_gate"},
+    "blocked_claim_count": {"const": 6},
+    "blocked_claims": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"const": "accepts_arbitrary_triton_source"},
+        {"const": "executes_generated_artifacts"},
+        {"const": "executes_native_backends"},
+        {"const": "imports_external_frontend_packages"},
+        {"const": "runs_triton_jit"},
+        {"const": "uses_real_devices"}
+      ],
+      "items": false
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "prefixItems": [
+        {"const": "device_access"},
+        {"const": "direct_source_ingestion"},
+        {"const": "dynamic_library_loading"},
+        {"const": "frontend_package_import"},
+        {"const": "generated_artifact_execution"},
+        {"const": "native_backend_execution"},
+        {"const": "network_access"},
+        {"const": "plugin_discovery"},
+        {"const": "python_function_object_inspection"},
+        {"const": "python_import"},
+        {"const": "subprocess_execution"},
+        {"const": "triton_jit_execution"}
+      ],
+      "items": false
+    },
+    "blocked_surface_count": {"const": 12},
+    "completion_contract": {"const": "real_triton_surface_gate_completion.data_only.v0"},
+    "completion_status": {"const": "complete"},
+    "evidence_policy": {"const": "digest_only"},
+    "expected_surface_gate_count": {"const": 7},
+    "missing_surface_gate_ids": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "required_surface_gate_ids": {"$ref": "#/$defs/required_surface_gate_ids"},
+    "schema_version": {"const": "tuc.real_triton_surface_gate_completion_report.v0"},
+    "security_boundary_established": {"const": true},
+    "surface_gate_count": {"const": 7},
+    "surface_gates": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/surface_gate_evidence"}
+    }
+  },
+  "$defs": {
+    "admission_effect": {
+      "enum": [
+        "does_not_admit_direct_source_ingestion",
+        "does_not_admit_frontend_package_import",
+        "does_not_admit_plugin_discovery",
+        "does_not_admit_triton_jit_execution",
+        "does_not_admit_device_access",
+        "does_not_admit_generated_artifact_execution",
+        "does_not_admit_native_backend_execution"
+      ]
+    },
+    "gate_id": {
+      "enum": [
+        "source_ingestion_quarantine_gate",
+        "package_import_sandbox_gate",
+        "plugin_discovery_allowlist_gate",
+        "triton_jit_execution_sandbox_gate",
+        "device_access_sandbox_gate",
+        "generated_artifact_quarantine_gate",
+        "native_backend_execution_security_gate"
+      ]
+    },
+    "gate_status": {
+      "enum": [
+        "quarantine_only",
+        "sandbox_requirements_only",
+        "allowlist_requirements_only",
+        "quarantine_requirements_only",
+        "security_requirements_only"
+      ]
+    },
+    "report_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$",
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "environment",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "plugin_entrypoint",
+          "python_source",
+          "raw_source_text",
+          "raw_timing_samples",
+          "runtime_handle",
+          "source_text",
+          "url"
+        ]
+      }
+    },
+    "required_surface_gate_ids": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {"const": "source_ingestion_quarantine_gate"},
+        {"const": "package_import_sandbox_gate"},
+        {"const": "plugin_discovery_allowlist_gate"},
+        {"const": "triton_jit_execution_sandbox_gate"},
+        {"const": "device_access_sandbox_gate"},
+        {"const": "generated_artifact_quarantine_gate"},
+        {"const": "native_backend_execution_security_gate"}
+      ],
+      "items": false
+    },
+    "sha256_text": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "surface_gate_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admission_effect",
+        "evidence_digest",
+        "gate_id",
+        "gate_status",
+        "required",
+        "surface_id"
+      ],
+      "properties": {
+        "admission_effect": {"$ref": "#/$defs/admission_effect"},
+        "evidence_digest": {"$ref": "#/$defs/sha256_text"},
+        "gate_id": {"$ref": "#/$defs/gate_id"},
+        "gate_status": {"$ref": "#/$defs/gate_status"},
+        "required": {"const": true},
+        "surface_id": {"$ref": "#/$defs/surface_id"}
+      }
+    },
+    "surface_id": {
+      "enum": [
+        "direct_source_ingestion",
+        "frontend_package_import",
+        "plugin_discovery",
+        "triton_jit_execution",
+        "device_access",
+        "generated_artifact_execution",
+        "native_backend_execution"
+      ]
+    }
+  }
+}

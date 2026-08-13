@@ -1,0 +1,208 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_allocation_reconciliation_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allocation_mode": { "const": "dry_run_only" },
+    "blocked_execution_surfaces": {
+      "items": false,
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        { "const": "backend_plugin_discovery" },
+        { "const": "device_access" },
+        { "const": "dynamic_import" },
+        { "const": "dynamic_library_loading" },
+        { "const": "generated_artifact_execution" },
+        { "const": "jit_execution" },
+        { "const": "network_access" },
+        { "const": "subprocess_execution" }
+      ],
+      "type": "array"
+    },
+    "graph_name": { "$ref": "#/$defs/report_text" },
+    "handle_policy": { "const": "no_runtime_handles" },
+    "issues": {
+      "items": { "$ref": "#/$defs/issue" },
+      "maxItems": 96,
+      "type": "array"
+    },
+    "operation_count": { "minimum": 1, "type": "integer" },
+    "passed": { "type": "boolean" },
+    "reconciliation_contract": {
+      "const": "runtime_allocation_reconciliation.data_only.v0"
+    },
+    "reconciliation_metadata_digest": { "$ref": "#/$defs/sha256_digest" },
+    "reconciliation_policy_id": {
+      "const": "allocation_reconciliation.no_handles.no_pointers.contiguous_offsets.v0"
+    },
+    "reconciliation_status": { "const": "reconciled_by_policy" },
+    "row_count": { "minimum": 0, "type": "integer" },
+    "rows": {
+      "items": { "$ref": "#/$defs/row" },
+      "maxItems": 8192,
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_allocation_reconciliation_report.v0"
+    },
+    "source_admission_contract": {
+      "const": "runtime_allocation_admission.data_only.v0"
+    },
+    "source_admission_count": { "minimum": 0, "type": "integer" },
+    "source_admission_issue_count": { "minimum": 0, "type": "integer" },
+    "source_admission_metadata_digest": { "$ref": "#/$defs/sha256_digest" },
+    "source_admission_schema_version": {
+      "const": "tuc.runtime_allocation_admission_report.v0"
+    },
+    "source_admission_total_admitted_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_receipt_contract": {
+      "const": "runtime_allocation_receipt.data_only.v0"
+    },
+    "source_receipt_count": { "minimum": 0, "type": "integer" },
+    "source_receipt_issue_count": { "minimum": 0, "type": "integer" },
+    "source_receipt_metadata_digest": { "$ref": "#/$defs/sha256_digest" },
+    "source_receipt_schema_version": {
+      "const": "tuc.runtime_allocation_receipt_report.v0"
+    },
+    "source_receipt_source_admission_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "source_receipt_total_receipted_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "total_reconciled_bytes": { "minimum": 0, "type": "integer" }
+  },
+  "required": [
+    "allocation_mode",
+    "blocked_execution_surfaces",
+    "graph_name",
+    "handle_policy",
+    "issues",
+    "operation_count",
+    "passed",
+    "reconciliation_contract",
+    "reconciliation_metadata_digest",
+    "reconciliation_policy_id",
+    "reconciliation_status",
+    "row_count",
+    "rows",
+    "schema_version",
+    "source_admission_contract",
+    "source_admission_count",
+    "source_admission_issue_count",
+    "source_admission_metadata_digest",
+    "source_admission_schema_version",
+    "source_admission_total_admitted_bytes",
+    "source_receipt_contract",
+    "source_receipt_count",
+    "source_receipt_issue_count",
+    "source_receipt_metadata_digest",
+    "source_receipt_schema_version",
+    "source_receipt_source_admission_metadata_digest",
+    "source_receipt_total_receipted_bytes",
+    "total_reconciled_bytes"
+  ],
+  "type": "object",
+  "$defs": {
+    "issue": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_code": { "$ref": "#/$defs/report_text" },
+        "subject": { "$ref": "#/$defs/report_text" }
+      },
+      "required": ["issue_code", "subject"],
+      "type": "object"
+    },
+    "memory_domain": {
+      "enum": ["analog_weight_bank", "device_sram", "gpu_hbm", "host_ram"]
+    },
+    "row": {
+      "additionalProperties": false,
+      "properties": {
+        "admission_budget_id": { "$ref": "#/$defs/report_text" },
+        "admission_memory_domain": { "$ref": "#/$defs/memory_domain" },
+        "admission_request_id": { "$ref": "#/$defs/report_text" },
+        "admission_slot_id": { "$ref": "#/$defs/report_text" },
+        "admitted_bytes": { "minimum": 1, "type": "integer" },
+        "domain_end_bytes": { "minimum": 0, "type": "integer" },
+        "domain_max_reserved_bytes": { "minimum": 0, "type": "integer" },
+        "domain_offset_bytes": { "minimum": 0, "type": "integer" },
+        "domain_total_reserved_bytes": { "minimum": 0, "type": "integer" },
+        "receipt_budget_id": { "$ref": "#/$defs/report_text" },
+        "receipt_id": { "$ref": "#/$defs/report_text" },
+        "receipt_memory_domain": { "$ref": "#/$defs/memory_domain" },
+        "receipt_request_id": { "$ref": "#/$defs/report_text" },
+        "receipt_slot_id": { "$ref": "#/$defs/report_text" },
+        "receipted_bytes": { "minimum": 1, "type": "integer" },
+        "row_id": { "$ref": "#/$defs/report_text" },
+        "row_status": { "const": "reconciled" }
+      },
+      "required": [
+        "admission_budget_id",
+        "admission_memory_domain",
+        "admission_request_id",
+        "admission_slot_id",
+        "admitted_bytes",
+        "domain_end_bytes",
+        "domain_max_reserved_bytes",
+        "domain_offset_bytes",
+        "domain_total_reserved_bytes",
+        "receipt_budget_id",
+        "receipt_id",
+        "receipt_memory_domain",
+        "receipt_request_id",
+        "receipt_slot_id",
+        "receipted_bytes",
+        "row_id",
+        "row_status"
+      ],
+      "type": "object"
+    },
+    "report_text": {
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "allocator_handle",
+          "backend_artifact",
+          "callable",
+          "command",
+          "device_id",
+          "device_pointer",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "memory_address",
+          "memory_handle",
+          "module",
+          "network",
+          "plugin_entrypoint",
+          "pointer",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_timing_samples",
+          "runtime_handle",
+          "subprocess",
+          "url"
+        ]
+      },
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "sha256_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  }
+}

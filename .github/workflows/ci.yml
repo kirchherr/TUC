@@ -14,6 +14,8 @@ permissions:
 jobs:
   python:
     runs-on: ubuntu-24.04
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -22,13 +24,15 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install package
-        run: python -m pip install -e ".[dev]"
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
       - name: Ruff
         run: ruff check .
       - name: Mypy
         run: mypy src/tuc
       - name: Pytest
-        run: pytest -q
+        run: pytest -q -n 4
       - name: Example
         run: python examples/phase0_vertical_slice.py
       - name: Phase 1 pipeline example
@@ -41,17 +45,139 @@ jobs:
         run: python examples/backend_api_v0.py
       - name: Runtime evidence gate
         run: python examples/runtime_evidence_gate.py
+      - name: Runtime evidence replay verifier
+        run: python examples/runtime_evidence_replay_verifier.py
       - name: Runtime candidate score evidence
         run: python examples/runtime_candidate_score_evidence.py
       - name: Runtime candidate scoring gate
         run: python examples/runtime_candidate_scoring_gate.py
+      - name: Runtime allocation admission
+        run: python examples/runtime_allocation_admission.py
+      - name: Runtime allocation receipt
+        run: python examples/runtime_allocation_receipt.py
+      - name: Runtime allocation reconciliation
+        run: python examples/runtime_allocation_reconciliation.py
       - name: Runtime memory planning gate
         run: python examples/runtime_memory_planning_gate.py
+      - name: Runtime transfer evidence
+        run: python examples/runtime_transfer_evidence.py
+      - name: Runtime transfer trace index
+        run: python examples/runtime_transfer_trace_index.py
+      - name: Runtime transfer trace replay verifier
+        run: python examples/runtime_transfer_trace_replay_verifier.py
+      - name: Runtime backend equivalence transfer binding
+        run: python examples/runtime_backend_equivalence_transfer_binding.py
+      - name: Runtime layout conversion trace index
+        run: python examples/runtime_layout_conversion_trace_index.py
+      - name: Runtime layout conversion trace replay verifier
+        run: python examples/runtime_layout_conversion_trace_replay_verifier.py
+      - name: Runtime backend equivalence layout binding
+        run: python examples/runtime_backend_equivalence_layout_binding.py
+      - name: Proof of backend equivalence
+        run: python examples/proof_of_backend_equivalence.py
+      - name: Source Intent mixed runtime public proof bundle
+        run: python examples/source_intent_mixed_runtime_public_proof_bundle.py
       - name: Backend author evidence gate
         run: python examples/backend_author_evidence_gate.py
       - name: Source Intent frontend conformance gate
         run: python examples/source_intent_frontend_conformance_gate.py
+      - name: Source-To-Intent research parser conformance gate
+        run: python examples/source_to_intent_research_parser_conformance_gate.py
+      - name: Source-To-Intent research diagnostics
+        run: python examples/source_to_intent_research_diagnostics.py
+      - name: Source-To-Intent research preflight bridge
+        run: python examples/source_to_intent_research_preflight_bridge.py
+      - name: Source-To-Intent research execution bridge
+        run: python examples/source_to_intent_research_execution_bridge.py
+      - name: Source-To-Intent research idiom alignment
+        run: python examples/source_to_intent_research_idiom_alignment.py
+      - name: Source-To-Intent research kernel ingress
+        run: python examples/source_to_intent_research_kernel_ingress.py
+      - name: Source-To-Intent research kernel ingress runtime matrix
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_matrix.py
+      - name: Source-To-Intent research kernel ingress runtime step trace
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_step_trace.py
+      - name: Source-To-Intent research kernel ingress runtime evidence bundle index
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_evidence_bundle_index.py
+      - name: Source-To-Intent research kernel ingress runtime output closure index
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_output_closure_index.py
+      - name: Source-To-Intent research kernel ingress runtime replay verifier index
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_replay_verifier_index.py
+      - name: Source-To-Intent research kernel ingress backend equivalence
+        run: python examples/source_to_intent_research_kernel_ingress_backend_equivalence.py
+      - name: Source-To-Intent research kernel ingress backend equivalence shape profiles
+        run: python examples/source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles.py
+      - name: Source-To-Intent research kernel ingress workload scope
+        run: python examples/source_to_intent_research_kernel_ingress_workload_scope.py
+      - name: Performance proof readiness
+        run: python examples/performance_proof_readiness.py
+      - name: Planner overhead portfolio
+        run: python examples/planner_overhead_portfolio.py
+      - name: Source-To-Intent research kernel ingress runtime coverage policy
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_coverage_policy.py
+      - name: Source-To-Intent research kernel ingress runtime backend alignment
+        run: python examples/source_to_intent_research_kernel_ingress_runtime_backend_alignment.py
+      - name: Source-To-Intent research kernel ingress boundary budget
+        run: python examples/source_to_intent_research_kernel_ingress_boundary_budget.py
+      - name: Source-To-Intent research kernel ingress rejection coverage
+        run: python examples/source_to_intent_research_kernel_ingress_rejection_coverage.py
+      - name: Source-To-Intent research kernel ingress conformance gate
+        run: python examples/source_to_intent_research_kernel_ingress_conformance_gate.py
+      - name: Source-To-Intent research kernel ingress diagnostics
+        run: python examples/source_to_intent_research_kernel_ingress_diagnostics.py
+      - name: Source-To-Intent research kernel ingress idiom alignment
+        run: python examples/source_to_intent_research_kernel_ingress_idiom_alignment.py
+      - name: Source-To-Intent research kernel ingress proof bundle
+        run: python examples/source_to_intent_research_kernel_ingress_proof_bundle.py
+      - name: Source-To-Intent research kernel ingress evidence gate
+        run: python examples/source_to_intent_research_kernel_ingress_evidence_gate.py
+      - name: Source-To-Intent research source runtime smoke
+        run: python examples/source_to_intent_research_source_runtime_smoke.py
+      - name: Source-To-Intent research evidence gate
+        run: python examples/source_to_intent_research_evidence_gate.py
+      - name: Source-To-Intent research proof bundle
+        run: python examples/source_to_intent_research_proof_bundle.py
+      - name: Source-To-Intent research capability claim
+        run: python examples/source_to_intent_research_capability_claim.py
+      - name: Source-To-Intent research capability claim gate
+        run: python examples/source_to_intent_research_capability_claim_gate.py
+      - name: Source ingestion pre-claim acyclicity gate
+        run: python examples/source_ingestion_preclaim_acyclicity_gate.py
+      - name: Research scope claim gate
+        run: python examples/research_scope_claim_gate.py
       - name: Source-To-Intent parser block gate
         run: python examples/source_to_intent_parser_block_gate.py
+      - name: Source ingestion approval criteria
+        run: python examples/source_ingestion_approval_criteria.py
+      - name: CI replay for admitted slice
+        run: python examples/ci_replay_for_admitted_slice.py
+      - name: Source ingestion maintainer approval artifact
+        run: python examples/source_ingestion_maintainer_approval_artifact.py
+      - name: Source ingestion admission gate
+        run: python examples/source_ingestion_admission_gate.py
+      - name: First real Triton kernel path
+        run: python examples/first_real_triton_kernel_path.py
+      - name: Real Triton first slice evidence portfolio
+        run: python examples/real_triton_first_slice_evidence_portfolio.py
+      - name: Evidence graph acyclicity gate
+        run: python examples/evidence_graph_acyclicity_gate.py
       - name: Baseline benchmark smoke test
         run: python scripts/benchmark.py --iterations 1 --warmup 0
+
+
+  oci-source-ingestion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Build hardened source-ingestion worker
+        run: docker compose build source-ingestion-worker
+      - name: Replay OCI source-ingestion proof
+        env:
+          TUC_VERIFY_OCI_GOLDEN: "1"
+        run: python examples/oci_source_ingestion_research_proof.py

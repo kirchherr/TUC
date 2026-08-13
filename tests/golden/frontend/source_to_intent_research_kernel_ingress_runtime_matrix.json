@@ -1,0 +1,132 @@
+{
+  "artifact_policy": "metadata_only_values_omitted",
+  "backend_sequences": [
+    "linear-sim->vector-sim",
+    "vector-sim->vector-sim",
+    "linear-sim->vector-sim->vector-sim->vector-sim"
+  ],
+  "case_count": 5,
+  "cases": [
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_elementwise",
+      "execution_trace_digest": "sha256:d9ee6ed8ea961a6018b3171a73c46dd091d1e02b9796c728b79d78a36fe081ee",
+      "kernel_name": "matmul_elementwise",
+      "operation_families": [
+        "elementwise",
+        "matmul"
+      ],
+      "reference_correctness_digest": "sha256:a8f0678065842d149f2c819e36d92b4b7baa9064b2c76faefe489f75c96dfec6",
+      "runtime_plan_digest": "sha256:5dd180f8fc6ca7256f42c8c0a2fb6ba08f3af65e000e70e7c97ace5cb5496c19",
+      "status": "runtime_bound",
+      "terminal_outputs": [
+        "activated"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_reduction",
+      "execution_trace_digest": "sha256:ed6ed4d8c27ba0fbc78917ee067c9091d7af52239bf58ebb47f61cecc40efc19",
+      "kernel_name": "softmax_reduction",
+      "operation_families": [
+        "reduction",
+        "softmax"
+      ],
+      "reference_correctness_digest": "sha256:b7822b1cff26e2926b9b4f726f7c734ac468325557a3067e5d8112dc530a2f51",
+      "runtime_plan_digest": "sha256:739c830c015a9c6200e42c13a3987314f386b0db13001d55344b078aff3cf1f9",
+      "status": "runtime_bound",
+      "terminal_outputs": [
+        "row_sum"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_matmul_reduction",
+      "execution_trace_digest": "sha256:55d8e3c3618d217bd05f37806cbbbeb71217bc7e3e339b78302d2b340177a12a",
+      "kernel_name": "matmul_reduction",
+      "operation_families": [
+        "matmul",
+        "reduction"
+      ],
+      "reference_correctness_digest": "sha256:9514eab74294966fa28f71a4b38fe054454676208a92961518272a34b21ab9ef",
+      "runtime_plan_digest": "sha256:a4db63eef2a05b7c9ca29314d5b24dcdf064f38987bda5bb7fb93824db0bf185",
+      "status": "runtime_bound",
+      "terminal_outputs": [
+        "column_sum"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_softmax_elementwise",
+      "execution_trace_digest": "sha256:7db25b1ad8cf0e3a06933c846fb6fc1b89fd9625c39abcf319037ac90ca12a63",
+      "kernel_name": "softmax_elementwise",
+      "operation_families": [
+        "elementwise",
+        "softmax"
+      ],
+      "reference_correctness_digest": "sha256:07b1233579b3936be504af62e7f05752065874d8cba3e40f0e5639046f81242e",
+      "runtime_plan_digest": "sha256:21b424bb8a0002756d15e259fae7311fde7732326eab3c402f5fb3e1d4f618c7",
+      "status": "runtime_bound",
+      "terminal_outputs": [
+        "activated"
+      ],
+      "trace_step_count": 2
+    },
+    {
+      "backend_sequence": [
+        "linear-sim",
+        "vector-sim",
+        "vector-sim",
+        "vector-sim"
+      ],
+      "case_id": "research_module_mvp_pipeline",
+      "execution_trace_digest": "sha256:0da05472c0cf5ef06362f6c9b1cf2a4f726566cc72c41ac8c48723e978d696cd",
+      "kernel_name": "mvp_pipeline",
+      "operation_families": [
+        "elementwise",
+        "matmul",
+        "reduction",
+        "softmax"
+      ],
+      "reference_correctness_digest": "sha256:f08da54e302db8e65b8bcd147ad42e722a7a848619d32792100a05067f7481b9",
+      "runtime_plan_digest": "sha256:59dbf49fb8a9f65895c38b74c214752efc9b5d5cf9390533602040a11c8bf56d",
+      "status": "runtime_bound",
+      "terminal_outputs": [
+        "stable"
+      ],
+      "trace_step_count": 4
+    }
+  ],
+  "covered_operation_families": [
+    "elementwise",
+    "matmul",
+    "reduction",
+    "softmax"
+  ],
+  "default_parser_status": "default_parser_blocked",
+  "e2e_contract": "source_to_intent_research_kernel_ingress.e2e.v0",
+  "frontend_ingress_contract": "source_to_intent_research_kernel_ingress.execution_free.v0",
+  "kernel_ingress_digest": "sha256:368d57beb294d9983bb07c16a38fbb078caf65226d5339b53fd4490cbae9001c",
+  "parser_status": "research_explicit_only",
+  "raw_source_policy": "omitted_by_policy",
+  "raw_value_policy": "omitted_by_policy",
+  "runtime_matrix_contract": "source_to_intent_research_kernel_ingress_runtime_matrix.execution.v0",
+  "schema_version": "tuc.source_to_intent_research_kernel_ingress_runtime_matrix_report.v0",
+  "source_boundary": "triton_module_source_buffer_to_runtime_via_research_kernel_ingress",
+  "status": "PASS"
+}

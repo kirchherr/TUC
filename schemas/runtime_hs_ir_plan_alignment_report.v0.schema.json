@@ -1,0 +1,300 @@
+{
+  "$id": "https://tuc.dev/schemas/runtime_hs_ir_plan_alignment_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Runtime HS-IR Plan Alignment Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "alignment_contract",
+    "alignment_metadata_digest",
+    "artifact_status",
+    "blocked_execution_surfaces",
+    "execution_trace_backend_sequence",
+    "execution_trace_graph_name",
+    "executor_contract",
+    "graph_name",
+    "hs_ir_backend_sequence",
+    "hs_ir_layout_conversion_count",
+    "hs_ir_total_data_movement_bytes",
+    "hs_ir_total_layout_conversion_bytes",
+    "hs_ir_total_transfer_bytes",
+    "hs_ir_transfer_edge_count",
+    "issues",
+    "partition_backend_sequence",
+    "partition_layout_conversion_count",
+    "partition_plan_graph_name",
+    "partition_total_data_movement_bytes",
+    "partition_total_layout_conversion_bytes",
+    "partition_total_transfer_bytes",
+    "partition_transfer_edge_count",
+    "passed",
+    "raw_value_policy",
+    "schema_version",
+    "step_count",
+    "steps",
+    "trusted_executor_registry"
+  ],
+  "properties": {
+    "alignment_contract": {
+      "const": "runtime_hs_ir_plan_alignment.data_only.v0"
+    },
+    "alignment_metadata_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "artifact_status": {
+      "const": "review_evidence"
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "backend_plugin_discovery"
+        },
+        {
+          "const": "device_access"
+        },
+        {
+          "const": "dynamic_import"
+        },
+        {
+          "const": "dynamic_library_loading"
+        },
+        {
+          "const": "generated_artifact_execution"
+        },
+        {
+          "const": "jit_execution"
+        },
+        {
+          "const": "network_access"
+        },
+        {
+          "const": "subprocess_execution"
+        }
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "execution_trace_backend_sequence": {
+      "$ref": "#/$defs/report_text_array"
+    },
+    "execution_trace_graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "executor_contract": {
+      "const": "runtime_executor.trusted_backend.v0"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "hs_ir_backend_sequence": {
+      "$ref": "#/$defs/report_text_array"
+    },
+    "hs_ir_layout_conversion_count": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "hs_ir_total_data_movement_bytes": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "hs_ir_total_layout_conversion_bytes": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "hs_ir_total_transfer_bytes": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "hs_ir_transfer_edge_count": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/issue"
+      }
+    },
+    "partition_backend_sequence": {
+      "$ref": "#/$defs/report_text_array"
+    },
+    "partition_layout_conversion_count": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "partition_plan_graph_name": {
+      "$ref": "#/$defs/report_text"
+    },
+    "partition_total_data_movement_bytes": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "partition_total_layout_conversion_bytes": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "partition_total_transfer_bytes": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "partition_transfer_edge_count": {
+      "$ref": "#/$defs/non_negative_int"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "raw_value_policy": {
+      "const": "omitted_by_policy"
+    },
+    "schema_version": {
+      "const": "tuc.runtime_hs_ir_plan_alignment_report.v0"
+    },
+    "step_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    },
+    "trusted_executor_registry": {
+      "const": "trusted_runtime_executor_registry.v0"
+    }
+  },
+  "$defs": {
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "issue_code",
+        "subject"
+      ],
+      "properties": {
+        "issue_code": {
+          "$ref": "#/$defs/report_text"
+        },
+        "subject": {
+          "$ref": "#/$defs/report_text"
+        }
+      }
+    },
+    "non_negative_int": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "maxLength": 512,
+      "not": {
+        "enum": [
+          "backend_artifact",
+          "callable",
+          "command",
+          "command_line",
+          "device_id",
+          "dynamic_library",
+          "env",
+          "environment",
+          "executable",
+          "file_path",
+          "generated_code",
+          "host_path",
+          "import_module",
+          "jit_function",
+          "module",
+          "network",
+          "output_value",
+          "plugin_entrypoint",
+          "python_module",
+          "python_source",
+          "raw_benchmark_output",
+          "raw_tensor_value",
+          "raw_timing_samples",
+          "reference_value",
+          "runtime_handle",
+          "source_text",
+          "subprocess",
+          "tensor_value",
+          "tensor_values",
+          "url"
+        ]
+      }
+    },
+    "report_text_array": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/report_text"
+      }
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "alignment_status",
+        "execution_trace_backend",
+        "hs_ir_backend",
+        "hs_ir_produced_layout",
+        "layout_conversion_bytes",
+        "operation_kind",
+        "operation_name",
+        "partition_backend",
+        "partition_produced_layout",
+        "transfer_bytes",
+        "trusted_executor_status"
+      ],
+      "properties": {
+        "alignment_status": {
+          "enum": [
+            "aligned",
+            "failed"
+          ]
+        },
+        "execution_trace_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "hs_ir_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "hs_ir_produced_layout": {
+          "$ref": "#/$defs/report_text"
+        },
+        "layout_conversion_bytes": {
+          "$ref": "#/$defs/non_negative_int"
+        },
+        "operation_kind": {
+          "enum": [
+            "elementwise",
+            "matmul",
+            "reduction",
+            "softmax"
+          ]
+        },
+        "operation_name": {
+          "$ref": "#/$defs/report_text"
+        },
+        "partition_backend": {
+          "$ref": "#/$defs/report_text"
+        },
+        "partition_produced_layout": {
+          "$ref": "#/$defs/report_text"
+        },
+        "transfer_bytes": {
+          "$ref": "#/$defs/non_negative_int"
+        },
+        "trusted_executor_status": {
+          "enum": [
+            "backend_missing",
+            "operation_unsupported",
+            "trusted"
+          ]
+        }
+      }
+    }
+  }
+}

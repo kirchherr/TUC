@@ -17,9 +17,17 @@ from tuc.runtime.input_manifest import (
     RUNTIME_INPUT_MANIFEST_CONTRACT,
     RuntimeInputManifestReport,
 )
+from tuc.runtime.output_contract import (
+    RUNTIME_OUTPUT_CONTRACT,
+    RuntimeOutputContractReport,
+)
 from tuc.runtime.output_manifest import (
     RUNTIME_OUTPUT_MANIFEST_CONTRACT,
     RuntimeOutputManifestReport,
+)
+from tuc.runtime.public_output_bundle import (
+    RUNTIME_PUBLIC_OUTPUT_BUNDLE_CONTRACT,
+    RuntimePublicOutputBundle,
 )
 from tuc.runtime.reference_correctness import (
     RUNTIME_REFERENCE_CORRECTNESS_CONTRACT,
@@ -41,6 +49,8 @@ RUNTIME_EXECUTION_RECEIPT_REQUIRED_EVIDENCE_KINDS = (
     "tensor_store_evidence",
     "input_manifest",
     "output_manifest",
+    "output_contract",
+    "public_output_bundle",
     "reference_correctness",
 )
 MAX_RUNTIME_EXECUTION_RECEIPT_EVIDENCE_LINKS = 16
@@ -55,6 +65,8 @@ _EXPECTED_CONTRACT_BY_KIND = {
     "tensor_store_evidence": RUNTIME_TENSOR_STORE_EVIDENCE_CONTRACT,
     "input_manifest": RUNTIME_INPUT_MANIFEST_CONTRACT,
     "output_manifest": RUNTIME_OUTPUT_MANIFEST_CONTRACT,
+    "output_contract": RUNTIME_OUTPUT_CONTRACT,
+    "public_output_bundle": RUNTIME_PUBLIC_OUTPUT_BUNDLE_CONTRACT,
     "reference_correctness": RUNTIME_REFERENCE_CORRECTNESS_CONTRACT,
 }
 _FORBIDDEN_RECEIPT_TEXT = frozenset(
@@ -259,6 +271,8 @@ def build_runtime_execution_receipt_report(
     tensor_store_report: RuntimeTensorStoreEvidenceReport,
     input_manifest_report: RuntimeInputManifestReport,
     output_manifest_report: RuntimeOutputManifestReport,
+    output_contract_report: RuntimeOutputContractReport,
+    public_output_bundle: RuntimePublicOutputBundle,
     reference_correctness_report: RuntimeReferenceCorrectnessReport,
 ) -> RuntimeExecutionReceiptReport:
     """Build a data-only receipt linking one runtime execution to evidence."""
@@ -271,6 +285,10 @@ def build_runtime_execution_receipt_report(
         raise TypeError("runtime execution receipt input manifest report mismatch")
     if not isinstance(output_manifest_report, RuntimeOutputManifestReport):
         raise TypeError("runtime execution receipt output manifest report mismatch")
+    if not isinstance(output_contract_report, RuntimeOutputContractReport):
+        raise TypeError("runtime execution receipt output contract report mismatch")
+    if not isinstance(public_output_bundle, RuntimePublicOutputBundle):
+        raise TypeError("runtime execution receipt public output bundle mismatch")
     if not isinstance(reference_correctness_report, RuntimeReferenceCorrectnessReport):
         raise TypeError("runtime execution receipt reference report mismatch")
 
@@ -311,6 +329,22 @@ def build_runtime_execution_receipt_report(
             metadata_digest=output_manifest_report.output_metadata_digest,
             item_count=len(output_manifest_report.outputs),
             passed=output_manifest_report.passed,
+        ),
+        RuntimeExecutionReceiptEvidenceLink(
+            evidence_kind="output_contract",
+            graph_name=output_contract_report.graph_name,
+            evidence_contract=output_contract_report.output_contract,
+            metadata_digest=output_contract_report.contract_metadata_digest,
+            item_count=len(output_contract_report.public_outputs),
+            passed=output_contract_report.passed,
+        ),
+        RuntimeExecutionReceiptEvidenceLink(
+            evidence_kind="public_output_bundle",
+            graph_name=public_output_bundle.graph_name,
+            evidence_contract=public_output_bundle.bundle_contract,
+            metadata_digest=public_output_bundle.bundle_metadata_digest,
+            item_count=len(public_output_bundle.outputs),
+            passed=public_output_bundle.passed,
         ),
         RuntimeExecutionReceiptEvidenceLink(
             evidence_kind="reference_correctness",

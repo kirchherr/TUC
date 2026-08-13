@@ -1,0 +1,40 @@
+{
+  "artifact_count": 1,
+  "artifacts": [
+    {
+      "artifact_digest": "sha256:8b4f6d3c2a1e0f9d8c7b6a594837261504f3e2d1c0b9a897867564534231201f",
+      "artifact_id": "external_vector_lowering_artifact",
+      "build_recipe_id": "backend_author_path_lowering_recipe_v0",
+      "review_record_id": "backend_author_evidence_gate.ci.v0",
+      "review_status": "reviewed_digest_bound",
+      "sandbox_model_contract": "backend_plugin_sandbox_model.data_only.v0",
+      "source_scope_id": "external_vector_assigned_subgraph",
+      "storage_scope": "repository_evidence"
+    }
+  ],
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "execution_allowed": false,
+  "execution_permission": "not_granted",
+  "issues": [],
+  "provenance_contract": "backend_plugin_artifact_provenance.data_only.v0",
+  "provenance_policy": "artifact_provenance.digest_bound.reviewed.no_execution.v0",
+  "provenance_ready": true,
+  "provenance_status": "accepted_data_only_provenance",
+  "required_bindings": [
+    "sandbox_model",
+    "content_digest",
+    "source_scope",
+    "build_recipe",
+    "review_record"
+  ],
+  "schema_version": "tuc.backend_plugin_artifact_provenance_report.v0"
+}

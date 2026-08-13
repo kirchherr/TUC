@@ -81,6 +81,25 @@ def test_source_to_intent_readiness_requires_frontend_conformance_gate() -> None
     )
 
 
+def test_source_to_intent_readiness_requires_research_diagnostics() -> None:
+    report = build_source_to_intent_readiness_report(
+        "missing-research-diagnostics",
+        tuple(
+            SourceToIntentReadinessEvidence(evidence_id=evidence_id, present=True)
+            for evidence_id in SOURCE_TO_INTENT_REQUIRED_EVIDENCE
+            if evidence_id != "source_to_intent_research_diagnostics"
+        ),
+    )
+
+    assert not report.ready
+    assert report.issues == (
+        SourceToIntentReadinessIssue(
+            evidence_id="source_to_intent_research_diagnostics",
+            message="required source-to-intent parser gate evidence is missing",
+        ),
+    )
+
+
 def test_source_to_intent_readiness_rejects_unknown_evidence() -> None:
     with pytest.raises(ValueError, match="unsupported source-to-intent evidence id"):
         build_source_to_intent_readiness_report(

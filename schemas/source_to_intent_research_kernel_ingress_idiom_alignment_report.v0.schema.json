@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_idiom_alignment_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Idiom Alignment Report v0",
+  "description": "Metadata-only report proving accepted Kernel Ingress outputs stay inside covered Triton MVP idioms.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_source_count",
+    "alignment_contract",
+    "artifact_policy",
+    "blocked_execution_surfaces",
+    "cases",
+    "coverage_contract",
+    "coverage_policy",
+    "coverage_report_digest",
+    "covered_operation_families",
+    "default_parser_status",
+    "direct_general_triton_source_ingestion",
+    "frontend_ingress_contract",
+    "input_policy",
+    "kernel_ingress_contract",
+    "kernel_ingress_digest",
+    "kernel_ingress_conformance_gate_contract",
+    "kernel_ingress_conformance_gate_digest",
+    "kernel_names",
+    "parser_status",
+    "schema_version",
+    "source_boundary",
+    "source_names",
+    "status",
+    "unsupported_operation_families"
+  ],
+  "properties": {
+    "accepted_source_count": {"const": 5},
+    "alignment_contract": {
+      "const": "source_to_intent_research_kernel_ingress_idiom_alignment.scope.v0"
+    },
+    "artifact_policy": {"const": "metadata_only_values_omitted"},
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/case"}
+    },
+    "coverage_contract": {"const": "triton_idiom_coverage.execution_free.v0"},
+    "coverage_policy": {
+      "const": "kernel_ingress_operation_families_must_match_covered_idioms"
+    },
+    "coverage_report_digest": {"$ref": "#/$defs/sha256_digest"},
+    "covered_operation_families": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "elementwise"},
+        {"const": "matmul"},
+        {"const": "reduction"},
+        {"const": "softmax"}
+      ],
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "direct_general_triton_source_ingestion": {"const": false},
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "input_policy": {"const": "accepted_kernel_ingress_results_only"},
+    "kernel_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.e2e.v0"
+    },
+    "kernel_ingress_digest": {"$ref": "#/$defs/sha256_digest"},
+    "kernel_ingress_conformance_gate_contract": {
+      "const": "source_to_intent_research_kernel_ingress_conformance_gate.ci.v0"
+    },
+    "kernel_ingress_conformance_gate_digest": {
+      "$ref": "#/$defs/sha256_digest"
+    },
+    "kernel_names": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "matmul_elementwise"},
+        {"const": "softmax_reduction"},
+        {"const": "matmul_reduction"},
+        {"const": "softmax_elementwise"},
+        {"const": "mvp_pipeline"}
+      ],
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "parser_status": {"const": "research_explicit_only"},
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_idiom_alignment_report.v0"
+    },
+    "source_boundary": {
+      "const": "kernel_ingress_to_source_intent.v0_plain_data"
+    },
+    "source_names": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "research_matmul_elementwise"},
+        {"const": "research_softmax_reduction"},
+        {"const": "research_matmul_reduction"},
+        {"const": "research_softmax_elementwise"},
+        {"const": "research_mvp_pipeline"}
+      ],
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "status": {"const": "PASS"},
+    "unsupported_operation_families": {
+      "type": "array",
+      "maxItems": 0
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "kernel_name",
+        "matched_idioms",
+        "operation_families",
+        "status"
+      ],
+      "properties": {
+        "case_id": {
+          "enum": [
+            "research_matmul_elementwise",
+            "research_softmax_reduction",
+            "research_matmul_reduction",
+            "research_softmax_elementwise",
+            "research_mvp_pipeline"
+          ]
+        },
+        "kernel_name": {
+          "enum": [
+            "matmul_elementwise",
+            "softmax_reduction",
+            "matmul_reduction",
+            "softmax_elementwise",
+            "mvp_pipeline"
+          ]
+        },
+        "matched_idioms": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/report_text"},
+          "minItems": 2,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "operation_families": {
+          "type": "array",
+          "items": {
+            "enum": ["elementwise", "matmul", "reduction", "softmax"]
+          },
+          "minItems": 2,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "status": {"const": "covered"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

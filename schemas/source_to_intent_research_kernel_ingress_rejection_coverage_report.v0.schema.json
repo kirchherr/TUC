@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/source_to_intent_research_kernel_ingress_rejection_coverage_report.v0.schema.json",
+  "title": "TUC Source-To-Intent Research Kernel Ingress Rejection Coverage Report v0",
+  "description": "Source-free coverage matrix for current Kernel Ingress rejection surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_policy",
+    "blocked_compiler_outputs",
+    "blocked_execution_surfaces",
+    "boundary_budget_contract",
+    "boundary_budget_digest",
+    "budget_rejection_reasons",
+    "coverage_contract",
+    "coverage_matrix",
+    "coverage_policy",
+    "covered_rejection_count",
+    "default_parser_status",
+    "diagnostics_contract",
+    "diagnostics_digest",
+    "diagnostics_rejection_reasons",
+    "frontend_ingress_contract",
+    "parser_status",
+    "raw_source_policy",
+    "raw_value_policy",
+    "required_coverage_sources",
+    "schema_version",
+    "source_boundary",
+    "status"
+  ],
+  "properties": {
+    "artifact_policy": {"const": "metadata_only_source_free"},
+    "blocked_compiler_outputs": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "blocked_execution_surfaces": {
+      "type": "array",
+      "minItems": 17,
+      "maxItems": 17,
+      "items": {"$ref": "#/$defs/report_text"}
+    },
+    "boundary_budget_contract": {
+      "const": "source_to_intent_research_kernel_ingress_boundary_budget.security.v0"
+    },
+    "boundary_budget_digest": {"$ref": "#/$defs/sha256_digest"},
+    "budget_rejection_reasons": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "module_byte_budget"},
+        {"const": "module_line_budget"},
+        {"const": "module_ast_node_budget"},
+        {"const": "module_ast_depth_budget"}
+      ],
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true
+    },
+    "coverage_contract": {
+      "const": "source_to_intent_research_kernel_ingress_rejection_coverage.security.v0"
+    },
+    "coverage_matrix": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/reject_unsupported_import"
+        },
+        {
+          "$ref": "#/$defs/reject_import_from_statement"
+        },
+        {
+          "$ref": "#/$defs/reject_import_after_kernel_function"
+        },
+        {
+          "$ref": "#/$defs/reject_missing_triton_jit_decorator"
+        },
+        {
+          "$ref": "#/$defs/reject_annotated_signature"
+        },
+        {
+          "$ref": "#/$defs/reject_decorator_call"
+        },
+        {
+          "$ref": "#/$defs/reject_unsupported_decorator"
+        },
+        {
+          "$ref": "#/$defs/reject_multiple_kernel_functions"
+        },
+        {
+          "$ref": "#/$defs/reject_top_level_side_effect"
+        },
+        {
+          "$ref": "#/$defs/reject_kernel_name_mismatch"
+        },
+        {
+          "$ref": "#/$defs/module_byte_budget"
+        },
+        {
+          "$ref": "#/$defs/module_line_budget"
+        },
+        {
+          "$ref": "#/$defs/module_ast_node_budget"
+        },
+        {
+          "$ref": "#/$defs/module_ast_depth_budget"
+        }
+      ],
+      "minItems": 14,
+      "maxItems": 14
+    },
+    "coverage_policy": {
+      "const": "all_current_rejections_are_source_free_and_fail_closed"
+    },
+    "covered_rejection_count": {"const": 14},
+    "default_parser_status": {"const": "default_parser_blocked"},
+    "diagnostics_contract": {
+      "const": "source_to_intent_research_kernel_ingress_diagnostics.execution_free.v0"
+    },
+    "diagnostics_digest": {"$ref": "#/$defs/sha256_digest"},
+    "diagnostics_rejection_reasons": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "decorator_call"},
+        {"const": "import_after_kernel_function"},
+        {"const": "import_from_statement"},
+        {"const": "kernel_name_mismatch"},
+        {"const": "missing_triton_jit_decorator"},
+        {"const": "multiple_kernel_functions"},
+        {"const": "preflight_annotation"},
+        {"const": "top_level_side_effect"},
+        {"const": "unsupported_decorator"},
+        {"const": "unsupported_import"}
+      ],
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "frontend_ingress_contract": {
+      "const": "source_to_intent_research_kernel_ingress.execution_free.v0"
+    },
+    "parser_status": {"const": "research_explicit_only"},
+    "raw_source_policy": {"const": "omitted_by_policy"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "required_coverage_sources": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "diagnostics"},
+        {"const": "boundary_budget"}
+      ],
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "schema_version": {
+      "const": "tuc.source_to_intent_research_kernel_ingress_rejection_coverage_report.v0"
+    },
+    "source_boundary": {"const": "triton_module_source_buffer_as_untrusted_data"},
+    "status": {"const": "PASS"}
+  },
+  "$defs": {
+    "reject_unsupported_import": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_unsupported_import"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "unsupported_import"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_import_from_statement": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_import_from_statement"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "import_from_statement"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_import_after_kernel_function": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_import_after_kernel_function"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "import_after_kernel_function"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_missing_triton_jit_decorator": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_missing_triton_jit_decorator"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "missing_triton_jit_decorator"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_annotated_signature": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_annotated_signature"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "preflight_annotation"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_decorator_call": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_decorator_call"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "decorator_call"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_unsupported_decorator": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_unsupported_decorator"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "unsupported_decorator"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_multiple_kernel_functions": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_multiple_kernel_functions"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "multiple_kernel_functions"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_top_level_side_effect": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_top_level_side_effect"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "top_level_side_effect"},
+        "status": {"const": "covered"}
+      }
+    },
+    "reject_kernel_name_mismatch": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "reject_kernel_name_mismatch"},
+        "coverage_source": {"const": "diagnostics"},
+        "reason_id": {"const": "kernel_name_mismatch"},
+        "status": {"const": "covered"}
+      }
+    },
+    "module_byte_budget": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "module_byte_budget"},
+        "coverage_source": {"const": "boundary_budget"},
+        "reason_id": {"const": "module_byte_budget"},
+        "status": {"const": "covered"}
+      }
+    },
+    "module_line_budget": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "module_line_budget"},
+        "coverage_source": {"const": "boundary_budget"},
+        "reason_id": {"const": "module_line_budget"},
+        "status": {"const": "covered"}
+      }
+    },
+    "module_ast_node_budget": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "module_ast_node_budget"},
+        "coverage_source": {"const": "boundary_budget"},
+        "reason_id": {"const": "module_ast_node_budget"},
+        "status": {"const": "covered"}
+      }
+    },
+    "module_ast_depth_budget": {
+      "$ref": "#/$defs/coverage_item",
+      "properties": {
+        "case_id": {"const": "module_ast_depth_budget"},
+        "coverage_source": {"const": "boundary_budget"},
+        "reason_id": {"const": "module_ast_depth_budget"},
+        "status": {"const": "covered"}
+      }
+    },
+    "coverage_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "coverage_source", "reason_id", "status"],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/report_text"},
+        "coverage_source": {"enum": ["diagnostics", "boundary_budget"]},
+        "reason_id": {"$ref": "#/$defs/report_text"},
+        "status": {"const": "covered"}
+      }
+    },
+    "report_text": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "sha256_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

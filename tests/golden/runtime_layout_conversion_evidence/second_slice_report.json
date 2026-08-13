@@ -1,0 +1,45 @@
+{
+  "artifact_status": "review_evidence",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "conversion_count": 1,
+  "conversion_metadata_digest": "sha256:e85dd9f80ca4afc05eed9e13456f806a31eb5a51b94a1f9f590c792fbbe47bfc",
+  "conversion_scope": "planned_logical_layout_only",
+  "conversions": [
+    {
+      "consumer_input_id": "reduce_scores:scores",
+      "conversion_id": "layout_conversion_0000",
+      "conversion_status": "planned",
+      "from_backend": "systolic-sim",
+      "from_layout": "blocked",
+      "from_memory_domain": "device_sram",
+      "planned_bytes": 32,
+      "planner_reason": "layout_mismatch",
+      "source_operation": "score_projection",
+      "source_value_record_id": "score_projection:scores",
+      "target_operation": "reduce_scores",
+      "tensor_name": "scores",
+      "to_backend": "vector-sim",
+      "to_layout": "row_major",
+      "to_memory_domain": "device_sram"
+    }
+  ],
+  "evidence_contract": "runtime_layout_conversion_evidence.data_only.v0",
+  "execution_policy": "does_not_execute_conversions",
+  "graph_name": "runtime_layout_conversion_reduction_slice",
+  "issues": [],
+  "passed": true,
+  "raw_value_policy": "omitted_by_policy",
+  "residency_claim_status": "not_physical_residency_evidence",
+  "schema_version": "tuc.runtime_layout_conversion_evidence_report.v0",
+  "source_partition_plan_digest": "sha256:b397c55ab67f83c2479712239c978098dce804fbab1304839466ae049709fafd",
+  "total_planned_bytes": 32
+}
