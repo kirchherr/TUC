@@ -71,6 +71,7 @@ _MATERIALS = {
 }
 _OCI_PROOF = _ROOT / "tests/golden/frontend/oci_source_ingestion_research_proof_report.json"
 _SHA256_RE = re.compile(r"^sha256:[a-f0-9]{64}$")
+_MAX_MATERIAL_BYTES = 1024 * 1024
 _BUILD_CONTEXT_ALLOWLIST = (
     "*",
     "!docker/",
@@ -139,7 +140,8 @@ def build_report() -> str:
         "external_attestation_verified": False,
         "long_lived_signing_secret_required": False,
         "material_digests": {
-            name: _digest(path.read_bytes()) for name, path in sorted(_MATERIALS.items())
+            name: _digest(_canonical_text_bytes(path))
+            for name, path in sorted(_MATERIALS.items())
         },
         "oci_research_proof_digest": _digest(proof_text.encode("utf-8")),
         "platform": PLATFORM,
@@ -311,6 +313,20 @@ def _json_object(text: str, label: str) -> Mapping[str, object]:
 
 def _digest(data: bytes) -> str:
     return f"sha256:{sha256(data).hexdigest()}"
+
+
+def _canonical_text_bytes(path: Path) -> bytes:
+    data = path.read_bytes()
+    if not data or len(data) > _MAX_MATERIAL_BYTES or b"\x00" in data:
+        raise ValueError("OCI release provenance material bounds rejected")
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError("OCI release provenance material encoding rejected") from exc
+    text = text.replace("\r\n", "\n")
+    if "\r" in text:
+        raise ValueError("OCI release provenance material newline rejected")
+    return text.encode("utf-8")
 
 
 def _canonical_json(payload: object) -> str:

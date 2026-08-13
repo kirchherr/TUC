@@ -18,6 +18,7 @@ from examples.oci_source_worker_release_provenance_readiness import (
     READINESS_CONTRACT,
     REQUIRED_CONTROLS,
     SCHEMA_VERSION,
+    _canonical_text_bytes,
     assert_report_contract,
     build_report,
 )
@@ -135,3 +136,45 @@ def test_release_provenance_readiness_rejects_material_set_drift() -> None:
 
     with pytest.raises(ValueError, match="material set"):
         assert_report_contract(report)
+
+
+def test_release_provenance_material_digest_is_newline_stable(
+    tmp_path: Path,
+) -> None:
+    lf_path = tmp_path / "lf.txt"
+    crlf_path = tmp_path / "crlf.txt"
+    lf_path.write_bytes(b"first\nsecond\n")
+    crlf_path.write_bytes(b"first\r\nsecond\r\n")
+
+    assert _canonical_text_bytes(lf_path) == _canonical_text_bytes(crlf_path)
+
+
+def test_release_provenance_material_rejects_ambiguous_newlines(
+    tmp_path: Path,
+) -> None:
+    material_path = tmp_path / "material.txt"
+    material_path.write_bytes(b"first\rsecond\n")
+
+    with pytest.raises(ValueError, match="newline"):
+        _canonical_text_bytes(material_path)
+
+
+@pytest.mark.parametrize(
+    ("data", "match"),
+    (
+        (b"", "bounds"),
+        (b"text\x00data", "bounds"),
+        (b"\xff", "encoding"),
+        (b"x" * (1024 * 1024 + 1), "bounds"),
+    ),
+)
+def test_release_provenance_material_rejects_unsafe_text(
+    tmp_path: Path,
+    data: bytes,
+    match: str,
+) -> None:
+    material_path = tmp_path / "material.txt"
+    material_path.write_bytes(data)
+
+    with pytest.raises(ValueError, match=match):
+        _canonical_text_bytes(material_path)
