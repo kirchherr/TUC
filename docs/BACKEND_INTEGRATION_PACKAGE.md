@@ -58,6 +58,14 @@ contract does not grant execution permission.
 
 ## Run
 
+Installed public contract:
+
+```bash
+tuc-backend-verify backend_package.v0.json
+```
+
+Repository reference proof:
+
 ```bash
 python examples/backend_integration_package.py
 ```
@@ -74,6 +82,11 @@ with `integration_status` set to `PASS`.
 - Entrypoint: `examples/backend_integration_package.py`
 - Golden report: `tests/golden/backend_integration_package/external_vector_report.json`
 - Decision record: `rfcs/0282-backend-integration-package.md`
+- Installed-wheel proof: `docs/OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md`
+- Standalone consumer: `integration/objective_gamma`
+- Public API: `tuc.integration`
+- Console script: `tuc-backend-verify`
+- Distribution decision: `rfcs/0291-objective-gamma-external-integration.md`
 
 ## Non-Claims
 

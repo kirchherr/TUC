@@ -366,6 +366,15 @@ library, a command, a device path, a runtime handle, or an artifact, and it
 cannot request execution. Passing the report is not executable-backend
 certification.
 
+Objective Gamma promotes this same contract to the installed distribution
+boundary. External consumers import only `tuc.integration` or invoke
+`tuc-backend-verify`; the standard CI- and release-required test suite verifies
+both against a built wheel from outside the source tree. The standalone
+consumer and exact boundary are documented in
+`docs/OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md`, located at
+`integration/objective_gamma`, and accepted by
+`rfcs/0291-objective-gamma-external-integration.md`.
+
 ## Package Execution Admission
 
 The controlled execution bridge is documented in

@@ -1399,7 +1399,8 @@ Go/No-Go:
 
 ## Phase Eta: External Integration And Governance
 
-Status: future ecosystem readiness.
+Status: in progress. Installed external consumption is proven; organizational
+adoption and executable plugin admission remain future work.
 
 Purpose: make TUC usable by people who are not the original authors.
 
@@ -1408,6 +1409,8 @@ Deliverables:
 - Organization-backed maintainer groups.
 - CODEOWNERS backed by teams rather than a single maintainer.
 - Backend author onboarding guide with a reproducible certification path.
+- Stable installed-wheel API and CLI for the data-only backend integration
+  package, verified by a standalone consumer outside the source tree.
 - Versioned capability and runtime-plan schemas.
 - Release artifacts with SBOM, checksums, and provenance.
 - PyPI Trusted Publishing and protected tag governance.
@@ -1415,7 +1418,7 @@ Deliverables:
 Go/No-Go:
 
 - An external developer can add and test a toy backend without modifying TUC
-  core.
+  core. **PASS for data-only capability and planning integration.**
 - Governance protects HAC-IR neutrality from vendor capture.
 - Release and supply-chain controls are in place before broad adoption.
 
@@ -1432,7 +1435,8 @@ Go/No-Go:
    [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
 5. Keep HAC-IR neutrality and reserved-attribute rejection hardened as new
    proof and frontend surfaces appear.
-6. Strengthen backend capability and conformance tooling.
+6. Keep Objective Gamma's installed-wheel external-consumer proof passing while
+   strengthening backend capability and conformance tooling.
 7. Extend planning explanation coverage only when new proof slices add
    distinct placement, fallback, or movement evidence.
 8. Integrate real Triton intent only after the abstraction proof remains stable.

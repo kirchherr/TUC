@@ -22,7 +22,7 @@
   "broad_source_parser_claim": false,
   "claim_contract": "objective_beta.research_claim.digest_snapshot.v0",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "73141d48c541f34ddbd3597512e95b2e337c638140bddad05917f7f2a7bad65a",
+  "claim_metadata_digest": "761f48ed03b29c4293370340ff657747080de12f12f7d9601339de5c88366902",
   "claim_passed": true,
   "claim_scope": "objective_beta_kernel_ingress_first_slice_review_readiness",
   "claim_status": "supported_for_objective_beta_research_scope",
@@ -30,7 +30,7 @@
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "contract": "objective_alpha.research_claim_gate.ci.v0",
-      "digest": "4bcb5b7e2a0c448f6fc5bc08e5940e292bfbb025d11bc8338d2d02ac5b26e017",
+      "digest": "4a22b7899d8db6bf242cc3775d3fda15cdc142e7c2ff6cd8d3b8cc93665df4e3",
       "source_free": true,
       "status": "PASS"
     },
@@ -72,7 +72,7 @@
     {
       "artifact_id": "research_scope_claim_gate",
       "contract": "research_scope.claim_gate.data_only.v0",
-      "digest": "1477335ebd5cb3ca072829f4a6eafd6549c71c369fb0eefe650ab8200ff78b2a",
+      "digest": "f9dbd04645415529ac0d7a62a5136813b93cbc86963533c71252904d520874e2",
       "source_free": true,
       "status": "PASS"
     },
@@ -86,7 +86,7 @@
     {
       "artifact_id": "oci_source_worker_release_provenance_readiness",
       "contract": "oci_source_worker.release_provenance_readiness.data_only.v0",
-      "digest": "731df67576bd172f9833bf92a18ca4af452b8c8af3ca33c7f48616e9305e2e36",
+      "digest": "c7c3e12b23ea2b1f8864ec54fd9deb4f94bbd2193b4c59dd30231767b434440f",
       "source_free": true,
       "status": "PASS"
     }

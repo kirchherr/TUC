@@ -23,6 +23,9 @@ dependencies = [
   "numpy>=1.26"
 ]
 
+[project.scripts]
+tuc-backend-verify = "tuc.integration:main"
+
 [project.urls]
 Homepage = "https://github.com/kirchherr/TUC"
 Repository = "https://github.com/kirchherr/TUC"

@@ -18,18 +18,18 @@
   ],
   "capsule_contract": "objective_beta.reproducibility_capsule.digest_manifest.v0",
   "capsule_id": "objective_beta_reproducibility_capsule",
-  "capsule_metadata_digest": "151e525e26c403c42e7a5db56e38e13a38bbb7e401da569143ea643b42bbd518",
+  "capsule_metadata_digest": "ab896d7c96fca48bd76400f9b833b2182202eadaab9b0bbddc631612390c8c75",
   "capsule_status": "reproducible_from_repository_goldens",
-  "claim_digest": "62068f98733ce98c204950dc330db5097dd409bbb1a3147e63e13953b3cd0ec9",
-  "claim_gate_digest": "848077abba5bcbeefa98b2fd0410152a88576646b1223ecc539ab8759c0b209a",
+  "claim_digest": "0ed3ec3b576aba4259a4a9e05ac74c1f6038fc415d1a7fb010c60f01e6296848",
+  "claim_gate_digest": "061e86c92548c8628723aca9ba045bbae0f289099ca1aa81e45aac1c44bffe6d",
   "claim_gate_id": "objective_beta_research_claim_gate",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "73141d48c541f34ddbd3597512e95b2e337c638140bddad05917f7f2a7bad65a",
+  "claim_metadata_digest": "761f48ed03b29c4293370340ff657747080de12f12f7d9601339de5c88366902",
   "evidence": [
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "content_type": "application/json",
-      "digest": "4bcb5b7e2a0c448f6fc5bc08e5940e292bfbb025d11bc8338d2d02ac5b26e017",
+      "digest": "4a22b7899d8db6bf242cc3775d3fda15cdc142e7c2ff6cd8d3b8cc93665df4e3",
       "role": "predecessor_claim_gate",
       "source_free": true
     },
@@ -71,7 +71,7 @@
     {
       "artifact_id": "research_scope_claim_gate",
       "content_type": "application/json",
-      "digest": "1477335ebd5cb3ca072829f4a6eafd6549c71c369fb0eefe650ab8200ff78b2a",
+      "digest": "f9dbd04645415529ac0d7a62a5136813b93cbc86963533c71252904d520874e2",
       "role": "research_scope_boundary",
       "source_free": true
     },
@@ -85,21 +85,21 @@
     {
       "artifact_id": "oci_source_worker_release_provenance_readiness",
       "content_type": "application/json",
-      "digest": "731df67576bd172f9833bf92a18ca4af452b8c8af3ca33c7f48616e9305e2e36",
+      "digest": "c7c3e12b23ea2b1f8864ec54fd9deb4f94bbd2193b4c59dd30231767b434440f",
       "role": "release_provenance_readiness",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim",
       "content_type": "application/json",
-      "digest": "62068f98733ce98c204950dc330db5097dd409bbb1a3147e63e13953b3cd0ec9",
+      "digest": "0ed3ec3b576aba4259a4a9e05ac74c1f6038fc415d1a7fb010c60f01e6296848",
       "role": "research_claim",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim_gate",
       "content_type": "application/json",
-      "digest": "848077abba5bcbeefa98b2fd0410152a88576646b1223ecc539ab8759c0b209a",
+      "digest": "061e86c92548c8628723aca9ba045bbae0f289099ca1aa81e45aac1c44bffe6d",
       "role": "research_claim_gate",
       "source_free": true
     }

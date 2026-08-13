@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 import re
 import tarfile
 from pathlib import Path
@@ -341,6 +342,81 @@ def test_ci_and_release_declare_repository_example_import_path() -> None:
         workflow = workflow_path.read_text(encoding="utf-8")
         assert workflow.count("PYTHONPATH: ${{ github.workspace }}") == 1
     assert 'pythonpath = [".", "src"]' in pyproject
+
+
+@pytest.mark.skipif(os.name == "nt", reason="Windows symlink creation needs privileges")
+def test_external_consumer_verifier_rejects_symlink_inputs(tmp_path: Path) -> None:
+    verifier = _load_module("verify_external_backend_consumer.py")
+    wheel = tmp_path / "tuc.whl"
+    wheel.write_bytes(b"not executed")
+    wheel_link = tmp_path / "wheel-link.whl"
+    wheel_link.symlink_to(wheel)
+    consumer = tmp_path / "consumer"
+    consumer.mkdir()
+    source = tmp_path / "source"
+    source.mkdir()
+
+    with pytest.raises(ValueError, match="wheel must not be a symlink"):
+        verifier.verify_external_consumer(
+            wheel_path=wheel_link,
+            consumer_source=consumer,
+            source_root=source,
+        )
+
+
+@pytest.mark.skipif(os.name == "nt", reason="Windows symlink creation needs privileges")
+def test_external_consumer_verifier_rejects_nested_symlink(tmp_path: Path) -> None:
+    verifier = _load_module("verify_external_backend_consumer.py")
+    wheel = tmp_path / "tuc.whl"
+    wheel.write_bytes(b"not executed")
+    consumer = tmp_path / "consumer"
+    consumer.mkdir()
+    for filename in (
+        "backend_package.v0.json",
+        "consumer.py",
+        "expected_report.json",
+    ):
+        (consumer / filename).write_text("{}\n", encoding="utf-8")
+    outside = tmp_path / "outside.txt"
+    outside.write_text("not copied", encoding="utf-8")
+    (consumer / "escape.txt").symlink_to(outside)
+    source = tmp_path / "source"
+    source.mkdir()
+
+    with pytest.raises(ValueError, match="must not contain symlinks"):
+        verifier.verify_external_consumer(
+            wheel_path=wheel,
+            consumer_source=consumer,
+            source_root=source,
+        )
+
+
+def test_external_consumer_verifier_rejects_consumer_source_drift(
+    tmp_path: Path,
+) -> None:
+    verifier = _load_module("verify_external_backend_consumer.py")
+    consumer = tmp_path / "consumer"
+    consumer.mkdir()
+    for filename in verifier.OBJECTIVE_GAMMA_CONSUMER_FILES:
+        (consumer / filename).write_text("changed\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="consumer source digest mismatch"):
+        verifier._validate_consumer_tree(consumer)
+
+
+def test_external_consumer_verifier_rejects_unexpected_consumer_file(
+    tmp_path: Path,
+) -> None:
+    verifier = _load_module("verify_external_backend_consumer.py")
+    consumer = tmp_path / "consumer"
+    consumer.mkdir()
+    source_consumer = Path("integration/objective_gamma")
+    for filename in verifier.OBJECTIVE_GAMMA_CONSUMER_FILES:
+        (consumer / filename).write_bytes((source_consumer / filename).read_bytes())
+    (consumer / "unexpected.py").write_text("raise SystemExit(1)\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="file set changed"):
+        verifier._validate_consumer_tree(consumer)
 
 
 def test_source_worker_sbom_is_deterministic_and_material_bound() -> None:

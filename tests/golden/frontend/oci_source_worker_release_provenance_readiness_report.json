@@ -21,7 +21,7 @@
     "archive_verifier": "sha256:08b7eaefd32e2366c50f9727e8d73ca7a6405b1c084803b5abfb9ebac081a33c",
     "attestation_receipt_schema": "sha256:d6b6fb26642f3a71a2dac8be0163c3416370163311842087b191f34613d890c9",
     "attestation_receipt_writer": "sha256:76b43e133a3005bd78643ac563da8976c290c1f74222b8009f86ee6be590ca0e",
-    "build_context_policy": "sha256:a12ac0d015628ca51fc4b59dd275f29ac8177cd8c5f53f2e473a7e535579d339",
+    "build_context_policy": "sha256:2c922d3d318510318d834027e4c829b7956bcb96f62ff3838893a672d638effe",
     "ci_toolchain_lock": "sha256:279a3c8e55e737ae85f2d9ffefa0c0fe9750ef510bf1d0542dff05340c3e23b8",
     "dockerfile": "sha256:6dfcafc0be2563377331f62db66052b7cdd2a1e2cad60f4889d93943effe659c",
     "requirements": "sha256:68be807613300c9c5932f2c970e251a15974718fc38df68d03faf41efcac0602",
@@ -36,7 +36,7 @@
   "readiness_claim": "release_workflow_can_emit_attest_and_policy_verify_oci_archive_and_worker_sbom",
   "readiness_contract": "oci_source_worker.release_provenance_readiness.data_only.v0",
   "readiness_status": "PASS",
-  "report_digest": "sha256:e2a6e95f4bd47c658604dfbfb909a3935340bf6a79b8c1253370c9842d05015e",
+  "report_digest": "sha256:8978d3b36b6096a24105b5a12a76aa51fe67b291c43d6d2b597860a62b1e020c",
   "required_controls": [
     "archive_verified_before_attestation",
     "base_image_digest_pinned",
