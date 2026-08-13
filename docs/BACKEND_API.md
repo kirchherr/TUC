@@ -375,6 +375,17 @@ consumer and exact boundary are documented in
 `integration/objective_gamma`, and accepted by
 `rfcs/0291-objective-gamma-external-integration.md`.
 
+Objective Delta adds a separate installed semantic integration contract at
+`tuc.portable_compute` and `tuc-prove-portable-compute`. It accepts one bounded
+Source Intent and the exact two reviewed data-only packages, then preserves the
+external no-fallback plan while projecting only to fixed trusted simulator
+executors. Correctness and backend equivalence are mandatory. The standalone
+consumer, report boundary, and security invariants are documented in
+`docs/OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md`, located at
+`integration/objective_delta`, and accepted by
+`rfcs/0292-objective-delta-installed-portable-compute.md`. This does not add an
+executable backend API.
+
 ## Package Execution Admission
 
 The controlled execution bridge is documented in

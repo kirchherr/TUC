@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/portable_compute_proof_report.v0.schema.json",
+  "title": "TUC Portable Compute Proof Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "backend_equivalence_contract",
+    "backend_equivalence_digest",
+    "backend_equivalence_passed",
+    "backend_integration_contract",
+    "blocked_claims",
+    "blocked_execution_surfaces",
+    "execution_step_count",
+    "external_package_code_executed",
+    "external_plugin_execution",
+    "fallback_assignment_count",
+    "hac_ir_contract",
+    "hac_ir_digest",
+    "input_value_policy",
+    "input_values_serialized",
+    "layout_conversion_count",
+    "module_name",
+    "operation_families",
+    "output_contract",
+    "package_admission_contract",
+    "package_backend_sequence",
+    "package_digests",
+    "package_ids",
+    "package_integration_digests",
+    "physical_device_execution",
+    "portfolio_contract",
+    "portfolio_report_digest",
+    "projected_plan_digest",
+    "proof_claim",
+    "proof_contract",
+    "proof_status",
+    "public_api_version",
+    "public_output_bundle_contract",
+    "public_output_bundle_digest",
+    "public_output_names",
+    "raw_tensor_value_policy",
+    "raw_tensor_values_serialized",
+    "reference_correctness_contract",
+    "reference_correctness_digest",
+    "reference_correctness_passed",
+    "schema_version",
+    "source_intent_contract",
+    "source_intent_digest",
+    "source_intent_payload_serialized",
+    "source_plan_digest",
+    "source_text_executed",
+    "terminal_output_names",
+    "trusted_executor_registry",
+    "trusted_executor_sequence",
+    "trusted_projection_execution"
+  ],
+  "properties": {
+    "backend_equivalence_contract": {
+      "const": "runtime_backend_equivalence.data_only.v0"
+    },
+    "backend_equivalence_digest": { "$ref": "#/$defs/digest" },
+    "backend_equivalence_passed": { "const": true },
+    "backend_integration_contract": {
+      "const": "backend_integration.data_only.v0"
+    },
+    "blocked_claims": {
+      "const": [
+        "general_source_parser",
+        "source_text_execution",
+        "external_package_code_execution",
+        "external_plugin_execution",
+        "native_backend_execution",
+        "physical_device_residency",
+        "native_performance_parity"
+      ]
+    },
+    "blocked_execution_surfaces": {
+      "const": [
+        "backend_plugin_discovery",
+        "device_access",
+        "dynamic_import",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "jit_execution",
+        "network_access",
+        "subprocess_execution"
+      ]
+    },
+    "execution_step_count": { "const": 2 },
+    "external_package_code_executed": { "const": false },
+    "external_plugin_execution": { "const": false },
+    "fallback_assignment_count": { "const": 0 },
+    "hac_ir_contract": { "const": "hac-ir.v0" },
+    "hac_ir_digest": { "$ref": "#/$defs/digest" },
+    "input_value_policy": {
+      "const": "fixed_internal_test_vectors_not_serialized"
+    },
+    "input_values_serialized": { "const": false },
+    "layout_conversion_count": { "const": 1 },
+    "module_name": { "const": "source_intent_backend_package_portfolio" },
+    "operation_families": { "const": ["matmul", "elementwise"] },
+    "output_contract": { "const": "runtime_output_contract.data_only.v0" },
+    "package_admission_contract": {
+      "const": "backend_package_execution_admission.trusted_projection.v0"
+    },
+    "package_backend_sequence": {
+      "const": ["external-systolic", "external-vector"]
+    },
+    "package_digests": {
+      "const": [
+        "sha256:806813974dfde16b46f694566d751b18780d5e43d8455467bf4e5d7ea38b452c",
+        "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee"
+      ]
+    },
+    "package_ids": {
+      "const": [
+        "external-systolic-reference-package",
+        "external-vector-reference-package"
+      ]
+    },
+    "package_integration_digests": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/digest" }
+    },
+    "physical_device_execution": { "const": false },
+    "portfolio_contract": {
+      "const": "backend_package_execution_portfolio.trusted_projection.v0"
+    },
+    "portfolio_report_digest": { "$ref": "#/$defs/digest" },
+    "projected_plan_digest": { "$ref": "#/$defs/digest" },
+    "proof_claim": {
+      "const": "neutral_source_intent_preserves_observable_semantics_across_external_capabilities"
+    },
+    "proof_contract": {
+      "const": "portable_compute.installed_trusted_projection.v0"
+    },
+    "proof_status": { "const": "PASS" },
+    "public_api_version": { "const": "tuc.portable_compute_public_api.v0" },
+    "public_output_bundle_contract": {
+      "const": "runtime_public_output_bundle.readonly_values.v0"
+    },
+    "public_output_bundle_digest": { "$ref": "#/$defs/digest" },
+    "public_output_names": { "const": ["api_activated"] },
+    "raw_tensor_value_policy": { "const": "omitted_by_policy" },
+    "raw_tensor_values_serialized": { "const": false },
+    "reference_correctness_contract": {
+      "const": "runtime_reference_correctness.data_only.v0"
+    },
+    "reference_correctness_digest": { "$ref": "#/$defs/digest" },
+    "reference_correctness_passed": { "const": true },
+    "schema_version": { "const": "tuc.portable_compute_proof_report.v0" },
+    "source_intent_contract": { "const": "source_intent_ir.canonical.v0" },
+    "source_intent_digest": { "$ref": "#/$defs/digest" },
+    "source_intent_payload_serialized": { "const": false },
+    "source_plan_digest": { "$ref": "#/$defs/digest" },
+    "source_text_executed": { "const": false },
+    "terminal_output_names": { "const": ["activated"] },
+    "trusted_executor_registry": {
+      "const": "trusted_runtime_executor_registry.v0"
+    },
+    "trusted_executor_sequence": {
+      "const": ["systolic-sim", "vector-sim"]
+    },
+    "trusted_projection_execution": { "const": true }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

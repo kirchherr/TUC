@@ -1,0 +1,35 @@
+{
+  "name": "source_intent_backend_package_portfolio",
+  "schema_version": "source_intent.v0",
+  "tensors": [
+    {"name": "lhs", "shape": [2, 2], "dtype": "float64"},
+    {"name": "rhs", "shape": [2, 2], "dtype": "float64"},
+    {"name": "projection", "shape": [2, 2], "dtype": "float64"},
+    {"name": "activated", "shape": [2, 2], "dtype": "float64"}
+  ],
+  "operations": [
+    {
+      "name": "projection",
+      "family": "matmul",
+      "inputs": ["lhs", "rhs"],
+      "outputs": ["projection"],
+      "hints": {
+        "max_error_budget": 0.0,
+        "prefer_linear_accelerator": true
+      }
+    },
+    {
+      "name": "activation",
+      "family": "elementwise",
+      "inputs": ["projection"],
+      "outputs": ["activated"]
+    }
+  ],
+  "returns": [
+    {
+      "public_name": "api_activated",
+      "tensor_name": "activated",
+      "required": true
+    }
+  ]
+}

@@ -1,5 +1,16 @@
 # Roadmap Status
 
+- [Objective Delta Installed Portable Compute](OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md)
+  now proves one bounded Source Intent through two external data-only backend
+  packages, no-fallback heterogeneous planning, fixed trusted simulator
+  projection, explicit layout conversion, controlled execution, independent
+  reference correctness, and backend equivalence from a built TUC wheel. The
+  standalone consumer and installed CLI must reproduce one closed digest-only
+  report outside the source tree. Decision:
+  `rfcs/0292-objective-delta-installed-portable-compute.md`. External code,
+  native artifacts, devices, arbitrary source and tensors, and performance
+  claims remain blocked.
+
 - [Objective Gamma External Integration](OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md)
   now proves the Backend Integration Package v0 through a built TUC wheel, a
   stable public `tuc.integration` API, the installed `tuc-backend-verify` CLI,
@@ -1506,8 +1517,20 @@ Current focus:
   `tuc-backend-verify`, `integration/objective_gamma`, and
   `scripts/verify_external_backend_consumer.py`. The copied consumer must not
   import from repository source, examples, tests, or internal TUC modules.
+- Keep Objective Delta's installed semantic boundary passing through
+  `docs/OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md`,
+  `tuc.portable_compute`, `tuc-prove-portable-compute`,
+  `integration/objective_delta`, and
+  `scripts/verify_external_portable_compute_consumer.py`. The external source
+  and package inputs must retain exact bounded identities, and API plus CLI
+  reports must remain byte-identical.
+- Preserve Objective Delta's separation between the external package source
+  plan and fixed trusted simulator projection. A PASS must continue to require
+  zero fallback, explicit layout conversion, independent reference
+  correctness, and backend equivalence.
 - Treat this as proof of capability and planning portability only; executable
-  backend admission remains a separate blocked trust decision.
+  backend admission remains a separate blocked trust decision. Objective Delta
+  adds trusted semantic execution evidence, not external package execution.
 
 - Keep Backend Package Execution Admission passing as the only bridge from an
   external package plan to runtime execution. Its complete evidence set is

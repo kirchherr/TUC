@@ -189,6 +189,11 @@ Objective Alpha is the current proof shape:
 Graph -> HAC-IR -> Runtime Plan -> Backend A + Backend B -> Correct Result
 ```
 
+Objective Delta now reproduces one bounded version of that complete semantic
+path through a built wheel, an external consumer, two data-only backend
+packages, and the installed public API and CLI. See
+[Objective Delta Installed Portable Compute](docs/OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md).
+
 Run the proof family:
 
 ```bash
@@ -831,6 +836,17 @@ the source tree. See
 [Objective Gamma External Integration](docs/OBJECTIVE_GAMMA_EXTERNAL_INTEGRATION.md)
 and [RFC 0291](rfcs/0291-objective-gamma-external-integration.md). This extends
 capability-and-planning portability only; executable plugins remain blocked.
+
+Objective Delta extends the installed product boundary through one complete
+bounded semantic proof. The public `tuc.portable_compute` API and
+`tuc-prove-portable-compute` CLI accept fixed Source Intent plus both external
+data-only packages, preserve their no-fallback source plan, project only to
+reviewed trusted simulators, and require layout conversion, correctness, and
+backend equivalence before emitting a digest-only PASS. See
+[Objective Delta Installed Portable Compute](docs/OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md)
+and [RFC 0292](rfcs/0292-objective-delta-installed-portable-compute.md).
+External package code, plugins, native artifacts, devices, and performance
+claims remain blocked.
 
 Backend Package Execution Admission v0 provides the first controlled bridge.
 The digest-bound proof in `examples/backend_package_execution_proof.py`

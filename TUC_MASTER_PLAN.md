@@ -327,6 +327,38 @@ This is Level 4 integration evidence for data-only capability and planning. It
 does not admit external code, plugins, devices, native execution, or performance
 claims.
 
+### Objective Delta
+
+Prove one complete portable-compute slice through the installed distribution
+without opening executable plugin trust.
+
+Target:
+
+```text
+built TUC wheel
+    -> bounded Source Intent
+    -> two external data-only backend packages
+    -> capability-driven heterogeneous plan
+    -> fixed trusted executor projection
+    -> explicit layout conversion
+    -> correct and backend-equivalent result
+    -> digest-only PASS
+```
+
+Current result: **PASS** for the fixed Portable Compute Public API v0 boundary.
+The standalone consumer in `integration/objective_delta` runs outside the
+repository against a force-installed wheel. Both `tuc.portable_compute` and
+`tuc-prove-portable-compute` must reproduce the same closed metadata-only
+report while preserving the external package plan separately from its trusted
+`systolic-sim -> vector-sim` execution projection.
+
+This strengthens Level 4 from installed planning evidence to installed
+end-to-end semantic evidence for one bounded research slice. It is not Level 5
+adoption and does not admit arbitrary source, external code, native artifacts,
+physical devices, or performance claims. See
+`docs/OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md` and
+`rfcs/0292-objective-delta-installed-portable-compute.md`.
+
 ## Critical Milestones
 
 ### Milestone 1: Proof Of Abstraction
@@ -413,9 +445,18 @@ outside the source tree and rejects any source-import escape or report drift;
 the unchanged CI and release workflows both require that suite. Decision:
 `rfcs/0291-objective-gamma-external-integration.md`.
 
+Objective Delta extends that installed boundary through one complete trusted
+heterogeneous execution proof. `tuc.portable_compute`,
+`tuc-prove-portable-compute`, and `integration/objective_delta` join bounded
+Source Intent, both data-only external packages, the no-fallback source plan,
+trusted simulator projection, layout conversion, correctness, and backend
+equivalence in one closed report. Decision:
+`rfcs/0292-objective-delta-installed-portable-compute.md`.
+
 This proves the external ownership boundary for capability declaration,
-negative conformance, and compiler selection. It does not prove a native ABI,
-vendor code execution, device access, or performance.
+negative conformance, compiler selection, and one bounded installed semantic
+execution slice. It does not prove a native ABI, vendor code execution, device
+access, or performance.
 
 ### Milestone 4: Heterogeneous Execution Proof
 
