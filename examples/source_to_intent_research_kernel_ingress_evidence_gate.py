@@ -6,6 +6,8 @@ import json
 from collections.abc import Mapping
 from hashlib import sha256
 
+from tuc.report_output import emit_public_text_report
+
 try:
     from examples.source_to_intent_research_kernel_ingress import (
         assert_kernel_ingress_report_contract,
@@ -447,7 +449,7 @@ def build_gate_report(
 
 
 def main() -> None:
-    print(build_gate_report(), end="")
+    emit_public_text_report(build_gate_report())
 
 
 def assert_kernel_ingress_evidence_gate_report_contract(text: object) -> None:

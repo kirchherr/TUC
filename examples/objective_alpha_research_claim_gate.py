@@ -24,6 +24,7 @@ from examples.objective_alpha_research_claim import (
 from examples.objective_alpha_research_claim import (
     build_report as build_research_claim_report,
 )
+from tuc.report_output import emit_public_json_report
 
 OBJECTIVE_ALPHA_RESEARCH_CLAIM_GATE_REPORT_SCHEMA_VERSION = (
     "tuc.objective_alpha_research_claim_gate_report.v0"
@@ -55,7 +56,7 @@ def build_gate_report(*, claim_text: str | None = None) -> str:
 
 
 def main() -> None:
-    print(build_gate_report(), end="")
+    emit_public_json_report(build_gate_report())
 
 
 def assert_objective_alpha_research_claim_gate_report_contract(report: object) -> None:

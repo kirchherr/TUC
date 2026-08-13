@@ -1,5 +1,7 @@
 """Emit Runtime Layout Conversion Trace Index v0."""
 
+from tuc.report_output import emit_public_json_report
+
 try:
     from examples.runtime_mixed_backend_equivalence import build_graph, proof_inputs
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path
@@ -57,7 +59,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 if __name__ == "__main__":

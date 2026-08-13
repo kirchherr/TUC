@@ -39,6 +39,7 @@ from tuc.frontend.source_intent_metadata import (
 from tuc.frontend.source_intent_returns import source_intent_return_aliases
 from tuc.ir.dialect import HAC_IR_DIALECT_VERSION
 from tuc.ir.modules import IRStage
+from tuc.report_output import emit_public_json_report
 from tuc.runtime.backend_equivalence import (
     RUNTIME_BACKEND_EQUIVALENCE_CONTRACT,
     RuntimeBackendEquivalenceReport,
@@ -561,7 +562,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 def artifact_texts_for_evidence(

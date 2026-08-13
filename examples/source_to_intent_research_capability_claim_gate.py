@@ -6,6 +6,8 @@ import json
 from collections.abc import Mapping
 from hashlib import sha256
 
+from tuc.report_output import emit_public_text_report
+
 try:
     from examples.source_to_intent_research_capability_claim import (
         SOURCE_TO_INTENT_RESEARCH_CAPABILITY_BLOCKED_CLAIMS,
@@ -69,7 +71,7 @@ def build_gate_report(*, capability_claim_text: str | None = None) -> str:
 
 
 def main() -> None:
-    print(build_gate_report(), end="")
+    emit_public_text_report(build_gate_report())
 
 
 def assert_capability_claim_gate_report_contract(text: object) -> None:

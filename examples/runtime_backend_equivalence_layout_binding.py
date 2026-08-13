@@ -6,6 +6,7 @@ from examples.runtime_layout_conversion_trace_replay_verifier import (
 from examples.runtime_mixed_backend_equivalence import (
     build_mixed_backend_equivalence_report,
 )
+from tuc.report_output import emit_public_json_report
 from tuc.runtime.backend_equivalence import dump_runtime_backend_equivalence_report
 from tuc.runtime.backend_equivalence_layout_binding import (
     RuntimeBackendEquivalenceLayoutBindingReport,
@@ -43,7 +44,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 if __name__ == "__main__":

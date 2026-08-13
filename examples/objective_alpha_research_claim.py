@@ -26,6 +26,7 @@ from examples.objective_alpha_public_proof_bundle_gate import (
 from examples.source_intent_mixed_runtime_public_proof_bundle import (
     build_report as build_source_intent_mixed_runtime_public_proof_bundle_report,
 )
+from tuc.report_output import emit_public_json_report
 
 OBJECTIVE_ALPHA_RESEARCH_CLAIM_REPORT_SCHEMA_VERSION = (
     "tuc.objective_alpha_research_claim_report.v0"
@@ -133,7 +134,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 @lru_cache(maxsize=1)

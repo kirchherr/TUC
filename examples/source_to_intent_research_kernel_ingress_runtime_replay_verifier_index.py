@@ -7,6 +7,8 @@ import re
 from collections.abc import Mapping
 from hashlib import sha256
 
+from tuc.report_output import emit_public_json_report
+
 try:
     from examples.source_to_intent_research_execution_bridge import (
         _inputs_for,
@@ -372,7 +374,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 def assert_kernel_ingress_runtime_replay_verifier_index_report_contract(

@@ -7,6 +7,8 @@ import re
 from collections.abc import Iterable, Mapping
 from hashlib import sha256
 
+from tuc.report_output import emit_public_json_report
+
 try:
     from examples.source_to_intent_research_kernel_ingress_backend_equivalence_shape_profiles import (  # noqa: E501
         SOURCE_TO_INTENT_RESEARCH_KERNEL_INGRESS_BACKEND_EQUIVALENCE_SHAPE_PROFILES_CONTRACT,
@@ -193,7 +195,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 def assert_kernel_ingress_workload_scope_report_contract(report: object) -> None:

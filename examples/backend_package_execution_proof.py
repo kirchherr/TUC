@@ -13,6 +13,7 @@ from tuc.backends.integration_package import (
 )
 from tuc.compiler import compile_graph
 from tuc.ir import ComputeGraph, ComputeOperation, OperationKind, TensorRef
+from tuc.report_output import emit_public_json_report
 from tuc.runtime.backend_equivalence import build_runtime_backend_equivalence_report
 from tuc.runtime.backend_package_execution import (
     BackendPackageExecutionProofReport,
@@ -111,7 +112,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 if __name__ == "__main__":

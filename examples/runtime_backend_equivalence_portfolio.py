@@ -14,6 +14,7 @@ from tuc import (
     build_runtime_backend_equivalence_portfolio_report,
     dump_runtime_backend_equivalence_portfolio_report,
 )
+from tuc.report_output import emit_public_json_report
 
 RUNTIME_BACKEND_EQUIVALENCE_PORTFOLIO_ID = (
     "runtime_backend_equivalence_portfolio"
@@ -44,7 +45,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 if __name__ == "__main__":

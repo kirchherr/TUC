@@ -2,6 +2,7 @@
 
 from examples.runtime_backend_equivalence import build_graph, proof_inputs
 from tuc import SystolicArraySimulatorBackend, compile_graph
+from tuc.report_output import emit_public_json_report
 from tuc.runtime.executor import execute_graph
 from tuc.runtime.transfer_evidence import build_runtime_transfer_evidence_report
 from tuc.runtime.transfer_trace_index import (
@@ -39,7 +40,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 if __name__ == "__main__":

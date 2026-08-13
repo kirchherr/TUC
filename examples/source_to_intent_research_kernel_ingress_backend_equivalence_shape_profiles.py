@@ -10,6 +10,8 @@ from hashlib import sha256
 import numpy as np
 from numpy.typing import NDArray
 
+from tuc.report_output import emit_public_json_report
+
 try:
     from examples.source_to_intent_research_kernel_ingress import (
         _MODULE_CASES,
@@ -333,7 +335,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 def assert_kernel_ingress_backend_equivalence_shape_profiles_report_contract(

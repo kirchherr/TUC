@@ -20,6 +20,7 @@ from tuc import (
     dump_runtime_backend_equivalence_report,
     runtime_backend_equivalence_report_to_dict,
 )
+from tuc.report_output import emit_public_json_report
 
 PROOF_OF_BACKEND_EQUIVALENCE_REPORT_SCHEMA_VERSION = (
     "tuc.proof_of_backend_equivalence_report.v0"
@@ -161,7 +162,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 def assert_proof_of_backend_equivalence_report_contract(report: object) -> None:

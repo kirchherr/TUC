@@ -7,6 +7,7 @@ from tuc import (
     build_default_runtime_backend_equivalence_portfolio_policy_report,
     dump_runtime_backend_equivalence_portfolio_policy_report,
 )
+from tuc.report_output import emit_public_json_report
 
 
 def build_backend_equivalence_portfolio_policy_report() -> (
@@ -26,7 +27,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 if __name__ == "__main__":

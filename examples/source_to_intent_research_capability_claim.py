@@ -7,6 +7,8 @@ import re
 from collections.abc import Mapping
 from hashlib import sha256
 
+from tuc.report_output import emit_public_json_report
+
 try:
     from examples.source_to_intent_research_evidence_gate import (
         SOURCE_TO_INTENT_RESEARCH_EVIDENCE_GATE_CONTRACT,
@@ -495,7 +497,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 def assert_research_capability_claim_report_contract(report: object) -> None:

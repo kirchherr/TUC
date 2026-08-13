@@ -33,6 +33,7 @@ from examples.real_triton_first_slice_maintainer_approval_request import (
 from examples.source_to_intent_research_kernel_ingress_proof_bundle import (
     assert_kernel_ingress_proof_bundle_report_contract,
 )
+from tuc.report_output import emit_public_json_report
 
 OBJECTIVE_BETA_RESEARCH_CLAIM_REPORT_SCHEMA_VERSION = (
     "tuc.objective_beta_research_claim_report.v0"
@@ -219,7 +220,7 @@ def build_report() -> str:
 
 
 def main() -> None:
-    print(build_report(), end="")
+    emit_public_json_report(build_report())
 
 
 @lru_cache(maxsize=1)
