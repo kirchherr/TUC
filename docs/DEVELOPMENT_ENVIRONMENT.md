@@ -131,13 +131,17 @@ After rebuilding the development image with current dependencies:
 
 ```powershell
 docker compose run --rm dev python -m build
+docker compose run --rm dev python scripts/build_portable_compute_reproduction_kit.py --consumer integration/objective_delta --output dist/tuc-objective-delta-reproduction-kit-v0.zip
+docker compose run --rm dev python -m tuc.portable_compute_reproduction dist/tuc-objective-delta-reproduction-kit-v0.zip
 docker compose run --rm dev python scripts/generate_sbom.py --output dist/tuc.cdx.json
 docker compose run --rm dev python scripts/write_artifact_checksums.py dist --output dist/SHA256SUMS
 ```
 
 The GitHub release-artifact workflow also creates provenance and SBOM
 attestations. Local runs generate the distributions, CycloneDX SBOM, and
-checksum manifest only.
+checksum manifest only. The reproduction command above exercises the kit from
+the development installation; the release workflow additionally uses the built
+wheel, compares the receipt with its golden, and attests kit plus receipt.
 
 To exercise the source-worker release artifact locally with a Buildx builder
 that supports the OCI exporter:

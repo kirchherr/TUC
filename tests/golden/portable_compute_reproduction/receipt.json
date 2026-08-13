@@ -1,0 +1,56 @@
+{
+  "archive_policy": "exact_stored_members_regular_non_executable_digest_bound.v0",
+  "backend_equivalence_passed": true,
+  "blocked_claims": [
+    "general_source_parser",
+    "source_text_execution",
+    "external_package_code_execution",
+    "external_plugin_execution",
+    "native_backend_execution",
+    "physical_device_residency",
+    "native_performance_parity"
+  ],
+  "expected_report_digest": "sha256:ba512e899b61693296bed38f679a14777dd1f6530d18e9dc020112ddc8dfaf3d",
+  "external_package_code_executed": false,
+  "external_plugin_execution": false,
+  "fallback_assignment_count": 0,
+  "independent_reproduction_claim": false,
+  "kit_contract": "portable_compute.reproduction_kit.data_only.v0",
+  "kit_digest": "sha256:ddbe9d7e347ef03aa047a27df0272b8991380f20426c1e8be38205421c8ab42e",
+  "kit_id": "objective_delta_installed_portable_compute",
+  "layout_conversion_count": 1,
+  "manifest_digest": "sha256:9bcc5fd53fb854d770efd04b68c1e47a55a3a7bf81456332c32e13b81f5e4eb7",
+  "native_performance_claim": false,
+  "observed_report_digest": "sha256:ba512e899b61693296bed38f679a14777dd1f6530d18e9dc020112ddc8dfaf3d",
+  "package_digests": [
+    "sha256:806813974dfde16b46f694566d751b18780d5e43d8455467bf4e5d7ea38b452c",
+    "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee"
+  ],
+  "package_ids": [
+    "external-systolic-reference-package",
+    "external-vector-reference-package"
+  ],
+  "portable_compute_proof_contract": "portable_compute.installed_trusted_projection.v0",
+  "portable_compute_proof_status": "PASS",
+  "portable_compute_public_api_version": "tuc.portable_compute_public_api.v0",
+  "raw_tensor_values_serialized": false,
+  "reference_correctness_passed": true,
+  "reports_byte_identical": true,
+  "reproduction_contract": "portable_compute.reproduction.installed_offline.v0",
+  "reproduction_public_api_version": "tuc.portable_compute_reproduction_public_api.v0",
+  "reproduction_status": "PASS",
+  "schema_version": "tuc.portable_compute_reproduction_receipt.v0",
+  "source_intent_payload_serialized": false,
+  "source_text_executed": false,
+  "trusted_executor_sequence": [
+    "systolic-sim",
+    "vector-sim"
+  ],
+  "verified_payload_file_count": 4,
+  "verified_payload_file_names": [
+    "source_intent.v0.json",
+    "external_systolic.v0.json",
+    "external_vector.v0.json",
+    "expected_report.json"
+  ]
+}

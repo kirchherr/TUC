@@ -1,5 +1,15 @@
 # Roadmap Status
 
+- [Objective Delta Reproduction Kit](OBJECTIVE_DELTA_REPRODUCTION_KIT.md) now
+  packages the fixed installed portable-compute experiment as a deterministic
+  data-only ZIP with a closed digest-bound manifest. The installed
+  `tuc-reproduce-portable-compute` command validates the archive without
+  extraction, reruns trusted heterogeneous execution, and requires the
+  observed report to match expected evidence byte for byte. The release
+  workflow builds, replays, attests, checksums and uploads the kit and receipt.
+  Independent organizational reproduction remains explicitly unclaimed.
+  Decision: `rfcs/0293-objective-delta-reproduction-kit.md`.
+
 - [Objective Delta Installed Portable Compute](OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md)
   now proves one bounded Source Intent through two external data-only backend
   packages, no-fallback heterogeneous planning, fixed trusted simulator
@@ -1448,6 +1458,9 @@ Current slice:
 - Branch protection policy for `main` and expanded required CI smoke surface.
 - Release artifact workflow with CycloneDX SBOM, SHA-256 checksums, wheel import
   and external-consumer checks, plus GitHub provenance/SBOM attestations.
+- Deterministic Objective Delta data-only reproduction kit, installed-wheel
+  replay receipt, release attestations, and explicit separation between
+  maintainer self-reproduction and future independent evidence.
 - Release governance policy with SHA-pinned release actions, release-action pin
   tests, and required GitHub/PyPI publishing controls.
 - PyPI Trusted Publishing job gated by protected `v*` tags, artifact-build

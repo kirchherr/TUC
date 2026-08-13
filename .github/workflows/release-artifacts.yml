@@ -43,6 +43,11 @@ jobs:
         run: pytest -q -n 4
       - name: Build distributions
         run: python -m build
+      - name: Build Objective Delta reproduction kit
+        run: >-
+          python scripts/build_portable_compute_reproduction_kit.py
+          --consumer integration/objective_delta
+          --output dist/tuc-objective-delta-reproduction-kit-v0.zip
       - name: Verify wheel import
         run: |
           unset PYTHONPATH
@@ -51,6 +56,12 @@ jobs:
           cd /tmp
           /tmp/tuc-release-check/bin/python -m pip install "${wheel_path}"
           /tmp/tuc-release-check/bin/python -c "import importlib.metadata; import tuc; print(importlib.metadata.version('tuc'))"
+          /tmp/tuc-release-check/bin/tuc-reproduce-portable-compute \
+            "${GITHUB_WORKSPACE}/dist/tuc-objective-delta-reproduction-kit-v0.zip" \
+            >"${GITHUB_WORKSPACE}/dist/tuc-objective-delta-reproduction-receipt.v0.json"
+          cmp \
+            "${GITHUB_WORKSPACE}/dist/tuc-objective-delta-reproduction-receipt.v0.json" \
+            "${GITHUB_WORKSPACE}/tests/golden/portable_compute_reproduction/receipt.json"
       - name: Build source-worker OCI archive
         run: |
           docker buildx build \
@@ -79,6 +90,12 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
           sbom-path: dist/tuc.cdx.json
+      - name: Attest Objective Delta reproduction evidence
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        with:
+          subject-path: |
+            dist/tuc-objective-delta-reproduction-kit-v0.zip
+            dist/tuc-objective-delta-reproduction-receipt.v0.json
       - name: Attest source-worker OCI provenance
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         with:
@@ -128,6 +145,8 @@ jobs:
             dist/*.attestation-verification.json
             dist/*.oci-verification.json
             dist/*.oci.tar
+            dist/*.zip
+            dist/*-reproduction-receipt.v0.json
             dist/SHA256SUMS
           if-no-files-found: error
           retention-days: 30

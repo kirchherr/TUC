@@ -1415,6 +1415,9 @@ Deliverables:
 - Stable installed-wheel API and CLI for one bounded Source Intent plus
   two-package trusted heterogeneous execution proof, verified outside the
   source tree with correctness and backend equivalence.
+- Deterministic data-only Objective Delta reproduction kit and receipt,
+  replayed through the installed release wheel and covered by release
+  attestations and checksums.
 - Versioned capability and runtime-plan schemas.
 - Release artifacts with SBOM, checksums, and provenance.
 - PyPI Trusted Publishing and protected tag governance.
@@ -1444,8 +1447,10 @@ Go/No-Go:
    proof and frontend surfaces appear.
 6. Keep Objective Gamma's installed planning proof and Objective Delta's
    installed portable-compute proof passing as distinct public boundaries.
-7. Seek independent reproduction of Objective Delta before expanding its fixed
-   Source Intent or trusted executor set.
+7. Publish the Objective Delta Reproduction Kit and seek a separately
+   provenanced third-party receipt before expanding its fixed Source Intent or
+   trusted executor set. Release CI self-reproduction is not independent
+   evidence.
 8. Extend planning explanation coverage only when new proof slices add
    distinct placement, fallback, or movement evidence.
 9. Integrate real Triton intent only after the abstraction proof remains stable.

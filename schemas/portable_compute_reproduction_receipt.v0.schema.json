@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/portable_compute_reproduction_receipt.v0.schema.json",
+  "title": "TUC Portable Compute Reproduction Receipt v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "archive_policy",
+    "backend_equivalence_passed",
+    "blocked_claims",
+    "expected_report_digest",
+    "external_package_code_executed",
+    "external_plugin_execution",
+    "fallback_assignment_count",
+    "independent_reproduction_claim",
+    "kit_contract",
+    "kit_digest",
+    "kit_id",
+    "layout_conversion_count",
+    "manifest_digest",
+    "native_performance_claim",
+    "observed_report_digest",
+    "package_digests",
+    "package_ids",
+    "portable_compute_proof_contract",
+    "portable_compute_proof_status",
+    "portable_compute_public_api_version",
+    "raw_tensor_values_serialized",
+    "reference_correctness_passed",
+    "reports_byte_identical",
+    "reproduction_contract",
+    "reproduction_public_api_version",
+    "reproduction_status",
+    "schema_version",
+    "source_intent_payload_serialized",
+    "source_text_executed",
+    "trusted_executor_sequence",
+    "verified_payload_file_count",
+    "verified_payload_file_names"
+  ],
+  "properties": {
+    "archive_policy": {
+      "const": "exact_stored_members_regular_non_executable_digest_bound.v0"
+    },
+    "backend_equivalence_passed": { "const": true },
+    "blocked_claims": {
+      "const": [
+        "general_source_parser",
+        "source_text_execution",
+        "external_package_code_execution",
+        "external_plugin_execution",
+        "native_backend_execution",
+        "physical_device_residency",
+        "native_performance_parity"
+      ]
+    },
+    "expected_report_digest": { "$ref": "#/$defs/digest" },
+    "external_package_code_executed": { "const": false },
+    "external_plugin_execution": { "const": false },
+    "fallback_assignment_count": { "const": 0 },
+    "independent_reproduction_claim": { "const": false },
+    "kit_contract": {
+      "const": "portable_compute.reproduction_kit.data_only.v0"
+    },
+    "kit_digest": { "$ref": "#/$defs/digest" },
+    "kit_id": { "const": "objective_delta_installed_portable_compute" },
+    "layout_conversion_count": { "const": 1 },
+    "manifest_digest": { "$ref": "#/$defs/digest" },
+    "native_performance_claim": { "const": false },
+    "observed_report_digest": { "$ref": "#/$defs/digest" },
+    "package_digests": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/digest" }
+    },
+    "package_ids": {
+      "const": [
+        "external-systolic-reference-package",
+        "external-vector-reference-package"
+      ]
+    },
+    "portable_compute_proof_contract": {
+      "const": "portable_compute.installed_trusted_projection.v0"
+    },
+    "portable_compute_proof_status": { "const": "PASS" },
+    "portable_compute_public_api_version": {
+      "const": "tuc.portable_compute_public_api.v0"
+    },
+    "raw_tensor_values_serialized": { "const": false },
+    "reference_correctness_passed": { "const": true },
+    "reports_byte_identical": { "const": true },
+    "reproduction_contract": {
+      "const": "portable_compute.reproduction.installed_offline.v0"
+    },
+    "reproduction_public_api_version": {
+      "const": "tuc.portable_compute_reproduction_public_api.v0"
+    },
+    "reproduction_status": { "const": "PASS" },
+    "schema_version": {
+      "const": "tuc.portable_compute_reproduction_receipt.v0"
+    },
+    "source_intent_payload_serialized": { "const": false },
+    "source_text_executed": { "const": false },
+    "trusted_executor_sequence": { "const": ["systolic-sim", "vector-sim"] },
+    "verified_payload_file_count": { "const": 4 },
+    "verified_payload_file_names": {
+      "const": [
+        "source_intent.v0.json",
+        "external_systolic.v0.json",
+        "external_vector.v0.json",
+        "expected_report.json"
+      ]
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

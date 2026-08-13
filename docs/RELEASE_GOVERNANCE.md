@@ -107,8 +107,11 @@ Before a public release:
 - Branch protection is active on `main`.
 - The `v*` tag ruleset is active.
 - The release workflow has completed successfully.
-- The release artifact bundle includes wheel, sdist, SBOM, and `SHA256SUMS`.
+- The release artifact bundle includes wheel, sdist, SBOM, Objective Delta
+  reproduction kit and receipt, and `SHA256SUMS`.
 - GitHub attestations are present for distributions and SBOM.
+- GitHub attestations are present for the Objective Delta reproduction kit and
+  receipt; neither is described as independent third-party evidence.
 - At least one maintainer has reviewed release notes and artifact checksums.
 - PyPI Trusted Publishing is configured with the `pypi` environment.
 
