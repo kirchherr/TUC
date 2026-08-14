@@ -1,15 +1,61 @@
 # TUC
 
-TUC is **The Universal Compute**: an early-stage open-source prototype exploring
-whether compute intent can move through a hardware-independent interface into
-capability-driven runtime planning and controlled execution.
+TUC, short for **The Universal Compute**, is an early-stage research prototype.
+It asks a concrete question: can a program describe a calculation without
+naming a device, can target systems describe what they support, and can software
+choose between those targets while preserving the calculation's result and
+explaining every choice?
 
-TUC is not trying to become just another compiler. It is testing whether
-software can describe intent, hardware can describe capabilities, and the
-translation layer between them can stay inspectable, secure, and portable.
+## What The Current Experiment Actually Does
+
+Objective Delta v0.1.0 is deliberately small:
+
+1. One JSON file describes a `2 x 2` matrix multiplication followed by an
+   elementwise operation. It does not name a CPU, GPU, or vendor.
+2. Two other JSON files describe target capabilities. One accepts matrix
+   multiplication and produces a blocked memory layout. The other accepts the
+   elementwise operation in row-major layout.
+3. TUC assigns each operation to an eligible target and records the required
+   `blocked -> row_major` layout conversion.
+4. Two built-in NumPy-based simulators execute the plan on the same host CPU.
+5. TUC compares the result with a simple CPU reference and emits a deterministic
+   metadata-only receipt describing what happened.
+
+This proves one limited software result: for this fixed example, the compute
+description can remain unchanged while data-described capabilities determine
+an inspectable plan whose result matches the reference.
+
+It does **not** prove real-hardware portability, native accelerator execution,
+performance parity, arbitrary program support, or replacement of CUDA, ROCm,
+XLA, TVM, IREE, Triton, or vendor compilers.
+
+Running the experiment in several ordinary cloud VMs should reproduce it. That
+is useful evidence that the released experiment is portable and deterministic
+across independent environments. Because the current backends are simulators,
+it is not evidence that the same code runs efficiently on different physical
+accelerators. Native backends and real-device evidence remain future research.
+
+New to compiler terminology? Start with the
+[plain-language glossary](docs/GLOSSARY.md).
+
+## Before Running The Reproduction
+
+Treat TUC like any other unfamiliar Python package. The reproduction ZIP
+contains only five bounded JSON files, but the TUC wheel is executable Python
+code and NumPy is a runtime dependency. Checksums and GitHub attestations verify
+artifact identity and origin; they do not prove that software is harmless.
+
+Use a disposable VM or independently controlled CI runner, inspect the source
+or pure-Python wheel when appropriate, verify the published checksums and
+attestations, and disable outbound network access after obtaining the required
+artifacts. The reproduction command itself requires no network, external
+backend or plugin code, device, or subprocess execution. It does execute the
+installed TUC and NumPy packages; a NumPy distribution may include native
+components.
 
 - Strategic north star: [TUC Master Plan](TUC_MASTER_PLAN.md)
 - Operational status: [Roadmap Status](docs/ROADMAP_STATUS.md)
+- Terminology: [Plain-language glossary](docs/GLOSSARY.md)
 - First research proof path:
   [Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md)
 - External feedback triage:

@@ -15,6 +15,28 @@ For release-side construction and replay, the answer is **PASS**. Independent
 organizational reproduction remains pending until a third party returns a
 receipt produced in its own environment.
 
+## Safe Evaluation
+
+Installing `tuc` executes third-party Python code. The data-only property below
+applies to the reproduction ZIP, not to the TUC wheel or its NumPy dependency.
+Checksums and artifact attestations establish identity and provenance; they do
+not establish that software is benign.
+
+Run the experiment in a disposable VM or independently controlled CI runner.
+Inspect the repository source or pure-Python wheel as needed, verify the release
+checksums and attestations, and disable outbound network access after obtaining
+the required artifacts. The reproduction command itself reads one bounded ZIP,
+writes three verified JSON payloads to a temporary directory, runs only fixed
+in-process TUC and NumPy code, writes the receipt to standard output, and does
+not discover plugins, execute external package code, spawn subprocesses, load
+native backend libraries, or access devices.
+
+Reproducing the receipt in multiple ordinary VMs is expected and useful. It
+tests packaging, deterministic replay, and semantic stability across external
+environments. It does not test native execution or hardware independence across
+physical targets because Objective Delta's two execution backends are built-in
+host-CPU simulators.
+
 ## Artifact Set
 
 The release workflow builds and uploads:
