@@ -123,4 +123,9 @@ Those remain separate proof classes.
 - `scripts/verify_external_portable_compute_consumer.py`
 - `tests/test_portable_compute.py`
 
+The follow-on [Objective Delta Reproduction Kit](OBJECTIVE_DELTA_REPRODUCTION_KIT.md)
+packages this fixed experiment as an attestable data-only release artifact and
+replays it through an installed wheel. It does not claim that an independent
+organization has already reproduced the result.
+
 Decision: `rfcs/0292-objective-delta-installed-portable-compute.md`.

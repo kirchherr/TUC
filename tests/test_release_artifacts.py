@@ -269,6 +269,7 @@ def test_release_workflow_actions_are_sha_pinned() -> None:
         ("actions/attest", "59d89421af93a897026c735860bf21b6eb4f7b26"),
         ("actions/attest", "59d89421af93a897026c735860bf21b6eb4f7b26"),
         ("actions/attest", "59d89421af93a897026c735860bf21b6eb4f7b26"),
+        ("actions/attest", "59d89421af93a897026c735860bf21b6eb4f7b26"),
         ("actions/upload-artifact", "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"),
         ("actions/download-artifact", "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"),
         ("pypa/gh-action-pypi-publish", "cef221092ed1bacb1cc03d23a2d87d1d172e277b"),
@@ -584,6 +585,28 @@ def test_release_workflow_attests_worker_archive_and_sbom() -> None:
         "scripts/write_artifact_checksums.py"
     )
     assert 'echo "$GH_TOKEN"' not in workflow
+
+
+def test_release_workflow_builds_replays_and_attests_objective_delta_kit() -> None:
+    workflow = Path(".github/workflows/release-artifacts.yml").read_text(encoding="utf-8")
+
+    kit = "dist/tuc-objective-delta-reproduction-kit-v0.zip"
+    receipt = "dist/tuc-objective-delta-reproduction-receipt.v0.json"
+    assert "scripts/build_portable_compute_reproduction_kit.py" in workflow
+    assert f"--output {kit}" in workflow
+    assert "tuc-reproduce-portable-compute" in workflow
+    assert workflow.count(kit) == 3
+    assert workflow.count(receipt) == 3
+    assert "tests/golden/portable_compute_reproduction/receipt.json" in workflow
+    assert "Attest Objective Delta reproduction evidence" in workflow
+    assert "dist/*.zip" in workflow
+    assert "dist/*-reproduction-receipt.v0.json" in workflow
+    assert workflow.index("tuc-reproduce-portable-compute") < workflow.index(
+        "Attest Objective Delta reproduction evidence"
+    )
+    assert workflow.index("Attest Objective Delta reproduction evidence") < workflow.index(
+        "scripts/write_artifact_checksums.py"
+    )
 
 
 def _attestation_context() -> dict[str, object]:

@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/portable_compute_reproduction_kit_manifest.v0.schema.json",
+  "title": "TUC Portable Compute Reproduction Kit Manifest v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "archive_policy",
+    "blocked_claims",
+    "executable_content_included",
+    "files",
+    "independent_reproduction_claim",
+    "kit_contract",
+    "kit_id",
+    "member_policy",
+    "native_performance_claim",
+    "portable_compute_proof_contract",
+    "portable_compute_public_api_version",
+    "reproduction_public_api_version",
+    "schema_version"
+  ],
+  "properties": {
+    "archive_policy": {
+      "const": "exact_stored_members_regular_non_executable_digest_bound.v0"
+    },
+    "blocked_claims": {
+      "const": [
+        "general_source_parser",
+        "source_text_execution",
+        "external_package_code_execution",
+        "external_plugin_execution",
+        "native_backend_execution",
+        "physical_device_residency",
+        "native_performance_parity"
+      ]
+    },
+    "executable_content_included": { "const": false },
+    "files": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/file",
+          "properties": {
+            "path": { "const": "source_intent.v0.json" },
+            "role": { "const": "source_intent" }
+          }
+        },
+        {
+          "$ref": "#/$defs/file",
+          "properties": {
+            "path": { "const": "external_systolic.v0.json" },
+            "role": { "const": "backend_package_systolic" }
+          }
+        },
+        {
+          "$ref": "#/$defs/file",
+          "properties": {
+            "path": { "const": "external_vector.v0.json" },
+            "role": { "const": "backend_package_vector" }
+          }
+        },
+        {
+          "$ref": "#/$defs/file",
+          "properties": {
+            "path": { "const": "expected_report.json" },
+            "role": { "const": "portable_compute_expected_report" }
+          }
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "independent_reproduction_claim": { "const": false },
+    "kit_contract": {
+      "const": "portable_compute.reproduction_kit.data_only.v0"
+    },
+    "kit_id": { "const": "objective_delta_installed_portable_compute" },
+    "member_policy": { "const": "data_only_no_executable_content" },
+    "native_performance_claim": { "const": false },
+    "portable_compute_proof_contract": {
+      "const": "portable_compute.installed_trusted_projection.v0"
+    },
+    "portable_compute_public_api_version": {
+      "const": "tuc.portable_compute_public_api.v0"
+    },
+    "reproduction_public_api_version": {
+      "const": "tuc.portable_compute_reproduction_public_api.v0"
+    },
+    "schema_version": {
+      "const": "tuc.portable_compute_reproduction_kit_manifest.v0"
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["content_type", "path", "role", "sha256", "size_bytes"],
+      "properties": {
+        "content_type": { "const": "application/json" },
+        "path": { "type": "string" },
+        "role": { "type": "string" },
+        "sha256": { "$ref": "#/$defs/digest" },
+        "size_bytes": { "type": "integer", "minimum": 1, "maximum": 65536 }
+      }
+    }
+  }
+}

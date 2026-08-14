@@ -1,0 +1,52 @@
+{
+  "archive_policy": "exact_stored_members_regular_non_executable_digest_bound.v0",
+  "blocked_claims": [
+    "general_source_parser",
+    "source_text_execution",
+    "external_package_code_execution",
+    "external_plugin_execution",
+    "native_backend_execution",
+    "physical_device_residency",
+    "native_performance_parity"
+  ],
+  "executable_content_included": false,
+  "files": [
+    {
+      "content_type": "application/json",
+      "path": "source_intent.v0.json",
+      "role": "source_intent",
+      "sha256": "sha256:4bc12ed034b19255ce925be5659a7322e40d7ae95a67e178ac3900a9c5e3f828",
+      "size_bytes": 876
+    },
+    {
+      "content_type": "application/json",
+      "path": "external_systolic.v0.json",
+      "role": "backend_package_systolic",
+      "sha256": "sha256:465ac705cb734ab9f2dfbcb152e98d53d4a2b6a1b0c93b4cfde5a3aa0042f0d0",
+      "size_bytes": 1388
+    },
+    {
+      "content_type": "application/json",
+      "path": "external_vector.v0.json",
+      "role": "backend_package_vector",
+      "sha256": "sha256:7134888a1a8010018d23c08f276b8c851aa677946eba1c0a83c40172f147ef07",
+      "size_bytes": 1406
+    },
+    {
+      "content_type": "application/json",
+      "path": "expected_report.json",
+      "role": "portable_compute_expected_report",
+      "sha256": "sha256:ba512e899b61693296bed38f679a14777dd1f6530d18e9dc020112ddc8dfaf3d",
+      "size_bytes": 3855
+    }
+  ],
+  "independent_reproduction_claim": false,
+  "kit_contract": "portable_compute.reproduction_kit.data_only.v0",
+  "kit_id": "objective_delta_installed_portable_compute",
+  "member_policy": "data_only_no_executable_content",
+  "native_performance_claim": false,
+  "portable_compute_proof_contract": "portable_compute.installed_trusted_projection.v0",
+  "portable_compute_public_api_version": "tuc.portable_compute_public_api.v0",
+  "reproduction_public_api_version": "tuc.portable_compute_reproduction_public_api.v0",
+  "schema_version": "tuc.portable_compute_reproduction_kit_manifest.v0"
+}

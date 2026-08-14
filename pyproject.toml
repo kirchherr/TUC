@@ -26,6 +26,7 @@ dependencies = [
 [project.scripts]
 tuc-backend-verify = "tuc.integration:main"
 tuc-prove-portable-compute = "tuc.portable_compute:main"
+tuc-reproduce-portable-compute = "tuc.portable_compute_reproduction:main"
 
 [project.urls]
 Homepage = "https://github.com/kirchherr/TUC"

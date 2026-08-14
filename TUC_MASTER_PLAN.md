@@ -359,6 +359,15 @@ physical devices, or performance claims. See
 `docs/OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md` and
 `rfcs/0292-objective-delta-installed-portable-compute.md`.
 
+The Objective Delta Reproduction Kit now prepares the external validation
+step. The release workflow builds a deterministic data-only experiment,
+replays it through the installed wheel, requires a byte-identical receipt, and
+attests both artifacts. This is release-side reproducibility infrastructure,
+not evidence that an independent organization has already reproduced TUC.
+That claim remains blocked until separately provenanced external evidence is
+reviewed. See `docs/OBJECTIVE_DELTA_REPRODUCTION_KIT.md` and
+`rfcs/0293-objective-delta-reproduction-kit.md`.
+
 ## Critical Milestones
 
 ### Milestone 1: Proof Of Abstraction

@@ -12,6 +12,7 @@ The release workflow builds:
 - `linux/amd64` source-worker OCI Image Layout archive.
 - Source-worker OCI verification report.
 - Source-worker CycloneDX JSON SBOM.
+- Objective Delta data-only reproduction kit and metadata-only replay receipt.
 - SHA-256 checksum manifest.
 - GitHub artifact attestations for build provenance and the SBOM.
 
@@ -53,6 +54,10 @@ Current controls:
 - Repository-owned code verifies the OCI descriptor graph, platform, non-root
   identity, working directory, entrypoint, command policy, and rootfs digests
   before attestation.
+- Repository-owned code builds the Objective Delta kit deterministically,
+  validates it without extraction, replays it through the installed release
+  wheel, and compares the receipt byte for byte with reviewed evidence before
+  attestation.
 - Manual workflow runs are dry-runs. Publishing is restricted to `v*` tag pushes.
 
 ## Required For Publishing
@@ -76,6 +81,8 @@ CLI once release artifacts are produced:
 gh attestation verify dist/tuc-0.1.0-py3-none-any.whl -R kirchherr/TUC
 gh attestation verify dist/tuc-0.1.0.tar.gz -R kirchherr/TUC
 gh attestation verify dist/tuc-source-ingestion-worker.oci.tar -R kirchherr/TUC
+gh attestation verify dist/tuc-objective-delta-reproduction-kit-v0.zip -R kirchherr/TUC
+gh attestation verify dist/tuc-objective-delta-reproduction-receipt.v0.json -R kirchherr/TUC
 ```
 
 The release workflow also performs policy-bound, same-run provenance
@@ -109,7 +116,10 @@ artifacts must extend this SBOM model before release.
   protected tag-ruleset evidence.
 - Long-lived signing keys.
 - Executing generated backend artifacts during release.
-- Claiming reproducible builds.
+- Claiming byte-reproducible wheel or source-distribution builds. The fixed
+  Objective Delta data-only kit itself is deterministic by contract.
+- Treating the maintainer release receipt as independent third-party
+  reproduction.
 
 See [OCI Source Worker Release Provenance](OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md)
 for the archive contract and remaining claim boundary.

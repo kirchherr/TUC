@@ -193,6 +193,10 @@ Objective Delta now reproduces one bounded version of that complete semantic
 path through a built wheel, an external consumer, two data-only backend
 packages, and the installed public API and CLI. See
 [Objective Delta Installed Portable Compute](docs/OBJECTIVE_DELTA_INSTALLED_PORTABLE_COMPUTE.md).
+Its [Objective Delta Reproduction Kit](docs/OBJECTIVE_DELTA_REPRODUCTION_KIT.md)
+packages the same experiment as a deterministic, attestable, data-only release
+artifact with an installed replay command. Independent third-party
+reproduction remains pending.
 
 Run the proof family:
 
@@ -982,6 +986,8 @@ Project controls:
 - Branch protection guidance.
 - CI, security scanning, SBOM/checksum release artifacts, and Trusted
   Publishing governance.
+- Deterministic Objective Delta reproduction kit and receipt with release
+  attestations and an explicit no-independent-reproduction claim.
 
 Key docs:
 
@@ -991,6 +997,7 @@ Key docs:
 - [Review policy](docs/REVIEW_POLICY.md)
 - [Release governance](docs/RELEASE_GOVERNANCE.md)
 - [OCI source-worker release provenance](docs/OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md)
+- [Objective Delta Reproduction Kit](docs/OBJECTIVE_DELTA_REPRODUCTION_KIT.md)
 - [Branch protection policy](docs/BRANCH_PROTECTION.md)
 
 ## Quickstart
