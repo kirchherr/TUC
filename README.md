@@ -198,6 +198,12 @@ packages the same experiment as a deterministic, attestable, data-only release
 artifact with an installed replay command. Independent third-party
 reproduction remains pending.
 
+**Independent reproducer wanted:** the fixed v0.1.0 experiment takes about
+20-30 minutes on CPU and requires no repository checkout. See
+[GitHub issue #85](https://github.com/kirchherr/TUC/issues/85) for the exact
+procedure and [Independent Reproduction Outreach](docs/INDEPENDENT_REPRODUCTION_OUTREACH.md)
+for the public research invitation and review policy.
+
 Run the proof family:
 
 ```bash
@@ -998,6 +1004,7 @@ Key docs:
 - [Release governance](docs/RELEASE_GOVERNANCE.md)
 - [OCI source-worker release provenance](docs/OCI_SOURCE_WORKER_RELEASE_PROVENANCE.md)
 - [Objective Delta Reproduction Kit](docs/OBJECTIVE_DELTA_REPRODUCTION_KIT.md)
+- [Independent Reproduction Outreach](docs/INDEPENDENT_REPRODUCTION_OUTREACH.md)
 - [Branch protection policy](docs/BRANCH_PROTECTION.md)
 
 ## Quickstart
