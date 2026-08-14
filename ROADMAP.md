@@ -1449,8 +1449,10 @@ Go/No-Go:
    installed portable-compute proof passing as distinct public boundaries.
 7. Publish the Objective Delta Reproduction Kit and seek a separately
    provenanced third-party receipt before expanding its fixed Source Intent or
-   trusted executor set. Release CI self-reproduction is not independent
-   evidence.
+   trusted executor set. Keep the reduced-dependency audit path passing so an
+   external reviewer can inspect and reimplement the fixed contract without
+   installing TUC or NumPy. Neither release CI self-reproduction nor the
+   same-project audit implementation is independent evidence.
 8. Extend planning explanation coverage only when new proof slices add
    distinct placement, fallback, or movement evidence.
 9. Integrate real Triton intent only after the abstraction proof remains stable.

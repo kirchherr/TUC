@@ -11,7 +11,8 @@ explaining every choice?
 Objective Delta v0.1.0 is deliberately small:
 
 1. One JSON file describes a `2 x 2` matrix multiplication followed by an
-   elementwise operation. It does not name a CPU, GPU, or vendor.
+   identity elementwise operation, which forwards each value unchanged. It does
+   not name a CPU, GPU, or vendor.
 2. Two other JSON files describe target capabilities. One accepts matrix
    multiplication and produces a blocked memory layout. The other accepts the
    elementwise operation in row-major layout.
@@ -53,9 +54,17 @@ backend or plugin code, device, or subprocess execution. It does execute the
 installed TUC and NumPy packages; a NumPy distribution may include native
 components.
 
+For a smaller review surface, the
+[Objective Delta Reduced-Dependency Audit Path](docs/OBJECTIVE_DELTA_AUDIT_PATH.md)
+reimplements the fixed placement, layout conversion, and `2 x 2` semantics in
+one isolated standard-library script without importing TUC or NumPy. It remains
+same-project code and therefore is not independent organizational evidence.
+
 - Strategic north star: [TUC Master Plan](TUC_MASTER_PLAN.md)
 - Operational status: [Roadmap Status](docs/ROADMAP_STATUS.md)
 - Terminology: [Plain-language glossary](docs/GLOSSARY.md)
+- Reduced-dependency Objective Delta audit:
+  [Audit path](docs/OBJECTIVE_DELTA_AUDIT_PATH.md)
 - First research proof path:
   [Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md)
 - External feedback triage:

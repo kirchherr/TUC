@@ -368,6 +368,16 @@ That claim remains blocked until separately provenanced external evidence is
 reviewed. See `docs/OBJECTIVE_DELTA_REPRODUCTION_KIT.md` and
 `rfcs/0293-objective-delta-reproduction-kit.md`.
 
+The reduced-dependency audit path provides a complementary same-project
+implementation of the fixed external contract. A standalone standard-library
+script reads the Source Intent, both data-only packages, and public numerical
+test vector; it separately reconstructs placement, layout conversion, and the
+`2 x 2` result without importing TUC or NumPy. This lowers the audit burden
+and makes third-party reimplementation practical, but it does not satisfy the
+pending independent-organization requirement. See
+`docs/OBJECTIVE_DELTA_AUDIT_PATH.md` and
+`rfcs/0294-objective-delta-reduced-dependency-audit-path.md`.
+
 ## Critical Milestones
 
 ### Milestone 1: Proof Of Abstraction

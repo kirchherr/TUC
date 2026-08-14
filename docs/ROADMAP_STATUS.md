@@ -1,5 +1,15 @@
 # Roadmap Status
 
+- [Objective Delta Reduced-Dependency Audit Path](OBJECTIVE_DELTA_AUDIT_PATH.md)
+  now reimplements the fixed external contract in one isolated Python
+  standard-library script without importing TUC or NumPy. A public fixed-value
+  conformance vector, closed report schema, deterministic golden, strict JSON
+  bounds, and tamper tests make the placement, `blocked -> row_major`
+  conversion, and `2 x 2` result directly auditable. This is same-project
+  implementation-diversity evidence, not independent organizational
+  reproduction. Decision:
+  `rfcs/0294-objective-delta-reduced-dependency-audit-path.md`.
+
 - [Plain-Language Glossary](GLOSSARY.md) and the README's concrete Objective
   Delta walkthrough now define the current `2 x 2` simulator experiment before
   introducing research terminology. They explicitly separate data-only kit
