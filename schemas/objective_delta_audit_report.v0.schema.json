@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/objective_delta_audit_report.v0.schema.json",
+  "title": "TUC Objective Delta Audit Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "assignment_count",
+    "assignments",
+    "audit_contract",
+    "audit_status",
+    "blocked_claims",
+    "conformance_vector_contains_public_values",
+    "conformance_vector_digest",
+    "external_code_executed",
+    "independent_organizational_evidence",
+    "layout_conversion_count",
+    "layout_conversions",
+    "native_backend_execution",
+    "native_performance_claim",
+    "network_access",
+    "numpy_imported",
+    "output_digest",
+    "outputs_match",
+    "package_digests",
+    "package_ids",
+    "physical_device_execution",
+    "proof_scope",
+    "public_output_names",
+    "python_code_executed",
+    "raw_tensor_values_serialized",
+    "schema_version",
+    "source_intent_digest",
+    "stdlib_only",
+    "subprocess_execution",
+    "third_party_dependencies",
+    "tuc_imported"
+  ],
+  "properties": {
+    "assignment_count": { "const": 2 },
+    "assignments": {
+      "const": [
+        {
+          "backend": "external-systolic",
+          "family": "matmul",
+          "operation": "projection",
+          "output_layout": "blocked"
+        },
+        {
+          "backend": "external-vector",
+          "family": "elementwise",
+          "operation": "activation",
+          "output_layout": "row_major"
+        }
+      ]
+    },
+    "audit_contract": {
+      "const": "objective_delta.contract_reimplementation.stdlib.v0"
+    },
+    "audit_status": { "const": "PASS" },
+    "blocked_claims": {
+      "const": [
+        "independent_organizational_reproduction",
+        "arbitrary_source_intent",
+        "external_package_code_execution",
+        "native_backend_execution",
+        "physical_device_portability",
+        "native_performance_parity"
+      ]
+    },
+    "conformance_vector_contains_public_values": { "const": true },
+    "conformance_vector_digest": {
+      "const": "sha256:b03d192c1868c2a1c9b0169e4a3bbe2d609ab823ce0f64cf157b80dccccf3aef"
+    },
+    "external_code_executed": { "const": false },
+    "independent_organizational_evidence": { "const": false },
+    "layout_conversion_count": { "const": 1 },
+    "layout_conversions": {
+      "const": [
+        {
+          "consumer": "activation",
+          "from_layout": "blocked",
+          "producer": "projection",
+          "tensor": "projection",
+          "to_layout": "row_major"
+        }
+      ]
+    },
+    "native_backend_execution": { "const": false },
+    "native_performance_claim": { "const": false },
+    "network_access": { "const": false },
+    "numpy_imported": { "const": false },
+    "output_digest": {
+      "const": "sha256:db8ad36b4074749f60a69cb958471064c3311d5343744d75b6e298bd48299039"
+    },
+    "outputs_match": { "const": true },
+    "package_digests": {
+      "const": [
+        "sha256:806813974dfde16b46f694566d751b18780d5e43d8455467bf4e5d7ea38b452c",
+        "sha256:bf4bf333025a176f20ad927c249747f6ce923e14f224f4cd94ed769d893288ee"
+      ]
+    },
+    "package_ids": {
+      "const": [
+        "external-systolic-reference-package",
+        "external-vector-reference-package"
+      ]
+    },
+    "physical_device_execution": { "const": false },
+    "proof_scope": { "const": "fixed_2x2_matmul_then_identity" },
+    "public_output_names": { "const": ["api_activated"] },
+    "python_code_executed": { "const": true },
+    "raw_tensor_values_serialized": { "const": false },
+    "schema_version": { "const": "tuc.objective_delta_audit_report.v0" },
+    "source_intent_digest": {
+      "const": "sha256:5c5a6435ff498a159e09b76a99f4103531ab8c1659f28185d3586c5e11c5aace"
+    },
+    "stdlib_only": { "const": true },
+    "subprocess_execution": { "const": false },
+    "third_party_dependencies": { "const": false },
+    "tuc_imported": { "const": false }
+  }
+}
