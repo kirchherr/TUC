@@ -28,6 +28,12 @@ The reproducer does not need to endorse TUC, review the complete architecture,
 contribute code, or accept any performance claim. A failed reproduction is
 useful when the environment and failure evidence remain public and bounded.
 
+The request involves installing executable Python from an unfamiliar project.
+Reproducers should use disposable infrastructure and review the package to the
+degree appropriate for their threat model. The data-only claim applies to the
+reproduction ZIP, not to the installed TUC wheel or NumPy dependency. Release
+attestations prove provenance, not safety.
+
 ## Forum Post
 
 Use this version for a technically relevant compiler or reproducibility forum.
@@ -51,6 +57,11 @@ The released data-only kit is checksum-bound and covered by GitHub artifact
 attestations. A successful run produces a deterministic metadata-only receipt.
 A failed run is equally welcome when its environment and bounded diagnostic are
 reported.
+
+The TUC wheel is executable Python even though the reproduction kit is
+data-only. Treat it as untrusted third-party software and run it in a disposable
+VM or independently controlled CI runner. Checksums and attestations establish
+origin, not safety.
 
 Scope: this tests one published semantic experiment. It does not claim native
 backend support, physical-device execution, performance parity, arbitrary

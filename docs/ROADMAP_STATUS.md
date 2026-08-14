@@ -1,5 +1,13 @@
 # Roadmap Status
 
+- [Plain-Language Glossary](GLOSSARY.md) and the README's concrete Objective
+  Delta walkthrough now define the current `2 x 2` simulator experiment before
+  introducing research terminology. They explicitly separate data-only kit
+  safety from executable wheel trust, state that attestations prove provenance
+  rather than benign behavior, recommend disposable reproduction environments,
+  and explain why generic cloud-VM replay is expected but is not real-hardware
+  portability evidence.
+
 - [Independent Reproduction Outreach](INDEPENDENT_REPRODUCTION_OUTREACH.md)
   now turns Objective Delta's pending external-evidence requirement into a
   bounded fourteen-day recruitment and review protocol. It provides canonical
