@@ -1,5 +1,14 @@
 # Roadmap Status
 
+- [Independent Reproduction Outreach](INDEPENDENT_REPRODUCTION_OUTREACH.md)
+  now turns Objective Delta's pending external-evidence requirement into a
+  bounded fourteen-day recruitment and review protocol. It provides canonical
+  public messages, prioritized compiler and research channels, independence
+  disclosures, privacy limits, and PASS/FAIL evidence handling around
+  [GitHub issue #85](https://github.com/kirchherr/TUC/issues/85). Its success
+  metric is one qualified external reproduction; traffic, clones, stars, and
+  reactions remain diagnostic only.
+
 - [Objective Delta Reproduction Kit](OBJECTIVE_DELTA_REPRODUCTION_KIT.md) now
   packages the fixed installed portable-compute experiment as a deterministic
   data-only ZIP with a closed digest-bound manifest. The installed

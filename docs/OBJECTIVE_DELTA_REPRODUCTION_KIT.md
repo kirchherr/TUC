@@ -134,4 +134,17 @@ and a portable receipt format. It does not prove:
 An external reproduction claim requires a separately reviewed receipt and
 provenance from a party outside the TUC release workflow.
 
+## Independent Reproduction Request
+
+The public request for the first external reproduction is tracked in
+[GitHub issue #85](https://github.com/kirchherr/TUC/issues/85). It fixes the
+release, commands, expected receipt digest, independence criteria, evidence to
+return, and safety boundary for the experiment.
+
+The maintainer-facing
+[Independent Reproduction Outreach](INDEPENDENT_REPRODUCTION_OUTREACH.md)
+provides publication-ready messages, prioritized technical channels, a bounded
+fourteen-day sequence, disclosure rules, and the external-evidence review
+procedure. Outreach metrics do not change this proof's claim boundary.
+
 Decision: `rfcs/0293-objective-delta-reproduction-kit.md`.
