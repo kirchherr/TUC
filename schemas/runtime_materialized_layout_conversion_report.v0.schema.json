@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuc.dev/schemas/runtime_materialized_layout_conversion_report.v0.schema.json",
+  "title": "TUC Runtime Materialized Layout Conversion Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "backend_equivalence_metadata_digest",
+    "backend_equivalence_passed",
+    "baseline_run_id",
+    "blocked_execution_surfaces",
+    "candidate_output_metadata_digest",
+    "candidate_run_id",
+    "conversion_count",
+    "conversions",
+    "converter_contract",
+    "converter_execution_mode",
+    "converter_name",
+    "evidence_contract",
+    "external_artifacts",
+    "graph_name",
+    "materialization_policy",
+    "materialization_scope",
+    "materialized_trace_metadata_digest",
+    "operation_step_count",
+    "performance_claim_status",
+    "raw_value_policy",
+    "residency_claim_status",
+    "schema_version",
+    "status"
+  ],
+  "properties": {
+    "artifact_status": {"const": "review_evidence"},
+    "backend_equivalence_metadata_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "backend_equivalence_passed": {"const": true},
+    "baseline_run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "maxLength": 256
+    },
+    "blocked_execution_surfaces": {
+      "const": [
+        "backend_plugin_discovery",
+        "device_access",
+        "dynamic_import",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "jit_execution",
+        "network_access",
+        "subprocess_execution"
+      ]
+    },
+    "candidate_output_metadata_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "candidate_run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "maxLength": 256
+    },
+    "conversion_count": {"type": "integer", "minimum": 1, "maximum": 64},
+    "conversions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/conversion"}
+    },
+    "converter_contract": {
+      "const": "runtime_layout_converter.trusted_simulator.v0"
+    },
+    "converter_execution_mode": {"const": "in_process_fixed_tiled_copy"},
+    "converter_name": {"const": "trusted-blocked-2x2-to-row-major"},
+    "evidence_contract": {
+      "const": "runtime_layout_conversion.materialized_trusted_simulator.v0"
+    },
+    "external_artifacts": {"const": "forbidden"},
+    "graph_name": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "maxLength": 256
+    },
+    "materialization_policy": {
+      "const": "trusted_simulator_conversion_executed"
+    },
+    "materialization_scope": {"const": "trusted_simulator_only"},
+    "materialized_trace_metadata_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "operation_step_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4096
+    },
+    "performance_claim_status": {"const": "not_measured"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "residency_claim_status": {"const": "not_native_or_device_residency"},
+    "schema_version": {
+      "const": "tuc.runtime_materialized_layout_conversion_report.v0"
+    },
+    "status": {"const": "passed"}
+  },
+  "$defs": {
+    "conversion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conversion_status",
+        "logical_element_count",
+        "logical_shape",
+        "padding_element_count",
+        "physical_element_count",
+        "physical_shape",
+        "planned_bytes",
+        "planned_dtype",
+        "runtime_dtype",
+        "runtime_logical_bytes",
+        "runtime_physical_bytes",
+        "semantic_verification",
+        "source_backend",
+        "source_layout",
+        "source_operation",
+        "target_backend",
+        "target_layout",
+        "target_operation",
+        "temporary_storage_bytes",
+        "tensor_name",
+        "tile_shape"
+      ],
+      "properties": {
+        "conversion_status": {"const": "executed_and_verified"},
+        "logical_element_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000
+        },
+        "logical_shape": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"type": "integer", "minimum": 1, "maximum": 2000000}
+        },
+        "padding_element_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000000
+        },
+        "physical_element_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000
+        },
+        "physical_shape": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {"type": "integer", "minimum": 1, "maximum": 2000000}
+        },
+        "planned_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16000000
+        },
+        "planned_dtype": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "maxLength": 32
+        },
+        "runtime_dtype": {"const": "float64"},
+        "runtime_logical_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16000000
+        },
+        "runtime_physical_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16000000
+        },
+        "semantic_verification": {"const": "exact_logical_values"},
+        "source_backend": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "maxLength": 256
+        },
+        "source_layout": {"const": "blocked"},
+        "source_operation": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "maxLength": 256
+        },
+        "target_backend": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "maxLength": 256
+        },
+        "target_layout": {"const": "row_major"},
+        "target_operation": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "maxLength": 256
+        },
+        "temporary_storage_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32000000
+        },
+        "tensor_name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "maxLength": 256
+        },
+        "tile_shape": {"const": [2, 2]}
+      }
+    }
+  }
+}

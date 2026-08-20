@@ -515,6 +515,19 @@ The package boundary is exact and data-only, the intermediate
 fixed trusted simulators, and Runtime Backend Equivalence passes against the
 all-CPU baseline.
 
+A separate opt-in runtime proof now moves that conversion from plan-only
+metadata into bounded trusted simulator execution. Runtime Materialized Layout
+Conversion preflights the full edge before kernels run, reconstructs the
+planned padded `2 x 2` blocked representation, converts it to read-only
+row-major storage for `vector-sim`, verifies exact logical values, and binds the
+run to passing Backend Equivalence. It explicitly separates graph-level
+`float32` movement bytes from the prototype executor's internal `float64`
+buffer bytes. This strengthens the practical heterogeneous runtime claim while
+remaining non-native, non-device-resident, and non-performance evidence. The
+legacy non-materialized executor evidence remains stable. See
+`docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md` and
+`rfcs/0295-runtime-materialized-layout-conversion.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,

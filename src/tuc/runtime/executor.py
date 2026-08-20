@@ -26,7 +26,13 @@ from tuc.reference import (
     reference_reduction_sum,
     reference_softmax,
 )
+from tuc.runtime.layout_conversion_executor import (
+    RuntimeLayoutConversionExecutionStep,
+    assert_materializable_layout_conversion,
+    materialize_layout_conversion,
+)
 from tuc.runtime.partitioning import Assignment, PartitionPlan
+from tuc.runtime.plan import LayoutConversionCost
 
 RUNTIME_EXECUTOR_CONTRACT = "runtime_executor.trusted_backend.v0"
 TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT = "runtime_backend_executor.trusted.v0"
@@ -194,6 +200,7 @@ class RuntimeExecutionTrace:
     blocked_execution_surfaces: tuple[str, ...] = (
         RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
     )
+    layout_conversion_steps: tuple[RuntimeLayoutConversionExecutionStep, ...] = ()
 
     def __post_init__(self) -> None:
         _require_trace_name(self.graph_name, "graph_name")
@@ -208,6 +215,16 @@ class RuntimeExecutionTrace:
             self.blocked_execution_surfaces,
             "blocked_execution_surfaces",
         )
+        if type(self.layout_conversion_steps) is not tuple:
+            raise TypeError("runtime layout conversion trace steps must be a tuple")
+        if len(self.layout_conversion_steps) > MAX_RUNTIME_EXECUTION_VALUES:
+            raise ValueError("runtime layout conversion trace step count exceeds limit")
+        for step in self.layout_conversion_steps:
+            if not isinstance(step, RuntimeLayoutConversionExecutionStep):
+                raise TypeError(
+                    "runtime layout conversion trace steps must be "
+                    "RuntimeLayoutConversionExecutionStep"
+                )
 
     def dump(self) -> str:
         """Render a stable execution trace."""
@@ -221,9 +238,14 @@ class RuntimeExecutionTrace:
             "  blocked_execution_surfaces = "
             f'"{",".join(self.blocked_execution_surfaces)}"'
         )
+        if self.layout_conversion_steps:
+            lines.append("  layout_conversion_steps {")
+            for conversion_step in self.layout_conversion_steps:
+                lines.append(f"    {conversion_step.dump_line()}")
+            lines.append("  }")
         lines.append("  steps {")
-        for step in self.steps:
-            lines.append(f"    {_format_step(step)}")
+        for operation_step in self.steps:
+            lines.append(f"    {_format_step(operation_step)}")
         lines.append("  }")
         lines.append("}")
         return "\n".join(lines)
@@ -533,23 +555,71 @@ def execute_graph(
 ) -> RuntimeExecutionResult:
     """Execute a graph with trusted reference kernels and trace every step."""
 
+    return _execute_graph(graph, partition_plan, inputs, materialize_layouts=False)
+
+
+def execute_graph_with_materialized_layouts(
+    graph: ComputeGraph,
+    partition_plan: PartitionPlan,
+    inputs: Mapping[str, object],
+) -> RuntimeExecutionResult:
+    """Execute with fixed trusted simulator layout conversions materialized."""
+
+    return _execute_graph(graph, partition_plan, inputs, materialize_layouts=True)
+
+
+def _execute_graph(
+    graph: ComputeGraph,
+    partition_plan: PartitionPlan,
+    inputs: Mapping[str, object],
+    *,
+    materialize_layouts: bool,
+) -> RuntimeExecutionResult:
+    """Execute one graph under the selected trusted layout-conversion policy."""
+
     if not isinstance(graph, ComputeGraph):
         raise TypeError("runtime executor graph must be ComputeGraph")
     if not isinstance(partition_plan, PartitionPlan):
         raise TypeError("runtime executor partition_plan must be PartitionPlan")
     _validate_partition_plan(graph, partition_plan)
     runtime_execution_readiness_report(graph, partition_plan)
+    conversions_by_target = (
+        _materialized_conversions_by_target(graph, partition_plan)
+        if materialize_layouts
+        else {}
+    )
     tensor_store = _normalize_inputs(graph, inputs)
     assignments = {
         assignment.operation_name: assignment for assignment in partition_plan.assignments
     }
     executors = trusted_runtime_executor_registry()
     steps: list[RuntimeExecutionStep] = []
+    layout_conversion_steps: list[RuntimeLayoutConversionExecutionStep] = []
 
     for operation in graph.operations:
         assignment = assignments[operation.name]
         executor = _executor_for_assignment(assignment, executors)
-        result = executor.execute(operation, tensor_store.values)
+        operation_values: Mapping[str, FloatArray] = tensor_store.values
+        operation_conversions = conversions_by_target.get(operation.name, ())
+        if operation_conversions:
+            converted_values = dict(tensor_store.values)
+            for conversion, tensor in operation_conversions:
+                source_record = tensor_store.record_for(tensor.name)
+                if source_record.producer_id != conversion.source_operation:
+                    raise ValueError(
+                        "materialized layout conversion source operation mismatch"
+                    )
+                if source_record.planned_layout is not conversion.source_layout:
+                    raise ValueError("materialized layout conversion source record mismatch")
+                converted_value, conversion_step = materialize_layout_conversion(
+                    conversion,
+                    tensor,
+                    source_record.value,
+                )
+                converted_values[tensor.name] = converted_value
+                layout_conversion_steps.append(conversion_step)
+            operation_values = MappingProxyType(converted_values)
+        result = executor.execute(operation, operation_values)
         if len(operation.outputs) != 1:
             raise ValueError("runtime executor v0 supports one output per operation")
         output = operation.outputs[0]
@@ -564,12 +634,18 @@ def execute_graph(
         if tensor_store.record_count > MAX_RUNTIME_EXECUTION_VALUES:
             raise ValueError("runtime executor value count exceeds limit")
 
+    if materialize_layouts and len(layout_conversion_steps) != len(
+        partition_plan.layout_conversions
+    ):
+        raise ValueError("runtime executor did not materialize every planned conversion")
+
     return RuntimeExecutionResult(
         values=tensor_store.values,
         trace=RuntimeExecutionTrace(
             graph_name=graph.name,
             executor_contract=RUNTIME_EXECUTOR_CONTRACT,
             steps=tuple(steps),
+            layout_conversion_steps=tuple(layout_conversion_steps),
         ),
         records=tensor_store.records,
     )
@@ -917,6 +993,58 @@ def _validate_partition_plan(graph: ComputeGraph, partition_plan: PartitionPlan)
         raise ValueError("runtime executor partition plan must match graph operations")
 
 
+def _materialized_conversions_by_target(
+    graph: ComputeGraph,
+    partition_plan: PartitionPlan,
+) -> dict[str, tuple[tuple[LayoutConversionCost, TensorRef], ...]]:
+    """Validate all materialized conversions before graph execution begins."""
+
+    operations = {operation.name: operation for operation in graph.operations}
+    producers = {
+        tensor.name: operation.name
+        for operation in graph.operations
+        for tensor in operation.outputs
+    }
+    assignments = {
+        assignment.operation_name: assignment for assignment in partition_plan.assignments
+    }
+    grouped: dict[str, list[tuple[LayoutConversionCost, TensorRef]]] = {}
+    seen: set[tuple[str, str]] = set()
+    for conversion in partition_plan.layout_conversions:
+        if not isinstance(conversion, LayoutConversionCost):
+            raise TypeError(
+                "materialized layout conversion plan entries must be LayoutConversionCost"
+            )
+        target_operation = operations.get(conversion.target_operation)
+        if target_operation is None:
+            raise ValueError("materialized layout conversion target operation is unknown")
+        inputs_by_name = {tensor.name: tensor for tensor in target_operation.inputs}
+        tensor = inputs_by_name.get(conversion.tensor_name)
+        if tensor is None:
+            raise ValueError(
+                "materialized layout conversion tensor is not an operation input"
+            )
+        assert_materializable_layout_conversion(conversion, tensor)
+        source_operation = conversion.source_operation
+        if source_operation is None:
+            raise ValueError("materialized layout conversion requires a source operation")
+        if producers.get(tensor.name) != source_operation:
+            raise ValueError("materialized layout conversion source operation mismatch")
+        source_assignment = assignments.get(source_operation)
+        if source_assignment is None:
+            raise ValueError("materialized layout conversion source assignment is missing")
+        if source_assignment.produced_layout is not conversion.source_layout:
+            raise ValueError("materialized layout conversion source layout is not produced")
+        conversion_key = (conversion.target_operation, conversion.tensor_name)
+        if conversion_key in seen:
+            raise ValueError(
+                "materialized layout conversion tensor appears more than once"
+            )
+        seen.add(conversion_key)
+        grouped.setdefault(conversion.target_operation, []).append((conversion, tensor))
+    return {target: tuple(conversions) for target, conversions in grouped.items()}
+
+
 def _validate_runtime_graph_topology(graph: ComputeGraph) -> None:
     all_output_names: list[str] = [
         tensor.name for operation in graph.operations for tensor in operation.outputs
@@ -1197,6 +1325,7 @@ __all__ = [
     "dump_runtime_execution_readiness",
     "dump_trusted_runtime_executor_contracts",
     "execute_graph",
+    "execute_graph_with_materialized_layouts",
     "runtime_execution_readiness_report",
     "trusted_runtime_executor_contracts",
     "trusted_runtime_executor_registry",
