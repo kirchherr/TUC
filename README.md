@@ -412,6 +412,11 @@ Current runtime surfaces:
 - Runtime Backend Equivalence Layout Binding v0 binding mixed backend
   equivalence to verified layout trace replay by metadata digest, proving the
   same graph carries both terminal semantics and layout-transition evidence.
+- Runtime Materialized Layout Conversion v0 adds a separate opt-in trusted
+  simulator path that performs one bounded `blocked -> row_major` buffer
+  transformation, verifies exact logical values, and binds the result to
+  passing mixed Backend Equivalence. The legacy executor and its explicitly
+  non-materialized trace evidence remain unchanged.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
@@ -456,6 +461,7 @@ examples/runtime_memory_planning_gate.py
 examples/runtime_layout_conversion_trace_index.py
 examples/runtime_layout_conversion_trace_replay_verifier.py
 examples/runtime_backend_equivalence_layout_binding.py
+examples/runtime_materialized_layout_conversion.py
 ```
 
 Key docs:
@@ -491,6 +497,7 @@ Key docs:
 - [Runtime Layout Conversion Trace Index](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_INDEX.md)
 - [Runtime Layout Conversion Trace Replay Verifier](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md)
 - [Runtime Backend Equivalence Layout Binding](docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md)
+- [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Source Intent Mixed Runtime Public Proof Bundle](docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)

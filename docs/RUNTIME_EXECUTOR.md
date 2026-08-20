@@ -19,6 +19,8 @@ It is not a backend plugin system.
 - Input value contract: `runtime_executor.numpy_float64_inputs.v0`
 - Output value contract: `runtime_executor.declared_shape_float64_output.v0`
 - API: `execute_graph(graph, partition_plan, inputs)`
+- Opt-in materialized layout API:
+  `execute_graph_with_materialized_layouts(graph, partition_plan, inputs)`
 - Readiness API: `runtime_execution_readiness_report(graph, partition_plan)`
 - Trace API: `dump_execution_trace(trace)`
 - Backend contract API: `trusted_runtime_executor_contracts()`
@@ -78,6 +80,26 @@ and non-finite output values fail closed.
 If a runtime plan names a backend that is not in the trusted registry, execution
 fails closed. If a trusted executor is asked to execute an unsupported operation
 kind, execution also fails closed.
+
+## Opt-In Layout Materialization
+
+`execute_graph_with_materialized_layouts()` preserves the fixed trusted
+executor registry and adds a prevalidated simulator conversion boundary. v0
+accepts only an internal rank-2 `blocked -> row_major` edge and a fixed `2 x 2`
+tile. It packs the canonical logical value into independent padded blocked
+storage, unpacks it into independent row-major storage, requires exact logical
+equality, marks the converted consumer input read-only, and records a typed
+conversion trace step.
+
+Every planned conversion is checked before input normalization or graph kernel
+execution. The checks bind tensor, producer, consumer, source assignment,
+layouts, graph dtype, shape, and planned bytes. Duplicate, stale, unsupported,
+or incomplete plans fail closed.
+
+The normal `execute_graph()` path is unchanged. Existing trace and gate
+artifacts therefore retain their explicit non-materialized semantics. See
+[Runtime Materialized Layout Conversion](RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
+for the report, schema, security boundary, and non-claims.
 
 ## Execution Readiness
 

@@ -210,6 +210,11 @@ Completed evidence:
   placement and `blocked -> row_major` layout conversion, executes through the
   trusted runtime executor, and validates against independent reference
   semantics.
+- Runtime Materialized Layout Conversion adds an opt-in trusted simulator path
+  that preflights every conversion edge, performs a bounded padded `2 x 2`
+  blocked-buffer transformation, supplies read-only row-major data to the
+  consumer, and binds exact logical preservation to mixed Backend Equivalence.
+  The established non-materialized executor and gate evidence remain intact.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -1453,10 +1458,14 @@ Go/No-Go:
    external reviewer can inspect and reimplement the fixed contract without
    installing TUC or NumPy. Neither release CI self-reproduction nor the
    same-project audit implementation is independent evidence.
-8. Extend planning explanation coverage only when new proof slices add
+8. Advance practical trusted simulator execution through explicit opt-in
+   runtime proofs such as
+   [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
+   without widening native, device, plugin, residency, or performance claims.
+9. Extend planning explanation coverage only when new proof slices add
    distinct placement, fallback, or movement evidence.
-9. Integrate real Triton intent only after the abstraction proof remains stable.
-10. Expand to specialized hardware simulators only when they strengthen the
+10. Integrate real Triton intent only after the abstraction proof remains stable.
+11. Expand to specialized hardware simulators only when they strengthen the
    universal compute claim.
 
 ## Success Metrics
