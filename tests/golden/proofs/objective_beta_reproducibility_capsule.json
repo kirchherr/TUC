@@ -18,18 +18,18 @@
   ],
   "capsule_contract": "objective_beta.reproducibility_capsule.digest_manifest.v0",
   "capsule_id": "objective_beta_reproducibility_capsule",
-  "capsule_metadata_digest": "56d6a7c4ed3667c49d31354ea51bf21b6b2177f1b757a9f47304a1cbdf740917",
+  "capsule_metadata_digest": "ec28ffbbc57ff045249c1f6a686c5450a6fd3c8037f10855e2ddbf3ccbabee73",
   "capsule_status": "reproducible_from_repository_goldens",
-  "claim_digest": "b9bf4105f890a5f8ed3cbfbf38d313d69f5e864b57fdbd1c4bdfa65f0601e2bf",
-  "claim_gate_digest": "534bde5f66df1cdffa932f22b25e4a6a5feb5e48f0763be2732be1b763c84a32",
+  "claim_digest": "e209b40cb66555fa50e236571622e948616dcd822d7ced35b0da9a5e88256cf3",
+  "claim_gate_digest": "602f7a6c66219b38aaea8684c93bf0f3ed2fba88aed783db0c6d43b3a1692603",
   "claim_gate_id": "objective_beta_research_claim_gate",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "68bbe85260cf39dd9dd57a7aca68e7c2a4246f3ea7a98b64af6abdadc75af4bf",
+  "claim_metadata_digest": "6c9a69cf71e2178b5b327121e91fbe772a6cbe6b04555d59aad3e741fa599eac",
   "evidence": [
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "content_type": "application/json",
-      "digest": "41298b89f17b48fcd17d864e8367ba7bda7272cb85cfeb6f7452911f7e8d032e",
+      "digest": "aa5a31e372cb1f34b69e6de2ab32956d84f20201fd9432997f75ddc8be8fbc18",
       "role": "predecessor_claim_gate",
       "source_free": true
     },
@@ -43,35 +43,35 @@
     {
       "artifact_id": "first_real_triton_kernel_path",
       "content_type": "application/json",
-      "digest": "3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
+      "digest": "c4e07fdb0da46d52cf8598698b9043bd3c221c059f23ac41dca2f3a5089e7ab9",
       "role": "bounded_kernel_path",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_evidence_portfolio",
       "content_type": "application/json",
-      "digest": "b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
+      "digest": "1881fa6b5ce1c96fdd1a3c34b64bac20926cc23ccba89d0da20c1656977725de",
       "role": "first_slice_portfolio",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "content_type": "application/json",
-      "digest": "34db377d8f7bacb5586cfa05d412dbcb1ab5d93b0404771bc9e68be8254ce5b2",
+      "digest": "8de3152054b38a4d0148c0444a02dafb76bbfbd8acf68414f0c591ea4af74415",
       "role": "fail_closed_admission_readiness",
       "source_free": true
     },
     {
       "artifact_id": "real_triton_first_slice_maintainer_approval_request",
       "content_type": "application/json",
-      "digest": "6cd407ae8629a895c912b01d94ea4d59282d1164f565996eaece1bb60ac35680",
+      "digest": "eb04e1bfe64c04b3e42100eca284f55d19eba49dec75549e15e9c1ab81fa20e2",
       "role": "external_review_request",
       "source_free": true
     },
     {
       "artifact_id": "research_scope_claim_gate",
       "content_type": "application/json",
-      "digest": "3c47e6934e2426bd8ccc5c6262ca7b6fc00e1a6d3133e1026f6331143bb59bfd",
+      "digest": "4d35682623e68e6d9a4e2b67a82e4b08549e10095894a15868c0b451f5131c0a",
       "role": "research_scope_boundary",
       "source_free": true
     },
@@ -92,14 +92,14 @@
     {
       "artifact_id": "objective_beta_research_claim",
       "content_type": "application/json",
-      "digest": "b9bf4105f890a5f8ed3cbfbf38d313d69f5e864b57fdbd1c4bdfa65f0601e2bf",
+      "digest": "e209b40cb66555fa50e236571622e948616dcd822d7ced35b0da9a5e88256cf3",
       "role": "research_claim",
       "source_free": true
     },
     {
       "artifact_id": "objective_beta_research_claim_gate",
       "content_type": "application/json",
-      "digest": "534bde5f66df1cdffa932f22b25e4a6a5feb5e48f0763be2732be1b763c84a32",
+      "digest": "602f7a6c66219b38aaea8684c93bf0f3ed2fba88aed783db0c6d43b3a1692603",
       "role": "research_claim_gate",
       "source_free": true
     }

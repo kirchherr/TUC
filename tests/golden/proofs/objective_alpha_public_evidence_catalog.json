@@ -80,7 +80,7 @@
       "entry_point": "python examples/first_real_triton_kernel_path.py",
       "evidence_id": "first_real_triton_kernel_path",
       "extension_tier": "frontend_runtime_proof",
-      "metadata_digest": "3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
+      "metadata_digest": "c4e07fdb0da46d52cf8598698b9043bd3c221c059f23ac41dca2f3a5089e7ab9",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -89,7 +89,7 @@
       "entry_point": "python examples/real_triton_first_slice_evidence_portfolio.py",
       "evidence_id": "real_triton_first_slice_evidence_portfolio",
       "extension_tier": "frontend_runtime_proof",
-      "metadata_digest": "b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
+      "metadata_digest": "1881fa6b5ce1c96fdd1a3c34b64bac20926cc23ccba89d0da20c1656977725de",
       "raw_output_policy": "digest_only",
       "status": "passed"
     },
@@ -116,7 +116,7 @@
   "catalog_entry_count": 9,
   "catalog_extension_tier_coverage_status": "complete",
   "catalog_id": "objective_alpha_public_evidence_catalog",
-  "catalog_metadata_digest": "1e387e9e74a9ee7a423e51e2cf0ad94aae7090716455dadc93240066475471f6",
+  "catalog_metadata_digest": "5e45efdff6b2627c518779431c25c663bf77b2094e9f9a2eafbf63b1c45aff3b",
   "catalog_missing_extension_tiers": [],
   "catalog_passed": true,
   "catalog_required_extension_tiers": [
@@ -132,12 +132,12 @@
   "digest_policy": "sha256_hex_only",
   "extension_policy_contract": "objective_alpha.evidence_extension_policy.data_only.v0",
   "extension_policy_metadata_digest": "4c8dc9cd62201e414cf653c9f2e64a773d54df83835167df4e224791394e3cdf",
-  "first_real_triton_kernel_path_metadata_digest": "3649e459c8f4f8e9cf501a247f105669d8d45016ffa50022851391802205bd5e",
+  "first_real_triton_kernel_path_metadata_digest": "c4e07fdb0da46d52cf8598698b9043bd3c221c059f23ac41dca2f3a5089e7ab9",
   "growth_policy": "append_only_rfc_bound",
   "issues": [],
   "oci_source_ingestion_research_proof_metadata_digest": "ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
   "oci_source_worker_release_provenance_readiness_metadata_digest": "d833dd565ddebce0d82c8aaa6c511c69f210f951ebabec11e5a8e43f882889d5",
-  "real_triton_first_slice_evidence_portfolio_metadata_digest": "b8c37e204d082a312e5ff90352fdecc7be925cf44b5a5aaf79b0070f71a2d680",
+  "real_triton_first_slice_evidence_portfolio_metadata_digest": "1881fa6b5ce1c96fdd1a3c34b64bac20926cc23ccba89d0da20c1656977725de",
   "required_controls": [
     "schema_versioned_extension_artifacts",
     "sha256_metadata_digests",

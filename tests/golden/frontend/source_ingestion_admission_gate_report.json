@@ -21,12 +21,12 @@
   "evidence_policy": "digest_only_source_free",
   "gate_contract": "source_ingestion_admission_gate.fail_closed.v0",
   "gate_id": "source_ingestion_admission_gate",
-  "gate_report_digest": "sha256:15cc3bc390fc50eda594aefd7e6a8ebf15b69e7e8714505dbce83c08dd3b94c2",
+  "gate_report_digest": "sha256:34b10d0051b75ec93becfce61b788b001702609072e93ce9426b015f371e52fd",
   "gate_status": "blocked_missing_maintainer_security_review_approval",
   "issues": [],
   "maintainer_approval_artifact": {
     "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
-    "digest": "sha256:a224ed736022c9979b96629e05c138722cd9055539f7a3f9d7187d1f23c3c56c",
+    "digest": "sha256:689037024e0e53f02e8552256f8be1d20c52b126b2f3dec6766ee4598fd9e418",
     "evidence_id": "source_ingestion_maintainer_approval_artifact",
     "source_free": true,
     "status": "external_approval_not_supplied",
@@ -34,7 +34,7 @@
   },
   "maintainer_review_packet": {
     "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
-    "digest": "sha256:6b046dec85320fd63aad7c47cb299e88bfbea30796efca74b2fa9c1e24ae6f62",
+    "digest": "sha256:545d845ac128612070c455593356f30ec34a66a3912e1bda95d03c9cd73da0f9",
     "evidence_id": "source_ingestion_maintainer_security_review_packet",
     "source_free": true,
     "status": "ready_for_maintainer_review",

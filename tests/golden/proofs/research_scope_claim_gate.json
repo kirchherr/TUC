@@ -24,7 +24,7 @@
   "evidence": [
     {
       "contract": "objective_alpha.research_claim_gate.ci.v0",
-      "digest": "sha256:41298b89f17b48fcd17d864e8367ba7bda7272cb85cfeb6f7452911f7e8d032e",
+      "digest": "sha256:aa5a31e372cb1f34b69e6de2ab32956d84f20201fd9432997f75ddc8be8fbc18",
       "evidence_id": "objective_alpha_research_claim_gate",
       "source_free": true,
       "status": "PASS",
@@ -48,7 +48,7 @@
     },
     {
       "contract": "source_ingestion_maintainer_approval_artifact.absent.v0",
-      "digest": "sha256:e725a83191f56aaabffcefebd2917acd987c671db046005a138bd30d0024b591",
+      "digest": "sha256:bd93a0d976c1de4ba7e546f1a205690dc6901ddf393784790253fcf8f363962a",
       "evidence_id": "source_ingestion_maintainer_approval_artifact",
       "source_free": true,
       "status": "external_approval_not_supplied",
@@ -56,7 +56,7 @@
     },
     {
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
-      "digest": "sha256:ba8a22de6469c641c2808d500427d3c4da3d32d54342d596a601c93dba16559c",
+      "digest": "sha256:ef87ceef9ae879e1278c2425a6e447c7681ab93307e3f93b21e8defe2f47ed95",
       "evidence_id": "source_ingestion_admission_gate",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval",
@@ -64,7 +64,7 @@
     },
     {
       "contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
-      "digest": "sha256:220af4025bc7da554fe8d1be6011c6aa45df7fe843f3885af9f7d742535a12ac",
+      "digest": "sha256:142156a4207a5b9ed8ab0647e95f1f194f40656db05c51263277da360aa373be",
       "evidence_id": "source_ingestion_preclaim_evidence_graph_acyclicity_gate",
       "source_free": true,
       "status": "PASS",
@@ -101,7 +101,7 @@
   "rocm_replacement_claim": false,
   "schema_version": "tuc.research_scope_claim_gate_report.v0",
   "scope_boundary": "research_proof_not_compiler_replacement",
-  "scope_report_digest": "sha256:09fa9813ac92c90868ea2b19f0c2c3fade120dd24253a04e804f2ca88e8c3808",
+  "scope_report_digest": "sha256:cde471101566527f31f43c61982b0dd19e84c3fe305b818f7c792f4cbb264ca8",
   "source_ingestion_admitted": false,
   "supported_claims": [
     "hardware_independent_compute_intent_current_research_scope",
