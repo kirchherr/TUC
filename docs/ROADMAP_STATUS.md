@@ -1,5 +1,19 @@
 # Roadmap Status
 
+- [Runtime Materialized Layout Conversion](RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
+  now provides a separate opt-in trusted simulator execution path for the mixed
+  `systolic-sim -> vector-sim` proof. It preflights all conversion edges before
+  kernels run, materializes a padded `2 x 2` blocked buffer, converts it to
+  read-only row-major storage, verifies exact logical values, and binds the
+  result to passing Backend Equivalence. Its closed schema is
+  `schemas/runtime_materialized_layout_conversion_report.v0.schema.json`, its
+  deterministic golden is
+  `tests/golden/runtime_materialized_layout_conversion/current_report.json`,
+  and the decision is `rfcs/0295-runtime-materialized-layout-conversion.md`.
+  Planned `float32` bytes and internal `float64` buffer bytes are reported
+  separately. Legacy `execute_graph()` traces and their
+  `conversion_not_materialized_as_runtime_step` claim remain unchanged.
+
 - [Objective Delta Reduced-Dependency Audit Path](OBJECTIVE_DELTA_AUDIT_PATH.md)
   now reimplements the fixed external contract in one isolated Python
   standard-library script without importing TUC or NumPy. A public fixed-value
@@ -1700,6 +1714,12 @@ Current focus:
 
 ## Next
 
+- Runtime Materialized Layout Conversion is implemented as an opt-in trusted
+  simulator proof. Do not silently promote it into `execute_graph()` or replace
+  the accepted legacy Layout Conversion Trace artifacts. Default-path or
+  Runtime Evidence Gate promotion requires a separate migration decision and
+  must preserve the simulator-only, non-residency, and non-performance claim
+  boundary.
 - The isolated Source Ingestion Research Worker is complete as a non-admitting
   Linux prototype. A bounded realistic module now crosses a fixed `-I` worker
   with CPU, address-space, file-size, open-file, core-dump, request, response,

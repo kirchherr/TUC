@@ -68,7 +68,7 @@
       "to_evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice"
     },
     {
-      "bound_digest": "sha256:5f3abcabd22e5dfa51ccfcdb84051a844f57ba2f26436cc1f58a1ffca99c3bf9",
+      "bound_digest": "sha256:d8cd39808c6ec38b50b6787cb115570108119c5e33d27ba5c85ba06d72721bc9",
       "edge_kind": "digest_binding",
       "from_evidence_id": "real_triton_first_admissible_slice_plan",
       "source_free": true,
@@ -138,7 +138,7 @@
       "to_evidence_id": "source_to_intent_plain_data_output_golden_for_admitted_slice"
     },
     {
-      "bound_digest": "sha256:5f3abcabd22e5dfa51ccfcdb84051a844f57ba2f26436cc1f58a1ffca99c3bf9",
+      "bound_digest": "sha256:d8cd39808c6ec38b50b6787cb115570108119c5e33d27ba5c85ba06d72721bc9",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
       "source_free": true,
@@ -152,28 +152,28 @@
       "to_evidence_id": "source_ingestion_approval_criteria"
     },
     {
-      "bound_digest": "sha256:65214f077055807d5c796ee6cc668f48fc93b7b8e85c568b9214b78b6466efb0",
+      "bound_digest": "sha256:738a5de490104795715a4e3741d929482f72f32a22ad7390383a3fef4ead103f",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_maintainer_security_review_packet",
       "source_free": true,
       "to_evidence_id": "real_triton_first_admissible_slice_plan"
     },
     {
-      "bound_digest": "sha256:6b046dec85320fd63aad7c47cb299e88bfbea30796efca74b2fa9c1e24ae6f62",
+      "bound_digest": "sha256:545d845ac128612070c455593356f30ec34a66a3912e1bda95d03c9cd73da0f9",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_maintainer_approval_artifact",
       "source_free": true,
       "to_evidence_id": "source_ingestion_maintainer_security_review_packet"
     },
     {
-      "bound_digest": "sha256:6b046dec85320fd63aad7c47cb299e88bfbea30796efca74b2fa9c1e24ae6f62",
+      "bound_digest": "sha256:545d845ac128612070c455593356f30ec34a66a3912e1bda95d03c9cd73da0f9",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_admission_gate",
       "source_free": true,
       "to_evidence_id": "source_ingestion_maintainer_security_review_packet"
     },
     {
-      "bound_digest": "sha256:a224ed736022c9979b96629e05c138722cd9055539f7a3f9d7187d1f23c3c56c",
+      "bound_digest": "sha256:689037024e0e53f02e8552256f8be1d20c52b126b2f3dec6766ee4598fd9e418",
       "edge_kind": "digest_binding",
       "from_evidence_id": "source_ingestion_admission_gate",
       "source_free": true,

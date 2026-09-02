@@ -1,0 +1,70 @@
+{
+  "artifact_status": "review_evidence",
+  "backend_equivalence_metadata_digest": "sha256:9a8c087f406ce614b8d0241e65203f486ccb9b6589b260a5e74cd4f684ef1b33",
+  "backend_equivalence_passed": true,
+  "baseline_run_id": "reference_cpu",
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution"
+  ],
+  "candidate_output_metadata_digest": "sha256:39d09e42752ab1232ee50253b9cfc3f1f83a3f5f417c754f30af090c0291ad11",
+  "candidate_run_id": "materialized_mixed_simulators",
+  "conversion_count": 1,
+  "conversions": [
+    {
+      "conversion_status": "executed_and_verified",
+      "logical_element_count": 6,
+      "logical_shape": [
+        2,
+        3
+      ],
+      "padding_element_count": 2,
+      "physical_element_count": 8,
+      "physical_shape": [
+        1,
+        2,
+        2,
+        2
+      ],
+      "planned_bytes": 24,
+      "planned_dtype": "float32",
+      "runtime_dtype": "float64",
+      "runtime_logical_bytes": 48,
+      "runtime_physical_bytes": 64,
+      "semantic_verification": "exact_logical_values",
+      "source_backend": "systolic-sim",
+      "source_layout": "blocked",
+      "source_operation": "projection",
+      "target_backend": "vector-sim",
+      "target_layout": "row_major",
+      "target_operation": "normalize",
+      "temporary_storage_bytes": 112,
+      "tensor_name": "projection",
+      "tile_shape": [
+        2,
+        2
+      ]
+    }
+  ],
+  "converter_contract": "runtime_layout_converter.trusted_simulator.v0",
+  "converter_execution_mode": "in_process_fixed_tiled_copy",
+  "converter_name": "trusted-blocked-2x2-to-row-major",
+  "evidence_contract": "runtime_layout_conversion.materialized_trusted_simulator.v0",
+  "external_artifacts": "forbidden",
+  "graph_name": "runtime_mixed_backend_equivalence",
+  "materialization_policy": "trusted_simulator_conversion_executed",
+  "materialization_scope": "trusted_simulator_only",
+  "materialized_trace_metadata_digest": "sha256:1dc9e86b35e1634ab612142ee299a32eb1c4ed8b528b610b98e334e8ed4a1526",
+  "operation_step_count": 4,
+  "performance_claim_status": "not_measured",
+  "raw_value_policy": "omitted_by_policy",
+  "residency_claim_status": "not_native_or_device_residency",
+  "schema_version": "tuc.runtime_materialized_layout_conversion_report.v0",
+  "status": "passed"
+}
