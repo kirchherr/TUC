@@ -215,6 +215,12 @@ Completed evidence:
   blocked-buffer transformation, supplies read-only row-major data to the
   consumer, and binds exact logical preservation to mixed Backend Equivalence.
   The established non-materialized executor and gate evidence remain intact.
+- Runtime Materialized Transfer extends the opt-in practical path: after the
+  required layout conversion, the fixed systolic slice performs a distinct
+  read-only `device_sram -> host_ram` buffer copy and binds it to plan, trace,
+  output metadata, conversion evidence, and Backend Equivalence. It remains
+  simulator-only and makes no residency, native execution, or performance
+  claim.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -1461,6 +1467,7 @@ Go/No-Go:
 8. Advance practical trusted simulator execution through explicit opt-in
    runtime proofs such as
    [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
+   and [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md)
    without widening native, device, plugin, residency, or performance claims.
 9. Extend planning explanation coverage only when new proof slices add
    distinct placement, fallback, or movement evidence.

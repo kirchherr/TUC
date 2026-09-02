@@ -21,6 +21,8 @@ It is not a backend plugin system.
 - API: `execute_graph(graph, partition_plan, inputs)`
 - Opt-in materialized layout API:
   `execute_graph_with_materialized_layouts(graph, partition_plan, inputs)`
+- Opt-in materialized data-movement API:
+  `execute_graph_with_materialized_data_movement(graph, partition_plan, inputs)`
 - Readiness API: `runtime_execution_readiness_report(graph, partition_plan)`
 - Trace API: `dump_execution_trace(trace)`
 - Backend contract API: `trusted_runtime_executor_contracts()`
@@ -100,6 +102,21 @@ The normal `execute_graph()` path is unchanged. Existing trace and gate
 artifacts therefore retain their explicit non-materialized semantics. See
 [Runtime Materialized Layout Conversion](RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
 for the report, schema, security boundary, and non-claims.
+
+## Opt-In Transfer Materialization
+
+`execute_graph_with_materialized_data_movement()` adds a complete transfer
+preflight and one fixed trusted `device_sram -> host_ram` simulator copy. A
+layout-changing transfer must first match and execute its exact planned layout
+conversion. The target-ready value is then copied into distinct contiguous
+storage, checked for non-aliasing and exact logical equality, marked read-only,
+and supplied to the trusted consumer.
+
+All transfer edges are validated before inputs are normalized or any graph
+kernel runs. The preflight binds producer, consumer, assignments, domains,
+layouts, tensor shape, graph dtype, and planned bytes. The normal and
+layout-only executor paths are unchanged. See
+[Runtime Materialized Transfer](RUNTIME_MATERIALIZED_TRANSFER.md).
 
 ## Execution Readiness
 

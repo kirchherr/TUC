@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuc.dev/schemas/runtime_materialized_transfer_report.v0.schema.json",
+  "title": "TUC Runtime Materialized Transfer Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_status",
+    "backend_equivalence_metadata_digest",
+    "backend_equivalence_passed",
+    "baseline_run_id",
+    "blocked_execution_surfaces",
+    "candidate_output_metadata_digest",
+    "candidate_run_id",
+    "evidence_contract",
+    "external_artifacts",
+    "graph_name",
+    "layout_conversion_count",
+    "materialization_policy",
+    "materialization_scope",
+    "materialized_layout_conversion_metadata_digest",
+    "materialized_trace_metadata_digest",
+    "operation_step_count",
+    "performance_claim_status",
+    "raw_value_policy",
+    "residency_claim_status",
+    "schema_version",
+    "sequencing_policy",
+    "status",
+    "transfer_count",
+    "transfer_execution_mode",
+    "transfer_executor_contract",
+    "transfer_executor_name",
+    "transfers"
+  ],
+  "properties": {
+    "artifact_status": {"const": "review_evidence"},
+    "backend_equivalence_metadata_digest": {"$ref": "#/$defs/digest"},
+    "backend_equivalence_passed": {"const": true},
+    "baseline_run_id": {"$ref": "#/$defs/name"},
+    "blocked_execution_surfaces": {
+      "const": [
+        "allocation_handles",
+        "backend_plugin_discovery",
+        "device_access",
+        "physical_device_selection",
+        "dynamic_import",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "jit_execution",
+        "pointer_or_address_exposure",
+        "network_access",
+        "subprocess_execution"
+      ]
+    },
+    "candidate_output_metadata_digest": {"$ref": "#/$defs/digest"},
+    "candidate_run_id": {"$ref": "#/$defs/name"},
+    "evidence_contract": {
+      "const": "runtime_transfer.materialized_trusted_simulator.v0"
+    },
+    "external_artifacts": {"const": "forbidden"},
+    "graph_name": {"$ref": "#/$defs/name"},
+    "layout_conversion_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "materialization_policy": {
+      "const": "trusted_simulator_transfer_executed"
+    },
+    "materialization_scope": {
+      "const": "trusted_simulator_domain_copy_only"
+    },
+    "materialized_layout_conversion_metadata_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "materialized_trace_metadata_digest": {"$ref": "#/$defs/digest"},
+    "operation_step_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4096
+    },
+    "performance_claim_status": {"const": "not_measured"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "residency_claim_status": {
+      "const": "simulated_domains_not_physical_residency"
+    },
+    "schema_version": {"const": "tuc.runtime_materialized_transfer_report.v0"},
+    "sequencing_policy": {"const": "layout_ready_then_domain_copy"},
+    "status": {"const": "passed"},
+    "transfer_count": {"type": "integer", "minimum": 1, "maximum": 64},
+    "transfer_execution_mode": {"const": "in_process_owned_numpy_copy"},
+    "transfer_executor_contract": {
+      "const": "runtime_transfer_executor.trusted_simulator.v0"
+    },
+    "transfer_executor_name": {
+      "const": "trusted-device-sram-to-host-ram-copy"
+    },
+    "transfers": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/transfer"}
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "maxLength": 256
+    },
+    "transfer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "copy_input_layout",
+        "element_count",
+        "logical_shape",
+        "ownership_verification",
+        "planned_bytes",
+        "planned_dtype",
+        "runtime_bytes",
+        "runtime_dtype",
+        "semantic_verification",
+        "source_backend",
+        "source_domain",
+        "source_layout",
+        "source_operation",
+        "target_backend",
+        "target_domain",
+        "target_layout",
+        "target_operation",
+        "tensor_name",
+        "transfer_status"
+      ],
+      "properties": {
+        "copy_input_layout": {"const": "row_major"},
+        "element_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000
+        },
+        "logical_shape": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {"type": "integer", "minimum": 1, "maximum": 2000000}
+        },
+        "ownership_verification": {"const": "distinct_owned_buffer"},
+        "planned_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16000000
+        },
+        "planned_dtype": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "maxLength": 32
+        },
+        "runtime_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16000000
+        },
+        "runtime_dtype": {"const": "float64"},
+        "semantic_verification": {"const": "exact_logical_values"},
+        "source_backend": {"$ref": "#/$defs/name"},
+        "source_domain": {"const": "device_sram"},
+        "source_layout": {"const": "blocked"},
+        "source_operation": {"$ref": "#/$defs/name"},
+        "target_backend": {"$ref": "#/$defs/name"},
+        "target_domain": {"const": "host_ram"},
+        "target_layout": {"const": "row_major"},
+        "target_operation": {"$ref": "#/$defs/name"},
+        "tensor_name": {"$ref": "#/$defs/name"},
+        "transfer_status": {"const": "executed_and_verified"}
+      }
+    }
+  }
+}

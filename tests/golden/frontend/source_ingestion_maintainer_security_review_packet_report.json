@@ -23,7 +23,7 @@
     "maintainer_security_review_approval"
   ],
   "remaining_external_evidence_count": 1,
-  "report_digest": "sha256:57a7b16c1b44fb1a278c223331a10c02f3c6fef6f4098c7eb3ca9590a826c97f",
+  "report_digest": "sha256:a81e331593cf80fa6fe1889a19679b867c816a8b07b08dc1908b9e710cd40793",
   "required_check_count": 16,
   "required_checks": [
     "bounded_source_buffer_reviewed",
@@ -94,7 +94,7 @@
     },
     {
       "contract": "ci_replay_for_admitted_slice.ci.v0",
-      "digest": "sha256:d8cd39808c6ec38b50b6787cb115570108119c5e33d27ba5c85ba06d72721bc9",
+      "digest": "sha256:ea7ee240288aafc6aff0d0a362de2eda5a70e63a28e839f0c44c55baaf80efab",
       "evidence_id": "ci_replay_for_admitted_slice",
       "reviewable": true,
       "source_free": true,
@@ -110,7 +110,7 @@
     },
     {
       "contract": "real_triton_first_slice_plan.data_only.v0",
-      "digest": "sha256:738a5de490104795715a4e3741d929482f72f32a22ad7390383a3fef4ead103f",
+      "digest": "sha256:0d3fc7663a2bf294ad71e8d1df0da01715a56fdf3451e2e9eaaba9cfb6a617c3",
       "evidence_id": "real_triton_first_admissible_slice_plan",
       "reviewable": true,
       "source_free": true,

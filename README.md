@@ -417,6 +417,11 @@ Current runtime surfaces:
   transformation, verifies exact logical values, and binds the result to
   passing mixed Backend Equivalence. The legacy executor and its explicitly
   non-materialized trace evidence remain unchanged.
+- Runtime Materialized Transfer v0 extends that opt-in path with a real,
+  alias-free `device_sram -> host_ram` simulator buffer copy after layout
+  conversion, then binds plan, trace, output metadata, conversion evidence, and
+  passing Backend Equivalence without claiming physical residency or measured
+  transfer performance.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
@@ -462,6 +467,7 @@ examples/runtime_layout_conversion_trace_index.py
 examples/runtime_layout_conversion_trace_replay_verifier.py
 examples/runtime_backend_equivalence_layout_binding.py
 examples/runtime_materialized_layout_conversion.py
+examples/runtime_materialized_transfer.py
 ```
 
 Key docs:
@@ -498,6 +504,7 @@ Key docs:
 - [Runtime Layout Conversion Trace Replay Verifier](docs/RUNTIME_LAYOUT_CONVERSION_TRACE_REPLAY_VERIFIER.md)
 - [Runtime Backend Equivalence Layout Binding](docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md)
 - [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
+- [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Source Intent Mixed Runtime Public Proof Bundle](docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)

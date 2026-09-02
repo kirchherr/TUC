@@ -33,6 +33,7 @@ execute_graph
   -> Runtime Layout Conversion Trace Replay Verifier
   -> Runtime Backend Equivalence Layout Binding
   -> Runtime Materialized Layout Conversion (opt-in simulator proof)
+  -> Runtime Materialized Transfer (opt-in simulator proof)
   -> Runtime Planning Explanation
   -> Runtime Evidence Gate
 ```
@@ -239,6 +240,18 @@ Backend Equivalence. It does not change the historical
 [RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md](RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md),
 `schemas/runtime_materialized_layout_conversion_report.v0.schema.json`, and
 `examples/runtime_materialized_layout_conversion.py`.
+
+`Runtime Materialized Transfer` is the next separate opt-in execution proof.
+It preflights the complete transfer and conversion plan, requires the planned
+layout conversion first, then copies the target-ready value into distinct
+read-only simulator storage for the consumer. The report binds that transfer
+trace to Materialized Layout Conversion, output metadata, and passing Backend
+Equivalence. It does not change the historical
+`transfer_not_materialized_as_runtime_step` artifacts or claim physical
+residency. See
+[RUNTIME_MATERIALIZED_TRANSFER.md](RUNTIME_MATERIALIZED_TRANSFER.md),
+`schemas/runtime_materialized_transfer_report.v0.schema.json`, and
+`examples/runtime_materialized_transfer.py`.
 
 `Runtime Evidence Replay Verifier` replays serialized Runtime Execution Evidence
 Bundle and Runtime Execution Output Closure reports by metadata digest only. See

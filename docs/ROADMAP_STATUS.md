@@ -1,5 +1,18 @@
 # Roadmap Status
 
+- [Runtime Materialized Transfer](RUNTIME_MATERIALIZED_TRANSFER.md) now turns
+  the accepted systolic `device_sram -> host_ram` edge into a real opt-in
+  trusted simulator buffer copy. The complete transfer and conversion plan is
+  preflighted before kernels run; the target-ready value is copied into
+  distinct read-only storage, checked for exact semantics and non-aliasing, and
+  bound to Materialized Layout Conversion plus Backend Equivalence. Its closed
+  schema is `schemas/runtime_materialized_transfer_report.v0.schema.json`, its
+  deterministic golden is
+  `tests/golden/runtime_materialized_transfer/current_report.json`, and the
+  decision is `rfcs/0296-runtime-materialized-transfer.md`. Domain names remain
+  simulator labels; physical residency, native transfer, and performance are
+  not claimed.
+
 - [Runtime Materialized Layout Conversion](RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
   now provides a separate opt-in trusted simulator execution path for the mixed
   `systolic-sim -> vector-sim` proof. It preflights all conversion edges before
@@ -1714,6 +1727,12 @@ Current focus:
 
 ## Next
 
+- Runtime Materialized Transfer is implemented as an opt-in trusted simulator
+  proof. Do not reinterpret the accepted Transfer Evidence, Trace Index,
+  Replay Verifier, or general Runtime Evidence Gate as materialized execution.
+  Default-path or gate promotion requires a separate migration decision and
+  must preserve the simulator-only, non-residency, and non-performance claim
+  boundary.
 - Runtime Materialized Layout Conversion is implemented as an opt-in trusted
   simulator proof. Do not silently promote it into `execute_graph()` or replace
   the accepted legacy Layout Conversion Trace artifacts. Default-path or

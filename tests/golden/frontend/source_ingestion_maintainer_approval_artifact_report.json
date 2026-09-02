@@ -28,7 +28,7 @@
   "maintainer_review_packet": {
     "contract": "source_ingestion_maintainer_security_review_packet.review.v0",
     "criteria_bound": true,
-    "digest": "sha256:545d845ac128612070c455593356f30ec34a66a3912e1bda95d03c9cd73da0f9",
+    "digest": "sha256:17fa7e8f8983cb3adc13662b686481787b6812ecaf14c357136b2469b85ddebc",
     "evidence_id": "source_ingestion_maintainer_security_review_packet",
     "reviewable": true,
     "source_free": true,
@@ -38,7 +38,7 @@
     "maintainer_security_review_approval"
   ],
   "remaining_external_evidence_count": 1,
-  "report_digest": "sha256:3373558b11dfd013e5701653edc2cdc81e2ce8d952c0e83410d544ad0c22bd84",
+  "report_digest": "sha256:7349b65915810e51124d3834c6b29d9290428c3a82ddc30d64ba060a8782847f",
   "required_control_count": 10,
   "required_controls": [
     "maintainer_review_packet_bound",
