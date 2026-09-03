@@ -422,6 +422,11 @@ Current runtime surfaces:
   conversion, then binds plan, trace, output metadata, conversion evidence, and
   passing Backend Equivalence without claiming physical residency or measured
   transfer performance.
+- Runtime Materialized Allocation v0 turns the accepted memory-planning chain
+  into three bounded persistent host-simulator slots, releases values at their
+  proven final use, and actually reuses one slot across two non-overlapping
+  tensor lifetimes. Its report binds execution to Reference Correctness while
+  excluding kernel temporaries and output snapshots from the memory claim.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
@@ -505,6 +510,7 @@ Key docs:
 - [Runtime Backend Equivalence Layout Binding](docs/RUNTIME_BACKEND_EQUIVALENCE_LAYOUT_BINDING.md)
 - [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
 - [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md)
+- [Runtime Materialized Allocation](docs/RUNTIME_MATERIALIZED_ALLOCATION.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Source Intent Mixed Runtime Public Proof Bundle](docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)
@@ -546,6 +552,7 @@ schemas/runtime_allocation_request_manifest_report.v0.schema.json
 schemas/runtime_allocation_admission_report.v0.schema.json
 schemas/runtime_allocation_receipt_report.v0.schema.json
 schemas/runtime_allocation_reconciliation_report.v0.schema.json
+schemas/runtime_materialized_allocation_report.v0.schema.json
 ```
 
 ## Frontend Intake

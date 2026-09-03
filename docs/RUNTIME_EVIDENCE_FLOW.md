@@ -34,6 +34,7 @@ execute_graph
   -> Runtime Backend Equivalence Layout Binding
   -> Runtime Materialized Layout Conversion (opt-in simulator proof)
   -> Runtime Materialized Transfer (opt-in simulator proof)
+  -> Runtime Materialized Allocation (opt-in simulator proof)
   -> Runtime Planning Explanation
   -> Runtime Evidence Gate
 ```
@@ -252,6 +253,17 @@ residency. See
 [RUNTIME_MATERIALIZED_TRANSFER.md](RUNTIME_MATERIALIZED_TRANSFER.md),
 `schemas/runtime_materialized_transfer_report.v0.schema.json`, and
 `examples/runtime_materialized_transfer.py`.
+
+`Runtime Materialized Allocation` is a separate opt-in memory execution proof.
+It rebuilds the complete Buffer Lifetime through Allocation Reconciliation
+chain before allocating three persistent host-simulator slots. Four produced
+values are written and released at their proven final-use indexes, with one
+slot receiving a second generation only after its first tensor is released.
+The report binds planning, operation trace, allocation trace, output metadata,
+and Reference Correctness without exposing values or storage identity. See
+[RUNTIME_MATERIALIZED_ALLOCATION.md](RUNTIME_MATERIALIZED_ALLOCATION.md),
+`schemas/runtime_materialized_allocation_report.v0.schema.json`, and
+`examples/runtime_materialized_allocation.py`.
 
 `Runtime Evidence Replay Verifier` replays serialized Runtime Execution Evidence
 Bundle and Runtime Execution Output Closure reports by metadata digest only. See
