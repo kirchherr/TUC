@@ -75,6 +75,10 @@ jobs:
         run: python examples/runtime_backend_equivalence_layout_binding.py
       - name: Runtime materialized layout conversion
         run: python examples/runtime_materialized_layout_conversion.py
+      - name: Runtime materialized transfer
+        run: python examples/runtime_materialized_transfer.py
+      - name: Runtime materialized allocation
+        run: python examples/runtime_materialized_allocation.py
       - name: Proof of backend equivalence
         run: python examples/proof_of_backend_equivalence.py
       - name: Source Intent mixed runtime public proof bundle

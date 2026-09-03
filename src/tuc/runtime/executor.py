@@ -32,7 +32,12 @@ from tuc.runtime.layout_conversion_executor import (
     materialize_layout_conversion,
 )
 from tuc.runtime.partitioning import Assignment, PartitionPlan
-from tuc.runtime.plan import LayoutConversionCost
+from tuc.runtime.plan import LayoutConversionCost, RuntimeTransferEdge
+from tuc.runtime.transfer_executor import (
+    RuntimeTransferExecutionStep,
+    assert_materializable_runtime_transfer,
+    materialize_runtime_transfer,
+)
 
 RUNTIME_EXECUTOR_CONTRACT = "runtime_executor.trusted_backend.v0"
 TRUSTED_RUNTIME_BACKEND_EXECUTOR_CONTRACT = "runtime_backend_executor.trusted.v0"
@@ -201,6 +206,7 @@ class RuntimeExecutionTrace:
         RUNTIME_EXECUTOR_BLOCKED_EXECUTION_SURFACES
     )
     layout_conversion_steps: tuple[RuntimeLayoutConversionExecutionStep, ...] = ()
+    transfer_steps: tuple[RuntimeTransferExecutionStep, ...] = ()
 
     def __post_init__(self) -> None:
         _require_trace_name(self.graph_name, "graph_name")
@@ -225,6 +231,15 @@ class RuntimeExecutionTrace:
                     "runtime layout conversion trace steps must be "
                     "RuntimeLayoutConversionExecutionStep"
                 )
+        if type(self.transfer_steps) is not tuple:
+            raise TypeError("runtime transfer trace steps must be a tuple")
+        if len(self.transfer_steps) > MAX_RUNTIME_EXECUTION_VALUES:
+            raise ValueError("runtime transfer trace step count exceeds limit")
+        for transfer_step in self.transfer_steps:
+            if not isinstance(transfer_step, RuntimeTransferExecutionStep):
+                raise TypeError(
+                    "runtime transfer trace steps must be RuntimeTransferExecutionStep"
+                )
 
     def dump(self) -> str:
         """Render a stable execution trace."""
@@ -242,6 +257,11 @@ class RuntimeExecutionTrace:
             lines.append("  layout_conversion_steps {")
             for conversion_step in self.layout_conversion_steps:
                 lines.append(f"    {conversion_step.dump_line()}")
+            lines.append("  }")
+        if self.transfer_steps:
+            lines.append("  transfer_steps {")
+            for transfer_step in self.transfer_steps:
+                lines.append(f"    {transfer_step.dump_line()}")
             lines.append("  }")
         lines.append("  steps {")
         for operation_step in self.steps:
@@ -555,7 +575,13 @@ def execute_graph(
 ) -> RuntimeExecutionResult:
     """Execute a graph with trusted reference kernels and trace every step."""
 
-    return _execute_graph(graph, partition_plan, inputs, materialize_layouts=False)
+    return _execute_graph(
+        graph,
+        partition_plan,
+        inputs,
+        materialize_layouts=False,
+        materialize_transfers=False,
+    )
 
 
 def execute_graph_with_materialized_layouts(
@@ -565,7 +591,29 @@ def execute_graph_with_materialized_layouts(
 ) -> RuntimeExecutionResult:
     """Execute with fixed trusted simulator layout conversions materialized."""
 
-    return _execute_graph(graph, partition_plan, inputs, materialize_layouts=True)
+    return _execute_graph(
+        graph,
+        partition_plan,
+        inputs,
+        materialize_layouts=True,
+        materialize_transfers=False,
+    )
+
+
+def execute_graph_with_materialized_data_movement(
+    graph: ComputeGraph,
+    partition_plan: PartitionPlan,
+    inputs: Mapping[str, object],
+) -> RuntimeExecutionResult:
+    """Execute with all supported layout conversions and transfers materialized."""
+
+    return _execute_graph(
+        graph,
+        partition_plan,
+        inputs,
+        materialize_layouts=True,
+        materialize_transfers=True,
+    )
 
 
 def _execute_graph(
@@ -574,6 +622,7 @@ def _execute_graph(
     inputs: Mapping[str, object],
     *,
     materialize_layouts: bool,
+    materialize_transfers: bool,
 ) -> RuntimeExecutionResult:
     """Execute one graph under the selected trusted layout-conversion policy."""
 
@@ -588,6 +637,11 @@ def _execute_graph(
         if materialize_layouts
         else {}
     )
+    transfers_by_target = (
+        _materialized_transfers_by_target(graph, partition_plan)
+        if materialize_transfers
+        else {}
+    )
     tensor_store = _normalize_inputs(graph, inputs)
     assignments = {
         assignment.operation_name: assignment for assignment in partition_plan.assignments
@@ -595,14 +649,17 @@ def _execute_graph(
     executors = trusted_runtime_executor_registry()
     steps: list[RuntimeExecutionStep] = []
     layout_conversion_steps: list[RuntimeLayoutConversionExecutionStep] = []
+    transfer_steps: list[RuntimeTransferExecutionStep] = []
 
     for operation in graph.operations:
         assignment = assignments[operation.name]
         executor = _executor_for_assignment(assignment, executors)
         operation_values: Mapping[str, FloatArray] = tensor_store.values
         operation_conversions = conversions_by_target.get(operation.name, ())
-        if operation_conversions:
+        operation_transfers = transfers_by_target.get(operation.name, ())
+        if operation_conversions or operation_transfers:
             converted_values = dict(tensor_store.values)
+            converted_layouts: dict[str, LayoutKind] = {}
             for conversion, tensor in operation_conversions:
                 source_record = tensor_store.record_for(tensor.name)
                 if source_record.producer_id != conversion.source_operation:
@@ -617,7 +674,30 @@ def _execute_graph(
                     source_record.value,
                 )
                 converted_values[tensor.name] = converted_value
+                converted_layouts[tensor.name] = conversion.target_layout
                 layout_conversion_steps.append(conversion_step)
+            for transfer, tensor in operation_transfers:
+                source_record = tensor_store.record_for(tensor.name)
+                if source_record.producer_id != transfer.source_operation:
+                    raise ValueError("materialized transfer source operation mismatch")
+                if source_record.planned_backend != transfer.source_backend:
+                    raise ValueError("materialized transfer source backend mismatch")
+                if source_record.planned_memory_domain is not transfer.source_domain:
+                    raise ValueError("materialized transfer source domain mismatch")
+                if source_record.planned_layout is not transfer.source_layout:
+                    raise ValueError("materialized transfer source layout mismatch")
+                input_layout = converted_layouts.get(
+                    tensor.name,
+                    source_record.planned_layout,
+                )
+                transferred_value, transfer_step = materialize_runtime_transfer(
+                    transfer,
+                    tensor,
+                    converted_values[tensor.name],
+                    input_layout=input_layout,
+                )
+                converted_values[tensor.name] = transferred_value
+                transfer_steps.append(transfer_step)
             operation_values = MappingProxyType(converted_values)
         result = executor.execute(operation, operation_values)
         if len(operation.outputs) != 1:
@@ -638,6 +718,10 @@ def _execute_graph(
         partition_plan.layout_conversions
     ):
         raise ValueError("runtime executor did not materialize every planned conversion")
+    if materialize_transfers and len(transfer_steps) != len(
+        partition_plan.transfer_edges
+    ):
+        raise ValueError("runtime executor did not materialize every planned transfer")
 
     return RuntimeExecutionResult(
         values=tensor_store.values,
@@ -646,6 +730,7 @@ def _execute_graph(
             executor_contract=RUNTIME_EXECUTOR_CONTRACT,
             steps=tuple(steps),
             layout_conversion_steps=tuple(layout_conversion_steps),
+            transfer_steps=tuple(transfer_steps),
         ),
         records=tensor_store.records,
     )
@@ -1045,6 +1130,94 @@ def _materialized_conversions_by_target(
     return {target: tuple(conversions) for target, conversions in grouped.items()}
 
 
+def _materialized_transfers_by_target(
+    graph: ComputeGraph,
+    partition_plan: PartitionPlan,
+) -> dict[str, tuple[tuple[RuntimeTransferEdge, TensorRef], ...]]:
+    """Validate every materialized transfer before graph execution begins."""
+
+    operations = {operation.name: operation for operation in graph.operations}
+    producers = {
+        tensor.name: operation.name
+        for operation in graph.operations
+        for tensor in operation.outputs
+    }
+    assignments = {
+        assignment.operation_name: assignment for assignment in partition_plan.assignments
+    }
+    conversions = {
+        (conversion.target_operation, conversion.tensor_name): conversion
+        for conversion in partition_plan.layout_conversions
+    }
+    if len(conversions) != len(partition_plan.layout_conversions):
+        raise ValueError("materialized transfer plan contains duplicate conversions")
+    grouped: dict[str, list[tuple[RuntimeTransferEdge, TensorRef]]] = {}
+    seen: set[tuple[str, str]] = set()
+    for transfer in partition_plan.transfer_edges:
+        if not isinstance(transfer, RuntimeTransferEdge):
+            raise TypeError("materialized transfer plan entries must be RuntimeTransferEdge")
+        target_operation = operations.get(transfer.target_operation)
+        if target_operation is None:
+            raise ValueError("materialized transfer target operation is unknown")
+        inputs_by_name = {tensor.name: tensor for tensor in target_operation.inputs}
+        tensor = inputs_by_name.get(transfer.tensor_name)
+        if tensor is None:
+            raise ValueError("materialized transfer tensor is not an operation input")
+        assert_materializable_runtime_transfer(transfer, tensor)
+        if producers.get(tensor.name) != transfer.source_operation:
+            raise ValueError("materialized transfer source operation mismatch")
+        source_assignment = assignments.get(transfer.source_operation)
+        target_assignment = assignments.get(transfer.target_operation)
+        if source_assignment is None or target_assignment is None:
+            raise ValueError("materialized transfer assignment linkage is incomplete")
+        if (
+            source_assignment.backend_name != transfer.source_backend
+            or source_assignment.memory_domain is not transfer.source_domain
+            or source_assignment.produced_layout is not transfer.source_layout
+        ):
+            raise ValueError("materialized transfer source assignment mismatch")
+        if (
+            target_assignment.backend_name != transfer.target_backend
+            or target_assignment.memory_domain is not transfer.target_domain
+        ):
+            raise ValueError("materialized transfer target assignment mismatch")
+        if _runtime_operation_layout(target_operation) is not transfer.target_layout:
+            raise ValueError("materialized transfer target layout mismatch")
+        conversion = conversions.get((transfer.target_operation, transfer.tensor_name))
+        if transfer.source_layout is transfer.target_layout:
+            if conversion is not None:
+                raise ValueError("materialized transfer has unexpected layout conversion")
+        elif conversion is None:
+            raise ValueError("materialized transfer requires a planned layout conversion")
+        elif (
+            conversion.source_operation != transfer.source_operation
+            or conversion.source_layout is not transfer.source_layout
+            or conversion.target_layout is not transfer.target_layout
+            or conversion.bytes_converted != transfer.bytes_moved
+        ):
+            raise ValueError("materialized transfer layout conversion mismatch")
+        transfer_key = (transfer.target_operation, transfer.tensor_name)
+        if transfer_key in seen:
+            raise ValueError("materialized transfer tensor appears more than once")
+        seen.add(transfer_key)
+        grouped.setdefault(transfer.target_operation, []).append((transfer, tensor))
+    return {target: tuple(transfers) for target, transfers in grouped.items()}
+
+
+def _runtime_operation_layout(operation: ComputeOperation) -> LayoutKind:
+    value = operation.attributes.get("tuc.layout")
+    if value is None:
+        return LayoutKind.ROW_MAJOR
+    if isinstance(value, LayoutKind):
+        return value
+    if isinstance(value, str):
+        try:
+            return LayoutKind(value)
+        except ValueError as exc:
+            raise ValueError(f"unsupported operation layout: {value!r}") from exc
+    raise TypeError("operation layout must be a LayoutKind or string")
+
+
 def _validate_runtime_graph_topology(graph: ComputeGraph) -> None:
     all_output_names: list[str] = [
         tensor.name for operation in graph.operations for tensor in operation.outputs
@@ -1325,6 +1498,7 @@ __all__ = [
     "dump_runtime_execution_readiness",
     "dump_trusted_runtime_executor_contracts",
     "execute_graph",
+    "execute_graph_with_materialized_data_movement",
     "execute_graph_with_materialized_layouts",
     "runtime_execution_readiness_report",
     "trusted_runtime_executor_contracts",

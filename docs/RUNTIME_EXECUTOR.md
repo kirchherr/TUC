@@ -21,6 +21,8 @@ It is not a backend plugin system.
 - API: `execute_graph(graph, partition_plan, inputs)`
 - Opt-in materialized layout API:
   `execute_graph_with_materialized_layouts(graph, partition_plan, inputs)`
+- Opt-in materialized data-movement API:
+  `execute_graph_with_materialized_data_movement(graph, partition_plan, inputs)`
 - Readiness API: `runtime_execution_readiness_report(graph, partition_plan)`
 - Trace API: `dump_execution_trace(trace)`
 - Backend contract API: `trusted_runtime_executor_contracts()`
@@ -100,6 +102,36 @@ The normal `execute_graph()` path is unchanged. Existing trace and gate
 artifacts therefore retain their explicit non-materialized semantics. See
 [Runtime Materialized Layout Conversion](RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
 for the report, schema, security boundary, and non-claims.
+
+## Opt-In Transfer Materialization
+
+`execute_graph_with_materialized_data_movement()` adds a complete transfer
+preflight and one fixed trusted `device_sram -> host_ram` simulator copy. A
+layout-changing transfer must first match and execute its exact planned layout
+conversion. The target-ready value is then copied into distinct contiguous
+storage, checked for non-aliasing and exact logical equality, marked read-only,
+and supplied to the trusted consumer.
+
+All transfer edges are validated before inputs are normalized or any graph
+kernel runs. The preflight binds producer, consumer, assignments, domains,
+layouts, tensor shape, graph dtype, and planned bytes. The normal and
+layout-only executor paths are unchanged. See
+[Runtime Materialized Transfer](RUNTIME_MATERIALIZED_TRANSFER.md).
+
+## Opt-In Allocation Materialization
+
+`execute_graph_with_materialized_allocations()` accepts the complete reviewed
+memory-planning prerequisite chain and executes produced values through a fixed
+bounded NumPy slot arena. The chain and all inputs are validated before slots
+are allocated or kernels run. Each trusted kernel result is copied into its
+planned slot, verified exactly, exposed downstream as a read-only view, and
+released only at its proven final-use index.
+
+The v0 path is limited to transfer-free `host_ram`, `row_major`, `float32`
+planning with internal bounded `float64` storage. It retains only external
+inputs and immutable terminal output snapshots. The existing executor paths
+and Tensor Store semantics remain unchanged. See
+[Runtime Materialized Allocation](RUNTIME_MATERIALIZED_ALLOCATION.md).
 
 ## Execution Readiness
 

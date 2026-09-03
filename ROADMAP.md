@@ -215,6 +215,18 @@ Completed evidence:
   blocked-buffer transformation, supplies read-only row-major data to the
   consumer, and binds exact logical preservation to mixed Backend Equivalence.
   The established non-materialized executor and gate evidence remain intact.
+- Runtime Materialized Transfer extends the opt-in practical path: after the
+  required layout conversion, the fixed systolic slice performs a distinct
+  read-only `device_sram -> host_ram` buffer copy and binds it to plan, trace,
+  output metadata, conversion evidence, and Backend Equivalence. It remains
+  simulator-only and makes no residency, native execution, or performance
+  claim.
+- Runtime Materialized Allocation crosses the next practical boundary by
+  rebuilding the accepted memory-planning chain, preallocating bounded
+  host-simulator slots, releasing produced values at proven final use, and
+  executing one exact-match slot reuse. The closed report binds this behavior
+  to output metadata and Reference Correctness while keeping addresses,
+  handles, native allocation, device placement, and performance claims blocked.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -802,9 +814,8 @@ Next work:
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
-- Add allocator behavior only after allocation-plan, memory-budget, and
-  allocation-request-manifest evidence stays deterministic, digest-bound, and
-  reviewable.
+- Keep Runtime Materialized Allocation opt-in until transfer-staging lifetimes,
+  layout-specific slot sizes, and promotion criteria are separately modeled.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 
@@ -1460,7 +1471,9 @@ Go/No-Go:
    same-project audit implementation is independent evidence.
 8. Advance practical trusted simulator execution through explicit opt-in
    runtime proofs such as
-   [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
+   [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md),
+   [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md), and
+   [Runtime Materialized Allocation](docs/RUNTIME_MATERIALIZED_ALLOCATION.md)
    without widening native, device, plugin, residency, or performance claims.
 9. Extend planning explanation coverage only when new proof slices add
    distinct placement, fallback, or movement evidence.

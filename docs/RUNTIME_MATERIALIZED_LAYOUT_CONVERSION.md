@@ -123,3 +123,7 @@ The trusted runtime still keeps canonical logical NumPy values in its internal
 tensor store. At the conversion boundary, v0 reconstructs the planned blocked
 simulator representation and converts it back to row-major form. That is a real
 bounded buffer transformation, but it is not evidence about physical hardware.
+
+[Runtime Materialized Transfer](RUNTIME_MATERIALIZED_TRANSFER.md) builds on this
+opt-in path by copying the target-ready value into a distinct simulator buffer
+for a cross-domain consumer while preserving the same non-native claim boundary.

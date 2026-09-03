@@ -67,3 +67,10 @@ raw tensor values.
 Transfer latency and energy fields are deterministic planning estimates. They
 are not hardware measurements and must not be used as native performance
 evidence.
+
+## Materialized Companion Proof
+
+[Runtime Materialized Transfer](RUNTIME_MATERIALIZED_TRANSFER.md) is a separate
+opt-in trusted simulator proof that executes one bounded owned buffer copy. It
+does not alter this report's `does_not_execute_transfers` contract or the
+accepted non-materialized Trace Index and Replay Verifier artifacts.

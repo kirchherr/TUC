@@ -528,6 +528,30 @@ legacy non-materialized executor evidence remains stable. See
 `docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md` and
 `rfcs/0295-runtime-materialized-layout-conversion.md`.
 
+Runtime Materialized Transfer now advances the same proof from representation
+change to explicit data movement. The opt-in runtime preflights the complete
+transfer and conversion plan, converts the systolic projection to target-ready
+row-major form, copies it into a distinct read-only simulator buffer for the
+`reference-cpu` consumer, and requires terminal Backend Equivalence. The
+closed report binds plan, materialized trace, output metadata, conversion
+evidence, and equivalence without exposing values. `device_sram` and
+`host_ram` remain simulator placement labels, not observed physical residency.
+See `docs/RUNTIME_MATERIALIZED_TRANSFER.md` and
+`rfcs/0296-runtime-materialized-transfer.md`.
+
+Runtime Materialized Allocation now advances the memory-planning proof from
+reviewed data into bounded execution. The opt-in runtime rebuilds the complete
+Lifetime, Allocation Plan, Budget, Request, Admission, Receipt, and
+Reconciliation chain before allocating storage. It preallocates one private
+host-process NumPy buffer per slot, releases each produced value at its proven
+last use, and reuses one slot for a later non-overlapping tensor generation.
+Terminal output snapshots pass Reference Correctness, while storage identities,
+values, addresses, pointers, and handles remain private. Kernel temporaries and
+output snapshots are explicitly excluded from the persistent-slot memory claim;
+native allocation, devices, and performance remain open. See
+`docs/RUNTIME_MATERIALIZED_ALLOCATION.md` and
+`rfcs/0297-runtime-materialized-allocation.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
