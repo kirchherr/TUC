@@ -133,6 +133,19 @@ inputs and immutable terminal output snapshots. The existing executor paths
 and Tensor Store semantics remain unchanged. See
 [Runtime Materialized Allocation](RUNTIME_MATERIALIZED_ALLOCATION.md).
 
+## Heterogeneous Storage Planning
+
+`build_runtime_heterogeneous_storage_plan_report()` is the data-only planning
+companion for future mixed-domain allocation. It models physical blocked
+storage, layout-conversion staging, and transfer-target staging without
+allocating memory or executing a backend. Copy source and destination
+lifetimes overlap at their movement event, preventing premature slot reuse.
+
+The v0 sizing contract accepts only `row_major` and fixed rank-2 2x2 `blocked`
+storage. Other layouts remain closed until their stride, tile, and alignment
+semantics are explicit. See
+[Runtime Heterogeneous Storage Plan](RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md).
+
 ## Execution Readiness
 
 Before executing any operation, Runtime Executor v0 builds a
