@@ -1,5 +1,17 @@
 # Roadmap Status
 
+- [Runtime Materialized Allocation](RUNTIME_MATERIALIZED_ALLOCATION.md) now
+  turns the complete canonical memory-planning chain into a bounded opt-in
+  persistent NumPy slot arena. The accepted proof preallocates three slots,
+  writes four produced tensors, releases each value at its proven final use,
+  and reuses `slot_001` for `left_tmp -> right_tmp` without serializing storage
+  identity or values. The closed report binds planning, execution, output
+  metadata, and Reference Correctness through
+  `schemas/runtime_materialized_allocation_report.v0.schema.json`; its golden is
+  `tests/golden/runtime_materialized_allocation/current_report.json` and its
+  decision is `rfcs/0297-runtime-materialized-allocation.md`. Native allocators,
+  device placement, kernel output buffers, and performance remain non-claims.
+
 - [Runtime Materialized Transfer](RUNTIME_MATERIALIZED_TRANSFER.md) now turns
   the accepted systolic `device_sram -> host_ram` edge into a real opt-in
   trusted simulator buffer copy. The complete transfer and conversion plan is

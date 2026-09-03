@@ -539,6 +539,19 @@ evidence, and equivalence without exposing values. `device_sram` and
 See `docs/RUNTIME_MATERIALIZED_TRANSFER.md` and
 `rfcs/0296-runtime-materialized-transfer.md`.
 
+Runtime Materialized Allocation now advances the memory-planning proof from
+reviewed data into bounded execution. The opt-in runtime rebuilds the complete
+Lifetime, Allocation Plan, Budget, Request, Admission, Receipt, and
+Reconciliation chain before allocating storage. It preallocates one private
+host-process NumPy buffer per slot, releases each produced value at its proven
+last use, and reuses one slot for a later non-overlapping tensor generation.
+Terminal output snapshots pass Reference Correctness, while storage identities,
+values, addresses, pointers, and handles remain private. Kernel temporaries and
+output snapshots are explicitly excluded from the persistent-slot memory claim;
+native allocation, devices, and performance remain open. See
+`docs/RUNTIME_MATERIALIZED_ALLOCATION.md` and
+`rfcs/0297-runtime-materialized-allocation.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,

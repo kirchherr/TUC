@@ -17,7 +17,7 @@ from tuc.backends import BackendCapability
 def build_current_runtime_buffer_lifetime_report() -> RuntimeBufferLifetimeReport:
     """Build the current runtime buffer lifetime report."""
 
-    graph = _buffer_lifetime_graph()
+    graph = build_graph()
     backend = BackendCapability(
         name="reference-cpu",
         supported_ops=frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE}),
@@ -36,7 +36,9 @@ def main() -> None:
     )
 
 
-def _buffer_lifetime_graph() -> ComputeGraph:
+def build_graph() -> ComputeGraph:
+    """Build the canonical graph containing one safe exact-match reuse slot."""
+
     lhs_a = TensorRef("lhs_a", (4, 4))
     rhs_a = TensorRef("rhs_a", (4, 4))
     lhs_b = TensorRef("lhs_b", (4, 4))
