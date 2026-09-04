@@ -562,6 +562,19 @@ planned reservation from 344 to 208 bytes without allocating memory or
 executing a backend. See `docs/RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md` and
 `rfcs/0298-runtime-heterogeneous-storage-plan.md`.
 
+Runtime Materialized Heterogeneous Storage now executes that accepted plan as
+one bounded opt-in vertical proof. Five private preallocated NumPy slots carry
+eight produced, layout-staging, and transfer-target lifetimes; fixed 2x2
+blocked storage preserves explicit padding, and three slot generations are
+reused only after their planned releases. Both terminal outputs pass independent
+Reference Correctness and all-CPU Backend Equivalence. The closed report also
+reconstructs and binds Materialized Layout Conversion and Materialized Transfer
+evidence. Planned `float32` capacity remains separate from private simulator
+`float64` capacity, while native allocation, physical residency, and
+performance remain open. See
+`docs/RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md` and
+`rfcs/0299-runtime-materialized-heterogeneous-storage.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,

@@ -1,5 +1,21 @@
 # Roadmap Status
 
+- [Runtime Materialized Heterogeneous Storage](RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md)
+  now binds the canonical mixed-domain storage plan to a bounded opt-in trusted
+  simulator arena. Eight produced, layout-staging, and transfer-target
+  lifetimes execute through five private slots; blocked 3x3 values retain
+  explicit 2x2 padding, and three second generations begin only after their
+  predecessors are released. Both terminal outputs pass Reference Correctness
+  and Backend Equivalence, with Materialized Layout Conversion and Materialized
+  Transfer reconstructed as bound evidence. Its closed schema is
+  `schemas/runtime_materialized_heterogeneous_storage_report.v0.schema.json`,
+  its deterministic golden is
+  `tests/golden/runtime_materialized_heterogeneous_storage/current_report.json`,
+  and the accepted decision is
+  `rfcs/0299-runtime-materialized-heterogeneous-storage.md`. The domains remain
+  simulator labels; native allocation, physical residency, and performance are
+  not claimed.
+
 - [Runtime Heterogeneous Storage Plan](RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md)
   now models produced buffers, layout-conversion staging, and transfer-target
   staging on one deterministic event timeline. The odd 3x3 proof records 2x2
@@ -1751,6 +1767,12 @@ Current focus:
 
 ## Next
 
+- Runtime Materialized Heterogeneous Storage is implemented as an opt-in
+  trusted simulator proof under RFC 0299. It must not be silently promoted into
+  `execute_graph()` or used to reinterpret planning-only evidence as native
+  memory behavior. Default-path or Runtime Evidence Gate promotion requires a
+  separate migration decision, stable independent reproduction, and unchanged
+  non-residency, non-native, and non-performance boundaries.
 - Runtime Materialized Transfer is implemented as an opt-in trusted simulator
   proof. Do not reinterpret the accepted Transfer Evidence, Trace Index,
   Replay Verifier, or general Runtime Evidence Gate as materialized execution.

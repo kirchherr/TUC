@@ -72,7 +72,7 @@
       "artifact_id": "source_ingestion_preclaim_acyclicity_gate",
       "artifact_kind": "json_report",
       "contract": "source_ingestion_preclaim_acyclicity_gate.data_only.v0",
-      "digest": "sha256:cb023f33464c720378aeba4e870863a1b086901fc61ae2230cc7ea44b35b561b",
+      "digest": "sha256:6c77bc7ab23da29fa516f6b56a51df716e1504d5dea18b3317c790a609c67cb1",
       "source_free": true,
       "status": "PASS"
     },
@@ -80,7 +80,7 @@
       "artifact_id": "source_ingestion_admission_gate",
       "artifact_kind": "json_report",
       "contract": "source_ingestion_admission_gate.fail_closed.v0",
-      "digest": "sha256:ec069337ea84cf6d63ce7fc75855900cb9e21bf2baa5aef0850d863bd1eb26b1",
+      "digest": "sha256:5b3590d88ba0d1fdb483c7e0f180b77b4d1971f32a7ddf21addfa5d01cfbc32c",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval"
     }

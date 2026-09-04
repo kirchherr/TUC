@@ -232,6 +232,13 @@ Completed evidence:
   one ordered event timeline. Fixed 2x2 blocked sizing exposes padding for odd
   shapes, and role-isolated slots prove conservative reuse across sequential
   mixed-backend slices without allocating or executing.
+- Runtime Materialized Heterogeneous Storage closes that practical gap through
+  a separate opt-in trusted simulator path. The canonical plan now preallocates
+  five private slots, executes eight produced/layout/transfer lifetimes and
+  three post-release reuse events, verifies blocked padding and terminal
+  outputs, and binds the run to Reference Correctness, Backend Equivalence,
+  Materialized Layout Conversion, and Materialized Transfer. Native allocation,
+  physical residency, and performance remain explicitly unclaimed.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -819,10 +826,12 @@ Next work:
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
-- Transfer-staging lifetimes and layout-specific slot sizes are now modeled by
-  Runtime Heterogeneous Storage Plan. Keep Runtime Materialized Allocation
-  opt-in until explicit promotion criteria bind that plan to a mixed-domain
-  execution path through a separate RFC.
+- Transfer-staging lifetimes and layout-specific slot sizes are now both
+  planned and executed by the opt-in Runtime Materialized Heterogeneous Storage
+  proof under RFC 0299. Keep all materialized paths out of `execute_graph()` and
+  the central Runtime Evidence Gate until a separate migration decision defines
+  promotion criteria without broadening residency, native, or performance
+  claims.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 

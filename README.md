@@ -432,6 +432,12 @@ Current runtime surfaces:
   odd blocked tensors by physical 2x2 tiles, keeps copy endpoints live together,
   and proves conservative slot reuse across two mixed-backend slices without
   allocating memory or executing a backend.
+- Runtime Materialized Heterogeneous Storage v0 binds that canonical plan to a
+  bounded opt-in simulator arena. It executes all eight produced, layout, and
+  transfer-staging lifetimes through five preallocated slots, verifies blocked
+  padding and both terminal outputs, and performs three slot reuses only after
+  their planned releases. Reference Correctness and Backend Equivalence pass;
+  physical residency, native allocation, and performance remain non-claims.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
@@ -479,6 +485,7 @@ examples/runtime_backend_equivalence_layout_binding.py
 examples/runtime_materialized_layout_conversion.py
 examples/runtime_materialized_transfer.py
 examples/runtime_heterogeneous_storage_plan.py
+examples/runtime_materialized_heterogeneous_storage.py
 ```
 
 Key docs:
@@ -518,6 +525,7 @@ Key docs:
 - [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md)
 - [Runtime Materialized Allocation](docs/RUNTIME_MATERIALIZED_ALLOCATION.md)
 - [Runtime Heterogeneous Storage Plan](docs/RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md)
+- [Runtime Materialized Heterogeneous Storage](docs/RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Source Intent Mixed Runtime Public Proof Bundle](docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)
@@ -561,6 +569,7 @@ schemas/runtime_allocation_receipt_report.v0.schema.json
 schemas/runtime_allocation_reconciliation_report.v0.schema.json
 schemas/runtime_materialized_allocation_report.v0.schema.json
 schemas/runtime_heterogeneous_storage_plan_report.v0.schema.json
+schemas/runtime_materialized_heterogeneous_storage_report.v0.schema.json
 ```
 
 ## Frontend Intake

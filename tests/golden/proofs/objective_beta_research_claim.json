@@ -22,7 +22,7 @@
   "broad_source_parser_claim": false,
   "claim_contract": "objective_beta.research_claim.digest_snapshot.v0",
   "claim_id": "objective_beta_universal_compute_research_claim",
-  "claim_metadata_digest": "2a4865a13952f405707cf72fc99bcdcd85351f762234c5597a20d9021faf755e",
+  "claim_metadata_digest": "0a8bb51a14cffbf4a66544f0748da0f7897ba0b8262ab79fe916ab83692d77f7",
   "claim_passed": true,
   "claim_scope": "objective_beta_kernel_ingress_first_slice_review_readiness",
   "claim_status": "supported_for_objective_beta_research_scope",
@@ -30,7 +30,7 @@
     {
       "artifact_id": "objective_alpha_research_claim_gate",
       "contract": "objective_alpha.research_claim_gate.ci.v0",
-      "digest": "ce90cfbb89f6d51221771bc105079a440332f6a7bbd53c1f77bc6b3c2feca1ed",
+      "digest": "797fb248d229850e665ad3465935e6f0a9fa4aca309685c7ba02a52179112c78",
       "source_free": true,
       "status": "PASS"
     },
@@ -44,35 +44,35 @@
     {
       "artifact_id": "first_real_triton_kernel_path",
       "contract": "first_real_triton_kernel_path.digest_bound.v0",
-      "digest": "993ac9afa5f6baa7480434095bc9423f17641447f4dd124ba72d7fefc187b916",
+      "digest": "7f1ce800aa584b665ec703e7b8aaaeb721cf2dbc954ae3a8d66a184ecfc7f466",
       "source_free": true,
       "status": "PASS"
     },
     {
       "artifact_id": "real_triton_first_slice_evidence_portfolio",
       "contract": "real_triton_first_slice_evidence_portfolio.research_boundary.v0",
-      "digest": "90c9037342bff270274e57400ce6ef767dcc792b3277d9719b4b9e959eb7c4bb",
+      "digest": "7feddc2719f1172f14508fe2705af6e4ef9a80d4c7dbf0773f96dd06981b2c01",
       "source_free": true,
       "status": "PASS"
     },
     {
       "artifact_id": "real_triton_first_slice_admission_readiness_gate",
       "contract": "real_triton_first_slice_admission_readiness_gate.data_only.v0",
-      "digest": "eb518a49de5d7eb76e5169635ff382c7e730a8f09aea3395b3d42b02dabee7cf",
+      "digest": "2c3a5d027182de29ef969722613a7ed3d3f7ed00ad2d59b8d5f2291363c92fcf",
       "source_free": true,
       "status": "blocked_missing_maintainer_security_review_approval"
     },
     {
       "artifact_id": "real_triton_first_slice_maintainer_approval_request",
       "contract": "real_triton_first_slice_maintainer_approval_request.data_only.v0",
-      "digest": "7eb15d5ff342a8d2bb36f5045c835461d01706ef759ef2b111490b1cafed9b1c",
+      "digest": "45a55d322d36906af4a23137cab7316aec61ca00af31a90d4ce6bcee47ba82b6",
       "source_free": true,
       "status": "ready_for_external_review"
     },
     {
       "artifact_id": "research_scope_claim_gate",
       "contract": "research_scope.claim_gate.data_only.v0",
-      "digest": "1b6440076d09138c058940d4ed4c5b97f0046626746ca01f96e2a3f8f51cc574",
+      "digest": "7a3209aae6e017f31d4b254c180206f44f8b0304a3056add794d360514747f37",
       "source_free": true,
       "status": "PASS"
     },

@@ -36,6 +36,7 @@ execute_graph
   -> Runtime Materialized Transfer (opt-in simulator proof)
   -> Runtime Materialized Allocation (opt-in simulator proof)
   -> Runtime Heterogeneous Storage Plan (data-only physical planning)
+  -> Runtime Materialized Heterogeneous Storage (opt-in joined storage proof)
   -> Runtime Planning Explanation
   -> Runtime Evidence Gate
 ```
@@ -275,6 +276,18 @@ compatibility. See
 [RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md](RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md),
 `schemas/runtime_heterogeneous_storage_plan_report.v0.schema.json`, and
 `examples/runtime_heterogeneous_storage_plan.py`.
+
+`Runtime Materialized Heterogeneous Storage` is the separate opt-in joined
+execution proof. It rebuilds the canonical storage plan before allocation,
+preallocates its exact slots, then materializes produced values, blocked-layout
+padding, row-major layout staging, and distinct transfer-target staging on the
+planned event timeline. Slot generations are reused only after observed
+planned releases. The final report binds the storage trace to Reference
+Correctness, Backend Equivalence, Materialized Layout Conversion, and
+Materialized Transfer without exposing values or storage identity. See
+[RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md](RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md),
+`schemas/runtime_materialized_heterogeneous_storage_report.v0.schema.json`, and
+`examples/runtime_materialized_heterogeneous_storage.py`.
 
 `Runtime Evidence Replay Verifier` replays serialized Runtime Execution Evidence
 Bundle and Runtime Execution Output Closure reports by metadata digest only. See
