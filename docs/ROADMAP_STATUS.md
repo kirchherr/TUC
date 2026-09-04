@@ -1,5 +1,20 @@
 # Roadmap Status
 
+- [Bounded GPU Observation Proof](BOUNDED_GPU_OBSERVATION_PROOF.md) now provides
+  the first concrete, separate path from Objective Delta's fixed neutral
+  workload to a physical NVIDIA `sm_70` device. The implementation uses two
+  reviewed SASS-only kernels, an independent fixed CPU check, digest-pinned
+  CUDA images, a single-device compute-only container, no network or repository
+  mount, a read-only root filesystem, non-root execution, dropped capabilities,
+  seccomp, bounded resources, sanitized output, and explicit driver/display
+  operator acknowledgements. Its closed schema is
+  `schemas/bounded_gpu_observation_report.v0.schema.json` and its decision is
+  `rfcs/0300-bounded-gpu-observation-proof.md`. The normal executor and the
+  existing Device Access and Native Backend gates remain unchanged. The first
+  checked-in physical `PASS` observation remains pending a current local driver
+  security update and controlled execution; no native-performance, general
+  backend, or portable-hardware claim is made.
+
 - [Runtime Materialized Heterogeneous Storage](RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md)
   now binds the canonical mixed-domain storage plan to a bounded opt-in trusted
   simulator arena. Eight produced, layout-staging, and transfer-target
@@ -1767,6 +1782,13 @@ Current focus:
 
 ## Next
 
+- Complete the controlled Bounded GPU Observation sequence: build the
+  digest-pinned image, pass the no-kernel preflight, update the local NVIDIA
+  driver to a current security-supported GV100-compatible release, stop
+  unnecessary GPU workloads, run the fixed two-kernel proof, and review the
+  sanitized report before checking in any physical-execution evidence. Do not
+  use this experiment to open `execute_graph()`, general native backends,
+  runtime-generated artifacts, or performance claims.
 - Runtime Materialized Heterogeneous Storage is implemented as an opt-in
   trusted simulator proof under RFC 0299. It must not be silently promoted into
   `execute_graph()` or used to reinterpret planning-only evidence as native

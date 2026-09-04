@@ -575,6 +575,18 @@ performance remain open. See
 `docs/RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md` and
 `rfcs/0299-runtime-materialized-heterogeneous-storage.md`.
 
+Bounded GPU Observation Proof v0 now prepares the first controlled physical
+execution bridge without opening the normal runtime. Objective Delta's fixed
+public `2 x 2` `float64` `matmul -> elementwise identity` workload is bound to
+two reviewed
+`sm_70` SASS kernels in a digest-pinned, compute-only, single-device container
+with no network or repository mount. The first accepted `PASS` observation
+still requires the local driver-security prerequisite, no-kernel preflight,
+shared-display acknowledgement, and reviewed sanitized evidence. This is a
+fixed hardware observation, not a general native backend, portable-device
+proof, or performance claim. See `docs/BOUNDED_GPU_OBSERVATION_PROOF.md` and
+`rfcs/0300-bounded-gpu-observation-proof.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,

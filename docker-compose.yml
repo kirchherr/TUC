@@ -60,12 +60,48 @@ services:
     tty: false
     stop_grace_period: 1s
 
-  gpu:
-    <<: *dev-base
+  gpu-observation:
     profiles:
-      - gpu
-    gpus: all
+      - gpu-observation
+    build:
+      context: ./docker/gpu-observation
+      dockerfile: Dockerfile
+      args:
+        TUC_GPU_OBSERVATION_HEADER_DIGEST: sha256:d200ef8f2898f8b5cc021ba9dc59bd21aff743f016c0b8304b1f05b5b49c6477
+        TUC_GPU_OBSERVATION_SOURCE_DIGEST: sha256:f47efa68e28002dc1c8452c300b3776300961199cad657f1039150a4b1e9d6e5
+        TUC_GPU_OBSERVATION_WORKLOAD_DIGEST: sha256:b4db50ff9a90d776b5028e902d1528ef09bdca945a4d7d8166850e87e72cb1c0
+    image: tuc-gpu-observation:research-v0
+    platform: linux/amd64
+    pull_policy: never
+    network_mode: none
+    read_only: true
+    user: "10001:10001"
+    working_dir: /run/tuc
     environment:
-      <<: *dev-env
-      TUC_ENABLE_GPU: "1"
-    command: bash
+      CUDA_CACHE_DISABLE: "1"
+      CUDA_DISABLE_PTX_JIT: "1"
+      CUDA_VISIBLE_DEVICES: "0"
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+      NVIDIA_DRIVER_CAPABILITIES: compute
+      NVIDIA_VISIBLE_DEVICES: "0"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 16
+    mem_limit: 1g
+    cpus: 1.0
+    ipc: private
+    shm_size: 16m
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1700,uid=10001,gid=10001
+    gpus:
+      - driver: nvidia
+        device_ids:
+          - "0"
+    stdin_open: false
+    tty: false
+    stop_grace_period: 1s
+    command:
+      - --preflight

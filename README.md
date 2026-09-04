@@ -325,6 +325,15 @@ Runtime Executor v0 runs already-compiled graphs through a fixed trusted
 in-process executor registry. It is intentionally not a plugin system and does
 not authorize external executable backend artifacts.
 
+The separate [Bounded GPU Observation Proof](docs/BOUNDED_GPU_OBSERVATION_PROOF.md)
+is the first controlled path prepared for one physical GPU observation. It runs
+only Objective Delta's fixed `2 x 2` `matmul -> elementwise identity` workload
+as two reviewed
+`sm_70` kernels in a hardened opt-in container. It does not modify the normal
+executor, admit a general native backend, or measure performance. RFC:
+`rfcs/0300-bounded-gpu-observation-proof.md`; schema:
+`schemas/bounded_gpu_observation_report.v0.schema.json`.
+
 Current runtime surfaces:
 
 - Runtime Execution Readiness before kernels run.
