@@ -575,16 +575,17 @@ performance remain open. See
 `docs/RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md` and
 `rfcs/0299-runtime-materialized-heterogeneous-storage.md`.
 
-Bounded GPU Observation Proof v0 now prepares the first controlled physical
+Bounded GPU Observation Proof v0 now records the first controlled physical
 execution bridge without opening the normal runtime. Objective Delta's fixed
 public `2 x 2` `float64` `matmul -> elementwise identity` workload is bound to
 two reviewed
 `sm_70` SASS kernels in a digest-pinned, compute-only, single-device container
-with no network or repository mount. The first accepted `PASS` observation
-still requires the local driver-security prerequisite, no-kernel preflight,
-shared-display acknowledgement, and reviewed sanitized evidence. This is a
-fixed hardware observation, not a general native backend, portable-device
-proof, or performance claim. See `docs/BOUNDED_GPU_OBSERVATION_PROOF.md` and
+with no network or repository mount. The first accepted `PASS` observation now
+binds the completed local driver-security prerequisite, no-kernel preflight,
+shared-display acknowledgement, two-kernel execution, CPU-reference match, and
+reviewed sanitized evidence. This is a fixed hardware observation, not a
+general native backend, portable-device proof, or performance claim. See
+`docs/BOUNDED_GPU_OBSERVATION_PROOF.md` and
 `rfcs/0300-bounded-gpu-observation-proof.md`.
 
 Evidence:
@@ -597,9 +598,10 @@ Evidence:
 `tests/golden/backend_package_execution_portfolio/proof_report.json`, and
 `rfcs/0284-multi-package-execution-portfolio.md`.
 
-This materially advances Milestones 3 and 4 but does not close the native
-target: external package code, GPU kernels, specialized physical devices, and
-native performance remain unexecuted and unproven.
+This materially advances Milestones 3 and 4 and closes only the fixed physical
+GPU observation. External package code, compiler-emitted GPU kernels,
+cross-device physical portability, specialized physical targets, and native
+performance remain unexecuted or unproven.
 
 The Source Intent Backend Package Portfolio now closes the frontend-to-package
 gap in the same milestone:

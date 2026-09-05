@@ -26,15 +26,20 @@ This proves one limited software result: for this fixed example, the compute
 description can remain unchanged while data-described capabilities determine
 an inspectable plan whose result matches the reference.
 
-It does **not** prove real-hardware portability, native accelerator execution,
-performance parity, arbitrary program support, or replacement of CUDA, ROCm,
-XLA, TVM, IREE, Triton, or vendor compilers.
+The main Objective Delta reproduction does **not** prove real-hardware
+portability, general native accelerator execution, performance parity,
+arbitrary program support, or replacement of CUDA, ROCm, XLA, TVM, IREE,
+Triton, or vendor compilers. A separate bounded observation has now executed
+the same fixed compute family as two precompiled `sm_70` kernels on one
+physical GPU and matched the CPU reference. That is one real-device
+observation, not a general backend or portability result.
 
 Running the experiment in several ordinary cloud VMs should reproduce it. That
 is useful evidence that the released experiment is portable and deterministic
-across independent environments. Because the current backends are simulators,
-it is not evidence that the same code runs efficiently on different physical
-accelerators. Native backends and real-device evidence remain future research.
+across independent environments. Because the current TUC backends are
+simulators, it is not evidence that the same code runs efficiently on different
+physical accelerators. General native backends and cross-device physical
+portability remain future research.
 
 New to compiler terminology? Start with the
 [plain-language glossary](docs/GLOSSARY.md).
@@ -326,11 +331,12 @@ in-process executor registry. It is intentionally not a plugin system and does
 not authorize external executable backend artifacts.
 
 The separate [Bounded GPU Observation Proof](docs/BOUNDED_GPU_OBSERVATION_PROOF.md)
-is the first controlled path prepared for one physical GPU observation. It runs
-only Objective Delta's fixed `2 x 2` `matmul -> elementwise identity` workload
-as two reviewed
-`sm_70` kernels in a hardened opt-in container. It does not modify the normal
-executor, admit a general native backend, or measure performance. RFC:
+records TUC's first controlled physical GPU observation. Objective Delta's
+fixed `2 x 2` `matmul -> elementwise identity` workload passed as two reviewed
+`sm_70` kernels in a hardened opt-in container and matched its CPU reference.
+The sanitized [physical observation](tests/golden/proofs/bounded_gpu_observation_report.json)
+does not modify the normal executor, admit a general native backend, establish
+cross-device portability, or measure performance. RFC:
 `rfcs/0300-bounded-gpu-observation-proof.md`; schema:
 `schemas/bounded_gpu_observation_report.v0.schema.json`.
 

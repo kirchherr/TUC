@@ -4,9 +4,10 @@
 
 Bounded GPU Observation Proof v0 is implemented as a separate opt-in research
 path. The container build, static security contract, preflight, and physical
-kernel observation are deliberately separate actions. A checked-in `PASS`
-observation is accepted only after the local driver-security prerequisite and
-the shared-display-risk acknowledgement have been satisfied.
+kernel observation are deliberately separate actions. The first checked-in
+`PASS` observation was accepted after the local driver-security prerequisite,
+no-kernel preflight, shared-display-risk acknowledgement, fixed execution, and
+CPU-reference comparison all succeeded.
 
 Decision: `rfcs/0300-bounded-gpu-observation-proof.md`.
 Threat model: [Bounded GPU Observation Threat Model](BOUNDED_GPU_OBSERVATION_THREAT_MODEL.md).
@@ -123,6 +124,18 @@ py -3 examples/bounded_gpu_observation_proof.py `
 The two explicit flags are part of the security boundary. Omitting either one
 fails before Docker or device access.
 
+## Observed Result
+
+The accepted sanitized report is
+`tests/golden/proofs/bounded_gpu_observation_report.json`. It records one
+visible `nvidia_cuda_sm70` device, two kernel launches, 128 bytes of explicit
+workload allocation, physical execution, and a passed CPU-reference check. It
+also records that JIT execution, generated code, performance collection,
+normal-executor modification, and TUC native-backend admission did not occur.
+
+This closes only the local observation requested by RFC 0300. Independent
+reproduction is still `not_yet_supplied`.
+
 ## Evidence
 
 - CUDA source:
@@ -134,6 +147,8 @@ fails before Docker or device access.
 - runtime profile: `docker-compose.yml`;
 - orchestrator: `examples/bounded_gpu_observation_proof.py`;
 - schema: `schemas/bounded_gpu_observation_report.v0.schema.json`;
+- accepted physical observation:
+  `tests/golden/proofs/bounded_gpu_observation_report.json`;
 - tests: `tests/test_bounded_gpu_observation_proof.py`.
 
 An accepted observation binds the workload, Objective Delta files, CUDA source,

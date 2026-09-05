@@ -32,6 +32,9 @@ SCHEMA_PATH = Path("schemas/bounded_gpu_observation_report.v0.schema.json")
 DOC_PATH = Path("docs/BOUNDED_GPU_OBSERVATION_PROOF.md")
 THREAT_MODEL_PATH = Path("docs/BOUNDED_GPU_OBSERVATION_THREAT_MODEL.md")
 RFC_PATH = Path("rfcs/0300-bounded-gpu-observation-proof.md")
+PHYSICAL_OBSERVATION_PATH = Path(
+    "tests/golden/proofs/bounded_gpu_observation_report.json"
+)
 
 
 def _rendered_compose_config() -> dict[str, object]:
@@ -279,6 +282,22 @@ def test_report_binds_physical_execution_without_broadening_claims() -> None:
     assert "pci_bus_id" not in rendered
     assert "raw_tensor_values\"" not in rendered
     assert "C:\\Users\\" not in rendered
+
+
+def test_checked_in_physical_observation_is_valid_sanitized_pass() -> None:
+    rendered = PHYSICAL_OBSERVATION_PATH.read_text(encoding="utf-8")
+    report = json.loads(rendered)
+
+    assert dump_bounded_gpu_observation_report(report) == rendered
+    assert report["report_digest"] == (
+        "sha256:82edd3b39f084e3a9e5ff7978dcfbbac5aa107f7011163bcdcc0fbbb8886110f"
+    )
+    assert report["proof"]["status"] == "PASS"
+    assert report["execution"]["kernel_launch_count"] == 2
+    assert report["execution"]["physical_device_execution"] is True
+    assert report["execution"]["tuc_native_backend_admitted"] is False
+    assert report["execution"]["performance_measurement_collected"] is False
+    assert report["claim_boundary"]["external_reproduction"] == "not_yet_supplied"
 
 
 def test_report_digest_and_semantic_fields_fail_closed() -> None:

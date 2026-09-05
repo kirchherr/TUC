@@ -11,9 +11,12 @@
   `schemas/bounded_gpu_observation_report.v0.schema.json` and its decision is
   `rfcs/0300-bounded-gpu-observation-proof.md`. The normal executor and the
   existing Device Access and Native Backend gates remain unchanged. The first
-  checked-in physical `PASS` observation remains pending a current local driver
-  security update and controlled execution; no native-performance, general
-  backend, or portable-hardware claim is made.
+  checked-in physical `PASS` observation is now recorded at
+  `tests/golden/proofs/bounded_gpu_observation_report.json`: exactly two fixed
+  kernels executed on one `sm_70` device and matched the CPU reference after a
+  no-kernel preflight and explicit operator acknowledgements. Independent
+  reproduction remains absent; no native-performance, general-backend, or
+  portable-hardware claim is made.
 
 - [Runtime Materialized Heterogeneous Storage](RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md)
   now binds the canonical mixed-domain storage plan to a bounded opt-in trusted
@@ -1782,13 +1785,12 @@ Current focus:
 
 ## Next
 
-- Complete the controlled Bounded GPU Observation sequence: build the
-  digest-pinned image, pass the no-kernel preflight, update the local NVIDIA
-  driver to a current security-supported GV100-compatible release, stop
-  unnecessary GPU workloads, run the fixed two-kernel proof, and review the
-  sanitized report before checking in any physical-execution evidence. Do not
-  use this experiment to open `execute_graph()`, general native backends,
-  runtime-generated artifacts, or performance claims.
+- Preserve the checked-in Bounded GPU Observation as one local, fixed physical
+  observation and seek an independently provenanced reproduction of the same
+  RFC 0300 contract. A different architecture, dynamic input, compiler-emitted
+  kernel, normal-runtime integration, or performance experiment requires a
+  successor decision; this result must not open `execute_graph()`, general
+  native backends, runtime-generated artifacts, or performance claims.
 - Runtime Materialized Heterogeneous Storage is implemented as an opt-in
   trusted simulator proof under RFC 0299. It must not be silently promoted into
   `execute_graph()` or used to reinterpret planning-only evidence as native

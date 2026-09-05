@@ -3,8 +3,10 @@
 ## Status
 
 Accepted as a separate opt-in research implementation. It does not admit a
-native backend into TUC's normal compiler or runtime. A public `PASS` artifact
-requires a successful local preflight and execution under the controls below.
+native backend into TUC's normal compiler or runtime. The first public `PASS`
+artifact is recorded at
+`tests/golden/proofs/bounded_gpu_observation_report.json` after a successful
+local preflight and execution under the controls below.
 
 ## Context
 
@@ -104,6 +106,8 @@ library paths, generated code, or compiler output require a new RFC.
 - CUDA source and workload: `docker/gpu-observation/`;
 - runtime policy: `docker-compose.yml`;
 - schema: `schemas/bounded_gpu_observation_report.v0.schema.json`;
+- accepted physical observation:
+  `tests/golden/proofs/bounded_gpu_observation_report.json`;
 - tests: `tests/test_bounded_gpu_observation_proof.py`;
 - documentation: `docs/BOUNDED_GPU_OBSERVATION_PROOF.md`;
 - threat model: `docs/BOUNDED_GPU_OBSERVATION_THREAT_MODEL.md`.
@@ -112,7 +116,7 @@ library paths, generated code, or compiler output require a new RFC.
 
 TUC gains a credible simulator-to-device bridge without pretending to possess
 a production GPU backend. The experiment is small enough to audit and repeat,
-while its report can become the first physical-execution evidence in the
+and its accepted report is now the first physical-execution evidence in the
 roadmap after a controlled local run.
 
 The former broad GPU development Compose service is removed. GPU access now

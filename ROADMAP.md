@@ -239,15 +239,16 @@ Completed evidence:
   outputs, and binds the run to Reference Correctness, Backend Equivalence,
   Materialized Layout Conversion, and Materialized Transfer. Native allocation,
   physical residency, and performance remain explicitly unclaimed.
-- Bounded GPU Observation Proof v0 is the next controlled physical boundary.
-  It maps Objective Delta's fixed public `2 x 2` `float64`
+- Bounded GPU Observation Proof v0 records TUC's first controlled physical
+  observation. It maps Objective Delta's fixed public `2 x 2` `float64`
   `matmul -> elementwise identity` vector to two reviewed `sm_70` SASS kernels in a
   digest-pinned, single-device, compute-only container. It remains separate
   from `execute_graph()` and from the non-admitting Device Access and Native
-  Backend gates. A checked-in `PASS` requires a current driver security update,
-  a no-kernel preflight, explicit shared-display acknowledgement, sanitized
-  metadata-only evidence, and review under RFC 0300. It cannot support native
-  performance, general backend, or portable-hardware claims.
+  Backend gates. The checked-in `PASS` followed a current driver security
+  update, a no-kernel preflight, explicit shared-display acknowledgement,
+  sanitized metadata-only evidence, and review under RFC 0300. It cannot
+  support native-performance, general-backend, or portable-hardware claims;
+  independent reproduction is still absent.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
