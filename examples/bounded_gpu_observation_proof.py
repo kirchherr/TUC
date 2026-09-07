@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path
 from typing import BinaryIO, cast
@@ -50,6 +51,8 @@ CUDA_SOURCE_PATH = GPU_CONTEXT_PATH / "bounded_gpu_observation.cu"
 WORKLOAD_HEADER_PATH = GPU_CONTEXT_PATH / "objective_delta_workload.hpp"
 WORKLOAD_MANIFEST_PATH = GPU_CONTEXT_PATH / "objective_delta_workload.v0.json"
 GPU_DOCKERFILE_PATH = GPU_CONTEXT_PATH / "Dockerfile"
+GPU_SM86_CUDA_SOURCE_PATH = GPU_CONTEXT_PATH / "bounded_gpu_observation_sm86.cu"
+GPU_SM86_DOCKERFILE_PATH = GPU_CONTEXT_PATH / "Dockerfile.sm86"
 OBJECTIVE_DELTA_SOURCE_INTENT_PATH = (
     REPOSITORY_ROOT / "integration/objective_delta/source_intent.v0.json"
 )
@@ -166,8 +169,93 @@ _REPORT_KEYS = frozenset(
 )
 
 
+@dataclass(frozen=True)
+class GpuObservationProfile:
+    """A reviewed, closed GPU target profile selected from a static allowlist."""
+
+    profile_id: str
+    schema_version: str
+    preflight_schema_version: str
+    proof_contract: str
+    worker_protocol: str
+    compose_profile: str
+    service: str
+    image: str
+    cuda_source_path: Path
+    dockerfile_path: Path
+    accelerator_class: str
+    compute_target: str
+    sass_target: str
+    proof_scope: str
+    image_title: str
+    image_version: str
+
+
+GPU_SM70_PROFILE = GpuObservationProfile(
+    profile_id="nvidia-sm70",
+    schema_version=GPU_OBSERVATION_SCHEMA_VERSION,
+    preflight_schema_version="tuc.bounded_gpu_observation_preflight.v0",
+    proof_contract=GPU_OBSERVATION_PROOF_CONTRACT,
+    worker_protocol=GPU_OBSERVATION_WORKER_PROTOCOL,
+    compose_profile="gpu-observation",
+    service=GPU_OBSERVATION_SERVICE,
+    image=GPU_OBSERVATION_IMAGE,
+    cuda_source_path=CUDA_SOURCE_PATH,
+    dockerfile_path=GPU_DOCKERFILE_PATH,
+    accelerator_class="nvidia_cuda_sm70",
+    compute_target="compute_70",
+    sass_target="sm_70",
+    proof_scope="single_fixed_local_hardware_observation",
+    image_title="TUC bounded GPU observation",
+    image_version="research-v0",
+)
+
+GPU_SM86_PROFILE = GpuObservationProfile(
+    profile_id="nvidia-sm86",
+    schema_version="tuc.bounded_gpu_sm86_observation_report.v0",
+    preflight_schema_version="tuc.bounded_gpu_sm86_observation_preflight.v0",
+    proof_contract="bounded_gpu_sm86_observation.physical_device.v0",
+    worker_protocol="tuc.bounded_gpu_sm86_observation_worker.v0",
+    compose_profile="gpu-observation-sm86",
+    service="gpu-observation-sm86",
+    image="tuc-gpu-observation-sm86:research-v0",
+    cuda_source_path=GPU_SM86_CUDA_SOURCE_PATH,
+    dockerfile_path=GPU_SM86_DOCKERFILE_PATH,
+    accelerator_class="nvidia_cuda_sm86",
+    compute_target="compute_86",
+    sass_target="sm_86",
+    proof_scope="single_fixed_remote_hardware_observation",
+    image_title="TUC bounded GPU sm86 observation",
+    image_version="research-sm86-v0",
+)
+
+_TRUSTED_GPU_PROFILES = {
+    GPU_SM70_PROFILE.profile_id: GPU_SM70_PROFILE,
+    GPU_SM86_PROFILE.profile_id: GPU_SM86_PROFILE,
+}
+
+
 class GpuObservationError(ValueError):
     """Raised when the bounded hardware observation fails closed."""
+
+
+def resolve_gpu_observation_profile(profile_id: str) -> GpuObservationProfile:
+    """Resolve only a reviewed profile; never accept a free-form CUDA target."""
+
+    if type(profile_id) is not str or profile_id not in _TRUSTED_GPU_PROFILES:
+        raise GpuObservationError("bounded GPU observation profile rejected")
+    return _TRUSTED_GPU_PROFILES[profile_id]
+
+
+def _require_trusted_profile(
+    profile: GpuObservationProfile,
+) -> GpuObservationProfile:
+    if type(profile) is not GpuObservationProfile:
+        raise GpuObservationError("bounded GPU observation profile rejected")
+    reviewed = _TRUSTED_GPU_PROFILES.get(profile.profile_id)
+    if reviewed != profile:
+        raise GpuObservationError("bounded GPU observation profile rejected")
+    return profile
 
 
 def _canonical_json(value: object) -> str:
@@ -301,19 +389,24 @@ def _validate_objective_delta_link(workload: dict[str, object]) -> None:
             raise GpuObservationError(f"Objective Delta {key} binding drift")
 
 
-def _expected_build_args() -> dict[str, str]:
+def _expected_build_args(
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, str]:
+    profile = _require_trusted_profile(profile)
     return {
         "TUC_GPU_OBSERVATION_HEADER_DIGEST": _digest_file(WORKLOAD_HEADER_PATH),
-        "TUC_GPU_OBSERVATION_SOURCE_DIGEST": _digest_file(CUDA_SOURCE_PATH),
+        "TUC_GPU_OBSERVATION_SOURCE_DIGEST": _digest_file(profile.cuda_source_path),
         "TUC_GPU_OBSERVATION_WORKLOAD_DIGEST": _digest_file(WORKLOAD_MANIFEST_PATH),
     }
 
 
-def _expected_compose_contract() -> dict[str, object]:
+def _expected_compose_contract(
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
     return {
-        "build_args": _expected_build_args(),
+        "build_args": _expected_build_args(profile),
         "build_context": "docker/gpu-observation",
-        "dockerfile": "Dockerfile",
+        "dockerfile": profile.dockerfile_path.name,
         "cap_drop": ["ALL"],
         "command": ["--preflight"],
         "cpus": 1,
@@ -329,14 +422,14 @@ def _expected_compose_contract() -> dict[str, object]:
             "NVIDIA_VISIBLE_DEVICES": "0",
         },
         "gpus": [{"device_ids": ["0"], "driver": "nvidia"}],
-        "image": GPU_OBSERVATION_IMAGE,
+        "image": profile.image,
         "ipc": "private",
         "mem_limit": 1024 * 1024 * 1024,
         "network_mode": "none",
         "pids_limit": 16,
         "platform": "linux/amd64",
         "privileged": False,
-        "profiles": ["gpu-observation"],
+        "profiles": [profile.compose_profile],
         "pull_policy": "never",
         "read_only": True,
         "security_opt": ["no-new-privileges:true"],
@@ -380,7 +473,10 @@ def _bounded_subprocess_json(command: tuple[str, ...], *, max_bytes: int) -> dic
     return cast(dict[str, object], payload)
 
 
-def _load_compose_config() -> dict[str, object]:
+def _load_compose_config(
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
+    profile = _require_trusted_profile(profile)
     return _bounded_subprocess_json(
         (
             "docker",
@@ -388,7 +484,7 @@ def _load_compose_config() -> dict[str, object]:
             "--file",
             str(COMPOSE_PATH),
             "--profile",
-            "gpu-observation",
+            profile.compose_profile,
             "config",
             "--format",
             "json",
@@ -407,7 +503,10 @@ def _as_int(value: object, field: str) -> int:
     return result
 
 
-def _validate_compose_config(config: object) -> dict[str, object]:
+def _validate_compose_config(
+    config: object,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
     if type(config) is not dict:
         raise GpuObservationError("GPU Compose config must be a plain object")
     services = cast(dict[str, object], config).get("services")
@@ -416,7 +515,7 @@ def _validate_compose_config(config: object) -> dict[str, object]:
     service_map = cast(dict[str, object], services)
     if "gpu" in service_map:
         raise GpuObservationError("legacy broad GPU development service is forbidden")
-    service = service_map.get(GPU_OBSERVATION_SERVICE)
+    service = service_map.get(profile.service)
     if type(service) is not dict:
         raise GpuObservationError("bounded GPU Compose service missing")
     typed = cast(dict[str, object], service)
@@ -459,19 +558,26 @@ def _validate_compose_config(config: object) -> dict[str, object]:
         "working_dir": typed.get("working_dir"),
         "tty": typed.get("tty", False),
     }
-    if normalized != _expected_compose_contract():
+    if normalized != _expected_compose_contract(profile):
         raise GpuObservationError("bounded GPU Compose security contract drift")
     return normalized
 
 
-def _load_image_metadata() -> dict[str, object]:
+def _load_image_metadata(
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
+    profile = _require_trusted_profile(profile)
     return _bounded_subprocess_json(
-        ("docker", "image", "inspect", GPU_OBSERVATION_IMAGE, "--format", "{{json .}}"),
+        ("docker", "image", "inspect", profile.image, "--format", "{{json .}}"),
         max_bytes=_MAX_INSPECT_BYTES,
     )
 
 
-def _validate_image_metadata(metadata: object) -> dict[str, object]:
+def _validate_image_metadata(
+    metadata: object,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
+    profile = _require_trusted_profile(profile)
     if type(metadata) is not dict:
         raise GpuObservationError("bounded GPU image metadata must be a plain object")
     typed = cast(dict[str, object], metadata)
@@ -488,13 +594,15 @@ def _validate_image_metadata(metadata: object) -> dict[str, object]:
     if type(labels) is not dict:
         raise GpuObservationError("bounded GPU image labels missing")
     expected_labels = {
-        "io.tuc.gpu-observation.contract": GPU_OBSERVATION_PROOF_CONTRACT,
+        "io.tuc.gpu-observation.contract": profile.proof_contract,
         "io.tuc.gpu-observation.header-digest": _digest_file(WORKLOAD_HEADER_PATH),
-        "io.tuc.gpu-observation.source-digest": _digest_file(CUDA_SOURCE_PATH),
+        "io.tuc.gpu-observation.source-digest": _digest_file(
+            profile.cuda_source_path
+        ),
         "io.tuc.gpu-observation.workload-digest": _digest_file(WORKLOAD_MANIFEST_PATH),
         "org.opencontainers.image.source": "https://github.com/kirchherr/TUC",
-        "org.opencontainers.image.title": "TUC bounded GPU observation",
-        "org.opencontainers.image.version": "research-v0",
+        "org.opencontainers.image.title": profile.image_title,
+        "org.opencontainers.image.version": profile.image_version,
     }
     label_map = cast(dict[str, object], labels)
     if any(label_map.get(key) != value for key, value in expected_labels.items()):
@@ -582,7 +690,11 @@ def _decode_worker_json(payload: bytes) -> dict[str, object]:
     return cast(dict[str, object], decoded)
 
 
-def _run_worker(mode: str, image_digest: str) -> dict[str, object]:
+def _run_worker(
+    mode: str,
+    image_digest: str,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
     command = _worker_command(mode, image_digest)
     with tempfile.TemporaryFile() as stdout_file, tempfile.TemporaryFile() as stderr_file:
         try:
@@ -625,13 +737,17 @@ def _run_worker(mode: str, image_digest: str) -> dict[str, object]:
                 reason = "unclassified_failure"
             raise GpuObservationError(f"bounded GPU worker rejected observation: {reason}")
         response = _decode_worker_json(response_bytes)
-    return _validate_worker_response(response, mode=mode)
+    return _validate_worker_response(response, mode=mode, profile=profile)
 
 
-def _expected_worker_response(mode: str) -> dict[str, object]:
+def _expected_worker_response(
+    mode: str,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
+    profile = _require_trusted_profile(profile)
     execute = mode == "execute"
     return {
-        "accelerator_class": "nvidia_cuda_sm70",
+        "accelerator_class": profile.accelerator_class,
         "device_name_serialized": False,
         "driver_version_serialized": False,
         "dtype": "float64",
@@ -640,7 +756,7 @@ def _expected_worker_response(mode: str) -> dict[str, object]:
         "kernel_launch_count": 2 if execute else 0,
         "mode": mode,
         "operation_families": ["matmul", "elementwise"],
-        "protocol": GPU_OBSERVATION_WORKER_PROTOCOL,
+        "protocol": profile.worker_protocol,
         "raw_tensor_values_serialized": False,
         "raw_timing_samples_serialized": False,
         "reason_code": "none",
@@ -662,7 +778,12 @@ def _expected_worker_response(mode: str) -> dict[str, object]:
     }
 
 
-def _validate_worker_response(response: object, *, mode: str) -> dict[str, object]:
+def _validate_worker_response(
+    response: object,
+    *,
+    mode: str,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
     if type(response) is not dict:
         raise GpuObservationError("bounded GPU worker response must be a plain object")
     typed = cast(dict[str, object], response)
@@ -671,14 +792,17 @@ def _validate_worker_response(response: object, *, mode: str) -> dict[str, objec
         raise GpuObservationError("bounded GPU worker response key drift")
     if type(security) is not dict or frozenset(security) != _WORKER_SECURITY_KEYS:
         raise GpuObservationError("bounded GPU worker security key drift")
-    if typed != _expected_worker_response(mode):
+    if typed != _expected_worker_response(mode, profile):
         raise GpuObservationError("bounded GPU worker invariant drift")
     if len(_canonical_json(typed).encode("utf-8")) > _MAX_WORKER_BYTES:
         raise GpuObservationError("bounded GPU worker response exceeds limit")
     return typed
 
 
-def _validate_static_sources() -> dict[str, object]:
+def _validate_static_sources(
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
+    profile = _require_trusted_profile(profile)
     workload = _validate_workload_manifest(_load_json(WORKLOAD_MANIFEST_PATH))
     if _read_text_bounded(WORKLOAD_HEADER_PATH) != (
         render_workload_header(workload)
@@ -686,11 +810,14 @@ def _validate_static_sources() -> dict[str, object]:
         raise GpuObservationError("generated GPU workload header drift")
     _validate_objective_delta_link(workload)
 
-    dockerfile = _read_text_bounded(GPU_DOCKERFILE_PATH)
+    dockerfile = _read_text_bounded(profile.dockerfile_path)
     required_fragments = (
         f"FROM {GPU_OBSERVATION_DEVEL_IMAGE} AS build",
         f"FROM {GPU_OBSERVATION_RUNTIME_IMAGE}",
-        "--generate-code=arch=compute_70,code=sm_70",
+        (
+            "--generate-code="
+            f"arch={profile.compute_target},code={profile.sass_target}"
+        ),
         "CUDA_DISABLE_PTX_JIT=1",
         'ENTRYPOINT ["/opt/tuc/bin/tuc-bounded-gpu-observation"]',
     )
@@ -699,6 +826,21 @@ def _validate_static_sources() -> dict[str, object]:
     forbidden_fragments = ("apt-get", "curl ", "wget ", "ADD http", "git clone")
     if any(fragment in dockerfile for fragment in forbidden_fragments):
         raise GpuObservationError("bounded GPU Dockerfile dependency surface rejected")
+    dockerignore_path = profile.dockerfile_path.with_name(
+        f"{profile.dockerfile_path.name}.dockerignore"
+    )
+    expected_dockerignore = "\n".join(
+        (
+            "*",
+            f"!{profile.dockerfile_path.name}",
+            f"!{profile.cuda_source_path.name}",
+            f"!{WORKLOAD_HEADER_PATH.name}",
+            f"!{WORKLOAD_MANIFEST_PATH.name}",
+            "",
+        )
+    )
+    if _read_text_bounded(dockerignore_path) != expected_dockerignore:
+        raise GpuObservationError("bounded GPU build-context allowlist drift")
     return workload
 
 
@@ -709,17 +851,19 @@ def build_bounded_gpu_observation_report(
     *,
     driver_security_reviewed: bool,
     shared_display_risk_acknowledged: bool,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
 ) -> dict[str, object]:
     """Bind one successful fixed-kernel run into sanitized public evidence."""
 
+    profile = _require_trusted_profile(profile)
     if not driver_security_reviewed:
         raise GpuObservationError("current vendor driver security update not attested")
     if not shared_display_risk_acknowledged:
         raise GpuObservationError("shared display GPU risk not acknowledged")
-    workload = _validate_static_sources()
-    worker = _validate_worker_response(response, mode="execute")
-    compose = _validate_compose_config(compose_contract)
-    image = _validate_image_metadata(image_metadata)
+    workload = _validate_static_sources(profile)
+    worker = _validate_worker_response(response, mode="execute", profile=profile)
+    compose = _validate_compose_config(compose_contract, profile)
+    image = _validate_image_metadata(image_metadata, profile)
     report: dict[str, object] = {
         "claim_boundary": {
             "blocked_claims": list(GPU_OBSERVATION_BLOCKED_CLAIMS),
@@ -772,16 +916,16 @@ def build_bounded_gpu_observation_report(
         },
         "proof": {
             "claim": GPU_OBSERVATION_PROOF_CLAIM,
-            "contract": GPU_OBSERVATION_PROOF_CONTRACT,
-            "scope": "single_fixed_local_hardware_observation",
+            "contract": profile.proof_contract,
+            "scope": profile.proof_scope,
             "status": "PASS",
         },
         "provenance": {
             "builder_image": GPU_OBSERVATION_DEVEL_IMAGE,
             "compose_contract_digest": _digest_payload(compose),
             "container_image_digest": image["container_image_digest"],
-            "cuda_source_digest": _digest_file(CUDA_SOURCE_PATH),
-            "dockerfile_digest": _digest_file(GPU_DOCKERFILE_PATH),
+            "cuda_source_digest": _digest_file(profile.cuda_source_path),
+            "dockerfile_digest": _digest_file(profile.dockerfile_path),
             "image_config_verified": image["image_config_verified"],
             "image_source_binding_verified": image["image_source_binding_verified"],
             "objective_delta_report_file_digest": _digest_file(OBJECTIVE_DELTA_REPORT_PATH),
@@ -793,12 +937,12 @@ def build_bounded_gpu_observation_report(
             ),
             "ptx_jit_disabled": True,
             "runtime_image": GPU_OBSERVATION_RUNTIME_IMAGE,
-            "sass_target": "sm_70",
+            "sass_target": profile.sass_target,
             "worker_observation_digest": _digest_payload(worker),
             "workload_header_digest": _digest_file(WORKLOAD_HEADER_PATH),
             "workload_manifest_digest": _digest_file(WORKLOAD_MANIFEST_PATH),
         },
-        "schema_version": GPU_OBSERVATION_SCHEMA_VERSION,
+        "schema_version": profile.schema_version,
         "workload": {
             "dtype": workload["dtype"],
             "input_policy": workload["input_policy"],
@@ -810,18 +954,23 @@ def build_bounded_gpu_observation_report(
         },
     }
     report["report_digest"] = _digest_payload(report)
-    return assert_bounded_gpu_observation_report(report)
+    return assert_bounded_gpu_observation_report(report, profile=profile)
 
 
-def assert_bounded_gpu_observation_report(report: object) -> dict[str, object]:
+def assert_bounded_gpu_observation_report(
+    report: object,
+    *,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
     """Fail closed unless a report preserves the narrow physical claim."""
 
+    profile = _require_trusted_profile(profile)
     if type(report) is not dict:
         raise GpuObservationError("bounded GPU observation report must be a plain object")
     typed = cast(dict[str, object], report)
     if frozenset(typed) != _REPORT_KEYS:
         raise GpuObservationError("bounded GPU observation report key drift")
-    if typed.get("schema_version") != GPU_OBSERVATION_SCHEMA_VERSION:
+    if typed.get("schema_version") != profile.schema_version:
         raise GpuObservationError("bounded GPU observation schema drift")
 
     proof = typed.get("proof")
@@ -847,7 +996,7 @@ def assert_bounded_gpu_observation_report(report: object) -> dict[str, object]:
             "shared_display_risk_acknowledged": True,
         },
         "execution": {
-            "accelerator_class": "nvidia_cuda_sm70",
+            "accelerator_class": profile.accelerator_class,
             "device_access": True,
             "driver_api_called": True,
             "fixed_native_probe_execution": True,
@@ -888,8 +1037,8 @@ def assert_bounded_gpu_observation_report(report: object) -> dict[str, object]:
         },
         "proof": {
             "claim": GPU_OBSERVATION_PROOF_CLAIM,
-            "contract": GPU_OBSERVATION_PROOF_CONTRACT,
-            "scope": "single_fixed_local_hardware_observation",
+            "contract": profile.proof_contract,
+            "scope": profile.proof_scope,
             "status": "PASS",
         },
         "workload": {
@@ -949,9 +1098,11 @@ def assert_bounded_gpu_observation_report(report: object) -> dict[str, object]:
         raise GpuObservationError("bounded GPU observation provenance digest rejected")
     fixed_provenance = {
         "builder_image": GPU_OBSERVATION_DEVEL_IMAGE,
-        "compose_contract_digest": _digest_payload(_expected_compose_contract()),
-        "cuda_source_digest": _digest_file(CUDA_SOURCE_PATH),
-        "dockerfile_digest": _digest_file(GPU_DOCKERFILE_PATH),
+        "compose_contract_digest": _digest_payload(
+            _expected_compose_contract(profile)
+        ),
+        "cuda_source_digest": _digest_file(profile.cuda_source_path),
+        "dockerfile_digest": _digest_file(profile.dockerfile_path),
         "image_config_verified": True,
         "image_source_binding_verified": True,
         "objective_delta_report_file_digest": _digest_file(OBJECTIVE_DELTA_REPORT_PATH),
@@ -963,8 +1114,10 @@ def assert_bounded_gpu_observation_report(report: object) -> dict[str, object]:
         ),
         "ptx_jit_disabled": True,
         "runtime_image": GPU_OBSERVATION_RUNTIME_IMAGE,
-        "sass_target": "sm_70",
-        "worker_observation_digest": _digest_payload(_expected_worker_response("execute")),
+        "sass_target": profile.sass_target,
+        "worker_observation_digest": _digest_payload(
+            _expected_worker_response("execute", profile)
+        ),
         "workload_header_digest": _digest_file(WORKLOAD_HEADER_PATH),
         "workload_manifest_digest": _digest_file(WORKLOAD_MANIFEST_PATH),
     }
@@ -982,10 +1135,14 @@ def assert_bounded_gpu_observation_report(report: object) -> dict[str, object]:
     return typed
 
 
-def dump_bounded_gpu_observation_report(report: object) -> str:
+def dump_bounded_gpu_observation_report(
+    report: object,
+    *,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> str:
     """Return bounded, deterministic, metadata-only public evidence."""
 
-    typed = assert_bounded_gpu_observation_report(report)
+    typed = assert_bounded_gpu_observation_report(report, profile=profile)
     rendered = json.dumps(typed, indent=2, sort_keys=True) + "\n"
     if len(rendered.encode("utf-8")) > _MAX_REPORT_BYTES:
         raise GpuObservationError("bounded GPU observation report exceeds limit")
@@ -1009,19 +1166,25 @@ def run_gpu_observation(
     *,
     driver_security_reviewed: bool = False,
     shared_display_risk_acknowledged: bool = False,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
 ) -> dict[str, object]:
     """Run a preflight or the explicit fixed-kernel observation."""
 
+    profile = _require_trusted_profile(profile)
     if mode == "execute" and not driver_security_reviewed:
         raise GpuObservationError("current vendor driver security update not attested")
     if mode == "execute" and not shared_display_risk_acknowledged:
         raise GpuObservationError("shared display GPU risk not acknowledged")
-    _validate_static_sources()
-    compose = _load_compose_config()
-    _validate_compose_config(compose)
-    image_metadata = _load_image_metadata()
-    image = _validate_image_metadata(image_metadata)
-    response = _run_worker(mode, cast(str, image["container_image_digest"]))
+    _validate_static_sources(profile)
+    compose = _load_compose_config(profile)
+    _validate_compose_config(compose, profile)
+    image_metadata = _load_image_metadata(profile)
+    image = _validate_image_metadata(image_metadata, profile)
+    response = _run_worker(
+        mode,
+        cast(str, image["container_image_digest"]),
+        profile,
+    )
     if mode == "preflight":
         return {
             "accelerator_class": response["accelerator_class"],
@@ -1031,7 +1194,7 @@ def run_gpu_observation(
             "mode": "preflight",
             "proof_status": "NOT_EXECUTED",
             "sanitized": True,
-            "schema_version": "tuc.bounded_gpu_observation_preflight.v0",
+            "schema_version": profile.preflight_schema_version,
             "security_boundary_passed": True,
             "visible_device_count": 1,
             "workload_manifest_digest": response["workload_manifest_digest"],
@@ -1042,6 +1205,7 @@ def run_gpu_observation(
         image_metadata,
         driver_security_reviewed=driver_security_reviewed,
         shared_display_risk_acknowledged=shared_display_risk_acknowledged,
+        profile=profile,
     )
 
 
@@ -1050,6 +1214,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--preflight", action="store_true")
     mode.add_argument("--execute", action="store_true")
+    parser.add_argument(
+        "--profile",
+        choices=tuple(_TRUSTED_GPU_PROFILES),
+        default=GPU_SM70_PROFILE.profile_id,
+    )
     parser.add_argument("--attest-current-driver-security-update", action="store_true")
     parser.add_argument("--acknowledge-shared-display-risk", action="store_true")
     return parser.parse_args(argv)
@@ -1059,13 +1228,17 @@ def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     mode = "execute" if args.execute else "preflight"
     try:
+        profile = resolve_gpu_observation_profile(args.profile)
         report = run_gpu_observation(
             mode,
             driver_security_reviewed=args.attest_current_driver_security_update,
             shared_display_risk_acknowledged=args.acknowledge_shared_display_risk,
+            profile=profile,
         )
         if mode == "execute":
-            sys.stdout.write(dump_bounded_gpu_observation_report(report))
+            sys.stdout.write(
+                dump_bounded_gpu_observation_report(report, profile=profile)
+            )
         else:
             sys.stdout.write(json.dumps(report, indent=2, sort_keys=True) + "\n")
     except GpuObservationError as exc:
