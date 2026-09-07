@@ -133,7 +133,8 @@ workload allocation, physical execution, and a passed CPU-reference check. It
 also records that JIT execution, generated code, performance collection,
 normal-executor modification, and TUC native-backend admission did not occur.
 
-This closes only the local observation requested by RFC 0300. Independent
+This closes only the local observation requested by RFC 0300. RFC 0301 now
+binds it to a second same-maintainer `sm_86` observation, but independent
 reproduction is still `not_yet_supplied`.
 
 ## Evidence

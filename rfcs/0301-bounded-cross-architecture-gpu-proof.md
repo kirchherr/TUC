@@ -2,9 +2,9 @@
 
 ## Status
 
-Proposed and implementation-ready. Acceptance requires a successful no-kernel
-preflight and fixed-kernel observation on the reviewed `sm_86` profile, followed
-by validation of the aggregate evidence. This RFC does not admit a native TUC
+Accepted as a separate opt-in research implementation after the reviewed
+`sm_86` no-kernel preflight, fixed two-kernel observation, and aggregate
+cross-architecture evidence all passed. This RFC does not admit a native TUC
 backend.
 
 ## Context
@@ -91,6 +91,10 @@ timing sample enters public evidence.
 - schemas:
   `schemas/bounded_gpu_sm86_observation_report.v0.schema.json` and
   `schemas/bounded_cross_architecture_gpu_proof.v0.schema.json`;
+- accepted physical `sm_86` observation:
+  `tests/golden/proofs/bounded_gpu_sm86_observation_report.json`;
+- accepted aggregate proof:
+  `tests/golden/proofs/bounded_cross_architecture_gpu_proof.json`;
 - tests: `tests/test_bounded_gpu_sm86_observation_proof.py` and
   `tests/test_bounded_cross_architecture_gpu_proof.py`;
 - procedure: `docs/BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md`;

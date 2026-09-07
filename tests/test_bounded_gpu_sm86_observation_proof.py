@@ -26,6 +26,9 @@ from examples.bounded_gpu_observation_proof import (
 
 PROFILE = GPU_SM86_PROFILE
 SCHEMA_PATH = Path("schemas/bounded_gpu_sm86_observation_report.v0.schema.json")
+DOC_PATH = Path("docs/BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md")
+THREAT_MODEL_PATH = Path("docs/BOUNDED_CROSS_ARCHITECTURE_GPU_THREAT_MODEL.md")
+RFC_PATH = Path("rfcs/0301-bounded-cross-architecture-gpu-proof.md")
 PHYSICAL_OBSERVATION_PATH = Path(
     "tests/golden/proofs/bounded_gpu_sm86_observation_report.json"
 )
@@ -248,3 +251,19 @@ def test_sm86_compose_build_args_match_reviewed_files() -> None:
             proof.WORKLOAD_MANIFEST_PATH
         ),
     }
+
+
+def test_sm86_public_docs_bind_evidence_without_host_identity() -> None:
+    texts = [
+        path.read_text(encoding="utf-8")
+        for path in (DOC_PATH, THREAT_MODEL_PATH, RFC_PATH)
+    ]
+    combined = "\n".join(texts)
+
+    assert str(PHYSICAL_OBSERVATION_PATH).replace("\\", "/") in combined
+    assert str(SCHEMA_PATH).replace("\\", "/") in combined
+    assert "tests/golden/proofs/bounded_cross_architecture_gpu_proof.json" in combined
+    assert "same-maintainer" in combined
+    assert "dev001" not in combined
+    assert "192.168." not in combined
+    assert "id_ed25519" not in combined

@@ -29,10 +29,12 @@ an inspectable plan whose result matches the reference.
 The main Objective Delta reproduction does **not** prove real-hardware
 portability, general native accelerator execution, performance parity,
 arbitrary program support, or replacement of CUDA, ROCm, XLA, TVM, IREE,
-Triton, or vendor compilers. A separate bounded observation has now executed
-the same fixed compute family as two precompiled `sm_70` kernels on one
-physical GPU and matched the CPU reference. That is one real-device
-observation, not a general backend or portability result.
+Triton, or vendor compilers. Separate bounded observations have now executed
+the same fixed compute family as two precompiled `sm_70` kernels on one GPU and
+as two precompiled `sm_86` kernels on another; both matched the same CPU
+reference. This is a narrow
+cross-architecture feasibility result within one vendor, not a general native
+backend, cross-vendor proof, or performance result.
 
 Running the experiment in several ordinary cloud VMs should reproduce it. That
 is useful evidence that the released experiment is portable and deterministic
@@ -339,6 +341,16 @@ does not modify the normal executor, admit a general native backend, establish
 cross-device portability, or measure performance. RFC:
 `rfcs/0300-bounded-gpu-observation-proof.md`; schema:
 `schemas/bounded_gpu_observation_report.v0.schema.json`.
+
+The follow-on
+[Bounded Cross-Architecture GPU Proof](docs/BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md)
+binds that `sm_70` result to a separately compiled and physically observed
+`sm_86` result for the identical fixed workload. Its
+[aggregate evidence](tests/golden/proofs/bounded_cross_architecture_gpu_proof.json)
+records two architecture classes but one vendor and same-maintainer ownership;
+cross-vendor execution, independent reproduction, arbitrary programs, native
+performance, and normal-runtime admission remain blocked. RFC:
+`rfcs/0301-bounded-cross-architecture-gpu-proof.md`.
 
 Current runtime surfaces:
 

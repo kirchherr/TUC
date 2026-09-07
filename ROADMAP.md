@@ -249,6 +249,15 @@ Completed evidence:
   sanitized metadata-only evidence, and review under RFC 0300. It cannot
   support native-performance, general-backend, or portable-hardware claims;
   independent reproduction is still absent.
+- Bounded Cross-Architecture GPU Proof v0 adds a second static, SASS-only
+  physical profile without opening the normal runtime. The identical Objective
+  Delta workload passed on reviewed `sm_70` and `sm_86` probes, and the
+  metadata-only aggregate binds both report and image digests to one workload
+  digest under RFC 0301. This supports bounded cross-architecture feasibility
+  within NVIDIA only. It explicitly records one vendor, same-maintainer
+  ownership, and absent independent reproduction; cross-vendor, arbitrary
+  program, native-performance, production-backend, and universal-hardware
+  claims remain blocked.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.

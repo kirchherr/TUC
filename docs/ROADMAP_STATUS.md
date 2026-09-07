@@ -1,5 +1,20 @@
 # Roadmap Status
 
+- [Bounded Cross-Architecture GPU Proof](BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md)
+  now binds the same fixed Objective Delta workload to accepted physical
+  `sm_70` and `sm_86` observations. The second profile is statically
+  allowlisted, separately SASS-compiled, PTX/JIT-free, single-device,
+  compute-only, networkless, non-root, resource-bounded, and schema-validated.
+  Its accepted observation is
+  `tests/golden/proofs/bounded_gpu_sm86_observation_report.json`; the aggregate
+  is `tests/golden/proofs/bounded_cross_architecture_gpu_proof.json`, and the
+  decision is `rfcs/0301-bounded-cross-architecture-gpu-proof.md`. Both reports
+  bind one workload-manifest digest and passed the same CPU oracle. The
+  aggregate records two architectures but only one vendor, same-maintainer
+  ownership, and absent independent reproduction. It does not admit native TUC
+  execution or support cross-vendor, arbitrary-program, performance, or
+  universal-hardware claims.
+
 - [Bounded GPU Observation Proof](BOUNDED_GPU_OBSERVATION_PROOF.md) now provides
   the first concrete, separate path from Objective Delta's fixed neutral
   workload to a physical NVIDIA `sm_70` device. The implementation uses two
@@ -1785,12 +1800,13 @@ Current focus:
 
 ## Next
 
-- Preserve the checked-in Bounded GPU Observation as one local, fixed physical
-  observation and seek an independently provenanced reproduction of the same
-  RFC 0300 contract. A different architecture, dynamic input, compiler-emitted
-  kernel, normal-runtime integration, or performance experiment requires a
-  successor decision; this result must not open `execute_graph()`, general
-  native backends, runtime-generated artifacts, or performance claims.
+- Preserve both checked-in physical observations and the bounded
+  cross-architecture aggregate under RFCs 0300 and 0301. Seek an independently
+  provenanced reproduction next. Any cross-vendor target, dynamic input,
+  compiler-emitted kernel, normal-runtime integration, or performance
+  experiment requires a successor decision; these results must not open
+  `execute_graph()`, general native backends, runtime-generated artifacts, or
+  performance claims.
 - Runtime Materialized Heterogeneous Storage is implemented as an opt-in
   trusted simulator proof under RFC 0299. It must not be silently promoted into
   `execute_graph()` or used to reinterpret planning-only evidence as native

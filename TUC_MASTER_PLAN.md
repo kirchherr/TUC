@@ -588,6 +588,19 @@ general native backend, portable-device proof, or performance claim. See
 `docs/BOUNDED_GPU_OBSERVATION_PROOF.md` and
 `rfcs/0300-bounded-gpu-observation-proof.md`.
 
+Bounded Cross-Architecture GPU Proof v0 now tests whether that fixed semantic
+bridge survives a change in physical CUDA architecture without adding dynamic
+target selection. A separately source-bound `sm_86` SASS-only profile passed
+the same no-kernel preflight, two-kernel execution, and CPU oracle as the
+accepted `sm_70` profile. The aggregate binds both report and image digests to
+one workload-manifest digest while recording two architectures, one vendor,
+same-maintainer ownership, and no independent reproduction. This strengthens
+the hardware-interface feasibility argument but does not establish
+cross-vendor portability, arbitrary-program support, native performance, or
+the universal-compute thesis. See
+`docs/BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md` and
+`rfcs/0301-bounded-cross-architecture-gpu-proof.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
@@ -599,9 +612,10 @@ Evidence:
 `rfcs/0284-multi-package-execution-portfolio.md`.
 
 This materially advances Milestones 3 and 4 and closes only the fixed physical
-GPU observation. External package code, compiler-emitted GPU kernels,
-cross-device physical portability, specialized physical targets, and native
-performance remain unexecuted or unproven.
+GPU observations across two same-vendor architecture classes. External package
+code, compiler-emitted GPU kernels, cross-vendor physical portability,
+specialized physical targets, independent reproduction, and native performance
+remain unexecuted or unproven.
 
 The Source Intent Backend Package Portfolio now closes the frontend-to-package
 gap in the same milestone:

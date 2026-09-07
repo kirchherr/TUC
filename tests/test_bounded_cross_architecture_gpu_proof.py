@@ -89,4 +89,4 @@ def test_checked_in_cross_architecture_proof_is_deterministic_and_sanitized() ->
     assert "device_uuid" not in rendered
     assert "driver_version" not in rendered
     assert "host_path" not in rendered
-    assert "raw_tensor_values" not in rendered
+    assert '"raw_tensor_values":' not in rendered

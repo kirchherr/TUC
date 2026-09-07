@@ -2,9 +2,9 @@
 
 ## Status
 
-The `sm_86` implementation and closed execution protocol are ready for an
-explicit physical observation. RFC 0301 remains proposed until the preflight,
-execution, sanitized report, and aggregate proof all pass.
+Accepted under RFC 0301. The reviewed `sm_86` no-kernel preflight, fixed
+two-kernel physical observation, CPU-reference comparison, sanitized report,
+and aggregate proof all passed.
 
 Decision: `rfcs/0301-bounded-cross-architecture-gpu-proof.md`.
 Threat model:
@@ -86,6 +86,21 @@ After both physical reports are present, build the aggregate:
 ```bash
 python3 -m examples.bounded_cross_architecture_gpu_proof
 ```
+
+## Accepted Evidence
+
+The `sm_86` observation is recorded at
+`tests/golden/proofs/bounded_gpu_sm86_observation_report.json`. It reports one
+accepted `nvidia_cuda_sm86` class, two kernel launches, 128 bytes of explicit
+workload allocation, matched CPU-reference semantics, no JIT, and no
+performance measurement.
+
+The aggregate is recorded at
+`tests/golden/proofs/bounded_cross_architecture_gpu_proof.json`. It binds the
+accepted `sm_70` and `sm_86` report digests, their separately built image
+digests, and one identical workload-manifest digest. It records two
+architectures, one vendor, same-maintainer ownership, and absent independent
+reproduction.
 
 ## Interpretation
 
