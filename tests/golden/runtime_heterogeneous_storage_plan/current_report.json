@@ -1,0 +1,429 @@
+{
+  "blocked_execution_surfaces": [
+    "backend_plugin_discovery",
+    "device_access",
+    "dynamic_import",
+    "dynamic_library_loading",
+    "generated_artifact_execution",
+    "jit_execution",
+    "network_access",
+    "subprocess_execution",
+    "allocator_plugin_discovery",
+    "external_allocator_calls",
+    "memory_mapping",
+    "runtime_memory_allocation"
+  ],
+  "domain_peaks": [
+    {
+      "memory_domain": "device_sram",
+      "peak_live_physical_bytes": 100,
+      "reserved_slot_bytes": 100
+    },
+    {
+      "memory_domain": "host_ram",
+      "peak_live_physical_bytes": 72,
+      "reserved_slot_bytes": 108
+    }
+  ],
+  "event_count": 17,
+  "event_phases": [
+    "layout_conversion",
+    "transfer",
+    "consumer_execution",
+    "output_produced"
+  ],
+  "execution_policy": "does_not_allocate_or_execute",
+  "external_artifacts": "forbidden",
+  "graph_name": "runtime_heterogeneous_storage_plan",
+  "issues": [],
+  "layout_sizing_policy": "row_major_and_blocked_2x2_only",
+  "layout_staging_count": 2,
+  "lifetimes": [
+    {
+      "dtype": "float32",
+      "first_live_event": 3,
+      "first_live_phase": "output_produced",
+      "last_use_event": 4,
+      "last_use_phase": "layout_conversion",
+      "layout": "blocked",
+      "logical_bytes": 36,
+      "logical_element_count": 9,
+      "logical_shape": [
+        3,
+        3
+      ],
+      "memory_domain": "device_sram",
+      "padding_element_count": 7,
+      "physical_bytes": 64,
+      "physical_element_count": 16,
+      "physical_shape": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reusable": true,
+      "slot_id": "storage_slot_001",
+      "source_operation": "projection_a",
+      "storage_id": "storage.value.projection_a",
+      "storage_role": "produced_value",
+      "target_operation": "activation_a",
+      "tensor_name": "projection_a",
+      "tile_shape": [
+        2,
+        2
+      ]
+    },
+    {
+      "dtype": "float32",
+      "first_live_event": 4,
+      "first_live_phase": "layout_conversion",
+      "last_use_event": 5,
+      "last_use_phase": "transfer",
+      "layout": "row_major",
+      "logical_bytes": 36,
+      "logical_element_count": 9,
+      "logical_shape": [
+        3,
+        3
+      ],
+      "memory_domain": "device_sram",
+      "padding_element_count": 0,
+      "physical_bytes": 36,
+      "physical_element_count": 9,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reusable": true,
+      "slot_id": "storage_slot_002",
+      "source_operation": "projection_a",
+      "storage_id": "storage.layout.projection_a.activation_a",
+      "storage_role": "layout_staging",
+      "target_operation": "activation_a",
+      "tensor_name": "projection_a",
+      "tile_shape": []
+    },
+    {
+      "dtype": "float32",
+      "first_live_event": 5,
+      "first_live_phase": "transfer",
+      "last_use_event": 6,
+      "last_use_phase": "consumer_execution",
+      "layout": "row_major",
+      "logical_bytes": 36,
+      "logical_element_count": 9,
+      "logical_shape": [
+        3,
+        3
+      ],
+      "memory_domain": "host_ram",
+      "padding_element_count": 0,
+      "physical_bytes": 36,
+      "physical_element_count": 9,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reusable": true,
+      "slot_id": "storage_slot_003",
+      "source_operation": "projection_a",
+      "storage_id": "storage.transfer.projection_a.activation_a",
+      "storage_role": "transfer_target_staging",
+      "target_operation": "activation_a",
+      "tensor_name": "projection_a",
+      "tile_shape": []
+    },
+    {
+      "dtype": "float32",
+      "first_live_event": 7,
+      "first_live_phase": "output_produced",
+      "last_use_event": 16,
+      "last_use_phase": "graph_end",
+      "layout": "row_major",
+      "logical_bytes": 36,
+      "logical_element_count": 9,
+      "logical_shape": [
+        3,
+        3
+      ],
+      "memory_domain": "host_ram",
+      "padding_element_count": 0,
+      "physical_bytes": 36,
+      "physical_element_count": 9,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reusable": false,
+      "slot_id": "storage_slot_004",
+      "source_operation": "activation_a",
+      "storage_id": "storage.value.activated_a",
+      "storage_role": "produced_value",
+      "target_operation": "graph_output",
+      "tensor_name": "activated_a",
+      "tile_shape": []
+    },
+    {
+      "dtype": "float32",
+      "first_live_event": 11,
+      "first_live_phase": "output_produced",
+      "last_use_event": 12,
+      "last_use_phase": "layout_conversion",
+      "layout": "blocked",
+      "logical_bytes": 36,
+      "logical_element_count": 9,
+      "logical_shape": [
+        3,
+        3
+      ],
+      "memory_domain": "device_sram",
+      "padding_element_count": 7,
+      "physical_bytes": 64,
+      "physical_element_count": 16,
+      "physical_shape": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reusable": true,
+      "slot_id": "storage_slot_001",
+      "source_operation": "projection_b",
+      "storage_id": "storage.value.projection_b",
+      "storage_role": "produced_value",
+      "target_operation": "activation_b",
+      "tensor_name": "projection_b",
+      "tile_shape": [
+        2,
+        2
+      ]
+    },
+    {
+      "dtype": "float32",
+      "first_live_event": 12,
+      "first_live_phase": "layout_conversion",
+      "last_use_event": 13,
+      "last_use_phase": "transfer",
+      "layout": "row_major",
+      "logical_bytes": 36,
+      "logical_element_count": 9,
+      "logical_shape": [
+        3,
+        3
+      ],
+      "memory_domain": "device_sram",
+      "padding_element_count": 0,
+      "physical_bytes": 36,
+      "physical_element_count": 9,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reusable": true,
+      "slot_id": "storage_slot_002",
+      "source_operation": "projection_b",
+      "storage_id": "storage.layout.projection_b.activation_b",
+      "storage_role": "layout_staging",
+      "target_operation": "activation_b",
+      "tensor_name": "projection_b",
+      "tile_shape": []
+    },
+    {
+      "dtype": "float32",
+      "first_live_event": 13,
+      "first_live_phase": "transfer",
+      "last_use_event": 14,
+      "last_use_phase": "consumer_execution",
+      "layout": "row_major",
+      "logical_bytes": 36,
+      "logical_element_count": 9,
+      "logical_shape": [
+        3,
+        3
+      ],
+      "memory_domain": "host_ram",
+      "padding_element_count": 0,
+      "physical_bytes": 36,
+      "physical_element_count": 9,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reusable": true,
+      "slot_id": "storage_slot_003",
+      "source_operation": "projection_b",
+      "storage_id": "storage.transfer.projection_b.activation_b",
+      "storage_role": "transfer_target_staging",
+      "target_operation": "activation_b",
+      "tensor_name": "projection_b",
+      "tile_shape": []
+    },
+    {
+      "dtype": "float32",
+      "first_live_event": 15,
+      "first_live_phase": "output_produced",
+      "last_use_event": 16,
+      "last_use_phase": "graph_end",
+      "layout": "row_major",
+      "logical_bytes": 36,
+      "logical_element_count": 9,
+      "logical_shape": [
+        3,
+        3
+      ],
+      "memory_domain": "host_ram",
+      "padding_element_count": 0,
+      "physical_bytes": 36,
+      "physical_element_count": 9,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reusable": false,
+      "slot_id": "storage_slot_005",
+      "source_operation": "activation_b",
+      "storage_id": "storage.value.activated_b",
+      "storage_role": "produced_value",
+      "target_operation": "graph_output",
+      "tensor_name": "activated_b",
+      "tile_shape": []
+    }
+  ],
+  "operation_count": 4,
+  "passed": true,
+  "peak_live_physical_bytes": 136,
+  "performance_claim": "not_measured",
+  "planned_layout_conversion_count": 2,
+  "planned_transfer_count": 2,
+  "produced_storage_count": 4,
+  "raw_value_policy": "omitted_by_policy",
+  "residency_claim": "planning_labels_not_physical_residency",
+  "reuse_policy": "same_role_domain_layout_dtype_physical_shape_non_overlapping",
+  "reuse_savings_bytes": 136,
+  "reused_slot_count": 3,
+  "schema_version": "tuc.runtime_heterogeneous_storage_plan_report.v0",
+  "slot_count": 5,
+  "slots": [
+    {
+      "bytes_reserved": 64,
+      "dtype": "float32",
+      "layout": "blocked",
+      "memory_domain": "device_sram",
+      "non_overlapping": true,
+      "physical_shape": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "reuse_savings_bytes": 64,
+      "slot_id": "storage_slot_001",
+      "storage_count": 2,
+      "storage_ids": [
+        "storage.value.projection_a",
+        "storage.value.projection_b"
+      ],
+      "storage_role": "produced_value",
+      "tile_shape": [
+        2,
+        2
+      ],
+      "total_storage_bytes": 128
+    },
+    {
+      "bytes_reserved": 36,
+      "dtype": "float32",
+      "layout": "row_major",
+      "memory_domain": "device_sram",
+      "non_overlapping": true,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reuse_savings_bytes": 36,
+      "slot_id": "storage_slot_002",
+      "storage_count": 2,
+      "storage_ids": [
+        "storage.layout.projection_a.activation_a",
+        "storage.layout.projection_b.activation_b"
+      ],
+      "storage_role": "layout_staging",
+      "tile_shape": [],
+      "total_storage_bytes": 72
+    },
+    {
+      "bytes_reserved": 36,
+      "dtype": "float32",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "non_overlapping": true,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reuse_savings_bytes": 36,
+      "slot_id": "storage_slot_003",
+      "storage_count": 2,
+      "storage_ids": [
+        "storage.transfer.projection_a.activation_a",
+        "storage.transfer.projection_b.activation_b"
+      ],
+      "storage_role": "transfer_target_staging",
+      "tile_shape": [],
+      "total_storage_bytes": 72
+    },
+    {
+      "bytes_reserved": 36,
+      "dtype": "float32",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "non_overlapping": true,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reuse_savings_bytes": 0,
+      "slot_id": "storage_slot_004",
+      "storage_count": 1,
+      "storage_ids": [
+        "storage.value.activated_a"
+      ],
+      "storage_role": "produced_value",
+      "tile_shape": [],
+      "total_storage_bytes": 36
+    },
+    {
+      "bytes_reserved": 36,
+      "dtype": "float32",
+      "layout": "row_major",
+      "memory_domain": "host_ram",
+      "non_overlapping": true,
+      "physical_shape": [
+        3,
+        3
+      ],
+      "reuse_savings_bytes": 0,
+      "slot_id": "storage_slot_005",
+      "storage_count": 1,
+      "storage_ids": [
+        "storage.value.activated_b"
+      ],
+      "storage_role": "produced_value",
+      "tile_shape": [],
+      "total_storage_bytes": 36
+    }
+  ],
+  "source_buffer_lifetime_digest": "sha256:a7e85a59cd9934599ef87de91cde7eafa86c8ac76baec948b4fbb104f4eff340",
+  "source_layout_conversion_evidence_digest": "sha256:afc90ccf0958ba94617658d92e30751e24d62ea4433e5517129d2f5ca553cb8a",
+  "source_layout_partition_plan_digest": "sha256:10a2fe26a9b26d68ebf173a72c064ddc212a0cd967bb9a7b4d80879f40522f28",
+  "source_transfer_evidence_digest": "sha256:0b40795aee6e54b2bfb41444d8e5b433727497ddbca012b9352a45c9e815b689",
+  "source_transfer_partition_plan_digest": "sha256:5ff1b5cbc61a7cd39a96c3fc3d41455f7be9e7323ebf2ee0a6f0321119ea0d7d",
+  "storage_contract": "runtime_heterogeneous_storage_plan.data_only.v0",
+  "storage_lifetime_count": 8,
+  "storage_metadata_digest": "sha256:5ec8034478b0a782bba7fe7304a20b2430e57ac5cfb94e57dfb7f01a84e8e0dc",
+  "storage_scope": "produced_layout_and_transfer_staging_storage",
+  "total_reserved_physical_bytes": 208,
+  "total_unreused_physical_bytes": 344,
+  "transfer_staging_count": 2
+}

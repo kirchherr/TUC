@@ -227,6 +227,11 @@ Completed evidence:
   executing one exact-match slot reuse. The closed report binds this behavior
   to output metadata and Reference Correctness while keeping addresses,
   handles, native allocation, device placement, and performance claims blocked.
+- Runtime Heterogeneous Storage Plan closes the next planning gap by modeling
+  produced buffers, layout-conversion staging, and transfer-target staging on
+  one ordered event timeline. Fixed 2x2 blocked sizing exposes padding for odd
+  shapes, and role-isolated slots prove conservative reuse across sequential
+  mixed-backend slices without allocating or executing.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -814,8 +819,10 @@ Next work:
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
-- Keep Runtime Materialized Allocation opt-in until transfer-staging lifetimes,
-  layout-specific slot sizes, and promotion criteria are separately modeled.
+- Transfer-staging lifetimes and layout-specific slot sizes are now modeled by
+  Runtime Heterogeneous Storage Plan. Keep Runtime Materialized Allocation
+  opt-in until explicit promotion criteria bind that plan to a mixed-domain
+  execution path through a separate RFC.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 

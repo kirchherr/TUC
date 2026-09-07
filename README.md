@@ -427,6 +427,11 @@ Current runtime surfaces:
   proven final use, and actually reuses one slot across two non-overlapping
   tensor lifetimes. Its report binds execution to Reference Correctness while
   excluding kernel temporaries and output snapshots from the memory claim.
+- Runtime Heterogeneous Storage Plan v0 models produced buffers, layout
+  staging, and transfer-target staging on one ordered event timeline. It sizes
+  odd blocked tensors by physical 2x2 tiles, keeps copy endpoints live together,
+  and proves conservative slot reuse across two mixed-backend slices without
+  allocating memory or executing a backend.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
@@ -473,6 +478,7 @@ examples/runtime_layout_conversion_trace_replay_verifier.py
 examples/runtime_backend_equivalence_layout_binding.py
 examples/runtime_materialized_layout_conversion.py
 examples/runtime_materialized_transfer.py
+examples/runtime_heterogeneous_storage_plan.py
 ```
 
 Key docs:
@@ -511,6 +517,7 @@ Key docs:
 - [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md)
 - [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md)
 - [Runtime Materialized Allocation](docs/RUNTIME_MATERIALIZED_ALLOCATION.md)
+- [Runtime Heterogeneous Storage Plan](docs/RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Source Intent Mixed Runtime Public Proof Bundle](docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)
@@ -553,6 +560,7 @@ schemas/runtime_allocation_admission_report.v0.schema.json
 schemas/runtime_allocation_receipt_report.v0.schema.json
 schemas/runtime_allocation_reconciliation_report.v0.schema.json
 schemas/runtime_materialized_allocation_report.v0.schema.json
+schemas/runtime_heterogeneous_storage_plan_report.v0.schema.json
 ```
 
 ## Frontend Intake

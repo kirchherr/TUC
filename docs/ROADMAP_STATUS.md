@@ -1,5 +1,17 @@
 # Roadmap Status
 
+- [Runtime Heterogeneous Storage Plan](RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md)
+  now models produced buffers, layout-conversion staging, and transfer-target
+  staging on one deterministic event timeline. The odd 3x3 proof records 2x2
+  blocked padding, inclusive copy-boundary lifetimes, per-domain physical peaks,
+  and three role-isolated reused slots. Its closed schema is
+  `schemas/runtime_heterogeneous_storage_plan_report.v0.schema.json`, its
+  deterministic golden is
+  `tests/golden/runtime_heterogeneous_storage_plan/current_report.json`, and
+  the accepted decision is `rfcs/0298-runtime-heterogeneous-storage-plan.md`.
+  It allocates nothing, executes no backend, and makes no residency or
+  performance claim.
+
 - [Runtime Materialized Allocation](RUNTIME_MATERIALIZED_ALLOCATION.md) now
   turns the complete canonical memory-planning chain into a bounded opt-in
   persistent NumPy slot arena. The accepted proof preallocates three slots,

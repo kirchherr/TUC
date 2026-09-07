@@ -1,0 +1,421 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuc.dev/schemas/runtime_heterogeneous_storage_plan_report.v0.schema.json",
+  "title": "TUC Runtime Heterogeneous Storage Plan Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "blocked_execution_surfaces",
+    "domain_peaks",
+    "event_count",
+    "event_phases",
+    "execution_policy",
+    "external_artifacts",
+    "graph_name",
+    "issues",
+    "layout_sizing_policy",
+    "layout_staging_count",
+    "lifetimes",
+    "operation_count",
+    "passed",
+    "peak_live_physical_bytes",
+    "performance_claim",
+    "planned_layout_conversion_count",
+    "planned_transfer_count",
+    "produced_storage_count",
+    "raw_value_policy",
+    "residency_claim",
+    "reuse_policy",
+    "reuse_savings_bytes",
+    "reused_slot_count",
+    "schema_version",
+    "slot_count",
+    "slots",
+    "source_buffer_lifetime_digest",
+    "source_layout_conversion_evidence_digest",
+    "source_layout_partition_plan_digest",
+    "source_transfer_evidence_digest",
+    "source_transfer_partition_plan_digest",
+    "storage_contract",
+    "storage_lifetime_count",
+    "storage_metadata_digest",
+    "storage_scope",
+    "total_reserved_physical_bytes",
+    "total_unreused_physical_bytes",
+    "transfer_staging_count"
+  ],
+  "properties": {
+    "blocked_execution_surfaces": {
+      "const": [
+        "backend_plugin_discovery",
+        "device_access",
+        "dynamic_import",
+        "dynamic_library_loading",
+        "generated_artifact_execution",
+        "jit_execution",
+        "network_access",
+        "subprocess_execution",
+        "allocator_plugin_discovery",
+        "external_allocator_calls",
+        "memory_mapping",
+        "runtime_memory_allocation"
+      ]
+    },
+    "domain_peaks": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "memory_domain",
+          "peak_live_physical_bytes",
+          "reserved_slot_bytes"
+        ],
+        "properties": {
+          "memory_domain": {
+            "enum": [
+              "host_ram",
+              "gpu_hbm",
+              "device_sram",
+              "analog_weight_bank",
+              "neuromorphic_synapse_array",
+              "persistent_nvm",
+              "stream_buffer",
+              "unknown"
+            ]
+          },
+          "peak_live_physical_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 134217728
+          },
+          "reserved_slot_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 134217728
+          }
+        }
+      }
+    },
+    "event_count": {
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 32769
+    },
+    "event_phases": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "layout_conversion" },
+        { "const": "transfer" },
+        { "const": "consumer_execution" },
+        { "const": "output_produced" }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "execution_policy": {
+      "const": "does_not_allocate_or_execute"
+    },
+    "external_artifacts": {
+      "const": "forbidden"
+    },
+    "graph_name": {
+      "$ref": "#/$defs/name"
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["issue_code", "subject"],
+        "properties": {
+          "issue_code": { "$ref": "#/$defs/name" },
+          "subject": { "$ref": "#/$defs/name" }
+        }
+      }
+    },
+    "layout_sizing_policy": {
+      "const": "row_major_and_blocked_2x2_only"
+    },
+    "layout_staging_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8192
+    },
+    "lifetimes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8192,
+      "items": { "$ref": "#/$defs/lifetime" }
+    },
+    "operation_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8192
+    },
+    "passed": { "const": true },
+    "peak_live_physical_bytes": { "$ref": "#/$defs/nonzeroBytes" },
+    "performance_claim": { "const": "not_measured" },
+    "planned_layout_conversion_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8192
+    },
+    "planned_transfer_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8192
+    },
+    "produced_storage_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8192
+    },
+    "raw_value_policy": { "const": "omitted_by_policy" },
+    "residency_claim": { "const": "planning_labels_not_physical_residency" },
+    "reuse_policy": {
+      "const": "same_role_domain_layout_dtype_physical_shape_non_overlapping"
+    },
+    "reuse_savings_bytes": { "$ref": "#/$defs/bytes" },
+    "reused_slot_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8192
+    },
+    "schema_version": {
+      "const": "tuc.runtime_heterogeneous_storage_plan_report.v0"
+    },
+    "slot_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8192
+    },
+    "slots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8192,
+      "items": { "$ref": "#/$defs/slot" }
+    },
+    "source_buffer_lifetime_digest": { "$ref": "#/$defs/digest" },
+    "source_layout_conversion_evidence_digest": { "$ref": "#/$defs/digest" },
+    "source_layout_partition_plan_digest": { "$ref": "#/$defs/digest" },
+    "source_transfer_evidence_digest": { "$ref": "#/$defs/digest" },
+    "source_transfer_partition_plan_digest": { "$ref": "#/$defs/digest" },
+    "storage_contract": {
+      "const": "runtime_heterogeneous_storage_plan.data_only.v0"
+    },
+    "storage_lifetime_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8192
+    },
+    "storage_metadata_digest": { "$ref": "#/$defs/digest" },
+    "storage_scope": {
+      "const": "produced_layout_and_transfer_staging_storage"
+    },
+    "total_reserved_physical_bytes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 134217728
+    },
+    "total_unreused_physical_bytes": { "$ref": "#/$defs/nonzeroBytes" },
+    "transfer_staging_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8192
+    }
+  },
+  "$defs": {
+    "bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "layout": {
+      "enum": ["row_major", "blocked"]
+    },
+    "lifetime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dtype",
+        "first_live_event",
+        "first_live_phase",
+        "last_use_event",
+        "last_use_phase",
+        "layout",
+        "logical_bytes",
+        "logical_element_count",
+        "logical_shape",
+        "memory_domain",
+        "padding_element_count",
+        "physical_bytes",
+        "physical_element_count",
+        "physical_shape",
+        "reusable",
+        "slot_id",
+        "source_operation",
+        "storage_id",
+        "storage_role",
+        "target_operation",
+        "tensor_name",
+        "tile_shape"
+      ],
+      "properties": {
+        "dtype": { "$ref": "#/$defs/name" },
+        "first_live_event": { "$ref": "#/$defs/event" },
+        "first_live_phase": {
+          "enum": [
+            "layout_conversion",
+            "transfer",
+            "consumer_execution",
+            "output_produced"
+          ]
+        },
+        "last_use_event": { "$ref": "#/$defs/event" },
+        "last_use_phase": {
+          "enum": [
+            "layout_conversion",
+            "transfer",
+            "consumer_execution",
+            "output_produced",
+            "graph_end"
+          ]
+        },
+        "layout": { "$ref": "#/$defs/layout" },
+        "logical_bytes": { "$ref": "#/$defs/nonzeroBytes" },
+        "logical_element_count": { "$ref": "#/$defs/nonzeroCount" },
+        "logical_shape": { "$ref": "#/$defs/shape" },
+        "memory_domain": { "$ref": "#/$defs/memoryDomain" },
+        "padding_element_count": { "$ref": "#/$defs/bytes" },
+        "physical_bytes": { "$ref": "#/$defs/nonzeroBytes" },
+        "physical_element_count": { "$ref": "#/$defs/nonzeroCount" },
+        "physical_shape": { "$ref": "#/$defs/shape" },
+        "reusable": { "type": "boolean" },
+        "slot_id": { "$ref": "#/$defs/name" },
+        "source_operation": { "$ref": "#/$defs/name" },
+        "storage_id": { "$ref": "#/$defs/name" },
+        "storage_role": {
+          "enum": [
+            "produced_value",
+            "layout_staging",
+            "transfer_target_staging"
+          ]
+        },
+        "target_operation": { "$ref": "#/$defs/name" },
+        "tensor_name": { "$ref": "#/$defs/name" },
+        "tile_shape": {
+          "type": "array",
+          "maxItems": 2,
+          "items": { "$ref": "#/$defs/positiveDimension" }
+        }
+      }
+    },
+    "memoryDomain": {
+      "enum": [
+        "host_ram",
+        "gpu_hbm",
+        "device_sram",
+        "analog_weight_bank",
+        "neuromorphic_synapse_array",
+        "persistent_nvm",
+        "stream_buffer",
+        "unknown"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "nonzeroBytes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "nonzeroCount": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2000000
+    },
+    "event": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 32768
+    },
+    "positiveDimension": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2000000
+    },
+    "shape": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/positiveDimension" }
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bytes_reserved",
+        "dtype",
+        "layout",
+        "memory_domain",
+        "non_overlapping",
+        "physical_shape",
+        "reuse_savings_bytes",
+        "slot_id",
+        "storage_count",
+        "storage_ids",
+        "storage_role",
+        "tile_shape",
+        "total_storage_bytes"
+      ],
+      "properties": {
+        "bytes_reserved": { "$ref": "#/$defs/nonzeroBytes" },
+        "dtype": { "$ref": "#/$defs/name" },
+        "layout": { "$ref": "#/$defs/layout" },
+        "memory_domain": { "$ref": "#/$defs/memoryDomain" },
+        "non_overlapping": { "const": true },
+        "physical_shape": { "$ref": "#/$defs/shape" },
+        "reuse_savings_bytes": { "$ref": "#/$defs/bytes" },
+        "slot_id": { "$ref": "#/$defs/name" },
+        "storage_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "storage_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8192,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/name" }
+        },
+        "storage_role": {
+          "enum": [
+            "produced_value",
+            "layout_staging",
+            "transfer_target_staging"
+          ]
+        },
+        "tile_shape": {
+          "type": "array",
+          "maxItems": 2,
+          "items": { "$ref": "#/$defs/positiveDimension" }
+        },
+        "total_storage_bytes": { "$ref": "#/$defs/nonzeroBytes" }
+      }
+    }
+  }
+}

@@ -552,6 +552,16 @@ native allocation, devices, and performance remain open. See
 `docs/RUNTIME_MATERIALIZED_ALLOCATION.md` and
 `rfcs/0297-runtime-materialized-allocation.md`.
 
+Runtime Heterogeneous Storage Plan now provides the missing physical planning
+bridge between mixed-domain movement and materialized allocation. It gives
+produced values, layout staging, and transfer-target staging separate lifetimes
+on an ordered event timeline, keeps both copy endpoints live at movement
+boundaries, and sizes odd blocked tensors through the trusted 2x2 tile model.
+The canonical double-slice proof reuses three role-isolated slots and reduces
+planned reservation from 344 to 208 bytes without allocating memory or
+executing a backend. See `docs/RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md` and
+`rfcs/0298-runtime-heterogeneous-storage-plan.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,

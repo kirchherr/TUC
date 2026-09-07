@@ -99,7 +99,7 @@
     },
     {
       "contract": "ci_replay_for_admitted_slice.ci.v0",
-      "digest": "sha256:2d540395bfcc61c0a8d662a4c8208d5c399b6ead641e77bc052b566e7d447b8a",
+      "digest": "sha256:fd0e039c54fa755828642d0139b308390927b0002892a65a970eb33ab30031b5",
       "evidence_id": "ci_replay_for_admitted_slice",
       "source_free": true,
       "status": "PASS",
