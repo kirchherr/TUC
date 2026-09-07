@@ -186,6 +186,7 @@ class GpuObservationProfile:
     accelerator_class: str
     compute_target: str
     sass_target: str
+    pids_limit: int
     proof_scope: str
     image_title: str
     image_version: str
@@ -205,6 +206,7 @@ GPU_SM70_PROFILE = GpuObservationProfile(
     accelerator_class="nvidia_cuda_sm70",
     compute_target="compute_70",
     sass_target="sm_70",
+    pids_limit=16,
     proof_scope="single_fixed_local_hardware_observation",
     image_title="TUC bounded GPU observation",
     image_version="research-v0",
@@ -224,6 +226,7 @@ GPU_SM86_PROFILE = GpuObservationProfile(
     accelerator_class="nvidia_cuda_sm86",
     compute_target="compute_86",
     sass_target="sm_86",
+    pids_limit=32,
     proof_scope="single_fixed_remote_hardware_observation",
     image_title="TUC bounded GPU sm86 observation",
     image_version="research-sm86-v0",
@@ -426,7 +429,7 @@ def _expected_compose_contract(
         "ipc": "private",
         "mem_limit": 1024 * 1024 * 1024,
         "network_mode": "none",
-        "pids_limit": 16,
+        "pids_limit": profile.pids_limit,
         "platform": "linux/amd64",
         "privileged": False,
         "profiles": [profile.compose_profile],
@@ -634,7 +637,12 @@ def _validate_image_metadata(
     }
 
 
-def _worker_command(mode: str, image_digest: str) -> tuple[str, ...]:
+def _worker_command(
+    mode: str,
+    image_digest: str,
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> tuple[str, ...]:
+    profile = _require_trusted_profile(profile)
     if mode not in {"execute", "preflight"}:
         raise GpuObservationError("bounded GPU worker mode rejected")
     if _DIGEST_RE.fullmatch(image_digest) is None:
@@ -649,7 +657,7 @@ def _worker_command(mode: str, image_digest: str) -> tuple[str, ...]:
         "--workdir=/run/tuc",
         "--cap-drop=ALL",
         "--security-opt=no-new-privileges:true",
-        "--pids-limit=16",
+        f"--pids-limit={profile.pids_limit}",
         "--memory=1g",
         "--memory-swap=1g",
         "--cpus=1",
@@ -695,7 +703,7 @@ def _run_worker(
     image_digest: str,
     profile: GpuObservationProfile = GPU_SM70_PROFILE,
 ) -> dict[str, object]:
-    command = _worker_command(mode, image_digest)
+    command = _worker_command(mode, image_digest, profile)
     with tempfile.TemporaryFile() as stdout_file, tempfile.TemporaryFile() as stderr_file:
         try:
             process = subprocess.Popen(  # noqa: S603 - fixed Compose service and mode only
@@ -1020,7 +1028,7 @@ def assert_bounded_gpu_observation_report(
             "no_new_privileges": True,
             "non_root_gid": 10001,
             "non_root_uid": 10001,
-            "pids_limit": 16,
+            "pids_limit": profile.pids_limit,
             "repository_mount": False,
             "root_filesystem_read_only": True,
             "runtime_boundary": "docker_compose_nvidia_device_request",

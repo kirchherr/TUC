@@ -135,7 +135,7 @@ services:
       - ALL
     security_opt:
       - no-new-privileges:true
-    pids_limit: 16
+    pids_limit: 32
     mem_limit: 1g
     cpus: 1.0
     ipc: private

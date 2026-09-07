@@ -39,6 +39,11 @@ The `sm_86` worker is an explicit snapshot. Tests normalize its reviewed
 target-identity substitutions and require the remaining source to equal the
 `sm_70` worker byte for byte.
 
+The `sm_86` container allows at most 32 PIDs. The NVIDIA Container Toolkit 1.20
+OCI hook needs more than the RFC 0300 limit of 16 threads during device
+injection, before the worker starts. The workload itself remains one bounded
+process. All other runtime limits remain equivalent to the `sm_70` profile.
+
 ## Controlled Procedure
 
 The image build may access the container registry. The resulting runtime has

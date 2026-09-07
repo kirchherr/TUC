@@ -17,6 +17,7 @@ from examples.bounded_gpu_observation_proof import (
     _validate_compose_config,
     _validate_image_metadata,
     _validate_static_sources,
+    _worker_command,
     assert_bounded_gpu_observation_report,
     build_bounded_gpu_observation_report,
     dump_bounded_gpu_observation_report,
@@ -167,10 +168,18 @@ def test_sm86_compose_contract_is_closed_and_single_device() -> None:
     assert _validate_compose_config(config, PROFILE) == _expected_compose_contract(
         PROFILE
     )
+    assert config["services"][PROFILE.service]["pids_limit"] == 32
     service = config["services"][PROFILE.service]
     service["gpus"] = [{"driver": "nvidia", "device_ids": ["0", "1"]}]
     with pytest.raises(GpuObservationError, match="security contract drift"):
         _validate_compose_config(config, PROFILE)
+
+
+def test_sm86_worker_command_has_profile_bounded_hook_capacity() -> None:
+    command = _worker_command("preflight", "sha256:" + "2" * 64, PROFILE)
+
+    assert "--pids-limit=32" in command
+    assert "--pids-limit=16" not in command
 
 
 def test_sm86_image_metadata_is_profile_and_source_bound() -> None:

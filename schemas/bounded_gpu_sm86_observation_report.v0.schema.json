@@ -113,7 +113,7 @@
         "no_new_privileges": {"const": true},
         "non_root_gid": {"const": 10001},
         "non_root_uid": {"const": 10001},
-        "pids_limit": {"const": 16},
+        "pids_limit": {"const": 32},
         "repository_mount": {"const": false},
         "root_filesystem_read_only": {"const": true},
         "runtime_boundary": {

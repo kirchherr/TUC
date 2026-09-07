@@ -46,8 +46,8 @@ Both observations retain the RFC 0300 limits:
 - no network, host mount, repository mount, Docker socket, or runtime shell;
 - read-only root filesystem, non-root UID/GID 10001, all capabilities dropped,
   no-new-privileges, seccomp, and private IPC;
-- one CPU, 1 GiB memory, 16 PIDs, bounded tmpfs, bounded output, and a 30 second
-  wall-clock limit;
+- one CPU, 1 GiB memory, profile-bounded PIDs (`16` for `sm_70`, `32` for
+  `sm_86`), bounded tmpfs, bounded output, and a 30 second wall-clock limit;
 - exactly two fixed `2 x 2` `float64` kernels and 128 bytes of explicit
   workload allocation;
 - SASS for exactly one reviewed architecture, no embedded PTX, disabled JIT
@@ -59,6 +59,12 @@ The `sm_86` preflight may query device count, compute capability, and process
 security state, but launches no kernel. Execution is allowed only after that
 preflight returns `NOT_EXECUTED`, zero kernel launches, and a passing security
 boundary.
+
+The `sm_86` PID budget is `32` because NVIDIA Container Toolkit 1.20 performs
+device injection in a Go-based OCI hook before the worker starts. A diagnostic
+preflight proved that `16` prevents that hook from creating its required
+threads while `32` succeeds. The worker remains single-process; this is a
+bounded runtime compatibility allowance, not workload parallelism.
 
 ## Claim Boundary
 
