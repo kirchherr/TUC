@@ -1,5 +1,54 @@
 # Roadmap Status
 
+- [Bounded Cross-Architecture GPU Proof](BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md)
+  now binds the same fixed Objective Delta workload to accepted physical
+  `sm_70` and `sm_86` observations. The second profile is statically
+  allowlisted, separately SASS-compiled, PTX/JIT-free, single-device,
+  compute-only, networkless, non-root, resource-bounded, and schema-validated.
+  Its accepted observation is
+  `tests/golden/proofs/bounded_gpu_sm86_observation_report.json`; the aggregate
+  is `tests/golden/proofs/bounded_cross_architecture_gpu_proof.json`, and the
+  decision is `rfcs/0301-bounded-cross-architecture-gpu-proof.md`. Both reports
+  bind one workload-manifest digest and passed the same CPU oracle. The
+  aggregate records two architectures but only one vendor, same-maintainer
+  ownership, and absent independent reproduction. It does not admit native TUC
+  execution or support cross-vendor, arbitrary-program, performance, or
+  universal-hardware claims.
+
+- [Bounded GPU Observation Proof](BOUNDED_GPU_OBSERVATION_PROOF.md) now provides
+  the first concrete, separate path from Objective Delta's fixed neutral
+  workload to a physical NVIDIA `sm_70` device. The implementation uses two
+  reviewed SASS-only kernels, an independent fixed CPU check, digest-pinned
+  CUDA images, a single-device compute-only container, no network or repository
+  mount, a read-only root filesystem, non-root execution, dropped capabilities,
+  seccomp, bounded resources, sanitized output, and explicit driver/display
+  operator acknowledgements. Its closed schema is
+  `schemas/bounded_gpu_observation_report.v0.schema.json` and its decision is
+  `rfcs/0300-bounded-gpu-observation-proof.md`. The normal executor and the
+  existing Device Access and Native Backend gates remain unchanged. The first
+  checked-in physical `PASS` observation is now recorded at
+  `tests/golden/proofs/bounded_gpu_observation_report.json`: exactly two fixed
+  kernels executed on one `sm_70` device and matched the CPU reference after a
+  no-kernel preflight and explicit operator acknowledgements. Independent
+  reproduction remains absent; no native-performance, general-backend, or
+  portable-hardware claim is made.
+
+- [Runtime Materialized Heterogeneous Storage](RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md)
+  now binds the canonical mixed-domain storage plan to a bounded opt-in trusted
+  simulator arena. Eight produced, layout-staging, and transfer-target
+  lifetimes execute through five private slots; blocked 3x3 values retain
+  explicit 2x2 padding, and three second generations begin only after their
+  predecessors are released. Both terminal outputs pass Reference Correctness
+  and Backend Equivalence, with Materialized Layout Conversion and Materialized
+  Transfer reconstructed as bound evidence. Its closed schema is
+  `schemas/runtime_materialized_heterogeneous_storage_report.v0.schema.json`,
+  its deterministic golden is
+  `tests/golden/runtime_materialized_heterogeneous_storage/current_report.json`,
+  and the accepted decision is
+  `rfcs/0299-runtime-materialized-heterogeneous-storage.md`. The domains remain
+  simulator labels; native allocation, physical residency, and performance are
+  not claimed.
+
 - [Runtime Heterogeneous Storage Plan](RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md)
   now models produced buffers, layout-conversion staging, and transfer-target
   staging on one deterministic event timeline. The odd 3x3 proof records 2x2
@@ -1751,6 +1800,19 @@ Current focus:
 
 ## Next
 
+- Preserve both checked-in physical observations and the bounded
+  cross-architecture aggregate under RFCs 0300 and 0301. Seek an independently
+  provenanced reproduction next. Any cross-vendor target, dynamic input,
+  compiler-emitted kernel, normal-runtime integration, or performance
+  experiment requires a successor decision; these results must not open
+  `execute_graph()`, general native backends, runtime-generated artifacts, or
+  performance claims.
+- Runtime Materialized Heterogeneous Storage is implemented as an opt-in
+  trusted simulator proof under RFC 0299. It must not be silently promoted into
+  `execute_graph()` or used to reinterpret planning-only evidence as native
+  memory behavior. Default-path or Runtime Evidence Gate promotion requires a
+  separate migration decision, stable independent reproduction, and unchanged
+  non-residency, non-native, and non-performance boundaries.
 - Runtime Materialized Transfer is implemented as an opt-in trusted simulator
   proof. Do not reinterpret the accepted Transfer Evidence, Trace Index,
   Replay Verifier, or general Runtime Evidence Gate as materialized execution.

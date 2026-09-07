@@ -146,6 +146,21 @@ storage. Other layouts remain closed until their stride, tile, and alignment
 semantics are explicit. See
 [Runtime Heterogeneous Storage Plan](RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md).
 
+## Opt-In Heterogeneous Storage Materialization
+
+`execute_graph_with_materialized_heterogeneous_storage()` binds that canonical
+plan to one fixed bounded simulator slot arena. Complete graph, input, and plan
+preflight finishes before allocation. The executor then materializes produced
+storage, zero-padded fixed 2x2 blocked storage, row-major layout staging, and a
+distinct transfer-target copy through the plan's exact event sequence. A slot
+generation can begin only after its prior storage generation has reached the
+planned release event.
+
+Only fixed trusted backend functions and in-process NumPy storage are used.
+Memory-domain names are simulated placement labels. The default executor and
+all earlier opt-in paths remain unchanged. See
+[Runtime Materialized Heterogeneous Storage](RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md).
+
 ## Execution Readiness
 
 Before executing any operation, Runtime Executor v0 builds a

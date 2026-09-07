@@ -26,15 +26,22 @@ This proves one limited software result: for this fixed example, the compute
 description can remain unchanged while data-described capabilities determine
 an inspectable plan whose result matches the reference.
 
-It does **not** prove real-hardware portability, native accelerator execution,
-performance parity, arbitrary program support, or replacement of CUDA, ROCm,
-XLA, TVM, IREE, Triton, or vendor compilers.
+The main Objective Delta reproduction does **not** prove real-hardware
+portability, general native accelerator execution, performance parity,
+arbitrary program support, or replacement of CUDA, ROCm, XLA, TVM, IREE,
+Triton, or vendor compilers. Separate bounded observations have now executed
+the same fixed compute family as two precompiled `sm_70` kernels on one GPU and
+as two precompiled `sm_86` kernels on another; both matched the same CPU
+reference. This is a narrow
+cross-architecture feasibility result within one vendor, not a general native
+backend, cross-vendor proof, or performance result.
 
 Running the experiment in several ordinary cloud VMs should reproduce it. That
 is useful evidence that the released experiment is portable and deterministic
-across independent environments. Because the current backends are simulators,
-it is not evidence that the same code runs efficiently on different physical
-accelerators. Native backends and real-device evidence remain future research.
+across independent environments. Because the current TUC backends are
+simulators, it is not evidence that the same code runs efficiently on different
+physical accelerators. General native backends and cross-device physical
+portability remain future research.
 
 New to compiler terminology? Start with the
 [plain-language glossary](docs/GLOSSARY.md).
@@ -325,6 +332,26 @@ Runtime Executor v0 runs already-compiled graphs through a fixed trusted
 in-process executor registry. It is intentionally not a plugin system and does
 not authorize external executable backend artifacts.
 
+The separate [Bounded GPU Observation Proof](docs/BOUNDED_GPU_OBSERVATION_PROOF.md)
+records TUC's first controlled physical GPU observation. Objective Delta's
+fixed `2 x 2` `matmul -> elementwise identity` workload passed as two reviewed
+`sm_70` kernels in a hardened opt-in container and matched its CPU reference.
+The sanitized [physical observation](tests/golden/proofs/bounded_gpu_observation_report.json)
+does not modify the normal executor, admit a general native backend, establish
+cross-device portability, or measure performance. RFC:
+`rfcs/0300-bounded-gpu-observation-proof.md`; schema:
+`schemas/bounded_gpu_observation_report.v0.schema.json`.
+
+The follow-on
+[Bounded Cross-Architecture GPU Proof](docs/BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md)
+binds that `sm_70` result to a separately compiled and physically observed
+`sm_86` result for the identical fixed workload. Its
+[aggregate evidence](tests/golden/proofs/bounded_cross_architecture_gpu_proof.json)
+records two architecture classes but one vendor and same-maintainer ownership;
+cross-vendor execution, independent reproduction, arbitrary programs, native
+performance, and normal-runtime admission remain blocked. RFC:
+`rfcs/0301-bounded-cross-architecture-gpu-proof.md`.
+
 Current runtime surfaces:
 
 - Runtime Execution Readiness before kernels run.
@@ -432,6 +459,12 @@ Current runtime surfaces:
   odd blocked tensors by physical 2x2 tiles, keeps copy endpoints live together,
   and proves conservative slot reuse across two mixed-backend slices without
   allocating memory or executing a backend.
+- Runtime Materialized Heterogeneous Storage v0 binds that canonical plan to a
+  bounded opt-in simulator arena. It executes all eight produced, layout, and
+  transfer-staging lifetimes through five preallocated slots, verifies blocked
+  padding and both terminal outputs, and performs three slot reuses only after
+  their planned releases. Reference Correctness and Backend Equivalence pass;
+  physical residency, native allocation, and performance remain non-claims.
 - Operation/value contract checks for shapes, `float64`, finite values, and
   MVP operation semantics.
 
@@ -479,6 +512,7 @@ examples/runtime_backend_equivalence_layout_binding.py
 examples/runtime_materialized_layout_conversion.py
 examples/runtime_materialized_transfer.py
 examples/runtime_heterogeneous_storage_plan.py
+examples/runtime_materialized_heterogeneous_storage.py
 ```
 
 Key docs:
@@ -518,6 +552,7 @@ Key docs:
 - [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md)
 - [Runtime Materialized Allocation](docs/RUNTIME_MATERIALIZED_ALLOCATION.md)
 - [Runtime Heterogeneous Storage Plan](docs/RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md)
+- [Runtime Materialized Heterogeneous Storage](docs/RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md)
 - [Runtime Output Contract](docs/RUNTIME_OUTPUT_CONTRACT.md)
 - [Runtime Public Output Bundle](docs/RUNTIME_PUBLIC_OUTPUT_BUNDLE.md)
 - [Source Intent Mixed Runtime Public Proof Bundle](docs/SOURCE_INTENT_MIXED_RUNTIME_PUBLIC_PROOF_BUNDLE.md)
@@ -561,6 +596,7 @@ schemas/runtime_allocation_receipt_report.v0.schema.json
 schemas/runtime_allocation_reconciliation_report.v0.schema.json
 schemas/runtime_materialized_allocation_report.v0.schema.json
 schemas/runtime_heterogeneous_storage_plan_report.v0.schema.json
+schemas/runtime_materialized_heterogeneous_storage_report.v0.schema.json
 ```
 
 ## Frontend Intake

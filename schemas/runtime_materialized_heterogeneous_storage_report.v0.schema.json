@@ -1,0 +1,366 @@
+{
+  "$id": "https://tuc.example/schemas/runtime_materialized_heterogeneous_storage_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "blockedSurfaces": {
+      "items": false,
+      "maxItems": 15,
+      "minItems": 15,
+      "prefixItems": [
+        {"const": "backend_plugin_discovery"},
+        {"const": "device_access"},
+        {"const": "dynamic_import"},
+        {"const": "dynamic_library_loading"},
+        {"const": "generated_artifact_execution"},
+        {"const": "jit_execution"},
+        {"const": "network_access"},
+        {"const": "subprocess_execution"},
+        {"const": "allocator_plugin_discovery"},
+        {"const": "device_allocation"},
+        {"const": "external_allocator_calls"},
+        {"const": "memory_mapping"},
+        {"const": "pointer_or_address_exposure"},
+        {"const": "runtime_handle_serialization"},
+        {"const": "unbounded_memory_pool"}
+      ],
+      "type": "array"
+    },
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "release": {
+      "additionalProperties": false,
+      "properties": {
+        "event_index": {"maximum": 32768, "minimum": 0, "type": "integer"},
+        "event_phase": {
+          "enum": ["layout_conversion", "transfer", "consumer_execution", "output_produced", "graph_end"]
+        },
+        "release_verification": {"const": "released_at_planned_last_use"},
+        "slot_generation": {"minimum": 1, "type": "integer"},
+        "slot_id": {"$ref": "#/$defs/safeText"},
+        "status": {"const": "released"},
+        "storage_id": {"$ref": "#/$defs/safeText"}
+      },
+      "required": [
+        "event_index",
+        "event_phase",
+        "release_verification",
+        "slot_generation",
+        "slot_id",
+        "status",
+        "storage_id"
+      ],
+      "type": "object"
+    },
+    "safeText": {
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "type": "string"
+    },
+    "shape": {
+      "items": {"minimum": 1, "type": "integer"},
+      "maxItems": 8,
+      "minItems": 1,
+      "type": "array"
+    },
+    "slot": {
+      "additionalProperties": false,
+      "properties": {
+        "allocation_kind": {"enum": ["exclusive", "reused"]},
+        "handle_policy": {"const": "not_exposed"},
+        "layout": {"enum": ["blocked", "row_major"]},
+        "memory_domain": {"enum": ["device_sram", "host_ram"]},
+        "physical_shape": {"$ref": "#/$defs/shape"},
+        "planned_bytes": {"minimum": 1, "type": "integer"},
+        "planned_dtype": {"const": "float32"},
+        "runtime_bytes": {"maximum": 33554432, "minimum": 1, "type": "integer"},
+        "runtime_dtype": {"const": "float64"},
+        "slot_id": {"$ref": "#/$defs/safeText"},
+        "status": {"const": "preallocated"},
+        "storage_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+        "storage_role": {
+          "enum": ["produced_value", "layout_staging", "transfer_target_staging"]
+        },
+        "tile_shape": {
+          "items": {"minimum": 1, "type": "integer"},
+          "maxItems": 2,
+          "minItems": 0,
+          "type": "array"
+        }
+      },
+      "required": [
+        "allocation_kind",
+        "handle_policy",
+        "layout",
+        "memory_domain",
+        "physical_shape",
+        "planned_bytes",
+        "planned_dtype",
+        "runtime_bytes",
+        "runtime_dtype",
+        "slot_id",
+        "status",
+        "storage_count",
+        "storage_role",
+        "tile_shape"
+      ],
+      "type": "object"
+    },
+    "storageExecution": {
+      "additionalProperties": false,
+      "properties": {
+        "blocked_execution_surfaces": {"$ref": "#/$defs/blockedSurfaces"},
+        "execution_mode": {"const": "in_process_preallocated_numpy_storage_slots"},
+        "executor_contract": {"const": "runtime_heterogeneous_storage_executor.trusted_simulator.v0"},
+        "external_artifacts": {"const": "forbidden"},
+        "graph_name": {"$ref": "#/$defs/safeText"},
+        "handle_policy": {"const": "not_exposed"},
+        "performance_claim": {"const": "not_measured"},
+        "physical_memory_claim": {"const": "host_process_storage_with_simulated_domains"},
+        "planned_reserved_bytes": {"maximum": 134217728, "minimum": 1, "type": "integer"},
+        "release_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+        "release_policy": {"const": "release_at_planned_last_use_event"},
+        "releases": {
+          "items": {"$ref": "#/$defs/release"},
+          "maxItems": 8192,
+          "minItems": 1,
+          "type": "array"
+        },
+        "retention_policy": {"const": "external_inputs_and_terminal_output_snapshots_only"},
+        "reuse_event_count": {"maximum": 8191, "minimum": 1, "type": "integer"},
+        "runtime_reserved_bytes": {"maximum": 33554432, "minimum": 1, "type": "integer"},
+        "runtime_reuse_savings_bytes": {"minimum": 1, "type": "integer"},
+        "runtime_unreused_storage_bytes": {"minimum": 1, "type": "integer"},
+        "slot_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+        "slots": {
+          "items": {"$ref": "#/$defs/slot"},
+          "maxItems": 8192,
+          "minItems": 1,
+          "type": "array"
+        },
+        "source_storage_plan_digest": {"$ref": "#/$defs/digest"},
+        "status": {"const": "executed_and_verified"},
+        "storage_write_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+        "write_policy": {"const": "planned_representation_written_into_exact_role_slot"},
+        "writes": {
+          "items": {"$ref": "#/$defs/write"},
+          "maxItems": 8192,
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "blocked_execution_surfaces",
+        "execution_mode",
+        "executor_contract",
+        "external_artifacts",
+        "graph_name",
+        "handle_policy",
+        "performance_claim",
+        "physical_memory_claim",
+        "planned_reserved_bytes",
+        "release_count",
+        "release_policy",
+        "releases",
+        "retention_policy",
+        "reuse_event_count",
+        "runtime_reserved_bytes",
+        "runtime_reuse_savings_bytes",
+        "runtime_unreused_storage_bytes",
+        "slot_count",
+        "slots",
+        "source_storage_plan_digest",
+        "status",
+        "storage_write_count",
+        "write_policy",
+        "writes"
+      ],
+      "type": "object"
+    },
+    "write": {
+      "additionalProperties": false,
+      "properties": {
+        "event_index": {"maximum": 32768, "minimum": 0, "type": "integer"},
+        "event_phase": {
+          "enum": ["layout_conversion", "transfer", "consumer_execution", "output_produced"]
+        },
+        "handle_policy": {"const": "not_exposed"},
+        "last_use_event": {"maximum": 32768, "minimum": 0, "type": "integer"},
+        "last_use_phase": {
+          "enum": ["layout_conversion", "transfer", "consumer_execution", "output_produced", "graph_end"]
+        },
+        "layout": {"enum": ["blocked", "row_major"]},
+        "logical_shape": {"$ref": "#/$defs/shape"},
+        "memory_domain": {"enum": ["device_sram", "host_ram"]},
+        "padding_verification": {"enum": ["not_applicable", "zero_padding_verified"]},
+        "physical_shape": {"$ref": "#/$defs/shape"},
+        "planned_bytes": {"minimum": 1, "type": "integer"},
+        "previous_storage_id": {
+          "oneOf": [
+            {"$ref": "#/$defs/safeText"},
+            {"type": "null"}
+          ]
+        },
+        "reuse_status": {"enum": ["first_slot_generation", "reused_after_release"]},
+        "runtime_bytes": {"maximum": 33554432, "minimum": 1, "type": "integer"},
+        "semantic_verification": {"const": "exact_logical_values"},
+        "slot_generation": {"minimum": 1, "type": "integer"},
+        "slot_id": {"$ref": "#/$defs/safeText"},
+        "source_storage_id": {
+          "oneOf": [
+            {"$ref": "#/$defs/safeText"},
+            {"type": "null"}
+          ]
+        },
+        "status": {"const": "executed_and_verified"},
+        "storage_id": {"$ref": "#/$defs/safeText"},
+        "storage_role": {
+          "enum": ["produced_value", "layout_staging", "transfer_target_staging"]
+        },
+        "tensor_name": {"$ref": "#/$defs/safeText"},
+        "tile_shape": {
+          "items": {"minimum": 1, "type": "integer"},
+          "maxItems": 2,
+          "minItems": 0,
+          "type": "array"
+        },
+        "write_source": {
+          "enum": ["trusted_kernel_result", "trusted_layout_conversion", "trusted_domain_copy"]
+        }
+      },
+      "required": [
+        "event_index",
+        "event_phase",
+        "handle_policy",
+        "last_use_event",
+        "last_use_phase",
+        "layout",
+        "logical_shape",
+        "memory_domain",
+        "padding_verification",
+        "physical_shape",
+        "planned_bytes",
+        "previous_storage_id",
+        "reuse_status",
+        "runtime_bytes",
+        "semantic_verification",
+        "slot_generation",
+        "slot_id",
+        "source_storage_id",
+        "status",
+        "storage_id",
+        "storage_role",
+        "tensor_name",
+        "tile_shape",
+        "write_source"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_status": {"const": "review_evidence"},
+    "backend_equivalence_metadata_digest": {"$ref": "#/$defs/digest"},
+    "backend_equivalence_passed": {"const": true},
+    "blocked_execution_surfaces": {"$ref": "#/$defs/blockedSurfaces"},
+    "budget_interpretation": {"const": "planned_float32_bytes_separate_from_float64_simulator_storage"},
+    "evidence_contract": {"const": "runtime_heterogeneous_storage.materialized_trusted_simulator.v0"},
+    "execution_mode": {"const": "in_process_preallocated_numpy_storage_slots"},
+    "executor_contract": {"const": "runtime_heterogeneous_storage_executor.trusted_simulator.v0"},
+    "external_artifacts": {"const": "forbidden"},
+    "graph_name": {"$ref": "#/$defs/safeText"},
+    "handle_policy": {"const": "not_exposed"},
+    "kernel_temporary_policy": {"const": "excluded_from_storage_plan_memory_claim"},
+    "layout_conversion_passed": {"const": true},
+    "materialization_policy": {"const": "canonical_plan_preallocate_write_release_reuse"},
+    "materialization_scope": {"const": "preallocated_produced_layout_and_transfer_staging_slots"},
+    "materialized_layout_conversion_metadata_digest": {"$ref": "#/$defs/digest"},
+    "materialized_transfer_metadata_digest": {"$ref": "#/$defs/digest"},
+    "native_allocator_claim": {"const": "not_claimed"},
+    "operation_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+    "output_metadata_digest": {"$ref": "#/$defs/digest"},
+    "performance_claim": {"const": "not_measured"},
+    "physical_memory_claim": {"const": "host_process_storage_with_simulated_domains"},
+    "planned_reserved_bytes": {"maximum": 134217728, "minimum": 1, "type": "integer"},
+    "raw_value_policy": {"const": "omitted_by_policy"},
+    "reference_correctness_digest": {"$ref": "#/$defs/digest"},
+    "reference_correctness_passed": {"const": true},
+    "release_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+    "release_policy": {"const": "release_at_planned_last_use_event"},
+    "residency_claim": {"const": "simulated_domains_not_physical_residency"},
+    "retained_tensor_record_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+    "retention_policy": {"const": "external_inputs_and_terminal_output_snapshots_only"},
+    "reuse_event_count": {"maximum": 8191, "minimum": 1, "type": "integer"},
+    "reused_slot_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+    "runtime_execution_trace_digest": {"$ref": "#/$defs/digest"},
+    "runtime_reserved_bytes": {"maximum": 33554432, "minimum": 1, "type": "integer"},
+    "runtime_reuse_savings_bytes": {"minimum": 1, "type": "integer"},
+    "runtime_unreused_storage_bytes": {"minimum": 1, "type": "integer"},
+    "schema_version": {"const": "tuc.runtime_materialized_heterogeneous_storage_report.v0"},
+    "slot_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+    "source_storage_metadata_digest": {"$ref": "#/$defs/digest"},
+    "source_storage_plan_digest": {"$ref": "#/$defs/digest"},
+    "status": {"const": "passed"},
+    "storage_execution": {"$ref": "#/$defs/storageExecution"},
+    "storage_execution_trace_digest": {"$ref": "#/$defs/digest"},
+    "storage_write_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+    "terminal_output_count": {"maximum": 8192, "minimum": 1, "type": "integer"},
+    "terminal_output_snapshot_bytes": {"maximum": 33554432, "minimum": 1, "type": "integer"},
+    "transfer_passed": {"const": true},
+    "write_policy": {"const": "planned_representation_written_into_exact_role_slot"}
+  },
+  "required": [
+    "artifact_status",
+    "backend_equivalence_metadata_digest",
+    "backend_equivalence_passed",
+    "blocked_execution_surfaces",
+    "budget_interpretation",
+    "evidence_contract",
+    "execution_mode",
+    "executor_contract",
+    "external_artifacts",
+    "graph_name",
+    "handle_policy",
+    "kernel_temporary_policy",
+    "layout_conversion_passed",
+    "materialization_policy",
+    "materialization_scope",
+    "materialized_layout_conversion_metadata_digest",
+    "materialized_transfer_metadata_digest",
+    "native_allocator_claim",
+    "operation_count",
+    "output_metadata_digest",
+    "performance_claim",
+    "physical_memory_claim",
+    "planned_reserved_bytes",
+    "raw_value_policy",
+    "reference_correctness_digest",
+    "reference_correctness_passed",
+    "release_count",
+    "release_policy",
+    "residency_claim",
+    "retained_tensor_record_count",
+    "retention_policy",
+    "reuse_event_count",
+    "reused_slot_count",
+    "runtime_execution_trace_digest",
+    "runtime_reserved_bytes",
+    "runtime_reuse_savings_bytes",
+    "runtime_unreused_storage_bytes",
+    "schema_version",
+    "slot_count",
+    "source_storage_metadata_digest",
+    "source_storage_plan_digest",
+    "status",
+    "storage_execution",
+    "storage_execution_trace_digest",
+    "storage_write_count",
+    "terminal_output_count",
+    "terminal_output_snapshot_bytes",
+    "transfer_passed",
+    "write_policy"
+  ],
+  "title": "TUC Runtime Materialized Heterogeneous Storage Report v0",
+  "type": "object"
+}

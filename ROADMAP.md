@@ -232,6 +232,32 @@ Completed evidence:
   one ordered event timeline. Fixed 2x2 blocked sizing exposes padding for odd
   shapes, and role-isolated slots prove conservative reuse across sequential
   mixed-backend slices without allocating or executing.
+- Runtime Materialized Heterogeneous Storage closes that practical gap through
+  a separate opt-in trusted simulator path. The canonical plan now preallocates
+  five private slots, executes eight produced/layout/transfer lifetimes and
+  three post-release reuse events, verifies blocked padding and terminal
+  outputs, and binds the run to Reference Correctness, Backend Equivalence,
+  Materialized Layout Conversion, and Materialized Transfer. Native allocation,
+  physical residency, and performance remain explicitly unclaimed.
+- Bounded GPU Observation Proof v0 records TUC's first controlled physical
+  observation. It maps Objective Delta's fixed public `2 x 2` `float64`
+  `matmul -> elementwise identity` vector to two reviewed `sm_70` SASS kernels in a
+  digest-pinned, single-device, compute-only container. It remains separate
+  from `execute_graph()` and from the non-admitting Device Access and Native
+  Backend gates. The checked-in `PASS` followed a current driver security
+  update, a no-kernel preflight, explicit shared-display acknowledgement,
+  sanitized metadata-only evidence, and review under RFC 0300. It cannot
+  support native-performance, general-backend, or portable-hardware claims;
+  independent reproduction is still absent.
+- Bounded Cross-Architecture GPU Proof v0 adds a second static, SASS-only
+  physical profile without opening the normal runtime. The identical Objective
+  Delta workload passed on reviewed `sm_70` and `sm_86` probes, and the
+  metadata-only aggregate binds both report and image digests to one workload
+  digest under RFC 0301. This supports bounded cross-architecture feasibility
+  within NVIDIA only. It explicitly records one vendor, same-maintainer
+  ownership, and absent independent reproduction; cross-vendor, arbitrary
+  program, native-performance, production-backend, and universal-hardware
+  claims remain blocked.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -819,10 +845,12 @@ Next work:
 - Add runtime-plan golden dumps for future proof graphs only when they add new
   placement or transfer evidence.
 - Add richer override diagnostics only if they stay bounded and golden-tested.
-- Transfer-staging lifetimes and layout-specific slot sizes are now modeled by
-  Runtime Heterogeneous Storage Plan. Keep Runtime Materialized Allocation
-  opt-in until explicit promotion criteria bind that plan to a mixed-domain
-  execution path through a separate RFC.
+- Transfer-staging lifetimes and layout-specific slot sizes are now both
+  planned and executed by the opt-in Runtime Materialized Heterogeneous Storage
+  proof under RFC 0299. Keep all materialized paths out of `execute_graph()` and
+  the central Runtime Evidence Gate until a separate migration decision defines
+  promotion criteria without broadening residency, native, or performance
+  claims.
 - Add noise/error-budget score components only after those models are stable and
   documented.
 

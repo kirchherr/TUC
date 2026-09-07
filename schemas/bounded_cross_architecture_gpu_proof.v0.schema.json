@@ -1,0 +1,128 @@
+{
+  "$id": "https://github.com/kirchherr/TUC/schemas/bounded_cross_architecture_gpu_proof.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TUC Bounded Cross-Architecture GPU Proof v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_boundary",
+    "equivalence",
+    "observations",
+    "proof",
+    "report_digest",
+    "schema_version",
+    "workload"
+  ],
+  "properties": {
+    "claim_boundary": {
+      "const": {
+        "architecture_count": 2,
+        "blocked_claims": [
+          "arbitrary_program_portability",
+          "cross_vendor_execution",
+          "general_native_backend",
+          "independent_reproduction",
+          "native_performance_parity",
+          "production_device_admission",
+          "universal_hardware_proof",
+          "vendor_replacement"
+        ],
+        "independent_reproduction": "not_yet_supplied",
+        "observation_ownership": "same_maintainer",
+        "universal_compute_claim_proven": false,
+        "vendor_count": 1
+      }
+    },
+    "equivalence": {
+      "const": {
+        "cpu_reference_match_all": true,
+        "fixed_kernel_count_equal": true,
+        "operation_families_equal": true,
+        "ptx_jit_disabled_all": true,
+        "raw_tensor_values_serialized": false,
+        "runtime_generated_code_all": false,
+        "tensor_shape_dtype_equal": true,
+        "workload_manifest_digest_equal": true
+      }
+    },
+    "observations": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/observation",
+          "properties": {
+            "accelerator_class": {"const": "nvidia_cuda_sm70"},
+            "sass_target": {"const": "sm_70"},
+            "schema_version": {
+              "const": "tuc.bounded_gpu_observation_report.v0"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/observation",
+          "properties": {
+            "accelerator_class": {"const": "nvidia_cuda_sm86"},
+            "sass_target": {"const": "sm_86"},
+            "schema_version": {
+              "const": "tuc.bounded_gpu_sm86_observation_report.v0"
+            }
+          }
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "proof": {
+      "const": {
+        "claim": "same_fixed_neutral_compute_intent_executes_on_two_nvidia_architectures_and_matches_cpu_reference",
+        "contract": "bounded_cross_architecture_gpu_equivalence.v0",
+        "scope": "two_same_maintainer_fixed_hardware_observations",
+        "status": "PASS"
+      }
+    },
+    "report_digest": {"$ref": "#/$defs/digest"},
+    "schema_version": {
+      "const": "tuc.bounded_cross_architecture_gpu_proof.v0"
+    },
+    "workload": {
+      "const": {
+        "dtype": "float64",
+        "input_policy": "fixed_public_non_sensitive_test_vector",
+        "operation_families": ["matmul", "elementwise"],
+        "reference_correctness_passed": true,
+        "semantic_origin": "objective_delta_portable_compute_v0",
+        "shape": [2, 2],
+        "workload_contract": "objective_delta_matmul_elementwise_2x2_f64.v0"
+      }
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accelerator_class",
+        "container_image_digest",
+        "kernel_launch_count",
+        "report_digest",
+        "sass_target",
+        "schema_version",
+        "workload_manifest_digest"
+      ],
+      "properties": {
+        "accelerator_class": {"type": "string"},
+        "container_image_digest": {"$ref": "#/$defs/digest"},
+        "kernel_launch_count": {"const": 2},
+        "report_digest": {"$ref": "#/$defs/digest"},
+        "sass_target": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "workload_manifest_digest": {"$ref": "#/$defs/digest"}
+      }
+    }
+  }
+}

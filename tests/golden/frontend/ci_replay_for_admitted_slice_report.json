@@ -17,7 +17,7 @@
   "ci_binding_policy": "github_actions_read_only_replay",
   "ci_checkout_credentials": "persist_credentials_false",
   "ci_replay_step_bound": true,
-  "ci_workflow_digest": "sha256:a862050ca80ae7b1838dfb337372a52953b7a30204d49bb06b080448447a28d8",
+  "ci_workflow_digest": "sha256:d042b4ec64abecd4094c4aa18001e25ae6e53d2fe7387fbb30c7ccedc9e0b879",
   "ci_workflow_permissions": "contents_read",
   "contract": "ci_replay_for_admitted_slice.ci.v0",
   "direct_source_ingestion": false,
@@ -72,7 +72,7 @@
     }
   ],
   "replayed_evidence_count": 5,
-  "report_digest": "sha256:3c5b322abb2515f3a72b08b0edd85f550dcac19e5dd8ad0c275721625e86a98b",
+  "report_digest": "sha256:772a8ba60adbfcf993f895276324b7e44b096445a4d450039c0362a1315f7fe1",
   "required_control_count": 17,
   "required_controls": [
     "github_actions_permissions_contents_read",

@@ -562,6 +562,45 @@ planned reservation from 344 to 208 bytes without allocating memory or
 executing a backend. See `docs/RUNTIME_HETEROGENEOUS_STORAGE_PLAN.md` and
 `rfcs/0298-runtime-heterogeneous-storage-plan.md`.
 
+Runtime Materialized Heterogeneous Storage now executes that accepted plan as
+one bounded opt-in vertical proof. Five private preallocated NumPy slots carry
+eight produced, layout-staging, and transfer-target lifetimes; fixed 2x2
+blocked storage preserves explicit padding, and three slot generations are
+reused only after their planned releases. Both terminal outputs pass independent
+Reference Correctness and all-CPU Backend Equivalence. The closed report also
+reconstructs and binds Materialized Layout Conversion and Materialized Transfer
+evidence. Planned `float32` capacity remains separate from private simulator
+`float64` capacity, while native allocation, physical residency, and
+performance remain open. See
+`docs/RUNTIME_MATERIALIZED_HETEROGENEOUS_STORAGE.md` and
+`rfcs/0299-runtime-materialized-heterogeneous-storage.md`.
+
+Bounded GPU Observation Proof v0 now records the first controlled physical
+execution bridge without opening the normal runtime. Objective Delta's fixed
+public `2 x 2` `float64` `matmul -> elementwise identity` workload is bound to
+two reviewed
+`sm_70` SASS kernels in a digest-pinned, compute-only, single-device container
+with no network or repository mount. The first accepted `PASS` observation now
+binds the completed local driver-security prerequisite, no-kernel preflight,
+shared-display acknowledgement, two-kernel execution, CPU-reference match, and
+reviewed sanitized evidence. This is a fixed hardware observation, not a
+general native backend, portable-device proof, or performance claim. See
+`docs/BOUNDED_GPU_OBSERVATION_PROOF.md` and
+`rfcs/0300-bounded-gpu-observation-proof.md`.
+
+Bounded Cross-Architecture GPU Proof v0 now tests whether that fixed semantic
+bridge survives a change in physical CUDA architecture without adding dynamic
+target selection. A separately source-bound `sm_86` SASS-only profile passed
+the same no-kernel preflight, two-kernel execution, and CPU oracle as the
+accepted `sm_70` profile. The aggregate binds both report and image digests to
+one workload-manifest digest while recording two architectures, one vendor,
+same-maintainer ownership, and no independent reproduction. This strengthens
+the hardware-interface feasibility argument but does not establish
+cross-vendor portability, arbitrary-program support, native performance, or
+the universal-compute thesis. See
+`docs/BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md` and
+`rfcs/0301-bounded-cross-architecture-gpu-proof.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
@@ -572,9 +611,11 @@ Evidence:
 `tests/golden/backend_package_execution_portfolio/proof_report.json`, and
 `rfcs/0284-multi-package-execution-portfolio.md`.
 
-This materially advances Milestones 3 and 4 but does not close the native
-target: external package code, GPU kernels, specialized physical devices, and
-native performance remain unexecuted and unproven.
+This materially advances Milestones 3 and 4 and closes only the fixed physical
+GPU observations across two same-vendor architecture classes. External package
+code, compiler-emitted GPU kernels, cross-vendor physical portability,
+specialized physical targets, independent reproduction, and native performance
+remain unexecuted or unproven.
 
 The Source Intent Backend Package Portfolio now closes the frontend-to-package
 gap in the same milestone:

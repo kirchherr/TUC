@@ -1,0 +1,237 @@
+{
+  "$id": "https://github.com/kirchherr/TUC/schemas/bounded_gpu_observation_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TUC Bounded GPU Observation Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_boundary",
+    "execution",
+    "isolation",
+    "privacy",
+    "proof",
+    "provenance",
+    "report_digest",
+    "schema_version",
+    "workload"
+  ],
+  "properties": {
+    "claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blocked_claims",
+        "device_access_gate_reinterpreted",
+        "driver_security_review",
+        "external_reproduction",
+        "native_backend_gate_reinterpreted",
+        "normal_executor_modified",
+        "shared_display_risk_acknowledged"
+      ],
+      "properties": {
+        "blocked_claims": {
+          "const": [
+            "arbitrary_cuda_execution",
+            "compiler_emitted_cuda",
+            "general_native_backend",
+            "native_performance_parity",
+            "portable_hardware_execution",
+            "production_device_admission",
+            "vendor_replacement"
+          ]
+        },
+        "device_access_gate_reinterpreted": {"const": false},
+        "driver_security_review": {
+          "const": "operator_attested_current_vendor_update"
+        },
+        "external_reproduction": {"const": "not_yet_supplied"},
+        "native_backend_gate_reinterpreted": {"const": false},
+        "normal_executor_modified": {"const": false},
+        "shared_display_risk_acknowledged": {"const": true}
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accelerator_class",
+        "device_access",
+        "driver_api_called",
+        "fixed_native_probe_execution",
+        "jit_execution",
+        "kernel_launch_count",
+        "performance_measurement_collected",
+        "physical_device_execution",
+        "runtime_generated_code",
+        "tuc_native_backend_admitted",
+        "visible_device_count",
+        "workload_device_allocation_bytes"
+      ],
+      "properties": {
+        "accelerator_class": {"const": "nvidia_cuda_sm70"},
+        "device_access": {"const": true},
+        "driver_api_called": {"const": true},
+        "fixed_native_probe_execution": {"const": true},
+        "jit_execution": {"const": false},
+        "kernel_launch_count": {"const": 2},
+        "performance_measurement_collected": {"const": false},
+        "physical_device_execution": {"const": true},
+        "runtime_generated_code": {"const": false},
+        "tuc_native_backend_admitted": {"const": false},
+        "visible_device_count": {"const": 1},
+        "workload_device_allocation_bytes": {"const": 128}
+      }
+    },
+    "isolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capabilities_dropped",
+        "cpu_limit",
+        "driver_capabilities",
+        "effective_capabilities_zero",
+        "gpu_selection",
+        "memory_limit_bytes",
+        "network_access",
+        "no_new_privileges",
+        "non_root_gid",
+        "non_root_uid",
+        "pids_limit",
+        "repository_mount",
+        "root_filesystem_read_only",
+        "runtime_boundary",
+        "seccomp_mode"
+      ],
+      "properties": {
+        "capabilities_dropped": {"const": true},
+        "cpu_limit": {"const": 1},
+        "driver_capabilities": {"const": ["compute"]},
+        "effective_capabilities_zero": {"const": true},
+        "gpu_selection": {"const": "single_logical_device_zero"},
+        "memory_limit_bytes": {"const": 1073741824},
+        "network_access": {"const": false},
+        "no_new_privileges": {"const": true},
+        "non_root_gid": {"const": 10001},
+        "non_root_uid": {"const": 10001},
+        "pids_limit": {"const": 16},
+        "repository_mount": {"const": false},
+        "root_filesystem_read_only": {"const": true},
+        "runtime_boundary": {
+          "const": "docker_compose_nvidia_device_request"
+        },
+        "seccomp_mode": {"const": 2}
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device_name_serialized",
+        "driver_version_serialized",
+        "environment_serialized",
+        "hardware_identifiers_serialized",
+        "host_paths_serialized",
+        "raw_tensor_values_serialized",
+        "raw_timing_samples_serialized"
+      ],
+      "properties": {
+        "device_name_serialized": {"const": false},
+        "driver_version_serialized": {"const": false},
+        "environment_serialized": {"const": false},
+        "hardware_identifiers_serialized": {"const": false},
+        "host_paths_serialized": {"const": false},
+        "raw_tensor_values_serialized": {"const": false},
+        "raw_timing_samples_serialized": {"const": false}
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim", "contract", "scope", "status"],
+      "properties": {
+        "claim": {
+          "const": "fixed_neutral_workload_executes_on_one_physical_gpu_and_matches_cpu_reference"
+        },
+        "contract": {"const": "bounded_gpu_observation.physical_device.v0"},
+        "scope": {"const": "single_fixed_local_hardware_observation"},
+        "status": {"const": "PASS"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "builder_image",
+        "compose_contract_digest",
+        "container_image_digest",
+        "cuda_source_digest",
+        "dockerfile_digest",
+        "image_config_verified",
+        "image_source_binding_verified",
+        "objective_delta_report_file_digest",
+        "objective_delta_source_intent_file_digest",
+        "objective_delta_vector_file_digest",
+        "ptx_jit_disabled",
+        "runtime_image",
+        "sass_target",
+        "worker_observation_digest",
+        "workload_header_digest",
+        "workload_manifest_digest"
+      ],
+      "properties": {
+        "builder_image": {
+          "const": "nvidia/cuda:12.8.1-devel-ubuntu24.04@sha256:4b9ed5fa8361736996499f64ecebf25d4ec37ff56e4d11323ccde10aa36e0c43"
+        },
+        "compose_contract_digest": {"$ref": "#/$defs/digest"},
+        "container_image_digest": {"$ref": "#/$defs/digest"},
+        "cuda_source_digest": {"$ref": "#/$defs/digest"},
+        "dockerfile_digest": {"$ref": "#/$defs/digest"},
+        "image_config_verified": {"const": true},
+        "image_source_binding_verified": {"const": true},
+        "objective_delta_report_file_digest": {"$ref": "#/$defs/digest"},
+        "objective_delta_source_intent_file_digest": {"$ref": "#/$defs/digest"},
+        "objective_delta_vector_file_digest": {"$ref": "#/$defs/digest"},
+        "ptx_jit_disabled": {"const": true},
+        "runtime_image": {
+          "const": "nvidia/cuda:12.8.1-runtime-ubuntu24.04@sha256:828c4d878adcaa4265d80c95d8ec877149b49bb2419a4cf3bb6aa889bbb7ca2e"
+        },
+        "sass_target": {"const": "sm_70"},
+        "worker_observation_digest": {"$ref": "#/$defs/digest"},
+        "workload_header_digest": {"$ref": "#/$defs/digest"},
+        "workload_manifest_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "report_digest": {"$ref": "#/$defs/digest"},
+    "schema_version": {"const": "tuc.bounded_gpu_observation_report.v0"},
+    "workload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dtype",
+        "input_policy",
+        "operation_families",
+        "reference_correctness_passed",
+        "semantic_origin",
+        "shape",
+        "workload_contract"
+      ],
+      "properties": {
+        "dtype": {"const": "float64"},
+        "input_policy": {"const": "fixed_public_non_sensitive_test_vector"},
+        "operation_families": {"const": ["matmul", "elementwise"]},
+        "reference_correctness_passed": {"const": true},
+        "semantic_origin": {"const": "objective_delta_portable_compute_v0"},
+        "shape": {"const": [2, 2]},
+        "workload_contract": {
+          "const": "objective_delta_matmul_elementwise_2x2_f64.v0"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

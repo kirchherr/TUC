@@ -1,0 +1,38 @@
+{
+  "dtype": "float64",
+  "dynamic_input": false,
+  "expected_output": [
+    [4.0, 0.5],
+    [-2.0, 1.25]
+  ],
+  "input_policy": "fixed_public_non_sensitive_test_vector",
+  "inputs": {
+    "lhs": [
+      [1.0, -2.0],
+      [0.5, 3.0]
+    ],
+    "rhs": [
+      [2.0, 1.0],
+      [-1.0, 0.25]
+    ]
+  },
+  "operations": [
+    {
+      "family": "matmul",
+      "inputs": ["lhs", "rhs"],
+      "name": "projection",
+      "output": "projection"
+    },
+    {
+      "family": "elementwise",
+      "inputs": ["projection"],
+      "kind": "identity",
+      "name": "activation",
+      "output": "activated"
+    }
+  ],
+  "schema_version": "tuc.bounded_gpu_observation_workload.v0",
+  "semantic_origin": "objective_delta_portable_compute_v0",
+  "shape": [2, 2],
+  "workload_contract": "objective_delta_matmul_elementwise_2x2_f64.v0"
+}

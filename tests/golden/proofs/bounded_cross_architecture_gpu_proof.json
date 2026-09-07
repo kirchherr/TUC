@@ -1,0 +1,72 @@
+{
+  "claim_boundary": {
+    "architecture_count": 2,
+    "blocked_claims": [
+      "arbitrary_program_portability",
+      "cross_vendor_execution",
+      "general_native_backend",
+      "independent_reproduction",
+      "native_performance_parity",
+      "production_device_admission",
+      "universal_hardware_proof",
+      "vendor_replacement"
+    ],
+    "independent_reproduction": "not_yet_supplied",
+    "observation_ownership": "same_maintainer",
+    "universal_compute_claim_proven": false,
+    "vendor_count": 1
+  },
+  "equivalence": {
+    "cpu_reference_match_all": true,
+    "fixed_kernel_count_equal": true,
+    "operation_families_equal": true,
+    "ptx_jit_disabled_all": true,
+    "raw_tensor_values_serialized": false,
+    "runtime_generated_code_all": false,
+    "tensor_shape_dtype_equal": true,
+    "workload_manifest_digest_equal": true
+  },
+  "observations": [
+    {
+      "accelerator_class": "nvidia_cuda_sm70",
+      "container_image_digest": "sha256:f4dfbe61c9ac582976e9adfa974cadeb1d074b52bb954afa0e0cccc385f912d2",
+      "kernel_launch_count": 2,
+      "report_digest": "sha256:82edd3b39f084e3a9e5ff7978dcfbbac5aa107f7011163bcdcc0fbbb8886110f",
+      "sass_target": "sm_70",
+      "schema_version": "tuc.bounded_gpu_observation_report.v0",
+      "workload_manifest_digest": "sha256:b4db50ff9a90d776b5028e902d1528ef09bdca945a4d7d8166850e87e72cb1c0"
+    },
+    {
+      "accelerator_class": "nvidia_cuda_sm86",
+      "container_image_digest": "sha256:b2a76206fcefdda9006ec3188e624cf16de1f7a78a6e3b8d8d6f330f670a6fcf",
+      "kernel_launch_count": 2,
+      "report_digest": "sha256:13893caf3b48a39e0de7690b4aa10680ae4af3d67921d29a44e80a70583c1086",
+      "sass_target": "sm_86",
+      "schema_version": "tuc.bounded_gpu_sm86_observation_report.v0",
+      "workload_manifest_digest": "sha256:b4db50ff9a90d776b5028e902d1528ef09bdca945a4d7d8166850e87e72cb1c0"
+    }
+  ],
+  "proof": {
+    "claim": "same_fixed_neutral_compute_intent_executes_on_two_nvidia_architectures_and_matches_cpu_reference",
+    "contract": "bounded_cross_architecture_gpu_equivalence.v0",
+    "scope": "two_same_maintainer_fixed_hardware_observations",
+    "status": "PASS"
+  },
+  "report_digest": "sha256:36d9b401fb8eeab2f9f609da6c371aa141472c7c97517aff62ae2c022dc43d8f",
+  "schema_version": "tuc.bounded_cross_architecture_gpu_proof.v0",
+  "workload": {
+    "dtype": "float64",
+    "input_policy": "fixed_public_non_sensitive_test_vector",
+    "operation_families": [
+      "matmul",
+      "elementwise"
+    ],
+    "reference_correctness_passed": true,
+    "semantic_origin": "objective_delta_portable_compute_v0",
+    "shape": [
+      2,
+      2
+    ],
+    "workload_contract": "objective_delta_matmul_elementwise_2x2_f64.v0"
+  }
+}
