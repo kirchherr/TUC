@@ -49,6 +49,7 @@ C11_IMAGE_DIGEST = (
 DOC_PATH = Path("docs/BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md")
 THREAT_MODEL_PATH = Path("docs/BOUNDED_COMPILER_EMITTED_C11_THREAT_MODEL.md")
 RFC_PATH = Path("rfcs/0303-bounded-compiler-target-equivalence-proof.md")
+WORKFLOW_PATH = Path(".github/workflows/bounded-c11-proof.yml")
 
 
 def _source_intent() -> dict[str, object]:
@@ -229,6 +230,26 @@ def test_worker_response_rejects_extra_fields_and_reinterpreted_execution() -> N
     response["cpu_model"] = "should-not-be-public"
     with pytest.raises(BoundedCompilerEmittedC11ProofError, match="key drift"):
         _validate_worker_response(response, "execute")
+
+
+def test_bounded_c11_workflow_is_read_only_and_sha_pinned() -> None:
+    workflow = WORKFLOW_PATH.read_text(encoding="utf-8")
+
+    assert "permissions:\n  contents: read\n" in workflow
+    assert "pull_request_target" not in workflow
+    assert "@v" not in workflow
+    assert "secrets." not in workflow
+    assert (
+        "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" in workflow
+    )
+    assert (
+        "actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405"
+        in workflow
+    )
+    assert "pip install --require-hashes -r requirements/ci.txt" in workflow
+    assert "build --pull compiler-emitted-c11" in workflow
+    assert "bounded_compiler_emitted_c11_proof.py --preflight" in workflow
+    assert "bounded_compiler_emitted_c11_proof.py --execute" in workflow
 
     response = _expected_worker_response("execute")
     response["device_access"] = True

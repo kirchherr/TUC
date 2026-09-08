@@ -169,10 +169,6 @@ jobs:
         run: python examples/first_real_triton_kernel_path.py
       - name: Real Triton first slice evidence portfolio
         run: python examples/real_triton_first_slice_evidence_portfolio.py
-      - name: Bounded compiler-emitted C11 emission
-        run: python examples/bounded_compiler_emitted_c11_emission.py
-      - name: Bounded compiler target equivalence proof
-        run: python examples/bounded_compiler_target_equivalence_proof.py
       - name: Evidence graph acyclicity gate
         run: python examples/evidence_graph_acyclicity_gate.py
       - name: Baseline benchmark smoke test
@@ -195,28 +191,3 @@ jobs:
         env:
           TUC_VERIFY_OCI_GOLDEN: "1"
         run: python examples/oci_source_ingestion_research_proof.py
-
-  oci-compiler-emitted-c11:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    env:
-      PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-      - name: Install proof dependencies
-        run: |
-          python -m pip install --require-hashes -r requirements/ci.txt
-          python -m pip install --no-deps --no-build-isolation -e .
-      - name: Build bounded compiler-emitted C11 worker
-        run: >-
-          docker compose --profile compiler-emitted-c11
-          build --pull compiler-emitted-c11
-      - name: Verify zero-call preflight
-        run: python examples/bounded_compiler_emitted_c11_proof.py --preflight
-      - name: Execute bounded static C11 proof
-        run: python examples/bounded_compiler_emitted_c11_proof.py --execute
