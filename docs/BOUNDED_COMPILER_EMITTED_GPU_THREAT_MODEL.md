@@ -124,7 +124,7 @@ blocked.
 
 - schema:
   `schemas/bounded_compiler_emitted_gpu_observation_report.v0.schema.json`;
-- accepted report, once completed:
+- accepted report:
   `tests/golden/proofs/bounded_compiler_emitted_gpu_observation_report.json`;
 - tests: `tests/test_bounded_compiler_emitted_gpu_proof.py`;
 - decision: `rfcs/0302-bounded-compiler-emitted-gpu-proof.md`.

@@ -2,8 +2,9 @@
 
 ## Status
 
-Proposed pending successful no-kernel preflight and physical observation on the
-reviewed `sm_86` profile. This RFC does not admit a native TUC backend.
+Accepted after the reviewed `sm_86` no-kernel preflight and physical
+two-kernel observation both passed. This RFC does not admit a native TUC
+backend.
 
 ## Context
 
@@ -87,7 +88,7 @@ the Device Access Sandbox Gate or Native Backend Execution Security Gate.
 - fixed build inputs and generated artifacts: `docker/gpu-observation/`;
 - closed schema:
   `schemas/bounded_compiler_emitted_gpu_observation_report.v0.schema.json`;
-- accepted physical observation, once completed:
+- accepted physical observation:
   `tests/golden/proofs/bounded_compiler_emitted_gpu_observation_report.json`;
 - tests: `tests/test_bounded_compiler_emitted_gpu_proof.py`;
 - procedure: `docs/BOUNDED_COMPILER_EMITTED_GPU_PROOF.md`;

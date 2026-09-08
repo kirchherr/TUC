@@ -2,8 +2,10 @@
 
 ## Status
 
-Implementation complete; physical acceptance remains pending until the
-reviewed `sm_86` preflight and execution produce a valid checked-in report.
+Accepted under RFC 0302. The reviewed `sm_86` no-kernel preflight, exactly two
+compiler-emitted kernel launches, independent CPU-reference comparison, and
+sanitized report all passed.
+
 Decision: `rfcs/0302-bounded-compiler-emitted-gpu-proof.md`.
 
 Threat model:
