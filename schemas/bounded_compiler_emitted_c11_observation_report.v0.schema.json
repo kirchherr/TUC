@@ -1,0 +1,182 @@
+{
+  "$id": "https://github.com/kirchherr/TUC/schemas/bounded_compiler_emitted_c11_observation_report.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TUC Bounded Compiler-Emitted C11 Observation Report v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_boundary",
+    "emission",
+    "execution",
+    "isolation",
+    "privacy",
+    "proof",
+    "provenance",
+    "report_digest",
+    "schema_version",
+    "workload"
+  ],
+  "properties": {
+    "claim_boundary": {
+      "const": {
+        "blocked_claims": [
+          "arbitrary_source_programs",
+          "cross_isa_portability",
+          "general_cpu_backend",
+          "independent_reproduction",
+          "native_performance_parity",
+          "production_runtime_admission",
+          "universal_hardware_proof",
+          "vendor_replacement"
+        ],
+        "device_access_gate_reinterpreted": false,
+        "external_reproduction": "not_yet_supplied",
+        "native_backend_gate_reinterpreted": false,
+        "normal_executor_modified": false
+      }
+    },
+    "emission": {
+      "const": {
+        "code_generated": true,
+        "code_generation_phase": "trusted_review_time_before_container_build",
+        "cuda_dependency": false,
+        "emission_contract": "bounded_c11_emission.exact_source_intent_x86_64.v0",
+        "emission_plan_verified": true,
+        "generated_function_count": 2,
+        "identifier_policy": "fixed_symbols_no_source_identifier_interpolation",
+        "operation_families": ["matmul", "elementwise"],
+        "runtime_generated_code": false,
+        "source_intent_accepted": true,
+        "source_intent_schema_version": "source_intent.v0",
+        "source_text_executed": false,
+        "target_profile": "linux-x86_64-static-c11-compiler-emitted"
+      }
+    },
+    "execution": {
+      "const": {
+        "aot_binary_execution": true,
+        "architecture": "x86_64",
+        "binary_format": "elf64",
+        "compiler_emitted_c11_execution": true,
+        "controlled_host_execution": true,
+        "device_access": false,
+        "dynamic_linking": false,
+        "generated_function_call_count": 2,
+        "jit_execution": false,
+        "performance_measurement_collected": false,
+        "runtime_generated_code": false,
+        "tuc_native_backend_admitted": false,
+        "workload_working_set_bytes": 256
+      }
+    },
+    "isolation": {
+      "const": {
+        "capabilities_dropped": true,
+        "cpu_limit": 1,
+        "effective_capabilities_zero": true,
+        "memory_limit_bytes": 134217728,
+        "network_access": false,
+        "no_new_privileges": true,
+        "non_root_gid": 10001,
+        "non_root_uid": 10001,
+        "pids_limit": 8,
+        "repository_mount": false,
+        "root_filesystem_read_only": true,
+        "runtime_boundary": "docker_static_scratch_image",
+        "seccomp_mode": 2
+      }
+    },
+    "privacy": {
+      "const": {
+        "environment_serialized": false,
+        "generated_source_serialized": false,
+        "hardware_identifiers_serialized": false,
+        "host_paths_serialized": false,
+        "raw_tensor_values_serialized": false,
+        "raw_timing_samples_serialized": false,
+        "source_text_serialized": false
+      }
+    },
+    "proof": {
+      "const": {
+        "claim": "one_admitted_source_intent_lowers_to_reviewed_c11_and_executes_as_static_x86_64_elf_with_reference_equivalence",
+        "contract": "bounded_compiler_emitted_c11_observation.controlled_host.v0",
+        "scope": "one_same_maintainer_fixed_non_cuda_aot_observation",
+        "status": "PASS"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "builder_image",
+        "compose_contract_digest",
+        "container_image_digest",
+        "dockerfile_digest",
+        "emission_plan_file_digest",
+        "emission_plan_payload_digest",
+        "generated_header_digest",
+        "generated_source_digest",
+        "harness_digest",
+        "image_config_verified",
+        "image_source_binding_verified",
+        "runtime_image",
+        "source_intent_file_digest",
+        "source_intent_payload_digest",
+        "static_linkage_verified",
+        "target_architecture",
+        "worker_observation_digest",
+        "workload_header_digest",
+        "workload_manifest_file_digest",
+        "workload_payload_digest"
+      ],
+      "properties": {
+        "builder_image": {
+          "const": "gcc:14.2.0-bookworm@sha256:82549aa8f90ada3236a8be70c74543132a76662ef33f0c3271ed802b81584a82"
+        },
+        "compose_contract_digest": {"$ref": "#/$defs/digest"},
+        "container_image_digest": {"$ref": "#/$defs/digest"},
+        "dockerfile_digest": {"$ref": "#/$defs/digest"},
+        "emission_plan_file_digest": {"$ref": "#/$defs/digest"},
+        "emission_plan_payload_digest": {"$ref": "#/$defs/digest"},
+        "generated_header_digest": {"$ref": "#/$defs/digest"},
+        "generated_source_digest": {"$ref": "#/$defs/digest"},
+        "harness_digest": {"$ref": "#/$defs/digest"},
+        "image_config_verified": {"const": true},
+        "image_source_binding_verified": {"const": true},
+        "runtime_image": {"const": "scratch-static-elf"},
+        "source_intent_file_digest": {"$ref": "#/$defs/digest"},
+        "source_intent_payload_digest": {"$ref": "#/$defs/digest"},
+        "static_linkage_verified": {"const": true},
+        "target_architecture": {"const": "x86_64"},
+        "worker_observation_digest": {"$ref": "#/$defs/digest"},
+        "workload_header_digest": {"$ref": "#/$defs/digest"},
+        "workload_manifest_file_digest": {"$ref": "#/$defs/digest"},
+        "workload_payload_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "report_digest": {"$ref": "#/$defs/digest"},
+    "schema_version": {
+      "const": "tuc.bounded_compiler_emitted_c11_observation_report.v0"
+    },
+    "workload": {
+      "const": {
+        "dtype": "float32",
+        "elementwise_semantics": "relu",
+        "input_policy": "fixed_public_non_sensitive_test_vector",
+        "input_shapes": [[4, 8], [8, 2]],
+        "operation_families": ["matmul", "elementwise"],
+        "output_shape": [4, 2],
+        "reference_correctness_passed": true,
+        "semantic_origin": "accepted_triton_research_source_intent",
+        "workload_contract": "research_triton_matmul_relu_4x8x2_f32.v0"
+      }
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

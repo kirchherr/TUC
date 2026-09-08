@@ -200,3 +200,42 @@ services:
     stop_grace_period: 1s
     command:
       - --preflight
+
+  compiler-emitted-c11:
+    profiles:
+      - compiler-emitted-c11
+    build:
+      context: ./docker/c11-observation
+      dockerfile: Dockerfile.compiler-emitted-c11
+      args:
+        TUC_C11_EMISSION_PLAN_DIGEST: sha256:45fc7bf12f469179056be0f5cb4e860ea69bb9eaca9d54f84a954063d3f58ab7
+        TUC_C11_GENERATED_HEADER_DIGEST: sha256:df659c2e44804170786c7fbd5e86cc15eb1bb2a17340b45f64dbb71eeaafe3d6
+        TUC_C11_GENERATED_SOURCE_DIGEST: sha256:bfa557a3d3af2e9f3131f94bfd702baf194d3efb03603d385a21a3c5c6d68ac3
+        TUC_C11_HARNESS_DIGEST: sha256:6c7b43916170231ef02e7fe247ab9c04c4304242913fae8ed73de123791f5360
+        TUC_C11_SOURCE_INTENT_DIGEST: sha256:ad430b8afea64f246f68ab5f0c942ae65d8cfa987152b8f28e75b7a31eb1eee9
+        TUC_C11_WORKLOAD_HEADER_DIGEST: sha256:c40bc61ea0ff0c91d2bd0b764770730abe13ffbdae2070f6d625941d35d2b757
+        TUC_C11_WORKLOAD_MANIFEST_DIGEST: sha256:ce14428db957c2e5f5000d37137b1024bd60a8b3d850f4f87024728b4fc3f310
+    image: tuc-compiler-emitted-c11:research-v0
+    platform: linux/amd64
+    pull_policy: never
+    network_mode: none
+    read_only: true
+    user: "10001:10001"
+    working_dir: /run/tuc
+    environment:
+      LANG: C
+      LC_ALL: C
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 8
+    mem_limit: 128m
+    cpus: 1.0
+    ipc: private
+    shm_size: 4m
+    stdin_open: false
+    tty: false
+    stop_grace_period: 1s
+    command:
+      - --preflight

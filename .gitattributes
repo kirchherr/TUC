@@ -7,6 +7,8 @@
 *.json text eol=lf
 *.cu text eol=lf
 *.cuh text eol=lf
+*.c text eol=lf
+*.h text eol=lf
 *.hpp text eol=lf
 *.dockerignore text eol=lf
 *.mlir text eol=lf

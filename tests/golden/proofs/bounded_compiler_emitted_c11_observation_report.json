@@ -1,0 +1,131 @@
+{
+  "claim_boundary": {
+    "blocked_claims": [
+      "arbitrary_source_programs",
+      "cross_isa_portability",
+      "general_cpu_backend",
+      "independent_reproduction",
+      "native_performance_parity",
+      "production_runtime_admission",
+      "universal_hardware_proof",
+      "vendor_replacement"
+    ],
+    "device_access_gate_reinterpreted": false,
+    "external_reproduction": "not_yet_supplied",
+    "native_backend_gate_reinterpreted": false,
+    "normal_executor_modified": false
+  },
+  "emission": {
+    "code_generated": true,
+    "code_generation_phase": "trusted_review_time_before_container_build",
+    "cuda_dependency": false,
+    "emission_contract": "bounded_c11_emission.exact_source_intent_x86_64.v0",
+    "emission_plan_verified": true,
+    "generated_function_count": 2,
+    "identifier_policy": "fixed_symbols_no_source_identifier_interpolation",
+    "operation_families": [
+      "matmul",
+      "elementwise"
+    ],
+    "runtime_generated_code": false,
+    "source_intent_accepted": true,
+    "source_intent_schema_version": "source_intent.v0",
+    "source_text_executed": false,
+    "target_profile": "linux-x86_64-static-c11-compiler-emitted"
+  },
+  "execution": {
+    "aot_binary_execution": true,
+    "architecture": "x86_64",
+    "binary_format": "elf64",
+    "compiler_emitted_c11_execution": true,
+    "controlled_host_execution": true,
+    "device_access": false,
+    "dynamic_linking": false,
+    "generated_function_call_count": 2,
+    "jit_execution": false,
+    "performance_measurement_collected": false,
+    "runtime_generated_code": false,
+    "tuc_native_backend_admitted": false,
+    "workload_working_set_bytes": 256
+  },
+  "isolation": {
+    "capabilities_dropped": true,
+    "cpu_limit": 1,
+    "effective_capabilities_zero": true,
+    "memory_limit_bytes": 134217728,
+    "network_access": false,
+    "no_new_privileges": true,
+    "non_root_gid": 10001,
+    "non_root_uid": 10001,
+    "pids_limit": 8,
+    "repository_mount": false,
+    "root_filesystem_read_only": true,
+    "runtime_boundary": "docker_static_scratch_image",
+    "seccomp_mode": 2
+  },
+  "privacy": {
+    "environment_serialized": false,
+    "generated_source_serialized": false,
+    "hardware_identifiers_serialized": false,
+    "host_paths_serialized": false,
+    "raw_tensor_values_serialized": false,
+    "raw_timing_samples_serialized": false,
+    "source_text_serialized": false
+  },
+  "proof": {
+    "claim": "one_admitted_source_intent_lowers_to_reviewed_c11_and_executes_as_static_x86_64_elf_with_reference_equivalence",
+    "contract": "bounded_compiler_emitted_c11_observation.controlled_host.v0",
+    "scope": "one_same_maintainer_fixed_non_cuda_aot_observation",
+    "status": "PASS"
+  },
+  "provenance": {
+    "builder_image": "gcc:14.2.0-bookworm@sha256:82549aa8f90ada3236a8be70c74543132a76662ef33f0c3271ed802b81584a82",
+    "compose_contract_digest": "sha256:ed3223b68116b6e48fdfc55cf33fb8920eff7b11465ff94e1fc33471cfc07dca",
+    "container_image_digest": "sha256:63fb0598ba85a204225aeb53b1a5bfbd26b4ac3c24ad8b6660ba66bccdfbdf6c",
+    "dockerfile_digest": "sha256:254eb5301da8b8c5357a54b7ffb66b8d82bb584c85870b80a16f5a4116739f16",
+    "emission_plan_file_digest": "sha256:45fc7bf12f469179056be0f5cb4e860ea69bb9eaca9d54f84a954063d3f58ab7",
+    "emission_plan_payload_digest": "sha256:5e376516a5e888f85c36d799fa13000f19c8f167792479c5266c72c5a96fcab1",
+    "generated_header_digest": "sha256:df659c2e44804170786c7fbd5e86cc15eb1bb2a17340b45f64dbb71eeaafe3d6",
+    "generated_source_digest": "sha256:bfa557a3d3af2e9f3131f94bfd702baf194d3efb03603d385a21a3c5c6d68ac3",
+    "harness_digest": "sha256:6c7b43916170231ef02e7fe247ab9c04c4304242913fae8ed73de123791f5360",
+    "image_config_verified": true,
+    "image_source_binding_verified": true,
+    "runtime_image": "scratch-static-elf",
+    "source_intent_file_digest": "sha256:ad430b8afea64f246f68ab5f0c942ae65d8cfa987152b8f28e75b7a31eb1eee9",
+    "source_intent_payload_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
+    "static_linkage_verified": true,
+    "target_architecture": "x86_64",
+    "worker_observation_digest": "sha256:b9e95975d78c09b779e9c53c85e2655d7a715cd4afe7442eb49d283477b8f940",
+    "workload_header_digest": "sha256:c40bc61ea0ff0c91d2bd0b764770730abe13ffbdae2070f6d625941d35d2b757",
+    "workload_manifest_file_digest": "sha256:ce14428db957c2e5f5000d37137b1024bd60a8b3d850f4f87024728b4fc3f310",
+    "workload_payload_digest": "sha256:7aec3a02cdfe8fa687b6531d2a37849418bc056989b1cbdc397730b6dfebaadd"
+  },
+  "report_digest": "sha256:62db907dfbb8bed2627fb083d2aff368523ce2a9c7a3d04d3e020f935efe8656",
+  "schema_version": "tuc.bounded_compiler_emitted_c11_observation_report.v0",
+  "workload": {
+    "dtype": "float32",
+    "elementwise_semantics": "relu",
+    "input_policy": "fixed_public_non_sensitive_test_vector",
+    "input_shapes": [
+      [
+        4,
+        8
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "operation_families": [
+      "matmul",
+      "elementwise"
+    ],
+    "output_shape": [
+      4,
+      2
+    ],
+    "reference_correctness_passed": true,
+    "semantic_origin": "accepted_triton_research_source_intent",
+    "workload_contract": "research_triton_matmul_relu_4x8x2_f32.v0"
+  }
+}

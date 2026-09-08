@@ -1,0 +1,78 @@
+{
+  "blocked_claims": [
+    "arbitrary_source_intent",
+    "cross_isa_portability",
+    "dynamic_shapes_or_inputs",
+    "free_form_c",
+    "general_cpu_backend",
+    "native_performance_parity",
+    "production_runtime_admission",
+    "runtime_code_generation",
+    "source_text_execution"
+  ],
+  "code_generation_phase": "trusted_review_time_before_container_build",
+  "emission_contract": "bounded_c11_emission.exact_source_intent_x86_64.v0",
+  "generated_function_count": 2,
+  "generated_header_digest": "sha256:df659c2e44804170786c7fbd5e86cc15eb1bb2a17340b45f64dbb71eeaafe3d6",
+  "generated_source_digest": "sha256:bfa557a3d3af2e9f3131f94bfd702baf194d3efb03603d385a21a3c5c6d68ac3",
+  "identifier_policy": "fixed_symbols_no_source_identifier_interpolation",
+  "operations": [
+    {
+      "family": "matmul",
+      "function_call_count": 1,
+      "function_symbol": "tuc_projection_matmul_4x8x2_f32",
+      "input_shapes": [
+        [
+          4,
+          8
+        ],
+        [
+          8,
+          2
+        ]
+      ],
+      "operation": "projection",
+      "output_shape": [
+        4,
+        2
+      ]
+    },
+    {
+      "attributes": {
+        "elementwise_kind": "relu"
+      },
+      "family": "elementwise",
+      "function_call_count": 1,
+      "function_symbol": "tuc_activated_relu_4x2_f32",
+      "input_shapes": [
+        [
+          4,
+          2
+        ]
+      ],
+      "operation": "activated",
+      "output_shape": [
+        4,
+        2
+      ]
+    }
+  ],
+  "plan_digest": "sha256:5e376516a5e888f85c36d799fa13000f19c8f167792479c5266c72c5a96fcab1",
+  "runtime_generated_code": false,
+  "schema_version": "tuc.bounded_compiler_emitted_c11_plan.v0",
+  "source_intent_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
+  "source_intent_schema_version": "source_intent.v0",
+  "target": {
+    "architecture": "x86_64",
+    "binary_format": "elf64",
+    "compiler_contract": "gcc-14.2.0",
+    "cuda_dependency": false,
+    "execution_model": "bounded_sequential_host_functions",
+    "linkage": "static",
+    "source_language": "c11",
+    "target_profile": "linux-x86_64-static-c11-compiler-emitted"
+  },
+  "workload_contract": "research_triton_matmul_relu_4x8x2_f32.v0",
+  "workload_digest": "sha256:7aec3a02cdfe8fa687b6531d2a37849418bc056989b1cbdc397730b6dfebaadd",
+  "workload_header_digest": "sha256:c40bc61ea0ff0c91d2bd0b764770730abe13ffbdae2070f6d625941d35d2b757"
+}

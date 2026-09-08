@@ -267,6 +267,17 @@ Completed evidence:
   unchanged. RFC 0302 and its closed evidence explicitly keep arbitrary
   programs, a general CUDA backend, cross-vendor portability, production
   admission, native performance, and independent reproduction blocked.
+- Bounded Compiler Target Equivalence Proof v0 closes the CUDA-only target
+  gap for that exact slice. The identical accepted Source Intent and fixed
+  workload are deterministically emitted as two C11 functions, compiled by a
+  digest-pinned GCC 14.2.0 builder into one static `x86_64` ELF, and executed
+  in a device-free, networkless, read-only `scratch` container. The terminal
+  result passes a separately implemented reference, and a closed aggregate
+  binds that observation to the accepted CUDA/SASS observation through equal
+  Source Intent and workload provenance. RFC 0303 keeps arbitrary programs,
+  cross-ISA and cross-vendor portability, general native backends, native
+  performance, production admission, universal hardware support, and
+  independent reproduction blocked.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -1513,10 +1524,12 @@ Go/No-Go:
    external reviewer can inspect and reimplement the fixed contract without
    installing TUC or NumPy. Neither release CI self-reproduction nor the
    same-project audit implementation is independent evidence.
-8. Preserve the accepted RFC 0302 compiler-emitted physical proof as one exact
-   slice. Any generalization must add a distinct hardware-independence result,
-   preferably an independently controlled replay or a separately specified
-   non-CUDA target, rather than merely widening CUDA syntax.
+8. Preserve RFC 0302 and RFC 0303 as one exact, two-target compiler-emission
+   slice. The separately specified static C11 target now supplies the first
+   non-CUDA result without changing normal-runtime admission. The next
+   generalization must add a distinct dimension such as independent
+   reproduction, another ISA or vendor, or a separately reviewed source
+   program; do not merely widen CUDA or C syntax.
 9. Advance practical trusted simulator execution through explicit opt-in
    runtime proofs such as
    [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md),
