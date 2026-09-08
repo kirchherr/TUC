@@ -231,6 +231,11 @@ def test_worker_response_rejects_extra_fields_and_reinterpreted_execution() -> N
     with pytest.raises(BoundedCompilerEmittedC11ProofError, match="key drift"):
         _validate_worker_response(response, "execute")
 
+    response = _expected_worker_response("execute")
+    response["device_access"] = True
+    with pytest.raises(BoundedCompilerEmittedC11ProofError, match="invariant drift"):
+        _validate_worker_response(response, "execute")
+
 
 def test_bounded_c11_workflow_is_read_only_and_sha_pinned() -> None:
     workflow = WORKFLOW_PATH.read_text(encoding="utf-8")
@@ -250,11 +255,6 @@ def test_bounded_c11_workflow_is_read_only_and_sha_pinned() -> None:
     assert "build --pull compiler-emitted-c11" in workflow
     assert "bounded_compiler_emitted_c11_proof.py --preflight" in workflow
     assert "bounded_compiler_emitted_c11_proof.py --execute" in workflow
-
-    response = _expected_worker_response("execute")
-    response["device_access"] = True
-    with pytest.raises(BoundedCompilerEmittedC11ProofError, match="invariant drift"):
-        _validate_worker_response(response, "execute")
 
 
 def test_c11_report_is_closed_metadata_only_evidence() -> None:
