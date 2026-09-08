@@ -36,6 +36,13 @@ reference. This is a narrow
 cross-architecture feasibility result within one vendor, not a general native
 backend, cross-vendor proof, or performance result.
 
+A separate bounded proof now starts from one already admitted float32
+Matmul-plus-ReLU Source Intent payload, deterministically emits two fixed CUDA
+kernels, compiles them ahead of time as `sm_86` SASS, and observes them on one
+physical GPU against an independent CPU reference. This closes one exact
+compiler-to-device research path, not arbitrary code generation, a general
+CUDA backend, production admission, cross-vendor portability, or performance.
+
 Running the experiment in several ordinary cloud VMs should reproduce it. That
 is useful evidence that the released experiment is portable and deterministic
 across independent environments. Because the current TUC backends are
@@ -351,6 +358,20 @@ records two architecture classes but one vendor and same-maintainer ownership;
 cross-vendor execution, independent reproduction, arbitrary programs, native
 performance, and normal-runtime admission remain blocked. RFC:
 `rfcs/0301-bounded-cross-architecture-gpu-proof.md`.
+
+The
+[Bounded Compiler-Emitted GPU Proof](docs/BOUNDED_COMPILER_EMITTED_GPU_PROOF.md)
+advances one already admitted Triton research Source Intent slice through
+deterministic Matmul-plus-ReLU CUDA emission and two physical `sm_86` kernel
+launches. Its
+[sanitized evidence](tests/golden/proofs/bounded_compiler_emitted_gpu_observation_report.json)
+binds the Source Intent, lowering plan, generated kernel, hardened image, and
+CPU-reference PASS without serializing source, generated code, tensor values,
+host identity, or timings. Arbitrary programs, a general CUDA backend,
+cross-vendor execution, native performance, production admission, and
+independent reproduction remain blocked. RFC:
+`rfcs/0302-bounded-compiler-emitted-gpu-proof.md`; schema:
+`schemas/bounded_compiler_emitted_gpu_observation_report.v0.schema.json`.
 
 Current runtime surfaces:
 

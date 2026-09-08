@@ -601,6 +601,19 @@ the universal-compute thesis. See
 `docs/BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md` and
 `rfcs/0301-bounded-cross-architecture-gpu-proof.md`.
 
+Bounded Compiler-Emitted GPU Proof v0 now closes one exact frontend-to-physical
+code-generation path. The already admitted float32 Matmul-plus-ReLU Source
+Intent payload is canonicalized and semantics-checked, lowered by a
+deterministic fixed-template emitter into exactly two CUDA kernels, compiled
+ahead of time as PTX-free `sm_86` SASS, and observed on one physical GPU. The
+terminal result passed an independent CPU reference under the existing
+hardened device boundary. This is evidence that compiler-emitted code can join
+the bounded proof chain; it does not admit arbitrary Source Intent, a general
+CUDA backend, runtime code generation, normal-runtime device execution,
+cross-vendor portability, production use, independent reproduction, or native
+performance. See `docs/BOUNDED_COMPILER_EMITTED_GPU_PROOF.md` and
+`rfcs/0302-bounded-compiler-emitted-gpu-proof.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
@@ -611,11 +624,12 @@ Evidence:
 `tests/golden/backend_package_execution_portfolio/proof_report.json`, and
 `rfcs/0284-multi-package-execution-portfolio.md`.
 
-This materially advances Milestones 3 and 4 and closes only the fixed physical
-GPU observations across two same-vendor architecture classes. External package
-code, compiler-emitted GPU kernels, cross-vendor physical portability,
-specialized physical targets, independent reproduction, and native performance
-remain unexecuted or unproven.
+This materially advances Milestones 3 and 4 and closes the fixed physical GPU
+observations across two same-vendor architecture classes plus one exact
+compiler-emitted Source Intent slice on `sm_86`. External package code,
+arbitrary compiler-emitted programs, a general native backend, cross-vendor
+physical portability, specialized physical targets, independent reproduction,
+and native performance remain unexecuted or unproven.
 
 The Source Intent Backend Package Portfolio now closes the frontend-to-package
 gap in the same milestone:

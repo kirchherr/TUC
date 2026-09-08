@@ -1,0 +1,8 @@
+*
+!Dockerfile.compiler-emitted-sm86
+!bounded_compiler_emitted_gpu_observation_sm86.cu
+!compiler_emitted_workload.hpp
+!compiler_emitted_workload.v0.json
+!compiler_emitted_source_intent.v0.json
+!generated_compiler_emitted_sm86_kernels.cuh
+!compiler_emission_plan.v0.json

@@ -258,6 +258,15 @@ Completed evidence:
   ownership, and absent independent reproduction; cross-vendor, arbitrary
   program, native-performance, production-backend, and universal-hardware
   claims remain blocked.
+- Bounded Compiler-Emitted GPU Proof v0 closes one exact code-generation gap.
+  One previously admitted float32 `matmul -> ReLU` Source Intent payload is
+  digest- and semantics-validated, deterministically lowered into two fixed
+  CUDA kernel definitions, compiled ahead of time as PTX-free `sm_86` SASS,
+  and physically observed against an independent CPU reference. The harness
+  defines no kernels, the run allocated 256 bytes, and the normal executor is
+  unchanged. RFC 0302 and its closed evidence explicitly keep arbitrary
+  programs, a general CUDA backend, cross-vendor portability, production
+  admission, native performance, and independent reproduction blocked.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -1504,16 +1513,20 @@ Go/No-Go:
    external reviewer can inspect and reimplement the fixed contract without
    installing TUC or NumPy. Neither release CI self-reproduction nor the
    same-project audit implementation is independent evidence.
-8. Advance practical trusted simulator execution through explicit opt-in
+8. Preserve the accepted RFC 0302 compiler-emitted physical proof as one exact
+   slice. Any generalization must add a distinct hardware-independence result,
+   preferably an independently controlled replay or a separately specified
+   non-CUDA target, rather than merely widening CUDA syntax.
+9. Advance practical trusted simulator execution through explicit opt-in
    runtime proofs such as
    [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md),
    [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md), and
    [Runtime Materialized Allocation](docs/RUNTIME_MATERIALIZED_ALLOCATION.md)
    without widening native, device, plugin, residency, or performance claims.
-9. Extend planning explanation coverage only when new proof slices add
+10. Extend planning explanation coverage only when new proof slices add
    distinct placement, fallback, or movement evidence.
-10. Integrate real Triton intent only after the abstraction proof remains stable.
-11. Expand to specialized hardware simulators only when they strengthen the
+11. Integrate real Triton intent only after the abstraction proof remains stable.
+12. Expand to specialized hardware simulators only when they strengthen the
    universal compute claim.
 
 ## Success Metrics

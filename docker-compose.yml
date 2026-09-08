@@ -151,3 +151,52 @@ services:
     stop_grace_period: 1s
     command:
       - --preflight
+
+  gpu-compiler-emitted-sm86:
+    profiles:
+      - gpu-compiler-emitted-sm86
+    build:
+      context: ./docker/gpu-observation
+      dockerfile: Dockerfile.compiler-emitted-sm86
+      args:
+        TUC_GPU_OBSERVATION_EMISSION_PLAN_DIGEST: sha256:d19bbb2b77aad286a814b8bcb0b8fdddc528c68beb906a6c2fae49615b8378ae
+        TUC_GPU_OBSERVATION_EMITTED_KERNEL_DIGEST: sha256:246ffac0dda6946d980e2ea73bf4ad00e3d66c45700787dc8c3e742a81d39100
+        TUC_GPU_OBSERVATION_HEADER_DIGEST: sha256:24a4fd5880a5f20ec02a514c9d69788a5c2c44578da609f023839fff7481d4b9
+        TUC_GPU_OBSERVATION_SOURCE_DIGEST: sha256:0bd6597847f9541aed48f6e881136c5251db4b106b1686e8e0d5b3c336af314a
+        TUC_GPU_OBSERVATION_SOURCE_INTENT_DIGEST: sha256:ad430b8afea64f246f68ab5f0c942ae65d8cfa987152b8f28e75b7a31eb1eee9
+        TUC_GPU_OBSERVATION_WORKLOAD_DIGEST: sha256:ce14428db957c2e5f5000d37137b1024bd60a8b3d850f4f87024728b4fc3f310
+    image: tuc-gpu-compiler-emitted-sm86:research-v0
+    platform: linux/amd64
+    pull_policy: never
+    network_mode: none
+    read_only: true
+    user: "10001:10001"
+    working_dir: /run/tuc
+    environment:
+      CUDA_CACHE_DISABLE: "1"
+      CUDA_DISABLE_PTX_JIT: "1"
+      CUDA_VISIBLE_DEVICES: "0"
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+      NVIDIA_DRIVER_CAPABILITIES: compute
+      NVIDIA_VISIBLE_DEVICES: "0"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 32
+    mem_limit: 1g
+    cpus: 1.0
+    ipc: private
+    shm_size: 16m
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1700,uid=10001,gid=10001
+    gpus:
+      - driver: nvidia
+        device_ids:
+          - "0"
+    stdin_open: false
+    tty: false
+    stop_grace_period: 1s
+    command:
+      - --preflight

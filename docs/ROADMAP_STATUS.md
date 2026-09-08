@@ -1,5 +1,22 @@
 # Roadmap Status
 
+- [Bounded Compiler-Emitted GPU Proof](BOUNDED_COMPILER_EMITTED_GPU_PROOF.md)
+  now connects one already admitted float32 Matmul-plus-ReLU Source Intent
+  payload to deterministic reviewed CUDA emission and an accepted physical
+  `sm_86` observation. Fresh emission must match the checked-in plan and two
+  kernel definitions byte for byte; the separate harness contains no kernel
+  definitions. The digest-pinned, SASS-only, PTX/JIT-free, single-device,
+  networkless, non-root and resource-bounded run launched exactly two kernels,
+  allocated 256 bytes, and matched an independent CPU reference. Its closed
+  schema is
+  `schemas/bounded_compiler_emitted_gpu_observation_report.v0.schema.json`, its
+  accepted evidence is
+  `tests/golden/proofs/bounded_compiler_emitted_gpu_observation_report.json`,
+  and its decision is `rfcs/0302-bounded-compiler-emitted-gpu-proof.md`. The
+  normal executor remains unchanged; arbitrary programs, a general CUDA
+  backend, cross-vendor execution, native performance, production admission,
+  and independent reproduction remain blocked.
+
 - [Bounded Cross-Architecture GPU Proof](BOUNDED_CROSS_ARCHITECTURE_GPU_PROOF.md)
   now binds the same fixed Objective Delta workload to accepted physical
   `sm_70` and `sm_86` observations. The second profile is statically

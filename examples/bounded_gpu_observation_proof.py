@@ -53,6 +53,25 @@ WORKLOAD_MANIFEST_PATH = GPU_CONTEXT_PATH / "objective_delta_workload.v0.json"
 GPU_DOCKERFILE_PATH = GPU_CONTEXT_PATH / "Dockerfile"
 GPU_SM86_CUDA_SOURCE_PATH = GPU_CONTEXT_PATH / "bounded_gpu_observation_sm86.cu"
 GPU_SM86_DOCKERFILE_PATH = GPU_CONTEXT_PATH / "Dockerfile.sm86"
+GPU_COMPILER_EMITTED_SM86_CUDA_SOURCE_PATH = (
+    GPU_CONTEXT_PATH / "bounded_compiler_emitted_gpu_observation_sm86.cu"
+)
+GPU_COMPILER_EMITTED_SM86_DOCKERFILE_PATH = (
+    GPU_CONTEXT_PATH / "Dockerfile.compiler-emitted-sm86"
+)
+GPU_COMPILER_EMITTED_SOURCE_INTENT_PATH = (
+    GPU_CONTEXT_PATH / "compiler_emitted_source_intent.v0.json"
+)
+GPU_COMPILER_EMITTED_WORKLOAD_HEADER_PATH = (
+    GPU_CONTEXT_PATH / "compiler_emitted_workload.hpp"
+)
+GPU_COMPILER_EMITTED_WORKLOAD_MANIFEST_PATH = (
+    GPU_CONTEXT_PATH / "compiler_emitted_workload.v0.json"
+)
+GPU_COMPILER_EMITTED_KERNEL_PATH = (
+    GPU_CONTEXT_PATH / "generated_compiler_emitted_sm86_kernels.cuh"
+)
+GPU_COMPILER_EMISSION_PLAN_PATH = GPU_CONTEXT_PATH / "compiler_emission_plan.v0.json"
 OBJECTIVE_DELTA_SOURCE_INTENT_PATH = (
     REPOSITORY_ROOT / "integration/objective_delta/source_intent.v0.json"
 )
@@ -190,6 +209,17 @@ class GpuObservationProfile:
     proof_scope: str
     image_title: str
     image_version: str
+    build_context_path: Path
+    workload_header_path: Path
+    workload_manifest_path: Path
+    entrypoint: str
+    operation_families: tuple[str, ...]
+    dtype: str
+    tensor_shape: tuple[int, ...]
+    workload_contract: str
+    workload_allocation_bytes: int
+    standard_report_enabled: bool
+    extra_digest_bindings: tuple[tuple[str, str, Path], ...]
 
 
 GPU_SM70_PROFILE = GpuObservationProfile(
@@ -210,6 +240,17 @@ GPU_SM70_PROFILE = GpuObservationProfile(
     proof_scope="single_fixed_local_hardware_observation",
     image_title="TUC bounded GPU observation",
     image_version="research-v0",
+    build_context_path=GPU_CONTEXT_PATH,
+    workload_header_path=WORKLOAD_HEADER_PATH,
+    workload_manifest_path=WORKLOAD_MANIFEST_PATH,
+    entrypoint="/opt/tuc/bin/tuc-bounded-gpu-observation",
+    operation_families=("matmul", "elementwise"),
+    dtype="float64",
+    tensor_shape=(2, 2),
+    workload_contract=GPU_OBSERVATION_WORKLOAD_CONTRACT,
+    workload_allocation_bytes=128,
+    standard_report_enabled=True,
+    extra_digest_bindings=(),
 )
 
 GPU_SM86_PROFILE = GpuObservationProfile(
@@ -230,11 +271,70 @@ GPU_SM86_PROFILE = GpuObservationProfile(
     proof_scope="single_fixed_remote_hardware_observation",
     image_title="TUC bounded GPU sm86 observation",
     image_version="research-sm86-v0",
+    build_context_path=GPU_CONTEXT_PATH,
+    workload_header_path=WORKLOAD_HEADER_PATH,
+    workload_manifest_path=WORKLOAD_MANIFEST_PATH,
+    entrypoint="/opt/tuc/bin/tuc-bounded-gpu-observation",
+    operation_families=("matmul", "elementwise"),
+    dtype="float64",
+    tensor_shape=(2, 2),
+    workload_contract=GPU_OBSERVATION_WORKLOAD_CONTRACT,
+    workload_allocation_bytes=128,
+    standard_report_enabled=True,
+    extra_digest_bindings=(),
+)
+
+GPU_COMPILER_EMITTED_SM86_PROFILE = GpuObservationProfile(
+    profile_id="nvidia-sm86-compiler-emitted",
+    schema_version="tuc.bounded_compiler_emitted_gpu_observation_report.v0",
+    preflight_schema_version="tuc.bounded_compiler_emitted_gpu_preflight.v0",
+    proof_contract="bounded_compiler_emitted_gpu_observation.physical_device.v0",
+    worker_protocol="tuc.bounded_compiler_emitted_gpu_observation_worker.v0",
+    compose_profile="gpu-compiler-emitted-sm86",
+    service="gpu-compiler-emitted-sm86",
+    image="tuc-gpu-compiler-emitted-sm86:research-v0",
+    cuda_source_path=GPU_COMPILER_EMITTED_SM86_CUDA_SOURCE_PATH,
+    dockerfile_path=GPU_COMPILER_EMITTED_SM86_DOCKERFILE_PATH,
+    accelerator_class="nvidia_cuda_sm86",
+    compute_target="compute_86",
+    sass_target="sm_86",
+    pids_limit=32,
+    proof_scope="single_fixed_compiler_emitted_remote_hardware_observation",
+    image_title="TUC bounded compiler-emitted GPU sm86 observation",
+    image_version="research-compiler-emitted-sm86-v0",
+    build_context_path=GPU_CONTEXT_PATH,
+    workload_header_path=GPU_COMPILER_EMITTED_WORKLOAD_HEADER_PATH,
+    workload_manifest_path=GPU_COMPILER_EMITTED_WORKLOAD_MANIFEST_PATH,
+    entrypoint="/opt/tuc/bin/tuc-bounded-compiler-emitted-gpu-observation",
+    operation_families=("matmul", "elementwise"),
+    dtype="float32",
+    tensor_shape=(4, 2),
+    workload_contract="research_triton_matmul_relu_4x8x2_f32.v0",
+    workload_allocation_bytes=256,
+    standard_report_enabled=False,
+    extra_digest_bindings=(
+        (
+            "TUC_GPU_OBSERVATION_SOURCE_INTENT_DIGEST",
+            "io.tuc.gpu-observation.source-intent-digest",
+            GPU_COMPILER_EMITTED_SOURCE_INTENT_PATH,
+        ),
+        (
+            "TUC_GPU_OBSERVATION_EMITTED_KERNEL_DIGEST",
+            "io.tuc.gpu-observation.emitted-kernel-digest",
+            GPU_COMPILER_EMITTED_KERNEL_PATH,
+        ),
+        (
+            "TUC_GPU_OBSERVATION_EMISSION_PLAN_DIGEST",
+            "io.tuc.gpu-observation.emission-plan-digest",
+            GPU_COMPILER_EMISSION_PLAN_PATH,
+        ),
+    ),
 )
 
 _TRUSTED_GPU_PROFILES = {
     GPU_SM70_PROFILE.profile_id: GPU_SM70_PROFILE,
     GPU_SM86_PROFILE.profile_id: GPU_SM86_PROFILE,
+    GPU_COMPILER_EMITTED_SM86_PROFILE.profile_id: GPU_COMPILER_EMITTED_SM86_PROFILE,
 }
 
 
@@ -396,11 +496,16 @@ def _expected_build_args(
     profile: GpuObservationProfile = GPU_SM70_PROFILE,
 ) -> dict[str, str]:
     profile = _require_trusted_profile(profile)
-    return {
-        "TUC_GPU_OBSERVATION_HEADER_DIGEST": _digest_file(WORKLOAD_HEADER_PATH),
+    build_args = {
+        "TUC_GPU_OBSERVATION_HEADER_DIGEST": _digest_file(profile.workload_header_path),
         "TUC_GPU_OBSERVATION_SOURCE_DIGEST": _digest_file(profile.cuda_source_path),
-        "TUC_GPU_OBSERVATION_WORKLOAD_DIGEST": _digest_file(WORKLOAD_MANIFEST_PATH),
+        "TUC_GPU_OBSERVATION_WORKLOAD_DIGEST": _digest_file(
+            profile.workload_manifest_path
+        ),
     }
+    for build_arg, _label, path in profile.extra_digest_bindings:
+        build_args[build_arg] = _digest_file(path)
+    return build_args
 
 
 def _expected_compose_contract(
@@ -408,7 +513,7 @@ def _expected_compose_contract(
 ) -> dict[str, object]:
     return {
         "build_args": _expected_build_args(profile),
-        "build_context": "docker/gpu-observation",
+        "build_context": profile.build_context_path.relative_to(REPOSITORY_ROOT).as_posix(),
         "dockerfile": profile.dockerfile_path.name,
         "cap_drop": ["ALL"],
         "command": ["--preflight"],
@@ -527,12 +632,15 @@ def _validate_compose_config(
         raise GpuObservationError("bounded GPU build contract missing")
     build_typed = cast(dict[str, object], build)
     context = build_typed.get("context")
-    if not isinstance(context, str) or Path(context).resolve() != GPU_CONTEXT_PATH:
+    if (
+        not isinstance(context, str)
+        or Path(context).resolve() != profile.build_context_path
+    ):
         raise GpuObservationError("bounded GPU build context drift")
 
     normalized: dict[str, object] = {
         "build_args": build_typed.get("args"),
-        "build_context": "docker/gpu-observation",
+        "build_context": profile.build_context_path.relative_to(REPOSITORY_ROOT).as_posix(),
         "dockerfile": build_typed.get("dockerfile"),
         "cap_drop": typed.get("cap_drop"),
         "command": typed.get("command"),
@@ -598,21 +706,27 @@ def _validate_image_metadata(
         raise GpuObservationError("bounded GPU image labels missing")
     expected_labels = {
         "io.tuc.gpu-observation.contract": profile.proof_contract,
-        "io.tuc.gpu-observation.header-digest": _digest_file(WORKLOAD_HEADER_PATH),
+        "io.tuc.gpu-observation.header-digest": _digest_file(
+            profile.workload_header_path
+        ),
         "io.tuc.gpu-observation.source-digest": _digest_file(
             profile.cuda_source_path
         ),
-        "io.tuc.gpu-observation.workload-digest": _digest_file(WORKLOAD_MANIFEST_PATH),
+        "io.tuc.gpu-observation.workload-digest": _digest_file(
+            profile.workload_manifest_path
+        ),
         "org.opencontainers.image.source": "https://github.com/kirchherr/TUC",
         "org.opencontainers.image.title": profile.image_title,
         "org.opencontainers.image.version": profile.image_version,
     }
+    for _build_arg, label, path in profile.extra_digest_bindings:
+        expected_labels[label] = _digest_file(path)
     label_map = cast(dict[str, object], labels)
     if any(label_map.get(key) != value for key, value in expected_labels.items()):
         raise GpuObservationError("bounded GPU image provenance labels rejected")
     expected_config = {
         "Cmd": ["--preflight"],
-        "Entrypoint": ["/opt/tuc/bin/tuc-bounded-gpu-observation"],
+        "Entrypoint": [profile.entrypoint],
         "User": "10001:10001",
         "WorkingDir": "/run/tuc",
     }
@@ -758,12 +872,12 @@ def _expected_worker_response(
         "accelerator_class": profile.accelerator_class,
         "device_name_serialized": False,
         "driver_version_serialized": False,
-        "dtype": "float64",
+        "dtype": profile.dtype,
         "environment_serialized": False,
         "hardware_identifiers_serialized": False,
         "kernel_launch_count": 2 if execute else 0,
         "mode": mode,
-        "operation_families": ["matmul", "elementwise"],
+        "operation_families": list(profile.operation_families),
         "protocol": profile.worker_protocol,
         "raw_tensor_values_serialized": False,
         "raw_timing_samples_serialized": False,
@@ -778,11 +892,13 @@ def _expected_worker_response(
             "uid": 10001,
         },
         "status": "PASS",
-        "tensor_shape": [2, 2],
+        "tensor_shape": list(profile.tensor_shape),
         "visible_device_count": 1,
-        "workload_allocation_bytes": 128 if execute else 0,
-        "workload_contract": GPU_OBSERVATION_WORKLOAD_CONTRACT,
-        "workload_manifest_digest": _digest_file(WORKLOAD_MANIFEST_PATH),
+        "workload_allocation_bytes": (
+            profile.workload_allocation_bytes if execute else 0
+        ),
+        "workload_contract": profile.workload_contract,
+        "workload_manifest_digest": _digest_file(profile.workload_manifest_path),
     }
 
 
@@ -807,17 +923,12 @@ def _validate_worker_response(
     return typed
 
 
-def _validate_static_sources(
-    profile: GpuObservationProfile = GPU_SM70_PROFILE,
-) -> dict[str, object]:
-    profile = _require_trusted_profile(profile)
-    workload = _validate_workload_manifest(_load_json(WORKLOAD_MANIFEST_PATH))
-    if _read_text_bounded(WORKLOAD_HEADER_PATH) != (
-        render_workload_header(workload)
-    ):
-        raise GpuObservationError("generated GPU workload header drift")
-    _validate_objective_delta_link(workload)
+def _validate_profile_build_surface(
+    profile: GpuObservationProfile,
+) -> None:
+    """Validate the fixed build recipe and exact context allowlist for a profile."""
 
+    profile = _require_trusted_profile(profile)
     dockerfile = _read_text_bounded(profile.dockerfile_path)
     required_fragments = (
         f"FROM {GPU_OBSERVATION_DEVEL_IMAGE} AS build",
@@ -827,13 +938,14 @@ def _validate_static_sources(
             f"arch={profile.compute_target},code={profile.sass_target}"
         ),
         "CUDA_DISABLE_PTX_JIT=1",
-        'ENTRYPOINT ["/opt/tuc/bin/tuc-bounded-gpu-observation"]',
+        f'ENTRYPOINT ["{profile.entrypoint}"]',
     )
     if any(fragment not in dockerfile for fragment in required_fragments):
         raise GpuObservationError("bounded GPU Dockerfile contract drift")
     forbidden_fragments = ("apt-get", "curl ", "wget ", "ADD http", "git clone")
     if any(fragment in dockerfile for fragment in forbidden_fragments):
         raise GpuObservationError("bounded GPU Dockerfile dependency surface rejected")
+
     dockerignore_path = profile.dockerfile_path.with_name(
         f"{profile.dockerfile_path.name}.dockerignore"
     )
@@ -842,13 +954,29 @@ def _validate_static_sources(
             "*",
             f"!{profile.dockerfile_path.name}",
             f"!{profile.cuda_source_path.name}",
-            f"!{WORKLOAD_HEADER_PATH.name}",
-            f"!{WORKLOAD_MANIFEST_PATH.name}",
+            f"!{profile.workload_header_path.name}",
+            f"!{profile.workload_manifest_path.name}",
+            *(f"!{path.name}" for _build_arg, _label, path in profile.extra_digest_bindings),
             "",
         )
     )
     if _read_text_bounded(dockerignore_path) != expected_dockerignore:
         raise GpuObservationError("bounded GPU build-context allowlist drift")
+
+
+def _validate_static_sources(
+    profile: GpuObservationProfile = GPU_SM70_PROFILE,
+) -> dict[str, object]:
+    profile = _require_trusted_profile(profile)
+    if not profile.standard_report_enabled:
+        raise GpuObservationError("dedicated compiler-emission proof required")
+    workload = _validate_workload_manifest(_load_json(profile.workload_manifest_path))
+    if _read_text_bounded(profile.workload_header_path) != (
+        render_workload_header(workload)
+    ):
+        raise GpuObservationError("generated GPU workload header drift")
+    _validate_objective_delta_link(workload)
+    _validate_profile_build_surface(profile)
     return workload
 
 
@@ -864,6 +992,8 @@ def build_bounded_gpu_observation_report(
     """Bind one successful fixed-kernel run into sanitized public evidence."""
 
     profile = _require_trusted_profile(profile)
+    if not profile.standard_report_enabled:
+        raise GpuObservationError("dedicated compiler-emission proof required")
     if not driver_security_reviewed:
         raise GpuObservationError("current vendor driver security update not attested")
     if not shared_display_risk_acknowledged:
@@ -947,8 +1077,8 @@ def build_bounded_gpu_observation_report(
             "runtime_image": GPU_OBSERVATION_RUNTIME_IMAGE,
             "sass_target": profile.sass_target,
             "worker_observation_digest": _digest_payload(worker),
-            "workload_header_digest": _digest_file(WORKLOAD_HEADER_PATH),
-            "workload_manifest_digest": _digest_file(WORKLOAD_MANIFEST_PATH),
+            "workload_header_digest": _digest_file(profile.workload_header_path),
+            "workload_manifest_digest": _digest_file(profile.workload_manifest_path),
         },
         "schema_version": profile.schema_version,
         "workload": {
@@ -973,6 +1103,8 @@ def assert_bounded_gpu_observation_report(
     """Fail closed unless a report preserves the narrow physical claim."""
 
     profile = _require_trusted_profile(profile)
+    if not profile.standard_report_enabled:
+        raise GpuObservationError("dedicated compiler-emission proof required")
     if type(report) is not dict:
         raise GpuObservationError("bounded GPU observation report must be a plain object")
     typed = cast(dict[str, object], report)
@@ -1056,7 +1188,7 @@ def assert_bounded_gpu_observation_report(
             "reference_correctness_passed": True,
             "semantic_origin": "objective_delta_portable_compute_v0",
             "shape": [2, 2],
-            "workload_contract": GPU_OBSERVATION_WORKLOAD_CONTRACT,
+            "workload_contract": profile.workload_contract,
         },
     }
     for section_name, expected in expected_sections.items():
@@ -1126,8 +1258,8 @@ def assert_bounded_gpu_observation_report(
         "worker_observation_digest": _digest_payload(
             _expected_worker_response("execute", profile)
         ),
-        "workload_header_digest": _digest_file(WORKLOAD_HEADER_PATH),
-        "workload_manifest_digest": _digest_file(WORKLOAD_MANIFEST_PATH),
+        "workload_header_digest": _digest_file(profile.workload_header_path),
+        "workload_manifest_digest": _digest_file(profile.workload_manifest_path),
     }
     for key, value in fixed_provenance.items():
         if provenance_typed.get(key) != value:
@@ -1179,6 +1311,8 @@ def run_gpu_observation(
     """Run a preflight or the explicit fixed-kernel observation."""
 
     profile = _require_trusted_profile(profile)
+    if not profile.standard_report_enabled:
+        raise GpuObservationError("dedicated compiler-emission proof required")
     if mode == "execute" and not driver_security_reviewed:
         raise GpuObservationError("current vendor driver security update not attested")
     if mode == "execute" and not shared_display_risk_acknowledged:
@@ -1224,7 +1358,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     mode.add_argument("--execute", action="store_true")
     parser.add_argument(
         "--profile",
-        choices=tuple(_TRUSTED_GPU_PROFILES),
+        choices=tuple(
+            profile_id
+            for profile_id, profile in _TRUSTED_GPU_PROFILES.items()
+            if profile.standard_report_enabled
+        ),
         default=GPU_SM70_PROFILE.profile_id,
     )
     parser.add_argument("--attest-current-driver-security-update", action="store_true")
