@@ -208,6 +208,10 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+      - name: Install proof dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
       - name: Build bounded compiler-emitted C11 worker
         run: >-
           docker compose --profile compiler-emitted-c11

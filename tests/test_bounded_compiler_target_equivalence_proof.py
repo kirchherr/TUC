@@ -322,10 +322,14 @@ def test_public_docs_preserve_scope_and_host_privacy() -> None:
         for path in (DOC_PATH, THREAT_MODEL_PATH, RFC_PATH)
     )
 
-    assert C11_SCHEMA_PATH.as_posix() in combined
-    assert TARGET_EQUIVALENCE_SCHEMA_PATH.as_posix() in combined
-    assert C11_GOLDEN_PATH.as_posix() in combined
-    assert TARGET_EQUIVALENCE_GOLDEN_PATH.as_posix() in combined
+    documented_artifacts = (
+        C11_SCHEMA_PATH,
+        TARGET_EQUIVALENCE_SCHEMA_PATH,
+        C11_GOLDEN_PATH,
+        TARGET_EQUIVALENCE_GOLDEN_PATH,
+    )
+    for path in documented_artifacts:
+        assert path.relative_to(c11_proof.REPOSITORY_ROOT).as_posix() in combined
     assert "independent reproduction" in combined
     assert "universal hardware" in combined.lower()
     assert "dev001" not in combined
