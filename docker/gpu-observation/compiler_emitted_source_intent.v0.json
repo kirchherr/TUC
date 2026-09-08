@@ -1,0 +1,73 @@
+{
+  "name": "research_matmul_elementwise",
+  "operations": [
+    {
+      "family": "matmul",
+      "hints": {},
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "name": "projection",
+      "outputs": [
+        "projection"
+      ]
+    },
+    {
+      "attributes": {
+        "elementwise_kind": "relu"
+      },
+      "family": "elementwise",
+      "hints": {},
+      "inputs": [
+        "projection"
+      ],
+      "name": "activated",
+      "outputs": [
+        "activated"
+      ]
+    }
+  ],
+  "returns": [
+    {
+      "public_name": "y",
+      "required": true,
+      "tensor_name": "activated"
+    }
+  ],
+  "schema_version": "source_intent.v0",
+  "tensors": [
+    {
+      "dtype": "float32",
+      "name": "a",
+      "shape": [
+        4,
+        8
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "b",
+      "shape": [
+        8,
+        2
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "projection",
+      "shape": [
+        4,
+        2
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "activated",
+      "shape": [
+        4,
+        2
+      ]
+    }
+  ]
+}

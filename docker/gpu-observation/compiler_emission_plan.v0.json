@@ -1,0 +1,77 @@
+{
+  "blocked_claims": [
+    "arbitrary_source_intent",
+    "dynamic_shapes",
+    "free_form_cuda",
+    "general_cuda_backend",
+    "runtime_code_generation",
+    "source_text_execution"
+  ],
+  "code_generation_phase": "trusted_review_time_before_container_build",
+  "emission_contract": "bounded_cuda_emission.exact_source_intent_sm86.v0",
+  "emitted_kernel_digest": "sha256:246ffac0dda6946d980e2ea73bf4ad00e3d66c45700787dc8c3e742a81d39100",
+  "generated_kernel_count": 2,
+  "identifier_policy": "fixed_symbols_no_source_identifier_interpolation",
+  "operations": [
+    {
+      "family": "matmul",
+      "input_shapes": [
+        [
+          4,
+          8
+        ],
+        [
+          8,
+          2
+        ]
+      ],
+      "kernel_symbol": "tuc_projection_matmul_4x8x2_f32",
+      "launch": {
+        "blocks": 1,
+        "threads_per_block": 32
+      },
+      "operation": "projection",
+      "output_shape": [
+        4,
+        2
+      ]
+    },
+    {
+      "attributes": {
+        "elementwise_kind": "relu"
+      },
+      "family": "elementwise",
+      "input_shapes": [
+        [
+          4,
+          2
+        ]
+      ],
+      "kernel_symbol": "tuc_activated_relu_4x2_f32",
+      "launch": {
+        "blocks": 1,
+        "threads_per_block": 32
+      },
+      "operation": "activated",
+      "output_shape": [
+        4,
+        2
+      ]
+    }
+  ],
+  "plan_digest": "sha256:bac664cbc3683ab536b09e5f6d4657c061ee7a3042b32be5b610c9e2eb3c8d6f",
+  "runtime_generated_code": false,
+  "schema_version": "tuc.bounded_compiler_emission_plan.v0",
+  "source_intent_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
+  "source_intent_schema_version": "source_intent.v0",
+  "target": {
+    "accelerator_class": "nvidia_cuda_sm86",
+    "compute_target": "compute_86",
+    "ptx_emission": false,
+    "sass_target": "sm_86",
+    "target_profile": "nvidia-sm86-compiler-emitted"
+  },
+  "workload_contract": "research_triton_matmul_relu_4x8x2_f32.v0",
+  "workload_digest": "sha256:7aec3a02cdfe8fa687b6531d2a37849418bc056989b1cbdc397730b6dfebaadd",
+  "workload_header_digest": "sha256:24a4fd5880a5f20ec02a514c9d69788a5c2c44578da609f023839fff7481d4b9"
+}
