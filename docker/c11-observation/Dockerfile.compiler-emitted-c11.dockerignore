@@ -1,0 +1,9 @@
+*
+!Dockerfile.compiler-emitted-c11
+!bounded_compiler_emitted_c11_observation.c
+!generated_compiler_emitted_c11_functions.h
+!generated_compiler_emitted_c11_functions.c
+!compiler_emitted_c11_workload.h
+!compiler_emitted_workload.v0.json
+!compiler_emitted_source_intent.v0.json
+!compiler_emission_plan.v0.json

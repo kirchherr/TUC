@@ -1,0 +1,155 @@
+{
+  "$id": "https://github.com/kirchherr/TUC/schemas/bounded_compiler_target_equivalence_proof.v0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TUC Bounded Compiler Target Equivalence Proof v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_boundary",
+    "equivalence",
+    "observations",
+    "proof",
+    "report_digest",
+    "schema_version",
+    "source_intent",
+    "workload"
+  ],
+  "properties": {
+    "claim_boundary": {
+      "const": {
+        "blocked_claims": [
+          "arbitrary_program_portability",
+          "cross_isa_portability",
+          "cross_vendor_accelerator_execution",
+          "general_native_backends",
+          "independent_reproduction",
+          "native_performance_parity",
+          "production_runtime_admission",
+          "universal_hardware_proof",
+          "vendor_replacement"
+        ],
+        "compiler_target_count": 2,
+        "hardware_interface_feasibility_strengthened": true,
+        "independent_reproduction": "not_yet_supplied",
+        "non_cuda_target_count": 1,
+        "observation_ownership": "same_maintainer",
+        "universal_compute_claim_proven": false
+      }
+    },
+    "equivalence": {
+      "const": {
+        "cuda_dependency_absent_for_c11_target": true,
+        "operation_families_equal": true,
+        "raw_tensor_values_serialized": false,
+        "reference_correctness_passed_all": true,
+        "runtime_generated_code_all": false,
+        "source_intent_payload_digest_equal": true,
+        "target_specific_facts_outside_source_intent": true,
+        "tensor_shape_dtype_equal": true,
+        "terminal_reference_semantics_equal": true,
+        "workload_payload_digest_equal": true
+      }
+    },
+    "observations": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/observation",
+          "properties": {
+            "execution_model": {"const": "physical_gpu_aot_sass"},
+            "generated_artifact_kind": {"const": "cuda_kernel"},
+            "schema_version": {
+              "const": "tuc.bounded_compiler_emitted_gpu_observation_report.v0"
+            },
+            "target_family": {"const": "cuda_sass_sm86"}
+          }
+        },
+        {
+          "$ref": "#/$defs/observation",
+          "properties": {
+            "execution_model": {"const": "controlled_host_aot_static_elf"},
+            "generated_artifact_kind": {"const": "c11_function"},
+            "schema_version": {
+              "const": "tuc.bounded_compiler_emitted_c11_observation_report.v0"
+            },
+            "target_family": {"const": "c11_static_elf_x86_64"}
+          }
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "proof": {
+      "const": {
+        "claim": "one_exact_source_intent_preserves_reference_semantics_across_compiler_emitted_cuda_sass_and_non_cuda_static_c11_targets",
+        "contract": "bounded_compiler_target_equivalence.v0",
+        "scope": "one_fixed_source_intent_two_same_maintainer_compiler_targets",
+        "status": "PASS"
+      }
+    },
+    "report_digest": {"$ref": "#/$defs/digest"},
+    "schema_version": {
+      "const": "tuc.bounded_compiler_target_equivalence.v0"
+    },
+    "source_intent": {
+      "const": {
+        "payload_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
+        "schema_version": "source_intent.v0"
+      }
+    },
+    "workload": {
+      "const": {
+        "dtype": "float32",
+        "elementwise_semantics": "relu",
+        "input_policy": "fixed_public_non_sensitive_test_vector",
+        "input_shapes": [[4, 8], [8, 2]],
+        "operation_families": ["matmul", "elementwise"],
+        "output_shape": [4, 2],
+        "reference_correctness_passed": true,
+        "semantic_origin": "accepted_triton_research_source_intent",
+        "workload_contract": "research_triton_matmul_relu_4x8x2_f32.v0"
+      }
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "container_image_digest",
+        "emission_plan_payload_digest",
+        "execution_model",
+        "generated_artifact_count",
+        "generated_artifact_kind",
+        "reference_correctness_passed",
+        "report_digest",
+        "schema_version",
+        "source_intent_payload_digest",
+        "target_family",
+        "workload_payload_digest"
+      ],
+      "properties": {
+        "container_image_digest": {"$ref": "#/$defs/digest"},
+        "emission_plan_payload_digest": {"$ref": "#/$defs/digest"},
+        "execution_model": {"type": "string"},
+        "generated_artifact_count": {"const": 2},
+        "generated_artifact_kind": {"type": "string"},
+        "reference_correctness_passed": {"const": true},
+        "report_digest": {"$ref": "#/$defs/digest"},
+        "schema_version": {"type": "string"},
+        "source_intent_payload_digest": {
+          "const": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa"
+        },
+        "target_family": {"type": "string"},
+        "workload_payload_digest": {
+          "const": "sha256:7aec3a02cdfe8fa687b6531d2a37849418bc056989b1cbdc397730b6dfebaadd"
+        }
+      }
+    }
+  }
+}

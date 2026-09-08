@@ -1,5 +1,23 @@
 # Roadmap Status
 
+- [Bounded Compiler Target Equivalence Proof](BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md)
+  now binds the exact RFC 0302 Source Intent and workload to two materially
+  different compiler targets. The accepted CUDA path produced two AOT `sm_86`
+  SASS kernels and ran on a physical GPU; the new non-CUDA path produced two
+  C11 functions and ran as a static `x86_64` ELF in a hardened `scratch`
+  container with no device access. Both passed separately implemented
+  reference checks. The closed aggregate at
+  `tests/golden/proofs/bounded_compiler_target_equivalence_proof.json` requires
+  equal Source Intent and workload provenance and validates both child reports.
+  Its C11 evidence is
+  `tests/golden/proofs/bounded_compiler_emitted_c11_observation_report.json`;
+  schemas are
+  `schemas/bounded_compiler_emitted_c11_observation_report.v0.schema.json` and
+  `schemas/bounded_compiler_target_equivalence_proof.v0.schema.json`; decision:
+  `rfcs/0303-bounded-compiler-target-equivalence-proof.md`. This strengthens
+  hardware-interface feasibility but is not a universal hardware, cross-ISA,
+  cross-vendor, performance, production, or independent reproduction proof.
+
 - [Bounded Compiler-Emitted GPU Proof](BOUNDED_COMPILER_EMITTED_GPU_PROOF.md)
   now connects one already admitted float32 Matmul-plus-ReLU Source Intent
   payload to deterministic reviewed CUDA emission and an accepted physical

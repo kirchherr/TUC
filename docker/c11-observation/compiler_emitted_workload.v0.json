@@ -1,0 +1,65 @@
+{
+  "dtype": "float32",
+  "dynamic_input": false,
+  "expected_output": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      12.5,
+      0.0
+    ],
+    [
+      0.0,
+      11.875
+    ],
+    [
+      1.25,
+      3.5
+    ]
+  ],
+  "input_policy": "fixed_public_non_sensitive_test_vector",
+  "inputs": {
+    "a": [
+      [1.0, -2.0, 0.5, 3.0, 0.0, 1.5, -1.0, 2.0],
+      [0.0, 1.0, -1.0, 2.0, 3.0, -0.5, 1.5, -2.0],
+      [2.0, 0.5, 1.0, -1.5, 0.5, 2.5, -3.0, 1.0],
+      [-1.0, 2.0, 0.0, 1.0, -2.0, 1.0, 0.5, 3.0]
+    ],
+    "b": [
+      [1.0, -1.0],
+      [2.0, 0.5],
+      [-1.0, 3.0],
+      [0.5, -2.0],
+      [1.5, 1.0],
+      [-0.5, 0.25],
+      [2.5, -1.5],
+      [0.0, 2.0]
+    ]
+  },
+  "operations": [
+    {
+      "family": "matmul",
+      "inputs": ["a", "b"],
+      "name": "projection",
+      "output": "projection"
+    },
+    {
+      "attributes": {"elementwise_kind": "relu"},
+      "family": "elementwise",
+      "inputs": ["projection"],
+      "name": "activated",
+      "output": "activated"
+    }
+  ],
+  "schema_version": "tuc.bounded_compiler_emitted_gpu_workload.v0",
+  "semantic_origin": "source_to_intent_research_admitted_slice_v0",
+  "tensor_shapes": {
+    "a": [4, 8],
+    "activated": [4, 2],
+    "b": [8, 2],
+    "projection": [4, 2]
+  },
+  "workload_contract": "research_triton_matmul_relu_4x8x2_f32.v0"
+}

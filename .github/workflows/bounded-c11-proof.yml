@@ -1,0 +1,47 @@
+name: Bounded C11 proof
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "kirchherr/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bounded-c11-proof-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compiler-emitted-c11:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Install proof dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Verify deterministic C11 emission
+        run: python examples/bounded_compiler_emitted_c11_emission.py
+      - name: Build bounded compiler-emitted C11 worker
+        run: >-
+          docker compose --profile compiler-emitted-c11
+          build --pull compiler-emitted-c11
+      - name: Verify zero-call preflight
+        run: python examples/bounded_compiler_emitted_c11_proof.py --preflight
+      - name: Execute bounded static C11 proof
+        run: python examples/bounded_compiler_emitted_c11_proof.py --execute
+      - name: Verify accepted two-target aggregate
+        run: python examples/bounded_compiler_target_equivalence_proof.py

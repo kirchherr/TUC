@@ -1,0 +1,94 @@
+# syntax=docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+
+FROM --platform=linux/amd64 gcc:14.2.0-bookworm@sha256:82549aa8f90ada3236a8be70c74543132a76662ef33f0c3271ed802b81584a82 AS build
+
+ARG TUC_C11_HARNESS_DIGEST
+ARG TUC_C11_GENERATED_HEADER_DIGEST
+ARG TUC_C11_GENERATED_SOURCE_DIGEST
+ARG TUC_C11_WORKLOAD_HEADER_DIGEST
+ARG TUC_C11_WORKLOAD_MANIFEST_DIGEST
+ARG TUC_C11_SOURCE_INTENT_DIGEST
+ARG TUC_C11_EMISSION_PLAN_DIGEST
+
+ENV LANG=C \
+    LC_ALL=C \
+    SOURCE_DATE_EPOCH=0
+
+WORKDIR /src
+COPY bounded_compiler_emitted_c11_observation.c generated_compiler_emitted_c11_functions.h generated_compiler_emitted_c11_functions.c compiler_emitted_c11_workload.h compiler_emitted_workload.v0.json compiler_emitted_source_intent.v0.json compiler_emission_plan.v0.json ./
+
+RUN test "$(sha256sum bounded_compiler_emitted_c11_observation.c | cut -d ' ' -f 1)" = "${TUC_C11_HARNESS_DIGEST#sha256:}" \
+    && test "$(sha256sum generated_compiler_emitted_c11_functions.h | cut -d ' ' -f 1)" = "${TUC_C11_GENERATED_HEADER_DIGEST#sha256:}" \
+    && test "$(sha256sum generated_compiler_emitted_c11_functions.c | cut -d ' ' -f 1)" = "${TUC_C11_GENERATED_SOURCE_DIGEST#sha256:}" \
+    && test "$(sha256sum compiler_emitted_c11_workload.h | cut -d ' ' -f 1)" = "${TUC_C11_WORKLOAD_HEADER_DIGEST#sha256:}" \
+    && test "$(sha256sum compiler_emitted_workload.v0.json | cut -d ' ' -f 1)" = "${TUC_C11_WORKLOAD_MANIFEST_DIGEST#sha256:}" \
+    && test "$(sha256sum compiler_emitted_source_intent.v0.json | cut -d ' ' -f 1)" = "${TUC_C11_SOURCE_INTENT_DIGEST#sha256:}" \
+    && test "$(sha256sum compiler_emission_plan.v0.json | cut -d ' ' -f 1)" = "${TUC_C11_EMISSION_PLAN_DIGEST#sha256:}" \
+    && test "$(grep -c '^void tuc_' generated_compiler_emitted_c11_functions.c)" = "2" \
+    && test -z "$(grep '^void tuc_' bounded_compiler_emitted_c11_observation.c)" \
+    && mkdir -p /out \
+    && gcc \
+        -std=c11 \
+        -O2 \
+        -Wall \
+        -Wextra \
+        -Werror \
+        -Wconversion \
+        -Wformat=2 \
+        -Wformat-security \
+        -Wshadow \
+        -Wstrict-prototypes \
+        -D_FORTIFY_SOURCE=3 \
+        -fPIE \
+        -fstack-clash-protection \
+        -fstack-protector-strong \
+        -fcf-protection=full \
+        -fno-ident \
+        -frandom-seed=tuc-c11-proof-v0 \
+        -DTUC_C11_OBSERVATION_WORKLOAD_DIGEST=\"${TUC_C11_WORKLOAD_MANIFEST_DIGEST}\" \
+        generated_compiler_emitted_c11_functions.c \
+        bounded_compiler_emitted_c11_observation.c \
+        -static \
+        -Wl,--build-id=none,-z,noexecstack,-z,relro,-z,now \
+        -lm \
+        -o /out/tuc-bounded-compiler-emitted-c11-observation \
+    && test "$(nm --defined-only /out/tuc-bounded-compiler-emitted-c11-observation | grep -c ' T tuc_projection_matmul_4x8x2_f32$')" = "1" \
+    && test "$(nm --defined-only /out/tuc-bounded-compiler-emitted-c11-observation | grep -c ' T tuc_activated_relu_4x2_f32$')" = "1" \
+    && readelf -h /out/tuc-bounded-compiler-emitted-c11-observation | grep -q 'Machine:.*Advanced Micro Devices X86-64' \
+    && test -z "$(readelf -d /out/tuc-bounded-compiler-emitted-c11-observation | grep '(NEEDED)')" \
+    && strip --strip-unneeded /out/tuc-bounded-compiler-emitted-c11-observation
+
+FROM scratch
+
+ARG USER_UID=10001
+ARG USER_GID=10001
+ARG TUC_C11_HARNESS_DIGEST
+ARG TUC_C11_GENERATED_HEADER_DIGEST
+ARG TUC_C11_GENERATED_SOURCE_DIGEST
+ARG TUC_C11_WORKLOAD_HEADER_DIGEST
+ARG TUC_C11_WORKLOAD_MANIFEST_DIGEST
+ARG TUC_C11_SOURCE_INTENT_DIGEST
+ARG TUC_C11_EMISSION_PLAN_DIGEST
+
+LABEL org.opencontainers.image.source="https://github.com/kirchherr/TUC" \
+      org.opencontainers.image.title="TUC bounded compiler-emitted C11 observation" \
+      org.opencontainers.image.version="research-compiler-emitted-c11-v0" \
+      io.tuc.c11-observation.contract="bounded_compiler_emitted_c11_observation.controlled_host.v0" \
+      io.tuc.c11-observation.harness-digest="${TUC_C11_HARNESS_DIGEST}" \
+      io.tuc.c11-observation.generated-header-digest="${TUC_C11_GENERATED_HEADER_DIGEST}" \
+      io.tuc.c11-observation.generated-source-digest="${TUC_C11_GENERATED_SOURCE_DIGEST}" \
+      io.tuc.c11-observation.workload-header-digest="${TUC_C11_WORKLOAD_HEADER_DIGEST}" \
+      io.tuc.c11-observation.workload-manifest-digest="${TUC_C11_WORKLOAD_MANIFEST_DIGEST}" \
+      io.tuc.c11-observation.source-intent-digest="${TUC_C11_SOURCE_INTENT_DIGEST}" \
+      io.tuc.c11-observation.emission-plan-digest="${TUC_C11_EMISSION_PLAN_DIGEST}"
+
+COPY --from=build --chmod=0555 /out/tuc-bounded-compiler-emitted-c11-observation /opt/tuc/bin/tuc-bounded-compiler-emitted-c11-observation
+COPY --from=build --chmod=0444 /src/compiler_emitted_source_intent.v0.json /opt/tuc/share/compiler_emitted_source_intent.v0.json
+COPY --from=build --chmod=0444 /src/compiler_emitted_workload.v0.json /opt/tuc/share/compiler_emitted_workload.v0.json
+COPY --from=build --chmod=0444 /src/compiler_emission_plan.v0.json /opt/tuc/share/compiler_emission_plan.v0.json
+
+USER ${USER_UID}:${USER_GID}
+WORKDIR /run/tuc
+
+ENTRYPOINT ["/opt/tuc/bin/tuc-bounded-compiler-emitted-c11-observation"]
+CMD ["--preflight"]

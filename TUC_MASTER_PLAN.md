@@ -614,6 +614,19 @@ cross-vendor portability, production use, independent reproduction, or native
 performance. See `docs/BOUNDED_COMPILER_EMITTED_GPU_PROOF.md` and
 `rfcs/0302-bounded-compiler-emitted-gpu-proof.md`.
 
+Bounded Compiler Target Equivalence Proof v0 now tests whether that exact
+compiler-emission claim survives a materially different target contract. The
+same canonical Source Intent and fixed workload are emitted into exactly two
+C11 functions, compiled by a digest-pinned GCC 14.2.0 builder into a static
+`x86_64` ELF, and executed in a hardened device-free `scratch` container. The
+C11 result and the accepted CUDA/SASS result both pass independent reference
+semantics, and a closed aggregate requires identical Source Intent and
+workload provenance across them. This is the first compiler-emitted non-CUDA
+target result, not a universal hardware, cross-ISA, cross-vendor, performance,
+production, or independent reproduction proof. See
+`docs/BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md` and
+`rfcs/0303-bounded-compiler-target-equivalence-proof.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
@@ -626,10 +639,11 @@ Evidence:
 
 This materially advances Milestones 3 and 4 and closes the fixed physical GPU
 observations across two same-vendor architecture classes plus one exact
-compiler-emitted Source Intent slice on `sm_86`. External package code,
-arbitrary compiler-emitted programs, a general native backend, cross-vendor
-physical portability, specialized physical targets, independent reproduction,
-and native performance remain unexecuted or unproven.
+compiler-emitted Source Intent slice on both `sm_86` CUDA/SASS and static
+`x86_64` C11. External package code, arbitrary compiler-emitted programs, a
+general native backend, cross-ISA or cross-vendor physical portability,
+specialized physical targets, independent reproduction, and native performance
+remain unexecuted or unproven.
 
 The Source Intent Backend Package Portfolio now closes the frontend-to-package
 gap in the same milestone:

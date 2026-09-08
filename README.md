@@ -373,6 +373,21 @@ independent reproduction remain blocked. RFC:
 `rfcs/0302-bounded-compiler-emitted-gpu-proof.md`; schema:
 `schemas/bounded_compiler_emitted_gpu_observation_report.v0.schema.json`.
 
+The follow-on
+[Bounded Compiler Target Equivalence Proof](docs/BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md)
+lowers that exact Source Intent and workload through a separately specified
+static C11 target as well. Its accepted `x86_64` observation uses a
+digest-pinned GCC builder, a `scratch` runtime with no CUDA or device access,
+exactly two generated function calls, and the same independent reference
+semantics. The
+[aggregate evidence](tests/golden/proofs/bounded_compiler_target_equivalence_proof.json)
+binds both accepted compiler targets while keeping arbitrary programs,
+cross-ISA and cross-vendor portability, native performance, production use,
+universal hardware support, and independent reproduction blocked. RFC:
+`rfcs/0303-bounded-compiler-target-equivalence-proof.md`; schemas:
+`schemas/bounded_compiler_emitted_c11_observation_report.v0.schema.json` and
+`schemas/bounded_compiler_target_equivalence_proof.v0.schema.json`.
+
 Current runtime surfaces:
 
 - Runtime Execution Readiness before kernels run.
