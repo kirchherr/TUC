@@ -44,7 +44,7 @@ from examples.bounded_compiler_target_equivalence_proof import (
 )
 
 C11_IMAGE_DIGEST = (
-    "sha256:63fb0598ba85a204225aeb53b1a5bfbd26b4ac3c24ad8b6660ba66bccdfbdf6c"
+    "sha256:e5898ceccf0bcecd486808f9b0e93cdfc74e9f27f00185344b833da2e3c54eed"
 )
 DOC_PATH = Path("docs/BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md")
 THREAT_MODEL_PATH = Path("docs/BOUNDED_COMPILER_EMITTED_C11_THREAT_MODEL.md")

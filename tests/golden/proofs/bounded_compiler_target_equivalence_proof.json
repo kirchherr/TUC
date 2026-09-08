@@ -45,13 +45,13 @@
       "workload_payload_digest": "sha256:7aec3a02cdfe8fa687b6531d2a37849418bc056989b1cbdc397730b6dfebaadd"
     },
     {
-      "container_image_digest": "sha256:63fb0598ba85a204225aeb53b1a5bfbd26b4ac3c24ad8b6660ba66bccdfbdf6c",
+      "container_image_digest": "sha256:e5898ceccf0bcecd486808f9b0e93cdfc74e9f27f00185344b833da2e3c54eed",
       "emission_plan_payload_digest": "sha256:5e376516a5e888f85c36d799fa13000f19c8f167792479c5266c72c5a96fcab1",
       "execution_model": "controlled_host_aot_static_elf",
       "generated_artifact_count": 2,
       "generated_artifact_kind": "c11_function",
       "reference_correctness_passed": true,
-      "report_digest": "sha256:62db907dfbb8bed2627fb083d2aff368523ce2a9c7a3d04d3e020f935efe8656",
+      "report_digest": "sha256:aa2088500581e38bbb5e5b9c60246110e49ae919fc049932a2e682fc2d066fbf",
       "schema_version": "tuc.bounded_compiler_emitted_c11_observation_report.v0",
       "source_intent_payload_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
       "target_family": "c11_static_elf_x86_64",
@@ -64,7 +64,7 @@
     "scope": "one_fixed_source_intent_two_same_maintainer_compiler_targets",
     "status": "PASS"
   },
-  "report_digest": "sha256:32c48b7ef4aec3badbcb48a6d7359413c5735dcf51cadfe61fb7fd575999d97c",
+  "report_digest": "sha256:460cc79eb6af98324bab4110af7e30df9af50b978817f390406f0443a60d3c43",
   "schema_version": "tuc.bounded_compiler_target_equivalence.v0",
   "source_intent": {
     "payload_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
