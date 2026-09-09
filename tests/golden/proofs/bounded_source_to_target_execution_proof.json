@@ -1,0 +1,78 @@
+{
+  "binding": {
+    "compiler_artifacts_ahead_of_time": true,
+    "operation_families_equal": true,
+    "raw_source_serialized": false,
+    "raw_tensor_values_serialized": false,
+    "source_intent_digest_equal": true,
+    "source_request_matches_canonical_module": true,
+    "source_text_executed": false,
+    "target_specific_facts_outside_source_intent": true,
+    "terminal_reference_semantics_preserved": true
+  },
+  "claim_boundary": {
+    "blocked_claims": [
+      "arbitrary_program_portability",
+      "arbitrary_triton_source_ingestion",
+      "cross_isa_portability",
+      "cross_vendor_accelerator_execution",
+      "general_native_backends",
+      "general_triton_parser",
+      "independent_reproduction",
+      "native_performance_parity",
+      "production_runtime_admission",
+      "production_source_ingestion",
+      "universal_hardware_proof",
+      "vendor_replacement"
+    ],
+    "compiler_target_count": 2,
+    "default_source_ingestion_admitted": false,
+    "hardware_interface_feasibility_strengthened": true,
+    "independent_reproduction": "not_yet_supplied",
+    "observation_ownership": "same_maintainer",
+    "source_case_count": 1,
+    "source_ingestion_mode": "explicit_research_worker_only",
+    "universal_compute_claim_proven": false
+  },
+  "frontend": {
+    "child_report_digest": "sha256:38460e3cf51d2e05208f2e8d0215fa337d64a9933278d303cdcef4ad1d91dead",
+    "child_report_file_digest": "sha256:ea0ccf5b959dff4fd1c810a8a7605745d7aeab0e74d772416b27b879de1e47d2",
+    "isolation_contract": "oci_source_ingestion_research_proof.kernel_isolated.v0",
+    "kernel_name": "matmul_elementwise",
+    "malicious_source_rejected": true,
+    "module_digest": "sha256:eb599f41b7abee29e06c0842db8ba43fc8e8b710f668532a767c31fd81d7f7a0",
+    "schema_version": "tuc.oci_source_ingestion_research_proof_report.v0",
+    "source_intent_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
+    "source_name": "research_matmul_elementwise",
+    "worker_protocol": "tuc.oci_source_ingestion_worker.v0",
+    "worker_request_digest": "sha256:8655adcc04f7a8c97e398a9eaf0d0964663dbf4ee8a3eb722931da7cfb6f145a",
+    "worker_source_digest": "sha256:bf97478f2694989db8b3cafacec872516864e16595348cc6e1ef9a0b926250ba"
+  },
+  "proof": {
+    "claim": "one_fixed_inert_triton_source_case_lowers_to_the_same_source_intent_whose_compiler_emitted_cuda_sass_and_static_c11_targets_preserve_terminal_reference_semantics",
+    "contract": "bounded_source_to_target_execution.digest_bound.v0",
+    "scope": "one_fixed_same_maintainer_source_case_two_same_maintainer_targets",
+    "status": "PASS"
+  },
+  "report_digest": "sha256:bc0cc4821b88e7cad9d674274754508565e47922ef961c3df87d15ecc14c6268",
+  "schema_version": "tuc.bounded_source_to_target_execution_proof.v0",
+  "target_execution": {
+    "child_report_digest": "sha256:460cc79eb6af98324bab4110af7e30df9af50b978817f390406f0443a60d3c43",
+    "child_report_file_digest": "sha256:730d93b03539110fe280533d73e90633206177e41e7f6b7b144a0b40230a9813",
+    "compiler_target_count": 2,
+    "execution_models": [
+      "physical_gpu_aot_sass",
+      "controlled_host_aot_static_elf"
+    ],
+    "reference_correctness_passed_all": true,
+    "runtime_generated_code_all": false,
+    "schema_version": "tuc.bounded_compiler_target_equivalence.v0",
+    "source_intent_digest": "sha256:79f0fbd3fad9baf3a77df0eea5a1250234c24cdb7d5d6dd703e595816550daaa",
+    "target_families": [
+      "cuda_sass_sm86",
+      "c11_static_elf_x86_64"
+    ],
+    "terminal_reference_semantics_equal": true,
+    "workload_contract": "research_triton_matmul_relu_4x8x2_f32.v0"
+  }
+}

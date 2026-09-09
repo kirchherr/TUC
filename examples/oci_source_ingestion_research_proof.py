@@ -389,6 +389,22 @@ def assert_oci_source_ingestion_research_proof_report(
     for key, expected_value in expected.items():
         if typed[key] != expected_value:
             raise ValueError(f"OCI source ingestion proof {key} drift")
+
+    _, expected_worker_request_digest = _build_worker_request()
+    _, expected_rejection_request_digest = _build_rejection_request()
+    expected_provenance = {
+        "compose_contract_digest": _digest_payload(_COMPOSE_CONTRACT),
+        "dockerfile_digest": _digest_file(WORKER_DOCKERFILE_PATH),
+        "requirements_digest": _digest_file(WORKER_REQUIREMENTS_PATH),
+        "rejection_request_digest": expected_rejection_request_digest,
+        "source_intent_digest": _digest_payload(EXPECTED_SOURCE_INTENT),
+        "vertical_proof_digest": _digest_file(VERTICAL_PROOF_PATH),
+        "worker_request_digest": expected_worker_request_digest,
+        "worker_source_digest": _digest_file(WORKER_SOURCE_PATH),
+    }
+    for key, expected_value in expected_provenance.items():
+        if typed[key] != expected_value:
+            raise ValueError(f"OCI source ingestion proof {key} provenance drift")
     for key in (
         "compose_contract_digest",
         "dockerfile_digest",

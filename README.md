@@ -388,6 +388,15 @@ universal hardware support, and independent reproduction blocked. RFC:
 `schemas/bounded_compiler_emitted_c11_observation_report.v0.schema.json` and
 `schemas/bounded_compiler_target_equivalence_proof.v0.schema.json`.
 
+The
+[Bounded Source-To-Target Execution Proof](docs/BOUNDED_SOURCE_TO_TARGET_EXECUTION_PROOF.md)
+now binds that two-target result to the accepted isolated OCI intake of one
+fixed, inert Triton-shaped module through the same canonical Source Intent
+digest. This closes one inspectable source-to-executed-target research path;
+it does not admit arbitrary source, a general parser, production execution,
+performance claims, or independent reproduction. Decision:
+`rfcs/0304-bounded-source-to-target-execution-proof.md`.
+
 Current runtime surfaces:
 
 - Runtime Execution Readiness before kernels run.
