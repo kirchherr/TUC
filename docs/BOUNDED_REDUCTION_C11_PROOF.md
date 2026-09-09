@@ -57,6 +57,14 @@ share the host kernel and are not a proof against kernel vulnerabilities.
 - Closed worker schema: `schemas/bounded_reduction_c11_observation.v0.schema.json`.
 - Tests: `tests/test_bounded_reduction_c11.py`.
 - Native execution: the `Bounded C11 proof` workflow's second-source step.
+- Accepted native observation: `tests/golden/proofs/bounded_reduction_c11_observation.json`.
+
+The first native run passed on 2026-09-09 at implementation commit
+`3873291f586a97ec33a800d76c61bc30c3646aa6`: zero-call preflight, two-call
+static execution, ASan/UBSan execution, and all three wrong-code rejections.
+See the [observed CI job](https://github.com/kirchherr/TUC/actions/runs/34368239919/job/102522443572).
+The checked-in observation reproduces that job's static execution output;
+the CI job is its provenance, not an independent organization or attestation.
 
 Only a completed native workflow establishes execution for its commit. An
 emission plan or synthetic test observation does not. Public worker output

@@ -19,6 +19,7 @@ from examples.bounded_reduction_c11 import (
     artifact_files,
     build_artifacts,
     expected_observation,
+    load_observation,
     parse_fixed_source,
     validate_observation,
     verify_artifacts,
@@ -125,11 +126,39 @@ def test_preflight_and_extra_claims_cannot_become_execution_evidence() -> None:
 def test_artifact_tamper_is_rejected(tmp_path: Path, monkeypatch) -> None:
     import examples.bounded_reduction_c11 as proof
     for name, content in artifact_files(build_artifacts(parse_fixed_source())).items():
-        (tmp_path / name).write_text(content, encoding="utf-8")
+        (tmp_path / name).write_bytes(content.encode("utf-8"))
     monkeypatch.setattr(proof, "CONTEXT", tmp_path)
     (tmp_path / "generated.c").write_text("int main(void) { return 0; }", encoding="utf-8")
     with pytest.raises(BoundedCompilerEmissionError, match="artifact drift"):
         verify_artifacts()
+
+
+@pytest.mark.parametrize("raw", [
+    b'{"mode":"execute","mode":"preflight"}', b'{"value":NaN}',
+    b'\xff', b'{', b'', b' ' * (64 * 1024 + 1), b'[' * 2000,
+], ids=["duplicate", "nonfinite", "utf8", "syntax", "empty", "oversize", "deep"])
+def test_observation_loader_rejects_malformed_and_unbounded_data(tmp_path, raw) -> None:
+    path = tmp_path / "observation.json"
+    path.write_bytes(raw)
+    with pytest.raises(BoundedCompilerEmissionError):
+        load_observation(path)
+
+
+def test_observation_loader_rejects_special_files(tmp_path) -> None:
+    import os
+
+    with pytest.raises(BoundedCompilerEmissionError):
+        load_observation(tmp_path)
+    if hasattr(os, "mkfifo"):
+        fifo = tmp_path / "fifo"
+        os.mkfifo(fifo)
+        with pytest.raises(BoundedCompilerEmissionError):
+            load_observation(fifo)
+
+
+def test_accepted_native_observation_matches_current_program() -> None:
+    report = load_observation(ROOT / "tests/golden/proofs/bounded_reduction_c11_observation.json")
+    assert validate_observation(report)["reference_correctness"] is True
 
 
 def test_native_procedure_enforces_containment_and_wrong_code_checks() -> None:

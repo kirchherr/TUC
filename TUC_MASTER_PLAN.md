@@ -629,9 +629,9 @@ production, or independent reproduction proof. See
 
 RFC 0305 implements the next distinct source-program experiment:
 Matmul-plus-axis-1-Sum through the existing research parser to typed Source
-Intent and deterministic C11. Its explicit native procedure must pass an
-independent reference, ASan/UBSan and three wrong-code probes before execution
-is accepted. It does not extend two-target equivalence to reduction until a
+Intent and deterministic C11. Its explicit native procedure passed an
+independent reference, ASan/UBSan and three wrong-code probes on 2026-09-09.
+It does not extend two-target equivalence to reduction until a
 second target has actually run the same program. See
 `docs/BOUNDED_REDUCTION_C11_PROOF.md`.
 

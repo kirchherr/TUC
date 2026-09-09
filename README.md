@@ -397,11 +397,11 @@ it does not admit arbitrary source, a general parser, production execution,
 performance claims, or independent reproduction. Decision:
 `rfcs/0304-bounded-source-to-target-execution-proof.md`.
 
-The next native experiment,
+The second native source experiment,
 [Bounded Reduction C11](docs/BOUNDED_REDUCTION_C11_PROOF.md), adds a second
-source program with an axis-1 sum. Its dedicated workflow requires actual
-C11 execution, independent reference checks, sanitizers and three wrong-code
-probes. Reduction on a second target remains open.
+source program with an axis-1 sum. Actual C11 execution, independent reference
+checks, sanitizers and three wrong-code probes passed in its dedicated
+workflow. Reduction on a second target remains open.
 
 Current runtime surfaces:
 

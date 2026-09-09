@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import stat
 import sys
 from dataclasses import dataclass
 from fractions import Fraction
@@ -18,6 +20,8 @@ from examples.bounded_compiler_emission import (
     _digest_payload,
     _digest_text,
     _load_json,
+    _object_without_duplicates,
+    _reject_non_finite,
     assert_compiler_emission_workload,
 )
 from examples.bounded_compiler_emitted_c11_emission import _render_array
@@ -41,6 +45,7 @@ BLOCKED_CLAIMS = [
     "native_performance", "production_runtime_admission", "universal_hardware",
 ]
 EXPECTED_OUTPUT = (-5.875, 2.625, 5.125, 4.75)
+MAX_FILE_BYTES = 64 * 1024
 
 
 @dataclass(frozen=True)
@@ -172,11 +177,48 @@ def verify_artifacts() -> ReductionArtifacts:
     artifacts = build_artifacts(parse_fixed_source())
     for name, expected in artifact_files(artifacts).items():
         path = CONTEXT / name
-        if path.is_symlink() or not path.is_file() or path.stat().st_size > 16384:
-            raise BoundedCompilerEmissionError("reduction artifact boundary rejected")
-        if path.read_text(encoding="utf-8") != expected:
+        if _read_bounded_file(path) != expected.encode("utf-8"):
             raise BoundedCompilerEmissionError("reduction generated artifact drift")
     return artifacts
+
+
+def _read_bounded_file(path: Path) -> bytes:
+    def identity(value: os.stat_result) -> tuple[int, int, int, int]:
+        return value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns
+
+    try:
+        before = path.lstat()
+        if not stat.S_ISREG(before.st_mode) or not 0 < before.st_size <= MAX_FILE_BYTES:
+            raise BoundedCompilerEmissionError("reduction file boundary rejected")
+        flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
+        flags |= getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+        with os.fdopen(os.open(path, flags), "rb") as handle:
+            opened = os.fstat(handle.fileno())
+            if not stat.S_ISREG(opened.st_mode) or identity(opened) != identity(before):
+                raise BoundedCompilerEmissionError("reduction file changed")
+            raw = handle.read(MAX_FILE_BYTES + 1)
+            after = os.fstat(handle.fileno())
+        if (
+            len(raw) != before.st_size or identity(after) != identity(before)
+            or identity(path.lstat()) != identity(before)
+        ):
+            raise BoundedCompilerEmissionError("reduction file changed")
+        return raw
+    except OSError as exc:
+        raise BoundedCompilerEmissionError("reduction file unavailable") from exc
+
+
+def load_observation(path: Path) -> object:
+    try:
+        value = json.loads(
+            _read_bounded_file(path).decode("utf-8", errors="strict"),
+            object_pairs_hook=_object_without_duplicates,
+            parse_constant=_reject_non_finite,
+        )
+    except (UnicodeError, json.JSONDecodeError, RecursionError) as exc:
+        raise BoundedCompilerEmissionError("reduction observation JSON rejected") from exc
+    _assert_plain_json(value)
+    return value
 
 
 def expected_observation(mode: str, plan: dict[str, object]) -> dict[str, object]:
@@ -217,7 +259,7 @@ def main() -> int:
     try:
         if args.validate_observation:
             report = validate_observation(
-                _load_json(args.validate_observation),
+                load_observation(args.validate_observation),
                 "preflight" if args.preflight else "execute",
             )
         else:

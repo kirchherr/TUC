@@ -2,8 +2,11 @@
 
 ## Status
 
-Implemented for review. Native acceptance requires the dedicated C11 workflow
-to pass execution, sanitizer execution, and all three wrong-code probes.
+Accepted as a bounded research observation after the dedicated C11 workflow
+passed execution, sanitizer execution, and all three wrong-code probes on
+2026-09-09. The initial observed implementation commit is `3873291f586a97ec33a800d76c61bc30c3646aa6`;
+evidence: [native CI run](https://github.com/kirchherr/TUC/actions/runs/34368239919/job/102522443572).
+Repository merge approval remains a separate maintainer decision.
 
 ## Context
 
@@ -54,6 +57,9 @@ Only the operator procedure builds and executes the fixed artifacts. Public
 observations contain digests, shapes, counts and results, never tensor values,
 source, commands, host paths or device identifiers. The validator binds the
 observation to fresh emission and rejects extra keys and bool/integer swaps.
+Bounded file reads reject symlinks and special files, limit reads even after
+concurrent growth, and compare open-file identity against before/after facts.
+Wrong-code validation remains active under optimized Python interpreters.
 
 This is a second source program on one C11 target, with same-maintainer
 evidence. It does not extend the existing two-target equivalence claim to

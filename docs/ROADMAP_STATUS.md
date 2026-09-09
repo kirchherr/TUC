@@ -4,8 +4,9 @@
   next source-program dimension: the existing inert Matmul-plus-axis-1-Sum
   source becomes typed Source Intent and deterministic C11 with a rank-changing
   output. The dedicated native procedure checks an independent reference,
-  ASan/UBSan execution and three actually compiled wrong-code variants. Native
-  acceptance is conditional on that workflow passing for the reviewed commit.
+  ASan/UBSan execution and three actually compiled wrong-code variants. All
+  passed in the dedicated native CI run on 2026-09-09; the accepted observation
+  is `tests/golden/proofs/bounded_reduction_c11_observation.json`.
   Decision: `rfcs/0305-bounded-reduction-c11-proof.md`. Reduction on a second
   compiler target and independent reproduction remain open.
 
@@ -1858,7 +1859,7 @@ Current focus:
 
 ## Next
 
-- Complete RFC 0305 native validation, then test the same reduction program on
+- RFC 0305 native validation passed. Test the same reduction program on
   a second materially different compiler target. Preserve exact axis and
   terminal semantics, and require actual execution before extending the
   source-to-two-target claim to the new program.

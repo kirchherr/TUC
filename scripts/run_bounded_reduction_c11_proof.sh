@@ -48,11 +48,12 @@ for mutation in missing-sum accidental-relu wrong-axis; do
     python - "$evidence_dir/$mutation.json" <<'PY'
 import sys
 from pathlib import Path
-from examples.bounded_compiler_emission import _load_json
-from examples.bounded_reduction_c11 import expected_observation, verify_artifacts
+from examples.bounded_compiler_emission import _canonical_json
+from examples.bounded_reduction_c11 import expected_observation, load_observation, verify_artifacts
 expected = expected_observation("execute", verify_artifacts().plan)
 expected.update(status="ERROR", reason_code="reference_mismatch", reference_correctness=False)
-assert _load_json(Path(sys.argv[1])) == expected, "wrong-code probe did not reach the oracle"
+if _canonical_json(load_observation(Path(sys.argv[1]))) != _canonical_json(expected):
+    raise SystemExit("wrong-code probe did not reach the oracle")
 PY
 done
 printf '%s\n' 'Bounded reduction C11: execution PASS; ASan/UBSan PASS; 3 wrong-code probes rejected.'
