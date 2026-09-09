@@ -627,6 +627,14 @@ production, or independent reproduction proof. See
 `docs/BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md` and
 `rfcs/0303-bounded-compiler-target-equivalence-proof.md`.
 
+RFC 0305 implements the next distinct source-program experiment:
+Matmul-plus-axis-1-Sum through the existing research parser to typed Source
+Intent and deterministic C11. Its explicit native procedure must pass an
+independent reference, ASan/UBSan and three wrong-code probes before execution
+is accepted. It does not extend two-target equivalence to reduction until a
+second target has actually run the same program. See
+`docs/BOUNDED_REDUCTION_C11_PROOF.md`.
+
 Bounded Source-To-Target Execution Proof v0 now joins that target evidence to
 the accepted isolated OCI intake of one fixed Triton-shaped module. The source
 is treated as inert data, the frontend and both targets are bound by the exact

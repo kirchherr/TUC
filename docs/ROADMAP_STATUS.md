@@ -1,5 +1,14 @@
 # Roadmap Status
 
+- [Bounded Reduction C11 Proof](BOUNDED_REDUCTION_C11_PROOF.md) implements the
+  next source-program dimension: the existing inert Matmul-plus-axis-1-Sum
+  source becomes typed Source Intent and deterministic C11 with a rank-changing
+  output. The dedicated native procedure checks an independent reference,
+  ASan/UBSan execution and three actually compiled wrong-code variants. Native
+  acceptance is conditional on that workflow passing for the reviewed commit.
+  Decision: `rfcs/0305-bounded-reduction-c11-proof.md`. Reduction on a second
+  compiler target and independent reproduction remain open.
+
 - [Bounded Source-To-Target Execution Proof](BOUNDED_SOURCE_TO_TARGET_EXECUTION_PROOF.md)
   now binds the accepted isolated OCI intake of one fixed, inert Triton-shaped
   module to the accepted CUDA/SASS and static C11 observations through the
@@ -1849,6 +1858,10 @@ Current focus:
 
 ## Next
 
+- Complete RFC 0305 native validation, then test the same reduction program on
+  a second materially different compiler target. Preserve exact axis and
+  terminal semantics, and require actual execution before extending the
+  source-to-two-target claim to the new program.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

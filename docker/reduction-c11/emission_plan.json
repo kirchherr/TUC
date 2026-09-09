@@ -1,0 +1,38 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_target_reduction_equivalence",
+    "general_source_ingestion",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware"
+  ],
+  "contract": "bounded_reduction_c11.matmul_sum_axis1.v0",
+  "generated_source_digest": "sha256:6373a2247a841aa2c7707931b3ff3577dd2fb320ab7d9df500ab8e7136df3566",
+  "input_shapes": [
+    [
+      4,
+      8
+    ],
+    [
+      8,
+      2
+    ]
+  ],
+  "operation_families": [
+    "matmul",
+    "reduction"
+  ],
+  "output_shape": [
+    4
+  ],
+  "reduction_axis": 1,
+  "runtime_admission": false,
+  "schema_version": "tuc.bounded_reduction_c11_emission.v0",
+  "source_execution": false,
+  "source_intent_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614",
+  "source_module_digest": "sha256:a89fa59436fec099776603ffead3fda935dff77a05308572bcd049fd1cda338f",
+  "vector_digest": "sha256:2cdd865263bd5e2768122c0b8d1f71d9a213ffd86005dc71c3c4c741392b8135",
+  "working_set_bytes": 240
+}
