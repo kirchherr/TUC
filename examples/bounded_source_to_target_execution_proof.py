@@ -11,6 +11,8 @@ from typing import cast
 
 from examples import (
     bounded_compiler_target_equivalence_proof as target_proof,
+)
+from examples import (
     oci_source_ingestion_research_proof as oci_proof,
 )
 from examples.bounded_compiler_emission import _digest_payload
