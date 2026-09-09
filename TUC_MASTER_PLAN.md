@@ -627,6 +627,17 @@ production, or independent reproduction proof. See
 `docs/BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md` and
 `rfcs/0303-bounded-compiler-target-equivalence-proof.md`.
 
+Bounded Source-To-Target Execution Proof v0 now joins that target evidence to
+the accepted isolated OCI intake of one fixed Triton-shaped module. The source
+is treated as inert data, the frontend and both targets are bound by the exact
+same canonical Source Intent digest, and all current frontend provenance is
+revalidated before the aggregate can pass. This closes one inspectable
+source-to-executed-target research path without admitting arbitrary source, a
+general parser, normal-runtime device execution, native performance,
+production use, universal hardware support, or independent reproduction. See
+`docs/BOUNDED_SOURCE_TO_TARGET_EXECUTION_PROOF.md` and
+`rfcs/0304-bounded-source-to-target-execution-proof.md`.
+
 Evidence:
 
 `docs/BACKEND_PACKAGE_EXECUTION_PORTFOLIO.md`,
@@ -638,12 +649,12 @@ Evidence:
 `rfcs/0284-multi-package-execution-portfolio.md`.
 
 This materially advances Milestones 3 and 4 and closes the fixed physical GPU
-observations across two same-vendor architecture classes plus one exact
-compiler-emitted Source Intent slice on both `sm_86` CUDA/SASS and static
-`x86_64` C11. External package code, arbitrary compiler-emitted programs, a
-general native backend, cross-ISA or cross-vendor physical portability,
-specialized physical targets, independent reproduction, and native performance
-remain unexecuted or unproven.
+observations across two same-vendor architecture classes plus one exact,
+digest-bound source-to-target slice on both `sm_86` CUDA/SASS and static
+`x86_64` C11. External package code, arbitrary source or compiler-emitted
+programs, a general native backend, cross-ISA or cross-vendor physical
+portability, specialized physical targets, independent reproduction, and
+native performance remain unexecuted or unproven.
 
 The Source Intent Backend Package Portfolio now closes the frontend-to-package
 gap in the same milestone:

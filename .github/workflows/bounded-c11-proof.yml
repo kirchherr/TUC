@@ -45,3 +45,5 @@ jobs:
         run: python examples/bounded_compiler_emitted_c11_proof.py --execute
       - name: Verify accepted two-target aggregate
         run: python examples/bounded_compiler_target_equivalence_proof.py
+      - name: Verify accepted source-to-target aggregate
+        run: python examples/bounded_source_to_target_execution_proof.py

@@ -278,6 +278,13 @@ Completed evidence:
   cross-ISA and cross-vendor portability, general native backends, native
   performance, production admission, universal hardware support, and
   independent reproduction blocked.
+- Bounded Source-To-Target Execution Proof v0 binds the accepted isolated OCI
+  intake of one fixed Triton-shaped module to that exact two-target result.
+  The frontend and target observations must carry the same canonical Source
+  Intent digest, the source remains inert data, and all child provenance is
+  revalidated. RFC 0304 closes one vertical research path without admitting a
+  general parser, arbitrary programs, production execution, native
+  performance, universal hardware support, or independent reproduction.
 - Systolic Tensor Store Evidence records planned `device_sram` and `blocked`
   value-record metadata for the `systolic-sim` output while keeping raw values
   omitted by policy.
@@ -1524,12 +1531,13 @@ Go/No-Go:
    external reviewer can inspect and reimplement the fixed contract without
    installing TUC or NumPy. Neither release CI self-reproduction nor the
    same-project audit implementation is independent evidence.
-8. Preserve RFC 0302 and RFC 0303 as one exact, two-target compiler-emission
-   slice. The separately specified static C11 target now supplies the first
-   non-CUDA result without changing normal-runtime admission. The next
-   generalization must add a distinct dimension such as independent
-   reproduction, another ISA or vendor, or a separately reviewed source
-   program; do not merely widen CUDA or C syntax.
+8. Preserve RFCs 0302 through 0304 as one exact source-to-two-target research
+   slice. The isolated fixed source case, CUDA/SASS target, and static C11
+   target are now joined only through canonical digest-bound evidence, without
+   changing normal-runtime admission. The next generalization must add a
+   distinct dimension such as independent reproduction, another ISA or
+   vendor, or a separately reviewed source program; do not merely widen source,
+   CUDA, or C syntax.
 9. Advance practical trusted simulator execution through explicit opt-in
    runtime proofs such as
    [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md),
