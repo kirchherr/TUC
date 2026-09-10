@@ -127,7 +127,9 @@ def program_files_digest() -> str:
         name: "sha256:" + sha256(_read_bounded_file(CONTEXT / name)).hexdigest()
         for name in names
     }
-    for name in ("examples/bounded_reduction_cuda.py", "scripts/run_bounded_reduction_cuda_proof.sh"):
+    for name in (
+        "examples/bounded_reduction_cuda.py", "scripts/run_bounded_reduction_cuda_proof.sh"
+    ):
         digests[name] = "sha256:" + sha256(_read_bounded_file(ROOT / name)).hexdigest()
     return _digest_payload(digests)
 
