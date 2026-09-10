@@ -47,8 +47,27 @@ is claimed. Mutation observations are never accepted as execution evidence.
 
 ## Boundary And Status
 
-Implementation ready for actual observation; acceptance is pending native
-C11 and physical CUDA execution. The old single-vector records are unchanged.
+Native C11 and physical sm86 CUDA execution passed on 2026-09-10. Both ran
+all 21 executions with 42 generated calls, passed the preflight and rejected
+all four wrong-code probes. C11 also passed ASan/UBSan. The frozen-output
+mutant passed only the baseline and failed on run index 1 on both targets.
+The old single-vector records are unchanged.
+
+Observed source commit: `beb9cc207115d24d666238ccdc11af68098aab98`.
+Transferred source archive SHA-256:
+`c99ca362909fcbb14a47b239bea46fc5ad4029db4f5dbdecb225cec04df62181`.
+The archive contains that commit's `src`, `examples`, `docker`, `scripts`,
+`schemas` and `tests/golden` trees. Program files have not changed since the
+run; subsequent changes add records, regression checks, CI and documentation.
+
+Accepted metadata under `tests/golden/proofs/`:
+
+- `reduction_portfolio_c11_record.json`
+- `reduction_portfolio_cuda_record.json`
+- `reduction_portfolio_equivalence.json`
+- `reduction_portfolio_c11_frozen_output.json` (rejection, never a PASS child)
+- `reduction_portfolio_cuda_frozen_output.json` (rejection, never a PASS child)
+
 Fresh artifact checks require byte-identical generated C11 and CUDA functions.
 No dynamic inputs, shapes, parsing permissions, backend API or executor path
 are introduced. Native harnesses share reference/report code, so the separate

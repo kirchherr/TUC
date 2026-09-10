@@ -2,7 +2,11 @@
 
 ## Status
 
-Implemented for review; native acceptance pending observation.
+Implemented and natively observed on 2026-09-10; merge review pending.
+C11 and physical sm86 CUDA each passed all twenty cases plus replay and all
+four wrong-code probes. C11 also passed ASan/UBSan. Both frozen-output mutants
+passed the old baseline and failed at the next vector. Accepted records and
+the tested source identity are listed in `docs/REDUCTION_INPUT_PORTFOLIO.md`.
 
 ## Decision
 

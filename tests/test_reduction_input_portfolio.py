@@ -23,7 +23,7 @@ from examples.reduction_input_portfolio import (
 
 def test_all_twenty_cases_match_fp32_and_keep_old_generated_programs() -> None:
     cases = corpus()
-    assert len(cases) == len({_digest_payload(c) for c in cases}) == 20
+    assert len(cases) == len({_digest_payload([c["a"], c["b"]]) for c in cases}) == 20
     for case in cases:
         result = (np.array(case["a"], dtype=np.float32) @ np.array(case["b"], dtype=np.float32))
         np.testing.assert_array_equal(result.sum(axis=1), case["expected"])
@@ -54,6 +54,15 @@ def test_numeric_domain_is_bounded_and_exact(bad) -> None:
     case["a"][0][0] = bad
     with pytest.raises(BoundedCompilerEmissionError):
         exact_reference(case["a"], case["b"])
+
+
+@pytest.mark.parametrize("bad", [None, [], [[0.0]], [0.0] * 4, [[0.0] * 8] * 5])
+def test_malformed_shapes_are_rejected_before_reference_work(bad) -> None:
+    case = corpus()[0]
+    with pytest.raises(BoundedCompilerEmissionError):
+        exact_reference(bad, case["b"])
+    with pytest.raises(BoundedCompilerEmissionError):
+        exact_reference(case["a"], bad)
 
 
 @pytest.mark.parametrize("target", ["c11", "cuda"])
@@ -119,10 +128,13 @@ def test_operator_is_explicit_bounded_and_does_not_recompile_inside_case_loop() 
     assert common.index("if (!finish())") > common.index("for (unsigned int run")
 
 
-def test_accepted_portfolio_when_observed() -> None:
+def test_accepted_native_portfolio_and_observed_frozen_output_counterexample() -> None:
     directory = ROOT / "tests/golden/proofs"
-    if not (directory / "reduction_portfolio_cuda_record.json").exists():
-        pytest.skip("physical portfolio not observed yet")
     report = compare_records(load_observation(directory / "reduction_portfolio_c11_record.json"),
                              load_observation(directory / "reduction_portfolio_cuda_record.json"))
     assert report == json.loads((directory / "reduction_portfolio_equivalence.json").read_text())
+    for target in ("c11", "cuda"):
+        negative = load_observation(directory / f"reduction_portfolio_{target}_frozen_output.json")
+        validate_negative(negative, target, "frozen-output")
+        with pytest.raises(BoundedCompilerEmissionError):
+            validate_observation(negative, target)

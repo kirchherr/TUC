@@ -53,3 +53,9 @@ jobs:
         run: |
           python examples/bounded_reduction_cuda.py --compare-record tests/golden/proofs/bounded_reduction_cuda_record.json
           pytest -q tests/test_bounded_reduction_cuda.py tests/test_bounded_reduction_c11.py
+      - name: Execute twenty-vector C11 portfolio with sanitizers and wrong-code probes
+        run: sh scripts/run_reduction_input_portfolio.sh --c11
+      - name: Revalidate recorded two-target portfolio (no GPU execution)
+        run: |
+          python examples/reduction_input_portfolio.py --compare tests/golden/proofs/reduction_portfolio_c11_record.json tests/golden/proofs/reduction_portfolio_cuda_record.json
+          pytest -q tests/test_reduction_input_portfolio.py

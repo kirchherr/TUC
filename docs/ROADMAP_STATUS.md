@@ -1,5 +1,16 @@
 # Roadmap Status
 
+- [Reduction Input Portfolio](REDUCTION_INPUT_PORTFOLIO.md) passed native C11
+  and physical sm86 CUDA execution on 2026-09-10: twenty fixed vectors plus a
+  baseline replay, 42 generated calls per target, unchanged generated code,
+  exact reference agreement and four wrong-code rejections. C11 also passed
+  ASan/UBSan. The frozen-output control passes the old baseline but fails the
+  next vector on both targets. Accepted evidence:
+  `tests/golden/proofs/reduction_portfolio_equivalence.json`, with two bound
+  child records and two recorded frozen-output rejections. Decision: RFC 0307.
+  This broadens input coverage, not shape coverage, general native admission,
+  arbitrary-FP32 correctness, performance or independent reproduction.
+
 - [Bounded Reduction CUDA Proof](BOUNDED_REDUCTION_CUDA_PROOF.md) extends the
   second source case to actual physical sm86 execution. On 2026-09-10 the
   zero-call preflight, two generated kernel calls, exact reference agreement
@@ -1869,10 +1880,11 @@ Current focus:
 
 ## Next
 
-- RFCs 0305 and 0306 passed native reduction on C11 and physical CUDA.
-  Generalize the bounded contract with an additional reviewed input vector
-  or shape and execute both targets. Preserve exact axis and terminal
-  semantics; additional metadata alone does not broaden the result.
+- RFC 0307 broadens RFCs 0305 and 0306 to twenty fixed input vectors on both
+  native targets. Next, add one reviewed bounded shape with fresh C11/CUDA
+  lowering and execute both targets. Preserve exact axis and terminal
+  semantics and test dimensions that expose indexing or launch-coverage
+  errors; additional metadata alone does not broaden the result.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source
