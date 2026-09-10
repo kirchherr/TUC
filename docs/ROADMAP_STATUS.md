@@ -1,5 +1,15 @@
 # Roadmap Status
 
+- [Bounded Reduction CUDA Proof](BOUNDED_REDUCTION_CUDA_PROOF.md) extends the
+  second source case to actual physical sm86 execution. On 2026-09-10 the
+  zero-call preflight, two generated kernel calls, exact reference agreement
+  and three wrong-code rejections passed. The validated C11 and CUDA children
+  share the same Source Intent, input vector and rank-changing output.
+  Accepted evidence: `tests/golden/proofs/bounded_reduction_cuda_record.json`
+  and `tests/golden/proofs/bounded_reduction_target_equivalence.json`.
+  Decision: RFC 0306. This is same-maintainer fixed-vector evidence, not a
+  general CUDA backend, GPU sanitizer result or performance claim.
+
 - [Bounded Reduction C11 Proof](BOUNDED_REDUCTION_C11_PROOF.md) implements the
   next source-program dimension: the existing inert Matmul-plus-axis-1-Sum
   source becomes typed Source Intent and deterministic C11 with a rank-changing
@@ -7,8 +17,8 @@
   ASan/UBSan execution and three actually compiled wrong-code variants. All
   passed in the dedicated native CI run on 2026-09-09; the accepted observation
   is `tests/golden/proofs/bounded_reduction_c11_observation.json`.
-  Decision: `rfcs/0305-bounded-reduction-c11-proof.md`. Reduction on a second
-  compiler target and independent reproduction remain open.
+  Decision: `rfcs/0305-bounded-reduction-c11-proof.md`. RFC 0306 adds the
+  second compiler target; independent reproduction remains open.
 
 - [Bounded Source-To-Target Execution Proof](BOUNDED_SOURCE_TO_TARGET_EXECUTION_PROOF.md)
   now binds the accepted isolated OCI intake of one fixed, inert Triton-shaped
@@ -1859,10 +1869,10 @@ Current focus:
 
 ## Next
 
-- RFC 0305 native validation passed. Test the same reduction program on
-  a second materially different compiler target. Preserve exact axis and
-  terminal semantics, and require actual execution before extending the
-  source-to-two-target claim to the new program.
+- RFCs 0305 and 0306 passed native reduction on C11 and physical CUDA.
+  Generalize the bounded contract with an additional reviewed input vector
+  or shape and execute both targets. Preserve exact axis and terminal
+  semantics; additional metadata alone does not broaden the result.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

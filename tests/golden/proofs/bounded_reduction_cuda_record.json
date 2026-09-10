@@ -1,0 +1,26 @@
+{
+  "observation": {
+    "c11_source_digest": "sha256:6373a2247a841aa2c7707931b3ff3577dd2fb320ab7d9df500ab8e7136df3566",
+    "generated_function_calls": 2,
+    "generated_source_digest": "sha256:bc6b1ca5a32c11c66e8ac221fb0c079a361003b026e82cceee03bf120d5f34fe",
+    "mode": "execute",
+    "output_shape": [
+      4
+    ],
+    "raw_values_serialized": false,
+    "reason_code": "none",
+    "reference_correctness": true,
+    "schema_version": "tuc.bounded_reduction_cuda_observation.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614",
+    "status": "PASS",
+    "target": "nvidia_cuda_sm86",
+    "vector_digest": "sha256:2cdd865263bd5e2768122c0b8d1f71d9a213ffd86005dc71c3c4c741392b8135",
+    "visible_device_count": 1,
+    "working_set_bytes": 240
+  },
+  "operator_image_id": "sha256:1b137c4f907d315060245237ca11adfefdc60c6d671b8c9520a6167e5c65d0ac",
+  "program_files_digest": "sha256:6e2842267f389b1979742f01f731ca4fa556fb65acfe43eb380c91997df053fd",
+  "provenance": "same_maintainer_explicit_operator",
+  "schema_version": "tuc.bounded_reduction_cuda_record.v0"
+}

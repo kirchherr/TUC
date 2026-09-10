@@ -2,7 +2,10 @@
 
 ## Status
 
-Implemented for review; physical acceptance pending actual execution.
+Accepted as a bounded research observation on 2026-09-10 after physical sm86
+execution, exact reference agreement and three wrong-code rejections.
+Observed source commit: `10d29e01e7d7a7676504c918a4bf9d931edb0495`.
+Repository merge approval remains a separate maintainer decision.
 
 ## Decision
 

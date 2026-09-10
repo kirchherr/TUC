@@ -72,9 +72,11 @@ contains shapes, digests, call counts and correctness status, without source,
 raw values, machine identifiers or timings. Three runtime variants are test
 artifacts and never become accepted evidence.
 
-This remains one additional fixed source case, same-maintainer, on one C11
-target. It does not prove reduction on CUDA, another vendor or ISA,
+This C11 observation remains one additional fixed source case, same-maintainer,
+on one target. RFC 0306 separately records actual execution of the same
+reduction on physical CUDA; see [the CUDA proof](BOUNDED_REDUCTION_CUDA_PROOF.md).
+Neither experiment establishes arbitrary vendors or ISAs,
 performance, independent reproduction, arbitrary source support or production
 runtime admission. The normal executor and existing acceptance gates are
-unchanged. The next useful experiment is actual second-target execution of
-this same reduction program.
+unchanged. The next useful experiment broadens the reviewed input vector or
+shape and executes both targets.

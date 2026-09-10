@@ -59,8 +59,28 @@ memory-safety proof. Metadata output omits values, timings and host/device IDs.
 
 ## Status And Limits
 
-Implemented for physical observation. Do not promote to accepted two-target
-reduction evidence until the actual procedure and negative probes pass.
+Accepted as a same-maintainer physical observation on 2026-09-10. The source
+snapshot was commit `10d29e01e7d7a7676504c918a4bf9d931edb0495`. Its transmitted
+archive SHA-256 was
+`3ff58d3583733cc352db03ac8aac1cb898e92f45ac3b47c02416bdb93b5597ee`.
+The operator observed zero-call preflight, two generated calls with exact
+reference agreement, 240 device tensor bytes and three wrong-code rejections.
+The container exited and the GPU returned to its initial idle occupancy.
+
+Accepted artifacts:
+
+- `tests/golden/proofs/bounded_reduction_cuda_record.json`
+- `tests/golden/proofs/bounded_reduction_target_equivalence.json`
+
+The record includes the actual Docker image ID and the source-file binding.
+It was transferred back and independently revalidated by the local verifier;
+this is a second validation location, not an independent maintainer.
+The driver and toolkit were checked against the relevant published
+[driver bulletin](https://nvidia.custhelp.com/app/answers/detail/a_id/5821) and
+[toolkit bulletin](https://nvidia.custhelp.com/app/answers/detail/a_id/5850/~/security-bulletin%3A-nvidia-container-toolkit---june-2026).
+No host identity, driver version or credentials are part of public evidence.
+Hosted CI revalidates recorded GPU evidence; it does not rerun a physical GPU.
+
 One source case and one vector on C11 and NVIDIA do not prove arbitrary
 programs, another vendor, performance parity, independent reproduction,
 production runtime admission or universal hardware coverage.

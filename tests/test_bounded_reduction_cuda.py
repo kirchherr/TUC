@@ -127,13 +127,27 @@ def test_native_procedure_has_fixed_containment_and_negative_probes() -> None:
     assert "--fmad=false" in build
 
 
-def test_checked_in_gpu_record_when_available() -> None:
+def test_accepted_physical_gpu_record_is_required_and_matches_current_program() -> None:
     path = ROOT / "tests/golden/proofs/bounded_reduction_cuda_record.json"
-    if not path.exists():
-        pytest.skip("physical observation not yet recorded")
     report = build_equivalence(
         load_observation(ROOT / "tests/golden/proofs/bounded_reduction_c11_observation.json"),
         load_observation(path),
     )
     golden = ROOT / "tests/golden/proofs/bounded_reduction_target_equivalence.json"
     assert report == json.loads(golden.read_text())
+
+
+@pytest.mark.parametrize("mutation", ["extra", "missing", "preflight", "cpu_vector"])
+def test_record_and_baseline_cannot_be_promoted_by_metadata_mutation(mutation) -> None:
+    cpu = expected_cpu("execute", verify_cpu().plan)
+    record = build_record(expected_observation("execute"), "sha256:" + "1" * 64)
+    if mutation == "extra":
+        record["independent_reproduction"] = True
+    elif mutation == "missing":
+        del record["observation"]
+    elif mutation == "preflight":
+        record["observation"] = expected_observation("preflight")
+    else:
+        cpu["vector_digest"] = "sha256:" + "0" * 64
+    with pytest.raises(BoundedCompilerEmissionError):
+        build_equivalence(cpu, record)
