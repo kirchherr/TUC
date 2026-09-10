@@ -1,0 +1,44 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware"
+  ],
+  "blocks_per_launch": 1,
+  "c11_source_digest": "sha256:6373a2247a841aa2c7707931b3ff3577dd2fb320ab7d9df500ab8e7136df3566",
+  "contract": "bounded_reduction_cuda.matmul_sum_axis1_sm86.v0",
+  "generated_source_digest": "sha256:bc6b1ca5a32c11c66e8ac221fb0c079a361003b026e82cceee03bf120d5f34fe",
+  "input_shapes": [
+    [
+      4,
+      8
+    ],
+    [
+      8,
+      2
+    ]
+  ],
+  "kernel_launches": 2,
+  "operation_families": [
+    "matmul",
+    "reduction"
+  ],
+  "output_shape": [
+    4
+  ],
+  "ptx_jit": false,
+  "reduction_axis": 1,
+  "runtime_admission": false,
+  "schema_version": "tuc.bounded_reduction_cuda_emission.v0",
+  "source_execution": false,
+  "source_intent_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614",
+  "source_module_digest": "sha256:a89fa59436fec099776603ffead3fda935dff77a05308572bcd049fd1cda338f",
+  "target": "nvidia_cuda_sm86",
+  "threads_per_block": 32,
+  "vector_digest": "sha256:2cdd865263bd5e2768122c0b8d1f71d9a213ffd86005dc71c3c4c741392b8135",
+  "working_set_bytes": 240
+}

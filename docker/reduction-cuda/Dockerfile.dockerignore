@@ -1,0 +1,6 @@
+**
+!kernels.cuh
+!inputs.h
+!cuda_digest.h
+!harness.cu
+!build.sh

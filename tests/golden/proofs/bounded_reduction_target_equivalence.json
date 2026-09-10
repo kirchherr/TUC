@@ -1,0 +1,26 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware"
+  ],
+  "c11_observation_digest": "sha256:eb506abb00ed286a16ecdf43b78170f26cf2a6f82688c749b28f4c2d305667eb",
+  "comparison": "both_exactly_match_same_fixed_reference",
+  "cuda_record_digest": "sha256:c649d33de05b608fba7b054fb1c66ae54789573d06efe226c8a936a77153d2bc",
+  "output_shape": [
+    4
+  ],
+  "raw_values_serialized": false,
+  "schema_version": "tuc.bounded_reduction_target_equivalence.v0",
+  "source_intent_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614",
+  "status": "PASS",
+  "targets": [
+    "c11_x86_64",
+    "nvidia_cuda_sm86"
+  ],
+  "vector_digest": "sha256:2cdd865263bd5e2768122c0b8d1f71d9a213ffd86005dc71c3c4c741392b8135"
+}
