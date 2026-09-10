@@ -1,0 +1,10 @@
+**
+!generated.c
+!generated.h
+!kernels.cuh
+!vectors.h
+!common.h
+!host.c
+!device.cu
+!build-c11.sh
+!build-cuda.sh

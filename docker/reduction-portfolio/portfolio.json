@@ -1,0 +1,141 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware",
+    "arbitrary_fp32_inputs",
+    "dynamic_shapes"
+  ],
+  "c11_code_digest": "sha256:6373a2247a841aa2c7707931b3ff3577dd2fb320ab7d9df500ab8e7136df3566",
+  "calls_per_case": 2,
+  "case_tensor_bytes": 240,
+  "cases": [
+    {
+      "name": "baseline",
+      "vector_digest": "sha256:0b621c4a599714f76b23dc53c7df7b7be4d7e03adb2f4134dea919788fda8183"
+    },
+    {
+      "name": "zero_a",
+      "vector_digest": "sha256:89f5f7bf9f0865c1f9e39b636e237e7a63903a68e9f218a3dfa3d1903c73a0cd"
+    },
+    {
+      "name": "negated_a",
+      "vector_digest": "sha256:2e3fa74839568593a2d0059790d9f318ccb39559c02f6d15acabdb58c7e5b50d"
+    },
+    {
+      "name": "half_a",
+      "vector_digest": "sha256:ea3f7774a5b74df4e68f0bf9199205f2af29836e496f13dacc9255fb3fbf14c5"
+    },
+    {
+      "name": "swapped_b_columns",
+      "vector_digest": "sha256:5f6762d77518ee8f8c5abcad34bb81adcee3ed99dea1383bde5e6251cfb98836"
+    },
+    {
+      "name": "reversed_a_rows",
+      "vector_digest": "sha256:47ee6b06db09b4cfd09b2ba1872cfdd61f4b97b627589c1f845a517a643d25cd"
+    },
+    {
+      "name": "cancelling_b_columns",
+      "vector_digest": "sha256:978f501419b93c19eb68829868818d17da80d82408004ae445c63711c95f17db"
+    },
+    {
+      "name": "basis_0",
+      "vector_digest": "sha256:8af472666d5e12d1ceba63a8c98db1b64ba30104a13e615ef71e57930ff50457"
+    },
+    {
+      "name": "basis_1",
+      "vector_digest": "sha256:649d93ef03070c46bc23513c4963a6036e5017010c7e97a8677b005f4fd9676f"
+    },
+    {
+      "name": "basis_2",
+      "vector_digest": "sha256:b698c4597efa174ca1409aa061f7479471e3a58aba5cbaa19cc8d400d5e1d6ae"
+    },
+    {
+      "name": "basis_3",
+      "vector_digest": "sha256:218a9f912745ddca827dd7d64eb51395ff4ceaca128685a26346b413f40ee9c3"
+    },
+    {
+      "name": "basis_4",
+      "vector_digest": "sha256:03df06248f5a70f1eb94c711abe32b7089cae780dd0e7c735ea6cf3dadb0665a"
+    },
+    {
+      "name": "basis_5",
+      "vector_digest": "sha256:1b1496c80ae91e691c1d274fb9f7d504c1e89950e08c3544829df66ff08c883d"
+    },
+    {
+      "name": "basis_6",
+      "vector_digest": "sha256:51739070482a5ba6c837d001829f1d037e2aa362174c7f85613ad4fc26dc917e"
+    },
+    {
+      "name": "basis_7",
+      "vector_digest": "sha256:e80ad9a7ce1973d5d11a44c9db568694ad42a76eb5de8f85245817e12e6f54f4"
+    },
+    {
+      "name": "mixed_0",
+      "vector_digest": "sha256:96ff89b6a8fe48584019eb351537e8c5d3f4dbd5b1d1acb14046379bb545891a"
+    },
+    {
+      "name": "mixed_1",
+      "vector_digest": "sha256:b44411ce7c1a49cb5371e2947a785815f083f56f8e76f7cb4f4873148a07e255"
+    },
+    {
+      "name": "mixed_2",
+      "vector_digest": "sha256:ac1054f9341ea61c5f98d84dd212b8e6333ce6f677aa26ac4bf97b82f82914f1"
+    },
+    {
+      "name": "mixed_3",
+      "vector_digest": "sha256:4485137c09ddda111ee891c94339194cabf296f54ea8ea62a764ae0934c62479"
+    },
+    {
+      "name": "mixed_4",
+      "vector_digest": "sha256:082764de96efe2cb7d5a68cb209d16690a84e53a3664c14d916e54c362b48e79"
+    }
+  ],
+  "corpus_digest": "sha256:57adbe6e9798e60819301beadc9c20a808d9f562ba61aea8af1eddb832d0eaf1",
+  "cuda_code_digest": "sha256:bc6b1ca5a32c11c66e8ac221fb0c079a361003b026e82cceee03bf120d5f34fe",
+  "domain": "quarter_integers_abs_le_4",
+  "dtype": "float32",
+  "execution_order": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    0
+  ],
+  "input_shapes": [
+    [
+      4,
+      8
+    ],
+    [
+      8,
+      2
+    ]
+  ],
+  "output_shape": [
+    4
+  ],
+  "recompile_between_cases": false,
+  "schema_version": "tuc.reduction_input_portfolio.v0",
+  "source_intent_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614"
+}

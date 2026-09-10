@@ -4,12 +4,13 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Current implementation step: [Bounded Reduction C11 Proof](docs/BOUNDED_REDUCTION_C11_PROOF.md)
-adds a second source program with a rank-changing axis-1 sum, native reference
-checks, sanitizers and wrong-code probes. The native workflow passed on
-2026-09-09. [The same reduction passed on a physical CUDA target](docs/BOUNDED_REDUCTION_CUDA_PROOF.md)
-on 2026-09-10, including three wrong-code probes. The next practical
-generalization is an additional reviewed input vector or shape.
+Latest completed experiment: [Reduction Input Portfolio](docs/REDUCTION_INPUT_PORTFOLIO.md)
+extends the C11 and physical CUDA reduction proofs to twenty fixed inputs plus
+a baseline replay without changing the generated functions. Both targets
+passed all cases and four wrong-code probes on 2026-09-10; C11 also passed
+ASan/UBSan. A frozen-output mutant passes the old one-vector test but fails
+the new corpus. Next: one additional bounded shape, fresh lowering and actual
+execution on both targets. No arbitrary-input or performance claim follows.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.
