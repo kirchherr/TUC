@@ -1,0 +1,47 @@
+{
+  "acceptance_intervals_digest": "sha256:ce9db369fe48505ed52bc0b0128a2d0a19d50ea5e6cfc22d61e9928d5459a900",
+  "baseline_c11_code_digest": "sha256:35bc42c8af60aabca0fa74b052bbbd8fe43882fcc2065aebc27930741cc5ffd4",
+  "baseline_contract_digest": "sha256:8556cb3f647db292dfbb2415f3a8ea636105b3654e4cf157cfe236c3483a748b",
+  "baseline_cuda_code_digest": "sha256:66be0a56e4618e924f5c5c7511a06556fd229b618ba16735c58c636544921f35",
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware",
+    "arbitrary_fp32_inputs",
+    "dynamic_shapes",
+    "bitwise_backend_equivalence",
+    "relative_error_guarantee"
+  ],
+  "case_count": 10,
+  "corpus_digest": "sha256:4b130bb7902346618bd1bf7960e49fea09559cb49c2bdf8ebaf813d51975b43e",
+  "execution_policy_digest": "sha256:c0971d4777474f3b2f720a5dac322498e838de766cc465dc3a3b2a056e7d18f4",
+  "expected_counts": {
+    "baseline_rounding_outputs": 298,
+    "different_outputs": 61,
+    "fma_rounding_outputs": 298
+  },
+  "fma_c11_code_digest": "sha256:dffa3aab223ff570fedae5e50c7efe5390c32fef3d950066d8b5abd3c46c9fd0",
+  "fma_cuda_code_digest": "sha256:d7691a6125e349a40b9301ed73cb8eeccde2eae554ef22e0a9e720798568f7a6",
+  "input_shapes": [
+    [
+      33,
+      7
+    ],
+    [
+      7,
+      5
+    ]
+  ],
+  "output_shape": [
+    33
+  ],
+  "runs": 11,
+  "runtime_admission": false,
+  "schema_version": "tuc.bounded_fma_plan.v0",
+  "source_intent_digest": "sha256:54415a7218b284a9e0e8927ffc2a9d5eef0ff5cb9d5ccd8669b64d0f2a4c44a1",
+  "tensor_bytes": 1856
+}
