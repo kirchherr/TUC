@@ -1,0 +1,56 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware",
+    "arbitrary_fp32_inputs",
+    "dynamic_shapes"
+  ],
+  "c11_code_digest": "sha256:35bc42c8af60aabca0fa74b052bbbd8fe43882fcc2065aebc27930741cc5ffd4",
+  "case_count": 20,
+  "corpus_digest": "sha256:8639f8c55316ea3ce6618717e962785ee5d081c2b0b21ada8323080ad4328fa9",
+  "cuda_code_digest": "sha256:66be0a56e4618e924f5c5c7511a06556fd229b618ba16735c58c636544921f35",
+  "cuda_launches": [
+    {
+      "blocks": 6,
+      "logical_items": 165,
+      "threads": 32
+    },
+    {
+      "blocks": 2,
+      "logical_items": 33,
+      "threads": 32
+    }
+  ],
+  "dtype": "float32",
+  "input_shapes": [
+    [
+      33,
+      7
+    ],
+    [
+      7,
+      5
+    ]
+  ],
+  "numeric_domain": "quarter_integers_abs_le_4",
+  "output_shape": [
+    33
+  ],
+  "profile": "odd",
+  "projection_shape": [
+    33,
+    5
+  ],
+  "reduction_axis": 1,
+  "runs": 21,
+  "runtime_admission": false,
+  "schema_version": "tuc.bounded_reduction_shape_emission.v0",
+  "source_intent_digest": "sha256:54415a7218b284a9e0e8927ffc2a9d5eef0ff5cb9d5ccd8669b64d0f2a4c44a1",
+  "source_module_digest": "sha256:a89fa59436fec099776603ffead3fda935dff77a05308572bcd049fd1cda338f",
+  "tensor_bytes": 1856
+}
