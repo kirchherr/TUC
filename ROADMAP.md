@@ -4,13 +4,14 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Reduction Shapes](docs/BOUNDED_REDUCTION_SHAPES.md)
-adds A[33,7], B[7,5], y[33] to the baseline, with fresh C11/CUDA lowering and
-actual execution on 2026-09-14. Both targets passed twenty vectors plus replay
-and three wrong-code controls; C11 also passed ASan/UBSan. The larger output
-requires multiple GPU blocks, and incomplete coverage is rejected. Next:
-non-exact FP32 inputs under an explicit rounding/error contract on both
-targets. Dynamic shapes, arbitrary-input and performance claims remain blocked.
+Latest completed experiment: [Bounded FP32 Reduction Contract](docs/REDUCTION_FP32_CONTRACT.md)
+tests non-exact inputs with unchanged odd-shape C11/CUDA code. Actual execution
+on 2026-09-14 passed ten cases plus replay: 363 output checks per target,
+298 rounding witnesses, all inside a predeclared rational-reference error
+budget. Five negative controls were rejected; C11 also passed ASan/UBSan.
+Next: a reviewed FMA-enabled implementation under the same numerical contract,
+testing implementation freedom rather than only more vectors. Dynamic shapes,
+arbitrary-input, bitwise-equivalence and performance claims remain blocked.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.

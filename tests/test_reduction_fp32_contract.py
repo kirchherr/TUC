@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import math
 import subprocess
 import sys
@@ -11,6 +12,7 @@ import pytest
 
 from examples import reduction_fp32_contract as fp
 from examples.bounded_compiler_emission import BoundedCompilerEmissionError, _digest_payload
+from examples.bounded_reduction_c11 import load_observation
 
 
 def test_rounding_is_ties_even_without_double_rounding():
@@ -158,3 +160,21 @@ def test_native_isolation_and_numerical_options_are_explicit():
     assert "!isfinite(value)" in common
     assert "nextafterf((float)TUC_UPPER[index][0], INFINITY)" in common
     assert max(len(s.encode()) for s in fp.artifact_files().values()) < 65536
+
+
+def test_actual_native_records_match_accepted_comparison():
+    directory = fp.ROOT / "tests/golden/proofs"
+    records = [load_observation(directory / f"reduction_fp32_{t}_record.json") for t in fp.TARGETS]
+    assert fp.compare_records(*records) == json.loads(
+        (directory / "reduction_fp32_comparison.json").read_text())
+    assert all(r["observation"]["outputs_differing_from_reference64"] == 298 for r in records)
+
+
+@pytest.mark.parametrize("target", fp.TARGETS)
+@pytest.mark.parametrize("mutation", fp.MUTATIONS)
+def test_actual_native_negative_controls_are_rejected(target, mutation):
+    value = load_observation(fp.ROOT / "tests/golden/proofs" /
+                             f"reduction_fp32_{target}_{mutation}.json")
+    fp.validate_negative(value, target, mutation)
+    with pytest.raises(BoundedCompilerEmissionError):
+        fp.validate_observation(value, target)

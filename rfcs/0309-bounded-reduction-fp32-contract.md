@@ -1,6 +1,6 @@
 # RFC 0309: Bounded Reduction FP32 Contract
 
-- Status: Implemented; native acceptance pending
+- Status: Implemented; native C11 and physical sm86 CUDA observed 2026-09-14
 - Scope: Separate fixed-corpus native experiment following RFC 0308
 
 ## Decision
@@ -41,6 +41,11 @@ to credentials, publishing, dependencies, host services or other workloads.
    coverage, finite over-budget perturbation and infinity injection.
 4. Strict data-only records compare against the same contract, with actual
    source provenance. Hosted CI executes C11 and only replays stored GPU data.
+
+All four criteria passed. Each target checked 363 outputs, with 298 rounding
+witnesses; all five negative controls failed on the first run. Accepted
+comparison: `tests/golden/proofs/reduction_fp32_comparison.json`. See the
+linked experiment document for source/archive provenance and residual risks.
 
 ## Limitations
 

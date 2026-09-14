@@ -1,0 +1,24 @@
+{
+  "case_count": 10,
+  "cases_passed": 0,
+  "code_digest": "sha256:35bc42c8af60aabca0fa74b052bbbd8fe43882fcc2065aebc27930741cc5ffd4",
+  "contract_digest": "sha256:8556cb3f647db292dfbb2415f3a8ea636105b3654e4cf157cfe236c3483a748b",
+  "corpus_digest": "sha256:4b130bb7902346618bd1bf7960e49fea09559cb49c2bdf8ebaf813d51975b43e",
+  "failed_run_index": 0,
+  "generated_function_calls": 2,
+  "mode": "execute",
+  "numeric_contract_passed": false,
+  "output_shape": [
+    33
+  ],
+  "outputs_differing_from_reference64": 0,
+  "raw_values_serialized": false,
+  "reason_code": "numeric_contract_mismatch",
+  "repeated_baseline_passed": false,
+  "schema_version": "tuc.bounded_reduction_fp32_observation.v0",
+  "security_boundary_passed": true,
+  "source_intent_digest": "sha256:54415a7218b284a9e0e8927ffc2a9d5eef0ff5cb9d5ccd8669b64d0f2a4c44a1",
+  "status": "ERROR",
+  "target": "c11",
+  "tensor_bytes": 1856
+}

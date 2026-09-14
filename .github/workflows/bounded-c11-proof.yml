@@ -65,3 +65,9 @@ jobs:
         run: |
           python examples/bounded_reduction_shapes.py --compare tests/golden/proofs/reduction_shape_c11_record.json tests/golden/proofs/reduction_shape_cuda_record.json
           pytest -q tests/test_bounded_reduction_shapes.py
+      - name: Execute non-exact FP32 C11 contract with sanitizers and negative controls
+        run: sh scripts/run_reduction_fp32_contract.sh --c11
+      - name: Revalidate recorded FP32 numerical contract (no GPU execution)
+        run: |
+          python examples/reduction_fp32_contract.py --compare tests/golden/proofs/reduction_fp32_c11_record.json tests/golden/proofs/reduction_fp32_cuda_record.json
+          pytest -q tests/test_reduction_fp32_contract.py

@@ -641,9 +641,13 @@ next one; C11 also passes the portfolio under ASan/UBSan. This remains
 fixed-shape same-maintainer research evidence. RFC 0308 adds A[33,7], B[7,5],
 y[33] with fresh lowering and actual two-target execution on 2026-09-14:
 twenty vectors plus replay, multi-block CUDA coverage and three wrong-code
-controls all passed; C11 also passed ASan/UBSan. Next is non-exact FP32 input
-coverage under an explicit rounding/error contract, not dynamic shapes or
-performance claims. See `docs/BOUNDED_REDUCTION_SHAPES.md`,
+controls all passed; C11 also passed ASan/UBSan. RFC 0309 now covers ten
+non-exact FP32 cases plus replay on both targets with unchanged generated
+code: 363 output checks, 298 rounding witnesses, all within an a priori
+rational-reference error budget, and five rejected negative controls per
+target. C11 also passed ASan/UBSan. Next is a reviewed FMA-enabled variant
+under the same bound, not dynamic shapes, bitwise equality or performance
+claims. See `docs/REDUCTION_FP32_CONTRACT.md`, `docs/BOUNDED_REDUCTION_SHAPES.md`,
 `docs/REDUCTION_INPUT_PORTFOLIO.md`,
 `docs/BOUNDED_REDUCTION_C11_PROOF.md` and `docs/BOUNDED_REDUCTION_CUDA_PROOF.md`.
 

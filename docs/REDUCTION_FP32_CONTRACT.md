@@ -100,8 +100,25 @@ and [toolkit](https://nvidia.custhelp.com/app/answers/detail/a_id/5850) bulletin
 
 ## Status
 
-Implementation and local numerical tests are ready; native acceptance is
-pending. No physical execution is claimed by the generated plan alone.
+Actual native C11 and physical sm86 CUDA execution passed on 2026-09-14.
+Both targets passed all ten cases and replay: 363 scalar output checks,
+298 outputs differing from the binary64-rounded exact reference, 22 generated
+calls, zero-call preflight and all five negative controls. C11 also passed
+ASan/UBSan. Test containers exited and the GPU returned to idle occupancy;
+no other workloads, services or drivers were changed.
+
+Tested source commit: `0d813135048642e91e89c130660696d4f38ac98c`.
+Transferred archive SHA-256:
+`5568b7595810ddef78ff63338d9f81e272a2a7b02a6923669be15588f0e49fcb`.
+The archive contains that commit's `src`, `examples`, `docker`, `scripts`,
+`schemas` and `tests/golden` trees. Subsequent changes only add observations,
+regression enforcement, CI and documentation; observed program files are
+unchanged.
+
+Accepted evidence: `tests/golden/proofs/reduction_fp32_comparison.json`,
+two `reduction_fp32_{c11,cuda}_record.json` children, and five actual negative
+observations per target. Hosted CI executes C11 and revalidates stored GPU
+records; it does not run a physical GPU.
 
 Next: an explicitly reviewed FMA-enabled target variant under this same
 reference/error bound, to test numerical implementation freedom rather than
