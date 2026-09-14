@@ -10,6 +10,7 @@ import pytest
 
 from examples import bounded_composed_chain as chain
 from examples.bounded_compiler_emission import BoundedCompilerEmissionError
+from examples.bounded_reduction_c11 import load_observation
 from tuc.backends import LinearAlgebraSimulatorBackend, VectorSimulatorBackend
 from tuc.compiler import compile_graph
 from tuc.frontend import source_intent_from_mapping, source_intent_to_triton_metadata
@@ -154,3 +155,32 @@ def test_native_isolation_and_numerical_policy_remain_explicit():
     assert "first[row] != output[row]" in (chain.CONTEXT / "common.h").read_text()
     assert max(len(s.encode()) for s in chain.artifact_files().values()) < 65536
     assert json.loads((chain.CONTEXT / "numeric_contract.json").read_text()) == chain.CONTRACT
+
+
+def test_actual_native_records_match_accepted_comparison():
+    directory = chain.ROOT / "tests/golden/proofs"
+    records = [load_observation(directory / f"composed_chain_{t}_record.json")
+               for t in chain.TARGETS]
+    assert chain.compare_records(*records) == load_observation(
+        directory / "composed_chain_comparison.json")
+    sanitized = load_observation(directory / "composed_chain_c11_sanitized.json")
+    assert chain.validate_observation(sanitized, "c11") == records[0]["observation"]
+
+
+@pytest.mark.parametrize("target", chain.TARGETS)
+@pytest.mark.parametrize("mutation", chain.MUTATIONS)
+def test_actual_native_negative_controls_cannot_become_success(target, mutation):
+    value = load_observation(chain.ROOT / "tests/golden/proofs" /
+                             f"composed_chain_{target}_{mutation}.json")
+    chain.validate_negative(value, target, mutation)
+    with pytest.raises(BoundedCompilerEmissionError):
+        chain.validate_observation(value, target)
+
+
+@pytest.mark.parametrize("target", chain.TARGETS)
+def test_actual_preflight_has_no_execution(target):
+    value = load_observation(chain.ROOT / "tests/golden/proofs" /
+                             f"composed_chain_{target}_preflight.json")
+    assert chain.validate_observation(value, target, True)["generated_function_calls"] == 0
+    with pytest.raises(BoundedCompilerEmissionError):
+        chain.build_record(value, target, "sha256:" + "1" * 64)

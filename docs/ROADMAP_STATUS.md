@@ -1,5 +1,16 @@
 # Roadmap Status
 
+- [Bounded Composed Chain](BOUNDED_COMPOSED_CHAIN.md) passed native C11 and
+  physical sm86 CUDA execution on 2026-09-14: source-derived Matmul -> ReLU ->
+  reduction, 33 generated calls and 363 scalar checks per target. All ten
+  cases plus replay satisfy the exact nonlinear reference budget and the
+  declared separate FP32 order. Seven controls were rejected, including
+  bypassed/late ReLU and unwritten activation values. C11 passed ASan/UBSan.
+  Accepted comparison: `tests/golden/proofs/composed_chain_comparison.json`,
+  two records, two preflights, a sanitizer observation and fourteen rejected
+  observations. Decision: RFC 0311. Existing prototype HAC-IR execution is
+  separately regression-tested; the native operator is not core-plan-driven.
+
 - [Bounded FMA Variant](REDUCTION_FMA_VARIANT.md) passed paired native C11
   and physical sm86 CUDA execution on 2026-09-14: 726 scalar checks and 61
   differing output pairs per target, all within unchanged RFC 0309 intervals.
@@ -1914,12 +1925,13 @@ Current focus:
 
 ## Next
 
-- RFC 0310 demonstrates different native numerical implementations inside
-  unchanged error intervals, with silent fallback rejected. Next, compose
-  the reviewed primitives into a bounded source-derived Matmul -> ReLU ->
-  reduction chain, carrying explicit numerical policy through lowering and
-  real C11/CUDA execution. Preserve existing wrong-code/coverage controls;
-  do not infer arbitrary-input or performance guarantees from these cases.
+- RFC 0311 demonstrates the source-derived nonlinear chain on real C11/CUDA
+  targets. Consolidate the reviewed PR stack next, then investigate a bounded
+  core-plan-to-native execution bridge with its own security decision. Replace
+  hard-coded native dispatch with a checked plan only inside that explicit
+  operator experiment, not by opening the default runtime. Preserve numerical,
+  wrong-code, coverage, and previous FMA evidence. Independent reproduction
+  remains open; do not infer arbitrary-input or performance guarantees.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

@@ -649,9 +649,15 @@ target. C11 also passed ASan/UBSan. RFC 0310 now executes separate and
 explicit-FMA variants on both targets: 61 differing output pairs, 726 passing
 scalar checks within unchanged intervals and six rejected negative controls,
 including silent fallback. The candidate has its own execution policy; the
-old no-FMA contract remains unchanged. Next is a bounded source-derived
-Matmul -> ReLU -> reduction chain, not dynamic shapes or performance claims.
-See `docs/REDUCTION_FMA_VARIANT.md`, `docs/REDUCTION_FP32_CONTRACT.md`,
+old no-FMA contract remains unchanged. RFC 0311 now executes a source-derived
+Matmul -> ReLU -> reduction chain on both native targets: 363 scalar checks,
+33 calls and seven rejected controls per target, including misplaced ReLU.
+C11 also passes ASan/UBSan. Next is a separately reviewed bounded bridge from
+the checked core plan to native dispatch, after consolidating the PR stack;
+the current native operator is intent-bound but not core-plan-driven.
+Independent reproduction, dynamic shapes and performance claims remain open.
+See `docs/BOUNDED_COMPOSED_CHAIN.md`, `docs/REDUCTION_FMA_VARIANT.md`,
+`docs/REDUCTION_FP32_CONTRACT.md`,
 `docs/BOUNDED_REDUCTION_SHAPES.md`,
 `docs/REDUCTION_INPUT_PORTFOLIO.md`,
 `docs/BOUNDED_REDUCTION_C11_PROOF.md` and `docs/BOUNDED_REDUCTION_CUDA_PROOF.md`.

@@ -420,6 +420,9 @@ bitwise equality or arbitrary-FP32 correctness.
 The [paired FMA experiment](docs/REDUCTION_FMA_VARIANT.md) makes that distinction
 observable: 61 output pairs differ on each native target, yet both variants
 pass the unchanged error bounds. A silent non-FMA fallback is rejected.
+The [composed-chain experiment](docs/BOUNDED_COMPOSED_CHAIN.md) adds a nonlinear
+source-derived Matmul -> ReLU -> reduction sequence: both native targets pass
+363 scalar checks and reject seven faulty variants, including misplaced ReLU.
 
 Current runtime surfaces:
 

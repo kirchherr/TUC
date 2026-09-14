@@ -1,6 +1,6 @@
 # RFC 0311: Bounded Source-Derived Matmul, ReLU, Reduction
 
-Status: Implemented; native observations pending acceptance
+Status: Implemented and observed on both native targets, 2026-09-14
 
 ## Question and Scope
 
