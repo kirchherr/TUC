@@ -69,9 +69,31 @@ common-mode risk, mitigated but not eliminated by Python rational/NumPy tests.
 
 ## Status
 
-Ready for native observation; no new hardware success is claimed yet.
-Acceptance requires actual C11 and physical CUDA results plus all negative
-controls. Hosted CI may revalidate stored GPU records but cannot claim a new
+Actual native C11 and physical sm86 CUDA execution passed on 2026-09-14:
+twenty cases plus baseline replay, 42 generated calls per target, exact
+agreement for all 33 outputs, zero-call preflight and all three wrong-code
+rejections. C11 also passed ASan/UBSan. Both incomplete-coverage variants
+failed at run index 0 with a reference mismatch after two generated calls.
+
+Tested source commit: `c1cca5db79ab9cbbac60522a5bbea968b455bb1b`.
+Transferred source archive SHA-256:
+`b47228abb3a9506bd184ad04badc939c3dd955ecb7a7e81a4b325c4777f23a82`.
+The archive contains that commit's `src`, `examples`, `docker`, `scripts`,
+`schemas` and `tests/golden` trees. Observed program files remain unchanged;
+subsequent changes add evidence, regression enforcement, CI and documentation.
+
+Accepted files under `tests/golden/proofs/`:
+
+- `reduction_shape_c11_record.json`
+- `reduction_shape_cuda_record.json`
+- `reduction_shape_equivalence.json`
+- `reduction_shape_c11_incomplete_coverage.json` (rejection, never a PASS child)
+- `reduction_shape_cuda_incomplete_coverage.json` (rejection, never a PASS child)
+
+Hosted CI executes C11 and revalidates stored GPU records, not a new
 physical GPU run. A second shape does not prove dynamic shape support,
 performance, cross-vendor portability, production readiness or independent
 reproduction.
+
+Next: exercise non-exact FP32 inputs under an explicit rounding/error contract
+on both targets, keeping the current fixed-shape and execution boundaries.

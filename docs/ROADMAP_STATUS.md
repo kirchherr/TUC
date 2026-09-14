@@ -1,5 +1,16 @@
 # Roadmap Status
 
+- [Bounded Reduction Shapes](BOUNDED_REDUCTION_SHAPES.md) passed native C11
+  and physical sm86 CUDA execution on 2026-09-14 for A[33,7], B[7,5], y[33].
+  Fresh lowering covers six projection blocks and two reduction blocks;
+  both targets passed twenty vectors plus replay (42 generated calls) and
+  three wrong-code rejections. C11 also passed ASan/UBSan. Missing last-row
+  computation and a one-block CUDA launch are rejected through poisoned
+  logical outputs. Accepted aggregate:
+  `tests/golden/proofs/reduction_shape_equivalence.json`, with two bound
+  child records and two coverage rejection observations. Decision: RFC 0308.
+  This broadens fixed-shape coverage, not dynamic shapes or native admission.
+
 - [Reduction Input Portfolio](REDUCTION_INPUT_PORTFOLIO.md) passed native C11
   and physical sm86 CUDA execution on 2026-09-10: twenty fixed vectors plus a
   baseline replay, 42 generated calls per target, unchanged generated code,
@@ -1880,11 +1891,12 @@ Current focus:
 
 ## Next
 
-- RFC 0307 broadens RFCs 0305 and 0306 to twenty fixed input vectors on both
-  native targets. Next, add one reviewed bounded shape with fresh C11/CUDA
-  lowering and execute both targets. Preserve exact axis and terminal
-  semantics and test dimensions that expose indexing or launch-coverage
-  errors; additional metadata alone does not broaden the result.
+- RFC 0308 extends the twenty-vector reduction experiment to a second,
+  odd-sized shape on both native targets, exposing stride and launch-coverage
+  errors. Next, test non-exact FP32 inputs under an explicit rounding/error
+  contract with actual C11/CUDA execution. Do not infer arbitrary FP32
+  correctness from the existing exact quarter-integer corpus or use numeric
+  tolerance to hide incomplete coverage or wrong-axis semantics.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

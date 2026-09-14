@@ -59,3 +59,9 @@ jobs:
         run: |
           python examples/reduction_input_portfolio.py --compare tests/golden/proofs/reduction_portfolio_c11_record.json tests/golden/proofs/reduction_portfolio_cuda_record.json
           pytest -q tests/test_reduction_input_portfolio.py
+      - name: Execute odd-shape C11 reduction with sanitizers and coverage probes
+        run: sh scripts/run_bounded_reduction_shapes.sh --c11
+      - name: Revalidate recorded odd-shape equivalence (no GPU execution)
+        run: |
+          python examples/bounded_reduction_shapes.py --compare tests/golden/proofs/reduction_shape_c11_record.json tests/golden/proofs/reduction_shape_cuda_record.json
+          pytest -q tests/test_bounded_reduction_shapes.py

@@ -156,10 +156,8 @@ def test_native_controls_and_poisoning_are_explicit():
     assert "cudaMemset(buffers[2], 0xff" in (shapes.CONTEXT / "device.cu").read_text()
 
 
-def test_recorded_native_shape_evidence_when_available():
+def test_recorded_native_shape_evidence_and_incomplete_coverage_rejections():
     directory = ROOT / "tests/golden/proofs"
-    if not (directory / "reduction_shape_cuda_record.json").exists():
-        pytest.skip("native odd-shape observation pending")
     cpu = load_observation(directory / "reduction_shape_c11_record.json")
     gpu = load_observation(directory / "reduction_shape_cuda_record.json")
     report = shapes.compare_records(cpu, gpu)

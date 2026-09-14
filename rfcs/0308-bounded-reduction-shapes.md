@@ -2,7 +2,10 @@
 
 ## Status
 
-Implemented for native observation; acceptance pending execution and review.
+Implemented and natively observed on 2026-09-14; merge review pending.
+Both C11 and physical sm86 CUDA passed all twenty cases plus replay and three
+wrong-code controls. C11 also passed ASan/UBSan. The tested source identity
+and actual observations are listed in `docs/BOUNDED_REDUCTION_SHAPES.md`.
 
 ## Decision
 

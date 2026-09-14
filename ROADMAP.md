@@ -4,13 +4,13 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Reduction Input Portfolio](docs/REDUCTION_INPUT_PORTFOLIO.md)
-extends the C11 and physical CUDA reduction proofs to twenty fixed inputs plus
-a baseline replay without changing the generated functions. Both targets
-passed all cases and four wrong-code probes on 2026-09-10; C11 also passed
-ASan/UBSan. A frozen-output mutant passes the old one-vector test but fails
-the new corpus. Next: one additional bounded shape, fresh lowering and actual
-execution on both targets. No arbitrary-input or performance claim follows.
+Latest completed experiment: [Bounded Reduction Shapes](docs/BOUNDED_REDUCTION_SHAPES.md)
+adds A[33,7], B[7,5], y[33] to the baseline, with fresh C11/CUDA lowering and
+actual execution on 2026-09-14. Both targets passed twenty vectors plus replay
+and three wrong-code controls; C11 also passed ASan/UBSan. The larger output
+requires multiple GPU blocks, and incomplete coverage is rejected. Next:
+non-exact FP32 inputs under an explicit rounding/error contract on both
+targets. Dynamic shapes, arbitrary-input and performance claims remain blocked.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.

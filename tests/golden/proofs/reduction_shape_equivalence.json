@@ -1,0 +1,39 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware",
+    "arbitrary_fp32_inputs",
+    "dynamic_shapes"
+  ],
+  "c11_record_digest": "sha256:b457c13fc6772c04493f70d70d714805d20c137f3db100240fe38cda06f14086",
+  "case_count": 20,
+  "comparison": "all_cases_exactly_match_same_reference",
+  "cuda_record_digest": "sha256:7f220f5687f09cc60f43c787c46426c7d531824639563a5edabfabfea3de5a7d",
+  "input_shapes": [
+    [
+      33,
+      7
+    ],
+    [
+      7,
+      5
+    ]
+  ],
+  "output_shape": [
+    33
+  ],
+  "raw_values_serialized": false,
+  "runs_per_target": 21,
+  "schema_version": "tuc.bounded_reduction_shape_equivalence.v0",
+  "source_intent_digest": "sha256:54415a7218b284a9e0e8927ffc2a9d5eef0ff5cb9d5ccd8669b64d0f2a4c44a1",
+  "status": "PASS",
+  "targets": [
+    "c11",
+    "cuda"
+  ]
+}

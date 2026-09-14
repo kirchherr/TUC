@@ -409,6 +409,9 @@ unchanged generated functions to twenty fixed inputs plus a baseline replay
 on both targets. All passed, while a frozen-output mutant that passes the old
 single-vector test fails on the next input. This remains fixed-shape research,
 not arbitrary-input correctness, a general backend or a performance claim.
+The [odd-shape experiment](docs/BOUNDED_REDUCTION_SHAPES.md) also passed on
+both targets for A[33,7], B[7,5], y[33]: fresh lowering, twenty inputs plus
+replay, multiple GPU blocks and detected incomplete-coverage errors.
 
 Current runtime surfaces:
 

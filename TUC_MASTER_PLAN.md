@@ -638,9 +638,13 @@ and vector. RFC 0307 extends the unchanged generated functions to twenty
 fixed input vectors plus a baseline replay on both targets, all passed on
 2026-09-10. A frozen-output mutant passes the original vector and fails the
 next one; C11 also passes the portfolio under ASan/UBSan. This remains
-fixed-shape same-maintainer research evidence. Another bounded shape with
-fresh lowering and actual two-target execution is the next generalization.
-See `docs/REDUCTION_INPUT_PORTFOLIO.md`,
+fixed-shape same-maintainer research evidence. RFC 0308 adds A[33,7], B[7,5],
+y[33] with fresh lowering and actual two-target execution on 2026-09-14:
+twenty vectors plus replay, multi-block CUDA coverage and three wrong-code
+controls all passed; C11 also passed ASan/UBSan. Next is non-exact FP32 input
+coverage under an explicit rounding/error contract, not dynamic shapes or
+performance claims. See `docs/BOUNDED_REDUCTION_SHAPES.md`,
+`docs/REDUCTION_INPUT_PORTFOLIO.md`,
 `docs/BOUNDED_REDUCTION_C11_PROOF.md` and `docs/BOUNDED_REDUCTION_CUDA_PROOF.md`.
 
 Bounded Source-To-Target Execution Proof v0 now joins that target evidence to
