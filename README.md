@@ -417,6 +417,9 @@ code with non-exact inputs: both native targets pass 363 output checks within
 a predeclared error budget, with 298 rounding witnesses and five rejected
 negative controls each. This demonstrates bounded numerical agreement, not
 bitwise equality or arbitrary-FP32 correctness.
+The [paired FMA experiment](docs/REDUCTION_FMA_VARIANT.md) makes that distinction
+observable: 61 output pairs differ on each native target, yet both variants
+pass the unchanged error bounds. A silent non-FMA fallback is rejected.
 
 Current runtime surfaces:
 

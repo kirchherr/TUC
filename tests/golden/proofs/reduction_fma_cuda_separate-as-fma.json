@@ -1,0 +1,31 @@
+{
+  "acceptance_intervals_digest": "sha256:ce9db369fe48505ed52bc0b0128a2d0a19d50ea5e6cfc22d61e9928d5459a900",
+  "baseline_code_digest": "sha256:66be0a56e4618e924f5c5c7511a06556fd229b618ba16735c58c636544921f35",
+  "baseline_contract_digest": "sha256:8556cb3f647db292dfbb2415f3a8ea636105b3654e4cf157cfe236c3483a748b",
+  "baseline_rounding_outputs": 0,
+  "case_count": 10,
+  "corpus_digest": "sha256:4b130bb7902346618bd1bf7960e49fea09559cb49c2bdf8ebaf813d51975b43e",
+  "different_outputs": 0,
+  "execution_policy_digest": "sha256:c0971d4777474f3b2f720a5dac322498e838de766cc465dc3a3b2a056e7d18f4",
+  "execution_policy_passed": false,
+  "failed_run_index": 0,
+  "fma_code_digest": "sha256:d7691a6125e349a40b9301ed73cb8eeccde2eae554ef22e0a9e720798568f7a6",
+  "fma_rounding_outputs": 0,
+  "generated_function_calls": 4,
+  "mode": "execute",
+  "numeric_contract_passed": false,
+  "output_shape": [
+    33
+  ],
+  "raw_values_serialized": false,
+  "reason_code": "execution_policy_mismatch",
+  "repeated_baseline_passed": false,
+  "runs_passed": 0,
+  "scalar_checks": 0,
+  "schema_version": "tuc.bounded_fma_observation.v0",
+  "security_boundary_passed": true,
+  "source_intent_digest": "sha256:54415a7218b284a9e0e8927ffc2a9d5eef0ff5cb9d5ccd8669b64d0f2a4c44a1",
+  "status": "ERROR",
+  "target": "cuda",
+  "tensor_bytes": 1856
+}

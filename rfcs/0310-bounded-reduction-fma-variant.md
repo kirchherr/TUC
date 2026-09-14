@@ -1,6 +1,6 @@
 # RFC 0310: Bounded Reduction FMA Variant
 
-- Status: Implemented; native acceptance pending
+- Status: Implemented; native C11 and physical sm86 CUDA observed 2026-09-14
 - Scope: Paired fixed-corpus native experiment following RFC 0309
 
 ## Decision
@@ -29,6 +29,12 @@ remain disabled. No general source/IR/runtime admission is added.
    projection FFMA, and neither worker contains PTX fallback.
 5. Data-only records bind source, corpus, both code variants, baseline
    contract, interval artifact, execution policy, program files and image.
+
+All criteria passed. Each target observed 61 differing pairs out of 363,
+726 passing scalar checks, and six first-run negative rejections. The
+silent-fallback control was rejected by the policy check. Accepted comparison:
+`tests/golden/proofs/reduction_fma_comparison.json`. See the linked experiment
+document for source/archive provenance and residual risks.
 
 ## Security And Proof Impact
 

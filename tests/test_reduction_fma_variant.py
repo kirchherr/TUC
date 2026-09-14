@@ -10,6 +10,7 @@ import pytest
 
 from examples import reduction_fma_variant as fma
 from examples.bounded_compiler_emission import BoundedCompilerEmissionError, _digest_text
+from examples.bounded_reduction_c11 import load_observation
 
 
 def test_fused_reference_keeps_product_precision_until_single_rounding():
@@ -165,3 +166,20 @@ def test_isolation_sass_and_policy_controls_are_explicit():
     assert "first_fused[row] != fused[row]" in common
     assert max(len(s.encode()) for s in fma.artifact_files().values()) < 65536
     assert json.loads((fma.CONTEXT / "execution_policy.json").read_text()) == fma.POLICY
+
+
+def test_actual_native_records_match_accepted_comparison():
+    directory = fma.ROOT / "tests/golden/proofs"
+    records = [load_observation(directory / f"reduction_fma_{t}_record.json") for t in fma.TARGETS]
+    assert fma.compare_records(*records) == json.loads(
+        (directory / "reduction_fma_comparison.json").read_text())
+
+
+@pytest.mark.parametrize("target", fma.TARGETS)
+@pytest.mark.parametrize("mutation", fma.MUTATIONS)
+def test_actual_native_negative_controls_are_rejected(target, mutation):
+    value = load_observation(fma.ROOT / "tests/golden/proofs" /
+                             f"reduction_fma_{target}_{mutation}.json")
+    fma.validate_negative(value, target, mutation)
+    with pytest.raises(BoundedCompilerEmissionError):
+        fma.validate_observation(value, target)

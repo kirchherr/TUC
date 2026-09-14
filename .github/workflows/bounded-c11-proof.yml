@@ -71,3 +71,28 @@ jobs:
         run: |
           python examples/reduction_fp32_contract.py --compare tests/golden/proofs/reduction_fp32_c11_record.json tests/golden/proofs/reduction_fp32_cuda_record.json
           pytest -q tests/test_reduction_fp32_contract.py
+
+  paired-fma:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Install proof dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Execute paired separate and FMA C11 variants
+        run: sh scripts/run_reduction_fma_variant.sh --c11
+      - name: Revalidate paired observations (no GPU execution)
+        run: |
+          python examples/reduction_fma_variant.py --compare tests/golden/proofs/reduction_fma_c11_record.json tests/golden/proofs/reduction_fma_cuda_record.json
+          pytest -q tests/test_reduction_fma_variant.py

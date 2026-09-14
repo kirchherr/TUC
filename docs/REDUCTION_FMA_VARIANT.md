@@ -88,8 +88,33 @@ dependency, core runtime admission, general native backend or performance claim.
 
 ## Status
 
-Implementation and predeclared numerical expectations are ready. Native
-acceptance is pending; the generated plan alone is not execution evidence.
+Actual native C11 and physical sm86 CUDA execution passed on 2026-09-14.
+Each target performed 726 scalar checks in 44 generated calls: both policies
+satisfied the unchanged intervals, with exactly 61 differing output pairs
+and 298 rounding witnesses per policy. Both replay checks and all six
+negative controls passed; the silent-fallback control failed with
+`execution_policy_mismatch`, not a widened or violated numerical budget.
+C11 also passed ASan/UBSan; the CUDA build passed the per-kernel SASS checks.
+Test containers exited and GPU occupancy returned to its initial idle level.
+No other workloads, host services or drivers were changed.
+
+Tested source commit: `e65af416fc7e72948a773d6b6becd382dee31d38`.
+Transferred archive SHA-256:
+`89ff5f38f19fed67d82bdcf2effa0da26deac05fdaddef7ccb6cb2f0f92269d3`.
+The archive includes that commit's `src`, `examples`, `docker`, `scripts`,
+`schemas` and `tests/golden` trees. Later changes only add actual records,
+regression enforcement, CI and documentation; observed program files are
+unchanged.
+
+Accepted comparison: `tests/golden/proofs/reduction_fma_comparison.json`,
+with two `reduction_fma_{c11,cuda}_record.json` children and six actual
+negative observations per target. A separate bounded CI job runs the C11
+pair and revalidates stored GPU evidence, without a hosted physical GPU run.
+
+Next: connect the reviewed primitives into a bounded source-derived
+Matmul -> ReLU -> reduction chain, carrying explicit numerical policy through
+lowering and real two-target execution. More vectors or general-purpose
+evidence gates alone do not close that composition question.
 
 ## References
 

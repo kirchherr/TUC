@@ -1,5 +1,17 @@
 # Roadmap Status
 
+- [Bounded FMA Variant](REDUCTION_FMA_VARIANT.md) passed paired native C11
+  and physical sm86 CUDA execution on 2026-09-14: 726 scalar checks and 61
+  differing output pairs per target, all within unchanged RFC 0309 intervals.
+  A distinct FMA execution policy preserves the old no-FMA contract rather
+  than reinterpreting it. Both policies match their own ordered reference;
+  both replay correctly. Six negative controls were rejected, including
+  silent fallback; C11 passed ASan/UBSan and CUDA passed kernel-specific
+  FFMA/no-FFMA SASS checks. Accepted comparison:
+  `tests/golden/proofs/reduction_fma_comparison.json`, with two target records
+  and twelve rejection observations. Decision: RFC 0310. This demonstrates
+  bounded numerical implementation freedom, not general runtime admission.
+
 - [Bounded FP32 Reduction Contract](REDUCTION_FP32_CONTRACT.md) passed native
   C11 and physical sm86 CUDA execution on 2026-09-14. Ten non-exact input cases
   plus replay produced 363 output checks and 298 rounding witnesses per
@@ -1902,12 +1914,12 @@ Current focus:
 
 ## Next
 
-- RFC 0309 establishes actual two-target agreement with a predeclared
-  numerical contract on non-exact FP32 inputs. Next, test an explicitly
-  reviewed FMA-enabled implementation against the same reference/error bound,
-  exposing permissible implementation differences without widening the
-  budget after measurement. Keep wrong-code and coverage controls. Do not
-  infer arbitrary-input, bitwise or performance guarantees from this corpus.
+- RFC 0310 demonstrates different native numerical implementations inside
+  unchanged error intervals, with silent fallback rejected. Next, compose
+  the reviewed primitives into a bounded source-derived Matmul -> ReLU ->
+  reduction chain, carrying explicit numerical policy through lowering and
+  real C11/CUDA execution. Preserve existing wrong-code/coverage controls;
+  do not infer arbitrary-input or performance guarantees from these cases.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source
