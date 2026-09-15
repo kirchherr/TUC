@@ -1,0 +1,69 @@
+{
+  "assignments": [
+    {
+      "backend": "bounded-cuda",
+      "domain": "unknown",
+      "layout": "row_major",
+      "operation": "projection"
+    },
+    {
+      "backend": "bounded-cuda",
+      "domain": "unknown",
+      "layout": "row_major",
+      "operation": "activated"
+    },
+    {
+      "backend": "bounded-cuda",
+      "domain": "unknown",
+      "layout": "row_major",
+      "operation": "row_sum"
+    }
+  ],
+  "backend": "bounded-cuda",
+  "decision_report": "compiler.decision_report @research_composed_chain {\n  operation projection kind=matmul assigned=bounded-cuda accepted_backends=\"bounded-cuda\" rejected_backends=\"-\" reason=\"supported:matmul;domain=unknown;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major\"\n  support {\n    bounded-cuda accepted reason=\"accepted\" detail=\"capability accepts operation kind, layout, and error budget\"\n  }\n  operation activated kind=elementwise assigned=bounded-cuda accepted_backends=\"bounded-cuda\" rejected_backends=\"-\" reason=\"supported:elementwise;domain=unknown;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major\"\n  support {\n    bounded-cuda accepted reason=\"accepted\" detail=\"capability accepts operation kind, layout, and error budget\"\n  }\n  operation row_sum kind=reduction assigned=bounded-cuda accepted_backends=\"bounded-cuda\" rejected_backends=\"-\" reason=\"supported:reduction;domain=unknown;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major\"\n  support {\n    bounded-cuda accepted reason=\"accepted\" detail=\"capability accepts operation kind, layout, and error budget\"\n  }\n}",
+  "external_io_in_core_transfer_plan": false,
+  "hac_ir": "hac-ir.module @research_composed_chain {\n  metadata {\n    graph.dialect_version = \"tlir.v0\"\n    graph.frontend.adapter = \"triton_metadata.v0\"\n    graph.frontend.intake_contract = \"triton_intake.execution_free.v0\"\n    graph.frontend.schema_version = \"triton_metadata.v0\"\n    graph.frontend.source_intent_contract = \"source_intent_ir.canonical.v0\"\n    graph.frontend.source_intent_conversion_contract = \"source_intent_to_metadata.execution_free.v0\"\n    graph.frontend.source_intent_return_aliases = [\"y:row_sum\"]\n    graph.frontend.source_intent_return_policy = \"explicit_public_returns\"\n    graph.lowered_from = \"tlir\"\n    graph.movement_model = \"movement.v0\"\n    graph.movement_summary = {arithmetic_intensity: 0.679614181438999, movement_model: \"movement.v0\", operation_count: 3, total_arithmetic_ops: 2607, total_bytes_read: 2384, total_bytes_written: 1452}\n    graph.mvp_operation_count = 3\n    graph.source = \"triton-like-python\"\n    module.dialect_version = \"hac-ir.v0\"\n  }\n  %projection = tuc.matmul @projection(%a: tensor<33x7xf32>, %b: tensor<7x5xf32>) -> (%projection: tensor<33x5xf32>) {prefer_linear_accelerator = false, prefer_sparsity = false, robust_to_noise = false, tuc.arithmetic_intensity = 1.339907192575406, tuc.arithmetic_ops = 2310, tuc.bytes_read = 1064, tuc.bytes_written = 660, tuc.layout = \"row_major\", tuc.layout_tile_shape = [], tuc.linearity = \"linear\", tuc.movement_notes = [\"rank2_matmul\"], tuc.preferred_memory_domain = \"host_ram\", tuc.semantic_op = \"matmul\", tuc.source_stage = \"tlir\"}\n  %activated = tuc.elementwise @activated(%projection: tensor<33x5xf32>) -> (%activated: tensor<33x5xf32>) {kernel = \"relu\", prefer_linear_accelerator = false, prefer_sparsity = false, robust_to_noise = false, tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 165, tuc.bytes_read = 660, tuc.bytes_written = 660, tuc.layout = \"row_major\", tuc.layout_tile_shape = [], tuc.linearity = \"nonlinear\", tuc.movement_notes = [\"exact_shape_elementwise\"], tuc.preferred_memory_domain = \"host_ram\", tuc.semantic_op = \"elementwise\", tuc.source_stage = \"tlir\"}\n  %row_sum = tuc.reduction @row_sum(%activated: tensor<33x5xf32>) -> (%row_sum: tensor<33xf32>) {axis = 1, prefer_linear_accelerator = false, prefer_sparsity = false, robust_to_noise = false, tuc.arithmetic_intensity = 0.16666666666666666, tuc.arithmetic_ops = 132, tuc.bytes_read = 660, tuc.bytes_written = 132, tuc.layout = \"row_major\", tuc.layout_tile_shape = [], tuc.linearity = \"linear\", tuc.movement_notes = [\"bounded_reduction\"], tuc.preferred_memory_domain = \"host_ram\", tuc.semantic_op = \"reduction\", tuc.source_stage = \"tlir\"}\n}",
+  "hs_ir": "hs-ir.module @research_composed_chain target=\"heterogeneous\" {\n  metadata {\n    graph.backend_assignments = {activated: \"bounded-cuda\", projection: \"bounded-cuda\", row_sum: \"bounded-cuda\"}\n    graph.dialect_version = \"tlir.v0\"\n    graph.frontend.adapter = \"triton_metadata.v0\"\n    graph.frontend.intake_contract = \"triton_intake.execution_free.v0\"\n    graph.frontend.schema_version = \"triton_metadata.v0\"\n    graph.frontend.source_intent_contract = \"source_intent_ir.canonical.v0\"\n    graph.frontend.source_intent_conversion_contract = \"source_intent_to_metadata.execution_free.v0\"\n    graph.frontend.source_intent_return_aliases = [\"y:row_sum\"]\n    graph.frontend.source_intent_return_policy = \"explicit_public_returns\"\n    graph.lowered_from = \"hac-ir\"\n    graph.movement_model = \"movement.v0\"\n    graph.movement_summary = {arithmetic_intensity: 0.679614181438999, movement_model: \"movement.v0\", operation_count: 3, total_arithmetic_ops: 2607, total_bytes_read: 2384, total_bytes_written: 1452}\n    graph.mvp_operation_count = 3\n    graph.runtime_transfer_summary = {estimated_transfer_energy_pj: 0, estimated_transfer_latency_ns: 0, layout_conversion_count: 0, total_data_movement_bytes: 0, total_layout_conversion_bytes: 0, total_transfer_bytes: 0, transfer_edge_count: 0}\n    graph.source = \"triton-like-python\"\n    module.dialect_version = \"hs-ir.v0\"\n  }\n  %projection = tuc.matmul @projection(%a: tensor<33x7xf32>, %b: tensor<7x5xf32>) -> (%projection: tensor<33x5xf32>) {prefer_linear_accelerator = false, prefer_sparsity = false, robust_to_noise = false, tuc.arithmetic_intensity = 1.339907192575406, tuc.arithmetic_ops = 2310, tuc.assigned_backend = \"bounded-cuda\", tuc.bytes_read = 1064, tuc.bytes_written = 660, tuc.layout = \"row_major\", tuc.layout_tile_shape = [], tuc.linearity = \"linear\", tuc.movement_notes = [\"rank2_matmul\"], tuc.preferred_memory_domain = \"host_ram\", tuc.produced_layout = \"row_major\", tuc.semantic_op = \"matmul\", tuc.source_stage = \"hac-ir\"}\n  %activated = tuc.elementwise @activated(%projection: tensor<33x5xf32>) -> (%activated: tensor<33x5xf32>) {kernel = \"relu\", prefer_linear_accelerator = false, prefer_sparsity = false, robust_to_noise = false, tuc.arithmetic_intensity = 0.125, tuc.arithmetic_ops = 165, tuc.assigned_backend = \"bounded-cuda\", tuc.bytes_read = 660, tuc.bytes_written = 660, tuc.layout = \"row_major\", tuc.layout_tile_shape = [], tuc.linearity = \"nonlinear\", tuc.movement_notes = [\"exact_shape_elementwise\"], tuc.preferred_memory_domain = \"host_ram\", tuc.produced_layout = \"row_major\", tuc.semantic_op = \"elementwise\", tuc.source_stage = \"hac-ir\"}\n  %row_sum = tuc.reduction @row_sum(%activated: tensor<33x5xf32>) -> (%row_sum: tensor<33xf32>) {axis = 1, prefer_linear_accelerator = false, prefer_sparsity = false, robust_to_noise = false, tuc.arithmetic_intensity = 0.16666666666666666, tuc.arithmetic_ops = 132, tuc.assigned_backend = \"bounded-cuda\", tuc.bytes_read = 660, tuc.bytes_written = 132, tuc.layout = \"row_major\", tuc.layout_tile_shape = [], tuc.linearity = \"linear\", tuc.movement_notes = [\"bounded_reduction\"], tuc.preferred_memory_domain = \"host_ram\", tuc.produced_layout = \"row_major\", tuc.semantic_op = \"reduction\", tuc.source_stage = \"hac-ir\"}\n}",
+  "io_policy": "operator_owned_input_upload_and_terminal_download",
+  "memory_domain": "unknown",
+  "normal_runtime_admission": false,
+  "numeric_contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+  "operations": [
+    {
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "kind": "matmul",
+      "name": "projection",
+      "outputs": [
+        "projection"
+      ]
+    },
+    {
+      "inputs": [
+        "projection"
+      ],
+      "kind": "elementwise",
+      "name": "activated",
+      "outputs": [
+        "activated"
+      ]
+    },
+    {
+      "inputs": [
+        "activated"
+      ],
+      "kind": "reduction",
+      "name": "row_sum",
+      "outputs": [
+        "row_sum"
+      ]
+    }
+  ],
+  "runtime_plan": "runtime.plan @research_composed_chain {\n  assignments {\n    projection -> bounded-cuda domain=unknown produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason=\"supported:matmul;domain=unknown;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major\"\n    activated -> bounded-cuda domain=unknown produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason=\"supported:elementwise;domain=unknown;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major\"\n    row_sum -> bounded-cuda domain=unknown produced_layout=row_major transfer_bytes=0 layout_conversion_bytes=0 reason=\"supported:reduction;domain=unknown;transfer_bytes=0;layout_conversion_bytes=0;produced_layout=row_major\"\n  }\n  summary {\n    total_transfer_bytes = 0\n    total_layout_conversion_bytes = 0\n    total_data_movement_bytes = 0\n    estimated_transfer_latency_ns = 0\n    estimated_transfer_energy_pj = 0\n  }\n}",
+  "schema_version": "tuc.bounded_native_core_snapshot.v0",
+  "slot_policy": "projection_3_activation_2",
+  "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+  "target": "cuda"
+}

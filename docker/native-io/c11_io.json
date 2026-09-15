@@ -1,0 +1,75 @@
+{
+  "buffer_bytes": [
+    924,
+    140,
+    660,
+    660,
+    132
+  ],
+  "compute_dispatch_digest": "sha256:56a3699bba4f5754b7d64f4e1e620db07d7ae4c745fd60206bf049cc8b1e18e8",
+  "core_snapshot_digest": "sha256:2ba65961e79ae9574efaeb1754c73b68304df89ae6e067eda26bb2fb1eb38c76",
+  "cost_status": "not_measured",
+  "cross_space_bytes_per_run": 0,
+  "energy_pj": null,
+  "latency_ns": null,
+  "memory_spaces": {
+    "execution": {
+      "address_space": "host_process",
+      "physical_kind": "host_ram"
+    },
+    "host": {
+      "address_space": "host_process",
+      "physical_kind": "host_ram"
+    }
+  },
+  "normal_runtime_admission": false,
+  "schema_version": "tuc.bounded_native_io_plan.v0",
+  "scope": "closed_operator_boundary_not_core_partition_transfers",
+  "steps": [
+    {
+      "bytes": 924,
+      "dtype": "float32",
+      "layout": "row_major",
+      "mode": "host_binding",
+      "phase": "before_compute",
+      "shape": [
+        33,
+        7
+      ],
+      "slot": 0,
+      "source_space": "host",
+      "target_space": "execution",
+      "tensor": "a"
+    },
+    {
+      "bytes": 140,
+      "dtype": "float32",
+      "layout": "row_major",
+      "mode": "host_binding",
+      "phase": "before_compute",
+      "shape": [
+        7,
+        5
+      ],
+      "slot": 1,
+      "source_space": "host",
+      "target_space": "execution",
+      "tensor": "b"
+    },
+    {
+      "bytes": 132,
+      "dtype": "float32",
+      "layout": "row_major",
+      "mode": "host_binding",
+      "phase": "after_compute",
+      "shape": [
+        33
+      ],
+      "slot": 4,
+      "source_space": "execution",
+      "target_space": "host",
+      "tensor": "row_sum"
+    }
+  ],
+  "target": "c11"
+}
