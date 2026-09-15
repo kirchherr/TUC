@@ -1,6 +1,6 @@
 # RFC 0312: Bounded Core Plan to Native Dispatch
 
-Status: Implemented; physical execution pending acceptance
+Status: Implemented and observed on both native targets, 2026-09-15
 
 ## Research Question
 

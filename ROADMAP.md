@@ -4,18 +4,19 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Composed Chain](docs/BOUNDED_COMPOSED_CHAIN.md)
-executes source-derived Matmul -> ReLU -> reduction on native C11 and physical
-CUDA. On 2026-09-14 each target passed 363 scalar checks, three stages per run,
-and ten cases plus replay. Seven negative controls were rejected, including
-bypassed and misplaced ReLU; C11 also passed ASan/UBSan. The exact nonlinear
-reference and separate FP32 order have an explicit numerical contract.
-The preceding [FMA experiment](docs/REDUCTION_FMA_VARIANT.md) remains unchanged.
-Next: consolidate the reviewed PR stack, then connect the checked core plan to
-this bounded native chain in a dedicated operator experiment. The current
-native path checks Source Intent but does not execute the core partition plan.
-Independent reproduction remains open. Dynamic shapes, arbitrary-input
-correctness, general native admission and performance claims remain blocked.
+Latest completed experiment: [Bounded Plan-to-Native Bridge](docs/BOUNDED_PLAN_NATIVE_BRIDGE.md)
+derives native compute dispatch from the existing compiler's checked HAC-IR and
+backend assignments. On 2026-09-15 native C11 and physical CUDA each passed the
+unchanged 363 scalar checks and all twelve negative controls. Five plan faults
+were rejected before generated calls; C11 also passed ASan/UBSan. The targets
+share HAC-IR but use different intermediate-buffer bindings. Earlier chain,
+numerical-contract and FMA records remain unchanged.
+Integration is waiting for the required approving review on PR #100; do not
+bypass the rule. Next: merge reviewed predecessors in order, then make external
+I/O transfers explicit in the bounded plan with an appropriate memory-domain
+model. The current operator still owns upload/download and their costs are not
+in the core transfer plan. Independent reproduction remains open. Dynamic shapes,
+arbitrary-input correctness, general native admission and performance stay blocked.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.

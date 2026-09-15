@@ -1,5 +1,17 @@
 # Roadmap Status
 
+- [Bounded Plan-to-Native Bridge](BOUNDED_PLAN_NATIVE_BRIDGE.md) passed native
+  C11 and physical CUDA on 2026-09-15. The existing core compiler's assignments
+  now derive the static native opcode/operand table. Both targets share HAC-IR,
+  use distinct intermediate-buffer bindings, and pass 363 scalar checks and
+  twelve negative controls each. Five schedule faults reject with zero generated
+  calls. C11 ASan/UBSan passed. Accepted comparison:
+  `tests/golden/proofs/plan_native_comparison.json`, two bound records, two
+  preflights, one sanitizer observation and twenty-four rejections. RFC 0312.
+  Normal-runtime registration is unchanged; external I/O copies remain explicit
+  operator responsibilities outside core transfer accounting. The PR stack is
+  still blocked at #100 by a required approving review, not failing CI.
+
 - [Bounded Composed Chain](BOUNDED_COMPOSED_CHAIN.md) passed native C11 and
   physical sm86 CUDA execution on 2026-09-14: source-derived Matmul -> ReLU ->
   reduction, 33 generated calls and 363 scalar checks per target. All ten
@@ -1925,13 +1937,12 @@ Current focus:
 
 ## Next
 
-- RFC 0311 demonstrates the source-derived nonlinear chain on real C11/CUDA
-  targets. Consolidate the reviewed PR stack next, then investigate a bounded
-  core-plan-to-native execution bridge with its own security decision. Replace
-  hard-coded native dispatch with a checked plan only inside that explicit
-  operator experiment, not by opening the default runtime. Preserve numerical,
-  wrong-code, coverage, and previous FMA evidence. Independent reproduction
-  remains open; do not infer arbitrary-input or performance guarantees.
+- RFC 0312 demonstrates core-plan-derived dispatch on real C11/CUDA targets.
+  First obtain the required approving review and merge the predecessor stack
+  in order, without bypassing branch rules. The next bounded integration gap
+  is explicit external I/O transfer accounting and a suitable neutral device
+  memory domain. Preserve numerical, wrong-code, coverage and FMA evidence;
+  keep default native admission blocked. Independent reproduction remains open.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

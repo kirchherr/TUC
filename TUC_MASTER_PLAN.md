@@ -652,11 +652,15 @@ including silent fallback. The candidate has its own execution policy; the
 old no-FMA contract remains unchanged. RFC 0311 now executes a source-derived
 Matmul -> ReLU -> reduction chain on both native targets: 363 scalar checks,
 33 calls and seven rejected controls per target, including misplaced ReLU.
-C11 also passes ASan/UBSan. Next is a separately reviewed bounded bridge from
-the checked core plan to native dispatch, after consolidating the PR stack;
-the current native operator is intent-bound but not core-plan-driven.
+C11 also passes ASan/UBSan. RFC 0312 now derives native compute dispatch from
+checked core assignments, with common HAC-IR and distinct buffer bindings:
+363 scalar checks and twelve rejected controls per target, including five
+plan faults before generated calls. C11 also passes ASan/UBSan. Integration
+awaits the required approving review on PR #100. Next is explicit external
+I/O accounting in the bounded plan; copies remain operator-owned today.
 Independent reproduction, dynamic shapes and performance claims remain open.
-See `docs/BOUNDED_COMPOSED_CHAIN.md`, `docs/REDUCTION_FMA_VARIANT.md`,
+See `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`, `docs/BOUNDED_COMPOSED_CHAIN.md`,
+`docs/REDUCTION_FMA_VARIANT.md`,
 `docs/REDUCTION_FP32_CONTRACT.md`,
 `docs/BOUNDED_REDUCTION_SHAPES.md`,
 `docs/REDUCTION_INPUT_PORTFOLIO.md`,

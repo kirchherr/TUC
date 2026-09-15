@@ -423,6 +423,9 @@ pass the unchanged error bounds. A silent non-FMA fallback is rejected.
 The [composed-chain experiment](docs/BOUNDED_COMPOSED_CHAIN.md) adds a nonlinear
 source-derived Matmul -> ReLU -> reduction sequence: both native targets pass
 363 scalar checks and reject seven faulty variants, including misplaced ReLU.
+Its [plan-to-native successor](docs/BOUNDED_PLAN_NATIVE_BRIDGE.md) derives dispatch
+from checked core assignments on both targets and rejects five additional plan
+faults before kernel calls. General native-runtime admission remains blocked.
 
 Current runtime surfaces:
 

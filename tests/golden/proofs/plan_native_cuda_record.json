@@ -1,0 +1,43 @@
+{
+  "core_snapshot_digest": "sha256:8d5dc502818fb599998b5c4b23a08a4bcd0ea5bfe0f3d39713f7b235fae97b7a",
+  "dispatch_header_digest": "sha256:9e06118a0638e3eccaf85d12eb8b0b2712a9efb8ea0f7565adc70f3ad262c97b",
+  "hac_ir_digest": "sha256:e4177b1becea68bded5cd3113ecbe843ac97692b9a59260a46b97f4c8b897def",
+  "io_policy": "operator_owned_input_upload_and_terminal_download",
+  "normal_runtime_admission": false,
+  "observation": {
+    "case_count": 10,
+    "cases_passed": 11,
+    "code_digest": "sha256:4b89a46e00550dc7c992532e25ce8783308fbbfe4c41fc37b011faa2e3f91913",
+    "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+    "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+    "execution_policy_passed": true,
+    "failed_run_index": -1,
+    "generated_function_calls": 33,
+    "mode": "execute",
+    "numeric_contract_passed": true,
+    "operation_order": [
+      "matmul",
+      "relu",
+      "sum_axis1"
+    ],
+    "output_shape": [
+      33
+    ],
+    "outputs_differing_from_reference64": 256,
+    "raw_values_serialized": false,
+    "reason_code": "none",
+    "repeated_baseline_passed": true,
+    "scalar_checks": 363,
+    "schema_version": "tuc.bounded_chain_observation.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+    "status": "PASS",
+    "target": "cuda",
+    "tensor_bytes": 2516
+  },
+  "operator_image_id": "sha256:11f526f6ad1214f282a45a980f43d9fd27b94b030445142db53058bb78fb7247",
+  "previous_chain_program_digest": "sha256:402c2563b8586e85b49a55ba39b1ab45b007f7a510613076f0db001de6ee75f4",
+  "program_files_digest": "sha256:708e619f23f19bc431344fdb9e2a75166c4e3e8f99c99c382526bb038b3ac817",
+  "provenance": "same_maintainer_operator",
+  "schema_version": "tuc.bounded_plan_native_record.v0"
+}

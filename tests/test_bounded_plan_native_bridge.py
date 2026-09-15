@@ -8,6 +8,7 @@ import pytest
 
 from examples import bounded_plan_native_bridge as bridge
 from examples.bounded_compiler_emission import BoundedCompilerEmissionError
+from examples.bounded_reduction_c11 import load_observation
 from tuc.backends.base import BackendCapability
 from tuc.compiler import compile_graph
 from tuc.ir.model import OperationKind
@@ -136,3 +137,39 @@ def test_snapshot_budgets_reject_before_compilation(value, monkeypatch):
     monkeypatch.setattr(bridge, "compile_chain", forbidden)
     with pytest.raises(BoundedCompilerEmissionError):
         bridge.lower_snapshot(value, "cuda")
+
+
+def test_actual_native_records_bind_common_ir_and_distinct_dispatch():
+    directory = bridge.ROOT / "tests/golden/proofs"
+    records = [load_observation(directory / f"plan_native_{t}_record.json")
+               for t in bridge.TARGETS]
+    assert records[0]["hac_ir_digest"] == records[1]["hac_ir_digest"]
+    assert records[0]["dispatch_header_digest"] != records[1]["dispatch_header_digest"]
+    assert bridge.compare_records(*records) == load_observation(
+        directory / "plan_native_comparison.json")
+    sanitized = load_observation(directory / "plan_native_c11_sanitized.json")
+    assert bridge.chain.validate_observation(sanitized, "c11") == records[0]["observation"]
+    with pytest.raises(BoundedCompilerEmissionError):
+        bridge.compare_records(records[0], {**records[1], "core_snapshot_digest": "altered"})
+
+
+@pytest.mark.parametrize("target", bridge.TARGETS)
+@pytest.mark.parametrize("mutation", bridge.MUTATIONS)
+def test_actual_native_negative_controls_fail_closed(target, mutation):
+    value = load_observation(bridge.ROOT / "tests/golden/proofs" /
+                             f"plan_native_{target}_{mutation}.json")
+    bridge.validate_negative(value, target, mutation)
+    with pytest.raises(BoundedCompilerEmissionError):
+        bridge.build_record(value, target, "sha256:" + "1" * 64)
+    if mutation in bridge.PLAN_MUTATIONS:
+        assert value["generated_function_calls"] == 0
+        assert value["tensor_bytes"] == 0
+
+
+@pytest.mark.parametrize("target", bridge.TARGETS)
+def test_actual_preflight_is_not_execution(target):
+    value = load_observation(bridge.ROOT / "tests/golden/proofs" /
+                             f"plan_native_{target}_preflight.json")
+    bridge.chain.validate_observation(value, target, True)
+    with pytest.raises(BoundedCompilerEmissionError):
+        bridge.build_record(value, target, "sha256:" + "1" * 64)
