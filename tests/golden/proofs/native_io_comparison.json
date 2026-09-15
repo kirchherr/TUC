@@ -1,0 +1,23 @@
+{
+  "blocked_claims": [
+    "general_native_runtime",
+    "arbitrary_programs_or_inputs",
+    "performance",
+    "mixed_native_placement",
+    "independent_reproduction"
+  ],
+  "c11_record_digest": "sha256:12e89e9e91a154ae4885c797db73aa5aebc1dbc233495848cbcae0865bb8e871",
+  "cpu_host_bindings": 33,
+  "cuda_copy_bytes": 13156,
+  "cuda_copy_calls": 33,
+  "cuda_record_digest": "sha256:11edef904fc6bc8fa45d8443a59632c4fab61b8c4d2e31cda779b4a2512744c4",
+  "energy_pj": null,
+  "external_io_in_bounded_operator_plan": true,
+  "external_io_in_core_partition_plan": false,
+  "latency_ns": null,
+  "normal_runtime_admission": false,
+  "scalar_checks_per_target": 363,
+  "schema_version": "tuc.bounded_native_io_comparison.v0",
+  "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+  "status": "PASS"
+}

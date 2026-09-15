@@ -1,0 +1,75 @@
+{
+  "buffer_bytes": [
+    924,
+    140,
+    660,
+    660,
+    132
+  ],
+  "compute_dispatch_digest": "sha256:9e06118a0638e3eccaf85d12eb8b0b2712a9efb8ea0f7565adc70f3ad262c97b",
+  "core_snapshot_digest": "sha256:8d5dc502818fb599998b5c4b23a08a4bcd0ea5bfe0f3d39713f7b235fae97b7a",
+  "cost_status": "not_measured",
+  "cross_space_bytes_per_run": 1196,
+  "energy_pj": null,
+  "latency_ns": null,
+  "memory_spaces": {
+    "execution": {
+      "address_space": "device_global",
+      "physical_kind": "unknown"
+    },
+    "host": {
+      "address_space": "host_process",
+      "physical_kind": "host_ram"
+    }
+  },
+  "normal_runtime_admission": false,
+  "schema_version": "tuc.bounded_native_io_plan.v0",
+  "scope": "closed_operator_boundary_not_core_partition_transfers",
+  "steps": [
+    {
+      "bytes": 924,
+      "dtype": "float32",
+      "layout": "row_major",
+      "mode": "upload",
+      "phase": "before_compute",
+      "shape": [
+        33,
+        7
+      ],
+      "slot": 0,
+      "source_space": "host",
+      "target_space": "execution",
+      "tensor": "a"
+    },
+    {
+      "bytes": 140,
+      "dtype": "float32",
+      "layout": "row_major",
+      "mode": "upload",
+      "phase": "before_compute",
+      "shape": [
+        7,
+        5
+      ],
+      "slot": 1,
+      "source_space": "host",
+      "target_space": "execution",
+      "tensor": "b"
+    },
+    {
+      "bytes": 132,
+      "dtype": "float32",
+      "layout": "row_major",
+      "mode": "download",
+      "phase": "after_compute",
+      "shape": [
+        33
+      ],
+      "slot": 4,
+      "source_space": "execution",
+      "target_space": "host",
+      "tensor": "row_sum"
+    }
+  ],
+  "target": "cuda"
+}

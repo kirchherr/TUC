@@ -425,7 +425,12 @@ source-derived Matmul -> ReLU -> reduction sequence: both native targets pass
 363 scalar checks and reject seven faulty variants, including misplaced ReLU.
 Its [plan-to-native successor](docs/BOUNDED_PLAN_NATIVE_BRIDGE.md) derives dispatch
 from checked core assignments on both targets and rejects five additional plan
-faults before kernel calls. General native-runtime admission remains blocked.
+faults before kernel calls. The [bounded native I/O plan](docs/BOUNDED_NATIVE_IO_PLAN.md)
+also controls inputs and output: 33 host bindings on C11 versus 22 uploads and
+11 downloads on physical CUDA, with twenty rejected controls per target.
+An omitted output fails even after all kernels run. This is explicit boundary
+completion, not general core I/O planning or a performance claim.
+General native-runtime admission remains blocked.
 
 Current runtime surfaces:
 

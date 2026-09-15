@@ -1,0 +1,43 @@
+{
+  "io": {
+    "completed_steps": 3,
+    "download_bytes": 0,
+    "download_calls": 0,
+    "host_bindings": 3,
+    "upload_bytes": 0,
+    "upload_calls": 0
+  },
+  "io_plan_digest": "sha256:75333df59162bd0ec0eb32ada6430be6df465b4a3efeddeac1de55e12e007919",
+  "numeric_observation": {
+    "case_count": 10,
+    "cases_passed": 0,
+    "code_digest": "sha256:492fdfe0c8aa941c32a36471ec9ae4c2d2307013efa2eceb89bfde7b99319468",
+    "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+    "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+    "execution_policy_passed": false,
+    "failed_run_index": 0,
+    "generated_function_calls": 3,
+    "mode": "execute",
+    "numeric_contract_passed": false,
+    "operation_order": [
+      "matmul",
+      "relu",
+      "sum_axis1"
+    ],
+    "output_shape": [
+      33
+    ],
+    "outputs_differing_from_reference64": 0,
+    "raw_values_serialized": false,
+    "reason_code": "numeric_contract_mismatch",
+    "repeated_baseline_passed": false,
+    "scalar_checks": 0,
+    "schema_version": "tuc.bounded_chain_observation.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+    "status": "ERROR",
+    "target": "c11",
+    "tensor_bytes": 2516
+  },
+  "schema_version": "tuc.bounded_native_io_observation.v0"
+}
