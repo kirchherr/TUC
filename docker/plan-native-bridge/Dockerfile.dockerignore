@@ -1,0 +1,16 @@
+**
+!docker/
+!docker/plan-native-bridge/
+!docker/plan-native-bridge/generated.c
+!docker/plan-native-bridge/generated.h
+!docker/plan-native-bridge/kernels.cuh
+!docker/plan-native-bridge/host.c
+!docker/plan-native-bridge/device.cu
+!docker/plan-native-bridge/inputs.h
+!docker/plan-native-bridge/oracle.h
+!docker/plan-native-bridge/common.h
+!docker/plan-native-bridge/build-c11.sh
+!docker/plan-native-bridge/build-cuda.sh
+!docker/plan-native-bridge/dispatch_contract.h
+!docker/plan-native-bridge/c11_dispatch.h
+!docker/plan-native-bridge/cuda_dispatch.h
