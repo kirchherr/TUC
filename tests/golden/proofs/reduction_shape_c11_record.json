@@ -1,0 +1,28 @@
+{
+  "observation": {
+    "case_count": 20,
+    "cases_passed": 21,
+    "code_digest": "sha256:35bc42c8af60aabca0fa74b052bbbd8fe43882fcc2065aebc27930741cc5ffd4",
+    "corpus_digest": "sha256:8639f8c55316ea3ce6618717e962785ee5d081c2b0b21ada8323080ad4328fa9",
+    "failed_run_index": -1,
+    "generated_function_calls": 42,
+    "mode": "execute",
+    "output_shape": [
+      33
+    ],
+    "raw_values_serialized": false,
+    "reason_code": "none",
+    "reference_correctness": true,
+    "repeated_baseline_passed": true,
+    "schema_version": "tuc.bounded_reduction_shape_observation.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:54415a7218b284a9e0e8927ffc2a9d5eef0ff5cb9d5ccd8669b64d0f2a4c44a1",
+    "status": "PASS",
+    "target": "c11",
+    "tensor_bytes": 1856
+  },
+  "operator_image_id": "sha256:c3165e88688c3ac8a7c44fa6dbbf4189890cb144385a5ddd490309e3988cdda8",
+  "program_files_digest": "sha256:cc0585cdbbaae855e19106f83ca8ed61bc9fcebcc761671ac84638f3cfbf0f23",
+  "provenance": "same_maintainer_operator",
+  "schema_version": "tuc.bounded_reduction_shape_record.v0"
+}
