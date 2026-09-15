@@ -4,20 +4,20 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Plan-to-Native Bridge](docs/BOUNDED_PLAN_NATIVE_BRIDGE.md)
-derives native compute dispatch from the existing compiler's checked HAC-IR and
-backend assignments. On 2026-09-15 native C11 and physical CUDA each passed the
-unchanged 363 scalar checks and all twelve negative controls. Five plan faults
-were rejected before generated calls; C11 also passed ASan/UBSan. The targets
-share HAC-IR but use different intermediate-buffer bindings. Earlier chain,
-numerical-contract and FMA records remain unchanged.
-PR #100 is merged into `main`; #101 through #107 were merged into predecessor
-branches. Their original commits are retained in #108 for integration into
-`main`, subject to the required checks and review. Next: integrate #108, then make external
-I/O transfers explicit in the bounded plan with an appropriate memory-domain
-model. The current operator still owns upload/download and their costs are not
-in the core transfer plan. Independent reproduction remains open. Dynamic shapes,
-arbitrary-input correctness, general native admission and performance stay blocked.
+Latest completed experiment: [Bounded Native I/O Plan](docs/BOUNDED_NATIVE_IO_PLAN.md)
+derives explicit input/output steps around the checked native compute dispatch.
+On 2026-09-15 native C11 and physical CUDA each passed 363 scalar checks and
+twenty negative controls. C11 completed 33 host bindings and passed ASan/UBSan;
+CUDA completed 22 uploads and 11 downloads totaling 13156 boundary bytes.
+An omitted output is rejected even after all kernels run. Address space is
+separate from physical memory technology; latency and energy remain unmeasured.
+PR #108 has integrated #101 through #107 into `main`. Earlier compute, numerical
+and FMA proof records remain unchanged. This new I/O plan is still a bounded
+operator contract, not general core partition-planner support.
+Next: shared core boundary-residency planning toward one bounded mixed native
+placement, preserving explicit transfer completion and numerical checks.
+Independent reproduction remains open. Dynamic shapes, arbitrary-input
+correctness, general native admission and performance stay blocked.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.

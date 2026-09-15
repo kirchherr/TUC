@@ -1,0 +1,51 @@
+{
+  "normal_runtime_admission": false,
+  "observation": {
+    "io": {
+      "completed_steps": 33,
+      "download_bytes": 1452,
+      "download_calls": 11,
+      "host_bindings": 0,
+      "upload_bytes": 11704,
+      "upload_calls": 22
+    },
+    "io_plan_digest": "sha256:b0a0a412002c2c6b1d612384dfcce1238f3e3c1a476df329c4f54ae78d486e75",
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 11,
+      "code_digest": "sha256:4b89a46e00550dc7c992532e25ce8783308fbbfe4c41fc37b011faa2e3f91913",
+      "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+      "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+      "execution_policy_passed": true,
+      "failed_run_index": -1,
+      "generated_function_calls": 33,
+      "mode": "execute",
+      "numeric_contract_passed": true,
+      "operation_order": [
+        "matmul",
+        "relu",
+        "sum_axis1"
+      ],
+      "output_shape": [
+        33
+      ],
+      "outputs_differing_from_reference64": 256,
+      "raw_values_serialized": false,
+      "reason_code": "none",
+      "repeated_baseline_passed": true,
+      "scalar_checks": 363,
+      "schema_version": "tuc.bounded_chain_observation.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+      "status": "PASS",
+      "target": "cuda",
+      "tensor_bytes": 2516
+    },
+    "schema_version": "tuc.bounded_native_io_observation.v0"
+  },
+  "operator_image_id": "sha256:39c3baf8a7a95b52a957b0efa4a0a8ef7134fa9303aac64c21f0c7f6753e2e25",
+  "previous_bridge_program_digest": "sha256:708e619f23f19bc431344fdb9e2a75166c4e3e8f99c99c382526bb038b3ac817",
+  "program_files_digest": "sha256:a88ba745b6a4de7697cf6c7961bbb5d3123030c381703ed3e1889614542ad934",
+  "provenance": "same_maintainer_operator",
+  "schema_version": "tuc.bounded_native_io_record.v0"
+}

@@ -1,5 +1,18 @@
 # Roadmap Status
 
+- [Bounded Native I/O Plan](BOUNDED_NATIVE_IO_PLAN.md) passed native C11 and
+  physical sm86 CUDA on 2026-09-15. Both targets pass 363 scalar checks and
+  twenty negative controls. C11 completes 33 zero-copy host bindings and passes
+  ASan/UBSan; CUDA completes 22 uploads (11704 bytes) and 11 downloads (1452
+  bytes). Skipped output completion fails despite all three kernels running.
+  Twelve compute/I/O table faults reject before generated calls or copies.
+  Accepted comparison: `tests/golden/proofs/native_io_comparison.json`, with
+  two records, two preflights, one sanitizer observation and forty rejections.
+  RFC 0313 separates address space from physical RAM technology and leaves
+  latency/energy unknown. External I/O is planned by the bounded operator, not
+  yet by the core partition planner. Next: shared boundary-residency planning
+  toward bounded mixed native placement. General native admission stays closed.
+
 - [Bounded Plan-to-Native Bridge](BOUNDED_PLAN_NATIVE_BRIDGE.md) passed native
   C11 and physical CUDA on 2026-09-15. The existing core compiler's assignments
   now derive the static native opcode/operand table. Both targets share HAC-IR,
@@ -9,9 +22,9 @@
   `tests/golden/proofs/plan_native_comparison.json`, two bound records, two
   preflights, one sanitizer observation and twenty-four rejections. RFC 0312.
   Normal-runtime registration is unchanged; external I/O copies remain explicit
-  operator responsibilities outside core transfer accounting. PR #100 reached
-  `main`; #101 through #107 merged into predecessor branches. Their original
-  commits are retained in #108 for integration into `main` after checks and review.
+  operator responsibilities outside core transfer accounting in RFC 0312;
+  RFC 0313 adds the separately bound boundary plan above. PR #108 has integrated
+  the original #101 through #107 commits into `main`.
 
 - [Bounded Composed Chain](BOUNDED_COMPOSED_CHAIN.md) passed native C11 and
   physical sm86 CUDA execution on 2026-09-14: source-derived Matmul -> ReLU ->

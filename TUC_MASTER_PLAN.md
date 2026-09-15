@@ -655,13 +655,19 @@ Matmul -> ReLU -> reduction chain on both native targets: 363 scalar checks,
 C11 also passes ASan/UBSan. RFC 0312 now derives native compute dispatch from
 checked core assignments, with common HAC-IR and distinct buffer bindings:
 363 scalar checks and twelve rejected controls per target, including five
-plan faults before generated calls. C11 also passes ASan/UBSan. Integration
-continues through PR #108: #100 reached `main`, while #101 through #107 merged
-into predecessor branches. #108 retains those commits for checked integration
-into `main`. Next is explicit external
-I/O accounting in the bounded plan; copies remain operator-owned today.
+plan faults before generated calls. C11 also passes ASan/UBSan. PR #108 has
+integrated the original #101 through #107 commits into `main`. RFC 0313 now
+adds checked boundary I/O around this native dispatch: 33 host bindings on C11,
+22 uploads and 11 downloads (13156 bytes) on physical CUDA. Both native targets
+pass 363 scalar checks and twenty negative controls; C11 also passes ASan/UBSan.
+Missing output completion fails even after all kernels run. The bounded operator
+plan distinguishes address space from physical RAM technology and leaves
+latency/energy unmeasured. Core partition planning is not yet extended to
+external I/O. Next is shared boundary-residency planning toward a bounded mixed
+native placement, preserving explicit completion and numerical checks.
 Independent reproduction, dynamic shapes and performance claims remain open.
-See `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`, `docs/BOUNDED_COMPOSED_CHAIN.md`,
+See `docs/BOUNDED_NATIVE_IO_PLAN.md`, `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`,
+`docs/BOUNDED_COMPOSED_CHAIN.md`,
 `docs/REDUCTION_FMA_VARIANT.md`,
 `docs/REDUCTION_FP32_CONTRACT.md`,
 `docs/BOUNDED_REDUCTION_SHAPES.md`,

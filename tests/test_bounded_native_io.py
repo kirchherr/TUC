@@ -8,6 +8,7 @@ import pytest
 
 from examples import bounded_native_io as native
 from examples.bounded_compiler_emission import BoundedCompilerEmissionError, _digest_payload
+from examples.bounded_reduction_c11 import load_observation
 from tuc.runtime import runtime_execution_readiness_report
 
 
@@ -141,3 +142,47 @@ def test_skip_output_is_detected_even_when_all_kernels_ran(target):
     native.validate_observation(observation, target, mutation="io-skip-output")
     with pytest.raises(BoundedCompilerEmissionError):
         native.build_record(observation, target, "sha256:" + "1" * 64)
+
+
+def test_actual_native_records_bind_completed_io_and_numerical_contract():
+    directory = native.ROOT / "tests/golden/proofs"
+    records = [load_observation(directory / f"native_io_{t}_record.json") for t in native.TARGETS]
+    comparison = native.compare_records(*records)
+    assert comparison == load_observation(directory / "native_io_comparison.json")
+    assert comparison["cuda_copy_calls"] == 33
+    assert comparison["cuda_copy_bytes"] == 13156
+    assert comparison["latency_ns"] is None
+    assert comparison["external_io_in_core_partition_plan"] is False
+    assert records[0]["observation"]["io"]["host_bindings"] == 33
+    assert records[1]["observation"]["io"]["upload_bytes"] == 11704
+    sanitized = load_observation(directory / "native_io_c11_sanitized.json")
+    assert native.validate_observation(sanitized, "c11") == records[0]["observation"]
+    with pytest.raises(BoundedCompilerEmissionError):
+        native.compare_records(records[0], {**records[1], "program_files_digest": "altered"})
+
+
+@pytest.mark.parametrize("target", native.TARGETS)
+@pytest.mark.parametrize("mutation", native.MUTATIONS)
+def test_actual_native_rejections(target, mutation):
+    value = load_observation(native.ROOT / "tests/golden/proofs" /
+                             f"native_io_{target}_{mutation}.json")
+    native.validate_observation(value, target, mutation=mutation)
+    with pytest.raises(BoundedCompilerEmissionError):
+        native.validate_observation(value, target)
+    if mutation in (*native.bridge.PLAN_MUTATIONS, *native.IO_MUTATIONS):
+        assert value["io"] == native.io_counters(target, 0)
+        assert value["numeric_observation"]["generated_function_calls"] == 0
+        assert value["numeric_observation"]["tensor_bytes"] == 0
+    elif mutation == "io-skip-output":
+        assert value["io"]["completed_steps"] == 2
+        assert value["numeric_observation"]["generated_function_calls"] == 3
+
+
+@pytest.mark.parametrize("target", native.TARGETS)
+def test_actual_native_preflight_never_claims_execution(target):
+    value = load_observation(native.ROOT / "tests/golden/proofs" /
+                             f"native_io_{target}_preflight.json")
+    native.validate_observation(value, target, True)
+    assert value["io"] == native.io_counters(target, 0)
+    with pytest.raises(BoundedCompilerEmissionError):
+        native.build_record(value, target, "sha256:" + "1" * 64)

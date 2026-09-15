@@ -1,6 +1,6 @@
 # RFC 0313: Explicit Bounded Native Boundary I/O
 
-Status: Implemented; native observations pending
+Status: Implemented; native C11 and physical sm86 CUDA observations accepted
 
 ## Question and Scope
 
@@ -86,6 +86,14 @@ calls, ten cases plus replay, and twenty negative controls each. C11 must report
 33 host bindings and no explicit copies. CUDA must report 22 uploads (11704
 bytes) and 11 downloads (1452 bytes). Preflights and invalid table controls must
 report no completed I/O. C11 sanitizer execution and all old proofs remain valid.
+
+Accepted on 2026-09-15: both native targets met these conditions, including all
+forty compiled negative runs and the C11 sanitizer run. Source commit:
+`5136451be9f902fd5f71114bc5de1948e2a0ec01`; transferred archive SHA-256:
+`6946cd41218ddadd3048cceeddeb6280a1fb1ab11d1b648244af33064b636593`.
+The bound comparison is `tests/golden/proofs/native_io_comparison.json`.
+See [the experiment report](../docs/BOUNDED_NATIVE_IO_PLAN.md) for counts and
+record links. Accepted observations do not claim independent reproduction.
 
 Independent reproduction, general/native admission, arbitrary inputs/shapes,
 mixed native placement and performance remain unproven. A next larger question
