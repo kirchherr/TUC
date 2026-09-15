@@ -656,7 +656,9 @@ C11 also passes ASan/UBSan. RFC 0312 now derives native compute dispatch from
 checked core assignments, with common HAC-IR and distinct buffer bindings:
 363 scalar checks and twelve rejected controls per target, including five
 plan faults before generated calls. C11 also passes ASan/UBSan. Integration
-awaits the required approving review on PR #100. Next is explicit external
+continues through PR #108: #100 reached `main`, while #101 through #107 merged
+into predecessor branches. #108 retains those commits for checked integration
+into `main`. Next is explicit external
 I/O accounting in the bounded plan; copies remain operator-owned today.
 Independent reproduction, dynamic shapes and performance claims remain open.
 See `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`, `docs/BOUNDED_COMPOSED_CHAIN.md`,

@@ -78,9 +78,14 @@ not general native execution or a performance claim.
 
 ## Integration Queue
 
-On 2026-09-15, PRs #100 through #107 remain open. The full CI, native C11 and
-Security workflows of #107 passed. The first PR, #100, targets `main` and is
-blocked by a required approving review with write access, not by failed tests.
-Do not bypass that rule. Merge reviewed predecessors in order, retargeting each
-successor to `main` after its predecessor merges. Native development does not
-constitute that independent approval.
+On 2026-09-15, GitHub confirms PRs #100 through #107 are merged. Only #100
+targeted `main`; #101 through #107 targeted their predecessor feature branches.
+A merged PR badge does not establish that its changes reached `main`.
+
+The original heads of #101 through #107 are all ancestors of #108's head.
+PR #108 therefore carries their complete changes plus the plan-to-native bridge
+for integration into `main`; no cherry-pick, force push or evidence regeneration
+is needed. Its CI, native C11 and Security workflows passed on the original
+feature-branch base. Required checks and review must also cover the retargeted
+integration PR. Do not bypass those requirements or merge into a feature base.
+Native development does not constitute independent approval.

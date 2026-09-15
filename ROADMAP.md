@@ -11,8 +11,9 @@ unchanged 363 scalar checks and all twelve negative controls. Five plan faults
 were rejected before generated calls; C11 also passed ASan/UBSan. The targets
 share HAC-IR but use different intermediate-buffer bindings. Earlier chain,
 numerical-contract and FMA records remain unchanged.
-Integration is waiting for the required approving review on PR #100; do not
-bypass the rule. Next: merge reviewed predecessors in order, then make external
+PR #100 is merged into `main`; #101 through #107 were merged into predecessor
+branches. Their original commits are retained in #108 for integration into
+`main`, subject to the required checks and review. Next: integrate #108, then make external
 I/O transfers explicit in the bounded plan with an appropriate memory-domain
 model. The current operator still owns upload/download and their costs are not
 in the core transfer plan. Independent reproduction remains open. Dynamic shapes,

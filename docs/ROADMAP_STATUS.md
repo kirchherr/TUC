@@ -9,8 +9,9 @@
   `tests/golden/proofs/plan_native_comparison.json`, two bound records, two
   preflights, one sanitizer observation and twenty-four rejections. RFC 0312.
   Normal-runtime registration is unchanged; external I/O copies remain explicit
-  operator responsibilities outside core transfer accounting. The PR stack is
-  still blocked at #100 by a required approving review, not failing CI.
+  operator responsibilities outside core transfer accounting. PR #100 reached
+  `main`; #101 through #107 merged into predecessor branches. Their original
+  commits are retained in #108 for integration into `main` after checks and review.
 
 - [Bounded Composed Chain](BOUNDED_COMPOSED_CHAIN.md) passed native C11 and
   physical sm86 CUDA execution on 2026-09-14: source-derived Matmul -> ReLU ->
