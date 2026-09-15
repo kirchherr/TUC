@@ -403,8 +403,12 @@ source program with an axis-1 sum. Actual C11 execution, independent reference
 checks, sanitizers and three wrong-code probes passed in its dedicated
 workflow. [The same reduction now also runs on a physical NVIDIA GPU](docs/BOUNDED_REDUCTION_CUDA_PROOF.md):
 two compiler-emitted kernels, exact agreement with the same reference, and
-three rejected wrong-code variants. This remains one fixed vector, not a
-general backend or performance claim.
+three rejected wrong-code variants. The
+[Reduction Input Portfolio](docs/REDUCTION_INPUT_PORTFOLIO.md) extends those
+unchanged generated functions to twenty fixed inputs plus a baseline replay
+on both targets. All passed, while a frozen-output mutant that passes the old
+single-vector test fails on the next input. This remains fixed-shape research,
+not arbitrary-input correctness, a general backend or a performance claim.
 
 Current runtime surfaces:
 

@@ -634,8 +634,13 @@ independent reference, ASan/UBSan and three wrong-code probes on 2026-09-09.
 RFC 0306 adds actual physical sm86 CUDA execution of that same program on
 2026-09-10: two generated kernels, exact reference agreement and three
 wrong-code rejections. Both target observations bind the same Source Intent
-and vector. This remains fixed-vector same-maintainer research evidence;
-another input vector or shape is the next practical generalization. See
+and vector. RFC 0307 extends the unchanged generated functions to twenty
+fixed input vectors plus a baseline replay on both targets, all passed on
+2026-09-10. A frozen-output mutant passes the original vector and fails the
+next one; C11 also passes the portfolio under ASan/UBSan. This remains
+fixed-shape same-maintainer research evidence. Another bounded shape with
+fresh lowering and actual two-target execution is the next generalization.
+See `docs/REDUCTION_INPUT_PORTFOLIO.md`,
 `docs/BOUNDED_REDUCTION_C11_PROOF.md` and `docs/BOUNDED_REDUCTION_CUDA_PROOF.md`.
 
 Bounded Source-To-Target Execution Proof v0 now joins that target evidence to

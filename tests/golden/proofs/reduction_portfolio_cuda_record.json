@@ -1,0 +1,25 @@
+{
+  "observation": {
+    "case_count": 20,
+    "case_tensor_bytes": 240,
+    "cases_passed": 21,
+    "code_digest": "sha256:bc6b1ca5a32c11c66e8ac221fb0c079a361003b026e82cceee03bf120d5f34fe",
+    "corpus_digest": "sha256:57adbe6e9798e60819301beadc9c20a808d9f562ba61aea8af1eddb832d0eaf1",
+    "failed_run_index": -1,
+    "generated_function_calls": 42,
+    "mode": "execute",
+    "raw_values_serialized": false,
+    "reason_code": "none",
+    "reference_correctness": true,
+    "repeated_baseline_passed": true,
+    "schema_version": "tuc.reduction_input_portfolio_observation.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614",
+    "status": "PASS",
+    "target": "cuda"
+  },
+  "operator_image_id": "sha256:4bd72f3aa416ef449697d025f1f1903f8b715db00e01161f460af3a908095d4b",
+  "program_files_digest": "sha256:f71a1b5b79e0ae5c15db2889cb45e22f28495754a860e9bb06170fee41f92148",
+  "provenance": "same_maintainer_operator",
+  "schema_version": "tuc.reduction_input_portfolio_record.v0"
+}
