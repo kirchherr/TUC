@@ -1,0 +1,57 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware",
+    "arbitrary_fp32_inputs",
+    "dynamic_shapes",
+    "bitwise_backend_equivalence",
+    "relative_error_guarantee",
+    "general_chain_lowering"
+  ],
+  "c11_code_digest": "sha256:492fdfe0c8aa941c32a36471ec9ae4c2d2307013efa2eceb89bfde7b99319468",
+  "case_count": 10,
+  "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+  "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+  "cuda_code_digest": "sha256:4b89a46e00550dc7c992532e25ce8783308fbbfe4c41fc37b011faa2e3f91913",
+  "expected_rounded_outputs": 256,
+  "generated_calls_per_run": 3,
+  "input_shapes": [
+    [
+      33,
+      7
+    ],
+    [
+      7,
+      5
+    ]
+  ],
+  "intermediate_shapes": [
+    [
+      33,
+      5
+    ],
+    [
+      33,
+      5
+    ]
+  ],
+  "operation_order": [
+    "matmul",
+    "relu",
+    "sum_axis1"
+  ],
+  "output_shape": [
+    33
+  ],
+  "runs": 11,
+  "runtime_admission": false,
+  "schema_version": "tuc.bounded_chain_plan.v0",
+  "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+  "source_module_digest": "sha256:ca8a166ecdfe3dd71d6b606cdd2cc3463ea7cf0a47b71dcaccaabbf0583b7989",
+  "tensor_bytes": 2516
+}

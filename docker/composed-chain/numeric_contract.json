@@ -1,0 +1,20 @@
+{
+  "absolute_error_bound": "gamma_13 * sum_k_c(abs(a[row,k]*b[k,c]))",
+  "admission": "fixed_ten_case_corpus_only",
+  "fma_contraction": false,
+  "interval_encoding": "binary64_endpoints_rounded_inward",
+  "operation_order": [
+    "sequential_matmul",
+    "relu",
+    "sequential_sum_axis1"
+  ],
+  "reassociation": false,
+  "reference": "sum_c(max(sum_k(a[row,k]*b[k,c]),0))_over_exact_binary32_inputs",
+  "relu_error_propagation": "1_Lipschitz",
+  "rounding": "nearest_ties_even",
+  "rounding_depth_bound": 13,
+  "schema_version": "tuc.bounded_chain_numeric_contract.v0",
+  "signed_zero": "numerical_equality_only",
+  "underflow_overflow": "excluded_from_fixed_corpus",
+  "unit_roundoff": "2^-24"
+}

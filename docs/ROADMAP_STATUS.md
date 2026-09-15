@@ -1,5 +1,94 @@
 # Roadmap Status
 
+- [Bounded Plan-to-Native Bridge](BOUNDED_PLAN_NATIVE_BRIDGE.md) passed native
+  C11 and physical CUDA on 2026-09-15. The existing core compiler's assignments
+  now derive the static native opcode/operand table. Both targets share HAC-IR,
+  use distinct intermediate-buffer bindings, and pass 363 scalar checks and
+  twelve negative controls each. Five schedule faults reject with zero generated
+  calls. C11 ASan/UBSan passed. Accepted comparison:
+  `tests/golden/proofs/plan_native_comparison.json`, two bound records, two
+  preflights, one sanitizer observation and twenty-four rejections. RFC 0312.
+  Normal-runtime registration is unchanged; external I/O copies remain explicit
+  operator responsibilities outside core transfer accounting. PR #100 reached
+  `main`; #101 through #107 merged into predecessor branches. Their original
+  commits are retained in #108 for integration into `main` after checks and review.
+
+- [Bounded Composed Chain](BOUNDED_COMPOSED_CHAIN.md) passed native C11 and
+  physical sm86 CUDA execution on 2026-09-14: source-derived Matmul -> ReLU ->
+  reduction, 33 generated calls and 363 scalar checks per target. All ten
+  cases plus replay satisfy the exact nonlinear reference budget and the
+  declared separate FP32 order. Seven controls were rejected, including
+  bypassed/late ReLU and unwritten activation values. C11 passed ASan/UBSan.
+  Accepted comparison: `tests/golden/proofs/composed_chain_comparison.json`,
+  two records, two preflights, a sanitizer observation and fourteen rejected
+  observations. Decision: RFC 0311. Existing prototype HAC-IR execution is
+  separately regression-tested; the native operator is not core-plan-driven.
+
+- [Bounded FMA Variant](REDUCTION_FMA_VARIANT.md) passed paired native C11
+  and physical sm86 CUDA execution on 2026-09-14: 726 scalar checks and 61
+  differing output pairs per target, all within unchanged RFC 0309 intervals.
+  A distinct FMA execution policy preserves the old no-FMA contract rather
+  than reinterpreting it. Both policies match their own ordered reference;
+  both replay correctly. Six negative controls were rejected, including
+  silent fallback; C11 passed ASan/UBSan and CUDA passed kernel-specific
+  FFMA/no-FFMA SASS checks. Accepted comparison:
+  `tests/golden/proofs/reduction_fma_comparison.json`, with two target records
+  and twelve rejection observations. Decision: RFC 0310. This demonstrates
+  bounded numerical implementation freedom, not general runtime admission.
+
+- [Bounded FP32 Reduction Contract](REDUCTION_FP32_CONTRACT.md) passed native
+  C11 and physical sm86 CUDA execution on 2026-09-14. Ten non-exact input cases
+  plus replay produced 363 output checks and 298 rounding witnesses per
+  target; all satisfy a predeclared gamma13 absolute-error budget against an
+  exact rational reference. All five negative controls were rejected,
+  including a finite over-budget output and infinity. C11 passed ASan/UBSan.
+  Accepted comparison: `tests/golden/proofs/reduction_fp32_comparison.json`,
+  two bound child records and ten negative observations. Decision: RFC 0309.
+  This is numerical-contract agreement, not bitwise equivalence or arbitrary
+  FP32 support. The generated code and previous proof records are unchanged.
+
+- [Bounded Reduction Shapes](BOUNDED_REDUCTION_SHAPES.md) passed native C11
+  and physical sm86 CUDA execution on 2026-09-14 for A[33,7], B[7,5], y[33].
+  Fresh lowering covers six projection blocks and two reduction blocks;
+  both targets passed twenty vectors plus replay (42 generated calls) and
+  three wrong-code rejections. C11 also passed ASan/UBSan. Missing last-row
+  computation and a one-block CUDA launch are rejected through poisoned
+  logical outputs. Accepted aggregate:
+  `tests/golden/proofs/reduction_shape_equivalence.json`, with two bound
+  child records and two coverage rejection observations. Decision: RFC 0308.
+  This broadens fixed-shape coverage, not dynamic shapes or native admission.
+
+- [Reduction Input Portfolio](REDUCTION_INPUT_PORTFOLIO.md) passed native C11
+  and physical sm86 CUDA execution on 2026-09-10: twenty fixed vectors plus a
+  baseline replay, 42 generated calls per target, unchanged generated code,
+  exact reference agreement and four wrong-code rejections. C11 also passed
+  ASan/UBSan. The frozen-output control passes the old baseline but fails the
+  next vector on both targets. Accepted evidence:
+  `tests/golden/proofs/reduction_portfolio_equivalence.json`, with two bound
+  child records and two recorded frozen-output rejections. Decision: RFC 0307.
+  This broadens input coverage, not shape coverage, general native admission,
+  arbitrary-FP32 correctness, performance or independent reproduction.
+
+- [Bounded Reduction CUDA Proof](BOUNDED_REDUCTION_CUDA_PROOF.md) extends the
+  second source case to actual physical sm86 execution. On 2026-09-10 the
+  zero-call preflight, two generated kernel calls, exact reference agreement
+  and three wrong-code rejections passed. The validated C11 and CUDA children
+  share the same Source Intent, input vector and rank-changing output.
+  Accepted evidence: `tests/golden/proofs/bounded_reduction_cuda_record.json`
+  and `tests/golden/proofs/bounded_reduction_target_equivalence.json`.
+  Decision: RFC 0306. This is same-maintainer fixed-vector evidence, not a
+  general CUDA backend, GPU sanitizer result or performance claim.
+
+- [Bounded Reduction C11 Proof](BOUNDED_REDUCTION_C11_PROOF.md) implements the
+  next source-program dimension: the existing inert Matmul-plus-axis-1-Sum
+  source becomes typed Source Intent and deterministic C11 with a rank-changing
+  output. The dedicated native procedure checks an independent reference,
+  ASan/UBSan execution and three actually compiled wrong-code variants. All
+  passed in the dedicated native CI run on 2026-09-09; the accepted observation
+  is `tests/golden/proofs/bounded_reduction_c11_observation.json`.
+  Decision: `rfcs/0305-bounded-reduction-c11-proof.md`. RFC 0306 adds the
+  second compiler target; independent reproduction remains open.
+
 - [Bounded Source-To-Target Execution Proof](BOUNDED_SOURCE_TO_TARGET_EXECUTION_PROOF.md)
   now binds the accepted isolated OCI intake of one fixed, inert Triton-shaped
   module to the accepted CUDA/SASS and static C11 observations through the
@@ -1849,6 +1938,12 @@ Current focus:
 
 ## Next
 
+- RFC 0312 demonstrates core-plan-derived dispatch on real C11/CUDA targets.
+  First obtain the required approving review and merge the predecessor stack
+  in order, without bypassing branch rules. The next bounded integration gap
+  is explicit external I/O transfer accounting and a suitable neutral device
+  memory domain. Preserve numerical, wrong-code, coverage and FMA evidence;
+  keep default native admission blocked. Independent reproduction remains open.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

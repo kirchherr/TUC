@@ -1,0 +1,14 @@
+**
+!docker/
+!docker/reduction-shapes/
+!docker/reduction-shapes/generated.c
+!docker/reduction-shapes/generated.h
+!docker/reduction-shapes/kernels.cuh
+!docker/reduction-shapes/host.c
+!docker/reduction-shapes/device.cu
+!docker/reduction-fp32/
+!docker/reduction-fp32/inputs.h
+!docker/reduction-fp32/oracle.h
+!docker/reduction-fp32/common.h
+!docker/reduction-fp32/build-c11.sh
+!docker/reduction-fp32/build-cuda.sh

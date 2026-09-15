@@ -1,0 +1,28 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware",
+    "arbitrary_fp32_inputs",
+    "dynamic_shapes",
+    "bitwise_backend_equivalence",
+    "relative_error_guarantee",
+    "general_chain_lowering",
+    "general_native_plan_execution",
+    "planned_external_io_costs"
+  ],
+  "c11_record_digest": "sha256:fb0e01d80621d3a783da46406310805eb318328d11aee929146dd44599506a16",
+  "cuda_record_digest": "sha256:5d7f03985969941b3df324d8b531ad4bce56442fc779c241992c63f3c6b13d57",
+  "dispatch": "core_plan_driven",
+  "external_io_in_core_transfer_plan": false,
+  "hac_ir_digest": "sha256:e4177b1becea68bded5cd3113ecbe843ac97692b9a59260a46b97f4c8b897def",
+  "normal_runtime_admission": false,
+  "scalar_checks_per_target": 363,
+  "schema_version": "tuc.bounded_plan_native_comparison.v0",
+  "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+  "status": "PASS"
+}

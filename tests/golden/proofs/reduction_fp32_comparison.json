@@ -1,0 +1,34 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware",
+    "arbitrary_fp32_inputs",
+    "dynamic_shapes",
+    "bitwise_backend_equivalence",
+    "relative_error_guarantee"
+  ],
+  "c11_record_digest": "sha256:5c7d91fabc31e6fa3d19ee9636e5fdb139ac7e1bdca30bdb83f880a955ff4e35",
+  "case_count": 10,
+  "comparison": "both_targets_satisfy_same_exact_reference_error_contract",
+  "contract_digest": "sha256:8556cb3f647db292dfbb2415f3a8ea636105b3654e4cf157cfe236c3483a748b",
+  "corpus_digest": "sha256:4b130bb7902346618bd1bf7960e49fea09559cb49c2bdf8ebaf813d51975b43e",
+  "cuda_record_digest": "sha256:27ca785fed1c99a767b9d74b29e56d77f09bc1114999e0b25cb5a039142514bc",
+  "output_shape": [
+    33
+  ],
+  "pairwise_absolute_error_bound": "twice_per_row_contract_budget",
+  "raw_values_serialized": false,
+  "runs_per_target": 11,
+  "schema_version": "tuc.bounded_reduction_fp32_comparison.v0",
+  "source_intent_digest": "sha256:54415a7218b284a9e0e8927ffc2a9d5eef0ff5cb9d5ccd8669b64d0f2a4c44a1",
+  "status": "PASS",
+  "targets": [
+    "c11",
+    "cuda"
+  ]
+}

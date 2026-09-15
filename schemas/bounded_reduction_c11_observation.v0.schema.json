@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bounded reduction C11 worker observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "mode", "reason_code", "source_intent_digest", "generated_source_digest", "vector_digest", "generated_function_calls", "reference_correctness", "security_boundary_passed", "output_shape", "working_set_bytes", "raw_values_serialized"],
+  "properties": {
+    "schema_version": {"const": "tuc.bounded_reduction_c11_observation.v0"},
+    "status": {"const": "PASS"},
+    "mode": {"enum": ["preflight", "execute"]},
+    "reason_code": {"const": "none"},
+    "source_intent_digest": {"const": "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614"},
+    "generated_source_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "vector_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "generated_function_calls": {"type": "integer", "enum": [0, 2]},
+    "reference_correctness": {"type": "boolean"},
+    "security_boundary_passed": {"const": true},
+    "output_shape": {"const": [4]},
+    "working_set_bytes": {"type": "integer", "enum": [0, 240]},
+    "raw_values_serialized": {"const": false}
+  },
+  "allOf": [{
+    "if": {"properties": {"mode": {"const": "execute"}}},
+    "then": {"properties": {"generated_function_calls": {"const": 2}, "reference_correctness": {"const": true}, "working_set_bytes": {"const": 240}}},
+    "else": {"properties": {"generated_function_calls": {"const": 0}, "reference_correctness": {"const": false}, "working_set_bytes": {"const": 0}}}
+  }]
+}

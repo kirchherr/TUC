@@ -47,3 +47,102 @@ jobs:
         run: python examples/bounded_compiler_target_equivalence_proof.py
       - name: Verify accepted source-to-target aggregate
         run: python examples/bounded_source_to_target_execution_proof.py
+      - name: Execute second source program with reduction and wrong-code probes
+        run: sh scripts/run_bounded_reduction_c11_proof.sh
+      - name: Revalidate recorded physical reduction evidence (no GPU execution)
+        run: |
+          python examples/bounded_reduction_cuda.py --compare-record tests/golden/proofs/bounded_reduction_cuda_record.json
+          pytest -q tests/test_bounded_reduction_cuda.py tests/test_bounded_reduction_c11.py
+      - name: Execute twenty-vector C11 portfolio with sanitizers and wrong-code probes
+        run: sh scripts/run_reduction_input_portfolio.sh --c11
+      - name: Revalidate recorded two-target portfolio (no GPU execution)
+        run: |
+          python examples/reduction_input_portfolio.py --compare tests/golden/proofs/reduction_portfolio_c11_record.json tests/golden/proofs/reduction_portfolio_cuda_record.json
+          pytest -q tests/test_reduction_input_portfolio.py
+      - name: Execute odd-shape C11 reduction with sanitizers and coverage probes
+        run: sh scripts/run_bounded_reduction_shapes.sh --c11
+      - name: Revalidate recorded odd-shape equivalence (no GPU execution)
+        run: |
+          python examples/bounded_reduction_shapes.py --compare tests/golden/proofs/reduction_shape_c11_record.json tests/golden/proofs/reduction_shape_cuda_record.json
+          pytest -q tests/test_bounded_reduction_shapes.py
+      - name: Execute non-exact FP32 C11 contract with sanitizers and negative controls
+        run: sh scripts/run_reduction_fp32_contract.sh --c11
+      - name: Revalidate recorded FP32 numerical contract (no GPU execution)
+        run: |
+          python examples/reduction_fp32_contract.py --compare tests/golden/proofs/reduction_fp32_c11_record.json tests/golden/proofs/reduction_fp32_cuda_record.json
+          pytest -q tests/test_reduction_fp32_contract.py
+
+  paired-fma:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Install proof dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Execute paired separate and FMA C11 variants
+        run: sh scripts/run_reduction_fma_variant.sh --c11
+      - name: Revalidate paired observations (no GPU execution)
+        run: |
+          python examples/reduction_fma_variant.py --compare tests/golden/proofs/reduction_fma_c11_record.json tests/golden/proofs/reduction_fma_cuda_record.json
+          pytest -q tests/test_reduction_fma_variant.py
+
+  composed-chain:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Install proof dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Execute nonlinear C11 chain with sanitizers and seven negative controls
+        run: sh scripts/run_bounded_composed_chain.sh --c11
+      - name: Revalidate source-to-chain observations (no GPU execution)
+        run: |
+          python examples/bounded_composed_chain.py --compare tests/golden/proofs/composed_chain_c11_record.json tests/golden/proofs/composed_chain_cuda_record.json
+          pytest -q tests/test_bounded_composed_chain.py
+
+  plan-native-bridge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Install proof dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Execute core-plan-driven C11 dispatch with sanitizers and twelve controls
+        run: sh docker/plan-native-bridge/operator.sh --c11
+      - name: Revalidate core-plan-to-native observations (no GPU execution)
+        run: |
+          python examples/bounded_plan_native_bridge.py --compare tests/golden/proofs/plan_native_c11_record.json tests/golden/proofs/plan_native_cuda_record.json
+          pytest -q tests/test_bounded_plan_native_bridge.py

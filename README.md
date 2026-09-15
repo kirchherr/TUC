@@ -397,6 +397,36 @@ it does not admit arbitrary source, a general parser, production execution,
 performance claims, or independent reproduction. Decision:
 `rfcs/0304-bounded-source-to-target-execution-proof.md`.
 
+The second native source experiment,
+[Bounded Reduction C11](docs/BOUNDED_REDUCTION_C11_PROOF.md), adds a second
+source program with an axis-1 sum. Actual C11 execution, independent reference
+checks, sanitizers and three wrong-code probes passed in its dedicated
+workflow. [The same reduction now also runs on a physical NVIDIA GPU](docs/BOUNDED_REDUCTION_CUDA_PROOF.md):
+two compiler-emitted kernels, exact agreement with the same reference, and
+three rejected wrong-code variants. The
+[Reduction Input Portfolio](docs/REDUCTION_INPUT_PORTFOLIO.md) extends those
+unchanged generated functions to twenty fixed inputs plus a baseline replay
+on both targets. All passed, while a frozen-output mutant that passes the old
+single-vector test fails on the next input. This remains fixed-shape research,
+not arbitrary-input correctness, a general backend or a performance claim.
+The [odd-shape experiment](docs/BOUNDED_REDUCTION_SHAPES.md) also passed on
+both targets for A[33,7], B[7,5], y[33]: fresh lowering, twenty inputs plus
+replay, multiple GPU blocks and detected incomplete-coverage errors.
+The [FP32 contract experiment](docs/REDUCTION_FP32_CONTRACT.md) uses that same
+code with non-exact inputs: both native targets pass 363 output checks within
+a predeclared error budget, with 298 rounding witnesses and five rejected
+negative controls each. This demonstrates bounded numerical agreement, not
+bitwise equality or arbitrary-FP32 correctness.
+The [paired FMA experiment](docs/REDUCTION_FMA_VARIANT.md) makes that distinction
+observable: 61 output pairs differ on each native target, yet both variants
+pass the unchanged error bounds. A silent non-FMA fallback is rejected.
+The [composed-chain experiment](docs/BOUNDED_COMPOSED_CHAIN.md) adds a nonlinear
+source-derived Matmul -> ReLU -> reduction sequence: both native targets pass
+363 scalar checks and reject seven faulty variants, including misplaced ReLU.
+Its [plan-to-native successor](docs/BOUNDED_PLAN_NATIVE_BRIDGE.md) derives dispatch
+from checked core assignments on both targets and rejects five additional plan
+faults before kernel calls. General native-runtime admission remains blocked.
+
 Current runtime surfaces:
 
 - Runtime Execution Readiness before kernels run.

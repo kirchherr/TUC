@@ -627,6 +627,47 @@ production, or independent reproduction proof. See
 `docs/BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md` and
 `rfcs/0303-bounded-compiler-target-equivalence-proof.md`.
 
+RFC 0305 implements the next distinct source-program experiment:
+Matmul-plus-axis-1-Sum through the existing research parser to typed Source
+Intent and deterministic C11. Its explicit native procedure passed an
+independent reference, ASan/UBSan and three wrong-code probes on 2026-09-09.
+RFC 0306 adds actual physical sm86 CUDA execution of that same program on
+2026-09-10: two generated kernels, exact reference agreement and three
+wrong-code rejections. Both target observations bind the same Source Intent
+and vector. RFC 0307 extends the unchanged generated functions to twenty
+fixed input vectors plus a baseline replay on both targets, all passed on
+2026-09-10. A frozen-output mutant passes the original vector and fails the
+next one; C11 also passes the portfolio under ASan/UBSan. This remains
+fixed-shape same-maintainer research evidence. RFC 0308 adds A[33,7], B[7,5],
+y[33] with fresh lowering and actual two-target execution on 2026-09-14:
+twenty vectors plus replay, multi-block CUDA coverage and three wrong-code
+controls all passed; C11 also passed ASan/UBSan. RFC 0309 now covers ten
+non-exact FP32 cases plus replay on both targets with unchanged generated
+code: 363 output checks, 298 rounding witnesses, all within an a priori
+rational-reference error budget, and five rejected negative controls per
+target. C11 also passed ASan/UBSan. RFC 0310 now executes separate and
+explicit-FMA variants on both targets: 61 differing output pairs, 726 passing
+scalar checks within unchanged intervals and six rejected negative controls,
+including silent fallback. The candidate has its own execution policy; the
+old no-FMA contract remains unchanged. RFC 0311 now executes a source-derived
+Matmul -> ReLU -> reduction chain on both native targets: 363 scalar checks,
+33 calls and seven rejected controls per target, including misplaced ReLU.
+C11 also passes ASan/UBSan. RFC 0312 now derives native compute dispatch from
+checked core assignments, with common HAC-IR and distinct buffer bindings:
+363 scalar checks and twelve rejected controls per target, including five
+plan faults before generated calls. C11 also passes ASan/UBSan. Integration
+continues through PR #108: #100 reached `main`, while #101 through #107 merged
+into predecessor branches. #108 retains those commits for checked integration
+into `main`. Next is explicit external
+I/O accounting in the bounded plan; copies remain operator-owned today.
+Independent reproduction, dynamic shapes and performance claims remain open.
+See `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`, `docs/BOUNDED_COMPOSED_CHAIN.md`,
+`docs/REDUCTION_FMA_VARIANT.md`,
+`docs/REDUCTION_FP32_CONTRACT.md`,
+`docs/BOUNDED_REDUCTION_SHAPES.md`,
+`docs/REDUCTION_INPUT_PORTFOLIO.md`,
+`docs/BOUNDED_REDUCTION_C11_PROOF.md` and `docs/BOUNDED_REDUCTION_CUDA_PROOF.md`.
+
 Bounded Source-To-Target Execution Proof v0 now joins that target evidence to
 the accepted isolated OCI intake of one fixed Triton-shaped module. The source
 is treated as inert data, the frontend and both targets are bound by the exact

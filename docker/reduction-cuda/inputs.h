@@ -1,0 +1,58 @@
+#ifndef TUC_REDUCTION_INPUTS_H
+#define TUC_REDUCTION_INPUTS_H
+static const float TUC_A[32] = {
+    1.0F,
+    -2.0F,
+    0.5F,
+    3.0F,
+    0.0F,
+    1.5F,
+    -1.0F,
+    2.0F,
+    0.0F,
+    1.0F,
+    -1.0F,
+    2.0F,
+    3.0F,
+    -0.5F,
+    1.5F,
+    -2.0F,
+    2.0F,
+    0.5F,
+    1.0F,
+    -1.5F,
+    0.5F,
+    2.5F,
+    -3.0F,
+    1.0F,
+    -1.0F,
+    2.0F,
+    0.0F,
+    1.0F,
+    -2.0F,
+    1.0F,
+    0.5F,
+    3.0F,
+};
+static const float TUC_B[16] = {
+    1.0F,
+    -1.0F,
+    2.0F,
+    0.5F,
+    -1.0F,
+    3.0F,
+    0.5F,
+    -2.0F,
+    1.5F,
+    1.0F,
+    -0.5F,
+    0.25F,
+    2.5F,
+    -1.5F,
+    0.0F,
+    2.0F,
+};
+#define TUC_SOURCE_INTENT_DIGEST "sha256:8089f3a64aca72e2ee7d71a3f4eb10c7454d3c67f04cffa4db300734176cc614"
+#define TUC_GENERATED_SOURCE_DIGEST "sha256:6373a2247a841aa2c7707931b3ff3577dd2fb320ab7d9df500ab8e7136df3566"
+#define TUC_VECTOR_DIGEST "sha256:2cdd865263bd5e2768122c0b8d1f71d9a213ffd86005dc71c3c4c741392b8135"
+#endif
