@@ -1,0 +1,13 @@
+**
+!docker/
+!docker/composed-chain/
+!docker/composed-chain/generated.c
+!docker/composed-chain/generated.h
+!docker/composed-chain/kernels.cuh
+!docker/composed-chain/host.c
+!docker/composed-chain/device.cu
+!docker/composed-chain/inputs.h
+!docker/composed-chain/oracle.h
+!docker/composed-chain/common.h
+!docker/composed-chain/build-c11.sh
+!docker/composed-chain/build-cuda.sh

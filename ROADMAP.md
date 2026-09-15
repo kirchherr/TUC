@@ -4,16 +4,18 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded FMA Variant](docs/REDUCTION_FMA_VARIANT.md)
-executes separate and explicit-FMA implementations of the same intent on
-native C11 and physical CUDA. On 2026-09-14 both targets passed 726 scalar
-checks with 61 differing output pairs, all within the unchanged RFC 0309
-error intervals. Six negative controls, including silent fallback to the
-non-FMA implementation, were rejected; C11 also passed ASan/UBSan.
-Next: a bounded source-derived Matmul -> ReLU -> reduction chain, composing
-the reviewed primitives with explicit numerical policy and real two-target
-execution. Dynamic shapes, arbitrary-input correctness, general native
-admission and performance claims remain blocked.
+Latest completed experiment: [Bounded Composed Chain](docs/BOUNDED_COMPOSED_CHAIN.md)
+executes source-derived Matmul -> ReLU -> reduction on native C11 and physical
+CUDA. On 2026-09-14 each target passed 363 scalar checks, three stages per run,
+and ten cases plus replay. Seven negative controls were rejected, including
+bypassed and misplaced ReLU; C11 also passed ASan/UBSan. The exact nonlinear
+reference and separate FP32 order have an explicit numerical contract.
+The preceding [FMA experiment](docs/REDUCTION_FMA_VARIANT.md) remains unchanged.
+Next: consolidate the reviewed PR stack, then connect the checked core plan to
+this bounded native chain in a dedicated operator experiment. The current
+native path checks Source Intent but does not execute the core partition plan.
+Independent reproduction remains open. Dynamic shapes, arbitrary-input
+correctness, general native admission and performance claims remain blocked.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.

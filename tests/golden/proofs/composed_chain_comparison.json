@@ -1,0 +1,37 @@
+{
+  "blocked_claims": [
+    "arbitrary_programs",
+    "cross_vendor_execution",
+    "general_cuda_backend",
+    "independent_reproduction",
+    "native_performance",
+    "production_runtime_admission",
+    "universal_hardware",
+    "arbitrary_fp32_inputs",
+    "dynamic_shapes",
+    "bitwise_backend_equivalence",
+    "relative_error_guarantee",
+    "general_chain_lowering"
+  ],
+  "c11_record_digest": "sha256:b0913709faded2ce304f349f653c9649f79fe2bc0268952542dd39a2ca2c7945",
+  "comparison": "both_targets_satisfy_same_nonlinear_reference_contract_and_order",
+  "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+  "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+  "cuda_record_digest": "sha256:d0bb8dd41793131c67002f7e6c272c63694c898d3b6f8c4eb257cf3855d79716",
+  "operation_order": [
+    "matmul",
+    "relu",
+    "sum_axis1"
+  ],
+  "pairwise_absolute_error_bound": "twice_per_row_contract_budget",
+  "raw_values_serialized": false,
+  "runs_per_target": 11,
+  "scalar_checks_per_target": 363,
+  "schema_version": "tuc.bounded_chain_comparison.v0",
+  "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+  "status": "PASS",
+  "targets": [
+    "c11",
+    "cuda"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "observation": {
+    "case_count": 10,
+    "cases_passed": 11,
+    "code_digest": "sha256:492fdfe0c8aa941c32a36471ec9ae4c2d2307013efa2eceb89bfde7b99319468",
+    "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+    "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+    "execution_policy_passed": true,
+    "failed_run_index": -1,
+    "generated_function_calls": 33,
+    "mode": "execute",
+    "numeric_contract_passed": true,
+    "operation_order": [
+      "matmul",
+      "relu",
+      "sum_axis1"
+    ],
+    "output_shape": [
+      33
+    ],
+    "outputs_differing_from_reference64": 256,
+    "raw_values_serialized": false,
+    "reason_code": "none",
+    "repeated_baseline_passed": true,
+    "scalar_checks": 363,
+    "schema_version": "tuc.bounded_chain_observation.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+    "status": "PASS",
+    "target": "c11",
+    "tensor_bytes": 2516
+  },
+  "operator_image_id": "sha256:387c214ce25e0e55e22a20170e65fe4d7354f42f763d6b7d5ce35a93600b86b6",
+  "program_files_digest": "sha256:402c2563b8586e85b49a55ba39b1ab45b007f7a510613076f0db001de6ee75f4",
+  "provenance": "same_maintainer_operator",
+  "schema_version": "tuc.bounded_chain_record.v0"
+}
