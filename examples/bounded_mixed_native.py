@@ -139,6 +139,11 @@ def artifact_files():
         files["common.h"], '  printf("{', '  residency_emit();\n  printf("{'
     )
     files["common.h"] = bridge._replace_once(files["common.h"], r'false}\n",', r'false}}\n",')
+    files["common.h"] = bridge._replace_once(
+        files["common.h"],
+        "tuc.bounded_chain_observation.v0",
+        "tuc.bounded_mixed_numeric_observation.v0",
+    )
     # Toolchain hardening and numerical mutation recipes are inherited unchanged.
     for target in ("c11", "cuda"):
         key = f"build-{target}.sh"
@@ -287,8 +292,11 @@ def counters(target, runs):
 
 
 def expected_numeric(target, preflight=False):
+    if type(preflight) is not bool:
+        raise BoundedCompilerEmissionError("mixed preflight mode rejected")
     original = "c11" if target == "c11" else "cuda"
     value = bridge.chain.expected_observation(original, preflight)
+    value["schema_version"] = "tuc.bounded_mixed_numeric_observation.v0"
     if target == "mixed":
         value["target"] = "mixed"
         value["code_digest"] = _digest_payload(
@@ -302,6 +310,8 @@ def expected_numeric(target, preflight=False):
 
 def validate_observation(value, target, preflight=False, mutation=None):
     bridge._bounded_metadata(value)
+    if mutation is not None and (type(mutation) is not str or not mutation):
+        raise BoundedCompilerEmissionError("mixed mutation mode rejected")
     expected = expected_numeric(target, preflight)
     count = counters(target, 0 if preflight else 11)
     if mutation:

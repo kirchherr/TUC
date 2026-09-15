@@ -48,7 +48,7 @@ static int emit(const char *mode, const char *reason, bool security, unsigned in
   const bool ok = strcmp(reason, "none") == 0;
   const bool correct = ok && strcmp(mode, "execute") == 0 && passed == TUC_RUNS && rounded > 0U;
   residency_emit();
-  printf("{\"schema_version\":\"tuc.bounded_chain_observation.v0\","
+  printf("{\"schema_version\":\"tuc.bounded_mixed_numeric_observation.v0\","
          "\"target\":\"%s\",\"mode\":\"%s\",\"status\":\"%s\",\"reason_code\":\"%s\","
          "\"source_intent_digest\":\"%s\",\"code_digest\":\"%s\",\"corpus_digest\":\"%s\","
          "\"contract_digest\":\"%s\",\"operation_order\":[\"matmul\",\"relu\",\"sum_axis1\"],"
