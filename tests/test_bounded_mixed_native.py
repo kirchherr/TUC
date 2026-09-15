@@ -5,6 +5,7 @@ import pytest
 
 from examples import bounded_mixed_native as mixed
 from examples.bounded_compiler_emission import BoundedCompilerEmissionError, _digest_payload
+from examples.bounded_reduction_c11 import load_observation
 from tuc.runtime import runtime_execution_readiness_report
 
 
@@ -125,3 +126,83 @@ def test_prior_kernels_and_oracle_are_unchanged_and_verifier_is_pure(monkeypatch
         assert flag in operator
     assert "--privileged" not in operator
     assert '--target "$build_target-runtime"' in operator
+
+
+def test_observed_native_comparison_and_cpu_sanitizers():
+    directory = mixed.ROOT / "tests/golden/proofs"
+    records = [load_observation(directory / f"mixed_native_{t}_record.json") for t in mixed.TARGETS]
+    assert mixed.compare_records(*records) == load_observation(
+        directory / "mixed_native_comparison.json"
+    )
+    assert records[1]["observation"]["residency"]["cpu_calls"] == 11
+    assert records[1]["observation"]["residency"]["gpu_calls"] == 22
+    assert records[0]["observation"] == load_observation(
+        directory / "mixed_native_c11_sanitized.json"
+    )
+    with pytest.raises(BoundedCompilerEmissionError):
+        mixed.compare_records(records[0], {**records[1], "program_files_digest": "changed"})
+
+
+@pytest.mark.parametrize(
+    "target,mutation",
+    [
+        (t, m)
+        for t in mixed.TARGETS
+        for m in (*mixed.MUTATIONS, *(("skip-transfer",) if t == "mixed" else ()))
+    ],
+)
+def test_observed_rejections_cannot_be_execution_evidence(target, mutation):
+    value = load_observation(
+        mixed.ROOT / "tests/golden/proofs" / f"mixed_native_{target}_{mutation}.json"
+    )
+    mixed.validate_observation(value, target, mutation=mutation)
+    with pytest.raises(BoundedCompilerEmissionError):
+        mixed.validate_observation(value, target)
+    if mutation in mixed.STATIC_FAULTS:
+        assert value["residency"] == mixed.counters(target, 0)
+        assert value["numeric_observation"]["tensor_bytes"] == 0
+    elif mutation == "skip-transfer":
+        assert value["residency"]["gpu_calls"] == 1
+        assert value["residency"]["cpu_calls"] == 0
+        assert value["residency"]["download_calls"] == 0
+
+
+@pytest.mark.parametrize("target", mixed.TARGETS)
+def test_observed_preflight_is_not_execution(target):
+    value = load_observation(
+        mixed.ROOT / "tests/golden/proofs" / f"mixed_native_{target}_preflight.json"
+    )
+    mixed.validate_observation(value, target, True)
+    with pytest.raises(BoundedCompilerEmissionError):
+        mixed.build_record(value, target, "sha256:" + "1" * 64)
+
+
+@pytest.mark.parametrize("target", mixed.TARGETS)
+def test_old_numeric_schema_cannot_be_reinterpreted_as_mixed_evidence(target):
+    value = {
+        "schema_version": "tuc.bounded_mixed_native_observation.v0",
+        "plan_digest": _digest_payload(mixed.snapshot(target)),
+        "residency": mixed.counters(target, 11),
+        "numeric_observation": mixed.expected_numeric(target),
+    }
+    value["numeric_observation"]["schema_version"] = "tuc.bounded_chain_observation.v0"
+    with pytest.raises(BoundedCompilerEmissionError):
+        mixed.validate_observation(value, target)
+
+
+@pytest.mark.parametrize(
+    "preflight,mutation",
+    [
+        (0, None),
+        (1, None),
+        (None, None),
+        ("true", None),
+        (False, 0),
+        (False, ""),
+        (False, []),
+        (False, 1),
+    ],
+)
+def test_observation_modes_fail_closed(preflight, mutation):
+    with pytest.raises(BoundedCompilerEmissionError):
+        mixed.validate_observation({}, "mixed", preflight, mutation)

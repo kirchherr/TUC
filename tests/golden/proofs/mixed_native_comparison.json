@@ -1,0 +1,25 @@
+{
+  "blocked_claims": [
+    "general_native_runtime",
+    "arbitrary_inputs",
+    "dynamic_shapes",
+    "performance",
+    "independent_reproduction"
+  ],
+  "c11_record_digest": "sha256:45e2411aeaca309a3bff2418f8160d99e09ac599bf0118952520540cc7e545fe",
+  "copy_bytes_per_mixed_run": 2516,
+  "core_residency_schedule": true,
+  "energy_pj": null,
+  "latency_ns": null,
+  "mixed_record_digest": "sha256:519267357b18264141a5695e6719748c1f20fed7b9e5e2057f5226ed2391c0d8",
+  "normal_runtime_admission": false,
+  "placement": [
+    "bounded-cuda",
+    "bounded-c11",
+    "bounded-cuda"
+  ],
+  "scalar_checks_per_target": 363,
+  "schema_version": "tuc.bounded_mixed_native_comparison.v0",
+  "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+  "status": "PASS"
+}

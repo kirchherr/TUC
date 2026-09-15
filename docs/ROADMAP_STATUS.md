@@ -1,5 +1,18 @@
 # Roadmap Status
 
+- [Bounded Mixed Native Residency](BOUNDED_MIXED_NATIVE_RESIDENCY.md) passed
+  all-C11 and physical GPU -> CPU -> GPU execution on 2026-09-15. An opt-in core
+  planner now schedules external bindings, immutable resident copies, compute
+  assignments and terminal publication. The mixed path completes 22 GPU calls,
+  11 CPU calls, 33 uploads (18964 bytes), 22 downloads (8712 bytes) and 363 scalar
+  checks. Six malformed schedules reject before calls/allocation; a missing
+  projection download rejects before its CPU consumer. All fourteen CPU and
+  fifteen mixed controls pass, as do C11 ASan/UBSan and the full core typecheck.
+  Accepted comparison: `tests/golden/proofs/mixed_native_comparison.json`, with
+  two records, two preflights, a sanitizer observation and twenty-nine rejections.
+  RFC 0314. Prior records and default runtime admission remain unchanged.
+  Next: another bounded mixed placement under the same numerical contract.
+
 - [Bounded Native I/O Plan](BOUNDED_NATIVE_IO_PLAN.md) passed native C11 and
   physical sm86 CUDA on 2026-09-15. Both targets pass 363 scalar checks and
   twenty negative controls. C11 completes 33 zero-copy host bindings and passes

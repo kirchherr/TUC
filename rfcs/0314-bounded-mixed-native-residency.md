@@ -1,6 +1,6 @@
 # RFC 0314: Shared Residency Planning and Bounded Mixed Native Execution
 
-Status: Implementing; native evidence pending
+Status: Implemented; native C11 and physical mixed CPU/GPU observations accepted
 
 ## Scope
 
@@ -56,6 +56,15 @@ missing-copy/publication and wrong-code controls. Accept new bound observations
 only after recording the source commit and transferred archive digest. Keep old
 records unchanged. CI executes the CPU path and revalidates recorded GPU metadata.
 Same-maintainer evidence is not independent reproduction or hardware attestation.
+
+Acceptance completed on 2026-09-15: both targets pass the numerical contract;
+all fourteen C11 and fifteen mixed controls reject, including a missing
+projection download before the CPU consumer. C11 ASan/UBSan passes. Source:
+`354dd4aa7398c5398b6556d542b8aab006bbbfce`; transferred archive SHA-256:
+`79ab6368c3ac33f97da288e7081f033631e036568b72a1399fc50c0d6dcfacc7`.
+See [the observed experiment](../docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md) and
+`tests/golden/proofs/mixed_native_comparison.json`. Core typing passes with the
+hash-locked CI toolchain. No old proof identity, plan dump or record is changed.
 
 Normal-runtime native admission, arbitrary source/shapes/inputs, multi-device
 execution, layout conversion, performance and independent reproduction stay open.
