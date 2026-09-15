@@ -1,0 +1,17 @@
+**
+!docker/
+!docker/mixed-native/
+!docker/mixed-native/generated.c
+!docker/mixed-native/generated.h
+!docker/mixed-native/kernels.cuh
+!docker/mixed-native/inputs.h
+!docker/mixed-native/oracle.h
+!docker/mixed-native/common.h
+!docker/mixed-native/c11_plan.h
+!docker/mixed-native/mixed_plan.h
+!docker/mixed-native/build-c11.sh
+!docker/mixed-native/build-cuda.sh
+!docker/mixed-native/host.c
+!docker/mixed-native/device.cu
+!docker/mixed-native/worker.h
+!docker/mixed-native/contract.h
