@@ -1,0 +1,13 @@
+{
+  "admission": "fixed_rfc0309_corpus_only",
+  "automatic_contraction": false,
+  "baseline": "separate_binary32_multiply_then_add",
+  "baseline_policy_is_unchanged": true,
+  "candidate": "explicit_binary32_fused_multiply_add",
+  "candidate_c11": "fmaf",
+  "candidate_cuda": "__fmaf_rn",
+  "output_reduction": "sequential_binary32_sum",
+  "reassociation": false,
+  "rounding": "nearest_ties_even",
+  "schema_version": "tuc.bounded_fma_execution_policy.v0"
+}
