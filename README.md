@@ -412,6 +412,11 @@ not arbitrary-input correctness, a general backend or a performance claim.
 The [odd-shape experiment](docs/BOUNDED_REDUCTION_SHAPES.md) also passed on
 both targets for A[33,7], B[7,5], y[33]: fresh lowering, twenty inputs plus
 replay, multiple GPU blocks and detected incomplete-coverage errors.
+The [FP32 contract experiment](docs/REDUCTION_FP32_CONTRACT.md) uses that same
+code with non-exact inputs: both native targets pass 363 output checks within
+a predeclared error budget, with 298 rounding witnesses and five rejected
+negative controls each. This demonstrates bounded numerical agreement, not
+bitwise equality or arbitrary-FP32 correctness.
 
 Current runtime surfaces:
 

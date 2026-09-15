@@ -1,5 +1,16 @@
 # Roadmap Status
 
+- [Bounded FP32 Reduction Contract](REDUCTION_FP32_CONTRACT.md) passed native
+  C11 and physical sm86 CUDA execution on 2026-09-14. Ten non-exact input cases
+  plus replay produced 363 output checks and 298 rounding witnesses per
+  target; all satisfy a predeclared gamma13 absolute-error budget against an
+  exact rational reference. All five negative controls were rejected,
+  including a finite over-budget output and infinity. C11 passed ASan/UBSan.
+  Accepted comparison: `tests/golden/proofs/reduction_fp32_comparison.json`,
+  two bound child records and ten negative observations. Decision: RFC 0309.
+  This is numerical-contract agreement, not bitwise equivalence or arbitrary
+  FP32 support. The generated code and previous proof records are unchanged.
+
 - [Bounded Reduction Shapes](BOUNDED_REDUCTION_SHAPES.md) passed native C11
   and physical sm86 CUDA execution on 2026-09-14 for A[33,7], B[7,5], y[33].
   Fresh lowering covers six projection blocks and two reduction blocks;
@@ -1891,12 +1902,12 @@ Current focus:
 
 ## Next
 
-- RFC 0308 extends the twenty-vector reduction experiment to a second,
-  odd-sized shape on both native targets, exposing stride and launch-coverage
-  errors. Next, test non-exact FP32 inputs under an explicit rounding/error
-  contract with actual C11/CUDA execution. Do not infer arbitrary FP32
-  correctness from the existing exact quarter-integer corpus or use numeric
-  tolerance to hide incomplete coverage or wrong-axis semantics.
+- RFC 0309 establishes actual two-target agreement with a predeclared
+  numerical contract on non-exact FP32 inputs. Next, test an explicitly
+  reviewed FMA-enabled implementation against the same reference/error bound,
+  exposing permissible implementation differences without widening the
+  budget after measurement. Keep wrong-code and coverage controls. Do not
+  infer arbitrary-input, bitwise or performance guarantees from this corpus.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

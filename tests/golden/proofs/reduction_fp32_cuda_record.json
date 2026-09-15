@@ -1,0 +1,30 @@
+{
+  "observation": {
+    "case_count": 10,
+    "cases_passed": 11,
+    "code_digest": "sha256:66be0a56e4618e924f5c5c7511a06556fd229b618ba16735c58c636544921f35",
+    "contract_digest": "sha256:8556cb3f647db292dfbb2415f3a8ea636105b3654e4cf157cfe236c3483a748b",
+    "corpus_digest": "sha256:4b130bb7902346618bd1bf7960e49fea09559cb49c2bdf8ebaf813d51975b43e",
+    "failed_run_index": -1,
+    "generated_function_calls": 22,
+    "mode": "execute",
+    "numeric_contract_passed": true,
+    "output_shape": [
+      33
+    ],
+    "outputs_differing_from_reference64": 298,
+    "raw_values_serialized": false,
+    "reason_code": "none",
+    "repeated_baseline_passed": true,
+    "schema_version": "tuc.bounded_reduction_fp32_observation.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:54415a7218b284a9e0e8927ffc2a9d5eef0ff5cb9d5ccd8669b64d0f2a4c44a1",
+    "status": "PASS",
+    "target": "cuda",
+    "tensor_bytes": 1856
+  },
+  "operator_image_id": "sha256:d077e1796120368847e908623c7b4dc90ec3dd756dd487f7abd3588e0c5afc0a",
+  "program_files_digest": "sha256:2148321c6ccae4380a49de3554dc8b46b7b13a3876db3fdfe10275a0241a6096",
+  "provenance": "same_maintainer_operator",
+  "schema_version": "tuc.bounded_reduction_fp32_record.v0"
+}

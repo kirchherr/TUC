@@ -1,0 +1,14 @@
+{
+  "absolute_error_bound": "gamma_13 * sum_k_c(abs(a[row,k]*b[k,c]))",
+  "admission": "fixed_ten_case_corpus_only",
+  "fma_contraction": false,
+  "interval_encoding": "binary64_endpoints_rounded_inward",
+  "reassociation": false,
+  "reference": "exact_real_sum_of_products_of_binary32_inputs",
+  "rounding": "nearest_ties_even",
+  "rounding_depth_bound": 13,
+  "schema_version": "tuc.bounded_fp32_numeric_contract.v0",
+  "signed_zero": "numerical_equality_only",
+  "underflow_overflow": "excluded_from_fixed_corpus",
+  "unit_roundoff": "2^-24"
+}
