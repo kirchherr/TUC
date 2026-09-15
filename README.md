@@ -401,7 +401,10 @@ The second native source experiment,
 [Bounded Reduction C11](docs/BOUNDED_REDUCTION_C11_PROOF.md), adds a second
 source program with an axis-1 sum. Actual C11 execution, independent reference
 checks, sanitizers and three wrong-code probes passed in its dedicated
-workflow. Reduction on a second target remains open.
+workflow. [The same reduction now also runs on a physical NVIDIA GPU](docs/BOUNDED_REDUCTION_CUDA_PROOF.md):
+two compiler-emitted kernels, exact agreement with the same reference, and
+three rejected wrong-code variants. This remains one fixed vector, not a
+general backend or performance claim.
 
 Current runtime surfaces:
 

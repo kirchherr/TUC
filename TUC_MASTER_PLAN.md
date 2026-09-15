@@ -631,9 +631,12 @@ RFC 0305 implements the next distinct source-program experiment:
 Matmul-plus-axis-1-Sum through the existing research parser to typed Source
 Intent and deterministic C11. Its explicit native procedure passed an
 independent reference, ASan/UBSan and three wrong-code probes on 2026-09-09.
-It does not extend two-target equivalence to reduction until a
-second target has actually run the same program. See
-`docs/BOUNDED_REDUCTION_C11_PROOF.md`.
+RFC 0306 adds actual physical sm86 CUDA execution of that same program on
+2026-09-10: two generated kernels, exact reference agreement and three
+wrong-code rejections. Both target observations bind the same Source Intent
+and vector. This remains fixed-vector same-maintainer research evidence;
+another input vector or shape is the next practical generalization. See
+`docs/BOUNDED_REDUCTION_C11_PROOF.md` and `docs/BOUNDED_REDUCTION_CUDA_PROOF.md`.
 
 Bounded Source-To-Target Execution Proof v0 now joins that target evidence to
 the accepted isolated OCI intake of one fixed Triton-shaped module. The source

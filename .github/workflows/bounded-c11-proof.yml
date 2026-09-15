@@ -49,3 +49,7 @@ jobs:
         run: python examples/bounded_source_to_target_execution_proof.py
       - name: Execute second source program with reduction and wrong-code probes
         run: sh scripts/run_bounded_reduction_c11_proof.sh
+      - name: Revalidate recorded physical reduction evidence (no GPU execution)
+        run: |
+          python examples/bounded_reduction_cuda.py --compare-record tests/golden/proofs/bounded_reduction_cuda_record.json
+          pytest -q tests/test_bounded_reduction_cuda.py tests/test_bounded_reduction_c11.py
