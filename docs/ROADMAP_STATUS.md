@@ -1,5 +1,19 @@
 # Roadmap Status
 
+- [Bounded Source-To-Target Execution Proof](BOUNDED_SOURCE_TO_TARGET_EXECUTION_PROOF.md)
+  now binds the accepted isolated OCI intake of one fixed, inert Triton-shaped
+  module to the accepted CUDA/SASS and static C11 observations through the
+  exact same canonical Source Intent digest. The closed aggregate validates
+  both child reports and all current frontend provenance while keeping source
+  execution, normal-runtime admission, raw values, generated code, commands,
+  paths, and hardware identifiers outside public evidence. Schema:
+  `schemas/bounded_source_to_target_execution_proof.v0.schema.json`; accepted
+  evidence:
+  `tests/golden/proofs/bounded_source_to_target_execution_proof.json`;
+  decision: `rfcs/0304-bounded-source-to-target-execution-proof.md`. This is
+  one same-maintainer research case, not a general parser, arbitrary-program,
+  production, performance, universal-hardware, or independent proof.
+
 - [Bounded Compiler Target Equivalence Proof](BOUNDED_COMPILER_TARGET_EQUIVALENCE_PROOF.md)
   now binds the exact RFC 0302 Source Intent and workload to two materially
   different compiler targets. The accepted CUDA path produced two AOT `sm_86`
@@ -1835,6 +1849,11 @@ Current focus:
 
 ## Next
 
+- Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
+  source-to-two-target proof. Its next generalization must contribute a new
+  evidentiary dimension: independent provenance, a separately reviewed source
+  program, another ISA, or another vendor. Syntax-only expansion does not
+  strengthen the hardware-independent-interface claim.
 - Preserve both checked-in physical observations and the bounded
   cross-architecture aggregate under RFCs 0300 and 0301. Seek an independently
   provenanced reproduction next. Any cross-vendor target, dynamic input,
