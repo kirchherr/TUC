@@ -1,5 +1,14 @@
 # Roadmap Status
 
+- [Bounded Native Fanout](BOUNDED_NATIVE_FANOUT.md), RFC 0316, is implemented
+  locally with native acceptance pending. A fixed branched source requires two
+  consumers of the same projection and publication of both row sums. Three
+  static profiles preserve source/HAC-IR; gccc plans one projection download
+  for two CPU consumers. The 63 new tests and 69 selected core/security
+  regressions pass. CPU CI is prepared but no native execution, sanitizer result
+  or new accepted observation is claimed yet. Core defaults and prior evidence
+  remain unchanged.
+
 - [Bounded Native Placement Matrix](BOUNDED_NATIVE_PLACEMENTS.md) passed all eight
   CPU/GPU placements of one fixed graph in one physical sm86 image on 2026-09-17.
   Existing typed overrides select placement while HAC-IR and arithmetic remain

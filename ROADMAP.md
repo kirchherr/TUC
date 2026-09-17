@@ -18,6 +18,12 @@ reviewed source/shape contract, preserving numerical and completion checks.
 Independent reproduction remains open. Dynamic shapes, arbitrary-input
 correctness, general native admission and performance stay blocked.
 
+In progress: [Bounded Native Fanout](docs/BOUNDED_NATIVE_FANOUT.md), RFC 0316,
+prepares three fixed placements with one shared projection and two required
+outputs. Local source/plan/contract checks pass; actual native execution,
+sanitizers and observation acceptance are still pending. It does not supersede
+the completed placement-matrix evidence or widen normal-runtime admission.
+
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.
 

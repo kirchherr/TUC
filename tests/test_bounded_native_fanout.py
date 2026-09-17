@@ -198,3 +198,46 @@ def test_pure_verifier_and_operator_boundary(monkeypatch):
     assert '"$image_id" /opt/tuc/proof "$profile"' in operator
     for path in fanout.CONTEXT.iterdir():
         assert path.stat().st_size <= 65536
+
+
+def test_missing_duplicate_reordered_and_substituted_profiles_rejected():
+    values = [fanout.expected_observation(p, "matrix") for p in fanout.PROFILES]
+    for wrong in (
+        values[:-1],
+        list(reversed(values)),
+        [values[0]] * 3,
+        [fanout.expected_observation("cccc", "c11"), *values[1:]],
+    ):
+        with pytest.raises(BoundedCompilerEmissionError):
+            fanout.build_record(wrong, "matrix", "sha256:" + "a" * 64)
+
+
+@pytest.mark.parametrize("profile", fanout.PROFILES)
+def test_preflight_is_never_execution(profile):
+    value = fanout.expected_observation(profile, "matrix", True)
+    assert not any(value["residency"].values())
+    assert value["numeric_observation"]["scalar_checks"] == 0
+    with pytest.raises(BoundedCompilerEmissionError):
+        fanout.validate_observation(value, profile, "matrix")
+
+
+def test_missing_projection_copy_stops_before_either_consumer():
+    value = fanout.expected_observation("gccc", "matrix", mutation="skip-transfer")
+    assert value["residency"]["gpu_calls"] == 1
+    assert value["residency"]["cpu_calls"] == 0
+    assert value["residency"]["projection_copy_calls"] == 0
+    assert value["residency"]["shared_consumer_calls"] == 0
+    assert value["residency"]["published_outputs"] == 0
+
+
+@pytest.mark.parametrize("worker", (None, [], True, "cuda", "unknown"))
+def test_worker_scope_is_closed(worker):
+    with pytest.raises(BoundedCompilerEmissionError):
+        fanout.profiles_for(worker)
+
+
+def test_three_operation_observation_cannot_be_relabelled():
+    value = fanout.expected_observation("cccc", "matrix")
+    value["numeric_observation"]["schema_version"] = "tuc.bounded_placement_numeric.v0"
+    with pytest.raises(BoundedCompilerEmissionError):
+        fanout.validate_observation(value, "cccc", "matrix")

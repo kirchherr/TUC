@@ -34,6 +34,12 @@ plan parsing. This is not the full sixteen-placement matrix for four operations.
 
 ## Status
 
+The implementation and CPU CI job are prepared. Local validation passes 63
+fanout tests and 69 existing residency, override, scope-gate and workflow tests;
+Ruff also passes. The native worker has not yet been compiled or executed for
+this experiment. No native observations or accepted evidence files are claimed.
+The explicit operator run and its sanitizer/negative controls remain required.
+
 Native observations are pending. Require 726 scalar checks, 554 non-exact
 rounding witnesses, 44 calls and both publications per profile across ten cases
 plus replay. The shared placement must complete eleven projection downloads
