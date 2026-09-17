@@ -435,6 +435,11 @@ GPU Matmul -> CPU ReLU -> GPU reduction from a shared core residency schedule.
 It passes the same 363 scalar checks as all-C11; omitting an intermediate copy
 fails before its consumer. This is bounded mixed execution on a real CPU/GPU,
 not general native-runtime admission or a performance claim.
+The [placement matrix](docs/BOUNDED_NATIVE_PLACEMENTS.md) now runs all eight
+CPU/GPU assignments of that same graph in one reviewed native image. Typed
+placement overrides preserve HAC-IR and the numerical oracle. All eight pass
+363 scalar checks each; 144 negative controls across matrix and C11 baseline
+reject. This compares correct placement and explicit copy counts, not speed.
 
 Current runtime surfaces:
 

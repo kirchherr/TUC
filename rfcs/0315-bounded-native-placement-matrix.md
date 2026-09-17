@@ -1,6 +1,6 @@
 # RFC 0315: Bounded Native Placement Matrix
 
-Status: Implementing; native observations pending
+Status: Implemented; native observations accepted 2026-09-17
 
 ## Decision
 
@@ -57,3 +57,18 @@ are required. CI executes only C11 and revalidates recorded GPU observations.
 This is same-maintainer fixed-workload correctness evidence, not independent
 reproduction, arbitrary programs/inputs, dynamic shapes, general native admission,
 vendor portability, hardware attestation, measured speed or optimal placement.
+
+## Result
+
+All eight physical matrix placements pass in one image: 2904 scalar checks,
+132 CPU calls, 132 GPU calls and 220 copies totaling 110704 logical bytes.
+The separate C11 baseline passes 363 scalar checks and ASan/UBSan. All 144
+negative controls reject. Native contract sanitizers accept eight schedules
+and reject four invalid selectors plus 19840 single-bit integer-field mutations.
+This bounded mutation corpus is not coverage-guided fuzzing or pointer fuzzing.
+
+The accepted source, archive digest, grouped observations and reproduction
+commands are recorded in [Bounded Native Placements](../docs/BOUNDED_NATIVE_PLACEMENTS.md).
+Normal-runtime admission, core defaults, old observations and numerical policy
+remain unchanged. Native immutable fanout/copy reuse is a possible successor
+dimension and requires its own bounded source contract and review.

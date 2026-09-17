@@ -196,3 +196,29 @@ jobs:
         run: |
           python examples/bounded_mixed_native.py --compare tests/golden/proofs/mixed_native_c11_record.json tests/golden/proofs/mixed_native_mixed_record.json
           pytest -q tests/test_runtime_residency.py tests/test_bounded_mixed_native.py
+
+  native-placement-matrix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Install proof dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Execute C11 placement and native contract sanitizer tests
+        run: sh docker/native-placements/operator.sh --c11
+      - name: Verify all eight compiled placements (no GPU execution)
+        run: |
+          python examples/bounded_native_placements.py
+          python examples/bounded_native_placements.py --compare tests/golden/proofs/native_placements_c11_record.json tests/golden/proofs/native_placements_matrix_record.json
+          pytest -q -n 4 tests/test_bounded_native_placements.py

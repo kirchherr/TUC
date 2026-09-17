@@ -89,9 +89,9 @@ The full core typecheck passes in a separate pinned, networkless execution
 container. CI executes the C11 path and revalidates recorded mixed evidence;
 it does not execute on a GPU. Existing default runtime behavior is unchanged.
 
-The next useful dimension is another bounded mixed placement of the same graph,
-chosen through reviewed capability/placement inputs and compared against this
-same numerical oracle. Performance work remains separate from correctness.
+The [placement matrix successor](BOUNDED_NATIVE_PLACEMENTS.md) now covers all
+eight CPU/GPU assignments through typed overrides and the same numerical oracle.
+Performance work remains separate from correctness.
 
 See [RFC 0314](../rfcs/0314-bounded-mixed-native-residency.md) for resource limits,
 native isolation requirements and acceptance criteria. Independent reproduction,

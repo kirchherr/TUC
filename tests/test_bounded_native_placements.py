@@ -5,6 +5,7 @@ import pytest
 
 from examples import bounded_native_placements as placements
 from examples.bounded_compiler_emission import BoundedCompilerEmissionError
+from examples.bounded_reduction_c11 import load_observation
 from tuc.runtime import runtime_execution_readiness_report
 
 
@@ -184,3 +185,71 @@ def test_artifacts_pure_and_previous_code_unchanged(monkeypatch):
     assert '"$image_id" /opt/tuc/proof "$profile"' in operator
     assert "--privileged" not in operator
     assert "contract-sanitized" in operator
+
+
+def observed(name):
+    return load_observation(
+        placements.ROOT / "tests/golden/proofs" / f"native_placements_{name}.json"
+    )
+
+
+def test_observed_matrix_and_sanitizers():
+    cpu = observed("c11_record")
+    matrix = observed("matrix_record")
+    assert placements.compare_records(cpu, matrix) == observed("comparison")
+    assert cpu["observations"][0] == observed("c11_sanitized")
+    assert observed("c11_contract_sanitized") == {
+        "schema_version": "tuc.placement_contract_sanitizer.v0",
+        "status": "PASS",
+        "profiles_checked": 8,
+        "invalid_selectors": 4,
+        "bitflip_rejections": 19840,
+    }
+    assert sum(o["numeric_observation"]["scalar_checks"] for o in matrix["observations"]) == 2904
+    assert sum(o["residency"]["cpu_calls"] for o in matrix["observations"]) == 132
+    assert sum(o["residency"]["gpu_calls"] for o in matrix["observations"]) == 132
+    with pytest.raises(BoundedCompilerEmissionError):
+        placements.compare_records(cpu, {**matrix, "program_files_digest": "modified"})
+
+
+@pytest.mark.parametrize("worker", ("c11", "matrix"))
+def test_observed_preflights_and_unknown_profiles(worker):
+    values = observed(f"{worker}_preflights")
+    assert list(values) == list(placements.profiles_for(worker))
+    for profile, value in values.items():
+        placements.validate_observation(value, profile, worker, True)
+        with pytest.raises(BoundedCompilerEmissionError):
+            placements.validate_observation(value, profile, worker)
+    unknown = observed(f"{worker}_unknown_profile")
+    placements.validate_observation(unknown, "ccc", worker, mutation="unknown-profile")
+    assert unknown["numeric_observation"]["tensor_bytes"] == 0
+    with pytest.raises(BoundedCompilerEmissionError):
+        placements.validate_observation(unknown, "ccc", worker)
+
+
+@pytest.mark.parametrize(
+    "worker,profile",
+    [(w, p) for w in ("c11", "matrix") for p in placements.profiles_for(w)],
+)
+def test_all_observed_controls_reject_as_execution(worker, profile):
+    mutations = (*placements.MUTATIONS, *(("skip-transfer",) if profile != "ccc" else ()))
+    seen = set()
+    for group in (1, 2):
+        values = observed(f"{worker}_{profile}_controls_{group}")
+        assert set(values) == set(mutations[(group - 1) * 8 : group * 8])
+        assert not seen.intersection(values)
+        seen.update(values)
+        for mutation, value in values.items():
+            placements.validate_observation(value, profile, worker, mutation=mutation)
+            with pytest.raises(BoundedCompilerEmissionError):
+                placements.validate_observation(value, profile, worker)
+    assert seen == set(mutations)
+
+
+@pytest.mark.parametrize(
+    "preflight,mutation",
+    [(0, None), (1, None), ("true", None), (False, 0), (False, []), (True, "skip-publish")],
+)
+def test_observation_modes_fail_closed(preflight, mutation):
+    with pytest.raises(BoundedCompilerEmissionError):
+        placements.validate_observation({}, "ccc", "c11", preflight, mutation)
