@@ -1,0 +1,474 @@
+{
+  "clobber-left": {
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 0,
+      "code_digest": "sha256:3f6d1e934bafd16cbf500f1311e7ffa5bd12107f349904d36a54909a4d1fc5b6",
+      "contract_digest": "sha256:1b137919f034839c6d25ff3184363ada65888498dad63e9ae36452dbb7b0ce51",
+      "corpus_digest": "sha256:79c627d4599133ef940e8db51688dc9b8d0fc5228874e002c78146b78a600c9c",
+      "execution_policy_passed": false,
+      "failed_run_index": 0,
+      "generated_function_calls": 4,
+      "mode": "execute",
+      "numeric_contract_passed": false,
+      "operation_order": [
+        "relu_left",
+        "relu_right",
+        "matmul",
+        "sum_axis1"
+      ],
+      "output_names": [
+        "row_sum"
+      ],
+      "output_shapes": [
+        [
+          33
+        ]
+      ],
+      "output_values": 33,
+      "outputs_differing_from_reference64": 0,
+      "raw_values_serialized": false,
+      "reason_code": "numeric_contract_mismatch",
+      "repeated_baseline_passed": false,
+      "scalar_checks": 0,
+      "schema_version": "tuc.bounded_fanin_numeric.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:648dbbc6aeced9b09fd0e91a35aa9d4960368c45d5a652d2ad2d192170882131",
+      "status": "ERROR",
+      "target": "cccc",
+      "tensor_bytes": 2920
+    },
+    "plan_digest": "sha256:8f05e11f9e14df87cd0f5ca147faee770152f4ff5e21a2264b1cac042352b8e8",
+    "profile": "cccc",
+    "residency": {
+      "completed_steps": 7,
+      "cpu_calls": 4,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "join_calls": 1,
+      "left_copy_calls": 0,
+      "left_producer_calls": 1,
+      "published_outputs": 1,
+      "right_copy_calls": 0,
+      "right_producer_calls": 1,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    "schema_version": "tuc.bounded_fanin_observation.v0",
+    "worker": "matrix"
+  },
+  "clobber-right": {
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 0,
+      "code_digest": "sha256:3f6d1e934bafd16cbf500f1311e7ffa5bd12107f349904d36a54909a4d1fc5b6",
+      "contract_digest": "sha256:1b137919f034839c6d25ff3184363ada65888498dad63e9ae36452dbb7b0ce51",
+      "corpus_digest": "sha256:79c627d4599133ef940e8db51688dc9b8d0fc5228874e002c78146b78a600c9c",
+      "execution_policy_passed": false,
+      "failed_run_index": 0,
+      "generated_function_calls": 4,
+      "mode": "execute",
+      "numeric_contract_passed": false,
+      "operation_order": [
+        "relu_left",
+        "relu_right",
+        "matmul",
+        "sum_axis1"
+      ],
+      "output_names": [
+        "row_sum"
+      ],
+      "output_shapes": [
+        [
+          33
+        ]
+      ],
+      "output_values": 33,
+      "outputs_differing_from_reference64": 0,
+      "raw_values_serialized": false,
+      "reason_code": "numeric_contract_mismatch",
+      "repeated_baseline_passed": false,
+      "scalar_checks": 0,
+      "schema_version": "tuc.bounded_fanin_numeric.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:648dbbc6aeced9b09fd0e91a35aa9d4960368c45d5a652d2ad2d192170882131",
+      "status": "ERROR",
+      "target": "cccc",
+      "tensor_bytes": 2920
+    },
+    "plan_digest": "sha256:8f05e11f9e14df87cd0f5ca147faee770152f4ff5e21a2264b1cac042352b8e8",
+    "profile": "cccc",
+    "residency": {
+      "completed_steps": 7,
+      "cpu_calls": 4,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "join_calls": 1,
+      "left_copy_calls": 0,
+      "left_producer_calls": 1,
+      "published_outputs": 1,
+      "right_copy_calls": 0,
+      "right_producer_calls": 1,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    "schema_version": "tuc.bounded_fanin_observation.v0",
+    "worker": "matrix"
+  },
+  "invalidate-left": {
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 0,
+      "code_digest": "sha256:3f6d1e934bafd16cbf500f1311e7ffa5bd12107f349904d36a54909a4d1fc5b6",
+      "contract_digest": "sha256:1b137919f034839c6d25ff3184363ada65888498dad63e9ae36452dbb7b0ce51",
+      "corpus_digest": "sha256:79c627d4599133ef940e8db51688dc9b8d0fc5228874e002c78146b78a600c9c",
+      "execution_policy_passed": false,
+      "failed_run_index": 0,
+      "generated_function_calls": 2,
+      "mode": "execute",
+      "numeric_contract_passed": false,
+      "operation_order": [
+        "relu_left",
+        "relu_right",
+        "matmul",
+        "sum_axis1"
+      ],
+      "output_names": [
+        "row_sum"
+      ],
+      "output_shapes": [
+        [
+          33
+        ]
+      ],
+      "output_values": 33,
+      "outputs_differing_from_reference64": 0,
+      "raw_values_serialized": false,
+      "reason_code": "execution_failed",
+      "repeated_baseline_passed": false,
+      "scalar_checks": 0,
+      "schema_version": "tuc.bounded_fanin_numeric.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:648dbbc6aeced9b09fd0e91a35aa9d4960368c45d5a652d2ad2d192170882131",
+      "status": "ERROR",
+      "target": "cccc",
+      "tensor_bytes": 2920
+    },
+    "plan_digest": "sha256:8f05e11f9e14df87cd0f5ca147faee770152f4ff5e21a2264b1cac042352b8e8",
+    "profile": "cccc",
+    "residency": {
+      "completed_steps": 4,
+      "cpu_calls": 2,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "join_calls": 0,
+      "left_copy_calls": 0,
+      "left_producer_calls": 1,
+      "published_outputs": 0,
+      "right_copy_calls": 0,
+      "right_producer_calls": 1,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    "schema_version": "tuc.bounded_fanin_observation.v0",
+    "worker": "matrix"
+  },
+  "invalidate-right": {
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 0,
+      "code_digest": "sha256:3f6d1e934bafd16cbf500f1311e7ffa5bd12107f349904d36a54909a4d1fc5b6",
+      "contract_digest": "sha256:1b137919f034839c6d25ff3184363ada65888498dad63e9ae36452dbb7b0ce51",
+      "corpus_digest": "sha256:79c627d4599133ef940e8db51688dc9b8d0fc5228874e002c78146b78a600c9c",
+      "execution_policy_passed": false,
+      "failed_run_index": 0,
+      "generated_function_calls": 2,
+      "mode": "execute",
+      "numeric_contract_passed": false,
+      "operation_order": [
+        "relu_left",
+        "relu_right",
+        "matmul",
+        "sum_axis1"
+      ],
+      "output_names": [
+        "row_sum"
+      ],
+      "output_shapes": [
+        [
+          33
+        ]
+      ],
+      "output_values": 33,
+      "outputs_differing_from_reference64": 0,
+      "raw_values_serialized": false,
+      "reason_code": "execution_failed",
+      "repeated_baseline_passed": false,
+      "scalar_checks": 0,
+      "schema_version": "tuc.bounded_fanin_numeric.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:648dbbc6aeced9b09fd0e91a35aa9d4960368c45d5a652d2ad2d192170882131",
+      "status": "ERROR",
+      "target": "cccc",
+      "tensor_bytes": 2920
+    },
+    "plan_digest": "sha256:8f05e11f9e14df87cd0f5ca147faee770152f4ff5e21a2264b1cac042352b8e8",
+    "profile": "cccc",
+    "residency": {
+      "completed_steps": 4,
+      "cpu_calls": 2,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "join_calls": 0,
+      "left_copy_calls": 0,
+      "left_producer_calls": 1,
+      "published_outputs": 0,
+      "right_copy_calls": 0,
+      "right_producer_calls": 1,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    "schema_version": "tuc.bounded_fanin_observation.v0",
+    "worker": "matrix"
+  },
+  "nonfinite": {
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 0,
+      "code_digest": "sha256:3f6d1e934bafd16cbf500f1311e7ffa5bd12107f349904d36a54909a4d1fc5b6",
+      "contract_digest": "sha256:1b137919f034839c6d25ff3184363ada65888498dad63e9ae36452dbb7b0ce51",
+      "corpus_digest": "sha256:79c627d4599133ef940e8db51688dc9b8d0fc5228874e002c78146b78a600c9c",
+      "execution_policy_passed": false,
+      "failed_run_index": 0,
+      "generated_function_calls": 4,
+      "mode": "execute",
+      "numeric_contract_passed": false,
+      "operation_order": [
+        "relu_left",
+        "relu_right",
+        "matmul",
+        "sum_axis1"
+      ],
+      "output_names": [
+        "row_sum"
+      ],
+      "output_shapes": [
+        [
+          33
+        ]
+      ],
+      "output_values": 33,
+      "outputs_differing_from_reference64": 0,
+      "raw_values_serialized": false,
+      "reason_code": "numeric_contract_mismatch",
+      "repeated_baseline_passed": false,
+      "scalar_checks": 0,
+      "schema_version": "tuc.bounded_fanin_numeric.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:648dbbc6aeced9b09fd0e91a35aa9d4960368c45d5a652d2ad2d192170882131",
+      "status": "ERROR",
+      "target": "cccc",
+      "tensor_bytes": 2920
+    },
+    "plan_digest": "sha256:8f05e11f9e14df87cd0f5ca147faee770152f4ff5e21a2264b1cac042352b8e8",
+    "profile": "cccc",
+    "residency": {
+      "completed_steps": 7,
+      "cpu_calls": 4,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "join_calls": 1,
+      "left_copy_calls": 0,
+      "left_producer_calls": 1,
+      "published_outputs": 1,
+      "right_copy_calls": 0,
+      "right_producer_calls": 1,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    "schema_version": "tuc.bounded_fanin_observation.v0",
+    "worker": "matrix"
+  },
+  "over-budget": {
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 0,
+      "code_digest": "sha256:3f6d1e934bafd16cbf500f1311e7ffa5bd12107f349904d36a54909a4d1fc5b6",
+      "contract_digest": "sha256:1b137919f034839c6d25ff3184363ada65888498dad63e9ae36452dbb7b0ce51",
+      "corpus_digest": "sha256:79c627d4599133ef940e8db51688dc9b8d0fc5228874e002c78146b78a600c9c",
+      "execution_policy_passed": false,
+      "failed_run_index": 0,
+      "generated_function_calls": 4,
+      "mode": "execute",
+      "numeric_contract_passed": false,
+      "operation_order": [
+        "relu_left",
+        "relu_right",
+        "matmul",
+        "sum_axis1"
+      ],
+      "output_names": [
+        "row_sum"
+      ],
+      "output_shapes": [
+        [
+          33
+        ]
+      ],
+      "output_values": 33,
+      "outputs_differing_from_reference64": 0,
+      "raw_values_serialized": false,
+      "reason_code": "numeric_contract_mismatch",
+      "repeated_baseline_passed": false,
+      "scalar_checks": 0,
+      "schema_version": "tuc.bounded_fanin_numeric.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:648dbbc6aeced9b09fd0e91a35aa9d4960368c45d5a652d2ad2d192170882131",
+      "status": "ERROR",
+      "target": "cccc",
+      "tensor_bytes": 2920
+    },
+    "plan_digest": "sha256:8f05e11f9e14df87cd0f5ca147faee770152f4ff5e21a2264b1cac042352b8e8",
+    "profile": "cccc",
+    "residency": {
+      "completed_steps": 7,
+      "cpu_calls": 4,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "join_calls": 1,
+      "left_copy_calls": 0,
+      "left_producer_calls": 1,
+      "published_outputs": 1,
+      "right_copy_calls": 0,
+      "right_producer_calls": 1,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    "schema_version": "tuc.bounded_fanin_observation.v0",
+    "worker": "matrix"
+  },
+  "skip-left": {
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 0,
+      "code_digest": "sha256:3f6d1e934bafd16cbf500f1311e7ffa5bd12107f349904d36a54909a4d1fc5b6",
+      "contract_digest": "sha256:1b137919f034839c6d25ff3184363ada65888498dad63e9ae36452dbb7b0ce51",
+      "corpus_digest": "sha256:79c627d4599133ef940e8db51688dc9b8d0fc5228874e002c78146b78a600c9c",
+      "execution_policy_passed": false,
+      "failed_run_index": 0,
+      "generated_function_calls": 0,
+      "mode": "execute",
+      "numeric_contract_passed": false,
+      "operation_order": [
+        "relu_left",
+        "relu_right",
+        "matmul",
+        "sum_axis1"
+      ],
+      "output_names": [
+        "row_sum"
+      ],
+      "output_shapes": [
+        [
+          33
+        ]
+      ],
+      "output_values": 33,
+      "outputs_differing_from_reference64": 0,
+      "raw_values_serialized": false,
+      "reason_code": "execution_failed",
+      "repeated_baseline_passed": false,
+      "scalar_checks": 0,
+      "schema_version": "tuc.bounded_fanin_numeric.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:648dbbc6aeced9b09fd0e91a35aa9d4960368c45d5a652d2ad2d192170882131",
+      "status": "ERROR",
+      "target": "cccc",
+      "tensor_bytes": 2920
+    },
+    "plan_digest": "sha256:8f05e11f9e14df87cd0f5ca147faee770152f4ff5e21a2264b1cac042352b8e8",
+    "profile": "cccc",
+    "residency": {
+      "completed_steps": 1,
+      "cpu_calls": 0,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "join_calls": 0,
+      "left_copy_calls": 0,
+      "left_producer_calls": 0,
+      "published_outputs": 0,
+      "right_copy_calls": 0,
+      "right_producer_calls": 0,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    "schema_version": "tuc.bounded_fanin_observation.v0",
+    "worker": "matrix"
+  },
+  "skip-right": {
+    "numeric_observation": {
+      "case_count": 10,
+      "cases_passed": 0,
+      "code_digest": "sha256:3f6d1e934bafd16cbf500f1311e7ffa5bd12107f349904d36a54909a4d1fc5b6",
+      "contract_digest": "sha256:1b137919f034839c6d25ff3184363ada65888498dad63e9ae36452dbb7b0ce51",
+      "corpus_digest": "sha256:79c627d4599133ef940e8db51688dc9b8d0fc5228874e002c78146b78a600c9c",
+      "execution_policy_passed": false,
+      "failed_run_index": 0,
+      "generated_function_calls": 1,
+      "mode": "execute",
+      "numeric_contract_passed": false,
+      "operation_order": [
+        "relu_left",
+        "relu_right",
+        "matmul",
+        "sum_axis1"
+      ],
+      "output_names": [
+        "row_sum"
+      ],
+      "output_shapes": [
+        [
+          33
+        ]
+      ],
+      "output_values": 33,
+      "outputs_differing_from_reference64": 0,
+      "raw_values_serialized": false,
+      "reason_code": "execution_failed",
+      "repeated_baseline_passed": false,
+      "scalar_checks": 0,
+      "schema_version": "tuc.bounded_fanin_numeric.v0",
+      "security_boundary_passed": true,
+      "source_intent_digest": "sha256:648dbbc6aeced9b09fd0e91a35aa9d4960368c45d5a652d2ad2d192170882131",
+      "status": "ERROR",
+      "target": "cccc",
+      "tensor_bytes": 2920
+    },
+    "plan_digest": "sha256:8f05e11f9e14df87cd0f5ca147faee770152f4ff5e21a2264b1cac042352b8e8",
+    "profile": "cccc",
+    "residency": {
+      "completed_steps": 3,
+      "cpu_calls": 1,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "join_calls": 0,
+      "left_copy_calls": 0,
+      "left_producer_calls": 1,
+      "published_outputs": 0,
+      "right_copy_calls": 0,
+      "right_producer_calls": 0,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    "schema_version": "tuc.bounded_fanin_observation.v0",
+    "worker": "matrix"
+  }
+}

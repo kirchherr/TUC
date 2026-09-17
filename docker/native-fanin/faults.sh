@@ -1,0 +1,29 @@
+# Fixed compile-time controls; never external source or runtime opcodes.
+compile /out/bin/proof
+compile /out/bin/schedule-count -DTUC_SCHEDULE_FAULT=1
+compile /out/bin/schedule-slot -DTUC_SCHEDULE_FAULT=2
+compile /out/bin/schedule-space -DTUC_SCHEDULE_FAULT=3
+compile /out/bin/schedule-order -DTUC_SCHEDULE_FAULT=4
+compile /out/bin/schedule-size -DTUC_SCHEDULE_FAULT=5
+compile /out/bin/schedule-duplicate -DTUC_SCHEDULE_FAULT=6
+compile /out/bin/schedule-placement -DTUC_SCHEDULE_FAULT=7
+compile /out/bin/schedule-join-left -DTUC_SCHEDULE_FAULT=8
+compile /out/bin/schedule-join-right -DTUC_SCHEDULE_FAULT=9
+compile /out/bin/schedule-join-swap -DTUC_SCHEDULE_FAULT=10
+compile /out/bin/bypass-left -DTUC_BYPASS_LEFT=1
+compile /out/bin/bypass-right -DTUC_BYPASS_RIGHT=1
+compile /out/bin/bypass-both -DTUC_BYPASS_BOTH=1
+compile /out/bin/missing-join -DTUC_MISSING_JOIN=1
+compile /out/bin/incomplete-left -DTUC_INCOMPLETE_LEFT=1
+compile /out/bin/incomplete-right -DTUC_INCOMPLETE_RIGHT=1
+compile /out/bin/over-budget -DTUC_OVER_BUDGET=1
+compile /out/bin/nonfinite -DTUC_NONFINITE=1
+compile /out/bin/skip-left -DTUC_SKIP_LEFT=1
+compile /out/bin/skip-right -DTUC_SKIP_RIGHT=1
+compile /out/bin/invalidate-left -DTUC_INVALIDATE_LEFT=1
+compile /out/bin/invalidate-right -DTUC_INVALIDATE_RIGHT=1
+compile /out/bin/clobber-left -DTUC_CLOBBER_LEFT=1
+compile /out/bin/clobber-right -DTUC_CLOBBER_RIGHT=1
+compile /out/bin/skip-publish -DTUC_SKIP_PUBLISH=1
+compile /out/bin/skip-left-copy -DTUC_SKIP_LEFT_COPY=1
+compile /out/bin/skip-right-copy -DTUC_SKIP_RIGHT_COPY=1
