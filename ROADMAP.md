@@ -18,6 +18,11 @@ availability, under a separately reviewed source and numerical contract.
 Independent reproduction remains open. Dynamic shapes, arbitrary-input
 correctness, general native admission and performance stay blocked.
 
+In progress: [Bounded Native Fan-In Candidate](docs/BOUNDED_NATIVE_FANIN.md),
+RFC 0317, fixes two ReLU producers feeding a Matmul join and six placements.
+Pure source/plan/numerical checks pass; native implementation and acceptance
+remain pending. Candidate fixtures are not native observations.
+
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.
 
