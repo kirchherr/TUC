@@ -1,13 +1,16 @@
 # Roadmap Status
 
-- [Bounded Native Fanout](BOUNDED_NATIVE_FANOUT.md), RFC 0316, is implemented
-  locally with native acceptance pending. A fixed branched source requires two
-  consumers of the same projection and publication of both row sums. Three
-  static profiles preserve source/HAC-IR; gccc plans one projection download
-  for two CPU consumers. The 63 new tests and 69 selected core/security
-  regressions pass. CPU CI is prepared but no native execution, sanitizer result
-  or new accepted observation is claimed yet. Core defaults and prior evidence
-  remain unchanged.
+- [Bounded Native Fanout](BOUNDED_NATIVE_FANOUT.md), RFC 0316, passed C11 and
+  three same-image physical matrix profiles on 2026-09-17. All profiles preserve
+  the branched source/HAC-IR and require both outputs. Mixed gccc completes
+  eleven projection downloads for twenty-two CPU consumer calls. Each profile
+  passes 726 scalar checks; the matrix totals 2178 checks. All 84 negative
+  controls reject, including missing second publication and clobbered shared
+  contents. C11 ASan/UBSan and 8736 native schedule-field bitflip rejections
+  pass. Accepted comparison: `tests/golden/proofs/native_fanout_comparison.json`,
+  with twenty-one bounded metadata-only evidence files. Core defaults and prior
+  evidence remain unchanged. Next: bounded native fan-in under a separate source
+  and numerical contract. Performance and independent reproduction remain open.
 
 - [Bounded Native Placement Matrix](BOUNDED_NATIVE_PLACEMENTS.md) passed all eight
   CPU/GPU placements of one fixed graph in one physical sm86 image on 2026-09-17.
@@ -18,8 +21,8 @@
   pass. Accepted comparison: `tests/golden/proofs/native_placements_comparison.json`,
   with twenty-seven bounded metadata-only evidence files. RFC 0315. Core code,
   defaults, prior records and normal native admission remain unchanged. Next:
-  native fanout and immutable copy reuse under a separately reviewed source
-  contract. Performance and independent reproduction remain open.
+  native fanout and immutable copy reuse, now completed in RFC 0316.
+  Performance and independent reproduction remain open.
 
 - [Bounded Mixed Native Residency](BOUNDED_MIXED_NATIVE_RESIDENCY.md) passed
   all-C11 and physical GPU -> CPU -> GPU execution on 2026-09-15. An opt-in core
@@ -1985,12 +1988,12 @@ Current focus:
 
 ## Next
 
-- RFCs 0313 through 0315 now cover bounded external I/O, core residency planning
-  and all eight native placements of the fixed chain. The predecessor stack is
-  merged through PR #110. Obtain the required review for the placement matrix
-  without bypassing branch rules. The next bounded integration dimension is
-  native fanout with immutable resident-copy reuse under a separately reviewed
-  source/shape contract. Preserve numerical, wrong-code, coverage and FMA
+- RFCs 0313 through 0316 now cover bounded external I/O, core residency planning,
+  eight placements of the fixed chain and native immutable fanout. The
+  predecessor stack is merged through PR #111. Obtain the required review for
+  fanout without bypassing branch rules. The next bounded integration dimension
+  is native fan-in with distinct producer placements under a separately reviewed
+  source and numerical contract. Preserve numerical, wrong-code, coverage and FMA
   evidence; keep default native admission blocked. Independent reproduction
   remains open.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed

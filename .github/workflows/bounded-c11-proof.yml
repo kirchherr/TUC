@@ -246,4 +246,5 @@ jobs:
       - name: Verify fixed fanout source, plans and contracts (no GPU execution)
         run: |
           python examples/bounded_native_fanout.py
+          python examples/bounded_native_fanout.py --compare tests/golden/proofs/native_fanout_c11_record.json tests/golden/proofs/native_fanout_matrix_record.json
           pytest -q -n 4 tests/test_bounded_native_fanout.py

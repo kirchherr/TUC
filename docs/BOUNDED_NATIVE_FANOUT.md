@@ -32,23 +32,60 @@ Verification is pure. The explicit operator builds one matrix image for three
 fixed profiles, with fresh bounded containers and no runtime compilation or
 plan parsing. This is not the full sixteen-placement matrix for four operations.
 
-## Status
+## Accepted Observations
 
-The implementation and CPU CI job are prepared. Local validation passes 63
-fanout tests and 69 existing residency, override, scope-gate and workflow tests;
-Ruff also passes. The native worker has not yet been compiled or executed for
-this experiment. No native observations or accepted evidence files are claimed.
-The explicit operator run and its sanitizer/negative controls remain required.
+Native execution passed on 2026-09-17. The static C11 baseline and each of the
+three same-image matrix profiles completed ten cases plus replay: 726 scalar
+checks, 554 rounding witnesses, 44 generated calls and 22 published outputs.
+The matrix totals 2178 scalar checks, 77 CPU calls and 55 GPU calls.
 
-Native observations are pending. Require 726 scalar checks, 554 non-exact
-rounding witnesses, 44 calls and both publications per profile across ten cases
-plus replay. The shared placement must complete eleven projection downloads
-for twenty-two consumer calls. Missing second publication, invalidated shared
-availability, clobbered shared contents, wrong consumer edges and wrong output
-bindings are explicit negative controls, alongside the numerical controls.
+| Observed completed work | cccc | gccc | gggg |
+| --- | ---: | ---: | ---: |
+| CPU / GPU calls | 44 / 0 | 33 / 11 | 0 / 44 |
+| Upload calls / bytes | 0 / 0 | 22 / 11704 | 22 / 11704 |
+| Download calls / bytes | 0 / 0 | 11 / 7260 | 22 / 2904 |
+| Projection copy calls | 0 | 11 | 0 |
+| Shared consumer calls | 22 | 22 | 22 |
+| Published outputs | 22 | 22 | 22 |
 
-C11 ASan/UBSan and native contract integer-field mutation checks are mandatory.
+The mixed profile actually completed eleven projection downloads for twenty-two
+consumer calls, as planned. Twenty-one C11 and sixty-three matrix negative
+controls reject. Missing projection download stops before either CPU consumer.
+Invalidating shared availability after ReLU stops before the second consumer;
+clobbering shared contents fails the numerical contract. Omitting only the
+second publication fails despite all four operations completing. Nine static
+schedule faults reject before native calls or allocation.
+
+C11 ASan/UBSan passed. The sanitized native contract test accepted all three
+schedules and rejected four invalid selectors plus all 8736 single-bit changes
+to integer profile, buffer and event fields. This is deterministic bounded
+mutation testing, not coverage-guided fuzzing or pointer/string corruption fuzzing.
+
+The [comparison](../tests/golden/proofs/native_fanout_comparison.json) binds the
+[C11 record](../tests/golden/proofs/native_fanout_c11_record.json) and
+[matrix record](../tests/golden/proofs/native_fanout_matrix_record.json).
+Twenty-one metadata-only evidence files contain the comparison, two records,
+two preflight groups, twelve negative-control groups of at most eight entries,
+two unknown-selector observations and two sanitizer observations. Existing
+intake limits are unchanged. No raw tensors, device IDs, runtime handles or
+host paths are serialized. CI executes C11 and revalidates recorded matrix
+evidence; it does not execute on a GPU.
+
+Observed source commit: `b226fa6d585b02362564f31023604e1160f75995`.
+Transferred archive SHA-256:
+`34899bfbcdce13d0e204606a9b0ebb602fef96391813a73636871fcc64ff7d28`.
+The records bind the same fanout program and unchanged predecessor placement
+program. These are same-maintainer observations, not independent reproduction
+or hardware attestation. The reviewed host used driver 595.84 and Container
+Toolkit 1.20.0, checked against the applicable
+[driver](https://nvidia.custhelp.com/app/answers/detail/a_id/5821) and
+[container](https://nvidia.custhelp.com/app/answers/detail/a_id/5850) advisories.
+This is not a vulnerability-free or complete GPU-isolation claim. No experiment
+containers remained running; GPU utilization/memory returned to baseline.
+
 Prior evidence, core code/defaults and ordinary native admission remain unchanged.
 Arbitrary inputs/programs/shapes, performance, independent reproduction and
 cross-vendor claims remain open. See [RFC 0316](../rfcs/0316-bounded-native-fanout.md)
 for the dedicated native-execution security boundary and exact scope.
+Next: a bounded native fan-in join with distinct producer placements and checked
+input availability, under a separately reviewed source and numerical contract.

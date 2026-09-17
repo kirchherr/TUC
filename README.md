@@ -440,6 +440,10 @@ CPU/GPU assignments of that same graph in one reviewed native image. Typed
 placement overrides preserve HAC-IR and the numerical oracle. All eight pass
 363 scalar checks each; 144 negative controls across matrix and C11 baseline
 reject. This compares correct placement and explicit copy counts, not speed.
+The [native fanout proof](docs/BOUNDED_NATIVE_FANOUT.md) adds a branched source
+with two required outputs. In the mixed placement, one projection download
+feeds two CPU consumers. Three matrix profiles pass 726 scalar checks each;
+missing publication or corrupted shared input cannot become successful execution.
 
 Current runtime surfaces:
 

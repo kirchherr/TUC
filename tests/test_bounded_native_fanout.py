@@ -7,6 +7,7 @@ import pytest
 
 from examples import bounded_native_fanout as fanout
 from examples.bounded_compiler_emission import BoundedCompilerEmissionError
+from examples.bounded_reduction_c11 import load_observation
 from tuc.ir.modules import IRStage
 from tuc.runtime import runtime_execution_readiness_report
 
@@ -241,3 +242,62 @@ def test_three_operation_observation_cannot_be_relabelled():
     value["numeric_observation"]["schema_version"] = "tuc.bounded_placement_numeric.v0"
     with pytest.raises(BoundedCompilerEmissionError):
         fanout.validate_observation(value, "cccc", "matrix")
+
+
+def observed(name):
+    return load_observation(fanout.ROOT / "tests/golden/proofs" / f"native_fanout_{name}.json")
+
+
+def test_observed_fanout_and_native_sanitizers():
+    cpu, matrix = observed("c11_record"), observed("matrix_record")
+    assert fanout.compare_records(cpu, matrix) == observed("comparison")
+    assert cpu["observations"][0] == observed("c11_sanitized")
+    assert observed("c11_contract_sanitized") == {
+        "schema_version": "tuc.fanout_contract_sanitizer.v0",
+        "status": "PASS",
+        "profiles_checked": 3,
+        "invalid_selectors": 4,
+        "bitflip_rejections": 8736,
+    }
+    shared = matrix["observations"][1]
+    assert shared["profile"] == "gccc"
+    assert shared["residency"]["projection_copy_calls"] == 11
+    assert shared["residency"]["shared_consumer_calls"] == 22
+    assert shared["residency"]["published_outputs"] == 22
+    assert shared["residency"]["download_bytes"] == 7260
+    assert sum(o["numeric_observation"]["scalar_checks"] for o in matrix["observations"]) == 2178
+    with pytest.raises(BoundedCompilerEmissionError):
+        fanout.compare_records(cpu, {**matrix, "program_files_digest": "modified"})
+
+
+@pytest.mark.parametrize("worker", ("c11", "matrix"))
+def test_observed_preflight_and_invalid_selector_rejections(worker):
+    values = observed(f"{worker}_preflights")
+    assert list(values) == list(fanout.profiles_for(worker))
+    for profile, value in values.items():
+        fanout.validate_observation(value, profile, worker, True)
+        with pytest.raises(BoundedCompilerEmissionError):
+            fanout.validate_observation(value, profile, worker)
+    invalid = observed(f"{worker}_unknown_profile")
+    fanout.validate_observation(invalid, "cccc", worker, mutation="unknown-profile")
+    with pytest.raises(BoundedCompilerEmissionError):
+        fanout.validate_observation(invalid, "cccc", worker)
+
+
+@pytest.mark.parametrize(
+    "worker,profile",
+    [(worker, profile) for worker in ("c11", "matrix") for profile in fanout.profiles_for(worker)],
+)
+def test_all_observed_fault_controls(worker, profile):
+    mutations = (*fanout.MUTATIONS, *(("skip-transfer",) if profile != "cccc" else ()))
+    seen = set()
+    for group in (1, 2, 3):
+        values = observed(f"{worker}_{profile}_controls_{group}")
+        assert set(values) == set(mutations[(group - 1) * 8 : group * 8])
+        assert not seen.intersection(values)
+        seen.update(values)
+        for mutation, value in values.items():
+            fanout.validate_observation(value, profile, worker, mutation=mutation)
+            with pytest.raises(BoundedCompilerEmissionError):
+                fanout.validate_observation(value, profile, worker)
+    assert seen == set(mutations)

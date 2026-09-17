@@ -1,6 +1,6 @@
 # RFC 0316: Bounded Native Fanout
 
-Status: Implementing; native observations pending
+Status: Implemented; native observations accepted 2026-09-17
 
 ## Decision
 
@@ -61,3 +61,17 @@ CI executes only C11 and revalidates recorded GPU observations. Prior records,
 core defaults, numerical policies and ordinary native admission stay unchanged.
 No performance, energy, optimal-placement, independent-reproduction, hardware
 attestation or cross-vendor claim follows from this same-maintainer experiment.
+
+## Result
+
+The static C11 baseline and all three same-image physical matrix profiles pass
+726 scalar checks each. The mixed gccc profile completes eleven projection
+downloads for twenty-two consumer calls, with both outputs published on every
+run. Matrix total: 2178 scalar checks, 77 CPU calls and 55 GPU calls.
+All 84 negative controls reject. C11 ASan/UBSan and 8736 native schedule-field
+bitflip rejections pass. No observed program file changed during acceptance.
+
+Source/archive provenance, all grouped observations, boundaries and reproduction
+commands are in [Bounded Native Fanout](../docs/BOUNDED_NATIVE_FANOUT.md).
+A bounded native fan-in join is a possible successor and requires separate
+source and numerical-contract review; ordinary native admission remains closed.

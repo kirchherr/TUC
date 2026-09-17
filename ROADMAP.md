@@ -4,25 +4,19 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Native Placement Matrix](docs/BOUNDED_NATIVE_PLACEMENTS.md)
-passes all eight CPU/GPU assignments of the same Matmul -> ReLU -> Sum graph in
-one native image on 2026-09-17. Typed placement overrides preserve source intent,
-HAC-IR, arithmetic and the oracle; unchanged core residency planning derives
-copies. The matrix passes 2904 scalar checks with 132 CPU calls, 132 GPU calls
-and 220 explicit copies. All 144 negative controls across C11 and matrix reject.
-C11 ASan/UBSan and 19840 native schedule-field bitflip rejections pass.
-Normal native admission, core defaults and all previous proof records remain
-unchanged. Copy counts do not establish latency, energy or optimal placement.
-Next: bounded native fanout and immutable resident-copy reuse under a separately
-reviewed source/shape contract, preserving numerical and completion checks.
+Latest completed experiment: [Bounded Native Fanout](docs/BOUNDED_NATIVE_FANOUT.md)
+passes a fixed branched source on C11 and three physical CPU/GPU profiles on
+2026-09-17. One immutable projection feeds ReLU and a direct row Sum; a second
+Sum reduces ReLU. Both outputs are required. The mixed profile completes one
+projection download for two CPU consumers per run. All three matrix profiles
+pass 726 scalar checks each, totaling 2178 checks, 77 CPU calls and 55 GPU calls.
+All 84 C11/matrix negative controls reject. C11 ASan/UBSan and 8736 native
+schedule-field bitflip rejections pass. The prior eight-placement matrix and
+all earlier records remain intact; core code/defaults are unchanged.
+Next: bounded native fan-in with distinct producer placements and checked input
+availability, under a separately reviewed source and numerical contract.
 Independent reproduction remains open. Dynamic shapes, arbitrary-input
 correctness, general native admission and performance stay blocked.
-
-In progress: [Bounded Native Fanout](docs/BOUNDED_NATIVE_FANOUT.md), RFC 0316,
-prepares three fixed placements with one shared projection and two required
-outputs. Local source/plan/contract checks pass; actual native execution,
-sanitizers and observation acceptance are still pending. It does not supersede
-the completed placement-matrix evidence or widen normal-runtime admission.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.
