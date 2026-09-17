@@ -1,5 +1,15 @@
 # Roadmap Status
 
+- [Bounded Native Fan-In Candidate](BOUNDED_NATIVE_FANIN.md), RFC 0317, defines
+  a fixed two-producer Matmul join with six placements and identical HAC-IR.
+  Metadata readiness requires both produced operands in the join's space.
+  Pure tests cover source/plan drift, each missing producer/copy, swapped or raw
+  operands, early joins and missing publication. The fixed numerical corpus
+  has 265 oracle rounding witnesses and six first-case wrong-code witnesses.
+  Nine bounded candidate fixtures contain no native observations. Native worker
+  implementation, security review, new transfer/run authorization and actual
+  acceptance remain pending; RFC 0316 is still the latest native experiment.
+
 - [Bounded Native Fanout](BOUNDED_NATIVE_FANOUT.md), RFC 0316, passed C11 and
   three same-image physical matrix profiles on 2026-09-17. All profiles preserve
   the branched source/HAC-IR and require both outputs. Mixed gccc completes
@@ -1993,7 +2003,9 @@ Current focus:
   predecessor stack is merged through PR #111. Obtain the required review for
   fanout without bypassing branch rules. The next bounded integration dimension
   is native fan-in with distinct producer placements under a separately reviewed
-  source and numerical contract. Preserve numerical, wrong-code, coverage and FMA
+  source and numerical contract, now prepared as the pure RFC 0317 candidate.
+  Native implementation and acceptance remain pending. Preserve numerical,
+  wrong-code, coverage and FMA
   evidence; keep default native admission blocked. Independent reproduction
   remains open.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed

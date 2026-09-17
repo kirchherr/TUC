@@ -682,8 +682,12 @@ CPU consumers. All 84 C11/matrix controls reject, and C11 sanitizers plus 8736
 native contract bitflip rejections pass. Existing core code and evidence remain
 unchanged. Next is a bounded native fan-in join with distinct producer placements
 under a separately reviewed source and numerical contract.
+RFC 0317 prepares that fan-in source/plan/numerical candidate with six fixed
+placements. It contains no native worker or observations and does not replace
+the accepted fanout result; native implementation and acceptance remain pending.
 Independent reproduction, dynamic shapes and performance claims remain open.
-See `docs/BOUNDED_NATIVE_FANOUT.md`, `docs/BOUNDED_NATIVE_PLACEMENTS.md`,
+See `docs/BOUNDED_NATIVE_FANIN.md`, `docs/BOUNDED_NATIVE_FANOUT.md`,
+`docs/BOUNDED_NATIVE_PLACEMENTS.md`,
 `docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md`, `docs/BOUNDED_NATIVE_IO_PLAN.md`,
 `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`,
 `docs/BOUNDED_COMPOSED_CHAIN.md`,

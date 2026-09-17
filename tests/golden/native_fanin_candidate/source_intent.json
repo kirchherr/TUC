@@ -1,0 +1,116 @@
+{
+  "name": "research_native_fanin_candidate",
+  "operations": [
+    {
+      "attributes": {
+        "elementwise_kind": "relu"
+      },
+      "family": "elementwise",
+      "hints": {},
+      "inputs": [
+        "a"
+      ],
+      "name": "left",
+      "outputs": [
+        "left"
+      ]
+    },
+    {
+      "attributes": {
+        "elementwise_kind": "relu"
+      },
+      "family": "elementwise",
+      "hints": {},
+      "inputs": [
+        "b"
+      ],
+      "name": "right",
+      "outputs": [
+        "right"
+      ]
+    },
+    {
+      "family": "matmul",
+      "hints": {},
+      "inputs": [
+        "left",
+        "right"
+      ],
+      "name": "projection",
+      "outputs": [
+        "projection"
+      ]
+    },
+    {
+      "attributes": {
+        "axis": 1
+      },
+      "family": "reduction",
+      "hints": {},
+      "inputs": [
+        "projection"
+      ],
+      "name": "row_sum",
+      "outputs": [
+        "row_sum"
+      ]
+    }
+  ],
+  "returns": [
+    {
+      "public_name": "y",
+      "required": true,
+      "tensor_name": "row_sum"
+    }
+  ],
+  "schema_version": "source_intent.v0",
+  "tensors": [
+    {
+      "dtype": "float32",
+      "name": "a",
+      "shape": [
+        33,
+        7
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "left",
+      "shape": [
+        33,
+        7
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "b",
+      "shape": [
+        7,
+        5
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "right",
+      "shape": [
+        7,
+        5
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "projection",
+      "shape": [
+        33,
+        5
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "row_sum",
+      "shape": [
+        33
+      ]
+    }
+  ]
+}
