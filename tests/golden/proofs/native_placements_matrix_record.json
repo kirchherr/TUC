@@ -1,0 +1,379 @@
+{
+  "normal_runtime_admission": false,
+  "observations": [
+    {
+      "numeric_observation": {
+        "case_count": 10,
+        "cases_passed": 11,
+        "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+        "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+        "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+        "execution_policy_passed": true,
+        "failed_run_index": -1,
+        "generated_function_calls": 33,
+        "mode": "execute",
+        "numeric_contract_passed": true,
+        "operation_order": [
+          "matmul",
+          "relu",
+          "sum_axis1"
+        ],
+        "output_shape": [
+          33
+        ],
+        "outputs_differing_from_reference64": 256,
+        "raw_values_serialized": false,
+        "reason_code": "none",
+        "repeated_baseline_passed": true,
+        "scalar_checks": 363,
+        "schema_version": "tuc.bounded_placement_numeric.v0",
+        "security_boundary_passed": true,
+        "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+        "status": "PASS",
+        "target": "ccc",
+        "tensor_bytes": 2516
+      },
+      "plan_digest": "sha256:9f0760e9ee637fea92f46219ae9f2a8c58f5bfb2143a725765a78d43a6e8ac4c",
+      "profile": "ccc",
+      "residency": {
+        "completed_steps": 66,
+        "cpu_calls": 33,
+        "download_bytes": 0,
+        "download_calls": 0,
+        "gpu_calls": 0,
+        "upload_bytes": 0,
+        "upload_calls": 0
+      },
+      "schema_version": "tuc.bounded_placement_observation.v0",
+      "worker": "matrix"
+    },
+    {
+      "numeric_observation": {
+        "case_count": 10,
+        "cases_passed": 11,
+        "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+        "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+        "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+        "execution_policy_passed": true,
+        "failed_run_index": -1,
+        "generated_function_calls": 33,
+        "mode": "execute",
+        "numeric_contract_passed": true,
+        "operation_order": [
+          "matmul",
+          "relu",
+          "sum_axis1"
+        ],
+        "output_shape": [
+          33
+        ],
+        "outputs_differing_from_reference64": 256,
+        "raw_values_serialized": false,
+        "reason_code": "none",
+        "repeated_baseline_passed": true,
+        "scalar_checks": 363,
+        "schema_version": "tuc.bounded_placement_numeric.v0",
+        "security_boundary_passed": true,
+        "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+        "status": "PASS",
+        "target": "ccg",
+        "tensor_bytes": 3308
+      },
+      "plan_digest": "sha256:6b0f0beeb829443744267b33ff2b5aa17efe5050f1d55157f86812287f755824",
+      "profile": "ccg",
+      "residency": {
+        "completed_steps": 88,
+        "cpu_calls": 22,
+        "download_bytes": 1452,
+        "download_calls": 11,
+        "gpu_calls": 11,
+        "upload_bytes": 7260,
+        "upload_calls": 11
+      },
+      "schema_version": "tuc.bounded_placement_observation.v0",
+      "worker": "matrix"
+    },
+    {
+      "numeric_observation": {
+        "case_count": 10,
+        "cases_passed": 11,
+        "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+        "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+        "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+        "execution_policy_passed": true,
+        "failed_run_index": -1,
+        "generated_function_calls": 33,
+        "mode": "execute",
+        "numeric_contract_passed": true,
+        "operation_order": [
+          "matmul",
+          "relu",
+          "sum_axis1"
+        ],
+        "output_shape": [
+          33
+        ],
+        "outputs_differing_from_reference64": 256,
+        "raw_values_serialized": false,
+        "reason_code": "none",
+        "repeated_baseline_passed": true,
+        "scalar_checks": 363,
+        "schema_version": "tuc.bounded_placement_numeric.v0",
+        "security_boundary_passed": true,
+        "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+        "status": "PASS",
+        "target": "cgc",
+        "tensor_bytes": 3836
+      },
+      "plan_digest": "sha256:fe115fa4ac9a7d7f4843f2a9e109759a01c7f125046c1cd069e4fcdaa9c63cb5",
+      "profile": "cgc",
+      "residency": {
+        "completed_steps": 88,
+        "cpu_calls": 22,
+        "download_bytes": 7260,
+        "download_calls": 11,
+        "gpu_calls": 11,
+        "upload_bytes": 7260,
+        "upload_calls": 11
+      },
+      "schema_version": "tuc.bounded_placement_observation.v0",
+      "worker": "matrix"
+    },
+    {
+      "numeric_observation": {
+        "case_count": 10,
+        "cases_passed": 11,
+        "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+        "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+        "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+        "execution_policy_passed": true,
+        "failed_run_index": -1,
+        "generated_function_calls": 33,
+        "mode": "execute",
+        "numeric_contract_passed": true,
+        "operation_order": [
+          "matmul",
+          "relu",
+          "sum_axis1"
+        ],
+        "output_shape": [
+          33
+        ],
+        "outputs_differing_from_reference64": 256,
+        "raw_values_serialized": false,
+        "reason_code": "none",
+        "repeated_baseline_passed": true,
+        "scalar_checks": 363,
+        "schema_version": "tuc.bounded_placement_numeric.v0",
+        "security_boundary_passed": true,
+        "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+        "status": "PASS",
+        "target": "cgg",
+        "tensor_bytes": 3308
+      },
+      "plan_digest": "sha256:171a688b628cb5eb3c13b4c2f668c2e261349e507b467f9a213c22ec3b20d591",
+      "profile": "cgg",
+      "residency": {
+        "completed_steps": 88,
+        "cpu_calls": 11,
+        "download_bytes": 1452,
+        "download_calls": 11,
+        "gpu_calls": 22,
+        "upload_bytes": 7260,
+        "upload_calls": 11
+      },
+      "schema_version": "tuc.bounded_placement_observation.v0",
+      "worker": "matrix"
+    },
+    {
+      "numeric_observation": {
+        "case_count": 10,
+        "cases_passed": 11,
+        "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+        "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+        "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+        "execution_policy_passed": true,
+        "failed_run_index": -1,
+        "generated_function_calls": 33,
+        "mode": "execute",
+        "numeric_contract_passed": true,
+        "operation_order": [
+          "matmul",
+          "relu",
+          "sum_axis1"
+        ],
+        "output_shape": [
+          33
+        ],
+        "outputs_differing_from_reference64": 256,
+        "raw_values_serialized": false,
+        "reason_code": "none",
+        "repeated_baseline_passed": true,
+        "scalar_checks": 363,
+        "schema_version": "tuc.bounded_placement_numeric.v0",
+        "security_boundary_passed": true,
+        "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+        "status": "PASS",
+        "target": "gcc",
+        "tensor_bytes": 4240
+      },
+      "plan_digest": "sha256:eebc8bc9dab99781c200c300bfb8cbc641ae6c9d134b73a0a84d0e5f74098556",
+      "profile": "gcc",
+      "residency": {
+        "completed_steps": 99,
+        "cpu_calls": 22,
+        "download_bytes": 7260,
+        "download_calls": 11,
+        "gpu_calls": 11,
+        "upload_bytes": 11704,
+        "upload_calls": 22
+      },
+      "schema_version": "tuc.bounded_placement_observation.v0",
+      "worker": "matrix"
+    },
+    {
+      "numeric_observation": {
+        "case_count": 10,
+        "cases_passed": 11,
+        "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+        "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+        "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+        "execution_policy_passed": true,
+        "failed_run_index": -1,
+        "generated_function_calls": 33,
+        "mode": "execute",
+        "numeric_contract_passed": true,
+        "operation_order": [
+          "matmul",
+          "relu",
+          "sum_axis1"
+        ],
+        "output_shape": [
+          33
+        ],
+        "outputs_differing_from_reference64": 256,
+        "raw_values_serialized": false,
+        "reason_code": "none",
+        "repeated_baseline_passed": true,
+        "scalar_checks": 363,
+        "schema_version": "tuc.bounded_placement_numeric.v0",
+        "security_boundary_passed": true,
+        "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+        "status": "PASS",
+        "target": "gcg",
+        "tensor_bytes": 5032
+      },
+      "plan_digest": "sha256:508d7f57512d00092a6e5c253eab7098f1b5bba8781bd7ab4aa824a28c07cc56",
+      "profile": "gcg",
+      "residency": {
+        "completed_steps": 121,
+        "cpu_calls": 11,
+        "download_bytes": 8712,
+        "download_calls": 22,
+        "gpu_calls": 22,
+        "upload_bytes": 18964,
+        "upload_calls": 33
+      },
+      "schema_version": "tuc.bounded_placement_observation.v0",
+      "worker": "matrix"
+    },
+    {
+      "numeric_observation": {
+        "case_count": 10,
+        "cases_passed": 11,
+        "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+        "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+        "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+        "execution_policy_passed": true,
+        "failed_run_index": -1,
+        "generated_function_calls": 33,
+        "mode": "execute",
+        "numeric_contract_passed": true,
+        "operation_order": [
+          "matmul",
+          "relu",
+          "sum_axis1"
+        ],
+        "output_shape": [
+          33
+        ],
+        "outputs_differing_from_reference64": 256,
+        "raw_values_serialized": false,
+        "reason_code": "none",
+        "repeated_baseline_passed": true,
+        "scalar_checks": 363,
+        "schema_version": "tuc.bounded_placement_numeric.v0",
+        "security_boundary_passed": true,
+        "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+        "status": "PASS",
+        "target": "ggc",
+        "tensor_bytes": 4240
+      },
+      "plan_digest": "sha256:b59bf5360d91c660bde399a5590b246a39036ef7cb71141feac375372c6dd70b",
+      "profile": "ggc",
+      "residency": {
+        "completed_steps": 99,
+        "cpu_calls": 11,
+        "download_bytes": 7260,
+        "download_calls": 11,
+        "gpu_calls": 22,
+        "upload_bytes": 11704,
+        "upload_calls": 22
+      },
+      "schema_version": "tuc.bounded_placement_observation.v0",
+      "worker": "matrix"
+    },
+    {
+      "numeric_observation": {
+        "case_count": 10,
+        "cases_passed": 11,
+        "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+        "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+        "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+        "execution_policy_passed": true,
+        "failed_run_index": -1,
+        "generated_function_calls": 33,
+        "mode": "execute",
+        "numeric_contract_passed": true,
+        "operation_order": [
+          "matmul",
+          "relu",
+          "sum_axis1"
+        ],
+        "output_shape": [
+          33
+        ],
+        "outputs_differing_from_reference64": 256,
+        "raw_values_serialized": false,
+        "reason_code": "none",
+        "repeated_baseline_passed": true,
+        "scalar_checks": 363,
+        "schema_version": "tuc.bounded_placement_numeric.v0",
+        "security_boundary_passed": true,
+        "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+        "status": "PASS",
+        "target": "ggg",
+        "tensor_bytes": 3712
+      },
+      "plan_digest": "sha256:8eb3ddf2dca42e2bba1f9655db9d50c931a26a2b75d00854cd48f03c4c51a96b",
+      "profile": "ggg",
+      "residency": {
+        "completed_steps": 99,
+        "cpu_calls": 0,
+        "download_bytes": 1452,
+        "download_calls": 11,
+        "gpu_calls": 33,
+        "upload_bytes": 11704,
+        "upload_calls": 22
+      },
+      "schema_version": "tuc.bounded_placement_observation.v0",
+      "worker": "matrix"
+    }
+  ],
+  "operator_image_id": "sha256:98a5a35009317fda259ca94a76ab2bca13c58c75532ad735db9b214cd8e0226f",
+  "previous_mixed_program_digest": "sha256:8124b30ba7742d89870beff6fc5874c8bde434344f1f8532d89ed9b5d1b0578e",
+  "program_files_digest": "sha256:b1b09db6e5b5602c43583abe1b3c205c6d154fb2a80088d1aa28f9582e0c21c9",
+  "provenance": "same_maintainer_operator",
+  "schema_version": "tuc.bounded_placement_record.v0",
+  "worker": "matrix"
+}

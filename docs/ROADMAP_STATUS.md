@@ -1,5 +1,17 @@
 # Roadmap Status
 
+- [Bounded Native Placement Matrix](BOUNDED_NATIVE_PLACEMENTS.md) passed all eight
+  CPU/GPU placements of one fixed graph in one physical sm86 image on 2026-09-17.
+  Existing typed overrides select placement while HAC-IR and arithmetic remain
+  identical. The matrix completes 2904 scalar checks, 132 CPU calls, 132 GPU
+  calls and 220 copies (110704 logical bytes). All 144 C11/matrix negative
+  controls reject; C11 ASan/UBSan and 19840 native contract bitflip rejections
+  pass. Accepted comparison: `tests/golden/proofs/native_placements_comparison.json`,
+  with twenty-seven bounded metadata-only evidence files. RFC 0315. Core code,
+  defaults, prior records and normal native admission remain unchanged. Next:
+  native fanout and immutable copy reuse under a separately reviewed source
+  contract. Performance and independent reproduction remain open.
+
 - [Bounded Mixed Native Residency](BOUNDED_MIXED_NATIVE_RESIDENCY.md) passed
   all-C11 and physical GPU -> CPU -> GPU execution on 2026-09-15. An opt-in core
   planner now schedules external bindings, immutable resident copies, compute
@@ -11,7 +23,7 @@
   Accepted comparison: `tests/golden/proofs/mixed_native_comparison.json`, with
   two records, two preflights, a sanitizer observation and twenty-nine rejections.
   RFC 0314. Prior records and default runtime admission remain unchanged.
-  Next: another bounded mixed placement under the same numerical contract.
+  RFC 0315 now extends this to all eight placements under the same contract.
 
 - [Bounded Native I/O Plan](BOUNDED_NATIVE_IO_PLAN.md) passed native C11 and
   physical sm86 CUDA on 2026-09-15. Both targets pass 363 scalar checks and
@@ -1964,12 +1976,14 @@ Current focus:
 
 ## Next
 
-- RFC 0312 demonstrates core-plan-derived dispatch on real C11/CUDA targets.
-  First obtain the required approving review and merge the predecessor stack
-  in order, without bypassing branch rules. The next bounded integration gap
-  is explicit external I/O transfer accounting and a suitable neutral device
-  memory domain. Preserve numerical, wrong-code, coverage and FMA evidence;
-  keep default native admission blocked. Independent reproduction remains open.
+- RFCs 0313 through 0315 now cover bounded external I/O, core residency planning
+  and all eight native placements of the fixed chain. The predecessor stack is
+  merged through PR #110. Obtain the required review for the placement matrix
+  without bypassing branch rules. The next bounded integration dimension is
+  native fanout with immutable resident-copy reuse under a separately reviewed
+  source/shape contract. Preserve numerical, wrong-code, coverage and FMA
+  evidence; keep default native admission blocked. Independent reproduction
+  remains open.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

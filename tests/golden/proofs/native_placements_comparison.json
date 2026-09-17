@@ -1,0 +1,102 @@
+{
+  "blocked_claims": [
+    "arbitrary_inputs",
+    "dynamic_shapes",
+    "general_native_runtime",
+    "performance",
+    "independent_reproduction"
+  ],
+  "c11_record_digest": "sha256:9c3f106e8d83fcb1d5110033959ad659abeb6219f65a5307cce5d47415ff5472",
+  "energy_pj": null,
+  "latency_ns": null,
+  "matrix_record_digest": "sha256:9d5101c7ad7deee205c533e40bbb135918425b7ca92a6de4ddaaa2c42b1e5e3c",
+  "matrix_scalar_checks": 2904,
+  "normal_runtime_admission": false,
+  "one_matrix_image": true,
+  "optimal_placement_claim": false,
+  "placements": [
+    {
+      "completed_steps": 66,
+      "cpu_calls": 33,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "profile": "ccc",
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    {
+      "completed_steps": 88,
+      "cpu_calls": 22,
+      "download_bytes": 1452,
+      "download_calls": 11,
+      "gpu_calls": 11,
+      "profile": "ccg",
+      "upload_bytes": 7260,
+      "upload_calls": 11
+    },
+    {
+      "completed_steps": 88,
+      "cpu_calls": 22,
+      "download_bytes": 7260,
+      "download_calls": 11,
+      "gpu_calls": 11,
+      "profile": "cgc",
+      "upload_bytes": 7260,
+      "upload_calls": 11
+    },
+    {
+      "completed_steps": 88,
+      "cpu_calls": 11,
+      "download_bytes": 1452,
+      "download_calls": 11,
+      "gpu_calls": 22,
+      "profile": "cgg",
+      "upload_bytes": 7260,
+      "upload_calls": 11
+    },
+    {
+      "completed_steps": 99,
+      "cpu_calls": 22,
+      "download_bytes": 7260,
+      "download_calls": 11,
+      "gpu_calls": 11,
+      "profile": "gcc",
+      "upload_bytes": 11704,
+      "upload_calls": 22
+    },
+    {
+      "completed_steps": 121,
+      "cpu_calls": 11,
+      "download_bytes": 8712,
+      "download_calls": 22,
+      "gpu_calls": 22,
+      "profile": "gcg",
+      "upload_bytes": 18964,
+      "upload_calls": 33
+    },
+    {
+      "completed_steps": 99,
+      "cpu_calls": 11,
+      "download_bytes": 7260,
+      "download_calls": 11,
+      "gpu_calls": 22,
+      "profile": "ggc",
+      "upload_bytes": 11704,
+      "upload_calls": 22
+    },
+    {
+      "completed_steps": 99,
+      "cpu_calls": 0,
+      "download_bytes": 1452,
+      "download_calls": 11,
+      "gpu_calls": 33,
+      "profile": "ggg",
+      "upload_bytes": 11704,
+      "upload_calls": 22
+    }
+  ],
+  "schema_version": "tuc.bounded_placement_comparison.v0",
+  "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+  "status": "PASS"
+}

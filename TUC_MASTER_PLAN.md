@@ -670,10 +670,16 @@ all-C11, with 22 GPU calls, 11 CPU calls and 55 completed copies across ten case
 plus replay. Fourteen C11 and fifteen mixed controls reject, including a missing
 projection download before the CPU consumer. C11 sanitizers and the full core
 typecheck pass. Existing partition dumps, numerical contracts and default native
-admission remain unchanged. Next is another bounded mixed placement selected
-through reviewed capability/placement inputs and checked against the same oracle.
+admission remain unchanged. RFC 0315 now runs all eight CPU/GPU placements of
+that same graph in one native matrix image, selected by existing typed overrides.
+HAC-IR and arithmetic remain identical. The matrix passes 2904 scalar checks;
+all 144 C11/matrix negative controls and 19840 native contract bitflip rejections
+pass, as do C11 sanitizers. Planned logical copies vary from 0 to 2516 bytes per
+run, without claiming speed or optimal placement. Next is native fanout with
+immutable resident-copy reuse under a separately reviewed source/shape contract.
 Independent reproduction, dynamic shapes and performance claims remain open.
-See `docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md`, `docs/BOUNDED_NATIVE_IO_PLAN.md`,
+See `docs/BOUNDED_NATIVE_PLACEMENTS.md`,
+`docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md`, `docs/BOUNDED_NATIVE_IO_PLAN.md`,
 `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`,
 `docs/BOUNDED_COMPOSED_CHAIN.md`,
 `docs/REDUCTION_FMA_VARIANT.md`,

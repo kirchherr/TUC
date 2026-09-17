@@ -4,18 +4,17 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Mixed Native Residency](docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md)
-uses one opt-in core schedule for bindings, copies, compute and publication.
-On 2026-09-15 all-C11 and physical GPU Matmul -> CPU ReLU -> GPU reduction each
-passed 363 scalar checks. Mixed execution completed 22 GPU calls, 11 CPU calls,
-33 uploads and 22 downloads. All fourteen C11 and fifteen mixed negative controls
-rejected; a missing intermediate download fails before its CPU consumer.
-C11 ASan/UBSan and the full core typecheck passed. The schedule distinguishes
-address-space identity from physical RAM technology; latency and energy remain
-unmeasured. Ordinary partition dumps and default execution remain unchanged.
-Earlier compute, numerical, FMA and native-I/O proof records are preserved.
-Next: compare another bounded mixed placement of the same graph through reviewed
-capability/placement inputs, preserving the same oracle and completion contract.
+Latest completed experiment: [Bounded Native Placement Matrix](docs/BOUNDED_NATIVE_PLACEMENTS.md)
+passes all eight CPU/GPU assignments of the same Matmul -> ReLU -> Sum graph in
+one native image on 2026-09-17. Typed placement overrides preserve source intent,
+HAC-IR, arithmetic and the oracle; unchanged core residency planning derives
+copies. The matrix passes 2904 scalar checks with 132 CPU calls, 132 GPU calls
+and 220 explicit copies. All 144 negative controls across C11 and matrix reject.
+C11 ASan/UBSan and 19840 native schedule-field bitflip rejections pass.
+Normal native admission, core defaults and all previous proof records remain
+unchanged. Copy counts do not establish latency, energy or optimal placement.
+Next: bounded native fanout and immutable resident-copy reuse under a separately
+reviewed source/shape contract, preserving numerical and completion checks.
 Independent reproduction remains open. Dynamic shapes, arbitrary-input
 correctness, general native admission and performance stay blocked.
 
