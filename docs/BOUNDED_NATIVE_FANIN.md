@@ -1,6 +1,6 @@
 # Bounded Native Fan-In Candidate
 
-Status: pure candidate verified; no native execution or accepted native evidence.
+Status: pure candidate verified; native workers prepared; native acceptance pending.
 
 The next experiment joins two separately placed ReLU producers at a Matmul,
 then reduces and publishes one row-sum output. Source, shapes and numerical
@@ -51,10 +51,31 @@ wrong expressions each differ beyond the budget in all 33 first-case outputs.
 The tests also reject missing producers/copies, early joins, substituted or
 swapped operands, malformed buffers, changed snapshots and publication faults.
 
+## Worker Preparation
+
+[RFC 0318](../rfcs/0318-bounded-native-fanin-workers.md) defines the separate
+native execution/security boundary. `docker/native-fanin/` contains C11 and sm86
+CUDA workers, fixed plan tables, operand-specific readiness/copy checks and
+25 compile-time fault variants per profile. Mixed profiles additionally omit
+their required left/right operand transfer. Both inputs must be ready before
+Matmul, and output publication is required. Producers run sequentially.
+
+```bash
+PYTHONPATH=.:src python examples/bounded_native_fanin_workers.py
+PYTHONPATH=.:src pytest -q tests/test_bounded_native_fanin_workers.py
+```
+
+The default verifier is pure. The separate operator uses pinned, networkless,
+read-only, unprivileged containers with explicit resource/time limits. A CPU-only
+CI job runs C11, ASan/UBSan and bounded native contract mutation checks. The
+operator's matrix mode requires a separately approved GPU host/run. Expected
+observation dictionaries in tests are synthetic protocols, not native evidence.
+
 ## Still Pending
 
-Native producer kernels, a reviewed operator/worker, sandboxing and fault
-controls, native sanitizers, actual C11/GPU observations and acceptance remain
-required. No new source was transferred and no native worker was run for this
-candidate. The [fanout proof](BOUNDED_NATIVE_FANOUT.md) remains the latest
-accepted native experiment. General admission and performance claims stay closed.
+Native validation, security review, new dev001 transfer/run authorization,
+actual six-profile same-image GPU observations and acceptance remain required.
+No fan-in native evidence has been accepted. RFC 0317 fixtures and earlier
+native evidence are unchanged. The [fanout proof](BOUNDED_NATIVE_FANOUT.md)
+remains the latest accepted native experiment; general admission and performance
+claims stay closed.

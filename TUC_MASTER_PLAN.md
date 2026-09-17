@@ -684,7 +684,9 @@ unchanged. Next is a bounded native fan-in join with distinct producer placement
 under a separately reviewed source and numerical contract.
 RFC 0317 prepares that fan-in source/plan/numerical candidate with six fixed
 placements. It contains no native worker or observations and does not replace
-the accepted fanout result; native implementation and acceptance remain pending.
+the accepted fanout result. RFC 0318 prepares the separate bounded C11/CUDA
+workers and operand-readiness/sanitizer controls; native validation and acceptance
+remain pending.
 Independent reproduction, dynamic shapes and performance claims remain open.
 See `docs/BOUNDED_NATIVE_FANIN.md`, `docs/BOUNDED_NATIVE_FANOUT.md`,
 `docs/BOUNDED_NATIVE_PLACEMENTS.md`,

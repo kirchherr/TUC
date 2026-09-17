@@ -20,8 +20,9 @@ correctness, general native admission and performance stay blocked.
 
 In progress: [Bounded Native Fan-In Candidate](docs/BOUNDED_NATIVE_FANIN.md),
 RFC 0317, fixes two ReLU producers feeding a Matmul join and six placements.
-Pure source/plan/numerical checks pass; native implementation and acceptance
-remain pending. Candidate fixtures are not native observations.
+Pure source/plan/numerical checks pass. RFC 0318 prepares bounded C11/CUDA
+workers, operand-readiness controls and CPU sanitizer CI; native validation and
+acceptance remain pending. Candidate fixtures are not native observations.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.

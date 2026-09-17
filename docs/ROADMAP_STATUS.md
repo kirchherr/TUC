@@ -6,9 +6,11 @@
   Pure tests cover source/plan drift, each missing producer/copy, swapped or raw
   operands, early joins and missing publication. The fixed numerical corpus
   has 265 oracle rounding witnesses and six first-case wrong-code witnesses.
-  Nine bounded candidate fixtures contain no native observations. Native worker
-  implementation, security review, new transfer/run authorization and actual
-  acceptance remain pending; RFC 0316 is still the latest native experiment.
+  Nine bounded candidate fixtures contain no native observations. RFC 0318
+  prepares C11/CUDA workers, separate operand guards, 25 fault controls/profile
+  plus mixed operand-copy controls and CPU sanitizer CI. Native validation,
+  security review, new transfer/run authorization and acceptance remain pending;
+  RFC 0316 is still the latest accepted native experiment.
 
 - [Bounded Native Fanout](BOUNDED_NATIVE_FANOUT.md), RFC 0316, passed C11 and
   three same-image physical matrix profiles on 2026-09-17. All profiles preserve
