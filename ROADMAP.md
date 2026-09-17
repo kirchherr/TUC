@@ -4,25 +4,18 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Native Fanout](docs/BOUNDED_NATIVE_FANOUT.md)
-passes a fixed branched source on C11 and three physical CPU/GPU profiles on
-2026-09-17. One immutable projection feeds ReLU and a direct row Sum; a second
-Sum reduces ReLU. Both outputs are required. The mixed profile completes one
-projection download for two CPU consumers per run. All three matrix profiles
-pass 726 scalar checks each, totaling 2178 checks, 77 CPU calls and 55 GPU calls.
-All 84 C11/matrix negative controls reject. C11 ASan/UBSan and 8736 native
-schedule-field bitflip rejections pass. The prior eight-placement matrix and
-all earlier records remain intact; core code/defaults are unchanged.
-Next: bounded native fan-in with distinct producer placements and checked input
-availability, under a separately reviewed source and numerical contract.
+Latest completed experiment: [Bounded Native Fan-In](docs/BOUNDED_NATIVE_FANIN.md),
+RFC 0318, passes C11 and six same-image physical CPU/GPU profiles on 2026-09-17.
+Two separately placed ReLU producers feed a Matmul join and row Sum, preserving
+the RFC 0317 source, numerical contract and HAC-IR. Each profile passes 363
+scalar checks; the matrix totals 2178 checks, 132 CPU calls and 132 GPU calls.
+All 179 fault controls and two invalid selectors reject. C11 ASan/UBSan and
+16032 native contract-field bitflip rejections pass. Thirty-seven new bounded
+metadata files retain the actual receipts. Prior fanout/placement evidence and
+candidate fixtures remain intact; core code/defaults are unchanged.
 Independent reproduction remains open. Dynamic shapes, arbitrary-input
 correctness, general native admission and performance stay blocked.
-
-In progress: [Bounded Native Fan-In Candidate](docs/BOUNDED_NATIVE_FANIN.md),
-RFC 0317, fixes two ReLU producers feeding a Matmul join and six placements.
-Pure source/plan/numerical checks pass. RFC 0318 prepares bounded C11/CUDA
-workers, operand-readiness controls and CPU sanitizer CI; native validation and
-acceptance remain pending. Candidate fixtures are not native observations.
+Producers execute sequentially; concurrent scheduling is not established.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.

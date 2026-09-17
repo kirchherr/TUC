@@ -1,0 +1,7 @@
+{
+  "bitflip_rejections": 16032,
+  "invalid_selectors": 4,
+  "profiles_checked": 6,
+  "schema_version": "tuc.fanin_contract_sanitizer.v0",
+  "status": "PASS"
+}

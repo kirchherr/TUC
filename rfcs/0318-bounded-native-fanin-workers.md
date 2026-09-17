@@ -1,6 +1,6 @@
 # RFC 0318: Bounded Native Fan-In Workers
 
-Status: Implementation prepared; native validation and acceptance pending
+Status: Bounded C11 and six-profile native validation accepted, 2026-09-17
 
 ## Scope
 
@@ -96,7 +96,24 @@ may be weakened to make sanitizer or device execution pass.
 
 Require successful C11 sanitizer/fault controls and all six same-image physical
 profiles, then review metadata-only records under PROOF_ARTIFACT_REVIEW.md.
-No fan-in native record is added by this preparation. All fanout/older evidence
-and RFC 0317 fixtures remain unchanged. General native admission, arbitrary
+All fanout/older evidence and RFC 0317 fixtures remain unchanged. General native
+admission, arbitrary
 sources/inputs, dynamic shapes, independent reproduction and performance remain
 blocked. Execution/acceptance is tracked separately from implementation.
+
+## Observed Acceptance
+
+The approved source commit `4d996e68f1fb9630f3c9bef9e5be67b683120209` passed
+the exact operator on dev001 after archive/program binding and a fresh NVIDIA
+advisory/isolation review. C11 and six same-image profiles pass; the matrix
+completes 2178 scalar checks, 1590 rounding witnesses and 132 CPU/132 GPU calls.
+All 179 targeted faults plus two invalid selectors reject with exact receipts.
+C11 ASan/UBSan and 16032 contract-field bitflip rejection probes pass.
+
+Actual receipts are retained in 37 new bounded metadata-only proof files.
+The separate `examples/bounded_native_fanin_equivalence.py` validates record
+bindings without modifying the executed worker. Full controls are revalidated
+by the evidence tests. See [the evidence and provenance report](../docs/BOUNDED_NATIVE_FANIN.md)
+for source/archive/image digests, observed environment, advisory scope and limits.
+This is same-maintainer evidence, not independent reproduction, cryptographic
+attestation, parallel scheduling or performance evidence.
