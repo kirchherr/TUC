@@ -1,0 +1,120 @@
+{
+  "name": "research_native_fanout",
+  "operations": [
+    {
+      "family": "matmul",
+      "hints": {},
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "name": "projection",
+      "outputs": [
+        "projection"
+      ]
+    },
+    {
+      "attributes": {
+        "elementwise_kind": "relu"
+      },
+      "family": "elementwise",
+      "hints": {},
+      "inputs": [
+        "projection"
+      ],
+      "name": "activated",
+      "outputs": [
+        "activated"
+      ]
+    },
+    {
+      "attributes": {
+        "axis": 1
+      },
+      "family": "reduction",
+      "hints": {},
+      "inputs": [
+        "projection"
+      ],
+      "name": "row_raw",
+      "outputs": [
+        "row_raw"
+      ]
+    },
+    {
+      "attributes": {
+        "axis": 1
+      },
+      "family": "reduction",
+      "hints": {},
+      "inputs": [
+        "activated"
+      ],
+      "name": "row_positive",
+      "outputs": [
+        "row_positive"
+      ]
+    }
+  ],
+  "returns": [
+    {
+      "public_name": "raw",
+      "required": true,
+      "tensor_name": "row_raw"
+    },
+    {
+      "public_name": "positive",
+      "required": true,
+      "tensor_name": "row_positive"
+    }
+  ],
+  "schema_version": "source_intent.v0",
+  "tensors": [
+    {
+      "dtype": "float32",
+      "name": "a",
+      "shape": [
+        33,
+        7
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "b",
+      "shape": [
+        7,
+        5
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "projection",
+      "shape": [
+        33,
+        5
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "activated",
+      "shape": [
+        33,
+        5
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "row_raw",
+      "shape": [
+        33
+      ]
+    },
+    {
+      "dtype": "float32",
+      "name": "row_positive",
+      "shape": [
+        33
+      ]
+    }
+  ]
+}

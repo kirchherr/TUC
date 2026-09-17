@@ -1,0 +1,32 @@
+{
+  "c11_code_digest": "sha256:492fdfe0c8aa941c32a36471ec9ae4c2d2307013efa2eceb89bfde7b99319468",
+  "case_count": 10,
+  "contract_digest": "sha256:bd37cfc89e8b992569840022dcfdfc12e21f7431b0a2bd5b5d9bee0475179859",
+  "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+  "cuda_code_digest": "sha256:4b89a46e00550dc7c992532e25ce8783308fbbfe4c41fc37b011faa2e3f91913",
+  "expected_rounded_outputs": 554,
+  "normal_runtime_admission": false,
+  "operation_order": [
+    "matmul",
+    "relu",
+    "raw_sum_axis1",
+    "positive_sum_axis1"
+  ],
+  "output_names": [
+    "row_raw",
+    "row_positive"
+  ],
+  "output_shapes": [
+    [
+      33
+    ],
+    [
+      33
+    ]
+  ],
+  "runs": 11,
+  "scalar_checks": 726,
+  "schema_version": "tuc.bounded_fanout_emission.v0",
+  "source_intent_digest": "sha256:011c97afb0e42b0e08067123572db253fb82eddd122c02e1eff71def47636e20",
+  "source_module_digest": "sha256:08cc0ea2520836e378f26834421bb47154fa056d1fcd3019b7df115f861b3987"
+}

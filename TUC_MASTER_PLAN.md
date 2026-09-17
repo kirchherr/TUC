@@ -675,10 +675,23 @@ that same graph in one native matrix image, selected by existing typed overrides
 HAC-IR and arithmetic remain identical. The matrix passes 2904 scalar checks;
 all 144 C11/matrix negative controls and 19840 native contract bitflip rejections
 pass, as do C11 sanitizers. Planned logical copies vary from 0 to 2516 bytes per
-run, without claiming speed or optimal placement. Next is native fanout with
-immutable resident-copy reuse under a separately reviewed source/shape contract.
+run, without claiming speed or optimal placement. RFC 0316 now adds immutable
+native fanout with two required outputs. Three same-image matrix profiles pass
+726 scalar checks each; gccc completes eleven projection downloads for twenty-two
+CPU consumers. All 84 C11/matrix controls reject, and C11 sanitizers plus 8736
+native contract bitflip rejections pass. Existing core code and evidence remain
+unchanged. RFC 0317 fixes the next fan-in source/plan/numerical candidate with
+six placements; its pure fixtures still contain no native observations.
+RFC 0318 now passes C11 and six same-image physical profiles joining the two
+ReLU producers at Matmul. The matrix totals 2178 scalar checks, 1590 rounding
+witnesses and 132 CPU/132 GPU calls. All 179 fault controls and two invalid
+selectors reject; C11 sanitizers and 16032 native contract-field bitflip probes
+pass. Thirty-seven new bounded metadata files preserve the actual observations
+and source/image bindings. Producers remain sequential, and prior evidence,
+candidate fixtures and core admission defaults remain unchanged.
 Independent reproduction, dynamic shapes and performance claims remain open.
-See `docs/BOUNDED_NATIVE_PLACEMENTS.md`,
+See `docs/BOUNDED_NATIVE_FANIN.md`, `docs/BOUNDED_NATIVE_FANOUT.md`,
+`docs/BOUNDED_NATIVE_PLACEMENTS.md`,
 `docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md`, `docs/BOUNDED_NATIVE_IO_PLAN.md`,
 `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`,
 `docs/BOUNDED_COMPOSED_CHAIN.md`,

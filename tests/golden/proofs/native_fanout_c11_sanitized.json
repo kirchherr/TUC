@@ -1,0 +1,60 @@
+{
+  "numeric_observation": {
+    "case_count": 10,
+    "cases_passed": 11,
+    "code_digest": "sha256:492fdfe0c8aa941c32a36471ec9ae4c2d2307013efa2eceb89bfde7b99319468",
+    "contract_digest": "sha256:bd37cfc89e8b992569840022dcfdfc12e21f7431b0a2bd5b5d9bee0475179859",
+    "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+    "execution_policy_passed": true,
+    "failed_run_index": -1,
+    "generated_function_calls": 44,
+    "mode": "execute",
+    "numeric_contract_passed": true,
+    "operation_order": [
+      "matmul",
+      "relu",
+      "raw_sum_axis1",
+      "positive_sum_axis1"
+    ],
+    "output_names": [
+      "row_raw",
+      "row_positive"
+    ],
+    "output_shapes": [
+      [
+        33
+      ],
+      [
+        33
+      ]
+    ],
+    "output_values": 66,
+    "outputs_differing_from_reference64": 554,
+    "raw_values_serialized": false,
+    "reason_code": "none",
+    "repeated_baseline_passed": true,
+    "scalar_checks": 726,
+    "schema_version": "tuc.bounded_fanout_numeric.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:011c97afb0e42b0e08067123572db253fb82eddd122c02e1eff71def47636e20",
+    "status": "PASS",
+    "target": "cccc",
+    "tensor_bytes": 2648
+  },
+  "plan_digest": "sha256:a883e51f9a5a9b5676df938ed93490ede30337898104af63ad6013c9391e5926",
+  "profile": "cccc",
+  "residency": {
+    "completed_steps": 88,
+    "cpu_calls": 44,
+    "download_bytes": 0,
+    "download_calls": 0,
+    "gpu_calls": 0,
+    "projection_copy_calls": 0,
+    "published_outputs": 22,
+    "shared_consumer_calls": 22,
+    "upload_bytes": 0,
+    "upload_calls": 0
+  },
+  "schema_version": "tuc.bounded_fanout_observation.v0",
+  "worker": "c11"
+}

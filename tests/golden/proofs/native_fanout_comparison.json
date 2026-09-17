@@ -1,0 +1,60 @@
+{
+  "blocked_claims": [
+    "arbitrary_inputs",
+    "dynamic_shapes",
+    "general_native_runtime",
+    "performance",
+    "independent_reproduction"
+  ],
+  "c11_record_digest": "sha256:e1fa308f8731b1c499bea9975a532c77900526d804894e78f15055e1479d378f",
+  "energy_pj": null,
+  "latency_ns": null,
+  "matrix_record_digest": "sha256:a5c906e32642087953900ca1044bf3185e88dfe1c4c79c0fc711d29168771ed9",
+  "matrix_scalar_checks": 2178,
+  "normal_runtime_admission": false,
+  "one_matrix_image": true,
+  "placements": [
+    {
+      "completed_steps": 88,
+      "cpu_calls": 44,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "profile": "cccc",
+      "projection_copy_calls": 0,
+      "published_outputs": 22,
+      "shared_consumer_calls": 22,
+      "upload_bytes": 0,
+      "upload_calls": 0
+    },
+    {
+      "completed_steps": 121,
+      "cpu_calls": 33,
+      "download_bytes": 7260,
+      "download_calls": 11,
+      "gpu_calls": 11,
+      "profile": "gccc",
+      "projection_copy_calls": 11,
+      "published_outputs": 22,
+      "shared_consumer_calls": 22,
+      "upload_bytes": 11704,
+      "upload_calls": 22
+    },
+    {
+      "completed_steps": 132,
+      "cpu_calls": 0,
+      "download_bytes": 2904,
+      "download_calls": 22,
+      "gpu_calls": 44,
+      "profile": "gggg",
+      "projection_copy_calls": 0,
+      "published_outputs": 22,
+      "shared_consumer_calls": 22,
+      "upload_bytes": 11704,
+      "upload_calls": 22
+    }
+  ],
+  "schema_version": "tuc.bounded_fanout_comparison.v0",
+  "source_intent_digest": "sha256:011c97afb0e42b0e08067123572db253fb82eddd122c02e1eff71def47636e20",
+  "status": "PASS"
+}

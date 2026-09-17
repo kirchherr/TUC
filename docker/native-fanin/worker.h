@@ -1,0 +1,108 @@
+#ifndef TUC_FANIN_WORKER_H
+#define TUC_FANIN_WORKER_H
+static const float *read_slots[TUC_MAX_BUFFERS] = {0};
+static float *write_slots[TUC_MAX_BUFFERS] = {0};
+static bool owned[TUC_MAX_BUFFERS] = {false};
+static bool prepare(void) {
+  for (unsigned int i = 0U; i < TUC_BUFFER_COUNT; ++i) {
+    const struct tuc_buffer b = buffer_at(i);
+    if (b.space == 0U && (b.tensor < 2U || b.tensor == 5U)) continue;
+    if (!allocate_buffer(&write_slots[i], b.bytes, b.space)) return false;
+    owned[i] = true; read_slots[i] = write_slots[i];
+  }
+  return true;
+}
+static bool finish(void) {
+  bool ok = true;
+  for (unsigned int i = 0U; i < TUC_BUFFER_COUNT; ++i) {
+    if (owned[i]) ok = release_buffer(write_slots[i], buffer_at(i).space) && ok;
+    owned[i] = false; write_slots[i] = NULL; read_slots[i] = NULL;
+  }
+  return ok;
+}
+static bool evaluate(const float *a, const float *b, float *output, unsigned int *calls) {
+  bool available[TUC_MAX_BUFFERS] = {false};
+  unsigned int completed = 0U;
+  const float *inputs[2] = {a, b};
+  for (unsigned int i = 0U; i < TUC_BUFFER_COUNT; ++i) {
+    const struct tuc_buffer slot = buffer_at(i);
+    if (slot.space == 0U && slot.tensor < 2U) read_slots[i] = NULL;
+    else {
+      if (slot.space == 0U && slot.tensor == 5U) {
+        write_slots[i] = output; read_slots[i] = output;
+      }
+      if (!poison_buffer(write_slots[i], slot.bytes, slot.space)) return false;
+    }
+  }
+  for (unsigned int i = 0U; i < TUC_RESIDENCY_COUNT; ++i) {
+    const struct tuc_event s = event_at(i);
+    if (s.kind == 0U) {
+      read_slots[s.out] = inputs[buffer_at(s.out).tensor]; available[s.out] = true;
+    } else if (s.kind == 1U) {
+      const struct tuc_buffer out = buffer_at(s.out);
+#ifdef TUC_SKIP_LEFT_COPY
+      if (out.tensor == 2U) return false;
+#endif
+#ifdef TUC_SKIP_RIGHT_COPY
+      if (out.tensor == 3U) return false;
+#endif
+      if (!available[s.a] || available[s.out]) return false;
+      if (!copy_buffer(write_slots[s.out], read_slots[s.a], out.bytes, out.space)) return false;
+      if (out.space == 1U) { ++upload_calls; upload_bytes += out.bytes; }
+      else { ++download_calls; download_bytes += out.bytes; }
+      if (out.tensor == 2U) ++left_copy_calls;
+      if (out.tensor == 3U) ++right_copy_calls;
+      available[s.out] = true;
+    } else if (s.kind == 2U) {
+#ifdef TUC_SKIP_LEFT
+      if (s.opcode == 1U) return false;
+#endif
+#ifdef TUC_SKIP_RIGHT
+      if (s.opcode == 2U) return false;
+#endif
+      if (s.opcode == 3U) {
+#ifdef TUC_INVALIDATE_LEFT
+        available[s.a] = false;
+#endif
+#ifdef TUC_INVALIDATE_RIGHT
+        available[s.b] = false;
+#endif
+#ifdef TUC_CLOBBER_LEFT
+        if (!poison_buffer(write_slots[s.a], buffer_at(s.a).bytes, s.space)) return false;
+#endif
+#ifdef TUC_CLOBBER_RIGHT
+        if (!poison_buffer(write_slots[s.b], buffer_at(s.b).bytes, s.space)) return false;
+#endif
+      }
+      if (!available[s.a] || (s.b != 255U && !available[s.b]) || available[s.out]) return false;
+      if (s.space == 0U) {
+        switch (s.opcode) {
+          case 1U: host_relu_left(read_slots[s.a], write_slots[s.out]); break;
+          case 2U: host_relu_right(read_slots[s.a], write_slots[s.out]); break;
+          case 3U: host_projection(read_slots[s.a], read_slots[s.b], write_slots[s.out]); break;
+          case 4U: host_sum(read_slots[s.a], write_slots[s.out]); break;
+          default: return false;
+        }
+        ++cpu_calls;
+      } else {
+        if (!device_dispatch(s.opcode, read_slots[s.a], s.b == 255U ? NULL : read_slots[s.b], write_slots[s.out])) return false;
+        ++gpu_calls;
+      }
+      ++*calls; available[s.out] = true;
+      if (s.opcode == 1U) ++left_producer_calls;
+      if (s.opcode == 2U) ++right_producer_calls;
+      if (s.opcode == 3U) ++join_calls;
+    } else {
+#ifdef TUC_SKIP_PUBLISH
+      return false;
+#endif
+      if (!available[s.a] || read_slots[s.a] != output) return false;
+      ++published_outputs;
+    }
+    ++completed; ++completed_steps;
+  }
+  return completed == TUC_RESIDENCY_COUNT;
+}
+#define TUC_TENSOR_BYTES TUC_RESIDENCY_BYTES
+#include "common.h"
+#endif

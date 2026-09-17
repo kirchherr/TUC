@@ -1,5 +1,34 @@
 # Roadmap Status
 
+- [Bounded Native Fan-In](BOUNDED_NATIVE_FANIN.md), RFCs 0317/0318, defines
+  a fixed two-producer Matmul join with six placements and identical HAC-IR.
+  Metadata readiness requires both produced operands in the join's space.
+  Pure tests cover source/plan drift, each missing producer/copy, swapped or raw
+  operands, early joins and missing publication. The fixed numerical corpus
+  has 265 oracle rounding witnesses and six first-case wrong-code witnesses.
+  Nine bounded candidate fixtures remain unchanged and contain no observations.
+  After separate approval and security review, RFC 0318 passed C11 and six
+  same-image physical profiles on 2026-09-17. The matrix totals 2178 scalar
+  checks, 1590 rounding witnesses, 132 CPU calls and 132 GPU calls. All 179 fault
+  controls plus two invalid selectors reject; C11 ASan/UBSan and 16032 native
+  contract-field bitflip rejections pass. Thirty-seven new bounded evidence
+  files include `tests/golden/proofs/native_fanin_comparison.json`. This is the
+  latest accepted native experiment, with sequential producers, unchanged
+  candidate/core/older evidence and no general admission or performance claim.
+
+- [Bounded Native Fanout](BOUNDED_NATIVE_FANOUT.md), RFC 0316, passed C11 and
+  three same-image physical matrix profiles on 2026-09-17. All profiles preserve
+  the branched source/HAC-IR and require both outputs. Mixed gccc completes
+  eleven projection downloads for twenty-two CPU consumer calls. Each profile
+  passes 726 scalar checks; the matrix totals 2178 checks. All 84 negative
+  controls reject, including missing second publication and clobbered shared
+  contents. C11 ASan/UBSan and 8736 native schedule-field bitflip rejections
+  pass. Accepted comparison: `tests/golden/proofs/native_fanout_comparison.json`,
+  with twenty-one bounded metadata-only evidence files. Core defaults and prior
+  evidence remain unchanged. Native fan-in under a separate source/numerical
+  contract is now completed in RFC 0318. Performance and independent reproduction
+  remain open.
+
 - [Bounded Native Placement Matrix](BOUNDED_NATIVE_PLACEMENTS.md) passed all eight
   CPU/GPU placements of one fixed graph in one physical sm86 image on 2026-09-17.
   Existing typed overrides select placement while HAC-IR and arithmetic remain
@@ -9,8 +38,8 @@
   pass. Accepted comparison: `tests/golden/proofs/native_placements_comparison.json`,
   with twenty-seven bounded metadata-only evidence files. RFC 0315. Core code,
   defaults, prior records and normal native admission remain unchanged. Next:
-  native fanout and immutable copy reuse under a separately reviewed source
-  contract. Performance and independent reproduction remain open.
+  native fanout and immutable copy reuse, now completed in RFC 0316.
+  Performance and independent reproduction remain open.
 
 - [Bounded Mixed Native Residency](BOUNDED_MIXED_NATIVE_RESIDENCY.md) passed
   all-C11 and physical GPU -> CPU -> GPU execution on 2026-09-15. An opt-in core
@@ -1976,12 +2005,13 @@ Current focus:
 
 ## Next
 
-- RFCs 0313 through 0315 now cover bounded external I/O, core residency planning
-  and all eight native placements of the fixed chain. The predecessor stack is
-  merged through PR #110. Obtain the required review for the placement matrix
-  without bypassing branch rules. The next bounded integration dimension is
-  native fanout with immutable resident-copy reuse under a separately reviewed
-  source/shape contract. Preserve numerical, wrong-code, coverage and FMA
+- RFCs 0313 through 0318 now cover bounded external I/O, core residency planning,
+  eight placements of the fixed chain, native immutable fanout and fan-in. The
+  predecessor stack is merged through PR #111. Obtain the required review for
+  fanout/fan-in stack without bypassing branch rules. The RFC 0317 candidate
+  and RFC 0318 native acceptance preserve distinct producer placements under
+  a separately reviewed source and numerical contract. Preserve numerical,
+  wrong-code, coverage and FMA
   evidence; keep default native admission blocked. Independent reproduction
   remains open.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed

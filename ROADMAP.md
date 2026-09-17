@@ -4,19 +4,18 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Native Placement Matrix](docs/BOUNDED_NATIVE_PLACEMENTS.md)
-passes all eight CPU/GPU assignments of the same Matmul -> ReLU -> Sum graph in
-one native image on 2026-09-17. Typed placement overrides preserve source intent,
-HAC-IR, arithmetic and the oracle; unchanged core residency planning derives
-copies. The matrix passes 2904 scalar checks with 132 CPU calls, 132 GPU calls
-and 220 explicit copies. All 144 negative controls across C11 and matrix reject.
-C11 ASan/UBSan and 19840 native schedule-field bitflip rejections pass.
-Normal native admission, core defaults and all previous proof records remain
-unchanged. Copy counts do not establish latency, energy or optimal placement.
-Next: bounded native fanout and immutable resident-copy reuse under a separately
-reviewed source/shape contract, preserving numerical and completion checks.
+Latest completed experiment: [Bounded Native Fan-In](docs/BOUNDED_NATIVE_FANIN.md),
+RFC 0318, passes C11 and six same-image physical CPU/GPU profiles on 2026-09-17.
+Two separately placed ReLU producers feed a Matmul join and row Sum, preserving
+the RFC 0317 source, numerical contract and HAC-IR. Each profile passes 363
+scalar checks; the matrix totals 2178 checks, 132 CPU calls and 132 GPU calls.
+All 179 fault controls and two invalid selectors reject. C11 ASan/UBSan and
+16032 native contract-field bitflip rejections pass. Thirty-seven new bounded
+metadata files retain the actual receipts. Prior fanout/placement evidence and
+candidate fixtures remain intact; core code/defaults are unchanged.
 Independent reproduction remains open. Dynamic shapes, arbitrary-input
 correctness, general native admission and performance stay blocked.
+Producers execute sequentially; concurrent scheduling is not established.
 
 TUC is **The Universal Compute**. The compiler pipeline is an implementation
 tool inside TUC, not the project's identity.
