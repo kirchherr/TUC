@@ -87,5 +87,7 @@ Prior evidence, core code/defaults and ordinary native admission remain unchange
 Arbitrary inputs/programs/shapes, performance, independent reproduction and
 cross-vendor claims remain open. See [RFC 0316](../rfcs/0316-bounded-native-fanout.md)
 for the dedicated native-execution security boundary and exact scope.
-Next: a bounded native fan-in join with distinct producer placements and checked
-input availability, under a separately reviewed source and numerical contract.
+The successor [bounded native fan-in](BOUNDED_NATIVE_FANIN.md) now completes
+distinct producer placements and checked input availability under RFCs 0317/0318.
+Required review of the combined fanout/fan-in integration remains open, as does
+independent reproduction.

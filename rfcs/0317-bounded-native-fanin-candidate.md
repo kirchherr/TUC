@@ -1,6 +1,7 @@
 # RFC 0317: Bounded Native Fan-In Candidate
 
-Status: Implemented as a pure candidate; native implementation and acceptance pending
+Status: Implemented as a pure candidate; native implementation and acceptance
+completed separately in [RFC 0318](0318-bounded-native-fanin-workers.md).
 
 ## Decision
 
@@ -76,6 +77,10 @@ normal_runtime_admission=false. It cannot substitute for RFC 0316 evidence.
 Earlier accepted records and their program bindings remain untouched.
 
 ## Required Next Stage
+
+The requirements below were fulfilled by RFC 0318 on 2026-09-17. Its
+[acceptance report](../docs/BOUNDED_NATIVE_FANIN.md) records the actual native
+observations; this RFC and its candidate fixtures remain planning evidence.
 
 Native work requires a separately reviewed implementation of both producer
 kernels, operand-specific readiness/copy guards, fixed C11/CUDA schedules and
