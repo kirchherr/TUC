@@ -430,7 +430,11 @@ also controls inputs and output: 33 host bindings on C11 versus 22 uploads and
 11 downloads on physical CUDA, with twenty rejected controls per target.
 An omitted output fails even after all kernels run. This is explicit boundary
 completion, not general core I/O planning or a performance claim.
-General native-runtime admission remains blocked.
+The [mixed native experiment](docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md) now executes
+GPU Matmul -> CPU ReLU -> GPU reduction from a shared core residency schedule.
+It passes the same 363 scalar checks as all-C11; omitting an intermediate copy
+fails before its consumer. This is bounded mixed execution on a real CPU/GPU,
+not general native-runtime admission or a performance claim.
 
 Current runtime surfaces:
 

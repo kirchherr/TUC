@@ -663,10 +663,18 @@ pass 363 scalar checks and twenty negative controls; C11 also passes ASan/UBSan.
 Missing output completion fails even after all kernels run. The bounded operator
 plan distinguishes address space from physical RAM technology and leaves
 latency/energy unmeasured. Core partition planning is not yet extended to
-external I/O. Next is shared boundary-residency planning toward a bounded mixed
-native placement, preserving explicit completion and numerical checks.
+external I/O in RFC 0313. RFC 0314 now adds a separate opt-in core residency
+schedule joining external bindings, copies, assignments and publication. Actual
+GPU Matmul -> CPU ReLU -> GPU reduction passes the same 363 scalar checks as
+all-C11, with 22 GPU calls, 11 CPU calls and 55 completed copies across ten cases
+plus replay. Fourteen C11 and fifteen mixed controls reject, including a missing
+projection download before the CPU consumer. C11 sanitizers and the full core
+typecheck pass. Existing partition dumps, numerical contracts and default native
+admission remain unchanged. Next is another bounded mixed placement selected
+through reviewed capability/placement inputs and checked against the same oracle.
 Independent reproduction, dynamic shapes and performance claims remain open.
-See `docs/BOUNDED_NATIVE_IO_PLAN.md`, `docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`,
+See `docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md`, `docs/BOUNDED_NATIVE_IO_PLAN.md`,
+`docs/BOUNDED_PLAN_NATIVE_BRIDGE.md`,
 `docs/BOUNDED_COMPOSED_CHAIN.md`,
 `docs/REDUCTION_FMA_VARIANT.md`,
 `docs/REDUCTION_FP32_CONTRACT.md`,

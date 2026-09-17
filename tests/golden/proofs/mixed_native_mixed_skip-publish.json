@@ -1,0 +1,44 @@
+{
+  "numeric_observation": {
+    "case_count": 10,
+    "cases_passed": 0,
+    "code_digest": "sha256:88d42c9b13d930d753e003fb30be15db11c3b5942b7e3a8e6f40e4e1ed94f895",
+    "contract_digest": "sha256:3c74687125bd67af4fc59a938dc48b2ba5a387a8e77372d1898f8bb2ab420b74",
+    "corpus_digest": "sha256:32c304299d41e9cba88a6cc186e0619fcb03131e29f220d19522865744eeac16",
+    "execution_policy_passed": false,
+    "failed_run_index": 0,
+    "generated_function_calls": 3,
+    "mode": "execute",
+    "numeric_contract_passed": false,
+    "operation_order": [
+      "matmul",
+      "relu",
+      "sum_axis1"
+    ],
+    "output_shape": [
+      33
+    ],
+    "outputs_differing_from_reference64": 0,
+    "raw_values_serialized": false,
+    "reason_code": "execution_failed",
+    "repeated_baseline_passed": false,
+    "scalar_checks": 0,
+    "schema_version": "tuc.bounded_mixed_numeric_observation.v0",
+    "security_boundary_passed": true,
+    "source_intent_digest": "sha256:e4572c28acc1c6e2f0ff774461208cadcb13ddf957ec79744ee474bd47f12af5",
+    "status": "ERROR",
+    "target": "mixed",
+    "tensor_bytes": 5032
+  },
+  "plan_digest": "sha256:b947de2f33fd608bb9e52111308ff5c3ae67fb3a32fb98a42957c5f9a8e8a6dc",
+  "residency": {
+    "completed_steps": 10,
+    "cpu_calls": 1,
+    "download_bytes": 792,
+    "download_calls": 2,
+    "gpu_calls": 2,
+    "upload_bytes": 1724,
+    "upload_calls": 3
+  },
+  "schema_version": "tuc.bounded_mixed_native_observation.v0"
+}

@@ -4,18 +4,18 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Native I/O Plan](docs/BOUNDED_NATIVE_IO_PLAN.md)
-derives explicit input/output steps around the checked native compute dispatch.
-On 2026-09-15 native C11 and physical CUDA each passed 363 scalar checks and
-twenty negative controls. C11 completed 33 host bindings and passed ASan/UBSan;
-CUDA completed 22 uploads and 11 downloads totaling 13156 boundary bytes.
-An omitted output is rejected even after all kernels run. Address space is
-separate from physical memory technology; latency and energy remain unmeasured.
-PR #108 has integrated #101 through #107 into `main`. Earlier compute, numerical
-and FMA proof records remain unchanged. This new I/O plan is still a bounded
-operator contract, not general core partition-planner support.
-Next: shared core boundary-residency planning toward one bounded mixed native
-placement, preserving explicit transfer completion and numerical checks.
+Latest completed experiment: [Bounded Mixed Native Residency](docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md)
+uses one opt-in core schedule for bindings, copies, compute and publication.
+On 2026-09-15 all-C11 and physical GPU Matmul -> CPU ReLU -> GPU reduction each
+passed 363 scalar checks. Mixed execution completed 22 GPU calls, 11 CPU calls,
+33 uploads and 22 downloads. All fourteen C11 and fifteen mixed negative controls
+rejected; a missing intermediate download fails before its CPU consumer.
+C11 ASan/UBSan and the full core typecheck passed. The schedule distinguishes
+address-space identity from physical RAM technology; latency and energy remain
+unmeasured. Ordinary partition dumps and default execution remain unchanged.
+Earlier compute, numerical, FMA and native-I/O proof records are preserved.
+Next: compare another bounded mixed placement of the same graph through reviewed
+capability/placement inputs, preserving the same oracle and completion contract.
 Independent reproduction remains open. Dynamic shapes, arbitrary-input
 correctness, general native admission and performance stay blocked.
 
