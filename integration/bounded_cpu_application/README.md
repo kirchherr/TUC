@@ -3,7 +3,9 @@
 This standalone client imports the installed TUC package and the standard
 library. It defines its own supported graphs and input data. Its default mode
 prepares inert applications; native compilation and execution require explicit
-commands. Native CI observations for RFC 0324 are currently pending.
+commands. The [native CI run](https://github.com/kirchherr/TUC/actions/runs/35339997831)
+passed on `c9ebb2675f5114b7332284ce5fa380e8f259bb43`; its original observed
+record is retained in [observed-ci-c9ebb26.json](observed-ci-c9ebb26.json).
 
 The two graphs are:
 
@@ -40,8 +42,8 @@ input cases twice, compares the results with the independent reference and
 closes each handle. The required totals are 12 successful runs and 72 scalar
 comparisons. A projection with finite inputs that overflow during multiplication
 must additionally return the runtime reason `numeric_rejection`. A successful
-command reports one such rejection. These are acceptance requirements, not a
-claim that a native run has already passed.
+command reports one such rejection. The linked CI run passed these requirements;
+they remain mandatory for each new execution.
 
 The runtime uses private temporary workspaces and executes by immutable image
 ID. It selects the fixed local endpoint and trusted CLI path with a fresh empty
@@ -91,7 +93,11 @@ operator artifacts.
 fresh wheel outside the checkout, verifies package origin, runs the static
 application client and sanitizer corpus, then retains a record binding observed
 results to program digests, harness hashes, wheel SHA-256 and source commit.
-No observed success record is claimed in this README while that run is pending.
+The linked run passed 333 Linux tests, all 12 application calls, 72 comparisons,
+one overflow rejection and all 2,460 sanitizer parser cases. The retained JSON
+is the original CI record, not a synthetic unit-test receipt. Its source and
+wheel hashes describe that specific run; subsequent revisions require their
+own verification.
 
 This slice supports only the bounded static FP32 CPU subset. It adds no CUDA
 execution, general runtime admission, dynamic shape support, autograd, arbitrary

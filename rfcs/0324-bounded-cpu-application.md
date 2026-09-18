@@ -1,6 +1,6 @@
 # RFC 0324: Explicit Bounded CPU Applications
 
-Status: implemented slice under validation; native CI observation pending.
+Status: implemented slice with observed native CI; owner review required.
 
 ## Problem and decision
 
@@ -147,7 +147,7 @@ instead of granting authority to remove unverified paths. This boundary does not
 defend against a malicious Docker daemon, host administrator or arbitrary native
 pointer misuse inside the separate C process API.
 
-## Planned validation and evidence limits
+## Validation and evidence limits
 
 Pure tests cover full application reconstruction, field/type/size boundaries,
 request and response mutations, exact exit/status matching, FP32 rejection and
@@ -170,9 +170,17 @@ to truncated, oversized and wrong-program frames.
 
 The workflow installs a wheel outside the checkout and retains program/harness
 identities, source commit, wheel hash and actual results only after its checks
-pass. At this RFC revision those native CI observations are pending. The test
-plan and synthetic protocol fixtures must not be presented as execution
-evidence, broad correctness, performance, CUDA support or normal runtime admission.
+pass. Native [run 35339997831](https://github.com/kirchherr/TUC/actions/runs/35339997831),
+job `105583474523`, passed on `c9ebb2675f5114b7332284ce5fa380e8f259bb43` with
+333 Linux tests and all application/parser requirements above. The original
+[observed record](../integration/bounded_cpu_application/observed-ci-c9ebb26.json)
+has SHA-256 `db4520bbd840d3f4ca743e68cf01eb9e671934f75a67acd4469a1df9c8e9777e`.
+Its GitHub artifact `10544721871` ZIP has SHA-256
+`99d2872fa25642945c39a092a16f5a9cf3d8556cea90e8fb0e8f42a20ec8b27f`;
+the wheel identity remains in the record. These observations establish this
+corpus at that revision, not broad correctness, performance, CUDA support or
+normal runtime admission. Synthetic protocol fixtures remain separate from
+this actual execution record.
 
 The [application guide](../docs/BOUNDED_CPU_APPLICATION.md) contains a complete
 user-defined graph example. The [installed consumer](../integration/bounded_cpu_application/README.md)

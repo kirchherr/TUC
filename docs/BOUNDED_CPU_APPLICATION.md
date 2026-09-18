@@ -5,9 +5,11 @@ tensors. Preparation returns source files. An explicit build creates a container
 image, and an explicit `run()` sends one input frame to a fresh container.
 Importing either module does not start a process.
 
-The implementation is under validation. The installed application and sanitizer
-CI workflow is defined; a successful native run for this slice has not yet been
-recorded. The numerical result in the example below is the expected result.
+The [native CI run](https://github.com/kirchherr/TUC/actions/runs/35339997831)
+passed on revision `c9ebb2675f5114b7332284ce5fa380e8f259bb43`: 333 Linux tests,
+12 application calls, 72 numerical checks, one checked overflow rejection and
+2,460 sanitizer parser cases. This establishes the tested corpus; the numerical
+result in the separate custom example below is the expected result.
 
 ## Requirements
 
@@ -172,6 +174,6 @@ read-only root, UID/GID 10001, no capabilities, no new privileges and bounded
 memory, CPU and process resources. There are no host bind mounts or arbitrary
 command parameters in this API.
 
-For the installed example and planned native validation, see
+For the installed example and recorded native validation, see
 [the application consumer](../integration/bounded_cpu_application/README.md) and
 [RFC 0324](../rfcs/0324-bounded-cpu-application.md).
