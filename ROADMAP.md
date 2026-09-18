@@ -4,6 +4,13 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Next validation slice: [Installed Source Intent C11 Conformance](docs/INSTALLED_SOURCE_C11_CONFORMANCE.md),
+RFC 0322, carries RFC 0321's application through an externally installed wheel
+into an isolated static/sanitized CPU test. The fixed corpus, all public returns
+and thirteen fault variants are bound to the emitted context and wheel digest.
+Acceptance requires observed conformance CI and owner review; general runtime
+admission and earlier CPU/GPU evidence are unchanged.
+
 Current implementation: [Public Bounded Source Intent Compiler](docs/BOUNDED_SOURCE_COMPILER.md),
 RFC 0321, gives installed applications one bounded data-only API for their own
 Source Intent graphs, capability-based planning and C11/CUDA source artifacts.
