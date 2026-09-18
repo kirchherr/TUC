@@ -1,0 +1,7 @@
+**
+!Dockerfile
+!Dockerfile.dockerignore
+!generated.c
+!generated.h
+!worker.c
+!build.sh

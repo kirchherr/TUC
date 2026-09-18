@@ -1,5 +1,13 @@
 # Roadmap Status
 
+- [Installed Source Intent C11 Conformance](INSTALLED_SOURCE_C11_CONFORMANCE.md),
+  RFC 0322, adds a fixed application execution test through the public compiler
+  in an isolated installed wheel. Three input corpora, two replays, static and
+  sanitizer builds, thirteen compiled faults and invalid-argument controls bind
+  actual numerical checks to source and public I/O. Acceptance requires the
+  workflow's observed receipt for the reviewed revision and owner review.
+  No CUDA, remote-host execution or general native admission is introduced.
+
 - [Public Bounded Source Intent Compiler](BOUNDED_SOURCE_COMPILER.md), RFC 0321,
   joins the existing frontend adapter, capability-based compiler and bounded DAG
   lowerer through one explicit installed API. Strict preflight, required terminal

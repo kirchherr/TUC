@@ -1,0 +1,59 @@
+name: Installed Source Intent C11 conformance
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "kirchherr/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bounded-source-c11-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  installed-c11:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Validate application boundary and build wheel
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pytest -q tests/test_bounded_source.py tests/test_bounded_source_consumer.py tests/test_bounded_source_c11.py
+          python -m pip wheel --no-deps --no-build-isolation --no-index . --wheel-dir "$RUNNER_TEMP/source-c11-wheel"
+      - name: Generate and execute through isolated installed consumer
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          python -m venv "$RUNNER_TEMP/source-c11-env"
+          "$RUNNER_TEMP/source-c11-env/bin/python" -m pip install --require-hashes -r requirements/ci.txt
+          "$RUNNER_TEMP/source-c11-env/bin/python" -m pip install --no-deps --no-index "$RUNNER_TEMP"/source-c11-wheel/tuc-*.whl
+          cp -R integration/bounded_source_c11 "$RUNNER_TEMP/source-c11-consumer"
+          cp -R integration/bounded_dag_compiler "$RUNNER_TEMP/source-c11-original"
+          cd "$RUNNER_TEMP/source-c11-consumer"
+          export PATH="$RUNNER_TEMP/source-c11-env/bin:$PATH"
+          python3 -I -c 'import hashlib, os, pathlib; wheels = list((pathlib.Path(os.environ["RUNNER_TEMP"]) / "source-c11-wheel").glob("tuc-*.whl")); assert len(wheels) == 1; pathlib.Path("wheel-sha256.txt").write_text("sha256:" + hashlib.sha256(wheels[0].read_bytes()).hexdigest() + "\n", encoding="ascii")'
+          python3 -I -c 'import os, pathlib, sys, tuc; root = pathlib.Path(sys.prefix).resolve(); assert pathlib.Path(tuc.__file__).resolve().is_relative_to(root); assert not any(pathlib.Path(p).resolve().is_relative_to(pathlib.Path(os.environ["GITHUB_WORKSPACE"]).resolve()) for p in sys.path if p)'
+          python3 -I "$RUNNER_TEMP/source-c11-original/consumer.py" --check "$RUNNER_TEMP/source-c11-original/expected_report.json" > original-report.json
+          python3 -I consumer.py > candidate-report.json
+          python3 -I -c 'import json, pathlib; old = json.loads(pathlib.Path("original-report.json").read_text()); new = json.loads(pathlib.Path("candidate-report.json").read_text()); expected = old["computation"]; actual = new["computation"]; assert new["backend_bindings_digest"] == old["profiles"]["cpu"]["backend_bindings_digest"]; assert all(actual[key] == expected[key] for key in ("source_intent_digest", "hac_ir_digest", "inputs", "returns")); assert all(digest == expected["primitive_source_digests"][name] for name, digest in actual["primitive_source_digests"].items())'
+          sh operator.sh --c11
+      - name: Retain verified application conformance receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: installed-source-c11-receipt
+          path: ${{ runner.temp }}/source-c11-consumer/tmp/bounded-source-c11.*/record.json
+          if-no-files-found: error
+          retention-days: 14

@@ -47,4 +47,6 @@
 /docs/TRITON_COMPATIBILITY.md @kirchherr
 /docs/BOUNDED_SOURCE_COMPILER.md @kirchherr
 /integration/bounded_dag_compiler/ @kirchherr
+/integration/bounded_source_c11/ @kirchherr
+/docs/INSTALLED_SOURCE_C11_CONFORMANCE.md @kirchherr
 /rfcs/ @kirchherr
