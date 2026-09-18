@@ -1,5 +1,11 @@
 # Roadmap Status
 
+- [Bounded CPU Add/Bias](BOUNDED_CPU_ADD_BIAS.md), RFC 0327, implements
+  hardware-neutral tensor addition with identical rank-one/two shapes or a
+  right-hand row bias. The source/JSON/IR/native CPU path supports affine,
+  residual and small MLP graphs; other broadcasts and native targets reject.
+  Installed numerical conformance and ASan/UBSan observations are pending.
+
 - [Bounded Source-to-CPU Bridge](BOUNDED_CPU_SOURCE.md), RFC 0326, adds an
   explicit installed converter from supported source and a tensor signature to
   validated graph JSON. The fixed OCI parser runs outside the host process;

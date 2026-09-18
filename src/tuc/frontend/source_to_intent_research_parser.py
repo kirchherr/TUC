@@ -387,21 +387,24 @@ def _parse_assignment(statement: ast.Assign, state: _ParseState) -> None:
     _validate_identifier(target, "source-to-intent parser assignment target")
     if target in state.value_shapes:
         raise SourceToIntentResearchParserError("assignment target must be new")
-    if not isinstance(statement.value, ast.Call):
-        raise SourceToIntentResearchParserError("assignment value must be a supported call")
-    call_name = _expression_name(statement.value.func)
-    if call_name not in _SUPPORTED_CALLS:
-        raise SourceToIntentResearchParserError("assignment call target unsupported")
-    if call_name == "tl.dot":
-        family, inputs, shape, attributes = _parse_dot(statement.value, state)
-    elif call_name == "tl.where":
-        family, inputs, shape, attributes = _parse_where(statement.value, state)
-    elif call_name == "tl.softmax":
-        family, inputs, shape, attributes = _parse_softmax(statement.value, state)
-    elif call_name == "tl.sum":
-        family, inputs, shape, attributes = _parse_sum(statement.value, state)
+    if isinstance(statement.value, ast.BinOp) and isinstance(statement.value.op, ast.Add):
+        family, inputs, shape, attributes = _parse_add(statement.value, state)
     else:
-        raise SourceToIntentResearchParserError("assignment call target unsupported")
+        if not isinstance(statement.value, ast.Call):
+            raise SourceToIntentResearchParserError("assignment value must be a supported call")
+        call_name = _expression_name(statement.value.func)
+        if call_name not in _SUPPORTED_CALLS:
+            raise SourceToIntentResearchParserError("assignment call target unsupported")
+        if call_name == "tl.dot":
+            family, inputs, shape, attributes = _parse_dot(statement.value, state)
+        elif call_name == "tl.where":
+            family, inputs, shape, attributes = _parse_where(statement.value, state)
+        elif call_name == "tl.softmax":
+            family, inputs, shape, attributes = _parse_softmax(statement.value, state)
+        elif call_name == "tl.sum":
+            family, inputs, shape, attributes = _parse_sum(statement.value, state)
+        else:
+            raise SourceToIntentResearchParserError("assignment call target unsupported")
 
     state.value_shapes[target] = shape
     state.produced_names.add(target)
@@ -418,6 +421,21 @@ def _parse_assignment(statement: ast.Assign, state: _ParseState) -> None:
     if attributes:
         operation["attributes"] = attributes
     state.operations.append(operation)
+
+
+def _parse_add(
+    value: ast.BinOp,
+    state: _ParseState,
+) -> tuple[str, tuple[str, ...], tuple[int, ...], dict[str, object]]:
+    # Only symbolic tensor names are admitted: no scalar, nested expression,
+    # indexing, call, implicit reversal, or general broadcast is evaluated.
+    lhs = _name_argument(value.left, "add lhs")
+    rhs = _name_argument(value.right, "add rhs")
+    left, right = _known_shape(lhs, state), _known_shape(rhs, state)
+    if (len(left) not in (1, 2) or
+            not (right == left or (len(left) == 2 and right == (left[1],)))):
+        raise SourceToIntentResearchParserError("add requires equal shapes or a right row bias")
+    return "elementwise", (lhs, rhs), left, {"elementwise_kind": "add"}
 
 
 def _parse_dot(
