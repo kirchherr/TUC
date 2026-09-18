@@ -438,7 +438,7 @@ def negative_cases(marker):
         "schema_version": SIGNATURE_SCHEMA, "source_name": "negative_return",
         "kernel_name": "negative_return",
         "tensor_shapes": {"x": [2, 2], "y": [2, 2], "z": [2]}},
-        "reason": "graph_rejected"})
+        "reason": "source_rejected"})
     return result
 
 
@@ -457,7 +457,7 @@ def _negative_controls(executable, directory, workspace, snapshots):
             str(source_path), "--signature", str(signature_path), "--workspace", str(workspace)))
         diagnostic = f"tuc-source-to-json: {case['reason']}\n".encode("ascii")
         if code != 2 or output or error != diagnostic:
-            raise ValueError("source converter rejection contract failed")
+            raise ValueError(f"source converter rejection contract failed: {case['id']}")
         if marker.exists():
             raise ValueError("rejected source produced a host file effect")
         _unchanged(snapshots, workspace)

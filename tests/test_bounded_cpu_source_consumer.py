@@ -11,6 +11,11 @@ import numpy as np
 import pytest
 
 from integration.bounded_cpu_source import consumer
+from tuc.compiler import bounded_cpu_source as source_api
+from tuc.frontend.source_to_intent_research_kernel_ingress import (
+    ingest_triton_module_source_to_source_intent,
+    source_to_intent_research_kernel_ingress_report_to_dict,
+)
 
 
 def _numpy_matmul(left, right, rows, inner, columns):
@@ -247,9 +252,9 @@ def test_negative_corpus_covers_source_signature_and_compiler_semantics_without_
     cases = consumer.negative_cases(tmp_path / "forbidden-effect")
     assert len(cases) == len({case["id"] for case in cases}) == 10
     reasons = [case["reason"] for case in cases]
-    assert reasons.count("source_rejected") == 6
+    assert reasons.count("source_rejected") == 7
     assert reasons.count("signature_rejected") == 2
-    assert reasons.count("graph_rejected") == 2
+    assert reasons.count("graph_rejected") == 1
     by_name = {case["id"]: case for case in cases}
     assert b"import os" in by_name["foreign_import"]["source"]
     assert b"eval(" in by_name["eval"]["source"]
@@ -262,6 +267,40 @@ def test_negative_corpus_covers_source_signature_and_compiler_semantics_without_
         ast.parse(by_name["syntax"]["source"])
     assert not (tmp_path / "forbidden-effect").exists()
     assert consumer.signature("fanout", 0)["tensor_shapes"]["a"] == [2, 3]
+
+
+@pytest.mark.parametrize("case_id,expected_reason", (("softmax", "graph_rejected"),
+                                                   ("nonterminal_return", "source_rejected")))
+def test_fixed_negative_sources_use_real_parser_and_parent_classification(
+        tmp_path, case_id, expected_reason):
+    """Parse fixed test literals as data; the worker envelope/isolation is synthetic.
+
+    Nonterminal returns fail SourceIntentModule construction inside the parser,
+    whereas valid softmax Source Intent reaches the narrower CPU parent boundary.
+    No caller source path, source execution, process or container is involved.
+    """
+    cases = {case["id"]: case for case in consumer.negative_cases(tmp_path / "unused-marker")}
+    case = cases[case_id]
+    signature = case["signature"]
+    request = source_api.prepare_source_request(case["source"], consumer.encoded(signature))
+    envelope = {"protocol": source_api.WORKER_PROTOCOL,
+                "request_digest": json.loads(request)["request_digest"]}
+    try:
+        parsed = ingest_triton_module_source_to_source_intent(
+            case["source"].decode("utf-8"), source_name=signature["source_name"],
+            kernel_name=signature["kernel_name"], tensor_shapes=signature["tensor_shapes"])
+    except ValueError:
+        # The unchanged worker maps parser ValueError to this closed response.
+        envelope.update(status="rejected", reason_code="source_rejected")
+    else:
+        envelope.update(
+            status="accepted", security=dict(source_api._SECURITY),
+            source_intent_payload=parsed.parser_result.source_intent_payload,
+            ingress_report=source_to_intent_research_kernel_ingress_report_to_dict(parsed.report))
+    with pytest.raises(source_api.BoundedCPUSourceError) as caught:
+        source_api.decode_source_response(request, consumer.encoded(envelope))
+    assert caught.value.reason == expected_reason
+    assert case["reason"] == expected_reason
 
 
 def test_mocked_negative_control_driver_requires_exact_source_free_rejection(monkeypatch, tmp_path):

@@ -110,7 +110,8 @@ Mocks are synthetic and cannot establish successful native execution.
 The independent installed consumer owns six source programs across fanout,
 true fanin and ReLU/Sum shape profiles. Six conversions feed twelve CPU calls
 and 56 independent binary32 comparisons. Ten negative controls cover malicious
-source constructs, invalid signatures and parser-valid unsupported CPU graphs.
+source constructs, invalid signatures, nonterminal returns and parser-valid
+softmax outside the CPU subset.
 Original source/signature/input bytes and cleanup are checked. Its new read-only
 workflow retains observed results bound to the source revision and installed
 wheel/consumer hashes. Native observations remain pending until the actual run.
