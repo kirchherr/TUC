@@ -1,6 +1,7 @@
 # RFC 0327: Bounded CPU tensor addition and row bias
 
-Status: implementation under validation; native observation pending.
+Status: implemented with observed installed/native conformance at `f27e2c8`;
+owner review and final-revision checks remain required.
 
 ## Problem and decision
 
@@ -40,7 +41,7 @@ unchanged for other kernels.
 
 The family stays `OperationKind.ELEMENTWISE`; capabilities and assignments use
 the existing inspectable pipeline. The bounded Add emitter checks the selected
-target explicitly and accepts only C11 CPU graphs. CUDA and mixed placement
+target explicitly and accepts one selected C11 CPU backend. CUDA and mixed placement
 reject before emission. This is a narrow backend constraint, not a new implicit
 fallback. Existing family-level HAC `tuc.linearity=nonlinear` remains unchanged;
 it is not a claim that mathematical addition is nonlinear.
@@ -85,3 +86,9 @@ limits. Prior evidence and claim gates remain unchanged; source/parser defaults,
 general Triton support and production admission remain separate.
 
 Owner review and actual installed/native CI are required for acceptance.
+
+The [observed run](https://github.com/kirchherr/TUC/actions/runs/35349477030)
+passed 215 boundary tests, the independent installed CLI corpus and both
+static/ASan/UBSan harnesses. The [execution guide](../docs/BOUNDED_CPU_ADD_BIAS.md)
+records the precise counters, revision and retained original receipt; this does
+not broaden the fixed observation scope or replace owner review.

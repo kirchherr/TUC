@@ -76,7 +76,8 @@ Post-planning limits remain 48 buffers, 96 events, 256 KiB planned storage,
 
 RFC 0327 extends the C11 CPU path with equal-shape tensor Add and right-hand
 row bias `[M,N] + [N]`. Add-containing graphs use the separate
-`tuc.bounded_add_dag_artifacts.v0` manifest and reject CUDA or mixed placement.
+`tuc.bounded_add_dag_artifacts.v0` manifest, require one selected C11 CPU
+backend, and reject CUDA or mixed placement.
 See the [Add/Bias guide](BOUNDED_CPU_ADD_BIAS.md) for an affine/MLP example.
 
 `validate_bounded_source_compilation` replays this pure compilation from the

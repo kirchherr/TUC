@@ -62,4 +62,26 @@ inputs themselves are normal. This extension executes on CPU only.
 
 See [RFC 0327](../rfcs/0327-bounded-cpu-add-bias.md) and the
 [independent installed examples](../integration/bounded_cpu_add_bias/README.md).
-Native observation is pending until the dedicated CI run succeeds.
+
+## Observed installed execution
+
+[CI run 35349477030](https://github.com/kirchherr/TUC/actions/runs/35349477030)
+passed at `f27e2c8f10e87dc642749e33b1e23249c46b7096`: 215 boundary tests,
+eight source conversions, sixteen CPU calls, 86 scalar comparisons, eight
+source/signature rejections and two native numeric rejections. Original inputs
+remained unchanged and execution workspaces were clean.
+
+Separate static and ASan/UBSan builds each passed four fixed graph fixtures,
+24 successful cases, 136 entrypoint calls, 114 scalar comparisons, 112 expected
+descriptor/numeric/environment rejections and 532 unchanged-output checks.
+Three deliberately faulty checker variants and an invalid invocation also
+produced their exact required failures in each build.
+
+The [original combined receipt](../integration/bounded_cpu_add_bias/observed-ci-f27e2c8.json)
+retains that revision identity. Artifact `10549561431` contained only
+`ci-record.json`; its ZIP SHA256 matched GitHub metadata and the upload log:
+`625109d37c65e55166883c4846669c3a02527d983d00a4e295eaeb7b7d614055`.
+The retained 23,952 bytes have SHA256
+`ce64e9eef5070fb2ac7fef260f63c25995763a7d598af1005ab2cbcabfae5ed0`.
+The receipt binds the installed wheel and both consumers. This is scoped
+correctness evidence; owner review and final-revision checks remain required.

@@ -42,6 +42,13 @@ workspace must be empty after cleanup. `record.json` is written exclusively
 after all checks pass. Default reports and synthetic tests are not native
 observations; the installed workflow's actual execution remains required.
 
+[Observed CI](https://github.com/kirchherr/TUC/actions/runs/35349477030) passed
+this corpus at `f27e2c8`. The original
+[combined receipt](observed-ci-f27e2c8.json) also records the separately executed
+static and ASan/UBSan native harnesses. Its source revision remains explicit;
+see the [execution guide](../../docs/BOUNDED_CPU_ADD_BIAS.md) for artifact hashes
+and precise observation scope.
+
 ## Small MLP example
 
 The [source](mlp.py.txt), [signature](mlp-signature.json) and

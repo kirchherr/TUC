@@ -33,3 +33,8 @@ Receipt binding covers the wheel identifier, installed compiler sources,
 consumer, generated artifacts, and fixed build/operator files. This prevents
 accidental context mixing; it is not receipt authentication. Candidate generation
 and pure protocol tests do not establish native execution or runtime admission.
+
+[CI run 35349477030](https://github.com/kirchherr/TUC/actions/runs/35349477030)
+executed all ten observations successfully at `f27e2c8`. The original
+[combined receipt](../bounded_cpu_add_bias/observed-ci-f27e2c8.json) retains that
+revision, wheel/consumer identities and actual static/sanitized observations.
