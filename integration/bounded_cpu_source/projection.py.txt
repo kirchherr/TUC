@@ -1,0 +1,8 @@
+import triton
+import triton.language as tl
+
+@triton.jit
+def projection(x, weights, scores):
+    projected = tl.dot(x, weights)
+    positive = tl.where(projected > 0.0, projected, 0.0)
+    tl.store(scores, positive)

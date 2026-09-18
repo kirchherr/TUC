@@ -7,6 +7,7 @@ choose between those targets while preserving the calculation's result and
 explaining every choice?
 
 For the current bounded native CPU application path, see
+[Convert supported source and run it on CPU](docs/BOUNDED_CPU_SOURCE.md) or
 [Run a CPU graph from JSON](docs/BOUNDED_CPU_JSON_CLI.md). An installed
 `tuc-cpu-app` command inspects caller-defined supported graph data and explicitly
 builds/runs it with separate input tensors on Linux x86-64. The
