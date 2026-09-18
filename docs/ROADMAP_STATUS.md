@@ -13,7 +13,7 @@
   controls plus two invalid selectors reject; C11 ASan/UBSan and 16032 native
   contract-field bitflip rejections pass. Thirty-seven new bounded evidence
   files include `tests/golden/proofs/native_fanin_comparison.json`. This is the
-  latest accepted native experiment, with sequential producers, unchanged
+  earlier accepted native experiment, with sequential producers, unchanged
   candidate/core/older evidence and no general admission or performance claim.
 
 - [Bounded Native Fanout](BOUNDED_NATIVE_FANOUT.md), RFC 0316, passed C11 and
@@ -2007,13 +2007,21 @@ Current focus:
 
 - RFCs 0313 through 0318 now cover bounded external I/O, core residency planning,
   eight placements of the fixed chain, native immutable fanout and fan-in. The
-  predecessor stack is merged through PR #111. Obtain the required review for
-  fanout/fan-in stack without bypassing branch rules. The RFC 0317 candidate
+  fanout/fan-in stack is merged through PR #112. The RFC 0317 candidate
   and RFC 0318 native acceptance preserve distinct producer placements under
   a separately reviewed source and numerical contract. Preserve numerical,
   wrong-code, coverage and FMA
   evidence; keep default native admission blocked. Independent reproduction
   remains open.
+- RFC 0319 adds a reusable bounded DAG artifact compiler and a separate
+  twelve-case isolated C11 conformance workflow. Its PR #115 CPU conformance
+  and full CI passed. Preserve previous native observations under their original
+  source bindings. RFC 0320 implements the concrete shared CPU/CUDA wrapper,
+  independent native validator and 36-profile corpus. Its CPU conformance and
+  explicitly authorized physical matrix passed at source `cdb67d5`; see the
+  [observed evidence](BOUNDED_DAG_NATIVE_EVIDENCE.md). All 36 profiles and 132
+  exact fault controls passed, with original source/image binding preserved. General
+  execution, dynamic shapes and performance remain closed.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source

@@ -445,6 +445,14 @@ with two required outputs. In the mixed placement, one projection download
 feeds two CPU consumers. Three matrix profiles pass 726 scalar checks each;
 missing publication or corrupted shared input cannot become successful execution.
 
+The [bounded DAG compiler](docs/BOUNDED_DAG_COMPILER.md) now derives C11 and CUDA
+primitive sources from typed Matmul/ReLU/row-Sum DAGs through one reusable API.
+It rebuilds canonical residency events, preserves public output aliases and
+binds emitted sources in a manifest. The portfolio includes four graph families,
+three shapes and a new graph with two Matmul joins. Independent reference tests
+and a dedicated isolated C11 conformance workflow check the shared compiler.
+CUDA emission alone establishes no new physical observation or runtime admission.
+
 Current runtime surfaces:
 
 - Runtime Execution Readiness before kernels run.

@@ -4,7 +4,23 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Latest completed experiment: [Bounded Native Fan-In](docs/BOUNDED_NATIVE_FANIN.md),
+Current implementation: [Bounded DAG Artifact Compiler](docs/BOUNDED_DAG_COMPILER.md),
+RFC 0319, replaces topology-specific source emission with a shared bounded
+HAC-IR/partition-to-C11/CUDA API. Four graph families and three static shapes
+exercise it, including a DAG with two Matmul joins and two public outputs.
+An isolated twelve-case C11 conformance workflow complements independent
+Python reference tests. Physical execution uses the separately reviewed
+RFC 0320 boundary below; ordinary runtime admission remains closed.
+
+[RFC 0320's shared native worker](docs/BOUNDED_DAG_NATIVE_WORKER.md) now validates
+36 fixed CPU/GPU/mixed profiles from these artifacts, with one event validator,
+owned slot management and separate planned/validation transfer accounting.
+Its CPU sanitizer/mutation workflow and the separately authorized physical
+matrix passed. [Observed evidence](docs/BOUNDED_DAG_NATIVE_EVIDENCE.md) binds all
+36 profiles and 132 fault controls to the exact executed source and image.
+Changed payloads still require fresh source-bound authorization.
+
+Earlier completed experiment: [Bounded Native Fan-In](docs/BOUNDED_NATIVE_FANIN.md),
 RFC 0318, passes C11 and six same-image physical CPU/GPU profiles on 2026-09-17.
 Two separately placed ReLU producers feed a Matmul join and row Sum, preserving
 the RFC 0317 source, numerical contract and HAC-IR. Each profile passes 363
