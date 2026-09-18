@@ -1,0 +1,123 @@
+{
+  "blocked_claims": [
+    "arbitrary_inputs",
+    "dynamic_shapes",
+    "general_native_runtime",
+    "concurrent_execution",
+    "performance",
+    "independent_reproduction"
+  ],
+  "c11_baseline_counters": {
+    "sanitized": {
+      "case_runs": 72,
+      "cpu_calls": 324,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "published_outputs": 108,
+      "scalar_checks": 1404,
+      "upload_bytes": 0,
+      "upload_calls": 0,
+      "validation_download_bytes": 0,
+      "validation_download_calls": 0
+    },
+    "static": {
+      "case_runs": 72,
+      "cpu_calls": 324,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "published_outputs": 108,
+      "scalar_checks": 1404,
+      "upload_bytes": 0,
+      "upload_calls": 0,
+      "validation_download_bytes": 0,
+      "validation_download_calls": 0
+    }
+  },
+  "c11_image_ids": {
+    "sanitized": "sha256:3b3d148a261147eb79e5d8ba7c242fe05c0fec4baa794bd27da98aeb43c08263",
+    "static": "sha256:ce05f290b66bc7531b72edcf4a9b584d689a384fc65ba3a137f17d33cd3cb4be"
+  },
+  "c11_record_digest": "sha256:75d60bb8809243c7d45b6f17e53845731746be5a5b16e614e0841bbaa741db66",
+  "context_digest": "sha256:36b396f46ba9d092ec8dc20d22d5e1ba8d8704a9b87370fcdef886f404b83e88",
+  "cpu_baselines_equal": true,
+  "energy_pj": null,
+  "fault_controls": {
+    "c11": 72,
+    "matrix": 132
+  },
+  "graphs": 12,
+  "invalid_invocation_controls": {
+    "c11": 4,
+    "matrix": 2
+  },
+  "latency_ns": null,
+  "matrix_counters": {
+    "case_runs": 216,
+    "cpu_calls": 468,
+    "download_bytes": 26280,
+    "download_calls": 234,
+    "gpu_calls": 504,
+    "published_outputs": 324,
+    "scalar_checks": 4212,
+    "upload_bytes": 67872,
+    "upload_calls": 360,
+    "validation_download_bytes": 95400,
+    "validation_download_calls": 504
+  },
+  "matrix_image_id": "sha256:8e0e38d4708955b59fdc7ef4cdaee015b0ac061a890eae9e300ab0bb9c4521db",
+  "matrix_profile_counters": {
+    "cpu": {
+      "case_runs": 72,
+      "cpu_calls": 324,
+      "download_bytes": 0,
+      "download_calls": 0,
+      "gpu_calls": 0,
+      "published_outputs": 108,
+      "scalar_checks": 1404,
+      "upload_bytes": 0,
+      "upload_calls": 0,
+      "validation_download_bytes": 0,
+      "validation_download_calls": 0
+    },
+    "gpu": {
+      "case_runs": 72,
+      "cpu_calls": 0,
+      "download_bytes": 5616,
+      "download_calls": 108,
+      "gpu_calls": 324,
+      "published_outputs": 108,
+      "scalar_checks": 1404,
+      "upload_bytes": 29472,
+      "upload_calls": 162,
+      "validation_download_bytes": 56952,
+      "validation_download_calls": 324
+    },
+    "mixed": {
+      "case_runs": 72,
+      "cpu_calls": 144,
+      "download_bytes": 20664,
+      "download_calls": 126,
+      "gpu_calls": 180,
+      "published_outputs": 108,
+      "scalar_checks": 1404,
+      "upload_bytes": 38400,
+      "upload_calls": 198,
+      "validation_download_bytes": 38448,
+      "validation_download_calls": 180
+    }
+  },
+  "matrix_record_digest": "sha256:57b90cc3482c481ca535bca089f058c49eb1f5036fe8ac61b5cc7c0eec72d45b",
+  "normal_runtime_admission": false,
+  "observation_scope": "fixed_portfolio_only",
+  "one_matrix_image": true,
+  "plans": 36,
+  "receipt_counts": {
+    "c11": 125,
+    "matrix": 206
+  },
+  "schema_version": "tuc.bounded_dag_native_comparison.v0",
+  "status": "PASS",
+  "verification_scope": "record_validation_only"
+}
