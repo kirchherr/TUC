@@ -12,6 +12,12 @@ An isolated twelve-case C11 conformance workflow complements independent
 Python reference tests. CUDA emission is source-only until separately accepted
 physical execution; ordinary runtime admission remains closed.
 
+[RFC 0320's shared native worker](docs/BOUNDED_DAG_NATIVE_WORKER.md) now prepares
+36 fixed CPU/GPU/mixed profiles from these artifacts, with one event validator,
+owned slot management and separate planned/validation transfer accounting.
+Its own CPU sanitizer/mutation workflow gates the implementation; fresh
+source-bound authorization and physical receipts still gate GPU acceptance.
+
 Latest completed experiment: [Bounded Native Fan-In](docs/BOUNDED_NATIVE_FANIN.md),
 RFC 0318, passes C11 and six same-image physical CPU/GPU profiles on 2026-09-17.
 Two separately placed ReLU producers feed a Matmul join and row Sum, preserving

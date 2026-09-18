@@ -1,6 +1,12 @@
 # RFC 0319: Bounded DAG Artifact Compiler
 
-Status: implemented; native CPU conformance pending observed CI results.
+Status: implemented; fixed CPU conformance passed at `dc1ce099c138ba383e42077d822275d06937c7b1`.
+
+[PR #115 conformance](https://github.com/kirchherr/TUC/actions/runs/35315459102)
+passed static and ASan/UBSan execution and every required control. The
+[full CI](https://github.com/kirchherr/TUC/actions/runs/35315459034) passed
+4,185 tests with two skips, Ruff and Mypy. These results bind that source
+revision; the shared CPU/GPU worker in RFC 0320 is a separate execution boundary.
 
 ## Problem and decision
 

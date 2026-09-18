@@ -2014,10 +2014,11 @@ Current focus:
   evidence; keep default native admission blocked. Independent reproduction
   remains open.
 - RFC 0319 adds a reusable bounded DAG artifact compiler and a separate
-  twelve-case isolated C11 conformance workflow. Validate the new compiler's
-  actual CPU receipts before acceptance; preserve previous native observations
-  under their original source bindings. Prepare a concrete CUDA wrapper and
-  source-bound review before seeking fresh physical-run authorization. General
+  twelve-case isolated C11 conformance workflow. Its PR #115 CPU conformance
+  and full CI passed. Preserve previous native observations under their original
+  source bindings. RFC 0320 implements the concrete shared CPU/CUDA wrapper,
+  independent native validator and 36-profile corpus. Complete its own CPU
+  conformance and source-bound review before seeking fresh physical-run authorization. General
   execution, dynamic shapes and performance remain closed.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
