@@ -1,5 +1,13 @@
 # Roadmap Status
 
+- [Bounded Source-to-CPU Bridge](BOUNDED_CPU_SOURCE.md), RFC 0326, adds an
+  explicit installed converter from supported source and a tensor signature to
+  validated graph JSON. The fixed OCI parser runs outside the host process;
+  the existing CPU CLI executes the graph. Independent installed conformance
+  covers six source programs, twelve calls and malformed/malicious inputs.
+  Actual execution and owner review are required for acceptance; general
+  default-source admission, original proof records and GPU scope are unchanged.
+
 - [Bounded CPU JSON CLI](BOUNDED_CPU_JSON_CLI.md), RFC 0325, adds installed
   inspect/run commands over existing Source Intent graph data and versioned
   tensor inputs. Strict byte/structure/numeric limits and no-follow regular-file

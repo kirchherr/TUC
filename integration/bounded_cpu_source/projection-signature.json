@@ -1,0 +1,10 @@
+{
+  "schema_version": "tuc.bounded_cpu_source.v0",
+  "source_name": "source_row_scores",
+  "kernel_name": "projection",
+  "tensor_shapes": {
+    "x": [2, 2],
+    "weights": [2, 1],
+    "scores": [2, 1]
+  }
+}

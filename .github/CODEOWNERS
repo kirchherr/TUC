@@ -56,4 +56,7 @@
 /src/tuc/bounded_cpu_application_cli.py @kirchherr
 /integration/bounded_cpu_json/ @kirchherr
 /docs/BOUNDED_CPU_JSON_CLI.md @kirchherr
+/src/tuc/bounded_cpu_source_cli.py @kirchherr
+/integration/bounded_cpu_source/ @kirchherr
+/docs/BOUNDED_CPU_SOURCE.md @kirchherr
 /rfcs/ @kirchherr

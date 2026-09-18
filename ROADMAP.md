@@ -4,7 +4,13 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Current implementation: [Bounded CPU JSON CLI](docs/BOUNDED_CPU_JSON_CLI.md),
+Current implementation: [Bounded Source-to-CPU Bridge](docs/BOUNDED_CPU_SOURCE.md),
+RFC 0326, converts supported caller-owned source through the isolated parser
+worker to checked graph JSON for the existing CPU application. Acceptance
+requires observed installed execution and owner review. General source/default
+parser admission and CUDA execution remain separate.
+
+Underlying interface: [Bounded CPU JSON CLI](docs/BOUNDED_CPU_JSON_CLI.md),
 RFC 0325, accepts caller-owned graph and tensor JSON through installed inspect/run
 commands. It validates bounded data before delegating to the
 [CPU application API](docs/BOUNDED_CPU_APPLICATION.md), RFC 0324. Installed native
