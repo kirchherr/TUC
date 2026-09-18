@@ -1,0 +1,9 @@
+**
+!fuzz.Dockerfile
+!fuzz.Dockerfile.dockerignore
+!entrypoint.c
+!entrypoint.h
+!application.c
+!application.h
+!seed.h
+!fuzz.c

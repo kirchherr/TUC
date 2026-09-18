@@ -51,4 +51,6 @@
 /docs/INSTALLED_SOURCE_C11_CONFORMANCE.md @kirchherr
 /integration/bounded_c11_entrypoint/ @kirchherr
 /docs/BOUNDED_C11_ENTRYPOINT.md @kirchherr
+/integration/bounded_cpu_application/ @kirchherr
+/docs/BOUNDED_CPU_APPLICATION.md @kirchherr
 /rfcs/ @kirchherr
