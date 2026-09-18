@@ -4,7 +4,14 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Next validation slice: [Installed Source Intent C11 Conformance](docs/INSTALLED_SOURCE_C11_CONFORMANCE.md),
+Current implementation: [Bounded C11 Graph Entrypoint](docs/BOUNDED_C11_ENTRYPOINT.md),
+RFC 0323, emits one reusable checked C function for a complete bounded CPU graph.
+It owns intermediate storage and scheduling, validates caller buffers and checks
+each rounded FP32 operation before publishing outputs. An installed-wheel client
+links two emitted graphs and exercises static/sanitized calls and rejection paths.
+Acceptance requires observed conformance CI and owner review for the exact revision.
+
+Underlying validation slice: [Installed Source Intent C11 Conformance](docs/INSTALLED_SOURCE_C11_CONFORMANCE.md),
 RFC 0322, carries RFC 0321's application through an externally installed wheel
 into an isolated static/sanitized CPU test. The fixed corpus, all public returns
 and thirteen fault variants are bound to the emitted context and wheel digest.

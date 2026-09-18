@@ -49,4 +49,6 @@
 /integration/bounded_dag_compiler/ @kirchherr
 /integration/bounded_source_c11/ @kirchherr
 /docs/INSTALLED_SOURCE_C11_CONFORMANCE.md @kirchherr
+/integration/bounded_c11_entrypoint/ @kirchherr
+/docs/BOUNDED_C11_ENTRYPOINT.md @kirchherr
 /rfcs/ @kirchherr

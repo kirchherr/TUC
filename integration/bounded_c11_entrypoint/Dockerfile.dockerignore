@@ -1,0 +1,10 @@
+**
+!Dockerfile
+!Dockerfile.dockerignore
+!app-entrypoint.c
+!app-entrypoint.h
+!tiny-entrypoint.c
+!tiny-entrypoint.h
+!entrypoint.h
+!worker.c
+!build.sh
