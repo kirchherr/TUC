@@ -45,4 +45,6 @@
 /docs/PROOF_OF_ABSTRACTION.md @kirchherr
 /docs/RUNTIME_PLAN.md @kirchherr
 /docs/TRITON_COMPATIBILITY.md @kirchherr
+/docs/BOUNDED_SOURCE_COMPILER.md @kirchherr
+/integration/bounded_dag_compiler/ @kirchherr
 /rfcs/ @kirchherr
