@@ -38,7 +38,23 @@ not a general sandbox or arbitrary Triton compatibility claim.
 
 `record.json` is created exclusively after every check succeeds. Default and
 fixture reports are inert expectations, not native evidence. Native observation
-remains pending until the installed workflow has completed successfully.
+is recorded only by a completed installed workflow.
+
+## Observed installed execution
+
+[Run 35346924415](https://github.com/kirchherr/TUC/actions/runs/35346924415),
+job `105605580725`, succeeded at source revision
+`1da22767afcd396ac90a1fa3b0c5663840080c9d`: 573 Linux tests, six source
+conversions, twelve CPU calls, 56 independent FP32 comparisons and all ten
+negative controls. Original files remained unchanged and workspaces were clean.
+
+The [original CI receipt](observed-ci-1da2276.json) is the exact `ci-record.json`
+entry from artifact `10547432511` (`bounded-source-cpu-receipt`), preserved
+without reserialization. Its ZIP SHA-256 matched GitHub metadata and upload log:
+`8703cec55446df792e07a80823d549ab758dc5019257c0de08b823b2a648cb6c`.
+The receipt binds the source revision, wheel and consumer and contains observed
+outputs and request identities. It establishes this bounded corpus only; final
+revision CI and owner review remain separate acceptance requirements.
 
 ## Small application example
 

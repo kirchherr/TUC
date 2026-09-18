@@ -102,5 +102,10 @@ runtime or output failure. Stderr is a closed diagnostic such as
 not included. `--help` is portable and does not start a process.
 
 See [RFC 0326](../rfcs/0326-bounded-source-to-cpu.md) for the boundary and
-validation design. Native conformance is pending until the dedicated workflow
-has actually executed this revision.
+validation design. [Native CI run 35346924415](
+https://github.com/kirchherr/TUC/actions/runs/35346924415) passed at source
+revision `1da2276`: six conversions, twelve CPU calls, 56 independent FP32
+comparisons and ten rejection controls. Its [original observed record](
+../integration/bounded_cpu_source/observed-ci-1da2276.json) binds the source
+revision, installed wheel and consumer. Final revision CI and owner review
+remain required for acceptance.

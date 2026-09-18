@@ -6,8 +6,9 @@ The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
 Current implementation: [Bounded Source-to-CPU Bridge](docs/BOUNDED_CPU_SOURCE.md),
 RFC 0326, converts supported caller-owned source through the isolated parser
-worker to checked graph JSON for the existing CPU application. Acceptance
-requires observed installed execution and owner review. General source/default
+worker to checked graph JSON for the existing CPU application. Installed native
+execution is observed at `1da2276`; acceptance still requires final revision CI
+and owner review. General source/default
 parser admission and CUDA execution remain separate.
 
 Underlying interface: [Bounded CPU JSON CLI](docs/BOUNDED_CPU_JSON_CLI.md),

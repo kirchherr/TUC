@@ -1,6 +1,7 @@
 # RFC 0326: Explicit bounded source-to-CPU application bridge
 
-Status: implementation under validation; native observation pending.
+Status: implemented; installed native conformance observed at `1da2276`;
+final revision CI and owner review pending.
 
 ## Problem and decision
 
@@ -114,7 +115,12 @@ source constructs, invalid signatures, nonterminal returns and parser-valid
 softmax outside the CPU subset.
 Original source/signature/input bytes and cleanup are checked. Its new read-only
 workflow retains observed results bound to the source revision and installed
-wheel/consumer hashes. Native observations remain pending until the actual run.
+wheel/consumer hashes. [Run 35346924415](
+https://github.com/kirchherr/TUC/actions/runs/35346924415) observed all six
+conversions, twelve CPU calls, 56 comparisons and ten rejection controls at
+`1da22767afcd396ac90a1fa3b0c5663840080c9d`; all 573 Linux boundary tests passed.
+The [unaltered receipt](../integration/bounded_cpu_source/observed-ci-1da2276.json)
+preserves that source identity and does not claim a later revision was run.
 
 Existing parser/worker sources, proof goldens and earlier records are unchanged.
 No new dependency, credential, package release, remote host, GPU execution or
