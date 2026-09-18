@@ -4,7 +4,12 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Current implementation: [Bounded Source-to-CPU Bridge](docs/BOUNDED_CPU_SOURCE.md),
+Current implementation: [Bounded CPU Add/Bias](docs/BOUNDED_CPU_ADD_BIAS.md),
+RFC 0327, extends source/JSON-to-CPU with same-shape addition and right-hand
+row bias for affine projections, residual sums and a small MLP. Installed
+FP32 conformance and ASan/UBSan validation are required before acceptance.
+
+Underlying source interface: [Bounded Source-to-CPU Bridge](docs/BOUNDED_CPU_SOURCE.md),
 RFC 0326, converts supported caller-owned source through the isolated parser
 worker to checked graph JSON for the existing CPU application. Installed native
 execution is observed at `1da2276`; acceptance still requires final revision CI

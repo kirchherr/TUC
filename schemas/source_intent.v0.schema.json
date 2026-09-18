@@ -112,7 +112,7 @@
         },
         "elementwise_kind": {
           "type": "string",
-          "enum": ["gelu", "identity", "relu"]
+          "enum": ["add", "gelu", "identity", "relu"]
         }
       }
     }

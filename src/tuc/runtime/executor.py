@@ -26,6 +26,7 @@ from tuc.reference import (
     reference_reduction_sum,
     reference_softmax,
 )
+from tuc.reference.kernels import reference_add
 from tuc.runtime.layout_conversion_executor import (
     RuntimeLayoutConversionExecutionStep,
     assert_materializable_layout_conversion,
@@ -907,6 +908,11 @@ def _execute_reference_operation(
             values[operation.inputs[1].name],
         )
     if operation.kind is OperationKind.ELEMENTWISE:
+        if operation.attributes.get("kernel") == "add":
+            return reference_add(
+                values[operation.inputs[0].name],
+                values[operation.inputs[1].name],
+            )
         _require_arity(operation, inputs=1, outputs=1)
         kernel = operation.attributes.get("kernel", "identity")
         if not isinstance(kernel, str):
@@ -963,6 +969,9 @@ def _validate_matmul_operation(operation: ComputeOperation) -> None:
 
 
 def _validate_elementwise_operation(operation: ComputeOperation) -> None:
+    if operation.attributes.get("kernel") == "add":
+        _validate_add_operation(operation)
+        return
     _require_arity(operation, inputs=1, outputs=1)
     input_tensor = operation.inputs[0]
     output = operation.outputs[0]
@@ -981,6 +990,20 @@ def _validate_elementwise_operation(operation: ComputeOperation) -> None:
             f"runtime executor elementwise output shape mismatch for {operation.name}: "
             f"expected {_format_shape(input_tensor.shape)}, got {_format_shape(output.shape)}"
         )
+
+
+def _validate_add_operation(operation: ComputeOperation) -> None:
+    _require_arity(operation, inputs=2, outputs=1)
+    left, right = operation.inputs
+    output = operation.outputs[0]
+    if any(tensor.dtype != "float32" for tensor in (left, right, output)):
+        raise ValueError("runtime executor add requires float32 tensor declarations")
+    if len(left.shape) not in (1, 2) or output.shape != left.shape:
+        raise ValueError("runtime executor add output must match its rank-1 or rank-2 left input")
+    if right.shape != left.shape and not (
+        len(left.shape) == 2 and right.shape == (left.shape[1],)
+    ):
+        raise ValueError("runtime executor add requires equal shapes or a right row bias")
 
 
 def _validate_reduction_operation(operation: ComputeOperation) -> None:

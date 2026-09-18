@@ -37,6 +37,7 @@ def test_source_intent_json_schema_matches_runtime_contract() -> None:
     assert defs["attributes"]["properties"]["axis"]["minimum"] == -8
     assert defs["attributes"]["properties"]["axis"]["maximum"] == 7
     assert defs["attributes"]["properties"]["elementwise_kind"]["enum"] == [
+        "add",
         "gelu",
         "identity",
         "relu",

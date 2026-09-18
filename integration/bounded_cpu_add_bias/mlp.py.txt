@@ -1,0 +1,11 @@
+import triton
+import triton.language as tl
+
+@triton.jit
+def mlp(x, w1, b1, w2, b2, y):
+    p = tl.dot(x, w1)
+    z = p + b1
+    hidden = tl.where(z > 0.0, z, 0.0)
+    q = tl.dot(hidden, w2)
+    result = q + b2
+    tl.store(y, result)

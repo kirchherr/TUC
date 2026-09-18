@@ -207,7 +207,8 @@ def _graph_preflight(value: object) -> dict[str, object]:
             _reject()
         for key, attribute in attributes.items():
             if ((key == "axis" and (type(attribute) is not int or attribute != 1)) or
-                    (key == "elementwise_kind" and attribute != "relu")):
+                    (key == "elementwise_kind" and
+                     (type(attribute) is not str or attribute not in ("relu", "add")))):
                 _reject()
         hints = _object(op.get("hints", {}), frozenset(), frozenset({
             "robust_to_noise", "prefer_sparsity", "prefer_linear_accelerator", "max_error_budget"}))
