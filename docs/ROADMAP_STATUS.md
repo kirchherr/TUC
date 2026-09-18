@@ -1,5 +1,14 @@
 # Roadmap Status
 
+- [Bounded CPU Application](BOUNDED_CPU_APPLICATION.md), RFC 0324, adds explicit
+  installed build/run APIs for caller-defined supported CPU graphs and input
+  values. Inert preparation and bounded binary framing remain separate from
+  native execution. The fixed local Docker operator owns immutable image handles,
+  bounded pipes and cleanup; the integration checks two graphs, varying data,
+  numeric rejection and a sanitizer parser corpus. Native acceptance requires
+  the workflow's actual observations for the reviewed revision and owner review.
+  This CPU application surface does not extend CUDA or general plugin admission.
+
 - [Bounded C11 Graph Entrypoint](BOUNDED_C11_ENTRYPOINT.md), RFC 0323, adds a
   reusable source-only C ABI for complete bounded CPU graphs. Descriptor/range
   validation and checked FP32 intermediates precede output publication; returned
