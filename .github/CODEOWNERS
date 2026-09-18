@@ -53,4 +53,7 @@
 /docs/BOUNDED_C11_ENTRYPOINT.md @kirchherr
 /integration/bounded_cpu_application/ @kirchherr
 /docs/BOUNDED_CPU_APPLICATION.md @kirchherr
+/src/tuc/bounded_cpu_application_cli.py @kirchherr
+/integration/bounded_cpu_json/ @kirchherr
+/docs/BOUNDED_CPU_JSON_CLI.md @kirchherr
 /rfcs/ @kirchherr

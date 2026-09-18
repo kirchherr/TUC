@@ -4,7 +4,14 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Current implementation: [Bounded C11 Graph Entrypoint](docs/BOUNDED_C11_ENTRYPOINT.md),
+Current implementation: [Bounded CPU JSON CLI](docs/BOUNDED_CPU_JSON_CLI.md),
+RFC 0325, accepts caller-owned graph and tensor JSON through installed inspect/run
+commands. It validates bounded data before delegating to the
+[CPU application API](docs/BOUNDED_CPU_APPLICATION.md), RFC 0324. Installed native
+conformance covers branching/fanin graphs and shape variants with independent
+references. Acceptance requires observed CI and owner review for the revision.
+
+Underlying implementation: [Bounded C11 Graph Entrypoint](docs/BOUNDED_C11_ENTRYPOINT.md),
 RFC 0323, emits one reusable checked C function for a complete bounded CPU graph.
 It owns intermediate storage and scheduling, validates caller buffers and checks
 each rounded FP32 operation before publishing outputs. An installed-wheel client

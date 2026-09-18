@@ -24,6 +24,7 @@ dependencies = [
 ]
 
 [project.scripts]
+tuc-cpu-app = "tuc.bounded_cpu_application_cli:main"
 tuc-backend-verify = "tuc.integration:main"
 tuc-prove-portable-compute = "tuc.portable_compute:main"
 tuc-reproduce-portable-compute = "tuc.portable_compute_reproduction:main"

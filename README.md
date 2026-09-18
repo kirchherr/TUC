@@ -6,6 +6,13 @@ naming a device, can target systems describe what they support, and can software
 choose between those targets while preserving the calculation's result and
 explaining every choice?
 
+For the current bounded native CPU application path, see
+[Run a CPU graph from JSON](docs/BOUNDED_CPU_JSON_CLI.md). An installed
+`tuc-cpu-app` command inspects caller-defined supported graph data and explicitly
+builds/runs it with separate input tensors on Linux x86-64. The
+[Python application API](docs/BOUNDED_CPU_APPLICATION.md) also supports reusing
+a build across multiple inputs.
+
 ## What The Current Experiment Actually Does
 
 Objective Delta v0.1.0 is deliberately small:

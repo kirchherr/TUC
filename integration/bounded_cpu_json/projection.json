@@ -1,0 +1,15 @@
+{
+  "schema_version": "source_intent.v0",
+  "name": "row_scores",
+  "tensors": [
+    {"name": "x", "shape": [2, 2]},
+    {"name": "weights", "shape": [2, 1]},
+    {"name": "projection", "shape": [2, 1]},
+    {"name": "positive", "shape": [2, 1]}
+  ],
+  "operations": [
+    {"name": "project", "family": "matmul", "inputs": ["x", "weights"], "outputs": ["projection"]},
+    {"name": "activate", "family": "elementwise", "inputs": ["projection"], "outputs": ["positive"], "attributes": {"elementwise_kind": "relu"}}
+  ],
+  "returns": [{"public_name": "scores", "tensor_name": "positive", "required": true}]
+}
