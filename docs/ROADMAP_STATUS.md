@@ -13,7 +13,7 @@
   controls plus two invalid selectors reject; C11 ASan/UBSan and 16032 native
   contract-field bitflip rejections pass. Thirty-seven new bounded evidence
   files include `tests/golden/proofs/native_fanin_comparison.json`. This is the
-  latest accepted native experiment, with sequential producers, unchanged
+  earlier accepted native experiment, with sequential producers, unchanged
   candidate/core/older evidence and no general admission or performance claim.
 
 - [Bounded Native Fanout](BOUNDED_NATIVE_FANOUT.md), RFC 0316, passed C11 and
