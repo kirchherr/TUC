@@ -690,6 +690,14 @@ pass. Thirty-seven new bounded metadata files preserve the actual observations
 and source/image bindings. Producers remain sequential, and prior evidence,
 candidate fixtures and core admission defaults remain unchanged.
 Independent reproduction, dynamic shapes and performance claims remain open.
+RFC 0319 now adds reusable lowering of bounded typed HAC-IR DAGs to C11/CUDA
+primitives and a digest-bound manifest with canonical residency events. The
+compiler supports static Matmul/ReLU/row-Sum composition within explicit
+operation, shape, memory and arithmetic budgets. A new seven-operation graph
+and an exhaustive placement reference suite exercise topology independence;
+twelve fixed family/shape cases have a dedicated isolated C11 conformance route.
+Source emission does not admit execution, and CUDA observations from earlier
+fixed emitters do not cover this compiler. See `docs/BOUNDED_DAG_COMPILER.md`.
 See `docs/BOUNDED_NATIVE_FANIN.md`, `docs/BOUNDED_NATIVE_FANOUT.md`,
 `docs/BOUNDED_NATIVE_PLACEMENTS.md`,
 `docs/BOUNDED_MIXED_NATIVE_RESIDENCY.md`, `docs/BOUNDED_NATIVE_IO_PLAN.md`,

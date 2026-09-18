@@ -4,6 +4,14 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Bounded DAG Artifact Compiler](docs/BOUNDED_DAG_COMPILER.md),
+RFC 0319, replaces topology-specific source emission with a shared bounded
+HAC-IR/partition-to-C11/CUDA API. Four graph families and three static shapes
+exercise it, including a DAG with two Matmul joins and two public outputs.
+An isolated twelve-case C11 conformance workflow complements independent
+Python reference tests. CUDA emission is source-only until separately accepted
+physical execution; ordinary runtime admission remains closed.
+
 Latest completed experiment: [Bounded Native Fan-In](docs/BOUNDED_NATIVE_FANIN.md),
 RFC 0318, passes C11 and six same-image physical CPU/GPU profiles on 2026-09-17.
 Two separately placed ReLU producers feed a Matmul join and row Sum, preserving

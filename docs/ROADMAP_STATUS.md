@@ -2007,13 +2007,18 @@ Current focus:
 
 - RFCs 0313 through 0318 now cover bounded external I/O, core residency planning,
   eight placements of the fixed chain, native immutable fanout and fan-in. The
-  predecessor stack is merged through PR #111. Obtain the required review for
-  fanout/fan-in stack without bypassing branch rules. The RFC 0317 candidate
+  fanout/fan-in stack is merged through PR #112. The RFC 0317 candidate
   and RFC 0318 native acceptance preserve distinct producer placements under
   a separately reviewed source and numerical contract. Preserve numerical,
   wrong-code, coverage and FMA
   evidence; keep default native admission blocked. Independent reproduction
   remains open.
+- RFC 0319 adds a reusable bounded DAG artifact compiler and a separate
+  twelve-case isolated C11 conformance workflow. Validate the new compiler's
+  actual CPU receipts before acceptance; preserve previous native observations
+  under their original source bindings. Prepare a concrete CUDA wrapper and
+  source-bound review before seeking fresh physical-run authorization. General
+  execution, dynamic shapes and performance remain closed.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new
   evidentiary dimension: independent provenance, a separately reviewed source
