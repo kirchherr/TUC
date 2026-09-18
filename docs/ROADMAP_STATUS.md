@@ -1,5 +1,13 @@
 # Roadmap Status
 
+- [Public Bounded Source Intent Compiler](BOUNDED_SOURCE_COMPILER.md), RFC 0321,
+  joins the existing frontend adapter, capability-based compiler and bounded DAG
+  lowerer through one explicit installed API. Strict preflight, required terminal
+  returns and complete result revalidation protect the narrower contract. A
+  separate wheel consumer uses a new branching graph and three capability sets.
+  Generated artifacts remain inert; the prior physical DAG evidence and normal
+  runtime admission remain unchanged.
+
 - [Bounded Native Fan-In](BOUNDED_NATIVE_FANIN.md), RFCs 0317/0318, defines
   a fixed two-producer Matmul join with six placements and identical HAC-IR.
   Metadata readiness requires both produced operands in the join's space.

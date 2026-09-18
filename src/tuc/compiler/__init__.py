@@ -14,7 +14,21 @@ from tuc.compiler.movement import (
 )
 from tuc.compiler.pipeline import CompilationResult, CompilerPipeline, compile_graph
 
+# isort: split
+# Load the explicit frontend facade after the existing pipeline exports: the
+# frontend conformance module imports compile_graph during package startup.
+from tuc.compiler.bounded_source import (
+    BoundedBackendBinding,
+    BoundedSourceCompilation,
+    BoundedTensorBinding,
+    compile_bounded_source_intent,
+    validate_bounded_source_compilation,
+)
+
 __all__ = [
+    "BoundedBackendBinding",
+    "BoundedSourceCompilation",
+    "BoundedTensorBinding",
     "CompilationResult",
     "CompilerDecisionReport",
     "CompilerPipeline",
@@ -23,8 +37,10 @@ __all__ = [
     "annotate_graph_movement",
     "build_compiler_decision_report",
     "compile_graph",
+    "compile_bounded_source_intent",
     "estimate_operation_movement",
     "lower_hac_to_hs",
     "lower_tlir_to_hac",
     "summarize_graph_movement",
+    "validate_bounded_source_compilation",
 ]

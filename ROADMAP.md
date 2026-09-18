@@ -4,7 +4,14 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Current implementation: [Bounded DAG Artifact Compiler](docs/BOUNDED_DAG_COMPILER.md),
+Current implementation: [Public Bounded Source Intent Compiler](docs/BOUNDED_SOURCE_COMPILER.md),
+RFC 0321, gives installed applications one bounded data-only API for their own
+Source Intent graphs, capability-based planning and C11/CUDA source artifacts.
+Explicit public I/O and full-result revalidation preserve source and backend
+bindings. A standalone wheel consumer exercises a new branching graph without
+granting native execution admission.
+
+Underlying [Bounded DAG Artifact Compiler](docs/BOUNDED_DAG_COMPILER.md),
 RFC 0319, replaces topology-specific source emission with a shared bounded
 HAC-IR/partition-to-C11/CUDA API. Four graph families and three static shapes
 exercise it, including a DAG with two Matmul joins and two public outputs.
