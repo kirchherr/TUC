@@ -1,6 +1,6 @@
 # RFC 0320: Shared Native Worker for Bounded DAG Artifacts
 
-Status: implementation candidate; physical execution not accepted.
+Status: fixed CPU and 36-profile physical matrix accepted, 2026-09-18.
 
 ## Decision
 
@@ -120,3 +120,19 @@ rejections, plus both invalid invocations, bound to the approved source and
 image. Preserve actual metadata separately from synthetic expectations.
 General runtime admission, dynamic shapes, new vendors/ISAs, concurrent
 scheduling, performance and independent reproduction remain outside this RFC.
+
+## Observed acceptance
+
+The exact approved source `cdb67d59c27f712606da1117e98870cc1f53692d` passed the
+unchanged matrix operator on dev001 after archive, context and host-baseline
+checks. All 36 same-image profiles passed: 216 runs, 468 CPU/504 GPU calls,
+4,212 terminal checks and 324 publications. All 132 faults and two invalid
+invocations rejected with exact metadata. The separate CPU CI also passed
+static/ASan/UBSan baselines and 194,688 plan-bit mutation controls.
+
+All 331 original CPU/matrix receipts are retained in two aggregate records.
+The separate pure equivalence verifier rechecks them without modifying the
+executed compiler, generator, worker, operator or workflow. See the
+[observed evidence report](../docs/BOUNDED_DAG_NATIVE_EVIDENCE.md) for original
+source/archive/context/image identities, profile totals, environment and limits.
+This acceptance grants no ordinary runtime admission or broader claim.

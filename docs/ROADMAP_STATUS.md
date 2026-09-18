@@ -2017,8 +2017,10 @@ Current focus:
   twelve-case isolated C11 conformance workflow. Its PR #115 CPU conformance
   and full CI passed. Preserve previous native observations under their original
   source bindings. RFC 0320 implements the concrete shared CPU/CUDA wrapper,
-  independent native validator and 36-profile corpus. Complete its own CPU
-  conformance and source-bound review before seeking fresh physical-run authorization. General
+  independent native validator and 36-profile corpus. Its CPU conformance and
+  explicitly authorized physical matrix passed at source `cdb67d5`; see the
+  [observed evidence](BOUNDED_DAG_NATIVE_EVIDENCE.md). All 36 profiles and 132
+  exact fault controls passed, with original source/image binding preserved. General
   execution, dynamic shapes and performance remain closed.
 - Preserve the RFC 0302 through RFC 0304 vertical slice as a fixed
   source-to-two-target proof. Its next generalization must contribute a new

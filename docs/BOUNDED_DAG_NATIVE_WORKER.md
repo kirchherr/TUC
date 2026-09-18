@@ -45,7 +45,15 @@ It runs twelve static and sanitized profiles with their exact controls, plus
 retains its verified record. Candidate reports and synthetic unit-test receipts
 cannot establish an executed process; consult the commit-bound CI record.
 
-## GPU preparation
+## Physical matrix acceptance
+
+The exact approved source `cdb67d5` passed all 36 same-image physical profiles
+on 2026-09-18. The observed totals match the candidate expectations above;
+all 132 fault controls and both invalid invocations rejected correctly.
+The [evidence report](BOUNDED_DAG_NATIVE_EVIDENCE.md) retains the original
+source/archive/context/image bindings and points to all actual receipts.
+The candidate remains a synthetic description; the separate records establish
+this fixed execution scope.
 
 The `--matrix` operator mode is implemented for a separately approved sm86 host.
 All 36 profiles use one image, including all-CPU profiles. Each GPU operation
@@ -56,6 +64,6 @@ cannot substitute for successful fault controls.
 
 Before any dev001 connection or transfer, bind the committed source/archive,
 review current driver/toolkit advisories and obtain fresh explicit authorization
-for the concrete payload. The current implementation and CPU-only workflow do
-not constitute physical GPU acceptance. Earlier fan-in/fanout observations
+for each changed concrete payload. CPU-only workflow results do not constitute
+physical GPU acceptance. Earlier fan-in/fanout observations
 retain their original source bindings and do not cover this worker.
