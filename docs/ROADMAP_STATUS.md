@@ -1,5 +1,13 @@
 # Roadmap Status
 
+- [Bounded C11 Graph Entrypoint](BOUNDED_C11_ENTRYPOINT.md), RFC 0323, adds a
+  reusable source-only C ABI for complete bounded CPU graphs. Descriptor/range
+  validation and checked FP32 intermediates precede output publication; returned
+  errors preserve output bytes under the documented caller obligations. The
+  installed client jointly links two graphs, with independent references and
+  static/sanitized rejection controls. Acceptance requires observed CI and owner
+  review; general native admission and CUDA execution are unchanged.
+
 - [Installed Source Intent C11 Conformance](INSTALLED_SOURCE_C11_CONFORMANCE.md),
   RFC 0322, adds a fixed application execution test through the public compiler
   in an isolated installed wheel. Three input corpora, two replays, static and
