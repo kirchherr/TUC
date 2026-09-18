@@ -117,3 +117,15 @@ inspect functions, evaluate code, discover plugins or admit CUDA execution.
 
 See [RFC 0325](../rfcs/0325-bounded-cpu-json-cli.md) and the
 [installed CLI conformance client](../integration/bounded_cpu_json/README.md).
+
+## Observed installed execution
+
+The [Linux integration run](https://github.com/kirchherr/TUC/actions/runs/35343784690)
+at source revision `1b2a1ce4d8db86de320af341dd5f44ada916aa79` passed 308 tests
+and executed the installed console outside the checkout: six programs, twelve
+successful calls and 56 independent binary32 scalar comparisons. It also
+confirmed one numeric overflow rejection and six malformed/duplicate/symlink
+controls, unchanged input bytes and cleaned workspaces. The
+[original receipt](../integration/bounded_cpu_json/observed-ci-1b2a1ce.json)
+retains source, wheel, consumer, program and request identities. This observation
+covers those bounded cases; owner review and final revision CI remain required.

@@ -1,6 +1,7 @@
 # RFC 0325: Bounded CPU JSON Application CLI
 
-Status: implementation under validation; native observation pending.
+Status: implemented; native CLI conformance observed. Owner review and final CI
+remain required.
 
 ## Problem and decision
 
@@ -114,8 +115,20 @@ The dedicated read-only workflow records actual results with source revision,
 wheel SHA-256, consumer SHA-256 and per-program/request identities. Its actions
 are commit-pinned and existing hash-pinned dependencies/toolchain are reused.
 No new dependency, credentials, repository protections or release workflow is
-introduced. Observations are pending until this workflow succeeds; test plans
-and synthetic responses cannot substitute for actual execution.
+introduced. Test plans and synthetic responses cannot substitute for actual
+execution.
+
+The [push CI run 35343784690](
+https://github.com/kirchherr/TUC/actions/runs/35343784690), job `105595495204`,
+succeeded on source revision `1b2a1ce4d8db86de320af341dd5f44ada916aa79`.
+It passed 308 tests in 8.84 seconds and observed the installed CLI outside the
+checkout completing all six programs, 12 successful calls and 56 independent
+scalar comparisons. The checked numeric rejection and all six negative
+controls passed; original input files were unchanged and workspaces were clean.
+The [original receipt](../integration/bounded_cpu_json/observed-ci-1b2a1ce.json)
+binds these results to the executed revision and its wheel, consumer and program
+identities. This observation does not cover later revisions; owner review and
+final CI remain required.
 
 Prior C11/GPU sources, observations and proof goldens retain their original
 scope. This is a bounded CPU application interface, not general source ingestion,

@@ -40,6 +40,16 @@ Expected outputs are `{"scores":[0.0,10.0]}`. See the
 The [workflow](../../.github/workflows/bounded-cpu-json-cli.yml) builds and
 installs an offline wheel, checks the installed import origin, exercises the
 console, and wraps the original consumer record with source, wheel and consumer
-hashes in `ci-record.json`. No success is claimed until that run is observed.
+hashes in `ci-record.json`.
 The runtime and native parser sanitizer conformance remain in their existing
 independent workflows.
+
+Native conformance was observed in successful [push CI run 35343784690](
+https://github.com/kirchherr/TUC/actions/runs/35343784690) on source revision
+`1b2a1ce4d8db86de320af341dd5f44ada916aa79`. Its installed CLI ran outside the
+checkout: six programs, 12 successful calls, 56 scalar comparisons, one checked
+numeric rejection and six negative controls passed. Input files remained
+unchanged and runtime workspaces were clean. The job also passed 308 tests in
+8.84 seconds. The [original observation](observed-ci-1b2a1ce.json) retains that
+executed source identity; it is not evidence for later revisions. Owner review
+and final CI remain required.
