@@ -1,5 +1,12 @@
 # Roadmap Status
 
+- [Bounded CPU JSON CLI](BOUNDED_CPU_JSON_CLI.md), RFC 0325, adds installed
+  inspect/run commands over existing Source Intent graph data and versioned
+  tensor inputs. Strict byte/structure/numeric limits and no-follow regular-file
+  reads precede the existing CPU runtime. An independent installed consumer
+  covers six branching/fanin/shape programs. Acceptance requires observed native
+  CI and owner review; general source ingestion and CUDA admission are unchanged.
+
 - [Bounded CPU Application](BOUNDED_CPU_APPLICATION.md), RFC 0324, adds explicit
   installed build/run APIs for caller-defined supported CPU graphs and input
   values. Inert preparation and bounded binary framing remain separate from
