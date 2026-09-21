@@ -1,5 +1,8 @@
 # Convert a bounded source program and run it on CPU
 
+For `product = left * right` and two combined Linear branches, see
+[elementwise products and gated MLPs](BOUNDED_CPU_GATING.md).
+
 For `tl.dot(x, tl.trans(weight))` and a small MLP using physical row-major
 weights, see [bounded CPU Linear](BOUNDED_CPU_LINEAR.md).
 

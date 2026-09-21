@@ -150,6 +150,9 @@ def emit_bounded_c11_entrypoint(
     if any(op.kind == "matmul_rhs_transposed" for op in spec.operations):
         numeric["rhs_transposed"] = "row_major_W_N_K_indexed_column_times_K_plus_k"
         numeric["transpose_temporary_bytes"] = 0
+    if any(op.kind == "mul" for op in spec.operations):
+        numeric["multiplication"] = "one_checked_binary32_product_per_output_element"
+        numeric["multiplication_shapes"] = "equal_rank1_or_rank2_without_broadcasting"
     provenance = {
         "schema_version": SCHEMA_VERSION,
         "source_intent_digest": fresh.source_intent_digest,

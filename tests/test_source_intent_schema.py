@@ -40,6 +40,7 @@ def test_source_intent_json_schema_matches_runtime_contract() -> None:
         "add",
         "gelu",
         "identity",
+        "mul",
         "relu",
     ]
     assert defs["tensor"]["properties"]["shape"]["maxItems"] == 8

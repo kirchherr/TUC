@@ -5,6 +5,9 @@ You can inspect the graph, then explicitly build and run it without writing a
 Python integration script. This is the file interface to the
 [bounded CPU application API](BOUNDED_CPU_APPLICATION.md).
 
+[Elementwise products and gated MLPs](BOUNDED_CPU_GATING.md) use
+`family: elementwise` with `elementwise_kind: mul` and exactly equal input shapes.
+
 The CPU path also supports [Linear with row-major weights](BOUNDED_CPU_LINEAR.md):
 Matmul with `rhs_transposed: true` consumes `X[M,K]` and `W[N,K]` and produces
 `Y[M,N]`. Omit the attribute for ordinary Matmul.

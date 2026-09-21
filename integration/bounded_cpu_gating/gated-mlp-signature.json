@@ -1,0 +1,1 @@
+{"schema_version":"tuc.bounded_cpu_source.v0","source_name":"small_gated_mlp","kernel_name":"gated_mlp","tensor_shapes":{"x":[2,2],"wv":[2,2],"bv":[2],"wg":[2,2],"bg":[2],"wo":[1,2],"scores":[2,1]}}

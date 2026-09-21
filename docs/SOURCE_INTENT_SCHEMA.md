@@ -27,7 +27,7 @@ The schema defines:
 - symbolic input and output tensor references
 - neutral operation attributes: `rhs_transposed: true` for rank-two `matmul`
   (see [bounded CPU Linear](BOUNDED_CPU_LINEAR.md)), `axis` for `reduction` and `softmax`, and
-  `elementwise_kind` with the fixed `add`, `gelu`, `identity`, and `relu` enum
+  `elementwise_kind` with the fixed `add`, `gelu`, `identity`, `mul`, and `relu` enum
 - neutral hints: `prefer_linear_accelerator`, `prefer_sparsity`,
   `robust_to_noise`, and `max_error_budget`
 - optional public return bindings through `returns`, documented in

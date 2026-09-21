@@ -209,7 +209,7 @@ def _graph_preflight(value: object) -> dict[str, object]:
             if ((key == "axis" and (type(attribute) is not int or attribute != 1)) or
                     (key == "rhs_transposed" and attribute is not True) or
                     (key == "elementwise_kind" and
-                     (type(attribute) is not str or attribute not in ("relu", "add")))):
+                     (type(attribute) is not str or attribute not in ("relu", "add", "mul")))):
                 _reject()
         hints = _object(op.get("hints", {}), frozenset(), frozenset({
             "robust_to_noise", "prefer_sparsity", "prefer_linear_accelerator", "max_error_budget"}))

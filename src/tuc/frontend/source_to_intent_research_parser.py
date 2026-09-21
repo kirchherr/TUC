@@ -389,6 +389,8 @@ def _parse_assignment(statement: ast.Assign, state: _ParseState) -> None:
         raise SourceToIntentResearchParserError("assignment target must be new")
     if isinstance(statement.value, ast.BinOp) and isinstance(statement.value.op, ast.Add):
         family, inputs, shape, attributes = _parse_add(statement.value, state)
+    elif isinstance(statement.value, ast.BinOp) and isinstance(statement.value.op, ast.Mult):
+        family, inputs, shape, attributes = _parse_multiply(statement.value, state)
     else:
         if not isinstance(statement.value, ast.Call):
             raise SourceToIntentResearchParserError("assignment value must be a supported call")
@@ -436,6 +438,18 @@ def _parse_add(
             not (right == left or (len(left) == 2 and right == (left[1],)))):
         raise SourceToIntentResearchParserError("add requires equal shapes or a right row bias")
     return "elementwise", (lhs, rhs), left, {"elementwise_kind": "add"}
+
+
+def _parse_multiply(
+    value: ast.BinOp,
+    state: _ParseState,
+) -> tuple[str, tuple[str, ...], tuple[int, ...], dict[str, object]]:
+    lhs = _name_argument(value.left, "multiply lhs")
+    rhs = _name_argument(value.right, "multiply rhs")
+    left, right = _known_shape(lhs, state), _known_shape(rhs, state)
+    if len(left) not in (1, 2) or left != right:
+        raise SourceToIntentResearchParserError("multiply requires identical rank-one/two shapes")
+    return "elementwise", (lhs, rhs), left, {"elementwise_kind": "mul"}
 
 
 def _parse_dot(

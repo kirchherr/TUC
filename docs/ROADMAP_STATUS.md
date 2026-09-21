@@ -1,5 +1,11 @@
 # Roadmap Status
 
+- [Bounded CPU Gating](BOUNDED_CPU_GATING.md), RFC 0329, adds exact-shape
+  rank-one/two FP32 products through source/JSON/IR and checked native CPU.
+  ReLU-gated MLPs fit within the existing operation limit. Scalar operands,
+  broadcasting and promotion remain unsupported. Installed numerical and
+  ASan/UBSan observations are pending.
+
 - [Bounded CPU Linear](BOUNDED_CPU_LINEAR.md), RFC 0328, carries an explicit
   right-transposed Matmul interpretation through source/JSON/IR to checked C11.
   Applications can supply `[N,K]` weights directly for affine and MLP graphs.

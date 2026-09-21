@@ -273,10 +273,13 @@ def _checked_module(value: object) -> SourceIntentModule:
         elif family == "elementwise":
             if (set(attributes) != {"elementwise_kind"} or
                     type(attributes["elementwise_kind"]) is not str or
-                    attributes["elementwise_kind"] not in {"relu", "add"}):
+                    attributes["elementwise_kind"] not in {"relu", "add", "mul"}):
                 _reject()
             if attributes["elementwise_kind"] == "relu":
                 if len(shapes) != 1 or output_shape != shapes[0]:
+                    _reject()
+            elif attributes["elementwise_kind"] == "mul":
+                if len(shapes) != 2 or shapes[0] != shapes[1] or output_shape != shapes[0]:
                     _reject()
             elif (len(shapes) != 2 or output_shape != shapes[0] or
                   not (shapes[1] == shapes[0] or
@@ -399,7 +402,11 @@ def compile_bounded_source_intent(
     used = {assignment.backend_name for assignment in partition.assignments}
     targets = {binding.capability.name: binding.target for binding in bindings
                if binding.capability.name in used}
-    if any(op.attributes.get("rhs_transposed") is True for op in clean_module.operations):
+    if any(op.attributes.get("elementwise_kind") == "mul" for op in clean_module.operations):
+        from tuc.backends.bounded_mul_dag import lower_bounded_mul_dag
+
+        artifacts = lower_bounded_mul_dag(compilation.hac_ir, partition, targets)
+    elif any(op.attributes.get("rhs_transposed") is True for op in clean_module.operations):
         from tuc.backends.bounded_linear_dag import lower_bounded_linear_dag
 
         artifacts = lower_bounded_linear_dag(compilation.hac_ir, partition, targets)

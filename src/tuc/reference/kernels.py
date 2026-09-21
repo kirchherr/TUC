@@ -87,6 +87,20 @@ def reference_add(left: object, right: object) -> FloatArray:
     return cast(FloatArray, result)
 
 
+def reference_multiply(left: object, right: object) -> FloatArray:
+    """Multiply identical rank-1/2 shapes under the existing FP64 reference policy."""
+
+    left_array = _require_float_array(left, "left")
+    right_array = _require_float_array(right, "right")
+    if left_array.ndim not in (1, 2) or right_array.shape != left_array.shape:
+        raise ValueError("reference multiply requires identical rank-1 or rank-2 shapes")
+    with np.errstate(over="ignore", invalid="ignore"):
+        result = np.multiply(left_array, right_array)
+    if not np.all(np.isfinite(result)):
+        raise ValueError("reference multiply result must contain only finite values")
+    return cast(FloatArray, result)
+
+
 def reference_reduction_sum(value: object, axis: int | None = None) -> FloatArray:
     """Return a deterministic sum-reduction reference result."""
 
@@ -158,6 +172,7 @@ __all__ = [
     "reference_elementwise",
     "reference_matmul",
     "reference_matmul_rhs_transposed",
+    "reference_multiply",
     "reference_reduction_sum",
     "reference_softmax",
 ]
