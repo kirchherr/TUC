@@ -1,0 +1,1 @@
+{"schema_version":"tuc.bounded_cpu_source.v0","source_name":"small_linear","kernel_name":"linear","tensor_shapes":{"x":[2,3],"weight":[2,3],"bias":[2],"scores":[2,2]}}

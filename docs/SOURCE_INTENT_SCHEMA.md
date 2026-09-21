@@ -6,9 +6,10 @@ TUC publishes a machine-readable JSON Schema for Source Intent plain data:
 schemas/source_intent.v0.schema.json
 ```
 
-The schema documents the same public contract accepted by
-`source_intent_from_mapping(data)`. It is an interoperability artifact for
-external frontend authors and future parser work.
+The schema documents the structural envelope accepted by
+`source_intent_from_mapping(data)`. Semantic checks, including attribute-family
+ownership and relationships between tensor shapes, remain in runtime intake.
+It is an interoperability artifact for external frontend authors and future parser work.
 
 ## Contract
 
@@ -24,7 +25,8 @@ The schema defines:
 - tensor names, shapes, and dtypes
 - operation families: `matmul`, `elementwise`, `reduction`, `softmax`
 - symbolic input and output tensor references
-- neutral operation attributes: `axis` for `reduction` and `softmax`, and
+- neutral operation attributes: `rhs_transposed: true` for rank-two `matmul`
+  (see [bounded CPU Linear](BOUNDED_CPU_LINEAR.md)), `axis` for `reduction` and `softmax`, and
   `elementwise_kind` with the fixed `add`, `gelu`, `identity`, and `relu` enum
 - neutral hints: `prefer_linear_accelerator`, `prefer_sparsity`,
   `robust_to_noise`, and `max_error_budget`
