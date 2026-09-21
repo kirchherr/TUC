@@ -7,7 +7,8 @@ The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 Current implementation: [Bounded CPU Gating](docs/BOUNDED_CPU_GATING.md),
 RFC 0329, adds exact-shape elementwise products to the existing CPU path.
 Seven/eight-operation ReLU-gated MLPs combine two Linear branches and an output
-projection. Installed FP32 and ASan/UBSan validation remain required.
+projection. [Installed FP32 and ASan/UBSan validation](https://github.com/kirchherr/TUC/actions/runs/35589963541)
+passed at `ce70446`; final CI and owner review remain required.
 
 Underlying implementation: [Bounded CPU Linear](docs/BOUNDED_CPU_LINEAR.md),
 RFC 0328, accepts row-major `[N,K]` weights directly through a neutral

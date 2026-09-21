@@ -71,4 +71,10 @@ identity and changes the request identity.
 
 See [RFC 0329](../rfcs/0329-bounded-cpu-gating.md) and the
 [independent installed examples](../integration/bounded_cpu_gating/README.md).
-Installed/native validation is pending.
+
+[Installed CI](https://github.com/kirchherr/TUC/actions/runs/35589963541) passed
+at `ce70446`: six source conversions, twelve CPU calls, 56 bitwise FP32 checks,
+ten source and three numeric rejections. Static and ASan/UBSan builds passed
+four fixed entrypoint graphs and their boundary controls. The
+[original receipt](evidence/bounded-cpu-gating-35589963541.json) records the
+executed revision and wheel; final CI and owner review remain required.

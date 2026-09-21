@@ -44,7 +44,14 @@ the compiler's nine-file program hash algorithm. Original fixture bytes must
 remain unchanged and workspaces empty after every command. It creates
 `record.json` exclusively after every check passes, with schema
 `tuc.bounded_cpu_gating_integration.v0`. Default reports and synthetic tests are
-not native observations. Actual installed/native CI observation is pending.
+not native observations.
+
+[CI run 35589963541](https://github.com/kirchherr/TUC/actions/runs/35589963541)
+observed all six conversions, twelve successful calls, 56 scalar checks,
+ten source and three numeric rejections at `ce70446`. The
+[original receipt](../../docs/evidence/bounded-cpu-gating-35589963541.json)
+also contains the separate static and ASan/UBSan entrypoint observations and
+binds source revision, wheel and both consumers.
 
 ## Small gated MLP example
 

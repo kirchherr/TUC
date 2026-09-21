@@ -35,3 +35,8 @@ Crashes and sanitizer failures are rejected. Receipts bind the wheel identifier,
 installed compiler files, consumer, generated sources and support files. This
 prevents accidental mixing, not forged evidence. There is no CUDA execution,
 new runtime admission, or performance claim.
+
+[CI run 35589963541](https://github.com/kirchherr/TUC/actions/runs/35589963541)
+observed all ten static/sanitized results at `ce70446`. The
+[original receipt](../../docs/evidence/bounded-cpu-gating-35589963541.json)
+retains context/binding/image identities and wheel/consumer hashes.

@@ -3,8 +3,12 @@
 - [Bounded CPU Gating](BOUNDED_CPU_GATING.md), RFC 0329, adds exact-shape
   rank-one/two FP32 products through source/JSON/IR and checked native CPU.
   ReLU-gated MLPs fit within the existing operation limit. Scalar operands,
-  broadcasting and promotion remain unsupported. Installed numerical and
-  ASan/UBSan observations are pending.
+  broadcasting and promotion remain unsupported.
+  [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35589963541) passed
+  at `ce70446`: 251 tests, six conversions, twelve CPU calls, 56 scalar checks,
+  ten source and three numeric rejections. Static and ASan/UBSan builds each
+  passed 115 native boundary rejections and 459 unchanged-output checks.
+  Original observations are retained; final CI and owner review remain required.
 
 - [Bounded CPU Linear](BOUNDED_CPU_LINEAR.md), RFC 0328, carries an explicit
   right-transposed Matmul interpretation through source/JSON/IR to checked C11.

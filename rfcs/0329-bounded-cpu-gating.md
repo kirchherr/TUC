@@ -1,6 +1,7 @@
 # RFC 0329: Bounded CPU multiplication and ReLU-gated MLPs
 
-Status: implementation under validation; installed/native observations pending.
+Status: implemented; installed/native execution observed at `ce70446` on
+2026-09-21. Final CI and owner review remain required for acceptance.
 
 ## Problem and decision
 
@@ -84,3 +85,38 @@ builds a wheel offline, installs outside checkout and binds observations to
 source, wheel and both consumers. No dependency, publication, credential,
 branch-protection, GPU/device or normal-runtime-admission change is made.
 Acceptance requires actual observed native execution, final CI and owner review.
+
+## Observed execution
+
+[CI run 35589963541](https://github.com/kirchherr/TUC/actions/runs/35589963541)
+passed at `ce704463cb367f7ac435ce8c3521bf16d3cde228`: 251 boundary/protocol tests,
+offline wheel installation outside checkout, six isolated source conversions,
+twelve CPU calls, 56 bitwise FP32 comparisons, ten source rejections and three
+numeric rejections. Static and ASan/UBSan builds each passed 16 successful runs,
+131 entrypoint calls, 64 scalar checks, 115 boundary rejections and 459 unchanged
+output checks. Ten observations include the three faulty checkers and invalid
+invocation for each build. Input-input aliasing is explicitly inapplicable to
+the repeated-input square graph's single public input.
+
+The [original combined receipt](../docs/evidence/bounded-cpu-gating-35589963541.json)
+is retained without reserialization: 21,959 bytes, SHA256
+`72a9e011e1867985cfee1bc2ae32324df2a0003e9a945bbefaad0d2bd2193bd9`.
+Artifact `10634510399` contained only `ci-record.json`; its ZIP SHA256
+`d50239062a21e046cafa2c3b26a95f52351cff80b2149a9e1d424c27da112691`
+matches GitHub metadata and the upload log. Source revision and both consumer
+hashes match the checked files. Wheel SHA256 is
+`24fd121fd75630fb034af8dad72162fa6ae99adae0b76a97f76004f0144cfd3a`.
+These observations establish execution of the fixed CPU corpora, with no
+additional device, model-compatibility or performance claim.
+
+Independent local audits reproduced all six source/signature pairs, complete
+graphs, public bindings and program digests, plus fifteen input/request pairs.
+Separately ordered NumPy FP32 calculations match all 56 actual CLI values,
+including four explicit signed-zero cases. The ten source rejections and three
+exceptional products also reproduce. All 21 native context files (102,518 bytes),
+context/binding digests and ten observations match exact reconstruction. Eight
+distinct native graph/dataset cases (32 values) agree with independent FP32
+calculations and emitted expectation bits; each runs twice per build. The
+single-input alias exclusion and all counters were independently checked.
+The artifact contains no wheel or container images; these audits do not claim
+to reinstall or rerun them.
