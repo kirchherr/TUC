@@ -46,8 +46,10 @@ The graph is an existing `source_intent.v0` document, with explicit `name`,
 describes computation; the CLI supplies the fixed `json_cpu` capability. JSON
 cannot choose a Docker image, executable, backend plugin or compiler command.
 
-The supported graph subset is static row-major FP32 with Matmul, explicit ReLU
-and axis-one Sum. At most eight operations, 24 tensors, eight terminal returns,
+The supported graph subset is static row-major FP32 with Matmul, explicit ReLU,
+axis-one Sum and bounded Add. Add accepts equal rank-one/two shapes or a
+right-hand row bias `[M,N] + [N]`; see the [Add/Bias guide](BOUNDED_CPU_ADD_BIAS.md).
+At most eight operations, 24 tensors, eight terminal returns,
 rank one or two and dimensions 1–64 are accepted. Existing graph semantics,
 one-million-scalar-work and 256 KiB tensor-storage limits also apply. Every
 terminal tensor must have one required return. See the

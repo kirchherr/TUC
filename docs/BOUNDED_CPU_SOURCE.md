@@ -77,6 +77,9 @@ One function with the two literal imports and `@triton.jit` is accepted.
 Statements are assignments using `tl.dot(a, b)`, ReLU as
 `tl.where(x > 0.0, x, 0.0)`, `tl.sum(x, axis=1)`, and terminal
 `tl.store(output_name, value)` calls. Source arguments denote complete tensors.
+RFC 0327 also accepts `result = left + right` for two named tensors: identical
+rank-one/two shapes or a matrix plus its right-hand row bias `[M,N] + [N]`.
+See the [Add/Bias application guide](BOUNDED_CPU_ADD_BIAS.md) for a small MLP.
 This does not implement pointer arithmetic, `tl.load`, masks, loops, constexpr,
 softmax execution or general Triton kernels. Public output names are separate
 from input names, and all terminal values must be stored.

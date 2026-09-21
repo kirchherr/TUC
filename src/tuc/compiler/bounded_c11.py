@@ -144,6 +144,9 @@ def emit_bounded_c11_entrypoint(
         "required_build_flags": ["-std=c11", "-fno-fast-math", "-ffp-contract=off",
                                  "-frounding-math"],
     }
+    if any(op.kind in ("add", "add_row_bias") for op in spec.operations):
+        numeric["addition"] = "one_checked_binary32_addition_per_output_element"
+        numeric["broadcast"] = "equal_shapes_or_rank2_lhs_with_rank1_rhs_row_bias_only"
     provenance = {
         "schema_version": SCHEMA_VERSION,
         "source_intent_digest": fresh.source_intent_digest,

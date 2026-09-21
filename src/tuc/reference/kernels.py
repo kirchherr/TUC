@@ -52,6 +52,23 @@ def reference_elementwise(
     raise AssertionError(f"unhandled elementwise kernel: {kernel_kind!r}")
 
 
+def reference_add(left: object, right: object) -> FloatArray:
+    """Add equal shapes or a right row bias using the existing FP64 reference policy."""
+
+    left_array = _require_float_array(left, "left")
+    right_array = _require_float_array(right, "right")
+    if left_array.ndim not in (1, 2):
+        raise ValueError("reference add requires a rank-1 or rank-2 left array")
+    row_bias = left_array.ndim == 2 and right_array.shape == (left_array.shape[1],)
+    if right_array.shape != left_array.shape and not row_bias:
+        raise ValueError("reference add requires equal shapes or a right row bias")
+    with np.errstate(over="ignore", invalid="ignore"):
+        result = np.add(left_array, right_array)
+    if not np.all(np.isfinite(result)):
+        raise ValueError("reference add result must contain only finite values")
+    return cast(FloatArray, result)
+
+
 def reference_reduction_sum(value: object, axis: int | None = None) -> FloatArray:
     """Return a deterministic sum-reduction reference result."""
 
@@ -119,6 +136,7 @@ __all__ = [
     "ElementwiseKernel",
     "MAX_REFERENCE_ARRAY_ELEMENTS",
     "MAX_REFERENCE_ARRAY_RANK",
+    "reference_add",
     "reference_elementwise",
     "reference_matmul",
     "reference_reduction_sum",
