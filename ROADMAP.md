@@ -8,8 +8,10 @@ Current implementation: [Bounded CPU Batch Applications](docs/BOUNDED_CPU_BATCH.
 RFC 0330, reuses one explicit CPU build for up to sixteen validated input sets.
 Shared weights, ordered request identities and bounded result publication make
 the existing Linear/Gating graph path useful for multiple datasets. The native
-protocol and per-request isolation remain unchanged. Observed installed execution,
-final CI and owner review remain required.
+protocol and per-request isolation remain unchanged.
+[Installed validation](https://github.com/kirchherr/TUC/actions/runs/35609641378)
+passed at `c82d48d`: seven batches, 21 ordered results, 96 FP32 checks and eight
+rejection controls. Final CI and owner review remain required.
 
 Current implementation: [Bounded CPU Gating](docs/BOUNDED_CPU_GATING.md),
 RFC 0329, adds exact-shape elementwise products to the existing CPU path.

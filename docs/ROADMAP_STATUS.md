@@ -4,8 +4,11 @@
   `run-batch` command with shared input tensors and up to sixteen ordered
   requests. Every expanded input and aggregate budget is checked before one
   build; results publish only after successful runs and cleanup. Native framing,
-  arithmetic and fresh-container isolation remain unchanged. Actual installed
-  observations, final CI and owner review are required before acceptance.
+  arithmetic and fresh-container isolation remain unchanged.
+  [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35609641378) passed
+  at `c82d48d`: 642 tests, seven batches, 21 results, 96 bitwise FP32 comparisons,
+  six malformed-input controls and two later numeric rejections. Original
+  observations are retained; final CI and owner review remain required.
 
 - [Bounded CPU Gating](BOUNDED_CPU_GATING.md), RFC 0329, adds exact-shape
   rank-one/two FP32 products through source/JSON/IR and checked native CPU.

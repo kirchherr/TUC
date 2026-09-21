@@ -1,7 +1,7 @@
 # RFC 0330: Bounded CPU batch applications
 
-Status: implementation in progress. Installed execution observations, final CI
-and owner review are required before acceptance.
+Status: implemented with observed installed CPU execution at `c82d48d`.
+Final CI and owner review remain required before acceptance.
 
 ## Problem and decision
 
@@ -112,7 +112,8 @@ A separate standard-library consumer, installed outside checkout, owns six
 fixed graph declarations and ordered FP32 equations. It exercises affine,
 gated-MLP and elementwise product graphs in two profiles, changing data and a
 second batch of an existing graph. It independently verifies complete public
-bindings, program/request/batch identities, exact results, malformed inputs,
+bindings, program identity consistency with `inspect`, independently reconstructed
+request/batch identities, exact results, malformed inputs,
 numeric failure in later requests, original-file preservation and cleanup.
 Synthetic candidates and mocked lifecycle tests do not establish native runs.
 
@@ -121,3 +122,32 @@ offline wheel and retains the original observation bound to source, wheel and
 consumer hashes. Acceptance requires actual installed observations and final
 checks. Shared inputs do not mean resident weights; this slice makes no latency,
 throughput, cache, concurrency, general model or GPU claim.
+
+## Observed execution
+
+[CI run 35609641378](https://github.com/kirchherr/TUC/actions/runs/35609641378)
+passed at `c82d48dc69d9bc2cd20b1e86577004ed3518960d`: 642 boundary/lifecycle tests,
+an offline wheel build and installation outside checkout, then seven batches
+across six fixed programs with 21 results and 96 bitwise FP32 comparisons.
+Six malformed batch controls and two runtime numeric failures at the second or
+last request produced exact closed diagnostics, empty stdout, unchanged fixture
+files and clean workspaces. These observations do not measure native build counts.
+
+The [original receipt](../docs/evidence/bounded-cpu-batch-35609641378.json) is
+retained without reserialization: 16,805 bytes, SHA256
+`bb4301048b4083f303752adef4e310174441edb110cbe58db28f18a0cf206872`.
+Artifact `10642149808` contained only `ci-record.json`; its ZIP SHA256
+`7e9700de5d270ccf94c031f2408a9f54ec276d851f34456bca6331a3e4563e29`
+matches GitHub metadata and the upload log. Consumer SHA256 is
+`65845aee71a999e4ccb01ef5fa4c5267af3268c91694980e0f2d231ca746545b`.
+Wheel SHA256 is
+`f6cde7b54dbe9f33888554e788c85ba8817fe29b783413dde07b71a309d44ced`,
+matching the build log. The artifact contains no wheel or container image.
+
+A separate local audit reconstructed all six graph declarations, public bindings
+and compiler program identities; every request and batch digest, original input
+hash and rejection-control identity matches the receipt. Ordered NumPy FP32
+equations independently match all 96 observed scalars, including signed zero.
+This audit checks the retained evidence; it does not reinstall or rerun the
+native wheel. Existing native parser and sanitizer workflows remain required
+for the final revision; this feature leaves their C emitters and runtime unchanged.

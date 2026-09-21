@@ -88,5 +88,11 @@ already provides explicit build-once, run-many behavior.
 See [RFC 0330](../rfcs/0330-bounded-cpu-batch.md), the
 [batch data schema](../schemas/bounded_cpu_batch.v0.schema.json) and the
 [independent installed consumer](../integration/bounded_cpu_batch/README.md).
-The example values above are expected results; acceptance requires retained
-observations from actual installed execution and final CI.
+
+[Installed CI](https://github.com/kirchherr/TUC/actions/runs/35609641378) passed
+at `c82d48d`: 642 tests followed by seven batches, 21 ordered results, 96 bitwise
+FP32 comparisons, six malformed-input controls and two later numeric rejections.
+The [original receipt](evidence/bounded-cpu-batch-35609641378.json) records the
+executed source, wheel and consumer. The guide's three example results were
+separately calculated; the retained execution receipt covers the consumer corpus.
+Final CI and owner review remain required.

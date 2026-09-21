@@ -41,9 +41,18 @@ Every original graph and batch file must remain unchanged. Successful observatio
 record full public bindings, graph/batch/merged-input hashes, program/request/batch
 identities, expected and observed outputs, and rejection controls. `record.json`
 is created exclusively only after every check passes. Digests detect accidental
-mixing; they do not authenticate evidence. Native execution remains pending until
-an actual installed CI run supplies its original receipt.
+mixing; they do not authenticate evidence. Program digests are checked against
+`inspect`; request and batch digests are reconstructed independently.
 
 Tests compare the scalar oracle with separately ordered NumPy FP32 equations and
 exercise forged responses, signed zero, identity changes and inert fixture mode.
 Synthetic test responses are not native execution evidence.
+
+[Installed CI run 35609641378](https://github.com/kirchherr/TUC/actions/runs/35609641378)
+passed at `c82d48d`: all seven batches, 21 results, 96 scalar checks, six malformed
+inputs and two numeric controls. The unchanged
+[original receipt](../../docs/evidence/bounded-cpu-batch-35609641378.json) binds
+the source revision, installed wheel and this consumer. A separate local audit
+reconstructed program/request/batch digests from the declared graphs and checked
+all observed values against ordered NumPy FP32 calculations. It does not rerun
+the native wheel or establish performance. Final CI and owner review remain.
