@@ -40,6 +40,7 @@ def test_source_intent_json_schema_matches_runtime_contract() -> None:
         "add",
         "gelu",
         "identity",
+        "mul",
         "relu",
     ]
     assert defs["tensor"]["properties"]["shape"]["maxItems"] == 8
@@ -60,7 +61,10 @@ def test_source_intent_json_schema_rejects_unknown_fields_by_contract() -> None:
     assert "prefer_analog_linear" not in hint_properties
     assert "backend" not in hint_properties
     attribute_properties = set(defs["attributes"]["properties"])
-    assert attribute_properties == {"axis", "elementwise_kind"}
+    assert attribute_properties == {"axis", "elementwise_kind", "rhs_transposed"}
+    assert defs["attributes"]["properties"]["rhs_transposed"] == {
+        "type": "boolean", "const": True,
+    }
     assert "python_source" not in schema["properties"]
     assert "file_path" not in defs["tensor"]["properties"]
     assert "plugin_entrypoint" not in defs["operation"]["properties"]

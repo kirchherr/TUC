@@ -1,0 +1,13 @@
+import triton
+import triton.language as tl
+
+@triton.jit
+def gated_mlp(x, wv, bv, wg, bg, wo, scores):
+    projected_value = tl.dot(x, tl.trans(wv))
+    value = projected_value + bv
+    projected_gate = tl.dot(x, tl.trans(wg))
+    shifted_gate = projected_gate + bg
+    gate = tl.where(shifted_gate > 0.0, shifted_gate, 0.0)
+    fused = value * gate
+    result = tl.dot(fused, tl.trans(wo))
+    tl.store(scores, result)

@@ -1,0 +1,14 @@
+**
+!Dockerfile
+!Dockerfile.dockerignore
+!square-entrypoint.c
+!square-entrypoint.h
+!matrix-entrypoint.c
+!matrix-entrypoint.h
+!mixed-entrypoint.c
+!mixed-entrypoint.h
+!gated-entrypoint.c
+!gated-entrypoint.h
+!entrypoint.h
+!worker.c
+!build.sh

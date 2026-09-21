@@ -1,0 +1,98 @@
+name: Bounded CPU Gating integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "kirchherr/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bounded-cpu-gating-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  installed-gating:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Validate product boundaries and build wheel
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pytest -q tests/test_bounded_mul_frontend.py tests/test_bounded_mul_ir.py tests/test_bounded_mul_c11.py tests/test_bounded_cpu_gating_consumer.py tests/test_bounded_mul_native_consumer.py
+          python -m pip wheel --no-deps --no-build-isolation --no-index . --wheel-dir "$RUNNER_TEMP/gating-wheel"
+      - name: Install outside checkout and execute native sanitizer conformance
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          python -m venv "$RUNNER_TEMP/gating-env"
+          "$RUNNER_TEMP/gating-env/bin/python" -m pip install --require-hashes -r requirements/ci.txt
+          "$RUNNER_TEMP/gating-env/bin/python" -m pip install --no-deps --no-index "$RUNNER_TEMP"/gating-wheel/tuc-*.whl
+          cp -R integration/bounded_mul_native "$RUNNER_TEMP/gating-native"
+          cp -R integration/bounded_cpu_gating "$RUNNER_TEMP/gating-cli"
+          cd "$RUNNER_TEMP/gating-native"
+          export PATH="$RUNNER_TEMP/gating-env/bin:$PATH"
+          python3 -I -c 'import os,pathlib,sys,tuc; assert pathlib.Path(tuc.__file__).resolve().is_relative_to(pathlib.Path(sys.prefix).resolve()); assert not any(pathlib.Path(p).resolve().is_relative_to(pathlib.Path(os.environ["GITHUB_WORKSPACE"]).resolve()) for p in sys.path if p)'
+          python3 -I -c 'import hashlib,os,pathlib; wheels=list((pathlib.Path(os.environ["RUNNER_TEMP"])/"gating-wheel").glob("tuc-*.whl")); assert len(wheels)==1; pathlib.Path("wheel-sha256.txt").write_text("sha256:"+hashlib.sha256(wheels[0].read_bytes()).hexdigest()+"\n",encoding="ascii")'
+          python3 -I consumer.py > candidate.json
+          sh operator.sh --c11
+      - name: Convert source and execute installed CPU examples
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          cd "$RUNNER_TEMP/gating-cli"
+          export PATH="$RUNNER_TEMP/gating-env/bin:$PATH"
+          python3 -I consumer.py > candidate.json
+          python3 -I consumer.py --run
+          python3 -I - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          native_root = Path(os.environ["RUNNER_TEMP"]) / "gating-native"
+          native = json.loads((native_root / "record.json").read_text())
+          assert native["schema_version"] == "tuc.bounded_mul_native_record.v0"
+          assert native["status"] == "PASS" and native["native_execution_observed"] is True
+          assert len(native["observations"]) == 10
+          for build in ("static", "sanitized"):
+              proof = native["observations"][f"{build}-proof.json"]
+              assert proof["status"] == "PASS"
+              assert proof["case_runs"] == 16 and proof["entrypoint_calls"] == 131
+              assert proof["scalar_checks"] == 64 and proof["published_outputs"] == 16
+              assert proof["rejected_cases"] == 115 and proof["sentinel_checks"] == 459
+          record = json.loads(Path("record.json").read_text())
+          assert record["schema_version"] == "tuc.bounded_cpu_gating_integration.v0"
+          assert record["status"] == "PASS" and record["native_execution_observed"] is True
+          assert record["source_conversions"] == 6 and record["case_runs"] == 12
+          assert record["scalar_checks"] == 56 and record["negative_controls"] == 10
+          assert record["numeric_rejections"] == 3
+          assert record["original_files_unchanged"] is True and record["workspaces_clean"] is True
+          wheels = list((Path(os.environ["RUNNER_TEMP"]) / "gating-wheel").glob("tuc-*.whl"))
+          assert len(wheels) == 1
+          wheel_hash = hashlib.sha256(wheels[0].read_bytes()).hexdigest()
+          assert native["wheel_digest"] == "sha256:" + wheel_hash
+          receipt = {"integration": record, "native": native,
+                     "source_commit": os.environ["GITHUB_SHA"], "wheel_sha256": wheel_hash,
+                     "consumer_sha256": hashlib.sha256(Path("consumer.py").read_bytes()).hexdigest(),
+                     "native_consumer_sha256": hashlib.sha256((native_root / "consumer.py").read_bytes()).hexdigest()}
+          Path("ci-record.json").write_text(json.dumps(receipt, sort_keys=True) + "\n")
+          PY
+      - name: Retain original installed and sanitizer observations
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bounded-cpu-gating-receipt
+          path: ${{ runner.temp }}/gating-cli/ci-record.json
+          if-no-files-found: error
+          retention-days: 14

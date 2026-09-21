@@ -62,4 +62,10 @@
 /integration/bounded_cpu_add_bias/ @kirchherr
 /integration/bounded_add_bias_native/ @kirchherr
 /docs/BOUNDED_CPU_ADD_BIAS.md @kirchherr
+/integration/bounded_cpu_linear/ @kirchherr
+/integration/bounded_linear_native/ @kirchherr
+/docs/BOUNDED_CPU_LINEAR.md @kirchherr
+/integration/bounded_cpu_gating/ @kirchherr
+/integration/bounded_mul_native/ @kirchherr
+/docs/BOUNDED_CPU_GATING.md @kirchherr
 /rfcs/ @kirchherr

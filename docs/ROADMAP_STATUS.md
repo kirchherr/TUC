@@ -1,5 +1,25 @@
 # Roadmap Status
 
+- [Bounded CPU Gating](BOUNDED_CPU_GATING.md), RFC 0329, adds exact-shape
+  rank-one/two FP32 products through source/JSON/IR and checked native CPU.
+  ReLU-gated MLPs fit within the existing operation limit. Scalar operands,
+  broadcasting and promotion remain unsupported.
+  [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35589963541) passed
+  at `ce70446`: 251 tests, six conversions, twelve CPU calls, 56 scalar checks,
+  ten source and three numeric rejections. Static and ASan/UBSan builds each
+  passed 115 native boundary rejections and 459 unchanged-output checks.
+  Original observations are retained; final CI and owner review remain required.
+
+- [Bounded CPU Linear](BOUNDED_CPU_LINEAR.md), RFC 0328, carries an explicit
+  right-transposed Matmul interpretation through source/JSON/IR to checked C11.
+  Applications can supply `[N,K]` weights directly for affine and MLP graphs.
+  Existing Add/Bias/ReLU/Sum composition and resource limits remain.
+  [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35569935472) passed
+  at `b0085167`: 241 tests, six source conversions, twelve CPU calls, 60 scalar
+  checks, ten source rejections and two numeric rejections. Static and ASan/UBSan
+  builds each passed 116 native boundary rejections. Original observations are
+  retained; owner review and final-revision CI remain required.
+
 - [Bounded CPU Add/Bias](BOUNDED_CPU_ADD_BIAS.md), RFC 0327, implements
   hardware-neutral tensor addition with identical rank-one/two shapes or a
   right-hand row bias. The source/JSON/IR/native CPU path supports affine,

@@ -50,6 +50,8 @@ def estimate_operation_movement(
     """Estimate per-operation bytes and arithmetic intensity for MVP kernels."""
 
     _validate_operation_surface(operation)
+    if "rhs_transposed" in operation.attributes and operation.kind is not OperationKind.MATMUL:
+        raise ValueError("rhs_transposed belongs only to matmul")
     domain = preferred_domain or _preferred_domain(operation)
     if operation.kind is OperationKind.MATMUL:
         return _estimate_matmul(operation, domain)
@@ -106,6 +108,8 @@ def _estimate_matmul(
     operation: ComputeOperation,
     domain: MemoryDomainKind,
 ) -> MovementEstimate:
+    if "rhs_transposed" in operation.attributes:
+        return _estimate_transposed_matmul(operation, domain)
     if len(operation.inputs) != 2 or len(operation.outputs) != 1:
         raise ValueError("matmul movement estimate expects two inputs and one output")
 
@@ -134,12 +138,40 @@ def _estimate_matmul(
     )
 
 
+def _estimate_transposed_matmul(
+    operation: ComputeOperation, domain: MemoryDomainKind,
+) -> MovementEstimate:
+    if operation.attributes["rhs_transposed"] is not True:
+        raise ValueError("matmul movement rhs_transposed must be True when present")
+    if len(operation.inputs) != 2 or len(operation.outputs) != 1:
+        raise ValueError("transposed matmul movement expects two inputs and one output")
+    left, right = operation.inputs
+    output = operation.outputs[0]
+    for tensor in (left, right, output):
+        _require_rank(tensor, 2, operation.name)
+        if tensor.dtype != "float32":
+            raise ValueError("transposed matmul movement requires float32 tensors")
+    m, k = left.shape
+    n, rhs_k = right.shape
+    if k != rhs_k or output.shape != (m, n):
+        raise ValueError("transposed matmul movement shape mismatch")
+    return _movement_estimate(
+        bytes_read=_tensor_nbytes(left) + _tensor_nbytes(right),
+        bytes_written=_tensor_nbytes(output),
+        arithmetic_ops=_checked_product((2, m, n, k), "matmul arithmetic_ops"),
+        preferred_domain=domain,
+        notes=("rank2_matmul_rhs_transposed_no_materialization",),
+    )
+
+
 def _estimate_elementwise(
     operation: ComputeOperation,
     domain: MemoryDomainKind,
 ) -> MovementEstimate:
     if operation.attributes.get("kernel") == "add":
         return _estimate_add(operation, domain)
+    if operation.attributes.get("kernel") == "mul":
+        return _estimate_multiply(operation, domain)
     reference_shape = operation.outputs[0].shape
     tensors = (*operation.inputs, *operation.outputs)
     if any(tensor.shape != reference_shape for tensor in tensors):
@@ -175,6 +207,26 @@ def _estimate_add(operation: ComputeOperation, domain: MemoryDomainKind) -> Move
         arithmetic_ops=_tensor_elements(output),
         preferred_domain=domain,
         notes=("right_row_bias_add" if row_bias else "exact_shape_elementwise",),
+    )
+
+
+def _estimate_multiply(operation: ComputeOperation, domain: MemoryDomainKind) -> MovementEstimate:
+    if len(operation.inputs) != 2 or len(operation.outputs) != 1:
+        raise ValueError("mul movement estimate requires two inputs and one output")
+    left, right = operation.inputs
+    output = operation.outputs[0]
+    if output.name in (left.name, right.name):
+        raise ValueError("mul movement estimate requires a fresh output")
+    if any(tensor.dtype != "float32" for tensor in (left, right, output)):
+        raise ValueError("mul movement estimate requires float32 tensors")
+    if len(left.shape) not in (1, 2) or right.shape != left.shape or output.shape != left.shape:
+        raise ValueError("mul movement estimate requires identical rank-1 or rank-2 shapes")
+    return _movement_estimate(
+        bytes_read=_tensor_nbytes(left) + _tensor_nbytes(right),
+        bytes_written=_tensor_nbytes(output),
+        arithmetic_ops=_tensor_elements(output),
+        preferred_domain=domain,
+        notes=("exact_shape_elementwise_multiply",),
     )
 
 

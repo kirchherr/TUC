@@ -35,11 +35,11 @@ _ALLOWED_HINTS = frozenset(
         "robust_to_noise",
     }
 )
-SOURCE_INTENT_ELEMENTWISE_KINDS = ("gelu", "identity", "relu", "add")
-_ALLOWED_ATTRIBUTES = frozenset({"axis", "elementwise_kind"})
+SOURCE_INTENT_ELEMENTWISE_KINDS = ("gelu", "identity", "relu", "add", "mul")
+_ALLOWED_ATTRIBUTES = frozenset({"axis", "elementwise_kind", "rhs_transposed"})
 _AXIS_OPERATION_FAMILIES = frozenset({"reduction", "softmax"})
 _ATTRIBUTE_OPERATION_FAMILIES = frozenset(
-    {*_AXIS_OPERATION_FAMILIES, "elementwise"}
+    {*_AXIS_OPERATION_FAMILIES, "elementwise", "matmul"}
 )
 _BOOLEAN_HINTS = frozenset(
     {"prefer_linear_accelerator", "prefer_sparsity", "robust_to_noise"}
@@ -159,6 +159,15 @@ class SourceIntentOperation:
             len(inputs) != 2 or len(outputs) != 1
         ):
             raise ValueError("source-intent add requires two inputs and one output")
+        if self.attributes.get("elementwise_kind") == "mul":
+            if len(inputs) != 2 or len(outputs) != 1:
+                raise ValueError("source-intent mul requires two inputs and one output")
+            if outputs[0] in inputs:
+                raise ValueError("source-intent mul requires a fresh output")
+        if self.attributes.get("rhs_transposed") is True and (
+            len(inputs) != 2 or len(outputs) != 1
+        ):
+            raise ValueError("source-intent transposed matmul requires two inputs and one output")
 
     def dump(self) -> str:
         inputs = ",".join(f"%{name}" for name in self.inputs)
@@ -358,7 +367,11 @@ def _freeze_attributes(
         if key not in _ALLOWED_ATTRIBUTES:
             raise ValueError(f"source-intent attribute contains unsupported key: {key}")
         value = attributes[key]
-        if key == "axis":
+        if key == "rhs_transposed":
+            if family != "matmul" or value is not True:
+                raise ValueError("source-intent rhs_transposed must be True and belong to matmul")
+            frozen[key] = True
+        elif key == "axis":
             if not isinstance(value, int) or isinstance(value, bool):
                 raise TypeError("source-intent axis attribute must be an integer")
             if family not in _AXIS_OPERATION_FAMILIES:
@@ -395,8 +408,14 @@ def _validate_operation_attributes(
 ) -> None:
     tensors_by_name = {tensor.name: tensor for tensor in tensors}
     for operation in operations:
+        if operation.attributes.get("rhs_transposed") is True:
+            _validate_transposed_matmul_tensors(operation, tensors_by_name)
+            continue
         if operation.attributes.get("elementwise_kind") == "add":
             _validate_add_tensors(operation, tensors_by_name)
+            continue
+        if operation.attributes.get("elementwise_kind") == "mul":
+            _validate_multiply_tensors(operation, tensors_by_name)
             continue
         if operation.family not in _AXIS_OPERATION_FAMILIES:
             continue
@@ -422,6 +441,20 @@ def _validate_operation_attributes(
                 raise ValueError("source-intent reduction output shape mismatch")
 
 
+def _validate_transposed_matmul_tensors(
+    operation: SourceIntentOperation, tensors: dict[str, SourceIntentTensor],
+) -> None:
+    if len(operation.inputs) != 2 or len(operation.outputs) != 1:
+        raise ValueError("source-intent transposed matmul requires two inputs and one output")
+    left, right = (tensors[name] for name in operation.inputs)
+    output = tensors[operation.outputs[0]]
+    if any(tensor.dtype != "float32" or len(tensor.shape) != 2
+           for tensor in (left, right, output)):
+        raise ValueError("source-intent transposed matmul requires rank-2 float32 tensors")
+    if left.shape[1] != right.shape[1] or output.shape != (left.shape[0], right.shape[0]):
+        raise ValueError("source-intent transposed matmul shape mismatch")
+
+
 def _validate_add_tensors(
     operation: SourceIntentOperation, tensors: dict[str, SourceIntentTensor],
 ) -> None:
@@ -437,6 +470,21 @@ def _validate_add_tensors(
         len(left.shape) == 2 and right.shape == (left.shape[1],)
     ):
         raise ValueError("source-intent add requires equal shapes or a right row bias")
+
+
+def _validate_multiply_tensors(
+    operation: SourceIntentOperation, tensors: dict[str, SourceIntentTensor],
+) -> None:
+    if len(operation.inputs) != 2 or len(operation.outputs) != 1:
+        raise ValueError("source-intent mul requires two inputs and one output")
+    left, right = (tensors[name] for name in operation.inputs)
+    output = tensors[operation.outputs[0]]
+    if output.name in operation.inputs:
+        raise ValueError("source-intent mul requires a fresh output")
+    if any(tensor.dtype != "float32" for tensor in (left, right, output)):
+        raise ValueError("source-intent mul requires float32 tensors")
+    if len(left.shape) not in (1, 2) or right.shape != left.shape or output.shape != left.shape:
+        raise ValueError("source-intent mul requires identical rank-1 or rank-2 shapes")
 
 
 def _reject_forbidden_key(key: str, label: str) -> None:

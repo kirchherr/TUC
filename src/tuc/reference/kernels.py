@@ -34,6 +34,24 @@ def reference_matmul(left: object, right: object) -> FloatArray:
     return left_array @ right_array
 
 
+def reference_matmul_rhs_transposed(left: object, right: object) -> FloatArray:
+    """Compute X[M,K] @ W[N,K].T under the existing FP64 reference policy."""
+
+    left_array = _require_float_array(left, "left")
+    right_array = _require_float_array(right, "right")
+    if left_array.ndim != 2 or right_array.ndim != 2:
+        raise ValueError("reference transposed matmul requires rank-2 arrays")
+    if left_array.shape[1] != right_array.shape[1]:
+        raise ValueError("reference transposed matmul input dimensions must agree")
+    if left_array.shape[0] * right_array.shape[0] > MAX_REFERENCE_ARRAY_ELEMENTS:
+        raise ValueError("reference transposed matmul output exceeds reference kernel limit")
+    with np.errstate(over="ignore", invalid="ignore"):
+        result = left_array @ right_array.T
+    if not np.all(np.isfinite(result)):
+        raise ValueError("reference transposed matmul result must contain only finite values")
+    return result
+
+
 def reference_elementwise(
     value: object,
     kernel: ElementwiseKernel | str = ElementwiseKernel.IDENTITY,
@@ -66,6 +84,20 @@ def reference_add(left: object, right: object) -> FloatArray:
         result = np.add(left_array, right_array)
     if not np.all(np.isfinite(result)):
         raise ValueError("reference add result must contain only finite values")
+    return cast(FloatArray, result)
+
+
+def reference_multiply(left: object, right: object) -> FloatArray:
+    """Multiply identical rank-1/2 shapes under the existing FP64 reference policy."""
+
+    left_array = _require_float_array(left, "left")
+    right_array = _require_float_array(right, "right")
+    if left_array.ndim not in (1, 2) or right_array.shape != left_array.shape:
+        raise ValueError("reference multiply requires identical rank-1 or rank-2 shapes")
+    with np.errstate(over="ignore", invalid="ignore"):
+        result = np.multiply(left_array, right_array)
+    if not np.all(np.isfinite(result)):
+        raise ValueError("reference multiply result must contain only finite values")
     return cast(FloatArray, result)
 
 
@@ -139,6 +171,8 @@ __all__ = [
     "reference_add",
     "reference_elementwise",
     "reference_matmul",
+    "reference_matmul_rhs_transposed",
+    "reference_multiply",
     "reference_reduction_sum",
     "reference_softmax",
 ]

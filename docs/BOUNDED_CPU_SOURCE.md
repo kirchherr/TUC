@@ -1,5 +1,11 @@
 # Convert a bounded source program and run it on CPU
 
+For `product = left * right` and two combined Linear branches, see
+[elementwise products and gated MLPs](BOUNDED_CPU_GATING.md).
+
+For `tl.dot(x, tl.trans(weight))` and a small MLP using physical row-major
+weights, see [bounded CPU Linear](BOUNDED_CPU_LINEAR.md).
+
 An installed `tuc-source-to-json` converts the supported Triton-like research
 notation into a checked graph. The existing `tuc-cpu-app` executes that graph
 with your input tensors. The converter parses source as data in a fixed isolated
