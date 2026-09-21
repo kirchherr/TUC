@@ -1,0 +1,74 @@
+name: Bounded source to CPU integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "kirchherr/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bounded-cpu-source-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  installed-source-cpu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Validate source protocol, worker lifecycle and CLI boundaries
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pytest -q tests/test_bounded_cpu_source.py tests/test_bounded_cpu_source_runtime.py tests/test_bounded_cpu_source_cli.py tests/test_bounded_cpu_source_consumer.py tests/test_bounded_cpu_application_cli.py
+          python -m pip wheel --no-deps --no-build-isolation --no-index . --wheel-dir "$RUNNER_TEMP/source-cpu-wheel"
+      - name: Convert caller source and execute installed CPU graphs outside checkout
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          python -m venv "$RUNNER_TEMP/source-cpu-env"
+          "$RUNNER_TEMP/source-cpu-env/bin/python" -m pip install --require-hashes -r requirements/ci.txt
+          "$RUNNER_TEMP/source-cpu-env/bin/python" -m pip install --no-deps --no-index "$RUNNER_TEMP"/source-cpu-wheel/tuc-*.whl
+          cp -R integration/bounded_cpu_source "$RUNNER_TEMP/source-cpu-consumer"
+          cd "$RUNNER_TEMP/source-cpu-consumer"
+          export PATH="$RUNNER_TEMP/source-cpu-env/bin:$PATH"
+          python3 -I -c 'import os,pathlib,sys,tuc; assert pathlib.Path(tuc.__file__).resolve().is_relative_to(pathlib.Path(sys.prefix).resolve()); assert not any(pathlib.Path(p).resolve().is_relative_to(pathlib.Path(os.environ["GITHUB_WORKSPACE"]).resolve()) for p in sys.path if p)'
+          tuc-source-to-json --help
+          python3 -I consumer.py > candidate.json
+          python3 -I consumer.py --run
+          python3 -I - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          record = json.loads(Path("record.json").read_text())
+          assert record["schema_version"] == "tuc.bounded_cpu_source_integration.v0"
+          assert record["status"] == "PASS" and record["native_execution_observed"] is True
+          assert record["source_conversions"] == 6 and record["case_runs"] == 12
+          assert record["scalar_checks"] == 56 and record["negative_controls"] == 10
+          assert record["original_files_unchanged"] is True and record["workspaces_clean"] is True
+          wheels = list((Path(os.environ["RUNNER_TEMP"]) / "source-cpu-wheel").glob("tuc-*.whl"))
+          assert len(wheels) == 1
+          receipt = {"integration": record, "source_commit": os.environ["GITHUB_SHA"],
+                     "wheel_sha256": hashlib.sha256(wheels[0].read_bytes()).hexdigest(),
+                     "consumer_sha256": hashlib.sha256(Path("consumer.py").read_bytes()).hexdigest()}
+          Path("ci-record.json").write_text(json.dumps(receipt, sort_keys=True) + "\n")
+          PY
+      - name: Retain actual source-to-native observations
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bounded-source-cpu-receipt
+          path: ${{ runner.temp }}/source-cpu-consumer/ci-record.json
+          if-no-files-found: error
+          retention-days: 14

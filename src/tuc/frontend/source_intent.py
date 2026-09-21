@@ -35,7 +35,7 @@ _ALLOWED_HINTS = frozenset(
         "robust_to_noise",
     }
 )
-SOURCE_INTENT_ELEMENTWISE_KINDS = ("gelu", "identity", "relu")
+SOURCE_INTENT_ELEMENTWISE_KINDS = ("gelu", "identity", "relu", "add")
 _ALLOWED_ATTRIBUTES = frozenset({"axis", "elementwise_kind"})
 _AXIS_OPERATION_FAMILIES = frozenset({"reduction", "softmax"})
 _ATTRIBUTE_OPERATION_FAMILIES = frozenset(
@@ -155,6 +155,10 @@ class SourceIntentOperation:
             "attributes",
             _freeze_attributes(self.attributes, self.family),
         )
+        if self.attributes.get("elementwise_kind") == "add" and (
+            len(inputs) != 2 or len(outputs) != 1
+        ):
+            raise ValueError("source-intent add requires two inputs and one output")
 
     def dump(self) -> str:
         inputs = ",".join(f"%{name}" for name in self.inputs)
@@ -391,6 +395,9 @@ def _validate_operation_attributes(
 ) -> None:
     tensors_by_name = {tensor.name: tensor for tensor in tensors}
     for operation in operations:
+        if operation.attributes.get("elementwise_kind") == "add":
+            _validate_add_tensors(operation, tensors_by_name)
+            continue
         if operation.family not in _AXIS_OPERATION_FAMILIES:
             continue
         if len(operation.inputs) != 1 or len(operation.outputs) != 1:
@@ -413,6 +420,23 @@ def _validate_operation_attributes(
                 raise ValueError("source-intent reduction scalar output unsupported")
             if output_shape != expected:
                 raise ValueError("source-intent reduction output shape mismatch")
+
+
+def _validate_add_tensors(
+    operation: SourceIntentOperation, tensors: dict[str, SourceIntentTensor],
+) -> None:
+    if len(operation.inputs) != 2 or len(operation.outputs) != 1:
+        raise ValueError("source-intent add requires two inputs and one output")
+    left, right = (tensors[name] for name in operation.inputs)
+    output = tensors[operation.outputs[0]]
+    if any(tensor.dtype != "float32" for tensor in (left, right, output)):
+        raise ValueError("source-intent add requires float32 tensors")
+    if len(left.shape) not in (1, 2) or output.shape != left.shape:
+        raise ValueError("source-intent add output must match its rank-1 or rank-2 left input")
+    if right.shape != left.shape and not (
+        len(left.shape) == 2 and right.shape == (left.shape[1],)
+    ):
+        raise ValueError("source-intent add requires equal shapes or a right row bias")
 
 
 def _reject_forbidden_key(key: str, label: str) -> None:

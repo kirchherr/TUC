@@ -1,0 +1,10 @@
+{
+  "schema_version": "tuc.bounded_cpu_inputs.v0",
+  "inputs": {
+    "x": [1, -2, 3, 4],
+    "w1": [2, -1, 1, 2],
+    "b1": [1, 1],
+    "w2": [1, 2],
+    "b2": [0.5]
+  }
+}

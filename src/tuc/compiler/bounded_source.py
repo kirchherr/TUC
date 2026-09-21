@@ -1,6 +1,6 @@
 """Data-only Source Intent entry point for the bounded DAG artifact compiler.
 
-Only explicit, static FP32 Matmul/ReLU/row-Sum modules are accepted. Backend
+Only explicit, static FP32 Matmul/ReLU/Add/row-Sum modules are accepted. Backend
 descriptors are planning data, not backend objects or execution permissions.
 No source parser, registry discovery, native compiler or runtime is invoked.
 """
@@ -268,8 +268,14 @@ def _checked_module(value: object) -> SourceIntentModule:
         elif family == "elementwise":
             if (set(attributes) != {"elementwise_kind"} or
                     type(attributes["elementwise_kind"]) is not str or
-                    attributes["elementwise_kind"] != "relu" or
-                    len(shapes) != 1 or output_shape != shapes[0]):
+                    attributes["elementwise_kind"] not in {"relu", "add"}):
+                _reject()
+            if attributes["elementwise_kind"] == "relu":
+                if len(shapes) != 1 or output_shape != shapes[0]:
+                    _reject()
+            elif (len(shapes) != 2 or output_shape != shapes[0] or
+                  not (shapes[1] == shapes[0] or
+                       (len(shapes[0]) == 2 and shapes[1] == (shapes[0][1],)))):
                 _reject()
             work += prod(output_shape)
         else:
@@ -388,7 +394,14 @@ def compile_bounded_source_intent(
     used = {assignment.backend_name for assignment in partition.assignments}
     targets = {binding.capability.name: binding.target for binding in bindings
                if binding.capability.name in used}
-    artifacts = lower_bounded_dag(compilation.hac_ir, partition, targets)
+    if any(op.attributes.get("elementwise_kind") == "add" for op in clean_module.operations):
+        # RFC 0327 keeps the historical DAG/CUDA emitter and its hash-bound
+        # observations unchanged. The extension has its own CPU-only contract.
+        from tuc.backends.bounded_add_dag import lower_bounded_add_dag
+
+        artifacts = lower_bounded_add_dag(compilation.hac_ir, partition, targets)
+    else:
+        artifacts = lower_bounded_dag(compilation.hac_ir, partition, targets)
     manifest = json.loads(artifacts.manifest_json)
     tensors = manifest["tensors"]
 

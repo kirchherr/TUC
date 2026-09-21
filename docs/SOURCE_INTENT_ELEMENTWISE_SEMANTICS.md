@@ -7,7 +7,7 @@ construction, planning, or trusted execution.
 ## Contract
 
 - Source Intent attribute: `elementwise_kind`
-- Accepted values: `gelu`, `identity`, `relu`
+- Accepted values: `add`, `gelu`, `identity`, `relu`
 - Owning operation family: `elementwise`
 - Metadata and ComputeGraph attribute: `kernel`
 - Decision: `rfcs/0287-source-intent-elementwise-semantics.md`
@@ -66,3 +66,19 @@ lowering cannot satisfy the ReLU proof.
 Future elementwise semantics require an RFC, a bounded enum addition, intake
 and schema tests, metadata and runtime binding tests, parser rejection cases,
 and value-level reference evidence.
+
+## Bounded Add extension (RFC 0327)
+
+`add` takes exactly two FP32 input tensors and one output. It accepts identical
+rank-one/two shapes or a matrix `[M,N]` plus a right-hand bias vector `[N]`.
+The output shape equals the left input; other broadcasting and scalar promotion
+are rejected. Source syntax is `result = left + right` with two known tensor
+names. Calls, indexing, nested expressions and other binary operators remain
+outside this syntax slice. Reusing one input as `x + x` is permitted.
+
+Source Intent maps this intent to `kernel=add` in ComputeGraph/HAC-IR. The
+existing family-level `tuc.linearity` label remains `nonlinear` for all
+elementwise operations; it does not describe Add's mathematical linearity.
+The bounded native extension supports C11 CPU execution only and requires
+checked binary32 arithmetic. Trusted simulation uses the existing FP64
+reference policy and is not evidence of native FP32 results.

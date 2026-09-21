@@ -56,4 +56,10 @@
 /src/tuc/bounded_cpu_application_cli.py @kirchherr
 /integration/bounded_cpu_json/ @kirchherr
 /docs/BOUNDED_CPU_JSON_CLI.md @kirchherr
+/src/tuc/bounded_cpu_source_cli.py @kirchherr
+/integration/bounded_cpu_source/ @kirchherr
+/docs/BOUNDED_CPU_SOURCE.md @kirchherr
+/integration/bounded_cpu_add_bias/ @kirchherr
+/integration/bounded_add_bias_native/ @kirchherr
+/docs/BOUNDED_CPU_ADD_BIAS.md @kirchherr
 /rfcs/ @kirchherr

@@ -1,5 +1,25 @@
 # Roadmap Status
 
+- [Bounded CPU Add/Bias](BOUNDED_CPU_ADD_BIAS.md), RFC 0327, implements
+  hardware-neutral tensor addition with identical rank-one/two shapes or a
+  right-hand row bias. The source/JSON/IR/native CPU path supports affine,
+  residual and small MLP graphs; other broadcasts and native targets reject.
+  [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35349477030)
+  passed at `f27e2c8`: 215 tests, eight source conversions, sixteen CPU calls,
+  86 scalar checks, eight syntax/signature and two numeric rejections. Static
+  and ASan/UBSan builds each passed 112 native boundary rejections. Original
+  observations are retained; owner review and final-revision checks remain required.
+
+- [Bounded Source-to-CPU Bridge](BOUNDED_CPU_SOURCE.md), RFC 0326, adds an
+  explicit installed converter from supported source and a tensor signature to
+  validated graph JSON. The fixed OCI parser runs outside the host process;
+  the existing CPU CLI executes the graph. Independent installed conformance
+  covers six source programs, twelve calls and malformed/malicious inputs.
+  [Installed native CI](https://github.com/kirchherr/TUC/actions/runs/35346924415)
+  passed at `1da2276`: 573 tests, six conversions, twelve CPU calls, 56 scalar
+  checks and ten rejections. Final revision CI and owner review remain required;
+  general default-source admission, original proof records and GPU scope are unchanged.
+
 - [Bounded CPU JSON CLI](BOUNDED_CPU_JSON_CLI.md), RFC 0325, adds installed
   inspect/run commands over existing Source Intent graph data and versioned
   tensor inputs. Strict byte/structure/numeric limits and no-follow regular-file

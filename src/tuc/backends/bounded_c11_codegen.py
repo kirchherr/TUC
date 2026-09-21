@@ -64,9 +64,10 @@ def validate_spec(spec: C11GraphSpec) -> tuple[int, int]:
     work = 0
     for op in spec.operations:
         _record(op, C11OperationSpec)
-        if type(op.kind) is not str or op.kind not in ("matmul", "relu", "sum_axis1"):
+        if type(op.kind) is not str or op.kind not in (
+                "matmul", "relu", "sum_axis1", "add", "add_row_bias"):
             raise ValueError("checked C11 operation rejected")
-        arity = 2 if op.kind == "matmul" else 1
+        arity = 2 if op.kind in ("matmul", "add", "add_row_bias") else 1
         indices(op.inputs, arity, arity)
         if (type(op.output) is not int or not 0 <= op.output < count or
                 op.output in producers or op.output in op.inputs):
@@ -78,6 +79,13 @@ def validate_spec(spec: C11GraphSpec) -> tuple[int, int]:
                     out != (first[0], second[1])):
                 raise ValueError("checked C11 matmul rejected")
             work += 2 * first[0] * first[1] * second[1]
+        elif op.kind in ("add", "add_row_bias"):
+            second = spec.tensor_shapes[op.inputs[1]]
+            valid = (first == second if op.kind == "add" else
+                     len(first) == 2 and second == (first[1],))
+            if not valid or out != first:
+                raise ValueError("checked C11 addition shape rejected")
+            work += prod(first)
         elif op.kind == "relu":
             if first != out:
                 raise ValueError("checked C11 relu rejected")
@@ -114,6 +122,9 @@ def _operation(spec: C11GraphSpec, index: int) -> list[str]:
         lines += ["    if (!tuc_normal(&a0[i])) return 0;",
                   "    const float value = a0[i] < 0.0F ? 0.0F : a0[i];",
                   "    if (!tuc_normal(&value)) return 0;", "    out[i] = value;"]
+    elif op.kind in ("add", "add_row_bias"):
+        rhs = "i" if op.kind == "add" else f"i % {shape[1]}U"
+        lines += [f"    if (!tuc_add(a0[i], a1[{rhs}], &out[i])) return 0;"]
     else:
         lines += ["    float sum = 0.0F;", f"    for (size_t k = 0; k < {shape[1]}U; ++k) {{"]
         if op.kind == "matmul":

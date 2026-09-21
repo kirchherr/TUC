@@ -1,0 +1,13 @@
+{
+  "schema_version": "tuc.bounded_cpu_source.v0",
+  "source_name": "small_biased_mlp",
+  "kernel_name": "mlp",
+  "tensor_shapes": {
+    "x": [2, 2],
+    "w1": [2, 2],
+    "b1": [2],
+    "w2": [2, 1],
+    "b2": [1],
+    "y": [2, 1]
+  }
+}

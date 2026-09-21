@@ -1,0 +1,14 @@
+**
+!Dockerfile
+!Dockerfile.dockerignore
+!vector-entrypoint.c
+!vector-entrypoint.h
+!matrix-entrypoint.c
+!matrix-entrypoint.h
+!bias-entrypoint.c
+!bias-entrypoint.h
+!pipeline-entrypoint.c
+!pipeline-entrypoint.h
+!entrypoint.h
+!worker.c
+!build.sh
