@@ -105,6 +105,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "rhs_transposed": {"type": "boolean", "const": true},
         "axis": {
           "type": "integer",
           "minimum": -8,

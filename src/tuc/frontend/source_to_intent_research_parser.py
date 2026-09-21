@@ -445,11 +445,24 @@ def _parse_dot(
     if len(call.args) != 2 or call.keywords:
         raise SourceToIntentResearchParserError("tl.dot requires two positional tensors")
     lhs = _name_argument(call.args[0], "tl.dot lhs")
-    rhs = _name_argument(call.args[1], "tl.dot rhs")
+    rhs_value = call.args[1]
+    transposed = isinstance(rhs_value, ast.Call)
+    if transposed:
+        if (not isinstance(rhs_value, ast.Call) or
+                _expression_name(rhs_value.func) != "tl.trans" or
+                len(rhs_value.args) != 1 or rhs_value.keywords):
+            raise SourceToIntentResearchParserError("tl.dot RHS only permits tl.trans(name)")
+        rhs = _name_argument(rhs_value.args[0], "tl.trans input")
+    else:
+        rhs = _name_argument(rhs_value, "tl.dot rhs")
     lhs_shape = _known_shape(lhs, state)
     rhs_shape = _known_shape(rhs, state)
     if len(lhs_shape) != 2 or len(rhs_shape) != 2:
         raise SourceToIntentResearchParserError("tl.dot requires rank-2 tensors")
+    if transposed:
+        if lhs_shape[1] != rhs_shape[1]:
+            raise SourceToIntentResearchParserError("transposed tl.dot inner dimensions must match")
+        return "matmul", (lhs, rhs), (lhs_shape[0], rhs_shape[0]), {"rhs_transposed": True}
     if lhs_shape[1] != rhs_shape[0]:
         raise SourceToIntentResearchParserError("tl.dot inner dimensions must match")
     return "matmul", (lhs, rhs), (lhs_shape[0], rhs_shape[1]), {}

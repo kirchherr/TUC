@@ -50,6 +50,8 @@ def estimate_operation_movement(
     """Estimate per-operation bytes and arithmetic intensity for MVP kernels."""
 
     _validate_operation_surface(operation)
+    if "rhs_transposed" in operation.attributes and operation.kind is not OperationKind.MATMUL:
+        raise ValueError("rhs_transposed belongs only to matmul")
     domain = preferred_domain or _preferred_domain(operation)
     if operation.kind is OperationKind.MATMUL:
         return _estimate_matmul(operation, domain)
@@ -106,6 +108,8 @@ def _estimate_matmul(
     operation: ComputeOperation,
     domain: MemoryDomainKind,
 ) -> MovementEstimate:
+    if "rhs_transposed" in operation.attributes:
+        return _estimate_transposed_matmul(operation, domain)
     if len(operation.inputs) != 2 or len(operation.outputs) != 1:
         raise ValueError("matmul movement estimate expects two inputs and one output")
 
@@ -131,6 +135,32 @@ def _estimate_matmul(
         arithmetic_ops=arithmetic_ops,
         preferred_domain=domain,
         notes=("rank2_matmul",),
+    )
+
+
+def _estimate_transposed_matmul(
+    operation: ComputeOperation, domain: MemoryDomainKind,
+) -> MovementEstimate:
+    if operation.attributes["rhs_transposed"] is not True:
+        raise ValueError("matmul movement rhs_transposed must be True when present")
+    if len(operation.inputs) != 2 or len(operation.outputs) != 1:
+        raise ValueError("transposed matmul movement expects two inputs and one output")
+    left, right = operation.inputs
+    output = operation.outputs[0]
+    for tensor in (left, right, output):
+        _require_rank(tensor, 2, operation.name)
+        if tensor.dtype != "float32":
+            raise ValueError("transposed matmul movement requires float32 tensors")
+    m, k = left.shape
+    n, rhs_k = right.shape
+    if k != rhs_k or output.shape != (m, n):
+        raise ValueError("transposed matmul movement shape mismatch")
+    return _movement_estimate(
+        bytes_read=_tensor_nbytes(left) + _tensor_nbytes(right),
+        bytes_written=_tensor_nbytes(output),
+        arithmetic_ops=_checked_product((2, m, n, k), "matmul arithmetic_ops"),
+        preferred_domain=domain,
+        notes=("rank2_matmul_rhs_transposed_no_materialization",),
     )
 
 

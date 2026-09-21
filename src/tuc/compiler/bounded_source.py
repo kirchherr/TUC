@@ -257,11 +257,16 @@ def _checked_module(value: object) -> SourceIntentModule:
         shapes = tuple(tensors[port].shape for port in inputs)
         output_shape = tensors[outputs[0]].shape
         if family == "matmul":
-            if (attributes or len(shapes) != 2 or
+            if (set(attributes) - {"rhs_transposed"} or
+                    ("rhs_transposed" in attributes and attributes["rhs_transposed"] is not True) or
+                    len(shapes) != 2 or
                     any(len(shape) != 2 for shape in (*shapes, output_shape))):
                 _reject()
             rows, inner = shapes[0]
-            other_inner, columns = shapes[1]
+            if attributes.get("rhs_transposed") is True:
+                columns, other_inner = shapes[1]
+            else:
+                other_inner, columns = shapes[1]
             if inner != other_inner or output_shape != (rows, columns):
                 _reject()
             work += 2 * rows * inner * columns
@@ -394,7 +399,11 @@ def compile_bounded_source_intent(
     used = {assignment.backend_name for assignment in partition.assignments}
     targets = {binding.capability.name: binding.target for binding in bindings
                if binding.capability.name in used}
-    if any(op.attributes.get("elementwise_kind") == "add" for op in clean_module.operations):
+    if any(op.attributes.get("rhs_transposed") is True for op in clean_module.operations):
+        from tuc.backends.bounded_linear_dag import lower_bounded_linear_dag
+
+        artifacts = lower_bounded_linear_dag(compilation.hac_ir, partition, targets)
+    elif any(op.attributes.get("elementwise_kind") == "add" for op in clean_module.operations):
         # RFC 0327 keeps the historical DAG/CUDA emitter and its hash-bound
         # observations unchanged. The extension has its own CPU-only contract.
         from tuc.backends.bounded_add_dag import lower_bounded_add_dag

@@ -1,0 +1,14 @@
+**
+!Dockerfile
+!Dockerfile.dockerignore
+!nonsquare-entrypoint.c
+!nonsquare-entrypoint.h
+!singleton-entrypoint.c
+!singleton-entrypoint.h
+!mixed-entrypoint.c
+!mixed-entrypoint.h
+!mlp-entrypoint.c
+!mlp-entrypoint.h
+!entrypoint.h
+!worker.c
+!build.sh

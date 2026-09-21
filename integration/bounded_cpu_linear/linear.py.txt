@@ -1,0 +1,8 @@
+import triton
+import triton.language as tl
+
+@triton.jit
+def linear(x, weight, bias, scores):
+    projected = tl.dot(x, tl.trans(weight))
+    result = projected + bias
+    tl.store(scores, result)

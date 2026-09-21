@@ -1,5 +1,11 @@
 # Roadmap Status
 
+- [Bounded CPU Linear](BOUNDED_CPU_LINEAR.md), RFC 0328, carries an explicit
+  right-transposed Matmul interpretation through source/JSON/IR to checked C11.
+  Applications can supply `[N,K]` weights directly for affine and MLP graphs.
+  Existing Add/Bias/ReLU/Sum composition and resource limits remain; installed
+  numerical and ASan/UBSan observations are pending.
+
 - [Bounded CPU Add/Bias](BOUNDED_CPU_ADD_BIAS.md), RFC 0327, implements
   hardware-neutral tensor addition with identical rank-one/two shapes or a
   right-hand row bias. The source/JSON/IR/native CPU path supports affine,
