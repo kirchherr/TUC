@@ -4,6 +4,13 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Bounded CPU Batch Applications](docs/BOUNDED_CPU_BATCH.md),
+RFC 0330, reuses one explicit CPU build for up to sixteen validated input sets.
+Shared weights, ordered request identities and bounded result publication make
+the existing Linear/Gating graph path useful for multiple datasets. The native
+protocol and per-request isolation remain unchanged. Observed installed execution,
+final CI and owner review remain required.
+
 Current implementation: [Bounded CPU Gating](docs/BOUNDED_CPU_GATING.md),
 RFC 0329, adds exact-shape elementwise products to the existing CPU path.
 Seven/eight-operation ReLU-gated MLPs combine two Linear branches and an output

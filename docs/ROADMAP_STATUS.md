@@ -1,5 +1,12 @@
 # Roadmap Status
 
+- [Bounded CPU Batch Applications](BOUNDED_CPU_BATCH.md), RFC 0330, adds a
+  `run-batch` command with shared input tensors and up to sixteen ordered
+  requests. Every expanded input and aggregate budget is checked before one
+  build; results publish only after successful runs and cleanup. Native framing,
+  arithmetic and fresh-container isolation remain unchanged. Actual installed
+  observations, final CI and owner review are required before acceptance.
+
 - [Bounded CPU Gating](BOUNDED_CPU_GATING.md), RFC 0329, adds exact-shape
   rank-one/two FP32 products through source/JSON/IR and checked native CPU.
   ReLU-gated MLPs fit within the existing operation limit. Scalar operands,

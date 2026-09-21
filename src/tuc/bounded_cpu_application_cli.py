@@ -17,6 +17,11 @@ from tuc.compiler.bounded_c11_application import (
     encode_bounded_c11_inputs,
     prepare_bounded_c11_application,
 )
+from tuc.compiler.bounded_cpu_batch import (
+    MAX_BATCH_JSON_BYTES,
+    BoundedCPUBatchError,
+    batch_from_json,
+)
 from tuc.compiler.bounded_cpu_json import (
     MAX_GRAPH_JSON_BYTES,
     MAX_INPUT_JSON_BYTES,
@@ -34,9 +39,11 @@ _SCHEMA = "tuc.bounded_cpu_cli.v0"
 _HELP = (
     "Usage: tuc-cpu-app inspect GRAPH.json\n"
     "       tuc-cpu-app run GRAPH.json --inputs INPUTS.json --workspace DIR\n"
+    "       tuc-cpu-app run-batch GRAPH.json --batch BATCH.json --workspace DIR\n"
     "       tuc-cpu-app --help\n\n"
     "File commands require Linux x86_64. inspect is execution-free.\n"
     "run explicitly builds and executes an isolated local CPU application.\n"
+    "run-batch validates all requests, builds once, and executes them sequentially.\n"
 )
 _RUNTIME_REASONS = frozenset({
     "argument_rejection", "numeric_rejection", "environment_rejection", "protocol_rejection",
@@ -67,19 +74,21 @@ def _arguments(argv: list[str]) -> tuple[str, str, str | None, str | None]:
             any(type(value) is not str or not value or len(value) > _MAX_PATH_BYTES or
                 "\x00" in value for value in argv)):
         raise _CLIError("arguments_rejected")
-    if argv in (["--help"], ["-h"], ["inspect", "--help"], ["run", "--help"]):
+    if argv in (["--help"], ["-h"], ["inspect", "--help"], ["run", "--help"],
+                ["run-batch", "--help"]):
         return "help", "", None, None
     if len(argv) == 2 and argv[0] == "inspect" and not argv[1].startswith("-"):
         return "inspect", argv[1], None, None
-    if len(argv) == 6 and argv[0] == "run" and not argv[1].startswith("-"):
+    if len(argv) == 6 and argv[0] in {"run", "run-batch"} and not argv[1].startswith("-"):
+        input_flag = "--batch" if argv[0] == "run-batch" else "--inputs"
         options: dict[str, str] = {}
         for index in (2, 4):
             key, value = argv[index:index + 2]
-            if key not in {"--inputs", "--workspace"} or key in options or value.startswith("-"):
+            if key not in {input_flag, "--workspace"} or key in options or value.startswith("-"):
                 raise _CLIError("arguments_rejected")
             options[key] = value
-        if set(options) == {"--inputs", "--workspace"}:
-            return "run", argv[1], options["--inputs"], options["--workspace"]
+        if set(options) == {input_flag, "--workspace"}:
+            return argv[0], argv[1], options[input_flag], options["--workspace"]
     raise _CLIError("arguments_rejected")
 
 
@@ -175,6 +184,34 @@ def _execute(action: str, graph_path: str, input_path: str | None,
             "native_execution_observed": False,
         })
     assert input_path is not None and workspace is not None
+    if action == "run-batch":
+        batch = batch_from_json(module, bindings, application,
+                                _read_file(input_path, MAX_BATCH_JSON_BYTES))
+        # Every request passes pure validation before importing the opt-in runtime.
+        from tuc.runtime.bounded_c11_application import (
+            BoundedC11ApplicationRuntimeError,
+            build_bounded_c11_application,
+        )
+        try:
+            results: list[dict[str, object]] = []
+            with build_bounded_c11_application(
+                    module, bindings, workspace=Path(workspace)) as built:
+                for item in batch.requests:
+                    checked = _checked_outputs(built.run(item.values()), manifest)
+                    results.append({"id": item.request_id, "request_digest": item.request_digest,
+                                    "outputs": checked})
+            return _json_bytes({
+                "schema_version": "tuc.bounded_cpu_batch_cli.v0", "action": action,
+                "program_digest": batch.program_digest, "batch_digest": batch.batch_digest,
+                "results": results, "native_execution_observed": True,
+            })
+        except BoundedC11ApplicationRuntimeError as error:
+            reason = error.reason if error.reason in _RUNTIME_REASONS else "runtime_rejected"
+            raise _CLIError(reason, 1) from None
+        except _CLIError:
+            raise
+        except (OSError, ValueError, TypeError, OverflowError):
+            raise _CLIError("runtime_rejected", 1) from None
     inputs = inputs_from_json(module, bindings, application,
                               _read_file(input_path, MAX_INPUT_JSON_BYTES))
     request = encode_bounded_c11_inputs(module, bindings, application, inputs)
@@ -239,6 +276,9 @@ def main(argv: list[str] | None = None) -> int:
         reason = (error.reason if error.reason in {"graph_json_rejected", "input_json_rejected"}
                   else "json_rejected")
         _diagnostic(reason)
+        return 2
+    except BoundedCPUBatchError:
+        _diagnostic("batch_json_rejected")
         return 2
     except BrokenPipeError:
         _silence_broken_stdout()

@@ -43,8 +43,10 @@ The module form is equivalent:
 python -I -m tuc.bounded_cpu_application_cli inspect projection.json
 ```
 
-The command builds for each invocation. Python applications that need several
-runs with one build should use the context-managed API in RFC 0324.
+The single `run` command builds for each invocation. Use
+[`run-batch`](BOUNDED_CPU_BATCH.md) to evaluate several named input sets and
+common weights with one build. Python applications can use the context-managed
+API in RFC 0324.
 
 ## Graph and input contracts
 
