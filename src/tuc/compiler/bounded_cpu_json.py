@@ -202,11 +202,12 @@ def _graph_preflight(value: object) -> dict[str, object]:
         for port in (*_array(op["inputs"], 1, 2), *_array(op["outputs"], 1, 1)):
             _name(port)
         attributes = _object(op.get("attributes", {}), frozenset(),
-                             frozenset({"axis", "elementwise_kind"}))
+                             frozenset({"axis", "elementwise_kind", "rhs_transposed"}))
         if len(attributes) > 1:
             _reject()
         for key, attribute in attributes.items():
             if ((key == "axis" and (type(attribute) is not int or attribute != 1)) or
+                    (key == "rhs_transposed" and attribute is not True) or
                     (key == "elementwise_kind" and
                      (type(attribute) is not str or attribute not in ("relu", "add")))):
                 _reject()

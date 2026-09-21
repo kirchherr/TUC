@@ -4,7 +4,13 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Current implementation: [Bounded CPU Add/Bias](docs/BOUNDED_CPU_ADD_BIAS.md),
+Current implementation: [Bounded CPU Linear](docs/BOUNDED_CPU_LINEAR.md),
+RFC 0328, accepts row-major `[N,K]` weights directly through a neutral
+right-transposed Matmul mode. Affine and MLP graphs keep their physical input
+arrays unchanged. [Installed FP32 and ASan/UBSan validation](https://github.com/kirchherr/TUC/actions/runs/35569935472)
+passed at `b0085167`; final-revision CI and owner review remain required.
+
+Underlying implementation: [Bounded CPU Add/Bias](docs/BOUNDED_CPU_ADD_BIAS.md),
 RFC 0327, extends source/JSON-to-CPU with same-shape addition and right-hand
 row bias for affine projections, residual sums and a small MLP. Installed
 FP32 conformance and ASan/UBSan validation are required before acceptance.

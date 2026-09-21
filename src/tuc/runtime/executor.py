@@ -26,7 +26,7 @@ from tuc.reference import (
     reference_reduction_sum,
     reference_softmax,
 )
-from tuc.reference.kernels import reference_add
+from tuc.reference.kernels import reference_add, reference_matmul_rhs_transposed
 from tuc.runtime.layout_conversion_executor import (
     RuntimeLayoutConversionExecutionStep,
     assert_materializable_layout_conversion,
@@ -902,6 +902,11 @@ def _execute_reference_operation(
 ) -> FloatArray:
     _validate_runtime_operation_contract(operation)
     if operation.kind is OperationKind.MATMUL:
+        if operation.attributes.get("rhs_transposed") is True:
+            return reference_matmul_rhs_transposed(
+                values[operation.inputs[0].name],
+                values[operation.inputs[1].name],
+            )
         _require_arity(operation, inputs=2, outputs=1)
         return reference_matmul(
             values[operation.inputs[0].name],
@@ -934,6 +939,8 @@ def _execute_reference_operation(
 
 
 def _validate_runtime_operation_contract(operation: ComputeOperation) -> None:
+    if "rhs_transposed" in operation.attributes and operation.kind is not OperationKind.MATMUL:
+        raise ValueError("runtime executor rhs_transposed belongs only to matmul")
     if operation.kind is OperationKind.MATMUL:
         _validate_matmul_operation(operation)
         return
@@ -950,6 +957,9 @@ def _validate_runtime_operation_contract(operation: ComputeOperation) -> None:
 
 
 def _validate_matmul_operation(operation: ComputeOperation) -> None:
+    if "rhs_transposed" in operation.attributes:
+        _validate_transposed_matmul_operation(operation)
+        return
     _require_arity(operation, inputs=2, outputs=1)
     left, right = operation.inputs
     output = operation.outputs[0]
@@ -966,6 +976,20 @@ def _validate_matmul_operation(operation: ComputeOperation) -> None:
             f"runtime executor matmul output shape mismatch for {operation.name}: "
             f"expected {_format_shape(expected)}, got {_format_shape(output.shape)}"
         )
+
+
+def _validate_transposed_matmul_operation(operation: ComputeOperation) -> None:
+    if operation.attributes["rhs_transposed"] is not True:
+        raise ValueError("runtime executor rhs_transposed must be True when present")
+    _require_arity(operation, inputs=2, outputs=1)
+    left, right = operation.inputs
+    output = operation.outputs[0]
+    for tensor in (left, right, output):
+        _require_rank(tensor, rank=2, operation=operation, role="transposed matmul tensor")
+        if tensor.dtype != "float32":
+            raise ValueError("runtime executor transposed matmul requires float32 declarations")
+    if left.shape[1] != right.shape[1] or output.shape != (left.shape[0], right.shape[0]):
+        raise ValueError("runtime executor transposed matmul shape mismatch")
 
 
 def _validate_elementwise_operation(operation: ComputeOperation) -> None:

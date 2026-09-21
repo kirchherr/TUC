@@ -5,6 +5,12 @@ capability-based placement and the reusable C11/CUDA artifact compiler. An
 installed application can provide its own bounded graph without importing the
 repository's examples or choosing a predefined graph family.
 
+RFC 0328 adds [CPU Linear](BOUNDED_CPU_LINEAR.md) using the existing Matmul family
+with `rhs_transposed: true`. Graphs containing this form use the distinct
+`tuc.bounded_linear_dag_artifacts.v0` manifest and require one C11 CPU backend;
+ordinary and transposed Matmul, Add/Bias, ReLU and Sum can be composed within
+the existing bounded graph limits.
+
 ```python
 from tuc.backends.base import BackendCapability
 from tuc.backends.bounded_dag import DAGTarget
