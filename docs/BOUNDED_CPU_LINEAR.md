@@ -41,7 +41,7 @@ tuc-cpu-app inspect graph.json
 tuc-cpu-app run graph.json --inputs inputs.json --workspace cpu-work
 ```
 
-Expected output: `{"y":[-0.5,1.0,4.5,7.0]}`. Inputs and outputs are flat
+Expected `outputs` field: `{"y":[-0.5,1.0,4.5,7.0]}`. Inputs and outputs are flat
 row-major arrays. `inspect` exposes the physical weight shape and deterministic
 program identity; replacing numeric values preserves the graph and changes the
 request identity.
@@ -63,4 +63,10 @@ The weight orientation is consistent with the
 but this interface consumes explicit bounded source/JSON and arrays, not
 PyTorch objects or model checkpoints. See [RFC 0328](../rfcs/0328-bounded-cpu-linear.md)
 and the [independent installed consumer](../integration/bounded_cpu_linear/README.md).
-Actual installed/native validation is pending.
+
+[Installed CI](https://github.com/kirchherr/TUC/actions/runs/35569935472) passed
+at `b0085167`: six source conversions, twelve CPU calls, 60 bitwise FP32 checks,
+ten source and two numeric rejections. Static and ASan/UBSan builds also passed
+the four fixed entrypoint graphs and their boundary controls. The
+[original receipt](evidence/bounded-cpu-linear-35569935472.json) records the
+executed revision and wheel; final-revision CI and owner review remain required.

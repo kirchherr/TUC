@@ -42,8 +42,14 @@ the compiler's nine-file program hash algorithm is not duplicated here.
 Original fixtures must remain byte-for-byte unchanged and workspaces empty
 after every command. It creates `record.json` exclusively after all checks pass.
 Its schema is `tuc.bounded_cpu_linear_integration.v0`; reports from the default
-mode and synthetic tests are not native observations. Actual installed/native
-CI observation is pending.
+mode and synthetic tests are not native observations.
+
+[Installed CI run 35569935472](https://github.com/kirchherr/TUC/actions/runs/35569935472)
+passed at `b0085167` with all six conversions, twelve calls, 60 scalar checks,
+ten source rejections and two numeric rejections. Its
+[original combined receipt](../../docs/evidence/bounded-cpu-linear-35569935472.json)
+also contains the separate static and ASan/UBSan entrypoint observations and
+binds both consumers, the installed wheel and source revision.
 
 ## Small Linear example
 

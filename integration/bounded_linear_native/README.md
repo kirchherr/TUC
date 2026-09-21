@@ -29,3 +29,8 @@ Unexpected crashes and sanitizer reports are rejected. The receipts bind the
 wheel identifier, installed compiler files, consumer, support files and emitted
 sources. This prevents accidental mixing, and is not cryptographic authentication.
 There is no CUDA execution, new runtime admission, or performance claim.
+
+[CI run 35569935472](https://github.com/kirchherr/TUC/actions/runs/35569935472)
+observed all ten expected static/sanitized results at `b0085167`. The
+[original receipt](../../docs/evidence/bounded-cpu-linear-35569935472.json)
+retains the executed context/binding/image identities and wheel/consumer hashes.

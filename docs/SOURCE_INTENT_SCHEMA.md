@@ -6,9 +6,10 @@ TUC publishes a machine-readable JSON Schema for Source Intent plain data:
 schemas/source_intent.v0.schema.json
 ```
 
-The schema documents the same public contract accepted by
-`source_intent_from_mapping(data)`. It is an interoperability artifact for
-external frontend authors and future parser work.
+The schema documents the structural envelope accepted by
+`source_intent_from_mapping(data)`. Semantic checks, including attribute-family
+ownership and relationships between tensor shapes, remain in runtime intake.
+It is an interoperability artifact for external frontend authors and future parser work.
 
 ## Contract
 

@@ -1,6 +1,7 @@
 # RFC 0328: Bounded CPU Linear with transposed right-hand weights
 
-Status: implementation under validation; installed/native observation pending.
+Status: implemented; installed/native execution observed at `b0085167` on
+2026-09-21. Owner review and final-revision CI remain required for acceptance.
 
 ## Problem and decision
 
@@ -86,3 +87,35 @@ contexts. No new runtime command, dependency, dynamic loader, cache authority,
 credential, publication, device or general admission is introduced.
 
 Owner review and observed installed/native execution are required for acceptance.
+
+## Observed execution
+
+[CI run 35569935472](https://github.com/kirchherr/TUC/actions/runs/35569935472)
+passed at `b0085167016242b30b6d4873d27d0e43f5c1677d`: 241 boundary/protocol tests,
+an offline wheel installed outside checkout, six isolated source conversions,
+twelve native CPU calls, 60 bitwise FP32 checks, ten source rejections and two
+numeric rejections. Static and ASan/UBSan entrypoint builds each passed 16 runs,
+132 calls, 56 scalar checks, 116 expected boundary rejections and 406 unchanged
+output checks. The ten observations include three faulty checkers and invalid
+invocation for each build.
+
+The [original combined receipt](../docs/evidence/bounded-cpu-linear-35569935472.json)
+is retained without reserialization. Its SHA256 is
+`e000a22c89f04fcf8bcda18397b6a6c19d3c290074d790e81de2aeaa49759fdc`.
+Artifact `10626015214` contained only `ci-record.json`; its ZIP SHA256
+`52a4d6eb2d052c40d5e1a90ee5e5d2b23366260a8d82375dff0c51f7268f72c3`
+matches the GitHub artifact metadata and upload log. The receipt binds both
+consumer hashes, source revision and wheel SHA256
+`274d3268d0e3325d3065389bb4fe2c04f249a15990fb9033946aaf930a4f641a`.
+These observations cover the fixed CPU corpora only; they establish no GPU,
+arbitrary-source, external-library parity or performance claim.
+
+Independent local audits reproduced all six source/signature/graph/program
+bindings, fourteen input/request digests, ten parser rejections and both numeric
+controls. All 60 recorded CLI outputs match separately ordered NumPy FP32
+calculations bit-for-bit. All 21 native context files (98,264 bytes), both
+context/binding digests and ten observations also reproduce exactly. Eight
+distinct native graph/dataset cases match independent FP32 arithmetic and the
+emitted expectation bits; the workflow executes each twice per build. The
+artifact contains no wheel or container images; these audits do not claim to
+reinstall or rerun them.
