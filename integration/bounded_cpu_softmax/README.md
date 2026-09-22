@@ -49,7 +49,9 @@ The receipt binds source, signature, graph, input, program, request and batch
 identities and preserves expected and observed outputs. These hashes detect
 accidental mixing and do not authenticate evidence.
 
-Native evidence is pending until an actual installed CI run supplies its original
-receipt. Unit tests use a separate ordered NumPy FP32 oracle and synthetic response
+[Installed CI run 35694760750](https://github.com/kirchherr/TUC/actions/runs/35694760750)
+passed all counts above at `a69b5fb`; its
+[original receipt](../../docs/evidence/bounded-cpu-softmax-35694760750.json) is retained.
+Unit tests use a separate ordered NumPy FP32 oracle and synthetic response
 mutations; they are not native execution evidence. No CUDA, performance, general
 runtime admission or broad Triton compatibility is claimed.

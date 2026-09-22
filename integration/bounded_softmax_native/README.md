@@ -38,3 +38,9 @@ operator invocation must also fail. Ten bounded observations bind exact source,
 graph, installed package, wheel and image identities. `--accept` reconstructs
 the entire context and requires complete, exact receipts. Inert candidates and
 synthetic test receipts do not establish native execution.
+
+[Installed CI run 35694760750](https://github.com/kirchherr/TUC/actions/runs/35694760750)
+passed both builds and all ten observations at `a69b5fb`. The
+[original receipt](../../docs/evidence/bounded-cpu-softmax-35694760750.json) and
+[hash audit](../../rfcs/0331-bounded-cpu-softmax.md#observed-execution) retain the
+observed counts and bind the installed source and complete generated context.

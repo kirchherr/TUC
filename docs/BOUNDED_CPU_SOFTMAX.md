@@ -75,6 +75,12 @@ The [installed examples](../integration/bounded_cpu_softmax/README.md) also cove
 scale factor, dropout or multi-head arrangement. It is a small building block,
 not a complete attention layer or general model loader.
 
-Actual installed execution and static/sanitizer observations are required before
-acceptance. The guide values above are expected results; final CI and owner
-review remain required.
+[Installed CI](https://github.com/kirchherr/TUC/actions/runs/35694760750) passed
+at `a69b5fb`: six source conversions, twelve single runs, one three-request
+batch, 106 numerical comparisons and 22 probability-row checks. Static and
+ASan/UBSan conformance also passed, including 108 rejected calls per build.
+The [original receipt](evidence/bounded-cpu-softmax-35694760750.json) and
+[verification details](../rfcs/0331-bounded-cpu-softmax.md#observed-execution)
+record the tested corpus. The guide values above are expected results; final
+CI and owner review for [PR #128](https://github.com/kirchherr/TUC/pull/128)
+remain required.

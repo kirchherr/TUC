@@ -9,7 +9,10 @@ RFC 0331, carries existing row-Softmax intent through the bounded CPU path.
 Affine classifiers and unscaled Matmul/Softmax/Matmul attention graphs compose
 with existing operations and batch execution. A separate numerical contract
 checks every rounded intermediate and defines fixed-corpus comparison tolerances.
-Observed installed/static/sanitizer execution, final CI and owner review are required.
+[Installed/static/sanitizer CI](https://github.com/kirchherr/TUC/actions/runs/35694760750)
+passed at `a69b5fb`: 1,153 tests, six conversions, fifteen individual/batch results,
+106 numerical comparisons and 108 native rejections per build. Original evidence
+is retained; final CI and owner review for PR #128 remain required.
 
 Current implementation: [Bounded CPU Batch Applications](docs/BOUNDED_CPU_BATCH.md),
 RFC 0330, reuses one explicit CPU build for up to sixteen validated input sets.

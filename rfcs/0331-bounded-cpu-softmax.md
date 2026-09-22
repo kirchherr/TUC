@@ -1,6 +1,6 @@
 # RFC 0331: Bounded CPU row Softmax
 
-Status: implementation in progress; actual installed/static/sanitizer execution,
+Status: implemented with observed installed/static/sanitizer execution in PR #128;
 final CI and owner review are required before acceptance.
 
 ## Problem and decision
@@ -103,6 +103,52 @@ wheel builds. Installed clients run outside checkout and preserve original
 observations bound to source, wheel, consumers, contexts and image identities.
 Synthetic candidates are not native observations. No GPU, production admission,
 general model, performance or public release claim is made.
+
+## Observed execution
+
+[CI run 35694760750](https://github.com/kirchherr/TUC/actions/runs/35694760750)
+passed at `a69b5fbe55e3d7750dc5b2f69d815be3f8fcdc3e`: 1,153 focused tests,
+an offline wheel build and installation outside checkout, then six source
+conversions, twelve individual runs and a three-request classifier batch.
+All 106 output comparisons and 22 visible probability-row checks passed.
+Eight source/JSON rejections and four arithmetic rejections produced the exact
+closed diagnostics, empty stdout, unchanged fixtures and clean workspaces.
+
+Static and ASan/UBSan native builds each passed 16 successful case runs,
+124 entrypoint calls, 80 scalar comparisons, 108 rejected calls and 544
+unchanged-output checks. All six intentionally faulty checker runs and both
+invalid invocations failed as required. These are ten actual observations.
+
+The [original receipt](../docs/evidence/bounded-cpu-softmax-35694760750.json)
+is retained without reserialization: 25,205 bytes, SHA256
+`e27350673c31c342bf6106ccc66e2e279483686b5a1b480902b986762ee1e001`.
+Artifact `10679737479` contained only `ci-record.json`; ZIP SHA256
+`e1c693ab7b4f4b6a58b80fb3882f8ef494b819c93d4b24e550e5b79598393acb`
+matches GitHub metadata and the upload log. Wheel SHA256
+`b46362f7a95b5ff45051dd2aa79c0360faeef449bb1f060bf22250e1a0537409`
+matches the wheel-build log. The artifact contains no wheel or container image.
+
+The CLI consumer SHA256 is
+`176925d8c922ef5dda6f43778ade759323c6164bd7ae4ea9aeafda7004acb16b`;
+the native consumer SHA256 is
+`74e72df576c63eed3ed7787ab1cb1dbefa00d0d025edd36ef748653b2862e69e`.
+A local audit reconstructed the complete 21-file native context, including the
+27 bound package-source files, four graph/binding declarations and ten exact
+observation records. Context SHA256 is
+`5c19b80d83652bb9de2f96b0f32aeb00c79f1a8099385351f6497d36d4cd1839`.
+Separate ordered NumPy FP32 equations match the 40 unique embedded reference
+scalars, each used twice per build. This reconstruction audits the retained
+observations; it does not repeat native execution.
+
+An independent integration audit reconstructed all six source/signature/graph
+declarations, public bindings and compiler program identities, nineteen input/
+request bindings (including four numerical controls), and the batch digest.
+Ordered NumPy FP32 equations match all 106 observed output values, with maximum
+absolute difference `5.960464477539063e-08` on this corpus. The 22 probability
+rows remain positive and finite, with the same maximum row-mass difference.
+All eight parser/graph rejection classifications and four distinct invalid
+numerical intermediates were independently checked. This is an audit of the
+original receipt, not another native run or a general error bound.
 
 ## References
 

@@ -4,8 +4,14 @@
   axis-one FP32 normalization to the native CPU path, including affine classifiers
   and small unscaled attention calculations. Existing graphs keep their program
   identities. The numerical contract checks shifts, exponentials, ordered sums
-  and quotients; conformance uses explicit tolerances. Actual installed/static/
-  sanitizer observations, final CI and owner review remain required.
+  and quotients; conformance uses explicit tolerances.
+  [Installed/static/sanitizer CI](https://github.com/kirchherr/TUC/actions/runs/35694760750)
+  passed at `a69b5fb`: 1,153 tests, six conversions, twelve single runs and one
+  three-request batch, 106 numerical comparisons, 22 probability-row checks,
+  eight source/JSON and four numeric rejections. Each native build passed 108
+  rejections and 544 unchanged-output checks. Original observations are retained;
+  final CI and owner review for [PR #128](https://github.com/kirchherr/TUC/pull/128)
+  remain required.
 
 - [Bounded CPU Batch Applications](BOUNDED_CPU_BATCH.md), RFC 0330, adds a
   `run-batch` command with shared input tensors and up to sixteen ordered
