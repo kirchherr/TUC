@@ -66,7 +66,7 @@ def validate_spec(spec: C11GraphSpec) -> tuple[int, int]:
         _record(op, C11OperationSpec)
         if type(op.kind) is not str or op.kind not in (
                 "matmul", "matmul_rhs_transposed", "relu", "sum_axis1", "add", "add_row_bias",
-                "mul"):
+                "mul", "softmax_axis1"):
             raise ValueError("checked C11 operation rejected")
         arity = 2 if op.kind in (
             "matmul", "matmul_rhs_transposed", "add", "add_row_bias", "mul") else 1
@@ -94,6 +94,10 @@ def validate_spec(spec: C11GraphSpec) -> tuple[int, int]:
             if first != out:
                 raise ValueError("checked C11 relu rejected")
             work += prod(first)
+        elif op.kind == "softmax_axis1":
+            if len(first) != 2 or out != first:
+                raise ValueError("checked C11 softmax shape rejected")
+            work += 5 * prod(first)
         else:
             if len(first) != 2 or out != (first[0],):
                 raise ValueError("checked C11 sum rejected")
@@ -120,6 +124,33 @@ def _operation(spec: C11GraphSpec, index: int) -> list[str]:
     shape = spec.tensor_shapes[op.inputs[0]]
     out = spec.tensor_shapes[op.output]
     params = ", ".join([*(f"const float *a{i}" for i in range(len(op.inputs))), "float *out"])
+    if op.kind == "softmax_axis1":
+        rows, columns = shape
+        return [f"static int tuc_op_{index}({params}) {{",
+                f"  for (size_t row = 0; row < {rows}U; ++row) {{",
+                f"    const size_t base = row * {columns}U;",
+                "    if (!tuc_normal(&a0[base])) return 0;",
+                "    float maximum = a0[base];",
+                f"    for (size_t column = 1; column < {columns}U; ++column) {{",
+                "      if (!tuc_normal(&a0[base + column])) return 0;",
+                "      if (a0[base + column] > maximum) maximum = a0[base + column];",
+                "    }", "    float sum = 0.0F;",
+                f"    for (size_t column = 0; column < {columns}U; ++column) {{",
+                "      volatile float rounded_shift = a0[base + column] - maximum;",
+                "      const float shift = rounded_shift;",
+                "      if (!tuc_normal(&shift)) return 0;",
+                "      volatile float rounded_exp = expf(shift);",
+                "      const float exponential = rounded_exp;",
+                "      if (!tuc_normal(&exponential) || !(exponential > 0.0F)) return 0;",
+                "      out[base + column] = exponential;",
+                "      if (!tuc_add(sum, exponential, &sum)) return 0;", "    }",
+                "    if (!tuc_normal(&sum) || !(sum > 0.0F)) return 0;",
+                f"    for (size_t column = 0; column < {columns}U; ++column) {{",
+                "      volatile float rounded_quotient = out[base + column] / sum;",
+                "      const float quotient = rounded_quotient;",
+                "      if (!tuc_normal(&quotient) || !(quotient > 0.0F)) return 0;",
+                "      out[base + column] = quotient;", "    }", "  }",
+                "  return 1;", "}", ""]
     lines = [f"static int tuc_op_{index}({params}) {{",
              f"  for (size_t i = 0; i < {prod(out)}U; ++i) {{"]
     if op.kind == "relu":
@@ -181,6 +212,8 @@ def emit_checked_graph(spec: C11GraphSpec, binding_digest: str) -> tuple[str, st
     source = ['#include "entrypoint.h"', "#include <stdint.h>", "#include <string.h>",
               "#include <float.h>", "#include <limits.h>", "#include <fenv.h>",
               "#include <xmmintrin.h>",
+              *(["#include <math.h>"] if any(op.kind == "softmax_axis1"
+                                            for op in spec.operations) else []),
               "#if !defined(__linux__) || !defined(__x86_64__) || !defined(__SSE2__)",
               '#error "checked C11 requires Linux x86-64 SSE2 flat-address ABI"', "#endif",
               "#ifdef __FAST_MATH__", '#error "checked C11 forbids fast math"', "#endif",

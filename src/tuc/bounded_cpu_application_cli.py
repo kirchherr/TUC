@@ -60,11 +60,15 @@ class _CLIError(ValueError):
         super().__init__(reason)
 
 
-def cpu_bindings() -> tuple[BoundedBackendBinding, ...]:
-    """Return the one fixed CPU capability; JSON never selects a backend."""
+def cpu_bindings(*, softmax: bool = False) -> tuple[BoundedBackendBinding, ...]:
+    """Return the fixed CPU capability, retaining legacy bindings without Softmax."""
+    if type(softmax) is not bool:
+        raise ValueError("bounded CPU capability rejected")
+    operations = {OperationKind.MATMUL, OperationKind.ELEMENTWISE, OperationKind.REDUCTION}
+    if softmax:
+        operations.add(OperationKind.SOFTMAX)
     return (BoundedBackendBinding(BackendCapability(
-        "json_cpu", frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE,
-                               OperationKind.REDUCTION}),
+        "json_cpu", frozenset(operations),
         memory_domain=MemoryDomainKind.HOST_RAM,
     ), DAGTarget.C11),)
 
@@ -170,7 +174,7 @@ def _execute(action: str, graph_path: str, input_path: str | None,
              workspace: str | None) -> bytes:
     _require_platform()
     module = source_intent_from_json(_read_file(graph_path, MAX_GRAPH_JSON_BYTES))
-    bindings = cpu_bindings()
+    bindings = cpu_bindings(softmax=any(op.family == "softmax" for op in module.operations))
     try:
         application = prepare_bounded_c11_application(module, bindings)
     except (ValueError, TypeError, OverflowError):

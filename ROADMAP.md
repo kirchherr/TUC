@@ -4,6 +4,13 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Bounded CPU Softmax](docs/BOUNDED_CPU_SOFTMAX.md),
+RFC 0331, carries existing row-Softmax intent through the bounded CPU path.
+Affine classifiers and unscaled Matmul/Softmax/Matmul attention graphs compose
+with existing operations and batch execution. A separate numerical contract
+checks every rounded intermediate and defines fixed-corpus comparison tolerances.
+Observed installed/static/sanitizer execution, final CI and owner review are required.
+
 Current implementation: [Bounded CPU Batch Applications](docs/BOUNDED_CPU_BATCH.md),
 RFC 0330, reuses one explicit CPU build for up to sixteen validated input sets.
 Shared weights, ordered request identities and bounded result publication make
@@ -11,7 +18,8 @@ the existing Linear/Gating graph path useful for multiple datasets. The native
 protocol and per-request isolation remain unchanged.
 [Installed validation](https://github.com/kirchherr/TUC/actions/runs/35609641378)
 passed at `c82d48d`: seven batches, 21 ordered results, 96 FP32 checks and eight
-rejection controls. Final CI and owner review remain required.
+rejection controls. [PR #127](https://github.com/kirchherr/TUC/pull/127) merged
+into `main` at `305ec88` after final CI passed with 6,762 tests and two skips.
 
 Current implementation: [Bounded CPU Gating](docs/BOUNDED_CPU_GATING.md),
 RFC 0329, adds exact-shape elementwise products to the existing CPU path.

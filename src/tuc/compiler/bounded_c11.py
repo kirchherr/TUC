@@ -153,6 +153,16 @@ def emit_bounded_c11_entrypoint(
     if any(op.kind == "mul" for op in spec.operations):
         numeric["multiplication"] = "one_checked_binary32_product_per_output_element"
         numeric["multiplication_shapes"] = "equal_rank1_or_rank2_without_broadcasting"
+    if any(op.kind == "softmax_axis1" for op in spec.operations):
+        numeric["softmax"] = "row_max_shift_expf_ordered_binary32_sum_division"
+        numeric["softmax_axis"] = 1
+        numeric["softmax_logical_work_per_element"] = 5
+        numeric["softmax_maximum"] = "first_element_then_strict_greater_scan"
+        numeric["softmax_domain"] = (
+            "normal_or_zero_shift_strictly_positive_normal_exp_and_quotient")
+        numeric["softmax_logit_range_cap"] = None
+        numeric["libm_accuracy"] = "implementation_dependent_not_bitexact_across_libraries"
+        numeric["softmax_rounded_shift_exp_sum_quotient_checked"] = True
     provenance = {
         "schema_version": SCHEMA_VERSION,
         "source_intent_digest": fresh.source_intent_digest,

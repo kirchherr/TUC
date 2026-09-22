@@ -7,6 +7,7 @@ choose between those targets while preserving the calculation's result and
 explaining every choice?
 
 For the current bounded native CPU application path, see
+[row Softmax, classifiers and small attention graphs](docs/BOUNDED_CPU_SOFTMAX.md),
 [several datasets with one build](docs/BOUNDED_CPU_BATCH.md),
 [elementwise products and gated MLPs](docs/BOUNDED_CPU_GATING.md),
 [Linear with row-major weights](docs/BOUNDED_CPU_LINEAR.md),

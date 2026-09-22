@@ -424,11 +424,11 @@ def negative_cases(marker):
     result.append({"id": "kernel_name", "source": base, "signature": changed_name,
                    "reason": "source_rejected"})
     prefix = "import triton\nimport triton.language as tl\n\n@triton.jit\n"
-    softmax = (prefix + "def negative_softmax(x, y):\n"
-               "    p = tl.softmax(x, axis=1)\n    tl.store(y, p)\n").encode()
-    result.append({"id": "softmax", "source": softmax, "signature": {
-        "schema_version": SIGNATURE_SCHEMA, "source_name": "negative_softmax",
-        "kernel_name": "negative_softmax", "tensor_shapes": {"x": [2, 2], "y": [2, 2]}},
+    softmax = (prefix + "def negative_softmax_axis0(x, y):\n"
+               "    p = tl.softmax(x, axis=0)\n    tl.store(y, p)\n").encode()
+    result.append({"id": "softmax_axis0", "source": softmax, "signature": {
+        "schema_version": SIGNATURE_SCHEMA, "source_name": "negative_softmax_axis0",
+        "kernel_name": "negative_softmax_axis0", "tensor_shapes": {"x": [2, 2], "y": [2, 2]}},
         "reason": "graph_rejected"})
     nonterminal = (prefix + "def negative_return(x, y, z):\n"
                    "    positive = tl.where(x > 0.0, x, 0.0)\n"

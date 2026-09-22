@@ -327,7 +327,7 @@ def test_rejection_reason_cannot_leak_or_forge_parent_results(reason):
     lambda g: g["tensors"][0].pop("dtype"),
     lambda g: g["returns"][0].pop("required"),
     lambda g: g["operations"][1]["attributes"].update(elementwise_kind="identity"),
-    lambda g: g["operations"][1].update(family="softmax", attributes={"axis": 1}),
+    lambda g: g["operations"][1].update(family="softmax", attributes={"axis": 0}),
     lambda g: g["operations"][2]["attributes"].update(axis=0),
     lambda g: g["operations"][2]["attributes"].update(axis=True),
     lambda g: g["returns"][0].update(tensor_name="p"),
