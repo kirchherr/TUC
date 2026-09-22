@@ -5,6 +5,9 @@ tensors. Preparation returns source files. An explicit build creates a container
 image, and an explicit `run()` sends one input frame to a fresh container.
 Importing either module does not start a process.
 
+For the same build-once, run-many behavior using JSON files, see
+[the batch CLI](BOUNDED_CPU_BATCH.md).
+
 The [native CI run](https://github.com/kirchherr/TUC/actions/runs/35339997831)
 passed on revision `c9ebb2675f5114b7332284ce5fa380e8f259bb43`: 333 Linux tests,
 12 application calls, 72 numerical checks, one checked overflow rejection and

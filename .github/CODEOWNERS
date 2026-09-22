@@ -68,4 +68,7 @@
 /integration/bounded_cpu_gating/ @kirchherr
 /integration/bounded_mul_native/ @kirchherr
 /docs/BOUNDED_CPU_GATING.md @kirchherr
+/integration/bounded_cpu_batch/ @kirchherr
+/docs/BOUNDED_CPU_BATCH.md @kirchherr
+/schemas/bounded_cpu_batch.v0.schema.json @kirchherr
 /rfcs/ @kirchherr

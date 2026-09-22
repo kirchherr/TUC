@@ -7,6 +7,7 @@ choose between those targets while preserving the calculation's result and
 explaining every choice?
 
 For the current bounded native CPU application path, see
+[several datasets with one build](docs/BOUNDED_CPU_BATCH.md),
 [elementwise products and gated MLPs](docs/BOUNDED_CPU_GATING.md),
 [Linear with row-major weights](docs/BOUNDED_CPU_LINEAR.md),
 [Add/Bias and a small MLP](docs/BOUNDED_CPU_ADD_BIAS.md),
@@ -14,7 +15,8 @@ For the current bounded native CPU application path, see
 [Run a CPU graph from JSON](docs/BOUNDED_CPU_JSON_CLI.md). An installed
 `tuc-cpu-app` command inspects caller-defined supported graph data and explicitly
 builds/runs it with separate input tensors on Linux x86-64. The
-[Python application API](docs/BOUNDED_CPU_APPLICATION.md) also supports reusing
+[batch command](docs/BOUNDED_CPU_BATCH.md) and
+[Python application API](docs/BOUNDED_CPU_APPLICATION.md) support reusing
 a build across multiple inputs.
 
 ## What The Current Experiment Actually Does
