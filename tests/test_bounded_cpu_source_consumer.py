@@ -262,21 +262,21 @@ def test_negative_corpus_covers_source_signature_and_compiler_semantics_without_
     assert b"create_connection" in by_name["network_effect"]["source"]
     assert by_name["dimension_limit"]["signature"]["tensor_shapes"]["a"][0] == 65
     assert by_name["boolean_dimension"]["signature"]["tensor_shapes"]["a"][0] is True
-    assert b"tl.softmax(" in by_name["softmax"]["source"]
+    assert b"tl.softmax(x, axis=0)" in by_name["softmax_axis0"]["source"]
     with pytest.raises(SyntaxError):
         ast.parse(by_name["syntax"]["source"])
     assert not (tmp_path / "forbidden-effect").exists()
     assert consumer.signature("fanout", 0)["tensor_shapes"]["a"] == [2, 3]
 
 
-@pytest.mark.parametrize("case_id,expected_reason", (("softmax", "graph_rejected"),
+@pytest.mark.parametrize("case_id,expected_reason", (("softmax_axis0", "graph_rejected"),
                                                    ("nonterminal_return", "source_rejected")))
 def test_fixed_negative_sources_use_real_parser_and_parent_classification(
         tmp_path, case_id, expected_reason):
     """Parse fixed test literals as data; the worker envelope/isolation is synthetic.
 
     Nonterminal returns fail SourceIntentModule construction inside the parser,
-    whereas valid softmax Source Intent reaches the narrower CPU parent boundary.
+    whereas axis-0 Softmax Source Intent reaches the narrower CPU parent boundary.
     No caller source path, source execution, process or container is involved.
     """
     cases = {case["id"]: case for case in consumer.negative_cases(tmp_path / "unused-marker")}

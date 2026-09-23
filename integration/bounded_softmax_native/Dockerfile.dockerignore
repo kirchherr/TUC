@@ -1,0 +1,14 @@
+**
+!Dockerfile
+!Dockerfile.dockerignore
+!softmax-entrypoint.c
+!softmax-entrypoint.h
+!classifier-entrypoint.c
+!classifier-entrypoint.h
+!mixed-entrypoint.c
+!mixed-entrypoint.h
+!attention-entrypoint.c
+!attention-entrypoint.h
+!entrypoint.h
+!worker.c
+!build.sh

@@ -197,7 +197,7 @@ def _graph_preflight(value: object) -> dict[str, object]:
                      frozenset({"attributes", "hints"}))
         _name(op["name"])
         if (type(op["family"]) is not str or
-                op["family"] not in ("matmul", "elementwise", "reduction")):
+                op["family"] not in ("matmul", "elementwise", "reduction", "softmax")):
             _reject()
         for port in (*_array(op["inputs"], 1, 2), *_array(op["outputs"], 1, 1)):
             _name(port)

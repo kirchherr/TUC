@@ -1,5 +1,18 @@
 # Roadmap Status
 
+- [Bounded CPU Softmax](BOUNDED_CPU_SOFTMAX.md), RFC 0331, adds rank-two,
+  axis-one FP32 normalization to the native CPU path, including affine classifiers
+  and small unscaled attention calculations. Existing graphs keep their program
+  identities. The numerical contract checks shifts, exponentials, ordered sums
+  and quotients; conformance uses explicit tolerances.
+  [Installed/static/sanitizer CI](https://github.com/kirchherr/TUC/actions/runs/35694760750)
+  passed at `a69b5fb`: 1,153 tests, six conversions, twelve single runs and one
+  three-request batch, 106 numerical comparisons, 22 probability-row checks,
+  eight source/JSON and four numeric rejections. Each native build passed 108
+  rejections and 544 unchanged-output checks. Original observations are retained;
+  final CI and owner review for [PR #128](https://github.com/kirchherr/TUC/pull/128)
+  remain required.
+
 - [Bounded CPU Batch Applications](BOUNDED_CPU_BATCH.md), RFC 0330, adds a
   `run-batch` command with shared input tensors and up to sixteen ordered
   requests. Every expanded input and aggregate budget is checked before one
@@ -8,7 +21,9 @@
   [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35609641378) passed
   at `c82d48d`: 642 tests, seven batches, 21 results, 96 bitwise FP32 comparisons,
   six malformed-input controls and two later numeric rejections. Original
-  observations are retained; final CI and owner review remain required.
+  observations are retained. [PR #127](https://github.com/kirchherr/TUC/pull/127)
+  merged into `main` at `305ec88` after 47 successful checks and one expected skip;
+  the complete test suite passed 6,762 tests with two skips.
 
 - [Bounded CPU Gating](BOUNDED_CPU_GATING.md), RFC 0329, adds exact-shape
   rank-one/two FP32 products through source/JSON/IR and checked native CPU.

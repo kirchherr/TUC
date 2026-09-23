@@ -1,6 +1,6 @@
 """Data-only Source Intent entry point for the bounded DAG artifact compiler.
 
-Only explicit, static FP32 Matmul/ReLU/Add/row-Sum modules are accepted. Backend
+Only explicit, static FP32 Matmul/ReLU/Add/Mul/row-Sum/row-Softmax is accepted. Backend
 descriptors are planning data, not backend objects or execution permissions.
 No source parser, registry discovery, native compiler or runtime is invoked.
 """
@@ -46,7 +46,8 @@ from tuc.ir.model import OperationKind
 MAX_BOUNDED_ERROR_BUDGET = 1_000_000.0
 _NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 _BACKEND_NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.:-]*\Z")
-_KINDS = frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE, OperationKind.REDUCTION})
+_KINDS = frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE,
+                    OperationKind.REDUCTION, OperationKind.SOFTMAX})
 _BOOLEAN_HINTS = frozenset({"robust_to_noise", "prefer_sparsity", "prefer_linear_accelerator"})
 
 
@@ -146,7 +147,7 @@ def _error_budget(value: object) -> float:
 
 
 def _operation_set(value: object, *, nonempty: bool) -> frozenset[OperationKind]:
-    if type(value) is not frozenset or not int(nonempty) <= len(value) <= 3:
+    if type(value) is not frozenset or not int(nonempty) <= len(value) <= len(_KINDS):
         _reject()
     values = cast(frozenset[object], value)
     if any(type(item) is not OperationKind for item in values):
@@ -236,7 +237,7 @@ def _checked_module(value: object) -> SourceIntentModule:
         op_name = _name(operation["name"])
         family = operation["family"]
         if (type(family) is not str or len(family) > 16 or
-                family not in {"matmul", "elementwise", "reduction"}
+                family not in {"matmul", "elementwise", "reduction", "softmax"}
                 or op_name in operation_names):
             _reject()
         inputs = tuple(_name(port) for port in _tuple(operation["inputs"], 1, 2))
@@ -286,6 +287,12 @@ def _checked_module(value: object) -> SourceIntentModule:
                        (len(shapes[0]) == 2 and shapes[1] == (shapes[0][1],)))):
                 _reject()
             work += prod(output_shape)
+        elif family == "softmax":
+            if (set(attributes) != {"axis"} or type(attributes["axis"]) is not int or
+                    attributes["axis"] != 1 or len(shapes) != 1 or len(shapes[0]) != 2 or
+                    output_shape != shapes[0]):
+                _reject()
+            work += 5 * prod(output_shape)
         else:
             if (set(attributes) != {"axis"} or type(attributes["axis"]) is not int or
                     attributes["axis"] != 1 or len(shapes) != 1 or len(shapes[0]) != 2 or
@@ -402,7 +409,11 @@ def compile_bounded_source_intent(
     used = {assignment.backend_name for assignment in partition.assignments}
     targets = {binding.capability.name: binding.target for binding in bindings
                if binding.capability.name in used}
-    if any(op.attributes.get("elementwise_kind") == "mul" for op in clean_module.operations):
+    if any(op.family == "softmax" for op in clean_module.operations):
+        from tuc.backends.bounded_softmax_dag import lower_bounded_softmax_dag
+
+        artifacts = lower_bounded_softmax_dag(compilation.hac_ir, partition, targets)
+    elif any(op.attributes.get("elementwise_kind") == "mul" for op in clean_module.operations):
         from tuc.backends.bounded_mul_dag import lower_bounded_mul_dag
 
         artifacts = lower_bounded_mul_dag(compilation.hac_ir, partition, targets)
