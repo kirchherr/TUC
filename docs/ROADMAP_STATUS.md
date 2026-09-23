@@ -3,8 +3,12 @@
 - [Reusable CPU models](BOUNDED_CPU_MODEL.md), RFC 0333, combines a bounded graph
   and fixed parameters in inspectable data-only JSON. Remaining inputs run through
   the existing single/batch CPU path without overrides. Parameter identities are
-  separate from program identities. Installed observations, final CI and owner
-  review remain required.
+  separate from program identities.
+  [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35886433476) passed
+  at `8e1484a`: 758 tests, seven packs, thirteen single runs, six two-request
+  batches, 110 output comparisons, eight malformed-input and two arithmetic
+  controls. Original evidence is retained and independently reconstructed.
+  Full CI and owner review remain required.
 
 - [Bounded CPU Scaling](BOUNDED_CPU_SCALING.md), RFC 0332, supports a compact
   right `[1]` factor or right `[N]` feature vector for `[M,N]`. Scaled attention

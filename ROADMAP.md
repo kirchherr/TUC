@@ -8,7 +8,10 @@ Current implementation: [Reusable CPU models](docs/BOUNDED_CPU_MODEL.md), RFC 03
 packages an existing neutral graph and fixed FP32 parameters as bounded data.
 Single and batch commands accept only remaining inputs; model identities bind
 parameters while expanded requests retain the original program/request/batch
-identities. Actual installed observations, final CI and owner review remain required.
+identities. [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35886433476)
+passed at `8e1484a`: 758 tests, seven model packs, thirteen single runs, six
+two-request batches and 110 output checks. Original observations and independent
+audit details are retained; full CI and owner review remain required.
 
 Current implementation: [Bounded CPU Scaling](docs/BOUNDED_CPU_SCALING.md),
 RFC 0332, admits compact right-hand factors for vector/matrix multiplication

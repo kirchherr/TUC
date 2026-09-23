@@ -106,5 +106,10 @@ their boundaries. Runtime numeric failures use `numeric_rejection`, exit code 1.
 
 See [RFC 0333](../rfcs/0333-bounded-cpu-model.md) and the
 [independent installed client](../integration/bounded_cpu_model/README.md).
-The guide values are expected results; installed observations, final CI and
-owner review remain required before acceptance.
+The guide values are expected results.
+[Installed CI](https://github.com/kirchherr/TUC/actions/runs/35886433476) passed at
+`8e1484a`: seven model packs, thirteen single runs, six two-request batches,
+110 output comparisons, eight malformed-data and two arithmetic rejections.
+The unchanged [original receipt](evidence/bounded-cpu-model-35886433476.json)
+and [audit details](../rfcs/0333-bounded-cpu-model.md#observed-execution) record the
+tested corpus. Full CI and owner review remain required before acceptance.

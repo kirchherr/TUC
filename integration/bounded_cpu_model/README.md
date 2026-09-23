@@ -34,4 +34,9 @@ Only complete success creates `record.json`. It binds original graph, parameter,
 canonical model and input bytes with program/model/request/batch identities,
 expected and observed outputs, and control identities. Digests do not
 authenticate evidence. Inert candidates and synthetic tests are not native
-observations. Actual installed execution is pending CI.
+observations.
+[CI run 35886433476](https://github.com/kirchherr/TUC/actions/runs/35886433476)
+observed all counts above at `8e1484a`, after 758 focused tests. Its unchanged
+[receipt](../../docs/evidence/bounded-cpu-model-35886433476.json) binds source,
+wheel and consumer identities. See the
+[independent audit](../../rfcs/0333-bounded-cpu-model.md#observed-execution).

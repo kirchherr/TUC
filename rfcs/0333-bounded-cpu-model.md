@@ -1,7 +1,7 @@
 # RFC 0333: Reusable bounded CPU model data
 
-Status: implementation in progress; observed installed execution, final CI and
-owner review required.
+Status: implemented with observed installed execution; full CI and owner review
+remain required.
 
 ## Decision and value
 
@@ -68,3 +68,39 @@ runtime/cleanup errors. An independent installed client must pack and execute
 legacy Linear, calibrated classifier and scaled attention models with multiple
 profiles, compare results with separate FP32 equations, and observe rejection
 and cleanup behavior. Unit tests and candidate reports are not native evidence.
+
+## Observed execution
+
+[CI run 35886433476](https://github.com/kirchherr/TUC/actions/runs/35886433476)
+passed at `8e1484a93086f6ab667bcc4863c1e4ec16109ec5`: 758 focused tests, offline
+wheel construction and installation outside checkout, then the independent
+standard-library client. It observed seven model packs, thirteen single runs
+and six two-request batches. All 110 comparisons passed: 38 bitwise Linear
+outputs, 72 composed outputs within the stated Softmax tolerances and twelve
+visible probability-row checks. A changed-parameter model retained its program
+identity and changed its model identity. Eight malformed-data controls and two
+arithmetic controls rejected with exact diagnostics, empty stdout, unchanged
+fixtures and clean workspaces.
+
+The unchanged [original receipt](../docs/evidence/bounded-cpu-model-35886433476.json)
+contains 16,968 bytes with SHA256
+`c51c05a6c067cc6df74448525e3601f39a78724275c4a6df1b833fb72be1970c`.
+Artifact `10763046799` has ZIP SHA256
+`e44c0c5fab174358b88e39dda240e87fe992f3b842f4463fc82b996c5eeb5042`,
+matching metadata and the upload log. Wheel SHA256
+`c1cb15a94e5dc4f71e214e951d3baa7829cc1e1b58422fe8568935145885f01b`
+matches the build log. The consumer hash matches the observed source revision.
+The artifact retains the receipt, not the wheel or native images.
+
+A separate local audit reconstructed six canonical models and their program
+identities, the changed parameter model, 28 request bindings, seven batch
+digests, all eight negative classifications and both numeric-control identities.
+Independent NumPy equations matched all 110 observed values, including 38 exact
+FP32 bit patterns. Maximum absolute composed-output difference was
+`5.960464477539063e-08`; maximum row-mass difference was
+`8.195638656616211e-08`. The audit did not repeat native execution.
+
+The existing Scaling audit also reconstructed its six retained programs and
+unchanged native context and observations. This extension changes host data
+packaging and CLI dispatch; it adds no native arithmetic. Full CI and owner
+review remain separate from these fixed-corpus observations.
