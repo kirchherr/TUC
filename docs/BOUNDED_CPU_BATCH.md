@@ -67,6 +67,8 @@ characters. `shared_inputs` can be omitted. Every request must supply exactly
 the graph inputs not already shared; an overlap rejects instead of overriding.
 This applies equally to [gated MLPs](BOUNDED_CPU_GATING.md).
 It also supports [row-Softmax classifiers](BOUNDED_CPU_SOFTMAX.md).
+Compact factors and feature parameters can be shared for
+[scaled attention and calibrated classifiers](BOUNDED_CPU_SCALING.md).
 
 The batch JSON limit is 2 MiB. The complete expanded batch has at most 65,536
 input values and 65,536 output values; common weights count toward the input

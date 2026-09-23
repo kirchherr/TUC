@@ -76,23 +76,23 @@ def test_mul_is_neutral_elementwise_through_all_ir_stages(shape):
 
 
 @pytest.mark.parametrize("left,right,output", [
-    ((2, 3), (3,), (2, 3)),  # Even Add's row-bias broadcast is forbidden.
+    ((2, 3), (2,), (2, 3)),  # A feature gain must match the final dimension.
     ((3,), (2, 3), (2, 3)),
     ((2, 3), (1, 3), (2, 3)),
     ((2, 3), (2, 1), (2, 3)),
-    ((3,), (1,), (3,)),
+    ((3,), (2,), (3,)),
     ((2, 3), (6,), (2, 3)),
     ((2, 3), (2, 3), (3, 2)),
     ((2, 3), (2, 3), (6,)),
     ((1, 2, 3), (1, 2, 3), (1, 2, 3)),
 ])
 def test_mul_shapes_reject_before_runtime_inputs(left, right, output):
-    with pytest.raises(ValueError, match="identical rank"):
+    with pytest.raises(ValueError, match="bounded right scaling"):
         _module(left, right, output)
     operation = _operation(left, right, output)
-    with pytest.raises(ValueError, match="identical rank"):
+    with pytest.raises(ValueError, match="bounded right scaling"):
         estimate_operation_movement(operation)
-    _reject_runtime(operation, "identical rank")
+    _reject_runtime(operation, "bounded right scaling")
 
 
 @pytest.mark.parametrize("position", range(3))
@@ -190,12 +190,12 @@ def test_fp64_reference_does_not_claim_native_binary32_rounding():
 
 
 @pytest.mark.parametrize("left,right", [
-    ((2, 3), (3,)), ((2, 3), (1, 3)), ((3,), (1,)),
+    ((2, 3), (2,)), ((2, 3), (1, 3)), ((3,), (2,)),
     ((3,), (2, 3)), ((1, 2, 3), (1, 2, 3)),
 ])
 def test_reference_rejects_numpy_broadcasting_before_multiplication(left, right, monkeypatch):
     monkeypatch.setattr(np, "multiply", lambda *a, **kw: pytest.fail("broadcast evaluated"))
-    with pytest.raises(ValueError, match="identical rank"):
+    with pytest.raises(ValueError, match="bounded right scaling"):
         reference_multiply(np.ones(left), np.ones(right))
 
 

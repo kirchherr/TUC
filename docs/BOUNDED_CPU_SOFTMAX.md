@@ -5,6 +5,9 @@ with Linear and Bias for class probabilities, or put it between two Matmuls for
 a small unscaled attention calculation. Existing single-run and batch commands
 both accept these graphs.
 
+For compact scaling factors before Softmax and per-feature calibration, see
+[CPU scaling](BOUNDED_CPU_SCALING.md).
+
 ## A three-class example
 
 Save `classifier.py`:

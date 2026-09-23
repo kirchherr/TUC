@@ -440,10 +440,10 @@ def negative_cases():
     cases = [{"id": name, "source": base.replace(b"x * rhs", expression),
               "signature": declared(), "reason": "source_rejected"}
              for name, expression in replacements]
-    for name, left, right in (("row_broadcast", (2, 3), (3,)),
+    for name, left, right in (("left_row_broadcast", (3,), (2, 3)),
                               ("column_broadcast", (2, 3), (2, 1)),
                               ("shape_mismatch", (2, 3), (2, 2)),
-                              ("vector_broadcast", (3,), (1,))):
+                              ("left_vector_broadcast", (1,), (3,))):
         cases.append({"id": name, "source": base, "signature": declared(left, right),
                       "reason": "source_rejected"})
     return cases

@@ -66,10 +66,11 @@ def validate_spec(spec: C11GraphSpec) -> tuple[int, int]:
         _record(op, C11OperationSpec)
         if type(op.kind) is not str or op.kind not in (
                 "matmul", "matmul_rhs_transposed", "relu", "sum_axis1", "add", "add_row_bias",
-                "mul", "softmax_axis1"):
+                "mul", "softmax_axis1", "mul_scalar", "mul_row_scale"):
             raise ValueError("checked C11 operation rejected")
         arity = 2 if op.kind in (
-            "matmul", "matmul_rhs_transposed", "add", "add_row_bias", "mul") else 1
+            "matmul", "matmul_rhs_transposed", "add", "add_row_bias", "mul",
+            "mul_scalar", "mul_row_scale") else 1
         indices(op.inputs, arity, arity)
         if (type(op.output) is not int or not 0 <= op.output < count or
                 op.output in producers or op.output in op.inputs):
@@ -93,6 +94,13 @@ def validate_spec(spec: C11GraphSpec) -> tuple[int, int]:
         elif op.kind == "relu":
             if first != out:
                 raise ValueError("checked C11 relu rejected")
+            work += prod(first)
+        elif op.kind in ("mul_scalar", "mul_row_scale"):
+            second = spec.tensor_shapes[op.inputs[1]]
+            valid = (second == (1,) if op.kind == "mul_scalar" else
+                     len(first) == 2 and second == (first[1],) and second != (1,))
+            if first == second or not valid or out != first:
+                raise ValueError("checked C11 scaling shape rejected")
             work += prod(first)
         elif op.kind == "softmax_axis1":
             if len(first) != 2 or out != first:
@@ -162,6 +170,9 @@ def _operation(spec: C11GraphSpec, index: int) -> list[str]:
         lines += [f"    if (!tuc_add(a0[i], a1[{rhs}], &out[i])) return 0;"]
     elif op.kind == "mul":
         lines += ["    if (!tuc_multiply(a0[i], a1[i], &out[i])) return 0;"]
+    elif op.kind in ("mul_scalar", "mul_row_scale"):
+        rhs = "0" if op.kind == "mul_scalar" else f"i % {shape[1]}U"
+        lines += [f"    if (!tuc_multiply(a0[i], a1[{rhs}], &out[i])) return 0;"]
     else:
         lines += ["    float sum = 0.0F;", f"    for (size_t k = 0; k < {shape[1]}U; ++k) {{"]
         if op.kind in ("matmul", "matmul_rhs_transposed"):
@@ -237,12 +248,14 @@ def emit_checked_graph(spec: C11GraphSpec, binding_digest: str) -> tuple[str, st
               "  range->first = first; range->last = first + bytes; return 1;",
               "}", "static int tuc_overlap(struct tuc_range a, struct tuc_range b) {",
               "  return a.first < b.last && b.first < a.last;", "}", ""]
-    if any(op.kind not in ("relu", "mul") for op in spec.operations):
+    if any(op.kind not in ("relu", "mul", "mul_scalar", "mul_row_scale")
+           for op in spec.operations):
         source += ["static int tuc_add(float left, float right, float *output) {",
                    "  if (!tuc_normal(&left) || !tuc_normal(&right)) return 0;",
                    "  volatile float rounded = left + right;", "  const float value = rounded;",
                    "  if (!tuc_normal(&value)) return 0;", "  *output = value; return 1;", "}", ""]
-    if any(op.kind in ("matmul", "matmul_rhs_transposed", "mul") for op in spec.operations):
+    if any(op.kind in ("matmul", "matmul_rhs_transposed", "mul", "mul_scalar", "mul_row_scale")
+           for op in spec.operations):
         source += ["static int tuc_multiply(float left, float right, float *output) {",
                    "  if (!tuc_normal(&left) || !tuc_normal(&right)) return 0;",
                    "  volatile float rounded = left * right;", "  const float value = rounded;",

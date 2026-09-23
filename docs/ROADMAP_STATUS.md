@@ -1,5 +1,12 @@
 # Roadmap Status
 
+- [Bounded CPU Scaling](BOUNDED_CPU_SCALING.md), RFC 0332, supports a compact
+  right `[1]` factor or right `[N]` feature vector for `[M,N]`. Scaled attention
+  and affine calibration before classification compose through the source/CPU
+  path and shared-input batches. Existing program identities and arithmetic
+  contracts remain stable. Actual installed/static/sanitizer observations,
+  final CI and owner review remain required.
+
 - [Bounded CPU Softmax](BOUNDED_CPU_SOFTMAX.md), RFC 0331, adds rank-two,
   axis-one FP32 normalization to the native CPU path, including affine classifiers
   and small unscaled attention calculations. Existing graphs keep their program
@@ -10,8 +17,9 @@
   three-request batch, 106 numerical comparisons, 22 probability-row checks,
   eight source/JSON and four numeric rejections. Each native build passed 108
   rejections and 544 unchanged-output checks. Original observations are retained;
-  final CI and owner review for [PR #128](https://github.com/kirchherr/TUC/pull/128)
-  remain required.
+  [PR #128](https://github.com/kirchherr/TUC/pull/128) merged into `main` at
+  `7501cb7` after 49 successful checks and one expected skip. The full suite
+  passed 6,981 tests with two skips.
 
 - [Bounded CPU Batch Applications](BOUNDED_CPU_BATCH.md), RFC 0330, adds a
   `run-batch` command with shared input tensors and up to sixteen ordered

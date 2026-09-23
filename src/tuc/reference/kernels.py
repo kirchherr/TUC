@@ -88,12 +88,14 @@ def reference_add(left: object, right: object) -> FloatArray:
 
 
 def reference_multiply(left: object, right: object) -> FloatArray:
-    """Multiply identical rank-1/2 shapes under the existing FP64 reference policy."""
+    """Multiply equal shapes or bounded right scaling under the FP64 reference policy."""
 
     left_array = _require_float_array(left, "left")
     right_array = _require_float_array(right, "right")
-    if left_array.ndim not in (1, 2) or right_array.shape != left_array.shape:
-        raise ValueError("reference multiply requires identical rank-1 or rank-2 shapes")
+    if (left_array.ndim not in (1, 2) or not (
+            right_array.shape == left_array.shape or right_array.shape == (1,) or
+            (left_array.ndim == 2 and right_array.shape == (left_array.shape[1],)))):
+        raise ValueError("reference multiply requires equal shapes or bounded right scaling")
     with np.errstate(over="ignore", invalid="ignore"):
         result = np.multiply(left_array, right_array)
     if not np.all(np.isfinite(result)):
