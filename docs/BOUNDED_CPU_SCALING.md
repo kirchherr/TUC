@@ -93,6 +93,13 @@ exact signed-zero products are allowed. Softmax retains its
 [separate numerical contract](BOUNDED_CPU_SOFTMAX.md).
 
 See [RFC 0332](../rfcs/0332-bounded-cpu-scaling.md) and the
-[installed examples](../integration/bounded_cpu_scaling/README.md). Actual
-installed/static/sanitizer observations, final CI and owner review remain
-required before acceptance. The values above are expected results.
+[installed examples](../integration/bounded_cpu_scaling/README.md).
+[Installed CI](https://github.com/kirchherr/TUC/actions/runs/35826990657) passed
+at `d09d325`: six source conversions, twelve single runs, one three-request batch,
+82 output comparisons and twelve probability-row checks. Static and ASan/UBSan
+conformance passed, including 118 rejected calls per build. The unchanged
+[original receipt](evidence/bounded-cpu-scaling-35826990657.json) and
+[verification details](../rfcs/0332-bounded-cpu-scaling.md#observed-execution)
+record the corpus. Final CI and owner review for
+[PR #129](https://github.com/kirchherr/TUC/pull/129) remain required.
+The guide values above are expected results.

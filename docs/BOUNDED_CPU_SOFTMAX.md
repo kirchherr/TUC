@@ -84,6 +84,6 @@ batch, 106 numerical comparisons and 22 probability-row checks. Static and
 ASan/UBSan conformance also passed, including 108 rejected calls per build.
 The [original receipt](evidence/bounded-cpu-softmax-35694760750.json) and
 [verification details](../rfcs/0331-bounded-cpu-softmax.md#observed-execution)
-record the tested corpus. The guide values above are expected results; final
-CI and owner review for [PR #128](https://github.com/kirchherr/TUC/pull/128)
-remain required.
+record the tested corpus. The guide values above are expected results.
+[PR #128](https://github.com/kirchherr/TUC/pull/128) merged into `main` at
+`7501cb7`; its final pre-merge suite passed 6,981 tests with two skips.

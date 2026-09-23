@@ -1,7 +1,7 @@
 # RFC 0332: Bounded CPU scaling
 
-Status: implementation in progress; installed/static/sanitizer observations,
-final CI and owner review remain required.
+Status: implemented with observed installed/static/sanitizer execution;
+final CI and owner review remain required for PR #129.
 
 ## Problem and decision
 
@@ -96,6 +96,42 @@ wheel builds and installation outside checkout. Original observations must bind
 source, wheel, consumers, contexts and image identities before native execution
 is claimed. Synthetic candidates and unit tests remain separate from observations.
 No GPU, general Triton/PyTorch equivalence, production or performance claim is made.
+
+## Observed execution
+
+[CI run 35826990657](https://github.com/kirchherr/TUC/actions/runs/35826990657)
+passed at `d09d32521a33ef3f716d51b1316de1774deddeda`: 1,383 focused tests,
+an offline wheel build and installation outside checkout, six source conversions,
+twelve individual runs and one three-request calibrated-classifier batch.
+All 82 output comparisons passed: 22 bitwise FP32 checks and 60 comparisons under
+the stated Softmax tolerances. Twelve public probability rows passed mass checks.
+Eight source/JSON rejections and four arithmetic rejections returned the exact
+diagnostics with empty stdout, preserved files and clean workspaces. The fourth
+arithmetic control failed the last request of a three-request classifier batch.
+
+Static and ASan/UBSan builds each passed 16 successful case runs, 134 entrypoint
+calls, 92 scalar comparisons, 118 rejected calls and 677 unchanged-output checks.
+Three deliberately faulty checkers and invalid invocation failed in each build.
+The original ten observations retain their image identities. Reconstructing the
+21-file native context against 28 installed package-source identities reproduced
+the recorded bindings and all ten expected observations. An independent NumPy
+check matched the 46 distinct embedded reference values, including 22 bitwise
+scaling values; the largest composed-reference difference was
+`2.9802322387695312e-08`. This audit did not repeat native execution.
+
+The unchanged [original receipt](../docs/evidence/bounded-cpu-scaling-35826990657.json)
+contains 25,384 bytes with SHA256
+`fbd366cc9b74fa1e4b5a12cff13fa0c98bcfc9968c3a6ca44c21ddaa1df57835`.
+Artifact `10735532333` has ZIP SHA256
+`32e96a3e88c4ffb89d1ff98855187ac4243ee4b59448bae403997d22ed551673`,
+matching GitHub artifact metadata and the upload log. The retained wheel identity
+is `44c91e538eef32a6ed5d46c2c57fc147a9a9ec0b0637691a90148d4438918a68`,
+matching the wheel-build log. Both consumer digests match the observed source
+commit. The receipt contains neither wheel bytes nor container images; hashes
+bind this observation and do not authenticate or generalize it.
+
+These are observations of the fixed corpus. Final checks and owner review for
+[PR #129](https://github.com/kirchherr/TUC/pull/129) remain separate requirements.
 
 ## References
 

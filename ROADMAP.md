@@ -8,8 +8,12 @@ Current implementation: [Bounded CPU Scaling](docs/BOUNDED_CPU_SCALING.md),
 RFC 0332, admits compact right-hand factors for vector/matrix multiplication
 and per-column feature calibration. Scaled attention and calibrated classifiers
 compose through source conversion, checked C11 and the existing batch CLI.
-Equal-shape graphs retain their original program identities. Actual installed/
-static/sanitizer observations, final CI and owner review remain required.
+Equal-shape graphs retain their original program identities.
+[Installed/static/sanitizer CI](https://github.com/kirchherr/TUC/actions/runs/35826990657)
+passed at `d09d325`: 1,383 tests, six conversions, fifteen individual/batch results,
+82 output comparisons and 118 native rejections per build. Original evidence is
+retained; final CI and owner review for [PR #129](https://github.com/kirchherr/TUC/pull/129)
+remain required.
 
 Current implementation: [Bounded CPU Softmax](docs/BOUNDED_CPU_SOFTMAX.md),
 RFC 0331, carries existing row-Softmax intent through the bounded CPU path.

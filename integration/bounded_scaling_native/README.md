@@ -31,3 +31,9 @@ Three intentionally faulty checkers and an invalid invocation must fail in each
 build. Ten observations bind installed source, wheel, generated context and image
 identities. Inert candidates and synthetic tests do not establish native execution.
 No masks, multi-head API, device admission or performance claim is made.
+
+[CI run 35826990657](https://github.com/kirchherr/TUC/actions/runs/35826990657)
+observed all ten records at `d09d325`, with the exact counts above in both builds.
+The unchanged [receipt](../../docs/evidence/bounded-cpu-scaling-35826990657.json)
+and [verification details](../../rfcs/0332-bounded-cpu-scaling.md#observed-execution)
+retain the source, wheel, context and image bindings.

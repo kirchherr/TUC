@@ -4,8 +4,13 @@
   right `[1]` factor or right `[N]` feature vector for `[M,N]`. Scaled attention
   and affine calibration before classification compose through the source/CPU
   path and shared-input batches. Existing program identities and arithmetic
-  contracts remain stable. Actual installed/static/sanitizer observations,
-  final CI and owner review remain required.
+  contracts remain stable.
+  [Installed/static/sanitizer CI](https://github.com/kirchherr/TUC/actions/runs/35826990657)
+  passed at `d09d325`: 1,383 tests, six conversions, twelve single runs and one
+  three-request batch, 82 output comparisons and twelve probability-row checks.
+  Each native build passed 118 rejections and 677 unchanged-output checks.
+  Original evidence is retained; final CI and owner review for
+  [PR #129](https://github.com/kirchherr/TUC/pull/129) remain required.
 
 - [Bounded CPU Softmax](BOUNDED_CPU_SOFTMAX.md), RFC 0331, adds rank-two,
   axis-one FP32 normalization to the native CPU path, including affine classifiers

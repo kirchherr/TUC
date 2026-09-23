@@ -52,6 +52,11 @@ observed outputs. Only complete success creates `record.json`, exclusively.
 Digests detect accidental mixing and do not authenticate evidence. Shared input
 declarations do not imply resident native weights or performance gains.
 
-Default/emit and unit tests provide no native execution evidence. Actual evidence
-is pending an installed CI run. No CUDA, general broadcasting, scalar literals,
-rank-zero inputs or performance claim is included.
+Default/emit and unit tests provide no native execution evidence.
+[Installed CI run 35826990657](https://github.com/kirchherr/TUC/actions/runs/35826990657)
+passed at `d09d325` with all counts above. Its unchanged
+[original receipt](../../docs/evidence/bounded-cpu-scaling-35826990657.json) binds
+source, wheel and consumer identities; see the
+[verification details](../../rfcs/0332-bounded-cpu-scaling.md#observed-execution).
+No CUDA, general broadcasting, scalar literals, rank-zero inputs or performance
+claim is included.

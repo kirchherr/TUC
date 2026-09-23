@@ -76,7 +76,7 @@ def test_real_parser_graph_passes_synthetic_parent_protocol_validation():
 
 
 @pytest.mark.parametrize("expression", [
-    "a - b", "a * b", "a / b", "a + 1", "1 + a", "a + True", "a + b + b",
+    "a - b", "a * b[0]", "a / b", "a + 1", "1 + a", "a + True", "a + b + b",
     "(a + b) + b", "a[0] + b", "a + tl.sum(b, axis=0)", "missing + b",
     "a.__class__ + b", "a + __import__('os')", "a + (lambda: b)()",
 ])
