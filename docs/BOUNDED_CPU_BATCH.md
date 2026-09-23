@@ -4,6 +4,9 @@
 sets. Put common weights in `shared_inputs` and changing data in `requests`.
 The command builds once and returns all results after execution and cleanup.
 
+To keep a graph and fixed weights together across separate batches, use
+[reusable CPU models](BOUNDED_CPU_MODEL.md) and `run-model-batch`.
+
 Use the installed TUC wheel on Linux x86-64 with the existing local Docker and
 private-workspace requirements from the [CPU application guide](BOUNDED_CPU_APPLICATION.md).
 The graph can come from the [source converter](BOUNDED_CPU_SOURCE.md) or be

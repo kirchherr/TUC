@@ -4,6 +4,12 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Reusable CPU models](docs/BOUNDED_CPU_MODEL.md), RFC 0333,
+packages an existing neutral graph and fixed FP32 parameters as bounded data.
+Single and batch commands accept only remaining inputs; model identities bind
+parameters while expanded requests retain the original program/request/batch
+identities. Actual installed observations, final CI and owner review remain required.
+
 Current implementation: [Bounded CPU Scaling](docs/BOUNDED_CPU_SCALING.md),
 RFC 0332, admits compact right-hand factors for vector/matrix multiplication
 and per-column feature calibration. Scaled attention and calibrated classifiers
@@ -12,8 +18,8 @@ Equal-shape graphs retain their original program identities.
 [Installed/static/sanitizer CI](https://github.com/kirchherr/TUC/actions/runs/35826990657)
 passed at `d09d325`: 1,383 tests, six conversions, fifteen individual/batch results,
 82 output comparisons and 118 native rejections per build. Original evidence is
-retained; final CI and owner review for [PR #129](https://github.com/kirchherr/TUC/pull/129)
-remain required.
+retained. [PR #129](https://github.com/kirchherr/TUC/pull/129) merged into `main`
+at `02e541a` after 51 successful checks and one expected skip.
 
 Current implementation: [Bounded CPU Softmax](docs/BOUNDED_CPU_SOFTMAX.md),
 RFC 0331, carries existing row-Softmax intent through the bounded CPU path.

@@ -1,5 +1,11 @@
 # Roadmap Status
 
+- [Reusable CPU models](BOUNDED_CPU_MODEL.md), RFC 0333, combines a bounded graph
+  and fixed parameters in inspectable data-only JSON. Remaining inputs run through
+  the existing single/batch CPU path without overrides. Parameter identities are
+  separate from program identities. Installed observations, final CI and owner
+  review remain required.
+
 - [Bounded CPU Scaling](BOUNDED_CPU_SCALING.md), RFC 0332, supports a compact
   right `[1]` factor or right `[N]` feature vector for `[M,N]`. Scaled attention
   and affine calibration before classification compose through the source/CPU
@@ -9,8 +15,8 @@
   passed at `d09d325`: 1,383 tests, six conversions, twelve single runs and one
   three-request batch, 82 output comparisons and twelve probability-row checks.
   Each native build passed 118 rejections and 677 unchanged-output checks.
-  Original evidence is retained; final CI and owner review for
-  [PR #129](https://github.com/kirchherr/TUC/pull/129) remain required.
+  Original evidence is retained. [PR #129](https://github.com/kirchherr/TUC/pull/129)
+  merged into `main` at `02e541a` after 51 successful checks and one expected skip.
 
 - [Bounded CPU Softmax](BOUNDED_CPU_SOFTMAX.md), RFC 0331, adds rank-two,
   axis-one FP32 normalization to the native CPU path, including affine classifiers

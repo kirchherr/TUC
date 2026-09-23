@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/bounded_cpu_model.v0.schema.json",
+  "title": "Reusable bounded CPU model v0",
+  "description": "Structural envelope. The bounded adapter additionally enforces its closed graph subset, graph budgets, a nonempty proper subset of public inputs, exact tensor lengths, FP32 numeric rules and canonical model identity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "graph", "parameters"],
+  "properties": {
+    "schema_version": {"const": "tuc.bounded_cpu_model.v0"},
+    "graph": {"$ref": "source_intent.v0.schema.json"},
+    "parameters": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 23,
+      "propertyNames": {"minLength": 1, "maxLength": 64},
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 4096,
+        "items": {"type": "number"}
+      }
+    }
+  }
+}

@@ -100,6 +100,9 @@ at `d09d325`: six source conversions, twelve single runs, one three-request batc
 conformance passed, including 118 rejected calls per build. The unchanged
 [original receipt](evidence/bounded-cpu-scaling-35826990657.json) and
 [verification details](../rfcs/0332-bounded-cpu-scaling.md#observed-execution)
-record the corpus. Final CI and owner review for
-[PR #129](https://github.com/kirchherr/TUC/pull/129) remain required.
+record the corpus. [PR #129](https://github.com/kirchherr/TUC/pull/129) merged
+into `main` at `02e541a` after all 51 checks passed, with one expected skip.
 The guide values above are expected results.
+
+Use [reusable models](BOUNDED_CPU_MODEL.md) to package the graph with fixed
+calibration parameters or attention keys, values and scale.
