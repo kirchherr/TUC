@@ -409,5 +409,3 @@ def test_mock_driver_covers_counts_and_publishes_only_complete_record(monkeypatc
                                                                                  82, 12, 8, 4]
     assert report["original_files_unchanged"] is True and report["workspaces_clean"] is True
     assert json.loads((tmp_path / "record.json").read_bytes()) == report
-
-
