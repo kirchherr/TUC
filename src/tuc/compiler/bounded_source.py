@@ -280,7 +280,9 @@ def _checked_module(value: object) -> SourceIntentModule:
                 if len(shapes) != 1 or output_shape != shapes[0]:
                     _reject()
             elif attributes["elementwise_kind"] == "mul":
-                if len(shapes) != 2 or shapes[0] != shapes[1] or output_shape != shapes[0]:
+                if (len(shapes) != 2 or output_shape != shapes[0] or not (
+                        shapes[1] == shapes[0] or shapes[1] == (1,) or
+                        (len(shapes[0]) == 2 and shapes[1] == (shapes[0][1],)))):
                     _reject()
             elif (len(shapes) != 2 or output_shape != shapes[0] or
                   not (shapes[1] == shapes[0] or
@@ -409,7 +411,13 @@ def compile_bounded_source_intent(
     used = {assignment.backend_name for assignment in partition.assignments}
     targets = {binding.capability.name: binding.target for binding in bindings
                if binding.capability.name in used}
-    if any(op.family == "softmax" for op in clean_module.operations):
+    shapes = {tensor.name: tensor.shape for tensor in clean_module.tensors}
+    if any(op.attributes.get("elementwise_kind") == "mul" and
+           shapes[op.inputs[0]] != shapes[op.inputs[1]] for op in clean_module.operations):
+        from tuc.backends.bounded_scaling_dag import lower_bounded_scaling_dag
+
+        artifacts = lower_bounded_scaling_dag(compilation.hac_ir, partition, targets)
+    elif any(op.family == "softmax" for op in clean_module.operations):
         from tuc.backends.bounded_softmax_dag import lower_bounded_softmax_dag
 
         artifacts = lower_bounded_softmax_dag(compilation.hac_ir, partition, targets)

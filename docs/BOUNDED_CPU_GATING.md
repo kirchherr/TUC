@@ -59,9 +59,11 @@ This sample demonstrates a ReLU gate; GLU and SwiGLU use different activations.
 
 In graph JSON, use `"family":"elementwise"` and
 `"attributes":{"elementwise_kind":"mul"}` with two inputs and one fresh
-output. Both inputs and the output must have exactly the same shape. Scalars,
-row broadcasting, nested multiplication, promotion and general tensor views
-are unsupported. Existing dimension 1-64, eight-operation and storage/work
+output. This gating example uses equal input/output shapes. The separate
+[scaling extension](BOUNDED_CPU_SCALING.md) also accepts compact right-hand
+`[1]` or feature-vector factors. Literal scalars, other broadcasting, nested
+multiplication, promotion and general tensor views are unsupported.
+Existing dimension 1-64, eight-operation and storage/work
 limits apply. Mul-containing graphs currently require one C11 CPU backend.
 
 Each product is checked after rounding to FP32. Overflow, subnormal products

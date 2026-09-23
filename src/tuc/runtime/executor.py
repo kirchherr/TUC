@@ -1050,8 +1050,10 @@ def _validate_multiply_operation(operation: ComputeOperation) -> None:
         raise ValueError("runtime executor mul requires a fresh output")
     if any(tensor.dtype != "float32" for tensor in (left, right, output)):
         raise ValueError("runtime executor mul requires float32 tensor declarations")
-    if len(left.shape) not in (1, 2) or right.shape != left.shape or output.shape != left.shape:
-        raise ValueError("runtime executor mul requires identical rank-1 or rank-2 shapes")
+    if (len(left.shape) not in (1, 2) or output.shape != left.shape or not (
+            right.shape == left.shape or right.shape == (1,) or
+            (len(left.shape) == 2 and right.shape == (left.shape[1],)))):
+        raise ValueError("runtime executor mul requires equal shapes or bounded right scaling")
 
 
 def _validate_reduction_operation(operation: ComputeOperation) -> None:

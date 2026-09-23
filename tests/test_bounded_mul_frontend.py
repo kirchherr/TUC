@@ -84,10 +84,10 @@ def test_product_source_accepts_only_two_known_tensor_names(expression):
 
 
 @pytest.mark.parametrize("left,right", [
-    ((2, 3), (3,)), ((3,), (2, 3)), ((2, 3), (1, 3)), ((2, 3), (2, 1)),
-    ((2, 3), (3, 2)), ((3,), (1,)), ((1, 3), (3,)), ((2, 3, 4), (2, 3, 4)),
+    ((2, 3), (2,)), ((3,), (2, 3)), ((2, 3), (1, 3)), ((2, 3), (2, 1)),
+    ((2, 3), (3, 2)), ((3,), (2,)), ((1, 3), (1, 1)), ((2, 3, 4), (2, 3, 4)),
 ])
-def test_product_rejects_unequal_shapes_and_all_broadcasts(left, right):
+def test_product_rejects_shapes_outside_bounded_right_scaling(left, right):
     with pytest.raises(ValueError):
         parse(left, right)
 
@@ -120,7 +120,7 @@ def test_json_product_rejects_malformed_or_inconsistent_records(mutation):
         document["tensors"][2]["shape"] = [3, 2]
     elif mutation in ("input-shape", "bool-dimension", "huge-dimension"):
         document["tensors"][1]["shape"] = {
-            "input-shape": [3], "bool-dimension": [True, 3], "huge-dimension": [65, 3]}[mutation]
+            "input-shape": [2, 1], "bool-dimension": [True, 3], "huge-dimension": [65, 3]}[mutation]
     elif mutation == "dtype":
         document["tensors"][1]["dtype"] = "float16"
     elif mutation == "kind-type":

@@ -447,8 +447,10 @@ def _parse_multiply(
     lhs = _name_argument(value.left, "multiply lhs")
     rhs = _name_argument(value.right, "multiply rhs")
     left, right = _known_shape(lhs, state), _known_shape(rhs, state)
-    if len(left) not in (1, 2) or left != right:
-        raise SourceToIntentResearchParserError("multiply requires identical rank-one/two shapes")
+    if (len(left) not in (1, 2) or not (
+            right == left or right == (1,) or (len(left) == 2 and right == (left[1],)))):
+        raise SourceToIntentResearchParserError(
+            "multiply requires equal shapes, a right scalar tensor or a right row scale")
     return "elementwise", (lhs, rhs), left, {"elementwise_kind": "mul"}
 
 

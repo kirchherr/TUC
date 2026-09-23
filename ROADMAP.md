@@ -4,6 +4,17 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Bounded CPU Scaling](docs/BOUNDED_CPU_SCALING.md),
+RFC 0332, admits compact right-hand factors for vector/matrix multiplication
+and per-column feature calibration. Scaled attention and calibrated classifiers
+compose through source conversion, checked C11 and the existing batch CLI.
+Equal-shape graphs retain their original program identities.
+[Installed/static/sanitizer CI](https://github.com/kirchherr/TUC/actions/runs/35826990657)
+passed at `d09d325`: 1,383 tests, six conversions, fifteen individual/batch results,
+82 output comparisons and 118 native rejections per build. Original evidence is
+retained; final CI and owner review for [PR #129](https://github.com/kirchherr/TUC/pull/129)
+remain required.
+
 Current implementation: [Bounded CPU Softmax](docs/BOUNDED_CPU_SOFTMAX.md),
 RFC 0331, carries existing row-Softmax intent through the bounded CPU path.
 Affine classifiers and unscaled Matmul/Softmax/Matmul attention graphs compose
@@ -12,7 +23,9 @@ checks every rounded intermediate and defines fixed-corpus comparison tolerances
 [Installed/static/sanitizer CI](https://github.com/kirchherr/TUC/actions/runs/35694760750)
 passed at `a69b5fb`: 1,153 tests, six conversions, fifteen individual/batch results,
 106 numerical comparisons and 108 native rejections per build. Original evidence
-is retained; final CI and owner review for PR #128 remain required.
+is retained. [PR #128](https://github.com/kirchherr/TUC/pull/128) merged into
+`main` at `7501cb7` after 49 successful checks and one expected skip; the complete
+test suite passed 6,981 tests with two skips.
 
 Current implementation: [Bounded CPU Batch Applications](docs/BOUNDED_CPU_BATCH.md),
 RFC 0330, reuses one explicit CPU build for up to sixteen validated input sets.

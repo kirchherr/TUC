@@ -219,14 +219,18 @@ def _estimate_multiply(operation: ComputeOperation, domain: MemoryDomainKind) ->
         raise ValueError("mul movement estimate requires a fresh output")
     if any(tensor.dtype != "float32" for tensor in (left, right, output)):
         raise ValueError("mul movement estimate requires float32 tensors")
-    if len(left.shape) not in (1, 2) or right.shape != left.shape or output.shape != left.shape:
-        raise ValueError("mul movement estimate requires identical rank-1 or rank-2 shapes")
+    if (len(left.shape) not in (1, 2) or output.shape != left.shape or not (
+            right.shape == left.shape or right.shape == (1,) or
+            (len(left.shape) == 2 and right.shape == (left.shape[1],)))):
+        raise ValueError("mul movement estimate requires equal shapes or bounded right scaling")
+    note = ("exact_shape_elementwise_multiply" if right.shape == left.shape else
+            "right_scalar_multiply" if right.shape == (1,) else "right_row_scale_multiply")
     return _movement_estimate(
         bytes_read=_tensor_nbytes(left) + _tensor_nbytes(right),
         bytes_written=_tensor_nbytes(output),
         arithmetic_ops=_tensor_elements(output),
         preferred_domain=domain,
-        notes=("exact_shape_elementwise_multiply",),
+        notes=(note,),
     )
 
 

@@ -177,11 +177,16 @@ def test_fixed_sources_match_actual_trusted_parser_graphs(family, profile):
 
 @pytest.mark.parametrize("case_id", (
     "scalar_right", "scalar_left", "nested", "division", "power", "call",
-    "row_broadcast", "column_broadcast", "shape_mismatch", "vector_broadcast",
+    "left_row_broadcast", "column_broadcast", "shape_mismatch", "left_vector_broadcast",
 ))
 def test_fixed_negative_sources_reject_in_actual_parser(case_id):
     case = next(case for case in consumer.negative_cases() if case["id"] == case_id)
     signature = case["signature"]
+    if case_id.startswith("left_"):
+        shapes = signature["tensor_shapes"]
+        expected = (([3], [2, 3]) if case_id == "left_row_broadcast" else ([1], [3]))
+        assert (shapes["x"], shapes["rhs"]) == expected
+        assert shapes["result"] == shapes["x"]
     source_api.prepare_source_request(case["source"], consumer.encoded(signature))
     with pytest.raises(ValueError):
         ingest_triton_module_source_to_source_intent(

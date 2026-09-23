@@ -1,0 +1,14 @@
+**
+!Dockerfile
+!Dockerfile.dockerignore
+!scalar-entrypoint.c
+!scalar-entrypoint.h
+!classifier-entrypoint.c
+!classifier-entrypoint.h
+!row_scale-entrypoint.c
+!row_scale-entrypoint.h
+!attention-entrypoint.c
+!attention-entrypoint.h
+!entrypoint.h
+!worker.c
+!build.sh

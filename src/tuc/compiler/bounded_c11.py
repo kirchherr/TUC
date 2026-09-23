@@ -153,6 +153,12 @@ def emit_bounded_c11_entrypoint(
     if any(op.kind == "mul" for op in spec.operations):
         numeric["multiplication"] = "one_checked_binary32_product_per_output_element"
         numeric["multiplication_shapes"] = "equal_rank1_or_rank2_without_broadcasting"
+    if any(op.kind in ("mul_scalar", "mul_row_scale") for op in spec.operations):
+        numeric["multiplication"] = "one_checked_binary32_product_per_output_element"
+        numeric["multiplication_shapes"] = (
+            "equal_rank1_or_rank2_or_right_scalar_or_rank2_right_feature_scale")
+        numeric["scaling_precedence"] = "equal_shapes_then_right_scalar_then_right_feature"
+        numeric["scaling_temporary_bytes"] = 0
     if any(op.kind == "softmax_axis1" for op in spec.operations):
         numeric["softmax"] = "row_max_shift_expf_ordered_binary32_sum_division"
         numeric["softmax_axis"] = 1

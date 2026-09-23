@@ -22,17 +22,19 @@ eighth operation for the final output bias. Two changing datasets per program
 require six source conversions, twelve successful CPU calls and 56 bitwise
 FP32 scalar comparisons. The vector and square cases include signed zero.
 
-Multiplication accepts two named rank-one or rank-two FP32 tensors with exactly
-equal shapes and a fresh output of that shape. `x*x` has one public input and
-two read-only operands. Scalar and broadcast multiplication are unsupported.
+These fixed programs multiply named rank-one or rank-two FP32 tensors with
+exactly equal shapes and a fresh output of that shape. `x*x` has one public
+input and two read-only operands. The separate
+[bounded scaling path](../../docs/BOUNDED_CPU_SCALING.md) also supports right
+scalar tensors and right feature gains; literals and left broadcasting reject.
 Each product and sequential accumulation is rounded separately to FP32 by the
 independent reference. The MLP uses physical row-major `[N,K]` Linear weights,
 separate bias additions and a ReLU gate. This is a bounded application example,
 with no arbitrary model, PyTorch, SwiGLU, GPU or performance claim.
 
-Ten negative controls cover scalar operands on either side, nested products,
-division, power, a nested function call, row/column broadcasts, unequal matrix
-shapes and vector broadcasting. Three numeric controls use only normal-or-zero
+Ten negative controls cover scalar literals on either side, nested products,
+division, power, a nested function call, left row/vector broadcasting, column
+broadcasting and unequal matrix shapes. Three numeric controls use only normal-or-zero
 operands but produce overflow, a subnormal product or a nonzero product rounded
 to zero. Each requires exact numeric rejection with empty stdout. These rejected
 calls are separate from the twelve successful CPU runs.
@@ -52,6 +54,9 @@ ten source and three numeric rejections at `ce70446`. The
 [original receipt](../../docs/evidence/bounded-cpu-gating-35589963541.json)
 also contains the separate static and ASan/UBSan entrypoint observations and
 binds source revision, wheel and both consumers.
+That receipt preserves the original revision's negative cases. The current
+consumer replaces its two formerly unsupported right-scaling cases with the
+still-rejected `left_row_broadcast` and `left_vector_broadcast` cases.
 
 ## Small gated MLP example
 
