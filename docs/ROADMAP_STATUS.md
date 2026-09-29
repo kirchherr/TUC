@@ -1,5 +1,13 @@
 # Roadmap Status
 
+- [Python CPU model sessions](BOUNDED_CPU_MODEL_SESSION.md), RFC 0334, add an inert
+  factory and lazy shared build for at most sixteen separately validated calls.
+  Results retain existing model/program/request identities. Lifecycle and cumulative
+  budgets are tested. [Installed CI](https://github.com/kirchherr/TUC/actions/runs/36570752112)
+  passed at `f4dbcc9`: 239 tests, four sessions, 21 successful calls, 42 comparisons
+  and 17 stable-context checks. Original evidence and independent NumPy audit are
+  retained; final CI and owner review for PR #131 remain required.
+
 - [Reusable CPU models](BOUNDED_CPU_MODEL.md), RFC 0333, combines a bounded graph
   and fixed parameters in inspectable data-only JSON. Remaining inputs run through
   the existing single/batch CPU path without overrides. Parameter identities are
@@ -8,7 +16,8 @@
   at `8e1484a`: 758 tests, seven packs, thirteen single runs, six two-request
   batches, 110 output comparisons, eight malformed-input and two arithmetic
   controls. Original evidence is retained and independently reconstructed.
-  Full CI and owner review remain required.
+  [PR #130](https://github.com/kirchherr/TUC/pull/130) merged into `main` at `a85e99a`
+  on 2026-09-29; complete CI was still running when the merge was observed.
 
 - [Bounded CPU Scaling](BOUNDED_CPU_SCALING.md), RFC 0332, supports a compact
   right `[1]` factor or right `[N]` feature vector for `[M,N]`. Scaled attention

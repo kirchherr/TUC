@@ -1,5 +1,8 @@
 # Reuse a graph with fixed parameters
 
+For successive calls inside Python with one build, see
+[model sessions](BOUNDED_CPU_MODEL_SESSION.md).
+
 A model JSON file contains one supported graph and its fixed parameters. Pack
 weights once, inspect the remaining inputs, then reuse the model with different
 data through single or batch commands. It works with the existing Linear,

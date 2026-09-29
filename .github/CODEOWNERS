@@ -82,3 +82,6 @@
 /docs/BOUNDED_CPU_MODEL.md @kirchherr
 /schemas/bounded_cpu_model.v0.schema.json @kirchherr
 /rfcs/ @kirchherr
+/src/tuc/bounded_cpu_model_session.py @kirchherr
+/integration/bounded_cpu_model_session/ @kirchherr
+/docs/BOUNDED_CPU_MODEL_SESSION.md @kirchherr

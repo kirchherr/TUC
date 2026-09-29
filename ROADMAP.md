@@ -4,6 +4,16 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Python CPU model sessions](docs/BOUNDED_CPU_MODEL_SESSION.md),
+RFC 0334, reuse one explicit build for later validated inputs with per-call results.
+Sessions enforce request and cumulative element budgets, close on execution failure,
+and retain the existing per-request native isolation.
+[Installed CI](https://github.com/kirchherr/TUC/actions/runs/36570752112) passed at
+`f4dbcc9`: 239 tests, four sessions, 21 successful calls, 42 output comparisons
+and 17 stable-context checks. Original evidence and independent NumPy audit are
+retained. Final CI and owner review for [PR #131](https://github.com/kirchherr/TUC/pull/131)
+remain required; no performance or resident-weight claim is made.
+
 Current implementation: [Reusable CPU models](docs/BOUNDED_CPU_MODEL.md), RFC 0333,
 packages an existing neutral graph and fixed FP32 parameters as bounded data.
 Single and batch commands accept only remaining inputs; model identities bind
@@ -11,7 +21,9 @@ parameters while expanded requests retain the original program/request/batch
 identities. [Installed CI](https://github.com/kirchherr/TUC/actions/runs/35886433476)
 passed at `8e1484a`: 758 tests, seven model packs, thirteen single runs, six
 two-request batches and 110 output checks. Original observations and independent
-audit details are retained; full CI and owner review remain required.
+audit details are retained. [PR #130](https://github.com/kirchherr/TUC/pull/130)
+merged into `main` at `a85e99a` on 2026-09-29; complete CI was still running when
+the merge was observed.
 
 Current implementation: [Bounded CPU Scaling](docs/BOUNDED_CPU_SCALING.md),
 RFC 0332, admits compact right-hand factors for vector/matrix multiplication
