@@ -77,4 +77,8 @@
 /integration/bounded_cpu_batch/ @kirchherr
 /docs/BOUNDED_CPU_BATCH.md @kirchherr
 /schemas/bounded_cpu_batch.v0.schema.json @kirchherr
+/src/tuc/compiler/bounded_cpu_model.py @kirchherr
+/integration/bounded_cpu_model/ @kirchherr
+/docs/BOUNDED_CPU_MODEL.md @kirchherr
+/schemas/bounded_cpu_model.v0.schema.json @kirchherr
 /rfcs/ @kirchherr
