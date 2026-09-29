@@ -1,12 +1,20 @@
 # Roadmap Status
 
+- [Bounded Model Session Audit](BOUNDED_MODEL_SESSION_AUDIT.md), RFC 0335,
+  commits the previously private audit as a Python-standard-library verifier.
+  It recomputes three model digests, all 21 request digests and all 42 scalar
+  values from the immutable 8,508-byte receipt without TUC, NumPy or native
+  execution. The closed report and negative tests strengthen external
+  reviewability while independent organizational reproduction remains open.
+
 - [Python CPU model sessions](BOUNDED_CPU_MODEL_SESSION.md), RFC 0334, add an inert
   factory and lazy shared build for at most sixteen separately validated calls.
   Results retain existing model/program/request identities. Lifecycle and cumulative
   budgets are tested. [Installed CI](https://github.com/kirchherr/TUC/actions/runs/36570752112)
   passed at `f4dbcc9`: 239 tests, four sessions, 21 successful calls, 42 comparisons
   and 17 stable-context checks. Original evidence and independent NumPy audit are
-  retained; final CI and owner review for PR #131 remain required.
+  retained. PR #131 final-head CI passed 55 checks with one expected skip;
+  7,383 tests passed and two skipped. Required owner review remains open.
 
 - [Reusable CPU models](BOUNDED_CPU_MODEL.md), RFC 0333, combines a bounded graph
   and fixed parameters in inspectable data-only JSON. Remaining inputs run through
