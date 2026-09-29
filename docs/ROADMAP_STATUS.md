@@ -1,5 +1,10 @@
 # Roadmap Status
 
+- [Python CPU model sessions](BOUNDED_CPU_MODEL_SESSION.md), RFC 0334, add an inert
+  factory and lazy shared build for at most sixteen separately validated calls.
+  Results retain existing model/program/request identities. Lifecycle and cumulative
+  budgets are tested; installed execution and final CI are pending.
+
 - [Reusable CPU models](BOUNDED_CPU_MODEL.md), RFC 0333, combines a bounded graph
   and fixed parameters in inspectable data-only JSON. Remaining inputs run through
   the existing single/batch CPU path without overrides. Parameter identities are

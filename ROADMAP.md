@@ -4,6 +4,12 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Python CPU model sessions](docs/BOUNDED_CPU_MODEL_SESSION.md),
+RFC 0334, reuse one explicit build for later validated inputs with per-call results.
+Sessions enforce request and cumulative element budgets, close on execution failure,
+and retain the existing per-request native isolation. Installed execution and final
+CI are pending; no performance or resident-weight claim is made.
+
 Current implementation: [Reusable CPU models](docs/BOUNDED_CPU_MODEL.md), RFC 0333,
 packages an existing neutral graph and fixed FP32 parameters as bounded data.
 Single and batch commands accept only remaining inputs; model identities bind
