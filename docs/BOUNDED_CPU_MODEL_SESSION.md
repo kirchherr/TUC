@@ -43,4 +43,9 @@ Build reuse does not imply resident weights or a measured speedup.
 
 See [RFC 0334](../rfcs/0334-bounded-cpu-model-session.md) and the
 [installed consumer](../integration/bounded_cpu_model_session/README.md).
-Installed execution evidence and final CI are pending.
+[Installed CI](https://github.com/kirchherr/TUC/actions/runs/36570752112) passed at
+`f4dbcc9`: 239 tests, four sessions, 21 successful calls, 42 output comparisons,
+17 stable-context checks and all rejection/cleanup controls. The unchanged
+[original receipt](evidence/bounded-model-session-36570752112.json) and
+[audit details](../rfcs/0334-bounded-cpu-model-session.md#observed-execution) retain
+the tested scope. Final CI and owner review remain required.
