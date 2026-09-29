@@ -13,8 +13,9 @@
   budgets are tested. [Installed CI](https://github.com/kirchherr/TUC/actions/runs/36570752112)
   passed at `f4dbcc9`: 239 tests, four sessions, 21 successful calls, 42 comparisons
   and 17 stable-context checks. Original evidence and independent NumPy audit are
-  retained. PR #131 final-head CI passed 55 checks with one expected skip;
-  7,383 tests passed and two skipped. Required owner review remains open.
+  retained. [PR #131](https://github.com/kirchherr/TUC/pull/131) merged into
+  `main` at `71a0d76` on 2026-09-29 after 55 successful checks and one expected
+  skip; 7,383 tests passed and two skipped.
 
 - [Reusable CPU models](BOUNDED_CPU_MODEL.md), RFC 0333, combines a bounded graph
   and fixed parameters in inspectable data-only JSON. Remaining inputs run through

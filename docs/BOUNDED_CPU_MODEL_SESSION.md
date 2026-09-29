@@ -52,4 +52,5 @@ the tested scope. The committed
 [standard-library audit](BOUNDED_MODEL_SESSION_AUDIT.md) independently reconstructs
 the fixed receipt identities and numerical results without another native run.
 Final-head CI passed 55 checks with one expected skip and 7,383 tests passed;
-owner review remains required.
+[PR #131](https://github.com/kirchherr/TUC/pull/131) merged into `main` at
+`71a0d76` on 2026-09-29.
