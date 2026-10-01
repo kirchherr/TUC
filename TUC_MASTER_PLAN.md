@@ -16,6 +16,11 @@ The bounded model-session audit advances reproducibility by giving reviewers a
 committed, standard-library-only reconstruction of fixed execution evidence.
 It does not substitute local replay for independently controlled reproduction.
 
+Capability-planned bounded model artifacts connect reusable model data back to
+the hardware-independent planning layer. Fixed parameters and variable inputs
+remain explicit while backend capabilities determine inert source artifacts;
+execution authority stays outside the compiler result.
+
 ## Mission
 
 TUC exists to explore whether compute intent can become more stable than the

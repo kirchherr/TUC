@@ -7,6 +7,7 @@ choose between those targets while preserving the calculation's result and
 explaining every choice?
 
 For the current bounded native CPU application path, see
+[capability-planned model artifacts](docs/BOUNDED_MODEL_ARTIFACTS.md),
 [Python model sessions with one shared build](docs/BOUNDED_CPU_MODEL_SESSION.md),
 their [reduced-dependency session audit](docs/BOUNDED_MODEL_SESSION_AUDIT.md),
 [reusable models with fixed parameters](docs/BOUNDED_CPU_MODEL.md),
