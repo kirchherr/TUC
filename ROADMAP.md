@@ -4,6 +4,12 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Capability-Planned Bounded Model Artifacts](docs/BOUNDED_MODEL_ARTIFACTS.md),
+RFC 0336, carries an existing fixed-parameter model into the bounded Source
+Intent compiler. It binds parameters, variable inputs, public outputs,
+capability-driven placement and inert C11/CUDA artifact identities without
+compiling or executing generated code.
+
 Current implementation: [Python CPU model sessions](docs/BOUNDED_CPU_MODEL_SESSION.md),
 RFC 0334, reuse one explicit build for later validated inputs with per-call results.
 Sessions enforce request and cumulative element budgets, close on execution failure,

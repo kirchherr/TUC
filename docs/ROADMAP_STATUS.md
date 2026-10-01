@@ -1,5 +1,12 @@
 # Roadmap Status
 
+- [Capability-Planned Bounded Model Artifacts](BOUNDED_MODEL_ARTIFACTS.md), RFC
+  0336, now bind existing fixed-parameter models to capability-selected
+  C11/CUDA source artifacts, parameter and variable-input tensor positions,
+  public outputs, and a deterministic model-compilation digest. The boundary is
+  data-only and opens no native compiler, runtime, plugin, device, filesystem,
+  network, subprocess, or generated-code execution surface.
+
 - [Bounded Model Session Audit](BOUNDED_MODEL_SESSION_AUDIT.md), RFC 0335,
   commits the previously private audit as a Python-standard-library verifier.
   It recomputes three model digests, all 21 request digests and all 42 scalar

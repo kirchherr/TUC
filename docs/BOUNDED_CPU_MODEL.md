@@ -1,5 +1,9 @@
 # Reuse a graph with fixed parameters
 
+For data-only capability planning and inert C11/CUDA source artifacts, use the
+[bounded model artifact compiler](BOUNDED_MODEL_ARTIFACTS.md). It preserves this
+model identity while keeping native execution outside the compiler boundary.
+
 For successive calls inside Python with one build, see
 [model sessions](BOUNDED_CPU_MODEL_SESSION.md).
 
