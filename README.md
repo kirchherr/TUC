@@ -8,6 +8,7 @@ explaining every choice?
 
 For the current bounded native CPU application path, see
 [Python model sessions with one shared build](docs/BOUNDED_CPU_MODEL_SESSION.md),
+their [reduced-dependency session audit](docs/BOUNDED_MODEL_SESSION_AUDIT.md),
 [reusable models with fixed parameters](docs/BOUNDED_CPU_MODEL.md),
 [scaled attention and feature calibration](docs/BOUNDED_CPU_SCALING.md),
 [row Softmax, classifiers and small attention graphs](docs/BOUNDED_CPU_SOFTMAX.md),

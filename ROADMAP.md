@@ -11,8 +11,16 @@ and retain the existing per-request native isolation.
 [Installed CI](https://github.com/kirchherr/TUC/actions/runs/36570752112) passed at
 `f4dbcc9`: 239 tests, four sessions, 21 successful calls, 42 output comparisons
 and 17 stable-context checks. Original evidence and independent NumPy audit are
-retained. Final CI and owner review for [PR #131](https://github.com/kirchherr/TUC/pull/131)
-remain required; no performance or resident-weight claim is made.
+retained. [PR #131](https://github.com/kirchherr/TUC/pull/131) merged into
+`main` at `71a0d76` on 2026-09-29 after 55 successful checks and one expected
+skip; no performance or resident-weight claim is made.
+
+Current evidence work: [Bounded Model Session Audit](docs/BOUNDED_MODEL_SESSION_AUDIT.md),
+RFC 0335, replaces the private one-off audit with a committed standard-library-only
+reimplementation. It recomputes three model identities, 21 request identities and
+42 scalar results from the immutable receipt without importing TUC or NumPy and
+without native execution. This improves external reviewability but is still
+same-maintainer evidence, not independent organizational reproduction.
 
 Current implementation: [Reusable CPU models](docs/BOUNDED_CPU_MODEL.md), RFC 0333,
 packages an existing neutral graph and fixed FP32 parameters as bounded data.

@@ -48,4 +48,9 @@ See [RFC 0334](../rfcs/0334-bounded-cpu-model-session.md) and the
 17 stable-context checks and all rejection/cleanup controls. The unchanged
 [original receipt](evidence/bounded-model-session-36570752112.json) and
 [audit details](../rfcs/0334-bounded-cpu-model-session.md#observed-execution) retain
-the tested scope. Final CI and owner review remain required.
+the tested scope. The committed
+[standard-library audit](BOUNDED_MODEL_SESSION_AUDIT.md) independently reconstructs
+the fixed receipt identities and numerical results without another native run.
+Final-head CI passed 55 checks with one expected skip and 7,383 tests passed;
+[PR #131](https://github.com/kirchherr/TUC/pull/131) merged into `main` at
+`71a0d76` on 2026-09-29.

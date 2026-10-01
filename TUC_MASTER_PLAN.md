@@ -12,6 +12,10 @@ This document is the strategic north star for TUC. When roadmap items,
 implementation ideas, or backend proposals conflict with this plan, this plan
 wins until it is deliberately revised through the RFC process.
 
+The bounded model-session audit advances reproducibility by giving reviewers a
+committed, standard-library-only reconstruction of fixed execution evidence.
+It does not substitute local replay for independently controlled reproduction.
+
 ## Mission
 
 TUC exists to explore whether compute intent can become more stable than the
