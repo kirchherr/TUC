@@ -22,6 +22,14 @@ from tuc.compiler.bounded_c11 import (
     emit_bounded_c11_entrypoint,
     validate_bounded_c11_entrypoint,
 )
+from tuc.compiler.bounded_model_artifact_bundle import (
+    MODEL_ARTIFACT_BUNDLE_CONTRACT,
+    BoundedModelArtifactBundle,
+    BoundedModelArtifactBundleError,
+    create_bounded_model_artifact_bundle,
+    inspect_bounded_model_artifact_bundle,
+    validate_bounded_model_artifact_bundle,
+)
 from tuc.compiler.bounded_source import (
     BoundedBackendBinding,
     BoundedSourceCompilation,
@@ -32,6 +40,8 @@ from tuc.compiler.bounded_source import (
 
 __all__ = [
     "BoundedBackendBinding",
+    "BoundedModelArtifactBundle",
+    "BoundedModelArtifactBundleError",
     "BoundedC11Entrypoint",
     "BoundedSourceCompilation",
     "BoundedTensorBinding",
@@ -39,16 +49,20 @@ __all__ = [
     "CompilerDecisionReport",
     "CompilerPipeline",
     "MOVEMENT_MODEL_VERSION",
+    "MODEL_ARTIFACT_BUNDLE_CONTRACT",
     "OperationDecisionReport",
     "annotate_graph_movement",
     "build_compiler_decision_report",
     "compile_graph",
+    "create_bounded_model_artifact_bundle",
     "compile_bounded_source_intent",
     "estimate_operation_movement",
     "emit_bounded_c11_entrypoint",
     "lower_hac_to_hs",
     "lower_tlir_to_hac",
+    "inspect_bounded_model_artifact_bundle",
     "summarize_graph_movement",
     "validate_bounded_source_compilation",
     "validate_bounded_c11_entrypoint",
+    "validate_bounded_model_artifact_bundle",
 ]
