@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuc.dev/schemas/bounded_model_artifacts_integration.v0.schema.json",
+  "title": "TUC Bounded Model Artifacts Integration v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_contract",
+    "changed_model_digest",
+    "device_access",
+    "generated_code_execution",
+    "model_digest",
+    "native_compilation",
+    "native_execution",
+    "plans",
+    "plugin_discovery",
+    "schema_version",
+    "source_intent_digest",
+    "status",
+    "subprocess_execution"
+  ],
+  "properties": {
+    "artifact_contract": {"const": "tuc.bounded_model_artifacts.v0"},
+    "changed_model_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "device_access": {"const": false},
+    "generated_code_execution": {"const": false},
+    "model_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "native_compilation": {"const": false},
+    "native_execution": {"const": false},
+    "plans": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifact_sha256",
+          "backend_sequence",
+          "backend_bindings_digest",
+          "changed_model_compilation_digest",
+          "model_compilation_digest",
+          "name",
+          "parameters",
+          "public_outputs",
+          "variable_inputs"
+        ],
+        "properties": {
+          "artifact_sha256": {
+            "type": "object",
+            "minProperties": 5,
+            "maxProperties": 5,
+            "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          },
+          "backend_sequence": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "string"}},
+          "backend_bindings_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "changed_model_compilation_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "model_compilation_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "name": {"enum": ["cpu", "cuda", "mixed"]},
+          "parameters": {"const": ["w"]},
+          "public_outputs": {"const": ["scores"]},
+          "variable_inputs": {"const": ["x"]}
+        }
+      }
+    },
+    "plugin_discovery": {"const": false},
+    "schema_version": {"const": "tuc.bounded_model_artifacts_integration.v0"},
+    "source_intent_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "status": {"const": "PASS"},
+    "subprocess_execution": {"const": false}
+  }
+}
