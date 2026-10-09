@@ -1,5 +1,12 @@
 # Roadmap Status
 
+- [Bounded Model Application Protocol Bridge](BOUNDED_MODEL_APPLICATION.md),
+  RFC 0339, connects validated model bundle/request data to the existing C11
+  program and binary input frame. Checked responses produce canonical receipts
+  binding original context and exact public output bits. CUDA/mixed plans,
+  replay, failed responses and receipt tampering reject. The bridge is inert;
+  its synthetic integration report makes no observed execution claim.
+
 - [Portable Bounded Model Artifact Requests](BOUNDED_MODEL_ARTIFACT_REQUEST.md),
   RFC 0338, bind concrete variable inputs and fixed FP32 parameter bits to
   the exact portable model bundle. Requests enforce canonical encoding, exact

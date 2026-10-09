@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuc.dev/schemas/bounded_model_application_integration.v0.schema.json",
+  "title": "TUC Bounded Model Application Integration v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "calls",
+    "device_access",
+    "filesystem_access",
+    "generated_code_execution",
+    "native_compilation",
+    "native_execution_observed",
+    "network_access",
+    "plugin_discovery",
+    "rejected_targets",
+    "result_contract",
+    "schema_version",
+    "status",
+    "subprocess_execution",
+    "synthetic_responses"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.bounded_model_application_integration.v0"
+    },
+    "result_contract": {
+      "const": "tuc.bounded_model_application_result.v0"
+    },
+    "status": {
+      "const": "PASS"
+    },
+    "rejected_targets": {
+      "const": [
+        "cuda",
+        "mixed"
+      ]
+    },
+    "synthetic_responses": {
+      "const": true
+    },
+    "native_execution_observed": {
+      "const": false
+    },
+    "filesystem_access": {
+      "const": false
+    },
+    "network_access": {
+      "const": false
+    },
+    "subprocess_execution": {
+      "const": false
+    },
+    "native_compilation": {
+      "const": false
+    },
+    "generated_code_execution": {
+      "const": false
+    },
+    "plugin_discovery": {
+      "const": false
+    },
+    "device_access": {
+      "const": false
+    },
+    "calls": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bundle_digest",
+          "name",
+          "outputs",
+          "program_digest",
+          "protocol_request_digest",
+          "receipt_sha256",
+          "request_digest",
+          "request_frame_bytes",
+          "response_bytes",
+          "result_digest"
+        ],
+        "properties": {
+          "bundle_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "request_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "program_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "protocol_request_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "result_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "receipt_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "name": {
+            "enum": [
+              "base",
+              "variable",
+              "parameter"
+            ]
+          },
+          "request_frame_bytes": {
+            "const": 104
+          },
+          "response_bytes": {
+            "const": 92
+          },
+          "outputs": {
+            "const": [
+              "scores"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

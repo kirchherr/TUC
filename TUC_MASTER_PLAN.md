@@ -31,6 +31,11 @@ fixed parameter bits to that transferable compiler result. Their identities
 make a later application boundary inspectable without granting execution
 authority or claiming device result equivalence.
 
+The bounded model application protocol bridge connects these input identities
+to the existing checked CPU protocol and preserves request-bound output data.
+Its data admission remains separate from native execution provenance and
+independently verified numerical correctness.
+
 ## Mission
 
 TUC exists to explore whether compute intent can become more stable than the

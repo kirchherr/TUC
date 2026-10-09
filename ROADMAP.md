@@ -4,6 +4,14 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Bounded Model Application Protocol Bridge](docs/BOUNDED_MODEL_APPLICATION.md),
+RFC 0339, admits fully validated portable requests to the existing C11 binary
+application protocol and binds checked responses/public output bits back to
+model, bundle and request identities. CUDA/mixed plans reject. All operations
+remain inert; synthetic consumer responses prove protocol consistency only.
+Native execution provenance and independent numerical comparison remain a
+separate runtime evidence obligation.
+
 Current implementation: [Portable Bounded Model Artifact Requests](docs/BOUNDED_MODEL_ARTIFACT_REQUEST.md),
 RFC 0338, bind concrete variable FP32 inputs and fixed parameters to the exact
 model bundle and capability plan. Canonical requests preserve tensor positions
