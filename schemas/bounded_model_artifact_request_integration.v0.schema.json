@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuc.dev/schemas/bounded_model_artifact_request_integration.v0.schema.json",
+  "title": "TUC Bounded Model Artifact Request Integration v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "device_access",
+    "filesystem_access",
+    "generated_code_execution",
+    "native_compilation",
+    "native_execution",
+    "network_access",
+    "plans",
+    "plugin_discovery",
+    "request_contract",
+    "schema_version",
+    "status",
+    "subprocess_execution"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tuc.bounded_model_artifact_request_integration.v0"
+    },
+    "request_contract": {
+      "const": "tuc.bounded_model_artifact_request.v0"
+    },
+    "status": {
+      "const": "PASS"
+    },
+    "device_access": {
+      "const": false
+    },
+    "filesystem_access": {
+      "const": false
+    },
+    "generated_code_execution": {
+      "const": false
+    },
+    "native_compilation": {
+      "const": false
+    },
+    "native_execution": {
+      "const": false
+    },
+    "network_access": {
+      "const": false
+    },
+    "plugin_discovery": {
+      "const": false
+    },
+    "subprocess_execution": {
+      "const": false
+    },
+    "plans": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "backend_bindings_digest",
+          "bundle_digest",
+          "changed_bundle_digest",
+          "changed_request_digest",
+          "input_elements",
+          "input_names",
+          "model_compilation_digest",
+          "model_digest",
+          "name",
+          "request_bytes",
+          "request_digests"
+        ],
+        "properties": {
+          "bundle_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "model_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "model_compilation_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "changed_bundle_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "changed_request_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "backend_bindings_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "name": {
+            "enum": [
+              "cpu",
+              "cuda",
+              "mixed"
+            ]
+          },
+          "request_digests": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "request_bytes": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2097152
+            }
+          },
+          "input_names": {
+            "const": [
+              "x",
+              "w"
+            ]
+          },
+          "input_elements": {
+            "const": 8
+          }
+        }
+      }
+    }
+  }
+}

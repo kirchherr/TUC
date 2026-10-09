@@ -1,5 +1,12 @@
 # Roadmap Status
 
+- [Portable Bounded Model Artifact Requests](BOUNDED_MODEL_ARTIFACT_REQUEST.md),
+  RFC 0338, bind concrete variable inputs and fixed FP32 parameter bits to
+  the exact portable model bundle. Requests enforce canonical encoding, exact
+  tensor positions, 2 MiB and 65,536-element limits, and original-context
+  validation. A closed consumer report covers CPU, CUDA and mixed plans;
+  no persistence, compiler or runtime authority is introduced.
+
 - [Portable Bounded Model Artifact Bundles](BOUNDED_MODEL_ARTIFACT_BUNDLE.md),
   RFC 0337, package the RFC 0336 result in a canonical JSON envelope capped at
   4 MiB. The envelope binds the model, capability set, FP32 parameter bits,

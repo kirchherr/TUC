@@ -4,6 +4,14 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Portable Bounded Model Artifact Requests](docs/BOUNDED_MODEL_ARTIFACT_REQUEST.md),
+RFC 0338, bind concrete variable FP32 inputs and fixed parameters to the exact
+model bundle and capability plan. Canonical requests preserve tensor positions
+and bits, enforce byte and combined-element budgets, and support independent
+inspection plus full original-context validation. CPU, CUDA and mixed-plan
+consumer evidence remains data-only. The next application boundary must bind
+execution outputs to these request identities under explicit runtime authority.
+
 Current implementation: [Portable Bounded Model Artifact Bundles](docs/BOUNDED_MODEL_ARTIFACT_BUNDLE.md),
 RFC 0337, serialize the existing fixed-parameter model, capability-selected
 inert artifacts, public bindings and decision evidence into one canonical,

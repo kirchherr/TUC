@@ -26,6 +26,11 @@ canonical, integrity-bound data. They preserve explicit model, capability,
 parameter, input, output and artifact identities while leaving persistence,
 compilation and execution under a separate caller-controlled boundary.
 
+Portable bounded model artifact requests bind concrete variable inputs and
+fixed parameter bits to that transferable compiler result. Their identities
+make a later application boundary inspectable without granting execution
+authority or claiming device result equivalence.
+
 ## Mission
 
 TUC exists to explore whether compute intent can become more stable than the
