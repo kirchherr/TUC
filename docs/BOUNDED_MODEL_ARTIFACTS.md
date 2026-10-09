@@ -30,3 +30,6 @@ trust boundary.
 This API performs no filesystem access, native compilation, runtime execution,
 plugin discovery, device access, network call or subprocess. The generated
 source has no execution authorization. See [RFC 0336](../rfcs/0336-bounded-model-artifacts.md).
+
+To transfer this result between processes or systems as one bounded canonical
+envelope, use the [portable model artifact bundle](BOUNDED_MODEL_ARTIFACT_BUNDLE.md).

@@ -21,6 +21,11 @@ the hardware-independent planning layer. Fixed parameters and variable inputs
 remain explicit while backend capabilities determine inert source artifacts;
 execution authority stays outside the compiler result.
 
+Portable bounded model artifact bundles make that result transferable as
+canonical, integrity-bound data. They preserve explicit model, capability,
+parameter, input, output and artifact identities while leaving persistence,
+compilation and execution under a separate caller-controlled boundary.
+
 ## Mission
 
 TUC exists to explore whether compute intent can become more stable than the

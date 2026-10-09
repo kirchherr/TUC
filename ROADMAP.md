@@ -4,6 +4,14 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Portable Bounded Model Artifact Bundles](docs/BOUNDED_MODEL_ARTIFACT_BUNDLE.md),
+RFC 0337, serialize the existing fixed-parameter model, capability-selected
+inert artifacts, public bindings and decision evidence into one canonical,
+bounded JSON envelope. Independent inspection checks structure and hashes;
+validation binds the envelope back to the original model and capabilities.
+The API grants no filesystem, compiler, runtime, plugin, device, network,
+subprocess or generated-code execution authority.
+
 Current implementation: [Capability-Planned Bounded Model Artifacts](docs/BOUNDED_MODEL_ARTIFACTS.md),
 RFC 0336, carries an existing fixed-parameter model into the bounded Source
 Intent compiler. It binds parameters, variable inputs, public outputs,

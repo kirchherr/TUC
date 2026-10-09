@@ -1,5 +1,14 @@
 # Roadmap Status
 
+- [Portable Bounded Model Artifact Bundles](BOUNDED_MODEL_ARTIFACT_BUNDLE.md),
+  RFC 0337, package the RFC 0336 result in a canonical JSON envelope capped at
+  4 MiB. The envelope binds the model, capability set, FP32 parameter bits,
+  public tensor positions, decision report and five inert artifact files.
+  Independent inspection rejects malformed, duplicate-key, non-canonical,
+  oversized or digest-drifted data; full validation recomputes the envelope
+  from the original model and capabilities. No persistence or execution
+  authority is introduced.
+
 - [Capability-Planned Bounded Model Artifacts](BOUNDED_MODEL_ARTIFACTS.md), RFC
   0336, now bind existing fixed-parameter models to capability-selected
   C11/CUDA source artifacts, parameter and variable-input tensor positions,
