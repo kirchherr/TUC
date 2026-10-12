@@ -30,3 +30,28 @@ Their `native_execution_observed` flag remains false because protocol bytes
 are not provenance. Mocked regression tests check control flow and isolation
 contracts; actual native evidence and an independent numerical comparison are
 still required. See [RFC 0340](../rfcs/0340-bounded-model-application-runtime.md).
+
+
+The installed Linux evidence workflow copies the native consumer outside the
+checkout and uses an installed wheel. It exercises three fixed contexts:
+original inputs, changed variable inputs and changed fixed parameters. Its
+public terminal outputs are row sums and ReLU scores (18 FP32 scalars total).
+Malformed requests, wrong extents, fixed overrides and numerical overflow must
+reject and leave the workspace clean.
+
+`audit_native_receipt.py` uses only the Python standard library and no TUC or
+consumer import. It independently recomputes FP32 multiplication, ordered
+addition, ReLU and row sums; model/parameter identity, input bits, request and
+response hashes and result payload integrity are checked. Its opaque compiled
+bundle/capability identifiers are consistency checks, not independently
+recompiled artifacts or sender authentication. The workflow retains the
+original execution record with source, wheel, consumer and audit digests.
+
+```sh
+python -I native_consumer.py --run
+python -I -S audit_native_receipt.py record.json
+```
+
+Only a successful native job establishes this fixed execution observation.
+The standard-library audit strengthens numerical reviewability; it remains a
+same-project audit rather than reproduction by a separate organization.

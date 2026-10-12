@@ -7,6 +7,7 @@ on:
       - main
       - master
       - "codex/**"
+      - "kirchherr/**"
 
 permissions:
   contents: read

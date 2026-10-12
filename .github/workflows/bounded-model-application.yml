@@ -1,0 +1,78 @@
+name: Bounded model application native integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "kirchherr/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bounded-model-application-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  installed-model-application:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ci.txt
+      - name: Validate model application and build wheel
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r requirements/ci.txt
+          python -m pytest -q tests/test_bounded_model_application.py tests/test_bounded_model_application_consumer.py tests/test_bounded_model_application_native.py tests/test_bounded_c11_application.py tests/test_bounded_c11_application_runtime.py tests/test_bounded_model_artifact_request.py
+          python -m pip wheel --no-deps --no-build-isolation --no-index . --wheel-dir "$RUNNER_TEMP/model-application-wheel"
+      - name: Observe installed Linux execution and independently audit
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          python -m venv "$RUNNER_TEMP/model-application-env"
+          "$RUNNER_TEMP/model-application-env/bin/python" -m pip install --require-hashes -r requirements/ci.txt
+          "$RUNNER_TEMP/model-application-env/bin/python" -m pip install --no-deps --no-index "$RUNNER_TEMP"/model-application-wheel/tuc-*.whl
+          cp -R integration/bounded_model_application "$RUNNER_TEMP/model-application-client"
+          cd "$RUNNER_TEMP/model-application-client"
+          export PATH="$RUNNER_TEMP/model-application-env/bin:$PATH"
+          python3 -I -c 'import os,pathlib,sys,tuc; assert pathlib.Path(tuc.__file__).resolve().is_relative_to(pathlib.Path(sys.prefix).resolve()); assert not any(pathlib.Path(p).resolve().is_relative_to(pathlib.Path(os.environ["GITHUB_WORKSPACE"]).resolve()) for p in sys.path if p)'
+          python3 -I native_consumer.py > candidate.json
+          python3 -I native_consumer.py --run
+          python3 -I -S audit_native_receipt.py record.json > audit.json
+          cat audit.json
+          python3 -I - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          record = json.loads(Path("record.json").read_bytes())
+          audit = json.loads(Path("audit.json").read_bytes())
+          assert record["status"] == "PASS" and record["native_execution_observed"] is True
+          assert record["successful_runs"] == 3 and record["workspaces_clean"] is True
+          assert audit["status"] == "PASS" and audit["scalar_checks"] == 18
+          assert audit["rejection_checks"] == 4 and audit["tuc_imported"] is False
+          assert audit["record_sha256"] == hashlib.sha256(Path("record.json").read_bytes()).hexdigest()
+          wheels = list((Path(os.environ["RUNNER_TEMP"]) / "model-application-wheel").glob("tuc-*.whl"))
+          assert len(wheels) == 1
+          receipt = {"integration": record, "audit": audit, "source_commit": os.environ["GITHUB_SHA"],
+                     "wheel_sha256": hashlib.sha256(wheels[0].read_bytes()).hexdigest(),
+                     "consumer_sha256": hashlib.sha256(Path("native_consumer.py").read_bytes()).hexdigest(),
+                     "audit_sha256": hashlib.sha256(Path("audit_native_receipt.py").read_bytes()).hexdigest()}
+          Path("ci-record.json").write_text(json.dumps(receipt, sort_keys=True) + "\n")
+          print("NATIVE_RECORD:" + json.dumps(receipt, sort_keys=True, separators=(",", ":")))
+          PY
+      - name: Retain original model observations and audit
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bounded-model-application-receipt
+          path: ${{ runner.temp }}/model-application-client/ci-record.json
+          if-no-files-found: error
+          retention-days: 14
