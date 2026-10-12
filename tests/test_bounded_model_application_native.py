@@ -119,3 +119,26 @@ def test_audit_has_no_tuc_or_consumer_import():
     assert not any(
         name and (name.startswith("tuc") or "native_consumer" in name) for name in imported
     )
+
+
+def test_retained_original_native_observation_is_auditable():
+    import hashlib
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    receipt = json.loads(
+        (root / "integration/bounded_model_application/observed-ci-59ad813.json").read_bytes()
+    )
+    assert receipt["source_commit"] == "59ad8139813ac5eb7b891907b3d74ebb06059a67"
+    report = audit.audit(audit.encoded(receipt["integration"]))
+    assert report == receipt["audit"]
+    for field, name in (
+        ("consumer_sha256", "native_consumer.py"),
+        ("audit_sha256", "audit_native_receipt.py"),
+    ):
+        source = (
+            (root / "integration/bounded_model_application" / name)
+            .read_bytes()
+            .replace(b"\r\n", b"\n")
+        )
+        assert hashlib.sha256(source).hexdigest() == receipt[field]

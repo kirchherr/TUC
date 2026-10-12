@@ -3,8 +3,11 @@
 - [Explicit Bounded Model Application Runtime](BOUNDED_MODEL_APPLICATION_RUNTIME.md),
   RFC 0340, adds exact-frame calls to the existing isolated C11 handle and an
   explicit original-context model adapter. Validation precedes build/run and
-  resources close on failure. Actual installed Linux execution evidence is
-  pending; mocked tests do not promote observed execution claims.
+  resources close on failure. [Installed Linux evidence](https://github.com/kirchherr/TUC/actions/runs/38277950014/job/114907922282)
+  passed at `59ad813`: three successful model calls, 18 bit-exact scalar
+  comparisons by a separate standard-library auditor, four rejection controls
+  and clean workspaces. The original receipt is retained and audited locally.
+  Independent organizational reproduction remains open.
 
 - [Bounded Model Application Protocol Bridge](BOUNDED_MODEL_APPLICATION.md),
   RFC 0339, connects validated model bundle/request data to the existing C11

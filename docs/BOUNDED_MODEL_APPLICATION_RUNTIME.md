@@ -28,8 +28,8 @@ its original interface and shares all execution controls with `run_frame`.
 Returned RFC 0339 receipts preserve exact output bits and request identities.
 Their `native_execution_observed` flag remains false because protocol bytes
 are not provenance. Mocked regression tests check control flow and isolation
-contracts; actual native evidence and an independent numerical comparison are
-still required. See [RFC 0340](../rfcs/0340-bounded-model-application-runtime.md).
+contracts; the retained installed Linux observation and a separate numerical audit
+now cover the fixed three-context corpus. See [RFC 0340](../rfcs/0340-bounded-model-application-runtime.md).
 
 
 The installed Linux evidence workflow copies the native consumer outside the
@@ -55,3 +55,11 @@ python -I -S audit_native_receipt.py record.json
 Only a successful native job establishes this fixed execution observation.
 The standard-library audit strengthens numerical reviewability; it remains a
 same-project audit rather than reproduction by a separate organization.
+
+
+The [original installed Linux job](https://github.com/kirchherr/TUC/actions/runs/38277950014/job/114907922282)
+passed at `59ad813`: three successful calls, 18 bit-exact numerical comparisons,
+four rejection controls and clean workspaces. The immutable observation is
+retained in `integration/bounded_model_application/observed-ci-59ad813.json`.
+Its source, wheel, consumer, auditor and inner record digests were checked and
+the independent auditor was replayed locally without TUC or native execution.

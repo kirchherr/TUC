@@ -1,6 +1,6 @@
 # RFC 0340: Explicit Bounded Model Application Runtime
 
-- Status: Implemented candidate; native evidence pending
+- Status: Implemented candidate; fixed installed native evidence passed
 - Date: 2026-10-12
 - Depends on: RFC 0339
 
@@ -56,5 +56,22 @@ added by this RFC's mocked tests.
 
 No new generally executable backend, resident-weight/session contract, model
 format compatibility, performance, CUDA execution, authentication or observed
-native correctness evidence is introduced. Actual installed Linux execution
-and independent numerical comparison remain pending.
+native correctness evidence is introduced. Installed Linux execution and independent standard-library numerical audit
+passed for three fixed contexts (18 FP32 scalars and four rejection controls)
+at `59ad813`. This is bounded same-project evidence, not independent
+organizational reproduction. The original record is retained in
+`integration/bounded_model_application/observed-ci-59ad813.json`.
+
+
+## Observed acceptance
+
+[Installed Linux job](https://github.com/kirchherr/TUC/actions/runs/38277950014/job/114907922282)
+passed at source `59ad8139813ac5eb7b891907b3d74ebb06059a67`. It executed three
+contexts against an installed wheel outside the checkout, rejected four invalid
+or overflowing calls, and cleaned all owned workspaces. The separate auditor
+ran under `python -I -S`, confirmed 18 bit-exact FP32 outputs and model/request/
+response identities without importing TUC, and was replayed locally against the
+original recorded bytes. Wheel SHA-256:
+`918eed0420667ed38c12ea2bd38e2bbb519511978d35c95cde6ce13ac795f11d`.
+Protocol receipts still make no provenance claim; the retained CI observation
+records the trusted execution event separately.
