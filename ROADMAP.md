@@ -4,6 +4,12 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Explicit Bounded Model Application Runtime](docs/BOUNDED_MODEL_APPLICATION_RUNTIME.md),
+RFC 0340, executes fully validated model requests through the existing isolated
+Linux C11 boundary, retaining request-bound checked output data. The frame
+method shares all named-input runtime controls. Mocked contract tests pass;
+actual native evidence and independent numerical comparison remain pending.
+
 Current implementation: [Bounded Model Application Protocol Bridge](docs/BOUNDED_MODEL_APPLICATION.md),
 RFC 0339, admits fully validated portable requests to the existing C11 binary
 application protocol and binds checked responses/public output bits back to

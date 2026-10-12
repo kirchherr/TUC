@@ -1,5 +1,11 @@
 # Roadmap Status
 
+- [Explicit Bounded Model Application Runtime](BOUNDED_MODEL_APPLICATION_RUNTIME.md),
+  RFC 0340, adds exact-frame calls to the existing isolated C11 handle and an
+  explicit original-context model adapter. Validation precedes build/run and
+  resources close on failure. Actual installed Linux execution evidence is
+  pending; mocked tests do not promote observed execution claims.
+
 - [Bounded Model Application Protocol Bridge](BOUNDED_MODEL_APPLICATION.md),
   RFC 0339, connects validated model bundle/request data to the existing C11
   program and binary input frame. Checked responses produce canonical receipts
