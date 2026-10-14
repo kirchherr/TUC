@@ -46,6 +46,10 @@ response hashes and result payload integrity are checked. Its opaque compiled
 bundle/capability identifiers are consistency checks, not independently
 recompiled artifacts or sender authentication. The workflow retains the
 original execution record with source, wheel, consumer and audit digests.
+All digest fields must contain lowercase 64-character hexadecimal hashes;
+`backend_bindings_digest` requires its existing `sha256:` prefix. The
+original and variable-input cases retain the same bundle and compilation;
+changed parameters change both, while the backend context stays fixed.
 
 ```sh
 python -I native_consumer.py --run
@@ -55,6 +59,9 @@ python -I -S audit_native_receipt.py record.json
 Only a successful native job establishes this fixed execution observation.
 The standard-library audit strengthens numerical reviewability; it remains a
 same-project audit rather than reproduction by a separate organization.
+The [standalone reproduction instructions](../integration/bounded_model_application/README.md)
+provide a two-file, package-free replay of the retained CI packet and the steps
+for a fresh installed native observation outside the checkout.
 
 
 The [original installed Linux job](https://github.com/kirchherr/TUC/actions/runs/38277950014/job/114907922282)
@@ -63,3 +70,7 @@ four rejection controls and clean workspaces. The immutable observation is
 retained in `integration/bounded_model_application/observed-ci-59ad813.json`.
 Its source, wheel, consumer, auditor and inner record digests were checked and
 the independent auditor was replayed locally without TUC or native execution.
+The original auditor's exact source is preserved in
+`integration/bounded_model_application/archive/audit_native_receipt_59ad813.py.txt`.
+The current auditor adds strict digest-format and context-relationship checks;
+the original observation and its recorded hashes remain unchanged.

@@ -75,3 +75,13 @@ original recorded bytes. Wheel SHA-256:
 `918eed0420667ed38c12ea2bd38e2bbb519511978d35c95cde6ce13ac795f11d`.
 Protocol receipts still make no provenance claim; the retained CI observation
 records the trusted execution event separately.
+
+## Review correction, 2026-10-14
+
+The separate auditor now rejects malformed opaque digest fields even when
+request and result hashes are recomputed. It also checks that variable input
+changes preserve bundle/compilation identities, parameter changes alter both,
+and backend identity stays fixed across all three cases. These remain bounded
+consistency checks, not independent compilation or provenance authentication.
+The original observation is unchanged; its original auditor source is retained
+under `integration/bounded_model_application/archive/` with the recorded hash.

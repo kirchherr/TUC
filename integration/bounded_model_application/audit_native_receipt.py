@@ -26,6 +26,20 @@ def digest(value: object) -> str:
     return hashlib.sha256(encoded(value)).hexdigest()
 
 
+def validate_digest(value, *, prefixed=False):
+    if type(value) is not str:
+        raise ValueError("digest type")
+    if prefixed:
+        if not value.startswith("sha256:"):
+            raise ValueError("digest prefix")
+        value = value[7:]
+    if (
+        len(value) != 64
+        or any(char not in "0123456789abcdef" for char in value)
+    ):
+        raise ValueError("digest format")
+
+
 def pairs(items):
     result = {}
     for key, value in items:
@@ -159,10 +173,12 @@ def audit(data: bytes):
             or type(record["successful_runs"]) is not int
             or record["successful_runs"] != 3
             or record["workspaces_clean"] is not True
+            or type(record["cases"]) is not list
             or len(record["cases"]) != 3
         ):
             raise ValueError("record contract")
         models, bundles, programs, requests, protocol_requests = [], [], [], [], []
+        compilations, backends = [], []
         receipt_keys = {
             "contract",
             "bundle_digest",
@@ -194,11 +210,24 @@ def audit(data: bytes):
             ((1.0, -0.0, 3.0, 4.0), (-2.0, 1.0, 0.0, -0.0), (1.0, -0.0, 3.0, 4.0)),
             strict=True,
         ):
-            if set(case) != {"name", "request", "receipt"} or case["name"] != name:
+            if (
+                type(case) is not dict
+                or set(case) != {"name", "request", "receipt"}
+                or case["name"] != name
+            ):
                 raise ValueError("case")
             request, receipt = case["request"], case["receipt"]
-            if set(request) != request_keys or set(receipt) != receipt_keys:
+            if (
+                type(request) is not dict
+                or type(receipt) is not dict
+                or set(request) != request_keys
+                or set(receipt) != receipt_keys
+            ):
                 raise ValueError("envelope fields")
+            for envelope in (request, receipt):
+                for key, value in envelope.items():
+                    if key.endswith("_digest") or key == "response_sha256":
+                        validate_digest(value, prefixed=key == "backend_bindings_digest")
             if request["contract"] != "tuc.bounded_model_artifact_request.v0":
                 raise ValueError("request contract")
             model_identity = {
@@ -279,12 +308,18 @@ def audit(data: bytes):
                 raise ValueError("result digest")
             models.append(model_digest)
             bundles.append(receipt["bundle_digest"])
+            compilations.append(receipt["model_compilation_digest"])
+            backends.append(receipt["backend_bindings_digest"])
             programs.append(receipt["program_digest"])
             requests.append(request["request_digest"])
             protocol_requests.append(protocol_digest.hex())
         if (
             len(set(models)) != 2
-            or len(set(bundles)) != 2
+            or bundles[0] != bundles[1]
+            or bundles[0] == bundles[2]
+            or compilations[0] != compilations[1]
+            or compilations[0] == compilations[2]
+            or len(set(backends)) != 1
             or len(set(programs)) != 1
             or len(set(requests)) != 3
             or len(set(protocol_requests)) != 3
@@ -321,13 +356,44 @@ def audit(data: bytes):
         raise ValueError("native_record_rejected") from None
 
 
+def audit_ci_packet(data: bytes):
+    """Check the retained envelope and numerical record, without authenticating it."""
+    try:
+        packet = read_record(data)
+        if type(packet) is not dict or set(packet) != {
+            "integration", "audit", "source_commit", "wheel_sha256",
+            "consumer_sha256", "audit_sha256",
+        }:
+            raise ValueError("packet fields")
+        source = packet["source_commit"]
+        if (
+            type(source) is not str
+            or len(source) != 40
+            or any(char not in "0123456789abcdef" for char in source)
+        ):
+            raise ValueError("source identity")
+        for field in ("wheel_sha256", "consumer_sha256", "audit_sha256"):
+            validate_digest(packet[field])
+        report = audit(encoded(packet["integration"]))
+        if encoded(packet["audit"]) != encoded(report):
+            raise ValueError("recorded audit drift")
+        return report
+    except (ValueError, TypeError, KeyError, OverflowError, RecursionError, UnicodeError):
+        raise ValueError("native_record_rejected") from None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("record", type=Path)
+    parser.add_argument(
+        "--ci-packet", action="store_true",
+        help="check a retained CI envelope instead of record.json",
+    )
     args = parser.parse_args()
     with args.record.open("rb") as stream:
         data = stream.read(MAX_BYTES + 1)
-    print(encoded(audit(data)).decode("ascii"), end="")
+    report = audit_ci_packet(data) if args.ci_packet else audit(data)
+    print(encoded(report).decode("ascii"), end="")
     return 0
 
 
