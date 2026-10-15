@@ -4,6 +4,11 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current closing work: [bounded model application acceptance handoff](docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md)
+records the merged model-to-CPU path and provides a deterministic offline
+audit distribution with CI verification. The next acceptance requires an
+independently controlled reproduction; same-project replay does not supply it.
+
 Current implementation: [Explicit Bounded Model Application Runtime](docs/BOUNDED_MODEL_APPLICATION_RUNTIME.md),
 RFC 0340, executes fully validated model requests through the existing isolated
 Linux C11 boundary, retaining request-bound checked output data. The frame
