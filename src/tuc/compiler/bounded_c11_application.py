@@ -252,6 +252,14 @@ def _request(
     return program, digest
 
 
+def validate_bounded_c11_request(
+    module: SourceIntentModule, backend_bindings: tuple[BoundedBackendBinding, ...],
+    application: BoundedC11Application, request: bytes,
+) -> None:
+    """Validate an exact bounded input frame without executing it."""
+    _request(_validated_manifest(module, backend_bindings, application), request)
+
+
 def encode_bounded_c11_inputs(
     module: SourceIntentModule, backend_bindings: tuple[BoundedBackendBinding, ...],
     application: BoundedC11Application, inputs: dict[str, tuple[float, ...]],
@@ -333,4 +341,4 @@ def decode_bounded_c11_outputs(
 __all__ = ["BoundedC11Application", "BoundedC11ApplicationExecutionError",
            "prepare_bounded_c11_application",
            "validate_bounded_c11_application", "encode_bounded_c11_inputs",
-           "decode_bounded_c11_outputs"]
+           "decode_bounded_c11_outputs", "validate_bounded_c11_request"]

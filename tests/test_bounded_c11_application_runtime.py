@@ -654,3 +654,125 @@ def test_descriptor_relative_create_and_cleanup_preserve_workspace(tmp_path, mon
         runtime._write_context(context)
     runtime._remove_files(context)
     assert tmp_path.is_dir() and not context.directory.exists()
+
+
+# RFC0340 frame and model-adapter tests use the same mocked process boundary.
+def test_exact_frame_runs_through_existing_isolation(host):
+    from tuc.compiler.bounded_c11_application import (
+        encode_bounded_c11_inputs,
+        prepare_bounded_c11_application,
+    )
+
+    module, backends = source(), bindings()
+    artifact = prepare_bounded_c11_application(module, backends)
+    frame = encode_bounded_c11_inputs(module, backends, artifact, inputs())
+    with build(host) as application:
+        assert application.run_frame(frame) == synthetic_response(frame)
+        assert application.run(inputs()) == {"answer": (11.0,)}
+    assert host.input_requests == [frame, frame]
+
+
+@pytest.mark.parametrize(
+    "mode", ["type", "short", "long", "magic", "program", "digest", "subnormal"]
+)
+def test_bad_frames_reject_before_process_launch(host, mode):
+    from hashlib import sha256
+
+    from tuc.compiler.bounded_c11_application import (
+        encode_bounded_c11_inputs,
+        prepare_bounded_c11_application,
+    )
+
+    module, backends = source(), bindings()
+    artifact = prepare_bounded_c11_application(module, backends)
+    frame = encode_bounded_c11_inputs(module, backends, artifact, inputs())
+    if mode == "type":
+        frame = bytearray(frame)
+    elif mode == "short":
+        frame = frame[:-1]
+    elif mode == "long":
+        frame += b"x"
+    elif mode in ("magic", "program", "digest"):
+        offset = {"magic": 0, "program": 8, "digest": 40}[mode]
+        frame = frame[:offset] + bytes([frame[offset] ^ 1]) + frame[offset + 1 :]
+    else:
+        payload = struct.pack("<I", 1) + frame[76:]
+        frame = frame[:40] + sha256(frame[8:40] + payload).digest() + payload
+    with (
+        build(host) as application,
+        pytest.raises(runtime.BoundedC11ApplicationRuntimeError, match="input_rejection"),
+    ):
+        application.run_frame(frame)
+    assert not commands(host, "run")
+
+
+def test_frame_closed_handle_rejects(host):
+    application = build(host)
+    application.close()
+    with pytest.raises(runtime.BoundedC11ApplicationRuntimeError, match="closed"):
+        application.run_frame(b"")
+
+
+def model_context():
+    from integration.bounded_model_application.consumer import _model
+    from tuc.compiler.bounded_model_artifact_bundle import create_bounded_model_artifact_bundle
+    from tuc.compiler.bounded_model_artifact_request import create_bounded_model_artifact_request
+
+    model = _model(2.0)
+    # The fixture backend must admit the model's ReLU operation too.
+    backends = (
+        BoundedBackendBinding(
+            BackendCapability(
+                "cpu",
+                frozenset({OperationKind.MATMUL, OperationKind.ELEMENTWISE}),
+                memory_domain=MemoryDomainKind.HOST_RAM,
+            ),
+            DAGTarget.C11,
+        ),
+    )
+    bundle = create_bounded_model_artifact_bundle(model, backends)
+    inputs_data = json.dumps(
+        {"schema_version": "tuc.bounded_cpu_inputs.v0", "inputs": {"x": [1.0, -0.0, 3.0, 4.0]}}
+    ).encode()
+    request = create_bounded_model_artifact_request(model, backends, bundle, inputs_data)
+    return model, backends, bundle, inputs_data, request
+
+
+def test_model_adapter_executes_exact_frame_and_closes(host):
+    from tuc.compiler.bounded_model_application import prepare_bounded_model_application
+    from tuc.runtime.bounded_model_application import run_bounded_model_application
+
+    ctx = model_context()
+    prepared = prepare_bounded_model_application(*ctx)
+    host.result = lambda frame: runtime._ProcessResult(
+        0, b"TUCOUT01" + frame[8:72] + struct.pack("<I4f", 0, 0.0, -0.0, 2.0, 3.0), b""
+    )
+    result = run_bounded_model_application(*ctx, workspace=host.workspace)
+    assert host.input_requests == [prepared.request_frame]
+    assert result.outputs[0].value_bits == "00000000000000800000004000004040"
+    receipt = json.loads(result.receipt_data)
+    assert receipt["request_digest"] == prepared.request_digest
+    assert receipt["native_execution_observed"] is False
+    assert commands(host, "image")
+    assert all(not context.exists() for context in host.contexts)
+
+
+def test_model_adapter_bad_request_never_builds(host):
+    from tuc.compiler.bounded_model_application import BoundedModelApplicationError
+    from tuc.runtime.bounded_model_application import run_bounded_model_application
+
+    model, backends, bundle, inputs_data, _ = model_context()
+    with pytest.raises(BoundedModelApplicationError):
+        run_bounded_model_application(
+            model, backends, bundle, inputs_data, b"{}", workspace=host.workspace
+        )
+    assert not host.calls
+
+
+def test_model_adapter_failed_response_cleans_resources(host):
+    from tuc.runtime.bounded_model_application import run_bounded_model_application
+
+    host.result = lambda frame: runtime._ProcessResult(0, b"bad", b"")
+    with pytest.raises(runtime.BoundedC11ApplicationRuntimeError, match="protocol_rejection"):
+        run_bounded_model_application(*model_context(), workspace=host.workspace)
+    assert all(not context.exists() for context in host.contexts)

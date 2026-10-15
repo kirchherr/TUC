@@ -4,6 +4,22 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current implementation: [Explicit Bounded Model Application Runtime](docs/BOUNDED_MODEL_APPLICATION_RUNTIME.md),
+RFC 0340, executes fully validated model requests through the existing isolated
+Linux C11 boundary, retaining request-bound checked output data. The frame
+method shares all named-input runtime controls. The installed Linux job
+and separate standard-library audit passed at `59ad813` for three contexts,
+18 bit-exact scalar comparisons and four rejection controls. Original evidence
+is retained; independent organizational reproduction remains open.
+
+Current implementation: [Bounded Model Application Protocol Bridge](docs/BOUNDED_MODEL_APPLICATION.md),
+RFC 0339, admits fully validated portable requests to the existing C11 binary
+application protocol and binds checked responses/public output bits back to
+model, bundle and request identities. CUDA/mixed plans reject. All operations
+remain inert; synthetic consumer responses prove protocol consistency only.
+Native execution provenance and independent numerical comparison remain a
+separate runtime evidence obligation.
+
 Current implementation: [Portable Bounded Model Artifact Requests](docs/BOUNDED_MODEL_ARTIFACT_REQUEST.md),
 RFC 0338, bind concrete variable FP32 inputs and fixed parameters to the exact
 model bundle and capability plan. Canonical requests preserve tensor positions

@@ -7,6 +7,9 @@ choose between those targets while preserving the calculation's result and
 explaining every choice?
 
 For the current bounded native CPU application path, see
+[explicit model execution on the isolated CPU runtime](docs/BOUNDED_MODEL_APPLICATION_RUNTIME.md),
+[standalone replay and native reproduction](integration/bounded_model_application/README.md),
+[model requests in the checked CPU protocol](docs/BOUNDED_MODEL_APPLICATION.md),
 [portable model artifact requests](docs/BOUNDED_MODEL_ARTIFACT_REQUEST.md),
 [portable model artifact bundles](docs/BOUNDED_MODEL_ARTIFACT_BUNDLE.md),
 [capability-planned model artifacts](docs/BOUNDED_MODEL_ARTIFACTS.md),

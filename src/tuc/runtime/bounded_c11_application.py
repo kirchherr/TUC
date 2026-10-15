@@ -39,6 +39,7 @@ from tuc.compiler.bounded_c11_application import (
     encode_bounded_c11_inputs,
     prepare_bounded_c11_application,
     validate_bounded_c11_application,
+    validate_bounded_c11_request,
 )
 from tuc.compiler.bounded_source import (
     BoundedBackendBinding,
@@ -516,6 +517,15 @@ class BuiltBoundedC11Application:
         self.close()
 
     def run(self, inputs: dict[str, tuple[float, ...]]) -> dict[str, tuple[float, ...]]:
+        return self._execute(inputs, frame=False)[1]
+
+    def run_frame(self, request: bytes) -> bytes:
+        """Execute only a validated frame; return only a checked success response."""
+        return self._execute(request, frame=True)[0]
+
+    def _execute(
+        self, data: dict[str, tuple[float, ...]] | bytes, *, frame: bool,
+    ) -> tuple[bytes, dict[str, tuple[float, ...]]]:
         record = _lookup(self)
         with record.lifecycle.lock:
             if record.lifecycle.closed:
@@ -533,8 +543,17 @@ class BuiltBoundedC11Application:
                 bindings = _checked_bindings(record.original_bindings)
                 validate_bounded_c11_application(module, bindings, record.application)
                 phase = "input_rejection"
-                request = encode_bounded_c11_inputs(record.module, record.bindings,
-                                                    record.application, inputs)
+                if frame:
+                    if type(data) is not bytes:
+                        raise ValueError("invalid request type")
+                    request = data
+                    validate_bounded_c11_request(record.module, record.bindings,
+                                                 record.application, request)
+                else:
+                    if type(data) is not dict:
+                        raise ValueError("invalid inputs type")
+                    request = encode_bounded_c11_inputs(record.module, record.bindings,
+                                                        record.application, data)
                 started = True
                 phase = "process_error"
                 result = _command(record.context,
@@ -544,9 +563,10 @@ class BuiltBoundedC11Application:
                 if result.stderr:
                     raise ValueError("unexpected execution diagnostics")
                 phase = "protocol_rejection"
-                return decode_bounded_c11_outputs(record.module, record.bindings,
-                                                  record.application, request, result.stdout,
-                                                  result.exit_code)
+                outputs = decode_bounded_c11_outputs(record.module, record.bindings,
+                                                     record.application, request, result.stdout,
+                                                     result.exit_code)
+                return result.stdout, outputs
             except BaseException as error:
                 if started:
                     _remove_container(record.context, container)

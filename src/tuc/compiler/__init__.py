@@ -22,6 +22,16 @@ from tuc.compiler.bounded_c11 import (
     emit_bounded_c11_entrypoint,
     validate_bounded_c11_entrypoint,
 )
+from tuc.compiler.bounded_model_application import (
+    MODEL_APPLICATION_RESULT_CONTRACT,
+    BoundedModelApplication,
+    BoundedModelApplicationError,
+    BoundedModelApplicationOutput,
+    BoundedModelApplicationResult,
+    decode_bounded_model_application_response,
+    prepare_bounded_model_application,
+    validate_bounded_model_application_result,
+)
 from tuc.compiler.bounded_model_artifact_bundle import (
     MODEL_ARTIFACT_BUNDLE_CONTRACT,
     BoundedModelArtifactBundle,
@@ -48,6 +58,14 @@ from tuc.compiler.bounded_source import (
 )
 
 __all__ = [
+    "MODEL_APPLICATION_RESULT_CONTRACT",
+    "BoundedModelApplication",
+    "BoundedModelApplicationError",
+    "BoundedModelApplicationOutput",
+    "BoundedModelApplicationResult",
+    "prepare_bounded_model_application",
+    "decode_bounded_model_application_response",
+    "validate_bounded_model_application_result",
     "BoundedBackendBinding",
     "BoundedModelArtifactBundle",
     "BoundedModelArtifactBundleError",
