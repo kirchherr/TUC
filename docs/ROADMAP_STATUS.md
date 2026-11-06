@@ -1,5 +1,14 @@
 # Roadmap Status
 
+- [Bounded model application acceptance handoff](BOUNDED_MODEL_APPLICATION_HANDOFF.md)
+  records the RFC0339/0340 merge through PR #136, both full 7,589-test
+  validations and exact-head installed CPU observation. A standard-library/Git
+  builder packages five committed source files plus generated metadata as an
+  eight-member deterministic offline audit ZIP, including LICENSE and NOTICE.
+  The read-only native workflow builds, extracts, checks and replays the
+  kit before retaining it with a checksum. This closes distribution readiness;
+  independent organizational reproduction is still a separate open acceptance.
+
 - [Explicit Bounded Model Application Runtime](BOUNDED_MODEL_APPLICATION_RUNTIME.md),
   RFC 0340, adds exact-frame calls to the existing isolated C11 handle and an
   explicit original-context model adapter. Validation precedes build/run and

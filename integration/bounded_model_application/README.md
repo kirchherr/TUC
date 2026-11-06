@@ -8,6 +8,12 @@ or executing native code.
 
 ## Replay the retained observation
 
+The [native evidence workflow](https://github.com/kirchherr/TUC/actions/workflows/bounded-model-application.yml)
+publishes the `bounded-model-application-audit-kit` artifact after a successful
+build and isolated replay. It contains a ZIP and its SHA-256 checksum. See the
+[acceptance handoff](../../docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md) for download,
+verification and the remaining external evidence obligation.
+
 Copy `audit_native_receipt.py` and `observed-ci-59ad813.json` into an otherwise
 empty directory. Python 3.11 or later is sufficient; no packages are required:
 
@@ -33,6 +39,24 @@ Its original auditor source is preserved byte-for-byte in
 `archive/audit_native_receipt_59ad813.py.txt`. The current auditor additionally
 checks strict digest formats and relationships between the three contexts;
 the original packet and hashes are unchanged.
+
+To build the same distribution from a pinned repository checkout, with Python
+and Git available, use an existing output directory:
+
+```sh
+python -I -S scripts/build_model_application_audit_kit.py --output /existing/output/tuc-model-application-audit-kit.zip
+```
+
+Run this command from the repository root. Git must be installed at an absolute
+PATH location outside the checkout. The builder reads an exact committed Git
+snapshot for its source inputs, ignores edits to those inputs and untracked
+notes, and never imports or executes the packaged sources. Use the versioned
+builder from that pinned commit. The stored ZIP has eight fixed flat members,
+fixed timestamps, regular non-executable file modes, source identity and internal
+checksums. Each source file is capped at 64 KiB; the ZIP is capped at 256 KiB.
+The project LICENSE and NOTICE are included from the same commit.
+Symlinks/submodules, missing or oversized sources and existing output targets
+reject. Source and checksums must be compared with a trusted origin separately.
 
 ## Make a fresh native observation
 

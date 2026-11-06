@@ -31,7 +31,8 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --require-hashes -r requirements/ci.txt
-          python -m pytest -q tests/test_bounded_model_application.py tests/test_bounded_model_application_consumer.py tests/test_bounded_model_application_native.py tests/test_bounded_c11_application.py tests/test_bounded_c11_application_runtime.py tests/test_bounded_model_artifact_request.py
+          mypy scripts/build_model_application_audit_kit.py
+          python -m pytest -q tests/test_bounded_model_application.py tests/test_bounded_model_application_consumer.py tests/test_bounded_model_application_native.py tests/test_bounded_c11_application.py tests/test_bounded_c11_application_runtime.py tests/test_bounded_model_artifact_request.py tests/test_model_application_audit_kit.py
           python -m pip wheel --no-deps --no-build-isolation --no-index . --wheel-dir "$RUNNER_TEMP/model-application-wheel"
       - name: Observe installed Linux execution and independently audit
         run: |
@@ -69,6 +70,61 @@ jobs:
           Path("ci-record.json").write_text(json.dumps(receipt, sort_keys=True) + "\n")
           print("NATIVE_RECORD:" + json.dumps(receipt, sort_keys=True, separators=(",", ":")))
           PY
+      - name: Build and replay standalone offline audit kit
+        run: |
+          set -euo pipefail
+          python -I -S scripts/build_model_application_audit_kit.py --output "$RUNNER_TEMP/tuc-model-application-audit-kit.zip" > "$RUNNER_TEMP/tuc-model-application-audit-kit.zip.sha256"
+          python -I -S - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          import sys
+          import zipfile
+          from pathlib import Path
+          temporary = Path(os.environ["RUNNER_TEMP"])
+          archive = temporary / "tuc-model-application-audit-kit.zip"
+          assert archive.stat().st_size <= 256 * 1024
+          names = {
+              "audit_native_receipt.py", "observed-ci-59ad813.json",
+              "original_auditor_59ad813.py.txt", "LICENSE", "NOTICE",
+              "README.md", "SOURCE.txt", "CHECKSUMS.sha256",
+          }
+          offline = temporary / "model-application-offline-audit"
+          offline.mkdir(mode=0o700)
+          with zipfile.ZipFile(archive) as kit:
+              assert len(kit.infolist()) == len(names) and set(kit.namelist()) == names
+              for entry in kit.infolist():
+                  assert entry.file_size <= 64 * 1024 and entry.compress_type == zipfile.ZIP_STORED
+                  assert entry.external_attr >> 16 == 0o100644
+                  (offline / entry.filename).write_bytes(kit.read(entry))
+          expected = "".join(
+              hashlib.sha256((offline / name).read_bytes()).hexdigest() + "  " + name + "\n"
+              for name in sorted(names - {"CHECKSUMS.sha256"})
+          )
+          assert (offline / "CHECKSUMS.sha256").read_text() == expected
+          assert (offline / "SOURCE.txt").read_text() == "source_commit=" + os.environ["GITHUB_SHA"] + "\n"
+          result = subprocess.run(
+              [sys.executable, "-I", "-S", str(offline / "audit_native_receipt.py"),
+               "--ci-packet", str(offline / "observed-ci-59ad813.json")],
+              cwd=offline, capture_output=True, timeout=30, check=True,
+          )
+          report = json.loads(result.stdout)
+          assert report["status"] == "PASS" and report["scalar_checks"] == 18
+          assert report["rejection_checks"] == 4 and report["tuc_imported"] is False
+          assert report["native_execution_performed"] is False and not result.stderr
+          print(result.stdout.decode("ascii"), end="")
+          print("OFFLINE_KIT_SHA256:" + hashlib.sha256(archive.read_bytes()).hexdigest())
+          PY
+      - name: Retain standalone audit kit and checksum
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bounded-model-application-audit-kit
+          path: |
+            ${{ runner.temp }}/tuc-model-application-audit-kit.zip
+            ${{ runner.temp }}/tuc-model-application-audit-kit.zip.sha256
+          if-no-files-found: error
+          retention-days: 14
       - name: Retain original model observations and audit
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

@@ -4,6 +4,11 @@
 - Date: 2026-10-12
 - Depends on: RFC 0339
 
+Integration: [PR #136](https://github.com/kirchherr/TUC/pull/136) merged at
+`83c12b31b32cd0ee52ba317a635a898b07a7998c` after both complete 7,589-test
+validations and the exact-head installed native observation passed. The owner
+authorized a one-time review-rule exception; repository rules were unchanged.
+
 ## Decision
 
 The existing explicit isolated Linux C11 handle gains `run_frame(request)`.
@@ -85,3 +90,20 @@ and backend identity stays fixed across all three cases. These remain bounded
 consistency checks, not independent compilation or provenance authentication.
 The original observation is unchanged; its original auditor source is retained
 under `integration/bounded_model_application/archive/` with the recorded hash.
+
+## Offline evidence distribution
+
+`scripts/build_model_application_audit_kit.py` packages an exact committed Git
+snapshot of the current auditor, original CI packet and archived original
+auditor and the project's LICENSE/NOTICE, together with README, source commit
+and internal checksums. It creates
+only a new output, reads bounded regular blobs rather than working-tree files,
+uses fixed stored ZIP metadata and never executes packaged sources. No compiler
+or runtime API, target, native command, plugin or admission changes follow.
+
+The existing read-only native workflow replays the extracted kit outside the
+checkout under Python `-I -S` before retaining the ZIP and external checksum.
+This is distribution and reproduction readiness, not independently controlled
+reproduction or authentication. The
+[acceptance handoff](../docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md) records the
+fixed completed path and the remaining external acceptance.
