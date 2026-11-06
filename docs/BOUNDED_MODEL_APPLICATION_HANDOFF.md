@@ -67,9 +67,11 @@ Checksums alone authenticate neither the sender nor the execution observation.
 An operator outside the project must supply a fresh observation from an
 independently controlled Linux x86-64 environment. The
 [native reproduction instructions](../integration/bounded_model_application/README.md)
-specify the installed-wheel execution and separate audit. Preserve the exact
-source, wheel/source hashes, environment/operator identity, raw record, audit
-output and command log, with the origin of that evidence stated explicitly.
+give the operator a single command to run the installed-wheel probe and
+return a bounded JSON observation. The reviewer can check the source
+bindings and arithmetic offline. Preserve the operator/environment identity,
+exact source, wheel digest and command log through an attributable channel;
+the verifier cannot establish that origin from the JSON alone.
 
 Same-project CI, another VM controlled by the same maintainer and local replay
 do not satisfy that independent acceptance. They establish reproducibility
