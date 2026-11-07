@@ -60,45 +60,54 @@ reject. Source and checksums must be compared with a trusted origin separately.
 
 ## Make a fresh native observation
 
-Use an independently controlled disposable Linux x86-64 environment with a
-working local Docker daemon. Review the existing
+Use an independently controlled disposable Linux x86-64 environment with
+CPython 3.12, Git and a working local Docker daemon. Review the existing
 [runtime requirements](../../docs/BOUNDED_CPU_APPLICATION.md) before
-execution. From a checkout at the exact revision being reviewed:
+execution. Check out the trusted revision to be reviewed. Give the explicit
+`run` command an unused output path outside the checkout:
 
 ```sh
-tuc_source="$(pwd)"
-tuc_reproduction="$(mktemp -d)"
-python -m venv "$tuc_reproduction/build-env"
-"$tuc_reproduction/build-env/bin/python" -m pip install --require-hashes -r "$tuc_source/requirements/ci.txt"
-"$tuc_reproduction/build-env/bin/python" -m pip wheel --no-deps --no-build-isolation --no-index "$tuc_source" --wheel-dir "$tuc_reproduction/wheels"
-python -m venv "$tuc_reproduction/run-env"
-"$tuc_reproduction/run-env/bin/python" -m pip install --require-hashes -r "$tuc_source/requirements/ci.txt"
-"$tuc_reproduction/run-env/bin/python" -m pip install --no-deps --no-index "$tuc_reproduction"/wheels/tuc-*.whl
-mkdir -m 700 "$tuc_reproduction/client"
-cp "$tuc_source/integration/bounded_model_application/native_consumer.py" "$tuc_reproduction/client/"
-cp "$tuc_source/integration/bounded_model_application/audit_native_receipt.py" "$tuc_reproduction/client/"
-cd "$tuc_reproduction/client"
-export PATH="$tuc_reproduction/run-env/bin:$PATH"
-unset PYTHONPATH
-python -I -c 'import pathlib,sys,tuc; assert pathlib.Path(tuc.__file__).resolve().is_relative_to(pathlib.Path(sys.prefix).resolve())'
-python -I native_consumer.py
-python -I native_consumer.py --run
-python -I -S audit_native_receipt.py record.json
+commit="$(git rev-parse --verify HEAD)"
+python3.12 -I -S scripts/reproduce_model_application.py run \
+  --source-commit "$commit" --output "$HOME/tuc-model-observation"
 ```
 
-Both virtual environments, the wheel and the copied client stay outside the
-checkout. Keep the new directory for reviewing its observation.
+The runner snapshots only the committed build files and the fixed client and
+auditor. It downloads the binary wheels in `requirements/ci.txt` with hash
+verification. Separate build and run environments install from that local
+download, and the wheel is built without fetching further packages. The
+installed client runs outside the checkout with the existing local Docker
+controls. Docker may need to fetch the pinned base images. A failed run leaves
+its working directory for diagnosis and does not emit a success observation.
 
-The first command only prints a candidate. `--run` explicitly builds and runs
-the existing isolated CPU path; it creates `workspace` and `record.json` in the
-client directory. Use a fresh directory for each observation. Success requires
-three calls, four rejected controls and an empty workspace after every call.
-The audit must pass all 18 scalar comparisons. The full pinned workflow is
-[`bounded-model-application.yml`](../../.github/workflows/bounded-model-application.yml).
+Success writes `operator-observation.json` with the raw record, audit, source
+revision, wheel and source hashes, Python platform and completed command
+stages. Retain the directory and your terminal or CI log. Send the JSON and
+the provenance of your run through a channel the reviewer can attribute to
+you. Include who controls the environment, the reviewed source revision and
+the observed wheel SHA-256. The JSON includes no host paths, account names,
+executable code or wheel bytes.
 
-Retain the exact source revision, wheel/source hashes, raw `record.json`, audit
-output, command log and independently controlled environment identity. A new
-observation becomes external evidence only when another party supplies its own
-origin and execution record. Same-project CI and local replay do not establish
-independent organizational reproduction. No performance, general model, GPU
-or vendor-compatibility result follows from this fixed corpus.
+## Review the returned observation
+
+From a trusted checkout of the same reviewed commit, use Python 3.11 or later
+and Git; this command requires neither Docker nor TUC installation:
+
+```sh
+python -I -S scripts/reproduce_model_application.py verify \
+  --source-commit "$commit" /path/to/operator-observation.json
+```
+
+If the operator supplies the wheel digest separately, add
+`--expected-wheel-sha256` with that digest to compare the two records.
+`verify` checks the bounded data against the committed client, lock and
+auditor, then recomputes all 18 scalar comparisons and four rejection checks
+using the trusted auditor. It reports `external_origin_verified=false` and
+`native_execution_performed=false`: arithmetic and identity consistency do
+not authenticate the operator, prove Docker execution, or attest the wheel.
+
+The [CI rehearsal](../../.github/workflows/bounded-model-application.yml)
+runs this procedure and uploads a data-only example. External acceptance
+requires a separately attributable observation from an independently
+controlled environment. No performance, general model, GPU or
+vendor-compatibility result follows from this fixed corpus.
