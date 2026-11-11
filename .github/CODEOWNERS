@@ -85,3 +85,10 @@
 /src/tuc/bounded_cpu_model_session.py @kirchherr
 /integration/bounded_cpu_model_session/ @kirchherr
 /docs/BOUNDED_CPU_MODEL_SESSION.md @kirchherr
+
+# Bounded model observation and offline review.
+/docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md @kirchherr
+/integration/bounded_model_application/ @kirchherr
+/scripts/build_model_application_audit_kit.py @kirchherr
+/scripts/reproduce_model_application.py @kirchherr
+/tests/test_model_application_operator.py @kirchherr
