@@ -31,8 +31,8 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --require-hashes -r requirements/ci.txt
-          mypy scripts/build_model_application_audit_kit.py scripts/reproduce_model_application.py
-          python -m pytest -q tests/test_bounded_model_application.py tests/test_bounded_model_application_consumer.py tests/test_bounded_model_application_native.py tests/test_bounded_c11_application.py tests/test_bounded_c11_application_runtime.py tests/test_bounded_model_artifact_request.py tests/test_model_application_audit_kit.py tests/test_model_application_operator.py
+          mypy scripts/build_model_application_audit_kit.py scripts/reproduce_model_application.py src/tuc/runtime/bounded_model_application_session.py
+          python -m pytest -q tests/test_bounded_model_application.py tests/test_bounded_model_application_consumer.py tests/test_bounded_model_application_native.py tests/test_bounded_c11_application.py tests/test_bounded_c11_application_runtime.py tests/test_bounded_model_artifact_request.py tests/test_model_application_audit_kit.py tests/test_model_application_operator.py tests/test_bounded_model_application_session.py tests/test_bounded_model_application_session_native.py
       - name: Rehearse the external operator procedure on Linux
         run: |
           set -euo pipefail
@@ -53,6 +53,59 @@ jobs:
         with:
           name: bounded-model-application-operator-rehearsal
           path: ${{ runner.temp }}/model-application-operator/operator-observation.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Observe build reuse across model application sessions
+        run: |
+          set -euo pipefail
+          client="$RUNNER_TEMP/model-application-session-client"
+          mkdir -m 700 "$client"
+          cp integration/bounded_model_application/native_session_consumer.py "$client/"
+          cp integration/bounded_model_application/audit_native_receipt.py "$client/"
+          cd "$client"
+          python="$RUNNER_TEMP/model-application-operator/run-env/bin/python"
+          "$python" -I -S native_session_consumer.py > candidate.json
+          "$python" -I native_session_consumer.py --run
+          "$python" -I -S audit_native_receipt.py record.json > audit.json
+          "$python" -I -S - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          observation = json.loads(Path("session-observation.json").read_bytes())
+          record = json.loads(Path("record.json").read_bytes())
+          audit = json.loads(Path("audit.json").read_bytes())
+          assert observation["status"] == "PASS"
+          assert observation["sessions"] == observation["docker_builds"] == 2
+          assert observation["native_runs"] == 4 and observation["successful_runs"] == 3
+          assert observation["sequences"] == [1, 2, 1]
+          assert observation["closed_session_rejections"] == 1
+          assert observation["workspaces_clean"] is True
+          assert audit["status"] == "PASS" and audit["scalar_checks"] == 18
+          assert audit["rejection_checks"] == 4 and audit["tuc_imported"] is False
+          assert audit["native_execution_performed"] is False
+          expected_record = "6a77307516b633d45b45f8efa4581076c854549491960652026b7219a3ff8bd8"
+          assert observation["record_sha256"] == audit["record_sha256"] == expected_record
+          assert hashlib.sha256(Path("record.json").read_bytes()).hexdigest() == expected_record
+          wheels = list((Path(os.environ["RUNNER_TEMP"]) / "model-application-operator/wheels").glob("tuc-*.whl"))
+          assert len(wheels) == 1
+          packet = {
+              "integration": record, "audit": audit, "source_commit": os.environ["GITHUB_SHA"],
+              "wheel_sha256": hashlib.sha256(wheels[0].read_bytes()).hexdigest(),
+              "consumer_sha256": hashlib.sha256(Path("native_session_consumer.py").read_bytes()).hexdigest(),
+              "audit_sha256": hashlib.sha256(Path("audit_native_receipt.py").read_bytes()).hexdigest(),
+          }
+          Path("ci-record.json").write_text(json.dumps(packet, sort_keys=True) + "\n")
+          print("SESSION_RECORD:" + json.dumps(packet, sort_keys=True, separators=(",", ":")))
+          print("SESSION_LIFECYCLE:" + json.dumps(observation, sort_keys=True, separators=(",", ":")))
+          PY
+      - name: Retain model session observation and numerical audit
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bounded-model-application-session-receipt
+          path: |
+            ${{ runner.temp }}/model-application-session-client/ci-record.json
+            ${{ runner.temp }}/model-application-session-client/session-observation.json
           if-no-files-found: error
           retention-days: 14
       - name: Build and replay standalone offline audit kit

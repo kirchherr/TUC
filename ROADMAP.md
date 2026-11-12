@@ -4,6 +4,12 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current candidate: [reusable model application sessions](docs/BOUNDED_MODEL_APPLICATION_SESSION.md),
+RFC0341, reuses one explicit CPU build for bounded requests against a fixed
+portable model context. Per-request validation, cumulative budgets and terminal
+failure cleanup remain explicit. Installed validation is tracked in the PR and CI;
+the independent acceptance of the merged single-call path remains open.
+
 Current closing work: [bounded model application acceptance handoff](docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md)
 records the merged model-to-CPU path and provides a deterministic offline
 audit distribution with CI verification. The next acceptance requires an

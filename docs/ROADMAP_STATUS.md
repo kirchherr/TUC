@@ -1,5 +1,11 @@
 # Roadmap Status
 
+- [Reusable model application sessions](BOUNDED_MODEL_APPLICATION_SESSION.md),
+  RFC0341, add lazy build reuse at the existing explicit C11 boundary for fixed
+  portable model/bundle contexts. Every request is validated; cumulative
+  budgets, concurrency rejection and terminal failure cleanup are enforced.
+  Installed validation is tracked in the PR and CI; independent acceptance remains open.
+
 - [Bounded model application acceptance handoff](BOUNDED_MODEL_APPLICATION_HANDOFF.md)
   records the RFC0339/0340 merge through PR #136, both full 7,589-test
   validations and exact-head installed CPU observation. A standard-library/Git
