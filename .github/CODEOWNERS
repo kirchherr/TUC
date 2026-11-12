@@ -92,3 +92,7 @@
 /scripts/build_model_application_audit_kit.py @kirchherr
 /scripts/reproduce_model_application.py @kirchherr
 /tests/test_model_application_operator.py @kirchherr
+/src/tuc/runtime/bounded_model_application_session.py @kirchherr
+/docs/BOUNDED_MODEL_APPLICATION_SESSION.md @kirchherr
+/tests/test_bounded_model_application_session.py @kirchherr
+/tests/test_bounded_model_application_session_native.py @kirchherr
