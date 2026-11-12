@@ -1,0 +1,17 @@
+{
+  "schema_version": "tuc.bounded_backend_bindings.v0",
+  "bindings": [
+    {
+      "name": "cpu",
+      "target": "c11",
+      "supported_ops": ["matmul", "elementwise", "reduction"],
+      "preferred_for": [],
+      "supports_noise_model": false,
+      "supports_calibration": false,
+      "max_error_budget": null,
+      "memory_domain": "host_ram",
+      "supported_layouts": ["row_major"],
+      "produced_layouts": ["row_major"]
+    }
+  ]
+}

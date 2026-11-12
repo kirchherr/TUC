@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kirchherr/TUC/schemas/bounded_backend_bindings.v0.schema.json",
+  "title": "Bounded source-target capability bindings v0",
+  "description": "Data only. The parser additionally enforces 64 KiB, depth 5, 4096 lexical tokens, unique backend names/targets and preferred-operation subsets. Targets select inert emission; they never authorize devices or backend code.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "bindings"],
+  "properties": {
+    "schema_version": {"const": "tuc.bounded_backend_bindings.v0"},
+    "bindings": {
+      "type": "array", "minItems": 1, "maxItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["name", "target", "supported_ops", "preferred_for", "supports_noise_model", "supports_calibration", "max_error_budget", "memory_domain", "supported_layouts", "produced_layouts"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"},
+          "target": {"enum": ["c11", "cuda-sm86"]},
+          "supported_ops": {"$ref": "#/$defs/operations", "minItems": 1},
+          "preferred_for": {"$ref": "#/$defs/operations"},
+          "supports_noise_model": {"type": "boolean"},
+          "supports_calibration": {"type": "boolean"},
+          "max_error_budget": {"type": ["number", "null"], "minimum": 0, "maximum": 1000000},
+          "memory_domain": {"enum": ["host_ram", "unknown"]},
+          "supported_layouts": {"const": ["row_major"]},
+          "produced_layouts": {"const": ["row_major"]}
+        },
+        "allOf": [
+          {"if": {"properties": {"target": {"const": "c11"}}}, "then": {"properties": {"memory_domain": {"const": "host_ram"}}}},
+          {"if": {"properties": {"target": {"const": "cuda-sm86"}}}, "then": {"properties": {"memory_domain": {"const": "unknown"}}}}
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "operations": {
+      "type": "array", "minItems": 0, "maxItems": 4, "uniqueItems": true,
+      "items": {"enum": ["matmul", "elementwise", "reduction", "softmax"]}
+    }
+  }
+}

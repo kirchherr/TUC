@@ -1,0 +1,26 @@
+{
+  "schema_version": "tuc.bounded_cpu_model.v0",
+  "graph": {
+    "schema_version": "source_intent.v0",
+    "name": "portable_native_observation",
+    "tensors": [
+      {"name": "x", "shape": [2, 2]},
+      {"name": "w", "shape": [2, 2]},
+      {"name": "p", "shape": [2, 2]},
+      {"name": "y", "shape": [2, 2]},
+      {"name": "r", "shape": [2]}
+    ],
+    "operations": [
+      {"name": "projection", "family": "matmul", "inputs": ["x", "w"], "outputs": ["p"]},
+      {"name": "activation", "family": "elementwise", "inputs": ["p"], "outputs": ["y"],
+       "attributes": {"elementwise_kind": "relu"}},
+      {"name": "rows", "family": "reduction", "inputs": ["p"], "outputs": ["r"],
+       "attributes": {"axis": 1}}
+    ],
+    "returns": [
+      {"public_name": "rows", "tensor_name": "r"},
+      {"public_name": "scores", "tensor_name": "y"}
+    ]
+  },
+  "parameters": {"w": [2.0, -1.0, 1.0, 3.0]}
+}

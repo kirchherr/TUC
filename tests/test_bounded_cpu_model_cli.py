@@ -79,8 +79,10 @@ def test_pack_and_inspect_are_inert_and_hide_parameter_values(host, monkeypatch,
     original = builtins.__import__
 
     def guard(name, *args, **kwargs):
-        if name.startswith("tuc.runtime"):
-            pytest.fail("inert command imported runtime")
+        # Pure planning modules also live under tuc.runtime. Only the native
+        # process-owning boundary is forbidden here, including on a cold import.
+        if name == "tuc.runtime" or name.startswith("tuc.runtime.bounded_"):
+            pytest.fail("inert command imported native runtime")
         return original(name, *args, **kwargs)
 
     monkeypatch.setattr(builtins, "__import__", guard)

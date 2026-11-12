@@ -1,5 +1,11 @@
 # Roadmap Status
 
+- [Portable model application CLI](BOUNDED_MODEL_APPLICATION_CLI.md), RFC0342,
+  connects bounded data-only backend declarations to portable model bundles,
+  exact requests and explicit single/batch CPU execution. Whole-batch admission
+  precedes one reused build; cleanup precedes result publication. Installed
+  validation is tracked in the PR and CI; independent acceptance remains open.
+
 - [Reusable model application sessions](BOUNDED_MODEL_APPLICATION_SESSION.md),
   RFC0341, add lazy build reuse at the existing explicit C11 boundary for fixed
   portable model/bundle contexts. Every request is validated; cumulative

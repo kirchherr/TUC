@@ -1,0 +1,7 @@
+{
+  "schema_version": "tuc.bounded_cpu_batch.v0",
+  "requests": [
+    {"id": "base", "inputs": {"x": [1.0, -0.0, 3.0, 4.0]}},
+    {"id": "variable", "inputs": {"x": [-2.0, 1.0, 0.0, -0.0]}}
+  ]
+}
