@@ -77,5 +77,8 @@ It preserves the original capability and compilation digests. See
 [RFC0342](../rfcs/0342-bounded-model-application-cli.md) and the
 [session API](BOUNDED_MODEL_APPLICATION_SESSION.md).
 
-The source-bound installed experiment and its separate CLI receipt artifact are
-tracked in the PR and CI. Independent organizational reproduction remains open.
+The source-bound installed experiment passed on merged main3324f72. Its
+[actual retained CLI packet and observation](evidence/BOUNDED_MODEL_APPLICATION_3324F72.md)
+include the original numerical audit and artifact/source bindings. Independent
+organizational reproduction remains open under the
+[completion plan](PROJECT_COMPLETION_PLAN.md).

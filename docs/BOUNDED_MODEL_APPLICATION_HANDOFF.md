@@ -1,6 +1,6 @@
 # Bounded model application acceptance handoff
 
-The model-to-CPU path under RFCs 0339 and 0340 is merged through
+The original model-to-CPU path under RFCs 0339 and 0340 was merged through
 [PR #136](https://github.com/kirchherr/TUC/pull/136) at
 `83c12b31b32cd0ee52ba317a635a898b07a7998c`. Its complete software path is:
 
@@ -12,7 +12,30 @@ Model and capabilities -> portable bundle -> concrete request
 The master plan remains active. This handoff defines the acceptance boundary
 for this bounded path and makes its retained evidence available to reviewers.
 
-## Completed software evidence
+## Reviewed engineering baseline after sessions and CLI
+
+[PR #139](https://github.com/kirchherr/TUC/pull/139) adds bounded build-reusing
+sessions; [PR #140](https://github.com/kirchherr/TUC/pull/140) adds the installed
+portable-model CLI. Their reviewed engineering baseline is
+`3324f72390c3e5711f1be519fa400dfe906df621`. Both final #140 suites passed
+7,768 tests with two skips, Ruff, strict Mypy for 169 source files and subsequent
+proof gates. The merged-source installed job passed 552 selected tests, the
+core/operator probe, two-build session lifecycle and actual single/batch CLI.
+
+The [retained current packets and lifecycle observations](evidence/BOUNDED_MODEL_APPLICATION_3324F72.md)
+are copied byte-for-byte from actual CI artifacts and retain source, wheel,
+consumer/auditor and wrapper/member hash bindings. Both numerical packets pass
+the original eighteen-scalar/four-control audit. This makes the observed data
+available after CI artifact expiry; independent execution origin still requires
+an attributable external result.
+
+The [completion plan](PROJECT_COMPLETION_PLAN.md) separates this implemented
+engineering baseline from M0 release-candidate preparation, M1 independent
+acceptance and M2 protected delivery. Use the exact M0 candidate for formal
+release acceptance. Earlier source-pinned handoffs, including the2c9cf67
+single-call handoff, remain evidence/instructions for their own source only.
+
+## Original software evidence (PR #136)
 
 | Acceptance item | Observed result |
 | --- | --- |
@@ -61,6 +84,59 @@ Success reports 18 scalar checks, four rejection checks, `tuc_imported=false`
 and `native_execution_performed=false`. This archive includes Python source;
 verify that source against the trusted repository/CI before executing it.
 Checksums alone authenticate neither the sender nor the execution observation.
+
+## Reproduce the complete engineering path
+
+The existing [operator procedure](../integration/bounded_model_application/README.md)
+produces the core numerical observation and a hash-locked installed environment.
+Use that same environment for the already reviewed session and CLI consumers.
+From a trusted clean checkout, the following Bash commands reproduce the current
+engineering baseline in a new output directory outside the checkout. The caller
+chooses the absolute output path; the operator runner creates the directory.
+
+```bash
+baseline=3324f72390c3e5711f1be519fa400dfe906df621
+test "$(git rev-parse --verify HEAD)" = "$baseline"
+test -z "$(git status --porcelain --untracked-files=no)"
+observation_root=/absolute/path/outside-checkout/tuc-model-3324f72
+python3.12 -I -S scripts/reproduce_model_application.py run \
+  --source-commit "$baseline" --output "$observation_root"
+runtime_python="$observation_root/run-env/bin/python"
+mkdir -m 700 "$observation_root/session" "$observation_root/cli"
+cp integration/bounded_model_application/native_session_consumer.py \
+  integration/bounded_model_application/audit_native_receipt.py "$observation_root/session/"
+cp integration/bounded_model_cli/{consumer.py,model.json,backends.json,inputs.json,batch.json} \
+  "$observation_root/cli/"
+cp integration/bounded_model_application/audit_native_receipt.py "$observation_root/cli/"
+(
+  cd "$observation_root/session"
+  "$runtime_python" -I native_session_consumer.py --run
+  "$runtime_python" -I -S audit_native_receipt.py record.json > audit.json
+)
+(
+  cd "$observation_root/cli"
+  "$runtime_python" -I -S consumer.py --run
+  "$runtime_python" -I -S audit_native_receipt.py record.json > audit.json
+)
+```
+
+Requirements remain independently controlled disposable Linux x86-64,
+CPython 3.12, Git and local Docker with the existing fixed runtime controls.
+The explicit `run`/`--run` calls build and execute reviewed native code.
+The same command sequence is exercised by the linked installed CI job; the
+operator's environment/control is the additional independent acceptance fact.
+
+Return `operator-observation.json`, both clients' `record.json` and `audit.json`,
+`session/session-observation.json`, `cli/cli-observation.json`, the source/wheel
+identity and an attributable command/run log. The core `verify` command checks
+the operator envelope; the standard-library auditor checks each additional
+numerical record. Review lifecycle counts and installed origin against the
+actual run log and reviewed consumer source. Those extra observations are not
+authenticated by the numerical auditor or by JSON alone.
+
+For formal M1 acceptance, use the reviewed source frozen by M0, with the
+corresponding source-matched procedure and consumer hashes. A result against
+this engineering baseline does not silently cover changed candidate code.
 
 ## Remaining independent acceptance
 

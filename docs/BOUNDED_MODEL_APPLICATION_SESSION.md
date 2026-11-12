@@ -56,7 +56,8 @@ request in the second session. A separate standard-library audit checks all
 original record. CI retains the numerical packet and separate lifecycle
 observation as `bounded-model-application-session-receipt`.
 
-The source-bound CI artifact and PR record the actual result. These are
-project-controlled observations and add no independent reproduction,
-performance, general model or accelerator claim. See
+The [actual merged-source packet and lifecycle observation](evidence/BOUNDED_MODEL_APPLICATION_3324F72.md)
+are retained alongside their source, wheel and CI artifact bindings. These
+project-controlled observations add no independent reproduction, performance,
+general model or accelerator claim. See the [completion plan](PROJECT_COMPLETION_PLAN.md) and
 [RFC0341](../rfcs/0341-bounded-model-application-sessions.md).

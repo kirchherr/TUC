@@ -4,17 +4,49 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
-Current candidate: [portable model application CLI](docs/BOUNDED_MODEL_APPLICATION_CLI.md),
+The next deliverable is a reviewed **bounded CPU model research release**.
+The engineering path is implemented and merged at
+`3324f72390c3e5711f1be519fa400dfe906df621`; independent acceptance and the next
+protected release remain open. The [completion review and plan](docs/PROJECT_COMPLETION_PLAN.md)
+defines the reviewed gaps, owner roles and required exit artifacts under
+[RFC0343](rfcs/0343-acceptance-led-roadmap.md).
+
+| Order | Milestone | Exit requirement |
+| --- | --- | --- |
+| M0 | Prepare and freeze the candidate | Resolve findings, verify actual CI/review/publishing controls, record exact candidate/artifact identities and passing required checks. |
+| M1 | Independent reproduction | A separately controlled operator returns attributable core/session/CLI results and passing audits for that candidate. |
+| M2 | Reviewed research release | Publish the accepted candidate with protected release approval, checksums, SBOM, verified provenance and explicit scope. |
+| M3 | Independent backend author | An outside developer integrates a data-only package through installed contracts without a TUC core change. |
+| M4 | Distinct physical portability | A dedicated reviewed experiment proves one bounded neutral workload on another vendor or ISA. |
+| M5 | Performance evidence | Existing performance gates accept methodology, overhead, native comparison and interpreted measurements. |
+| M6 | Organizational pilot | An outside organization accepts a real declared workload, supported interfaces, operation/admission criteria and recorded integration effort. |
+
+M0-M2 close the bounded CPU delivery. M3-M6 continue the larger TUC mission.
+During closure, implementation work resolves findings, reproduction obstacles
+or release requirements; new feature proposals must identify their separate
+hardware-independence proof value. Independent operator/author roles are still
+unassigned. CI repetition does not supply those roles.
+
+## Implemented model path and evidence
+
+The following increments record implementation and their original claim
+boundaries. Current closure priorities are M0-M6 above; older "next" steps in
+the historical evidence narrative are not a competing work queue.
+
+Merged implementation: [portable model application CLI](docs/BOUNDED_MODEL_APPLICATION_CLI.md),
 RFC0342, exposes capability declarations, portable bundle/request creation and
 explicit single/batch CPU execution through one installed command. Complete
-batch validation precedes build reuse; results publish after cleanup. The
-installed numerical experiment is tracked in the PR and source-bound CI.
+batch validation precedes build reuse; results publish after cleanup.
+[PR #140](https://github.com/kirchherr/TUC/pull/140) and the
+[retained merged-source observations](docs/evidence/BOUNDED_MODEL_APPLICATION_3324F72.md)
+record installed execution, numerical audit and clean workspaces.
 
-Current candidate: [reusable model application sessions](docs/BOUNDED_MODEL_APPLICATION_SESSION.md),
+Merged implementation: [reusable model application sessions](docs/BOUNDED_MODEL_APPLICATION_SESSION.md),
 RFC0341, reuses one explicit CPU build for bounded requests against a fixed
 portable model context. Per-request validation, cumulative budgets and terminal
-failure cleanup remain explicit. Installed validation is tracked in the PR and CI;
-the independent acceptance of the merged single-call path remains open.
+failure cleanup remain explicit. [PR #139](https://github.com/kirchherr/TUC/pull/139)
+and the retained session observation establish project-controlled validation;
+independent acceptance remains open.
 
 Current closing work: [bounded model application acceptance handoff](docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md)
 records the merged model-to-CPU path and provides a deterministic offline
@@ -257,13 +289,19 @@ Each phase maps to the proof ladder from the master plan.
 | 0 | Architecture | Master plan, RFCs, documented boundaries |
 | 1 | Prototype | In-repository Python implementation |
 | 2 | Proof | Working example with correct result |
-| 3 | Validation | Golden output and reproducible test |
-| 4 | Integration | External-style backend author path |
-| 5 | Adoption | Organization-ready integration surface |
+| 3 | Validation | Reproducible tests and separately attributable reproduction results |
+| 4 | Integration | Installed extension contract; independent authorship tracked in M3 |
+| 5 | Adoption | Attributable organizational use within an accepted scope |
+
+Evidence levels apply to a named boundary. Existing golden tests and installed
+same-project consumers establish their engineering contracts; independent
+operator, author and organization results require the corresponding M1/M3/M6
+evidence.
 
 ## Phase Alpha: Smallest Unarguable Proof
 
-Status: active and partially complete.
+Status: bounded research proofs established; independent validation and
+performance remain separate exit requirements.
 
 Purpose: prove the central claim before expanding scope.
 
@@ -791,7 +829,8 @@ Go/No-Go:
 
 ## Phase Beta: HAC-IR Contract
 
-Status: in progress.
+Status: bounded MVP contracts implemented; future extensions preserve the
+existing neutrality, validation and deterministic dump requirements.
 
 Purpose: make the hardware-independent interface stronger than any individual
 backend.
@@ -841,7 +880,8 @@ Go/No-Go:
 
 ## Phase Gamma: Capability Framework
 
-Status: in progress.
+Status: bounded data-only capability and installed planning contracts
+implemented; independent backend authorship and executable admission remain open.
 
 Purpose: let hardware describe what it can do without forcing implementation
 details into HAC-IR.
@@ -981,7 +1021,8 @@ Go/No-Go:
 
 ## Phase Delta: Runtime Planning
 
-Status: in progress.
+Status: bounded deterministic planning, scoring and explanation contracts
+implemented; richer policies require distinct evidence and review.
 
 Purpose: make placement decisions explainable before making them clever.
 
@@ -1060,7 +1101,8 @@ Completed evidence:
 
 Next work:
 
-- Add candidate scoring once transfer/noise-aware models are stable.
+- Preserve the implemented bounded candidate scoring contract; add richer
+  transfer/noise components only with separately reviewed models and evidence.
 - Use Runtime Candidate Scoring Policy as the review contract before changing
   candidate-score comparator semantics.
 - Keep Runtime Candidate Scoring Conformance passing before changing candidate
@@ -1090,7 +1132,8 @@ Go/No-Go:
 
 ## Phase Epsilon: Real Triton Integration
 
-Status: future credibility milestone.
+Status: bounded research intake and fixed source-to-target demonstrations
+implemented; broader syntax and production source ingestion remain unadmitted.
 
 Purpose: show that TUC can ingest real developer-facing compute intent.
 
@@ -1710,43 +1753,39 @@ Go/No-Go:
 
 ## Current Priority Order
 
-1. Keep the master plan and roadmap aligned.
-2. Keep the first public entry path short through
-   [Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md) and
-   [Research Onboarding Evidence](docs/RESEARCH_ONBOARDING_EVIDENCE.md).
-3. Apply external feedback through bounded triage, starting with
-   [External Review Triage 2026-06-22](docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md).
-4. Maintain the proof-of-abstraction validation as the first public proof,
-   including the
-   [Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
-5. Keep HAC-IR neutrality and reserved-attribute rejection hardened as new
-   proof and frontend surfaces appear.
-6. Keep Objective Gamma's installed planning proof and Objective Delta's
-   installed portable-compute proof passing as distinct public boundaries.
-7. Publish the Objective Delta Reproduction Kit and seek a separately
-   provenanced third-party receipt before expanding its fixed Source Intent or
-   trusted executor set. Keep the reduced-dependency audit path passing so an
-   external reviewer can inspect and reimplement the fixed contract without
-   installing TUC or NumPy. Neither release CI self-reproduction nor the
-   same-project audit implementation is independent evidence.
-8. Preserve RFCs 0302 through 0304 as one exact source-to-two-target research
-   slice. The isolated fixed source case, CUDA/SASS target, and static C11
-   target are now joined only through canonical digest-bound evidence, without
-   changing normal-runtime admission. The next generalization must add a
-   distinct dimension such as independent reproduction, another ISA or
-   vendor, or a separately reviewed source program; do not merely widen source,
-   CUDA, or C syntax.
-9. Advance practical trusted simulator execution through explicit opt-in
-   runtime proofs such as
-   [Runtime Materialized Layout Conversion](docs/RUNTIME_MATERIALIZED_LAYOUT_CONVERSION.md),
-   [Runtime Materialized Transfer](docs/RUNTIME_MATERIALIZED_TRANSFER.md), and
-   [Runtime Materialized Allocation](docs/RUNTIME_MATERIALIZED_ALLOCATION.md)
-   without widening native, device, plugin, residency, or performance claims.
-10. Extend planning explanation coverage only when new proof slices add
-   distinct placement, fallback, or movement evidence.
-11. Integrate real Triton intent only after the abstraction proof remains stable.
-12. Expand to specialized hardware simulators only when they strengthen the
-   universal compute claim.
+1. **M0:** resolve the completion review, reconcile actual branch controls with
+   policy, establish eligible review ownership, review release inputs and freeze
+   one exact research candidate. Keep accepted proofs and scope gates passing.
+2. **M1:** obtain independently controlled reproduction of that candidate's
+   core, session and CLI experiments. Review origin and arithmetic separately.
+3. **M2:** publish the accepted bounded research release through existing
+   protected release and publishing approvals, with durable evidence and
+   verifiable artifact identities.
+4. **M3:** have an independent author add and test a data-only backend through
+   the installed contract without TUC core modification. Measure onboarding
+   effort and record obstacles against the master plan's integration goal.
+5. **M4:** select one distinct physical vendor/ISA experiment under a dedicated
+   RFC and source-bound hardware authorization. Preserve RFCs 0302-0304 and all
+   later accepted CPU/GPU observations with their original claim boundaries.
+6. **M5:** evaluate planner overhead and native performance only after the
+   existing methodology, provenance, security and interpretation gates are met.
+7. **M6:** secure attributable acceptance of a scoped organizational pilot,
+   with real workload, compatibility, operational/admission requirements and
+   measured integration effort. Apply M5 when performance forms part of the claim.
+
+The [completion plan](docs/PROJECT_COMPLETION_PLAN.md) is the canonical ordered
+work queue. Existing public contracts remain supporting evidence:
+[Research Onboarding Slice](docs/RESEARCH_ONBOARDING_SLICE.md),
+[Research Onboarding Evidence](docs/RESEARCH_ONBOARDING_EVIDENCE.md),
+[External Review Triage 2026-06-22](docs/EXTERNAL_REVIEW_TRIAGE_2026_06_22.md) and
+[Objective Alpha Public Proof Bundle](docs/OBJECTIVE_ALPHA_PUBLIC_PROOF_BUNDLE.md).
+Keep HAC-IR neutrality, Objective Gamma and Objective Delta passing. The
+Objective Delta reproduction kit remains a separate external validation target.
+Publish the Objective Delta Reproduction Kit with applicable protected releases
+and keep its reduced-dependency audit path available for external review.
+Simulator storage/layout/transfer proofs retain their opt-in status; broader
+source, executable plugins and general devices keep their existing admission
+requirements.
 
 ## Success Metrics
 

@@ -1,6 +1,6 @@
 # RFC 0342: Portable Model Application CLI
 
-- Status: Implemented candidate; validation is tracked in the PR and source-bound CI
+- Status: Implemented and merged in PR #140; independent acceptance remains open
 - Date: 2026-11-12
 - Depends on: RFCs 0325, 0330, 0333, 0337, 0338, 0340, 0341
 
