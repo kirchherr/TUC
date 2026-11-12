@@ -17,6 +17,13 @@ from tuc.compiler.pipeline import CompilationResult, CompilerPipeline, compile_g
 # isort: split
 # Load the explicit frontend facade after the existing pipeline exports: the
 # frontend conformance module imports compile_graph during package startup.
+from tuc.compiler.bounded_backend_bindings import (
+    BACKEND_BINDINGS_SCHEMA,
+    MAX_BACKEND_BINDINGS_JSON_BYTES,
+    BoundedBackendBindingsError,
+    backend_bindings_from_json,
+    backend_bindings_to_json,
+)
 from tuc.compiler.bounded_c11 import (
     BoundedC11Entrypoint,
     emit_bounded_c11_entrypoint,
@@ -58,6 +65,11 @@ from tuc.compiler.bounded_source import (
 )
 
 __all__ = [
+    "BACKEND_BINDINGS_SCHEMA",
+    "MAX_BACKEND_BINDINGS_JSON_BYTES",
+    "BoundedBackendBindingsError",
+    "backend_bindings_from_json",
+    "backend_bindings_to_json",
     "MODEL_APPLICATION_RESULT_CONTRACT",
     "BoundedModelApplication",
     "BoundedModelApplicationError",

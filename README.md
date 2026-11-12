@@ -7,6 +7,7 @@ choose between those targets while preserving the calculation's result and
 explaining every choice?
 
 For the current bounded native CPU application path, see
+[the installed portable model CLI](docs/BOUNDED_MODEL_APPLICATION_CLI.md),
 [explicit model execution on the isolated CPU runtime](docs/BOUNDED_MODEL_APPLICATION_RUNTIME.md),
 [standalone replay and native reproduction](integration/bounded_model_application/README.md),
 [the model application acceptance handoff](docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md),

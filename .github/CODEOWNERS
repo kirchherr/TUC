@@ -96,3 +96,10 @@
 /docs/BOUNDED_MODEL_APPLICATION_SESSION.md @kirchherr
 /tests/test_bounded_model_application_session.py @kirchherr
 /tests/test_bounded_model_application_session_native.py @kirchherr
+/src/tuc/bounded_model_application_cli.py @kirchherr
+/docs/BOUNDED_MODEL_APPLICATION_CLI.md @kirchherr
+/schemas/bounded_backend_bindings.v0.schema.json @kirchherr
+/integration/bounded_model_cli/ @kirchherr
+/tests/test_bounded_backend_bindings.py @kirchherr
+/tests/test_bounded_model_application_cli.py @kirchherr
+/tests/test_bounded_model_cli_consumer.py @kirchherr

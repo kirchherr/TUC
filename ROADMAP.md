@@ -4,6 +4,12 @@
 
 The [TUC Master Plan](TUC_MASTER_PLAN.md) leads this roadmap.
 
+Current candidate: [portable model application CLI](docs/BOUNDED_MODEL_APPLICATION_CLI.md),
+RFC0342, exposes capability declarations, portable bundle/request creation and
+explicit single/batch CPU execution through one installed command. Complete
+batch validation precedes build reuse; results publish after cleanup. The
+installed numerical experiment is tracked in the PR and source-bound CI.
+
 Current candidate: [reusable model application sessions](docs/BOUNDED_MODEL_APPLICATION_SESSION.md),
 RFC0341, reuses one explicit CPU build for bounded requests against a fixed
 portable model context. Per-request validation, cumulative budgets and terminal
