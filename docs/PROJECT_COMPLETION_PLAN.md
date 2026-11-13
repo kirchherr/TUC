@@ -40,13 +40,15 @@ runtime defect was identified in this scope.
 | R1 | P2: Roadmap entries describe merged RFC0341/0342 as candidates with validation still delegated to the PR; implementation status and independent acceptance are not separated. | Corrected with merge/source evidence and explicit open acceptance state. |
 | R2 | P2: The priority list mixes maintenance, older completed increments and future research without an ordered release completion test. | Replaced by M0-M6, owners, dependencies and required exit artifacts. |
 | R3 | P2: New CLI/session observations are retained in 14-day CI artifacts; the existing offline kit retains the older original numerical observation. Rebuilding that kit cannot recreate the actual new lifecycle observation. | Four actual baseline JSON files are retained byte-for-byte with artifact/source bindings and offline audits in the [evidence index](evidence/BOUNDED_MODEL_APPLICATION_3324F72.md). |
-| R4 | P1 for release readiness: effective `main` rules enforce PR review, deletion and non-fast-forward protection, but omit `required_status_checks` and linear-history enforcement required by the documented branch policy. | Open owner/admin action in M0. CI was checked manually before the authorized merges; repository-wide enforcement still needs to match the approved policy. |
+| R4 | P1 for release readiness: effective `main` rules enforce PR review, deletion and non-fast-forward protection, but omit `required_status_checks` and linear-history enforcement required by the documented branch policy. | The owner approved reconciliation on 2026-11-13. Ruleset `17319611` now enforces strict GitHub-Actions-bound `python`, `CodeQL`, `Dependency Review`, linear history, Squash/Rebase and the existing Codeowner policy, with no bypass actors. Effective rules and owner `current_user_can_bypass: never` were read back. Normal PR verification remains open. |
 | R5 | P2: The only listed codeowner is `@kirchherr`, also author of the recent PRs. The active rule requires one codeowner approval; technical self-comments did not satisfy it, and #139/#140 used separately authorized exceptions. | The owner selected `mailactiveblue-blip`; its accepted Write access was verified on 2026-11-13. This update lists both accounts on every existing ownership rule. Open until a subsequent PR verifies the normal review path; consumed exceptions confer no future permission. |
 
-R4/R5 remain configuration and ownership dependencies. This update implements
-the owner-selected Codeowner assignment; live rule reconciliation and a normal
-PR still require separate verification. Any bypass remains specific to the
-explicitly authorized PR.
+R4's live configuration is installed; normal PR verification and R5 remain
+open. The selected reviewer is assigned and eligible. The owner-approved tag,
+alert and PyPI environment controls were also read back on 2026-11-13: required
+reviewers, no self-review, no administrator bypass and unchanged deployment
+filters. Remaining M0 release work is still open. Consumed merge exceptions
+confer no future permission.
 The observed effective-rule endpoint was
 `GET /repos/kirchherr/TUC/rules/branches/main`, backed by active ruleset
 `17319611`. [Branch protection policy](BRANCH_PROTECTION.md) remains the policy
@@ -82,7 +84,7 @@ responsibility; an external operator or author has not yet been assigned.
 
 | ID | Outcome and owner | Required exit artifact | Current state |
 | --- | --- | --- | --- |
-| M0 | Prepare and freeze the next research release candidate. Maintainer and repository owner. | No unresolved blocking findings; actual branch/review/publishing controls verified; version/support scope and exact source, lock, wheel, image and verifier identities recorded; exact-revision required CI passed. | Engineering baseline implemented; 0.2.0 version/support scope prepared. Controls, normal review, security triage, dry-run and candidate freeze remain open. |
+| M0 | Prepare and freeze the next research release candidate. Maintainer and repository owner. | No unresolved blocking findings; actual branch/review/publishing controls verified; version/support scope and exact source, lock, wheel, image and verifier identities recorded; exact-revision required CI passed. | Engineering baseline implemented; 0.2.0 scope and separate manual candidate build prepared. All four approved repository protections verified; normal review, remaining security triage, publishing migration, dry-run and candidate freeze remain open. |
 | M1 | Reproduce the frozen candidate outside project control. Independent operator, reviewed by maintainer. | Attributable fresh core, session and CLI observations, source/wheel bindings, command/run origin and passing offline audits; independence and scope accepted in review. | Open; requires M0's candidate pin and an independently controlled environment. |
 | M2 | Publish the accepted bounded research release. Release owner and eligible approver. | Protected exact-source release, wheel/sdist, checksums, SBOM and verified provenance; release notes bind M1's result and state the supported boundary. | Open; requires M0/M1 and normal release/publishing approvals. |
 | M3 | Have another developer integrate a data-only backend through the installed contract. Independent backend author. | Author-owned package, negative conformance and inspectable plan, installed reproduction, no TUC core modification. | Open external author milestone; existing Gamma/Delta CI provides the starting contract. |
@@ -118,7 +120,10 @@ M5 is required for performance claims or pilot performance acceptance criteria.
    [release security](RELEASE_SECURITY.md).
    Version 0.2.0 and its bounded support statement are prepared in the latter;
    this is not yet a frozen or accepted release candidate. Its workflow keeps
-   distribution builds and the isolated wheel check on the reviewed hash lock.
+   distribution builds and the isolated wheel check on a separate reviewed
+   research-candidate hash lock. The historical workflow/lock and their proof
+   remain unchanged. Resolve the old publisher's retirement or replacement
+   before creating a 0.2.0 tag.
 5. Record a single exact candidate revision and artifact identities for M1.
    New source, build inputs, lock, consumer or verifier changes require a new
    reviewed pin and the applicable repeat validation. The baseline `3324f72`

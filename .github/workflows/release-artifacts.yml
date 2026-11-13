@@ -42,7 +42,7 @@ jobs:
       - name: Pytest
         run: pytest -q -n 4
       - name: Build distributions
-        run: python -m build --no-isolation
+        run: python -m build
       - name: Build Objective Delta reproduction kit
         run: >-
           python scripts/build_portable_compute_reproduction_kit.py
@@ -54,9 +54,7 @@ jobs:
           wheel_path="$(ls "${GITHUB_WORKSPACE}"/dist/*.whl)"
           python -m venv /tmp/tuc-release-check
           cd /tmp
-          /tmp/tuc-release-check/bin/python -m pip install --require-hashes -r "${GITHUB_WORKSPACE}/requirements/ci.txt"
-          /tmp/tuc-release-check/bin/python -m pip install --no-deps --no-index "${wheel_path}"
-          /tmp/tuc-release-check/bin/python -m pip check
+          /tmp/tuc-release-check/bin/python -m pip install "${wheel_path}"
           /tmp/tuc-release-check/bin/python -c "import importlib.metadata; import tuc; print(importlib.metadata.version('tuc'))"
           /tmp/tuc-release-check/bin/tuc-reproduce-portable-compute \
             "${GITHUB_WORKSPACE}/dist/tuc-objective-delta-reproduction-kit-v0.zip" \

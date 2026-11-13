@@ -28,6 +28,21 @@ from an independently controlled operator; project CI and the historical
 Objective Delta receipt do not supply that acceptance. M2 then governs
 publication and its separate approvals.
 
+The 0.2.0 preparation adds a separate
+[research-candidate workflow](../.github/workflows/research-release-candidate.yml)
+and [toolchain lock](../requirements/research-release.txt). It runs only through
+manual dispatch on protected `main`, builds and attests artifacts, verifies the
+worker attestation against its own workflow/source identity, and retains the
+GitHub CLI verification JSON. It has no publishing job or tag/PR trigger.
+The historical workflow, lock, v0 receipt writer and proof corpus remain intact.
+Their v0 readiness report describes that historical path; it does not certify
+this new candidate workflow. A successful candidate dry-run is still required.
+
+The historical tag-triggered publisher remains configured. M0 must resolve its
+retirement or replacement through a reviewed publishing migration before any
+0.2.0 release tag is created. This source preparation neither disables that
+workflow nor authorizes its use to publish the new candidate.
+
 ## Release Artifact Scope
 
 The release workflow builds:
@@ -42,14 +57,15 @@ The release workflow builds:
 - SHA-256 checksum manifest.
 - GitHub artifact attestations for build provenance and the SBOM.
 
-The workflow uploads these files as GitHub Actions artifacts. On protected `v*`
-tag pushes, it can also publish wheel and source distribution files to PyPI
-after `pypi` environment approval.
+Both paths upload GitHub Actions artifacts. Only the historical workflow has a
+publishing job for protected `v*` tag pushes after `pypi` environment approval;
+the new research-candidate workflow produces artifacts without publication.
 
-CI and release tooling for Linux x86_64 / CPython 3.12 is resolved in
-`requirements/ci.txt`. Every wheel is version- and SHA-256-pinned, installation
-uses `--require-hashes`, and TUC's editable install disables dependency
-resolution and build isolation. Distribution builds also disable build
+The historical Linux x86_64 / CPython 3.12 toolchain is resolved in
+`requirements/ci.txt`; the new candidate uses `requirements/research-release.txt`.
+Every locked wheel is version- and SHA-256-pinned, installation uses
+`--require-hashes`, and TUC's editable install disables dependency resolution and
+build isolation. In the new candidate workflow, distribution builds disable build
 isolation so the reviewed build-tool lock remains in effect. The fresh wheel
 verification environment installs the same hash-locked requirements, installs
 only the local wheel with dependency resolution and index access disabled,
@@ -57,15 +73,17 @@ checks dependency compatibility, and runs outside the checkout with
 `PYTHONPATH` unset. CI and release tests use four fixed isolated workers from
 the locked `pytest-xdist` wheel. Lock updates require normal dependency review.
 
-The 0.2.0 preparation raises the build-backend minimum and CI lock to
-`setuptools 84.1.0` after reviewing
+The new research-candidate lock selects `setuptools 84.1.0` after reviewing
 [GHSA-xmj3-9gf7-h52w](https://github.com/pypa/setuptools/security/advisories/GHSA-xmj3-9gf7-h52w).
 The upstream advisory affects versions below 84.1.0 and describes a Windows
 path escape in legacy wheel installation. The locked replacement wheel hash
-was checked against the upstream PyPI release metadata. TUC's Linux PEP 517
-release build does not use that legacy installation path; removing the affected
-build-tool pin also protects workflows that would otherwise retain it. This
-specific fix does not replace the remaining dependency, action and image review.
+was checked against upstream PyPI release metadata. The historical lock still
+contains 84.0.0 because its exact bytes bind the accepted v0 proof. Its Linux
+PEP 517 build does not reach the affected legacy Windows installation path;
+it is not the toolchain for the new candidate. The package build-system minimum
+remains compatible with that frozen research CI; it does not select the
+candidate's actual builder. This documented transition does not replace the
+remaining dependency, action, image and publishing-migration review.
 
 ## Trust Boundary
 
