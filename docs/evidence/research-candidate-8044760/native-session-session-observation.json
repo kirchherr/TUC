@@ -1,0 +1,1 @@
+{"closed_session_rejections":1,"docker_builds":2,"native_execution_observed":true,"native_runs":4,"record_sha256":"6a77307516b633d45b45f8efa4581076c854549491960652026b7219a3ff8bd8","schema_version":"tuc.bounded_model_application_session_observation.v0","sequences":[1,2,1],"sessions":2,"status":"PASS","successful_runs":3,"workspaces_clean":true}

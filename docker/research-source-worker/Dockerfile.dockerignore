@@ -1,0 +1,12 @@
+**
+!docker/
+!docker/research-source-worker/
+!docker/research-source-worker/Dockerfile
+!docker/research-source-worker/Dockerfile.dockerignore
+!requirements/
+!requirements/source-worker.txt
+!src/
+!src/**/
+!src/**/*.py
+src/**/*.egg-info/**
+src/**/__pycache__/**

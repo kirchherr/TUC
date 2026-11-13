@@ -27,7 +27,7 @@ jobs:
       - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
         with:
           version: v0.34.1
-          driver-opts: image=moby/buildkit:v0.30.0@sha256:0168606be2315b7c807a03b3d8aa79beefdb31c98740cebdffdfeebf31190c9f
+          driver-opts: image=moby/buildkit:v0.35.0@sha256:a521fc1fd903a46c611c733dd692548512232fba2e0386d6055846a903d05a71
           buildkitd-flags: --cdi-disabled
       - name: Install package
         run: |
@@ -65,7 +65,7 @@ jobs:
       - name: Build source-worker OCI archive
         run: |
           docker buildx build \
-            --file docker/source-worker/Dockerfile \
+            --file docker/research-source-worker/Dockerfile \
             --platform linux/amd64 \
             --provenance=false \
             --sbom=false \
@@ -76,7 +76,7 @@ jobs:
       - name: Generate CycloneDX SBOM
         run: python scripts/generate_sbom.py --output dist/tuc.cdx.json
       - name: Generate source-worker CycloneDX SBOM
-        run: python scripts/generate_source_worker_sbom.py --output dist/tuc-source-ingestion-worker.cdx.json
+        run: python scripts/generate_research_source_worker_sbom.py --output dist/tuc-source-ingestion-worker.cdx.json
       - name: Attest distribution provenance
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         with:

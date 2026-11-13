@@ -1,0 +1,85 @@
+name: Research worker image
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "kirchherr/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: research-worker-image-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  worker:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+      - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+        with:
+          version: v0.34.1
+          driver-opts: image=moby/buildkit:v0.35.0@sha256:a521fc1fd903a46c611c733dd692548512232fba2e0386d6055846a903d05a71
+          buildkitd-flags: --cdi-disabled
+      - name: Build current research image and OCI archive
+        run: |
+          set -euo pipefail
+          mkdir -m 700 "$RUNNER_TEMP/research-worker"
+          printf 'context-exclusion-canary\n' > src/tuc/_context_exclusion_canary.txt
+          docker buildx build --file docker/research-source-worker/Dockerfile \
+            --platform linux/amd64 --provenance=false --sbom=false \
+            --tag tuc-research-worker:ci --load .
+          docker buildx build --file docker/research-source-worker/Dockerfile \
+            --platform linux/amd64 --provenance=false --sbom=false \
+            --output "type=oci,dest=$RUNNER_TEMP/research-worker/worker.oci.tar" .
+      - name: Verify descriptors and current material SBOM
+        run: |
+          set -euo pipefail
+          python scripts/verify_source_worker_oci_archive.py \
+            "$RUNNER_TEMP/research-worker/worker.oci.tar" \
+            --report "$RUNNER_TEMP/research-worker/worker.oci-verification.json"
+          python scripts/generate_research_source_worker_sbom.py \
+            --output "$RUNNER_TEMP/research-worker/worker.cdx.json"
+          docker image inspect --format '{{.Id}}' tuc-research-worker:ci \
+            > "$RUNNER_TEMP/research-worker/loaded-image-id.txt"
+          python -I -S - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "research-worker"
+          report = json.loads((root / "worker.oci-verification.json").read_bytes())
+          assert (root / "loaded-image-id.txt").read_text().strip() == report["config_digest"]
+          PY
+      - name: Observe pinned Python and removed package installers
+        run: |
+          set -euo pipefail
+          image_id="$(cat "$RUNNER_TEMP/research-worker/loaded-image-id.txt")"
+          docker run --rm --pull=never --network=none --read-only --user=10001:10001 \
+            --cpus=1 --memory=256m --memory-swap=256m --pids-limit=32 --cap-drop=ALL \
+            --security-opt=no-new-privileges:true --entrypoint=/usr/local/bin/python \
+            --env OPENBLAS_NUM_THREADS=1 --env OMP_NUM_THREADS=1 \
+            "$image_id" -I -c '
+          import importlib.util, json, platform, numpy
+          from pathlib import Path
+          assert platform.python_version() == "3.12.16"
+          assert numpy.__version__ == "2.4.4"
+          assert importlib.util.find_spec("pip") is None
+          assert importlib.util.find_spec("ensurepip") is None
+          assert not Path("/opt/tuc/src/tuc/_context_exclusion_canary.txt").exists()
+          print(json.dumps({"status":"PASS","python":platform.python_version(),"numpy":numpy.__version__,"pip_present":False,"ensurepip_present":False,"context_canary_excluded":True}))
+          ' > "$RUNNER_TEMP/research-worker/runtime-canary.json"
+      - name: Retain current image verification
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: research-worker-image-check
+          path: ${{ runner.temp }}/research-worker/
+          if-no-files-found: error
+          retention-days: 14

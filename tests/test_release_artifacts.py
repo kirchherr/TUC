@@ -391,6 +391,10 @@ def test_research_candidate_preserves_historical_proof_materials() -> None:
             "e172998c3fc11bee6818a59ac0b59078c5e7b74c724cafef57a6a34156c9944f",
         "requirements/ci.txt":
             "279a3c8e55e737ae85f2d9ffefa0c0fe9750ef510bf1d0542dff05340c3e23b8",
+        "docker/source-worker/Dockerfile":
+            "6dfcafc0be2563377331f62db66052b7cdd2a1e2cad60f4889d93943effe659c",
+        "scripts/generate_source_worker_sbom.py":
+            "1d97449a1a091fd0b1a3d54bbc205db53a91e169189f3b118498d0399896fa8c",
     }
     for filename, digest in expected.items():
         canonical_text = Path(filename).read_text(encoding="utf-8").encode("utf-8")

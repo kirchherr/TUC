@@ -1,0 +1,9 @@
+{
+  "registry": "registry-1.docker.io",
+  "repository": "moby/buildkit",
+  "tag": "v0.35.0",
+  "tag_index_digest": "sha256:aa632b921ef07411d2cb77292cd34213d4f7b384001d6fceef1e1f25bf9752bb",
+  "linux_amd64_manifest_digest": "sha256:a521fc1fd903a46c611c733dd692548512232fba2e0386d6055846a903d05a71",
+  "reference": "moby/buildkit:v0.35.0@sha256:a521fc1fd903a46c611c733dd692548512232fba2e0386d6055846a903d05a71",
+  "platform": "linux/amd64"
+}

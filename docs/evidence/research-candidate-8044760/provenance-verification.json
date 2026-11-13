@@ -1,0 +1,86 @@
+{
+  "certificate_identity_policy_enforced": true,
+  "certificates": [
+    {
+      "buildConfigDigest": "8044760f5e474d71ac10f22f20f2f2fd0883fef3",
+      "buildConfigURI": "https://github.com/kirchherr/TUC/.github/workflows/research-release-candidate.yml@refs/heads/main",
+      "buildSignerDigest": "8044760f5e474d71ac10f22f20f2f2fd0883fef3",
+      "buildSignerURI": "https://github.com/kirchherr/TUC/.github/workflows/research-release-candidate.yml@refs/heads/main",
+      "buildTrigger": "workflow_dispatch",
+      "certificateIssuer": "CN=sigstore-intermediate,O=sigstore.dev",
+      "githubWorkflowName": "Research Release Candidate",
+      "githubWorkflowRef": "refs/heads/main",
+      "githubWorkflowRepository": "kirchherr/TUC",
+      "githubWorkflowSHA": "8044760f5e474d71ac10f22f20f2f2fd0883fef3",
+      "githubWorkflowTrigger": "workflow_dispatch",
+      "issuer": "https://token.actions.githubusercontent.com",
+      "runInvocationURI": "https://github.com/kirchherr/TUC/actions/runs/43441263934/attempts/1",
+      "runnerEnvironment": "github-hosted",
+      "sourceRepositoryDigest": "8044760f5e474d71ac10f22f20f2f2fd0883fef3",
+      "sourceRepositoryIdentifier": "1260144654",
+      "sourceRepositoryOwnerIdentifier": "159765997",
+      "sourceRepositoryOwnerURI": "https://github.com/kirchherr",
+      "sourceRepositoryRef": "refs/heads/main",
+      "sourceRepositoryURI": "https://github.com/kirchherr/TUC",
+      "sourceRepositoryVisibilityAtSigning": "public",
+      "subjectAlternativeName": "https://github.com/kirchherr/TUC/.github/workflows/research-release-candidate.yml@refs/heads/main"
+    }
+  ],
+  "checks": [
+    {
+      "artifact": "tuc-0.2.0-py3-none-any.whl",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS"
+    },
+    {
+      "artifact": "tuc-0.2.0-py3-none-any.whl",
+      "predicate_type": "https://cyclonedx.org/bom",
+      "status": "PASS"
+    },
+    {
+      "artifact": "tuc-0.2.0.tar.gz",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS"
+    },
+    {
+      "artifact": "tuc-0.2.0.tar.gz",
+      "predicate_type": "https://cyclonedx.org/bom",
+      "status": "PASS"
+    },
+    {
+      "artifact": "tuc-objective-delta-reproduction-kit-v0.zip",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS"
+    },
+    {
+      "artifact": "tuc-objective-delta-reproduction-receipt.v0.json",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS"
+    },
+    {
+      "artifact": "tuc-source-ingestion-worker.oci.tar",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS"
+    },
+    {
+      "artifact": "tuc-source-ingestion-worker.oci.tar",
+      "predicate_type": "https://cyclonedx.org/bom",
+      "status": "PASS"
+    }
+  ],
+  "independent_operator_acceptance": false,
+  "owner_id": 159765997,
+  "package_publication_performed": false,
+  "recorded_utc": "2026-11-13T15:16:41.712584+00:00",
+  "repository_id": 1260144654,
+  "retained_bundle_file": "provenance-bundles.jsonl",
+  "retained_bundle_sha256": "59281a77cc848f7bcc40be2a0174c18222ba3b1ff5670d374383a80c2e8ab717",
+  "run_attempt": 1,
+  "run_id": 43441263934,
+  "signed_sboms_equal_downloaded_files": true,
+  "source": "8044760f5e474d71ac10f22f20f2f2fd0883fef3",
+  "status": "PASS",
+  "trusted_roots_sha256": "65ca537f6ed8a47fd0e560c421baa1f6c1efb8b25fc200d8c5c02c0e92eb2b9c",
+  "verifier_executable_sha256": "e01056748ff8900323aba76d4e0e0295934a95b2819d34e310f511a3a8e31e39",
+  "verifier_version": "2.104.0"
+}
