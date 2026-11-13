@@ -1,16 +1,45 @@
 # Roadmap Status
 
+## Current delivery assessment
+
+Reviewed engineering baseline: `3324f72390c3e5711f1be519fa400dfe906df621`,
+merged through PR #140. The bounded model-to-CPU path is implemented, including
+sessions and the installed CLI. Independent acceptance and the next reviewed
+research release are open. The [completion review and plan](PROJECT_COMPLETION_PLAN.md)
+defines findings, owners and exit artifacts under
+[RFC0343](../rfcs/0343-acceptance-led-roadmap.md).
+
+| Milestone | Status |
+| --- | --- |
+| M0: candidate preparation and freeze | Engineering implementation proven; branch-policy enforcement, eligible review ownership and release preparation require owner/maintainer action. |
+| M1: independent reproduction | Open; needs an independently controlled operator and the exact M0 candidate. |
+| M2: accepted research release | Open; depends on M0/M1 and protected release approval. |
+| M3: independent backend author | Open human integration milestone; installed Gamma/Delta contracts are available. |
+| M4: distinct physical vendor/ISA | Future bounded proof; current same-project CPU/GPU evidence retains its original scope. |
+| M5: performance | Future separate protocol; existing performance claim gates remain in force. |
+| M6: organizational pilot | Open long-term adoption goal; requires a real outside workload and attributable acceptance of declared integration/operation criteria. |
+
+Both #140 full suites passed 7,768 tests and two skips. The merged installed
+job passed 552 selected tests, three CLI requests, seven CLI controls and the
+session lifecycle experiment. [Actual merged-source JSON observations](evidence/BOUNDED_MODEL_APPLICATION_3324F72.md)
+are retained with source/wheel/artifact bindings and the unchanged numerical
+auditor. These are project-controlled observations, not independent adoption.
+
+## Implementation and evidence record
+
 - [Portable model application CLI](BOUNDED_MODEL_APPLICATION_CLI.md), RFC0342,
   connects bounded data-only backend declarations to portable model bundles,
   exact requests and explicit single/batch CPU execution. Whole-batch admission
   precedes one reused build; cleanup precedes result publication. Installed
-  validation is tracked in the PR and CI; independent acceptance remains open.
+  validation passed in [PR #140](https://github.com/kirchherr/TUC/pull/140) and
+  on merged main3324f72; independent acceptance remains open.
 
 - [Reusable model application sessions](BOUNDED_MODEL_APPLICATION_SESSION.md),
   RFC0341, add lazy build reuse at the existing explicit C11 boundary for fixed
   portable model/bundle contexts. Every request is validated; cumulative
   budgets, concurrency rejection and terminal failure cleanup are enforced.
-  Installed validation is tracked in the PR and CI; independent acceptance remains open.
+  [PR #139](https://github.com/kirchherr/TUC/pull/139) merged this API; the retained
+  merged-source lifecycle observation passed. Independent acceptance remains open.
 
 - [Bounded model application acceptance handoff](BOUNDED_MODEL_APPLICATION_HANDOFF.md)
   records the RFC0339/0340 merge through PR #136, both full 7,589-test

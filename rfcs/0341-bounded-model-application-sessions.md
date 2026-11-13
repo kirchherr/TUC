@@ -1,6 +1,6 @@
 # RFC 0341: Reusable Bounded Model Application Sessions
 
-- Status: Implemented candidate; validation is tracked in the PR and source-bound CI
+- Status: Implemented and merged in PR #139; independent acceptance remains open
 - Date: 2026-11-12
 - Depends on: RFCs 0339, 0340; follows the lifecycle controls of RFC 0334
 

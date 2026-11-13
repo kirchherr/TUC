@@ -292,6 +292,24 @@ Question: can another organization use it?
 
 ## Current Strategic Objective
 
+### Current delivery focus
+
+The bounded model-to-CPU path now has portable capability declarations,
+bundles, requests, reusable sessions and an installed single/batch CLI. Its
+merged engineering baseline is `3324f72390c3e5711f1be519fa400dfe906df621`.
+[RFC0343](rfcs/0343-acceptance-led-roadmap.md) and the
+[project completion plan](docs/PROJECT_COMPLETION_PLAN.md) prioritize a frozen
+research release candidate, independently controlled reproduction and reviewed
+delivery before further scope expansion. Governance configuration, eligible
+review ownership and release provenance are explicit exit requirements.
+
+Completing that bounded delivery advances the proof ladder. The wider mission
+continues through an independently authored backend, a distinct physical
+vendor/ISA proof, separately reviewed performance evidence and an accepted
+organizational pilot. Existing
+same-project integration and hardware observations preserve their original
+scope; independent organizational adoption remains a separate result.
+
 ### Objective Alpha
 
 Build the smallest unarguable proof.
