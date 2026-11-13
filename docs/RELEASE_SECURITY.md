@@ -57,6 +57,16 @@ checks dependency compatibility, and runs outside the checkout with
 `PYTHONPATH` unset. CI and release tests use four fixed isolated workers from
 the locked `pytest-xdist` wheel. Lock updates require normal dependency review.
 
+The 0.2.0 preparation raises the build-backend minimum and CI lock to
+`setuptools 84.1.0` after reviewing
+[GHSA-xmj3-9gf7-h52w](https://github.com/pypa/setuptools/security/advisories/GHSA-xmj3-9gf7-h52w).
+The upstream advisory affects versions below 84.1.0 and describes a Windows
+path escape in legacy wheel installation. The locked replacement wheel hash
+was checked against the upstream PyPI release metadata. TUC's Linux PEP 517
+release build does not use that legacy installation path; removing the affected
+build-tool pin also protects workflows that would otherwise retain it. This
+specific fix does not replace the remaining dependency, action and image review.
+
 ## Trust Boundary
 
 Release artifacts change TUC's downstream trust boundary because users may run
