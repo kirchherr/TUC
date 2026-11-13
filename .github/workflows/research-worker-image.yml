@@ -36,10 +36,10 @@ jobs:
           mkdir -m 700 "$RUNNER_TEMP/research-worker"
           printf 'context-exclusion-canary\n' > src/tuc/_context_exclusion_canary.txt
           docker buildx build --file docker/research-source-worker/Dockerfile \
-            --platform linux/amd64 --provenance=false --sbom=false \
+            --platform linux/amd64 --network=none --provenance=false --sbom=false \
             --tag tuc-research-worker:ci --load .
           docker buildx build --file docker/research-source-worker/Dockerfile \
-            --platform linux/amd64 --provenance=false --sbom=false \
+            --platform linux/amd64 --network=none --provenance=false --sbom=false \
             --output "type=oci,dest=$RUNNER_TEMP/research-worker/worker.oci.tar" .
       - name: Verify descriptors and current material SBOM
         run: |
@@ -65,17 +65,67 @@ jobs:
           docker run --rm --pull=never --network=none --read-only --user=10001:10001 \
             --cpus=1 --memory=256m --memory-swap=256m --pids-limit=32 --cap-drop=ALL \
             --security-opt=no-new-privileges:true --entrypoint=/usr/local/bin/python \
-            --env OPENBLAS_NUM_THREADS=1 --env OMP_NUM_THREADS=1 \
             "$image_id" -I -c '
-          import importlib.util, json, platform, numpy
+          import importlib.util, json, platform
           from pathlib import Path
           assert platform.python_version() == "3.12.16"
-          assert numpy.__version__ == "2.4.4"
+          assert importlib.util.find_spec("numpy") is None
           assert importlib.util.find_spec("pip") is None
           assert importlib.util.find_spec("ensurepip") is None
           assert not Path("/opt/tuc/src/tuc/_context_exclusion_canary.txt").exists()
-          print(json.dumps({"status":"PASS","python":platform.python_version(),"numpy":numpy.__version__,"pip_present":False,"ensurepip_present":False,"context_canary_excluded":True}))
+          print(json.dumps({"status":"PASS","python":platform.python_version(),"numpy_present":False,"pip_present":False,"ensurepip_present":False,"context_canary_excluded":True}))
           ' > "$RUNNER_TEMP/research-worker/runtime-canary.json"
+      - name: Reject host-network build requests without client entitlement
+        run: |
+          set -euo pipefail
+          probe="$RUNNER_TEMP/research-worker/network-probe"
+          mkdir -m 700 "$probe"
+          printf '%s\n' \
+            '# syntax=docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e' \
+            'FROM python:3.12-slim-bookworm@sha256:0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4' \
+            'RUN --network=host true' > "$probe/Dockerfile"
+          if docker buildx build --platform linux/amd64 "$probe" > "$probe/build.log" 2>&1; then
+            echo 'Host-network build unexpectedly accepted'
+            exit 1
+          fi
+          python -I -S - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "research-worker"
+          log = (root / "network-probe/build.log").read_text()
+          assert "network.host" in log and "not allowed" in log
+          (root / "network-entitlement-check.json").write_text(json.dumps({"status":"PASS","network_host_request_rejected":True}) + "\n")
+          PY
+      - name: Run the fixed source request through the packaged worker
+        run: |
+          set -euo pipefail
+          python -I -S - <<'PY'
+          import ast, hashlib, json, os
+          from pathlib import Path
+          module = ast.parse(Path("tests/test_bounded_cpu_source.py").read_text())
+          source = next(ast.literal_eval(n.value) for n in module.body if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "SOURCE" for t in n.targets))
+          payload = {"source_name":"projection","kernel_name":"project","tensor_shapes":{"a":[2,3],"b":[3,2],"y":[2,2],"z":[2]},"module_source":source.decode()}
+          encoded = lambda value: json.dumps(value,sort_keys=True,separators=(",",":")).encode()
+          request = {"protocol":"tuc.oci_source_ingestion_worker.v0","payload":payload,"request_digest":"sha256:" + hashlib.sha256(encoded(payload)).hexdigest()}
+          (Path(os.environ["RUNNER_TEMP"]) / "research-worker/request.json").write_bytes(encoded(request))
+          PY
+          image_id="$(cat "$RUNNER_TEMP/research-worker/loaded-image-id.txt")"
+          docker run --rm --interactive --pull=never --network=none --read-only --user=10001:10001 \
+            --cpus=1 --memory=1g --memory-swap=1g --pids-limit=32 --cap-drop=ALL \
+            --security-opt=no-new-privileges:true --workdir=/run/tuc \
+            --tmpfs=/tmp:rw,noexec,nosuid,nodev,size=8m "$image_id" \
+            < "$RUNNER_TEMP/research-worker/request.json" > "$RUNNER_TEMP/research-worker/response.json"
+          python -I -S - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "research-worker"
+          request = json.loads((root / "request.json").read_bytes())
+          response = json.loads((root / "response.json").read_bytes())
+          assert response["status"] == "accepted" and response["protocol"] == request["protocol"]
+          assert response["request_digest"] == request["request_digest"]
+          assert response["source_intent_payload"]["schema_version"] == "source_intent.v0"
+          assert response["source_intent_payload"]["name"] == "projection"
+          PY
       - name: Retain current image verification
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

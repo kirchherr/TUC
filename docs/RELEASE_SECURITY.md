@@ -54,17 +54,24 @@ allowlist and material SBOM generator. Its Linux/amd64 Python manifest is
 `0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4`
 (CPython 3.12.16); the active installed source converter uses that same fixed
 base while keeping its copy-only build recipe and closed import boundary.
-The packaged research worker removes pip/ensurepip after installing the
-unchanged hash-locked binary NumPy wheel. The installed converter inherits
+The packaged research worker contains the same six-module standard-library
+closure as the installed converter, with empty package initializers. It has
+no NumPy dependency and removes pip/ensurepip without network access. The
+context policy admits those six named sources; an actual Docker build checks
+that an excluded synthetic file is absent. The installed converter inherits
 unused base-image installer files but does not invoke them or admit their
 imports. The historical Dockerfile/SBOM generator and numerical corpus remain
 byte-identical. The image CI compares the loaded image ID to the verified OCI
-config and observes Python, NumPy and installer absence under constrained,
-network-disabled execution.
+config, observes Python and dependency/installer absence, and exercises a fixed
+source request under the existing constrained, network-disabled protocol.
 
 Active research build workflows use BuildKit 0.35.0, pinned to Linux/amd64
 manifest `a521fc1fd903a46c611c733dd692548512232fba2e0386d6055846a903d05a71`,
-with CDI disabled and no insecure entitlements. The disabled historical
+with CDI disabled. Active builds use `--network=none` without extra client
+entitlements. Buildx adds a daemon-side `network.host` allowance for container
+drivers; the image CI verifies that a Dockerfile host-network request is still
+rejected without the separate client grant. No client `--allow` is supplied.
+The disabled historical
 workflow retains its original 0.30.0 binding and v0 proof. Image/package
 findings and upstream advisory dispositions are recorded in the evidence
 index; passing signatures or a newer base-image scan alone is insufficient

@@ -150,8 +150,10 @@ The replacement official Linux/amd64 Python manifest resolves to
 with CPython 3.12.16. Its separate base-image scan has zero critical/high
 matches with an available fix. This does not claim zero findings: that base
 still reports 2 critical, 96 high, 139 medium, 108 low and 4 unknown OS matches,
-plus six pip matches. The updated research Dockerfile removes installed pip
-and ensurepip after the locked binary NumPy installation. The installed source
+plus six pip matches. The updated research Dockerfile copies only the existing
+six-module standard-library closure, supplies empty package initializers,
+omits NumPy and removes installed pip/ensurepip without network access. The
+image job tests context exclusion and a fixed accepted protocol request. The installed source
 converter remains copy-only/offline and disallows pip, Perl and SQLite imports;
 it inherits the base's unused pip files. Reachability and residual-finding
 review remain required; the newer base scan is not a rebuilt-worker scan.
@@ -172,7 +174,11 @@ the vendor fixes both in 0.31.1+. Trusted frontends/base images mitigate the
 historical setup. The active candidate/image-check paths move to reviewed
 BuildKit 0.35.0, with no matching indexed advisories, pinned by the
 [resolved Linux/amd64 digest](research-candidate-8044760/buildkit-image-resolution.json).
-CDI remains disabled and insecure entitlements remain absent.
+CDI remains disabled. Active builds use `--network=none` and no extra client
+entitlements. Buildx adds a daemon-side `network.host` allowance for container
+drivers; a negative image-job probe verifies that requesting host networking
+still rejects without the separate client grant. The check guards the
+effective behavior beyond the configured setup-action input.
 
 The [PyPI triage](research-candidate-8044760/python-dependency-triage.json)
 applies to the identical candidate/worker lock contents at reviewed head

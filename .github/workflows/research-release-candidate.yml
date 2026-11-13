@@ -67,6 +67,7 @@ jobs:
           docker buildx build \
             --file docker/research-source-worker/Dockerfile \
             --platform linux/amd64 \
+            --network=none \
             --provenance=false \
             --sbom=false \
             --output type=oci,dest=dist/tuc-source-ingestion-worker.oci.tar \

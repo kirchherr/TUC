@@ -34,7 +34,13 @@ def test_active_runtime_and_candidate_share_assessed_amd64_image():
     assert "--file docker/research-source-worker/Dockerfile" in workflow
     assert "scripts/generate_research_source_worker_sbom.py" in workflow
     policy = (ROOT / "docker/research-source-worker/Dockerfile.dockerignore").read_text()
-    assert "!src/**/*.py\n" in policy and "!src/**\n" not in policy
+    assert "!src/**" not in policy
+    admitted = {
+        line[1:]
+        for line in policy.splitlines()
+        if line.startswith("!src/") and line.endswith(".py")
+    }
+    assert admitted == {"src/tuc/frontend/" + name + ".py" for name in bounded_cpu_source._MODULES}
     assert (
         "image=moby/buildkit:v0.35.0@sha256:"
         "a521fc1fd903a46c611c733dd692548512232fba2e0386d6055846a903d05a71"
@@ -52,7 +58,8 @@ def test_current_sbom_binds_context_policy_and_keeps_historical_profile_distinct
         assert properties[f"tuc:material:{name}:sha256"] == sha256(data).hexdigest()
         assert properties[f"tuc:material:{name}:path"] == relative
     assert first["components"][0]["hashes"][0]["content"] == IMAGE.split("sha256:")[1]
-    assert first["components"][1]["purl"] == "pkg:pypi/numpy@2.4.4"
+    assert len(first["components"]) == 1
+    assert first["dependencies"][0]["dependsOn"] == [first["components"][0]["bom-ref"]]
 
 
 @pytest.fixture
@@ -65,7 +72,7 @@ def materials(tmp_path):
 
 
 @pytest.mark.parametrize(
-    "drift", ["floating-base", "extra-stage", "hidden-stage", "unhashed-numpy"]
+    "drift", ["floating-base", "extra-stage", "hidden-stage", "invalid-digest"]
 )
 def test_sbom_rejects_unlisted_build_inputs(materials, drift):
     recipe = materials / "docker/research-source-worker/Dockerfile"
@@ -76,7 +83,7 @@ def test_sbom_rejects_unlisted_build_inputs(materials, drift):
     elif drift == "hidden-stage":
         recipe.write_text(recipe.read_text() + "\n  from\talpine:latest\n")
     else:
-        (materials / "requirements/source-worker.txt").write_text("numpy==2.4.4\n")
+        recipe.write_text(recipe.read_text().replace(IMAGE, IMAGE[:-1] + "g"))
     with pytest.raises(ValueError, match="supply-chain pins rejected"):
         GENERATOR.generate_research_source_worker_sbom(materials)
 
@@ -95,5 +102,8 @@ def test_pr_image_check_has_no_attestation_or_publishing_authority():
     assert "--entrypoint=/usr/local/bin/python" in workflow
     assert 'find_spec("pip") is None' in workflow
     assert 'find_spec("ensurepip") is None' in workflow
-    assert 'context_canary_excluded' in workflow
+    assert 'find_spec("numpy") is None' in workflow
+    assert "context_canary_excluded" in workflow
     assert "--network=none" in workflow and "--read-only" in workflow
+    assert "network_host_request_rejected" in workflow
+    assert 'response["status"] == "accepted"' in workflow

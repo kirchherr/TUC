@@ -110,8 +110,12 @@ The active research candidate and PR image-check workflows retain Buildx
 The [security review](evidence/RESEARCH_CANDIDATE_8044760.md) records upstream
 advisories affecting the historical version and the new registry identity.
 
-BuildKit starts with `--cdi-disabled`; the workflow does not allow
-`network.host`, `security.insecure`, or device entitlements.
+BuildKit starts with `--cdi-disabled`. Active research builds use
+`--network=none` and supply no extra client entitlements. Buildx automatically
+adds a daemon-side `network.host` allowance for container drivers; it still
+requires a separate client grant. The actual image CI checks that a Dockerfile
+request for host networking rejects without that grant. Client
+`security.insecure`, host-network and device grants remain absent.
 
 When updating a release action:
 

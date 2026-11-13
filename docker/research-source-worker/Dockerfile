@@ -10,19 +10,12 @@ ENV PYTHONNOUSERSITE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONUTF8=1
 
-COPY requirements/source-worker.txt /tmp/source-worker.txt
-RUN python -m pip install \
-        --disable-pip-version-check \
-        --no-cache-dir \
-        --only-binary=:all: \
-        --require-hashes \
-        --requirement /tmp/source-worker.txt \
-    && python -m pip --isolated --disable-pip-version-check uninstall --yes pip \
+RUN python -m pip --isolated --disable-pip-version-check uninstall --yes pip \
     && rm -rf /usr/local/lib/python3.12/ensurepip \
-    && rm -f /tmp/source-worker.txt \
     && groupadd --gid 10001 tuc-worker \
     && useradd --uid 10001 --gid 10001 --no-create-home --shell /usr/sbin/nologin tuc-worker \
-    && mkdir -p /opt/tuc/src /run/tuc \
+    && mkdir -p /opt/tuc/src/tuc/frontend /run/tuc \
+    && touch /opt/tuc/src/tuc/__init__.py /opt/tuc/src/tuc/frontend/__init__.py \
     && chown -R 10001:10001 /opt/tuc /run/tuc
 
 COPY --chown=10001:10001 src/ /opt/tuc/src/

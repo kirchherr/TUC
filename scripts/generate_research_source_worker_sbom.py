@@ -10,11 +10,14 @@ from hashlib import sha256
 from pathlib import Path
 
 _BASE = re.compile(r"^FROM python:([^@\s]+)@sha256:([a-f0-9]{64})$", re.MULTILINE)
-_NUMPY = re.compile(r"numpy==([0-9]+(?:\.[0-9]+){2}) --hash=sha256:([a-f0-9]{64})")
 _FILES = {
     "dockerfile": "docker/research-source-worker/Dockerfile",
     "build_context_policy": "docker/research-source-worker/Dockerfile.dockerignore",
-    "requirements": "requirements/source-worker.txt",
+    "source_intent": "src/tuc/frontend/source_intent.py",
+    "source_intent_intake": "src/tuc/frontend/source_intent_intake.py",
+    "triton_source": "src/tuc/frontend/triton_source.py",
+    "research_parser": "src/tuc/frontend/source_to_intent_research_parser.py",
+    "research_ingress": "src/tuc/frontend/source_to_intent_research_kernel_ingress.py",
     "worker_source": "src/tuc/frontend/_isolated_source_ingestion_worker.py",
 }
 
@@ -27,16 +30,13 @@ def generate_research_source_worker_sbom(project_root: Path) -> dict[str, object
     from_lines = [
         line for line in recipe.splitlines() if re.match(r"FROM\s", line.lstrip(), re.IGNORECASE)
     ]
-    requirement = _NUMPY.fullmatch(files["requirements"].decode("utf-8").strip())
-    if len(bases) != 1 or len(from_lines) != 1 or requirement is None:
+    if len(bases) != 1 or len(from_lines) != 1:
         raise ValueError("research worker supply-chain pins rejected")
     tag, base_digest = bases[0]
-    numpy_version, numpy_digest = requirement.groups()
     digests = {name: sha256(data).hexdigest() for name, data in files.items()}
     material = json.dumps(digests, sort_keys=True, separators=(",", ":"))
     worker_ref = "pkg:oci/tuc-source-ingestion-worker@research-0.2.0"
     python_ref = f"pkg:oci/python@sha256:{base_digest}"
-    numpy_ref = f"pkg:pypi/numpy@{numpy_version}"
     return {
         "bomFormat": "CycloneDX",
         "specVersion": "1.6",
@@ -82,20 +82,10 @@ def generate_research_source_worker_sbom(project_root: Path) -> dict[str, object
                 "scope": "required",
                 "hashes": [{"alg": "SHA-256", "content": base_digest}],
             },
-            {
-                "type": "library",
-                "bom-ref": numpy_ref,
-                "name": "numpy",
-                "version": numpy_version,
-                "purl": numpy_ref,
-                "scope": "required",
-                "hashes": [{"alg": "SHA-256", "content": numpy_digest}],
-            },
         ],
         "dependencies": [
-            {"ref": worker_ref, "dependsOn": [python_ref, numpy_ref]},
+            {"ref": worker_ref, "dependsOn": [python_ref]},
             {"ref": python_ref, "dependsOn": []},
-            {"ref": numpy_ref, "dependsOn": []},
         ],
     }
 
