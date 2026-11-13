@@ -82,7 +82,7 @@ responsibility; an external operator or author has not yet been assigned.
 
 | ID | Outcome and owner | Required exit artifact | Current state |
 | --- | --- | --- | --- |
-| M0 | Prepare and freeze the next research release candidate. Maintainer and repository owner. | No unresolved blocking findings; actual branch/review/publishing controls verified; version/support scope and exact source, lock, wheel, image and verifier identities recorded; exact-revision required CI passed. | Engineering baseline implemented; release preparation and R4/R5 open. |
+| M0 | Prepare and freeze the next research release candidate. Maintainer and repository owner. | No unresolved blocking findings; actual branch/review/publishing controls verified; version/support scope and exact source, lock, wheel, image and verifier identities recorded; exact-revision required CI passed. | Engineering baseline implemented; 0.2.0 version/support scope prepared. Controls, normal review, security triage, dry-run and candidate freeze remain open. |
 | M1 | Reproduce the frozen candidate outside project control. Independent operator, reviewed by maintainer. | Attributable fresh core, session and CLI observations, source/wheel bindings, command/run origin and passing offline audits; independence and scope accepted in review. | Open; requires M0's candidate pin and an independently controlled environment. |
 | M2 | Publish the accepted bounded research release. Release owner and eligible approver. | Protected exact-source release, wheel/sdist, checksums, SBOM and verified provenance; release notes bind M1's result and state the supported boundary. | Open; requires M0/M1 and normal release/publishing approvals. |
 | M3 | Have another developer integrate a data-only backend through the installed contract. Independent backend author. | Author-owned package, negative conformance and inspectable plan, installed reproduction, no TUC core modification. | Open external author milestone; existing Gamma/Delta CI provides the starting contract. |
@@ -116,6 +116,9 @@ M5 is required for performance claims or pilot performance acceptance criteria.
    provenance. Verify actual publishing settings against
    [release governance](RELEASE_GOVERNANCE.md) and
    [release security](RELEASE_SECURITY.md).
+   Version 0.2.0 and its bounded support statement are prepared in the latter;
+   this is not yet a frozen or accepted release candidate. Its workflow keeps
+   distribution builds and the isolated wheel check on the reviewed hash lock.
 5. Record a single exact candidate revision and artifact identities for M1.
    New source, build inputs, lock, consumer or verifier changes require a new
    reviewed pin and the applicable repeat validation. The baseline `3324f72`

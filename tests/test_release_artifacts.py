@@ -332,6 +332,24 @@ def test_ci_and_release_use_locked_toolchain_without_build_isolation() -> None:
         assert 'pip install -e ".[dev]"' not in workflow
         assert workflow.count("run: pytest -q -n 4") == 1
 
+    release = Path(".github/workflows/release-artifacts.yml").read_text(encoding="utf-8")
+    assert "run: python -m build --no-isolation\n" in release
+    wheel_check = release.split("      - name: Verify wheel import\n", 1)[1].split(
+        "\n      - name:", 1
+    )[0]
+    assert "unset PYTHONPATH" in wheel_check
+    assert "python -m venv /tmp/tuc-release-check" in wheel_check
+    assert "cd /tmp" in wheel_check
+    isolated_python = "/tmp/tuc-release-check/bin/python"
+    locked_install = (
+        f'{isolated_python} -m pip install --require-hashes -r '
+        '"${GITHUB_WORKSPACE}/requirements/ci.txt"'
+    )
+    wheel_install = f'{isolated_python} -m pip install --no-deps --no-index "${{wheel_path}}"'
+    assert wheel_check.index(locked_install) < wheel_check.index(wheel_install)
+    assert f"{isolated_python} -m pip check" in wheel_check
+    assert f'{isolated_python} -m pip install "${{wheel_path}}"' not in wheel_check
+
 
 def test_ci_and_release_declare_repository_example_import_path() -> None:
     pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
