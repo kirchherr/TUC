@@ -276,10 +276,11 @@ def test_release_workflow_actions_are_sha_pinned() -> None:
     ]
 
 
-def test_ci_toolchain_is_version_and_hash_locked() -> None:
+@pytest.mark.parametrize("lock_name", ["ci.txt", "research-release.txt"])
+def test_ci_toolchain_is_version_and_hash_locked(lock_name: str) -> None:
     lines = [
         line
-        for line in Path("requirements/ci.txt").read_text(encoding="utf-8").splitlines()
+        for line in (Path("requirements") / lock_name).read_text(encoding="utf-8").splitlines()
         if line and not line.startswith("#")
     ]
     requirement_pattern = re.compile(
@@ -332,6 +333,69 @@ def test_ci_and_release_use_locked_toolchain_without_build_isolation() -> None:
         assert 'pip install -e ".[dev]"' not in workflow
         assert workflow.count("run: pytest -q -n 4") == 1
 
+def test_research_candidate_has_a_locked_main_only_nonpublishing_build() -> None:
+    release = Path(".github/workflows/research-release-candidate.yml").read_text(encoding="utf-8")
+    assert "workflow_dispatch:" in release
+    assert (
+        "if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'"
+        in release
+    )
+    assert "push:" not in release and "pull_request" not in release
+    assert "  publish:" not in release and "environment: pypi" not in release
+    assert "pypa/gh-action-pypi-publish" not in release
+    assert "python -m pip install --require-hashes -r requirements/research-release.txt" in release
+    assert "run: python -m build --no-isolation\n" in release
+    wheel_check = release.split("      - name: Verify wheel import\n", 1)[1].split(
+        "\n      - name:", 1
+    )[0]
+    assert "unset PYTHONPATH" in wheel_check
+    assert "python -m venv /tmp/tuc-release-check" in wheel_check
+    assert "cd /tmp" in wheel_check
+    isolated_python = "/tmp/tuc-release-check/bin/python"
+    locked_install = (
+        f'{isolated_python} -m pip install --require-hashes -r '
+        '"${GITHUB_WORKSPACE}/requirements/research-release.txt"'
+    )
+    wheel_install = f'{isolated_python} -m pip install --no-deps --no-index "${{wheel_path}}"'
+    assert wheel_check.index(locked_install) < wheel_check.index(wheel_install)
+    assert f"{isolated_python} -m pip check" in wheel_check
+    assert f'{isolated_python} -m pip install "${{wheel_path}}"' not in wheel_check
+    assert "gh attestation verify dist/tuc-source-ingestion-worker.oci.tar" in release
+    assert (
+        '--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/research-release-candidate.yml"'
+        in release
+    )
+    for flag in (
+        "--source-digest", "--source-ref", "--cert-oidc-issuer", "--deny-self-hosted-runners"
+    ):
+        assert flag in release
+    assert "dist/*.research-attestation-verification.json" in release
+    assert "scripts/write_github_attestation_verification_receipt.py" not in release
+    assert "name: tuc-research-candidate" in release
+    assert "permissions:\n  contents: read" in release
+    assert release.count("attestations: write") == release.count("id-token: write") == 1
+    legacy = Path(".github/workflows/release-artifacts.yml").read_text(encoding="utf-8")
+    action_pattern = re.compile(r"uses: ([^\s]+)")
+    reviewed_build_actions = [
+        action for action in action_pattern.findall(legacy)
+        if not action.startswith(("actions/download-artifact@", "pypa/gh-action-pypi-publish@"))
+    ]
+    assert action_pattern.findall(release) == reviewed_build_actions
+
+
+def test_research_candidate_preserves_historical_proof_materials() -> None:
+    expected = {
+        ".github/workflows/ci.yml":
+            "d042b4ec64abecd4094c4aa18001e25ae6e53d2fe7387fbb30c7ccedc9e0b879",
+        ".github/workflows/release-artifacts.yml":
+            "e172998c3fc11bee6818a59ac0b59078c5e7b74c724cafef57a6a34156c9944f",
+        "requirements/ci.txt":
+            "279a3c8e55e737ae85f2d9ffefa0c0fe9750ef510bf1d0542dff05340c3e23b8",
+    }
+    for filename, digest in expected.items():
+        canonical_text = Path(filename).read_text(encoding="utf-8").encode("utf-8")
+        assert hashlib.sha256(canonical_text).hexdigest() == digest
+
 
 def test_ci_and_release_declare_repository_example_import_path() -> None:
     pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
@@ -339,6 +403,7 @@ def test_ci_and_release_declare_repository_example_import_path() -> None:
     for workflow_path in (
         Path(".github/workflows/ci.yml"),
         Path(".github/workflows/release-artifacts.yml"),
+        Path(".github/workflows/research-release-candidate.yml"),
     ):
         workflow = workflow_path.read_text(encoding="utf-8")
         assert workflow.count("PYTHONPATH: ${{ github.workspace }}") == 1
