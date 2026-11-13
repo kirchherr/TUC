@@ -41,10 +41,12 @@ runtime defect was identified in this scope.
 | R2 | P2: The priority list mixes maintenance, older completed increments and future research without an ordered release completion test. | Replaced by M0-M6, owners, dependencies and required exit artifacts. |
 | R3 | P2: New CLI/session observations are retained in 14-day CI artifacts; the existing offline kit retains the older original numerical observation. Rebuilding that kit cannot recreate the actual new lifecycle observation. | Four actual baseline JSON files are retained byte-for-byte with artifact/source bindings and offline audits in the [evidence index](evidence/BOUNDED_MODEL_APPLICATION_3324F72.md). |
 | R4 | P1 for release readiness: effective `main` rules enforce PR review, deletion and non-fast-forward protection, but omit `required_status_checks` and linear-history enforcement required by the documented branch policy. | Open owner/admin action in M0. CI was checked manually before the authorized merges; repository-wide enforcement still needs to match the approved policy. |
-| R5 | P2: The only listed codeowner is `@kirchherr`, also author of the recent PRs. The active rule requires one codeowner approval; technical self-comments did not satisfy it, and #139/#140 used separately authorized exceptions. | Open owner decision in M0: establish an eligible normal review path. Those consumed exceptions confer no future permission. |
+| R5 | P2: The only listed codeowner is `@kirchherr`, also author of the recent PRs. The active rule requires one codeowner approval; technical self-comments did not satisfy it, and #139/#140 used separately authorized exceptions. | The owner selected `mailactiveblue-blip`; its accepted Write access was verified on 2026-11-13. This update lists both accounts on every existing ownership rule. Open until a subsequent PR verifies the normal review path; consumed exceptions confer no future permission. |
 
-R4/R5 are configuration and ownership dependencies. This change records them;
-it does not modify GitHub rules, add collaborators or authorize any review bypass.
+R4/R5 remain configuration and ownership dependencies. This update implements
+the owner-selected Codeowner assignment; live rule reconciliation and a normal
+PR still require separate verification. Any bypass remains specific to the
+explicitly authorized PR.
 The observed effective-rule endpoint was
 `GET /repos/kirchherr/TUC/rules/branches/main`, backed by active ruleset
 `17319611`. [Branch protection policy](BRANCH_PROTECTION.md) remains the policy

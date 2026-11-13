@@ -3,103 +3,103 @@
 # GitHub uses the last matching pattern for a file. Keep specific trust-boundary
 # rules below the default rule.
 
-* @kirchherr
+* @kirchherr @mailactiveblue-blip
 
 # Repository governance and supply-chain controls.
-/.github/CODEOWNERS @kirchherr
-/.github/dependabot.yml @kirchherr
-/.github/workflows/ @kirchherr
-/docker/ @kirchherr
-/docker-compose.yml @kirchherr
-/pyproject.toml @kirchherr
-/requirements/ @kirchherr
-/CONTRIBUTING.md @kirchherr
-/GOVERNANCE.md @kirchherr
-/SECURITY.md @kirchherr
-/TUC_MASTER_PLAN.md @kirchherr
-/docs/BRANCH_PROTECTION.md @kirchherr
-/docs/RELEASE_GOVERNANCE.md @kirchherr
-/docs/RELEASE_SECURITY.md @kirchherr
-/docs/SECURITY_BASELINE.md @kirchherr
+/.github/CODEOWNERS @kirchherr @mailactiveblue-blip
+/.github/dependabot.yml @kirchherr @mailactiveblue-blip
+/.github/workflows/ @kirchherr @mailactiveblue-blip
+/docker/ @kirchherr @mailactiveblue-blip
+/docker-compose.yml @kirchherr @mailactiveblue-blip
+/pyproject.toml @kirchherr @mailactiveblue-blip
+/requirements/ @kirchherr @mailactiveblue-blip
+/CONTRIBUTING.md @kirchherr @mailactiveblue-blip
+/GOVERNANCE.md @kirchherr @mailactiveblue-blip
+/SECURITY.md @kirchherr @mailactiveblue-blip
+/TUC_MASTER_PLAN.md @kirchherr @mailactiveblue-blip
+/docs/BRANCH_PROTECTION.md @kirchherr @mailactiveblue-blip
+/docs/RELEASE_GOVERNANCE.md @kirchherr @mailactiveblue-blip
+/docs/RELEASE_SECURITY.md @kirchherr @mailactiveblue-blip
+/docs/SECURITY_BASELINE.md @kirchherr @mailactiveblue-blip
 
 # Compiler and runtime trust boundaries.
-/src/tuc/backends/ @kirchherr
-/src/tuc/compiler/ @kirchherr
-/src/tuc/frontend/ @kirchherr
-/src/tuc/ir/ @kirchherr
-/src/tuc/runtime/ @kirchherr
-/src/tuc/manifests.py @kirchherr
-/examples/manifests/ @kirchherr
-/tests/golden/ @kirchherr
+/src/tuc/backends/ @kirchherr @mailactiveblue-blip
+/src/tuc/compiler/ @kirchherr @mailactiveblue-blip
+/src/tuc/frontend/ @kirchherr @mailactiveblue-blip
+/src/tuc/ir/ @kirchherr @mailactiveblue-blip
+/src/tuc/runtime/ @kirchherr @mailactiveblue-blip
+/src/tuc/manifests.py @kirchherr @mailactiveblue-blip
+/examples/manifests/ @kirchherr @mailactiveblue-blip
+/tests/golden/ @kirchherr @mailactiveblue-blip
 
 # Architecture decisions and external contracts.
-/docs/ARCHITECTURE.md @kirchherr
-/docs/BACKEND_API.md @kirchherr
-/docs/BACKEND_AUTHOR_CERTIFICATION.md @kirchherr
-/docs/BACKEND_CONFORMANCE.md @kirchherr
-/docs/BACKEND_REGISTRY.md @kirchherr
-/docs/DATA_MOVEMENT_IR.md @kirchherr
-/docs/HAC_IR_DIALECT.md @kirchherr
-/docs/HS_IR_DIALECT.md @kirchherr
-/docs/MLIR_DESIGN_SPIKE.md @kirchherr
-/docs/PROOF_OF_ABSTRACTION.md @kirchherr
-/docs/RUNTIME_PLAN.md @kirchherr
-/docs/TRITON_COMPATIBILITY.md @kirchherr
-/docs/BOUNDED_SOURCE_COMPILER.md @kirchherr
-/integration/bounded_dag_compiler/ @kirchherr
-/integration/bounded_source_c11/ @kirchherr
-/docs/INSTALLED_SOURCE_C11_CONFORMANCE.md @kirchherr
-/integration/bounded_c11_entrypoint/ @kirchherr
-/docs/BOUNDED_C11_ENTRYPOINT.md @kirchherr
-/integration/bounded_cpu_application/ @kirchherr
-/docs/BOUNDED_CPU_APPLICATION.md @kirchherr
-/src/tuc/bounded_cpu_application_cli.py @kirchherr
-/integration/bounded_cpu_json/ @kirchherr
-/docs/BOUNDED_CPU_JSON_CLI.md @kirchherr
-/src/tuc/bounded_cpu_source_cli.py @kirchherr
-/integration/bounded_cpu_source/ @kirchherr
-/docs/BOUNDED_CPU_SOURCE.md @kirchherr
-/integration/bounded_cpu_add_bias/ @kirchherr
-/integration/bounded_add_bias_native/ @kirchherr
-/docs/BOUNDED_CPU_ADD_BIAS.md @kirchherr
-/integration/bounded_cpu_linear/ @kirchherr
-/integration/bounded_linear_native/ @kirchherr
-/docs/BOUNDED_CPU_LINEAR.md @kirchherr
-/integration/bounded_cpu_gating/ @kirchherr
-/integration/bounded_mul_native/ @kirchherr
-/docs/BOUNDED_CPU_GATING.md @kirchherr
-/integration/bounded_cpu_softmax/ @kirchherr
-/integration/bounded_softmax_native/ @kirchherr
-/docs/BOUNDED_CPU_SOFTMAX.md @kirchherr
-/integration/bounded_cpu_scaling/ @kirchherr
-/integration/bounded_scaling_native/ @kirchherr
-/docs/BOUNDED_CPU_SCALING.md @kirchherr
-/integration/bounded_cpu_batch/ @kirchherr
-/docs/BOUNDED_CPU_BATCH.md @kirchherr
-/schemas/bounded_cpu_batch.v0.schema.json @kirchherr
-/src/tuc/compiler/bounded_cpu_model.py @kirchherr
-/integration/bounded_cpu_model/ @kirchherr
-/docs/BOUNDED_CPU_MODEL.md @kirchherr
-/schemas/bounded_cpu_model.v0.schema.json @kirchherr
-/rfcs/ @kirchherr
-/src/tuc/bounded_cpu_model_session.py @kirchherr
-/integration/bounded_cpu_model_session/ @kirchherr
-/docs/BOUNDED_CPU_MODEL_SESSION.md @kirchherr
+/docs/ARCHITECTURE.md @kirchherr @mailactiveblue-blip
+/docs/BACKEND_API.md @kirchherr @mailactiveblue-blip
+/docs/BACKEND_AUTHOR_CERTIFICATION.md @kirchherr @mailactiveblue-blip
+/docs/BACKEND_CONFORMANCE.md @kirchherr @mailactiveblue-blip
+/docs/BACKEND_REGISTRY.md @kirchherr @mailactiveblue-blip
+/docs/DATA_MOVEMENT_IR.md @kirchherr @mailactiveblue-blip
+/docs/HAC_IR_DIALECT.md @kirchherr @mailactiveblue-blip
+/docs/HS_IR_DIALECT.md @kirchherr @mailactiveblue-blip
+/docs/MLIR_DESIGN_SPIKE.md @kirchherr @mailactiveblue-blip
+/docs/PROOF_OF_ABSTRACTION.md @kirchherr @mailactiveblue-blip
+/docs/RUNTIME_PLAN.md @kirchherr @mailactiveblue-blip
+/docs/TRITON_COMPATIBILITY.md @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_SOURCE_COMPILER.md @kirchherr @mailactiveblue-blip
+/integration/bounded_dag_compiler/ @kirchherr @mailactiveblue-blip
+/integration/bounded_source_c11/ @kirchherr @mailactiveblue-blip
+/docs/INSTALLED_SOURCE_C11_CONFORMANCE.md @kirchherr @mailactiveblue-blip
+/integration/bounded_c11_entrypoint/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_C11_ENTRYPOINT.md @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_application/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_APPLICATION.md @kirchherr @mailactiveblue-blip
+/src/tuc/bounded_cpu_application_cli.py @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_json/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_JSON_CLI.md @kirchherr @mailactiveblue-blip
+/src/tuc/bounded_cpu_source_cli.py @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_source/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_SOURCE.md @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_add_bias/ @kirchherr @mailactiveblue-blip
+/integration/bounded_add_bias_native/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_ADD_BIAS.md @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_linear/ @kirchherr @mailactiveblue-blip
+/integration/bounded_linear_native/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_LINEAR.md @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_gating/ @kirchherr @mailactiveblue-blip
+/integration/bounded_mul_native/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_GATING.md @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_softmax/ @kirchherr @mailactiveblue-blip
+/integration/bounded_softmax_native/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_SOFTMAX.md @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_scaling/ @kirchherr @mailactiveblue-blip
+/integration/bounded_scaling_native/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_SCALING.md @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_batch/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_BATCH.md @kirchherr @mailactiveblue-blip
+/schemas/bounded_cpu_batch.v0.schema.json @kirchherr @mailactiveblue-blip
+/src/tuc/compiler/bounded_cpu_model.py @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_model/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_MODEL.md @kirchherr @mailactiveblue-blip
+/schemas/bounded_cpu_model.v0.schema.json @kirchherr @mailactiveblue-blip
+/rfcs/ @kirchherr @mailactiveblue-blip
+/src/tuc/bounded_cpu_model_session.py @kirchherr @mailactiveblue-blip
+/integration/bounded_cpu_model_session/ @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_CPU_MODEL_SESSION.md @kirchherr @mailactiveblue-blip
 
 # Bounded model observation and offline review.
-/docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md @kirchherr
-/integration/bounded_model_application/ @kirchherr
-/scripts/build_model_application_audit_kit.py @kirchherr
-/scripts/reproduce_model_application.py @kirchherr
-/tests/test_model_application_operator.py @kirchherr
-/src/tuc/runtime/bounded_model_application_session.py @kirchherr
-/docs/BOUNDED_MODEL_APPLICATION_SESSION.md @kirchherr
-/tests/test_bounded_model_application_session.py @kirchherr
-/tests/test_bounded_model_application_session_native.py @kirchherr
-/src/tuc/bounded_model_application_cli.py @kirchherr
-/docs/BOUNDED_MODEL_APPLICATION_CLI.md @kirchherr
-/schemas/bounded_backend_bindings.v0.schema.json @kirchherr
-/integration/bounded_model_cli/ @kirchherr
-/tests/test_bounded_backend_bindings.py @kirchherr
-/tests/test_bounded_model_application_cli.py @kirchherr
-/tests/test_bounded_model_cli_consumer.py @kirchherr
+/docs/BOUNDED_MODEL_APPLICATION_HANDOFF.md @kirchherr @mailactiveblue-blip
+/integration/bounded_model_application/ @kirchherr @mailactiveblue-blip
+/scripts/build_model_application_audit_kit.py @kirchherr @mailactiveblue-blip
+/scripts/reproduce_model_application.py @kirchherr @mailactiveblue-blip
+/tests/test_model_application_operator.py @kirchherr @mailactiveblue-blip
+/src/tuc/runtime/bounded_model_application_session.py @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_MODEL_APPLICATION_SESSION.md @kirchherr @mailactiveblue-blip
+/tests/test_bounded_model_application_session.py @kirchherr @mailactiveblue-blip
+/tests/test_bounded_model_application_session_native.py @kirchherr @mailactiveblue-blip
+/src/tuc/bounded_model_application_cli.py @kirchherr @mailactiveblue-blip
+/docs/BOUNDED_MODEL_APPLICATION_CLI.md @kirchherr @mailactiveblue-blip
+/schemas/bounded_backend_bindings.v0.schema.json @kirchherr @mailactiveblue-blip
+/integration/bounded_model_cli/ @kirchherr @mailactiveblue-blip
+/tests/test_bounded_backend_bindings.py @kirchherr @mailactiveblue-blip
+/tests/test_bounded_model_application_cli.py @kirchherr @mailactiveblue-blip
+/tests/test_bounded_model_cli_consumer.py @kirchherr @mailactiveblue-blip

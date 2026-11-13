@@ -11,7 +11,10 @@ The 2026-11-12 [completion review](PROJECT_COMPLETION_PLAN.md) read effective
 `main` rules from GitHub. Active ruleset `17319611` enforces deletion/non-fast-forward
 protection and PR/codeowner review. That response contains no
 `required_status_checks` or linear-history rule; merge, squash and rebase are
-allowed. The only current codeowner is also author of the recent PRs.
+allowed. At that review, the only listed codeowner was also author of the recent
+PRs.
+Reviewer onboarding and the required normal-PR verification are tracked in the
+[completion plan](PROJECT_COMPLETION_PLAN.md).
 
 The policy below is therefore a required configuration target, not evidence
 that every setting is already active. M0 requires the repository owner to
