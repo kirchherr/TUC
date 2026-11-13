@@ -1,0 +1,23 @@
+{
+  "candidate_workflow": {
+    "id": 417347172,
+    "name": "Research Release Candidate",
+    "path": ".github/workflows/research-release-candidate.yml",
+    "state": "active"
+  },
+  "ci_workflow": {
+    "id": 289690320,
+    "name": "CI",
+    "path": ".github/workflows/ci.yml",
+    "state": "active"
+  },
+  "legacy_workflow": {
+    "id": 289849327,
+    "name": "Release Artifacts",
+    "path": ".github/workflows/release-artifacts.yml",
+    "state": "disabled_manually"
+  },
+  "observed_utc": "2026-11-13T14:51:21.683460+00:00",
+  "owner_approved": true,
+  "package_publication_performed": false
+}

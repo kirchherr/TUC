@@ -20,10 +20,13 @@ not evidence that the full native execution path has been validated everywhere
 it can be installed. C11/CUDA/mixed planning remains hardware-neutral; actual
 model execution admits only the stated all-C11 boundary.
 
-M0 still requires verified repository and publishing controls, a successful
-normal Codeowner review, security triage, exact-revision CI and a protected
-non-publishing release dry-run. Record the accepted source, lock, wheel, image
-and verifier identities from that run before M1. M1 requires fresh observations
+All four owner-approved repository protections and the normal Codeowner path
+were verified through #143. Its protected engineering dry-run at `8044760`
+passed the full suite, checksums, SBOM/OCI checks and eight fresh cryptographic
+checks; [actual identities and retained evidence](evidence/RESEARCH_CANDIDATE_8044760.md)
+record the result. The subsequent image/security review requires a refreshed
+candidate before M0 freeze. Record the accepted new source, lock, wheel, image
+and verifier identities after that run and residual-finding review. M1 requires fresh observations
 from an independently controlled operator; project CI and the historical
 Objective Delta receipt do not supply that acceptance. M2 then governs
 publication and its separate approvals.
@@ -35,13 +38,44 @@ manual dispatch on protected `main`, builds and attests artifacts, verifies the
 worker attestation against its own workflow/source identity, and retains the
 GitHub CLI verification JSON. It has no publishing job or tag/PR trigger.
 The historical workflow, lock, v0 receipt writer and proof corpus remain intact.
-Their v0 readiness report describes that historical path; it does not certify
-this new candidate workflow. A successful candidate dry-run is still required.
+Their v0 readiness report describes that historical path. The successful
+`8044760` dry-run has its own workflow/source-bound verification record; the
+current security refresh needs a new protected run.
 
-The historical tag-triggered publisher remains configured. M0 must resolve its
-retirement or replacement through a reviewed publishing migration before any
-0.2.0 release tag is created. This source preparation neither disables that
-workflow nor authorizes its use to publish the new candidate.
+The owner separately approved disabling historical workflow `289849327`.
+Its `disabled_manually` state was read back on 2026-11-13; both legacy tag
+publication and its manual builds are stopped. CI and the candidate workflow
+remain active. M2 requires a reviewed replacement publisher, verified actual
+PyPI binding and separate publication approval before any 0.2.0 release tag.
+
+The current research worker uses a separate
+[Dockerfile](../docker/research-source-worker/Dockerfile), closed context
+allowlist and material SBOM generator. Its Linux/amd64 Python manifest is
+`0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4`
+(CPython 3.12.16); the active installed source converter uses that same fixed
+base while keeping its copy-only build recipe and closed import boundary.
+The packaged research worker contains the same six-module standard-library
+closure as the installed converter, with empty package initializers. It has
+no NumPy dependency and removes pip/ensurepip without network access. The
+context policy admits those six named sources; an actual Docker build checks
+that an excluded synthetic file is absent. The installed converter inherits
+unused base-image installer files but does not invoke them or admit their
+imports. The historical Dockerfile/SBOM generator and numerical corpus remain
+byte-identical. The image CI compares the loaded image ID to the verified OCI
+config, observes Python and dependency/installer absence, and exercises a fixed
+source request under the existing constrained, network-disabled protocol.
+
+Active research build workflows use BuildKit 0.35.0, pinned to Linux/amd64
+manifest `a521fc1fd903a46c611c733dd692548512232fba2e0386d6055846a903d05a71`,
+with CDI disabled. Active builds use `--network=none` without extra client
+entitlements. Buildx adds a daemon-side `network.host` allowance for container
+drivers; the image CI verifies that a Dockerfile host-network request is still
+rejected without the separate client grant. No client `--allow` is supplied.
+The disabled historical
+workflow retains its original 0.30.0 binding and v0 proof. Image/package
+findings and upstream advisory dispositions are recorded in the evidence
+index; passing signatures or a newer base-image scan alone is insufficient
+for security acceptance of the rebuilt candidate.
 
 ## Release Artifact Scope
 
@@ -57,9 +91,10 @@ The release workflow builds:
 - SHA-256 checksum manifest.
 - GitHub artifact attestations for build provenance and the SBOM.
 
-Both paths upload GitHub Actions artifacts. Only the historical workflow has a
-publishing job for protected `v*` tag pushes after `pypi` environment approval;
-the new research-candidate workflow produces artifacts without publication.
+Both workflow definitions upload GitHub Actions artifacts. The historical
+definition includes a protected-tag publishing job, but its Actions workflow
+is disabled. The active research-candidate workflow produces artifacts without
+publication.
 
 The historical Linux x86_64 / CPython 3.12 toolchain is resolved in
 `requirements/ci.txt`; the new candidate uses `requirements/research-release.txt`.

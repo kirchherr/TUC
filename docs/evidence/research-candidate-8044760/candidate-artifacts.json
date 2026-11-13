@@ -1,0 +1,46 @@
+{
+  "artifact_id": 14047607738,
+  "candidate_state": "engineering dry-run; superseded for freeze by image-security refresh",
+  "checksums": {
+    "tuc-0.2.0-py3-none-any.whl": "b76c046db84bda314fc3a8c860be18c33213143ddb72b029f2a847548e2c3809",
+    "tuc-0.2.0.tar.gz": "421bedf52926608458bd396acba2a9643306bcfeacb6b61bcb89eee232229d47",
+    "tuc-objective-delta-reproduction-kit-v0.zip": "ddbe9d7e347ef03aa047a27df0272b8991380f20426c1e8be38205421c8ab42e",
+    "tuc-objective-delta-reproduction-receipt.v0.json": "f52f416fc2b894e833a051f7408b4157afefc4ce64f274f2552980e8eff2ec78",
+    "tuc-source-ingestion-worker.cdx.json": "05ba80d8f65f5328f324608f81800c3857149a9140aa8b48ec9411392c0d0c15",
+    "tuc-source-ingestion-worker.oci-verification.json": "07ebc7d2e6ecfd1ff2069613f08fde228cec74d95fd84143fe565d8e8997a007",
+    "tuc-source-ingestion-worker.oci.tar": "8c358279315933b968c84451f67e11527ab8d951be21c500a553d4735e1ac00d",
+    "tuc-source-ingestion-worker.research-attestation-verification.json": "7a8ccb01c8cee8a6408bb805e5ebaf277de9d7e9a61b6cc78ec2fdf2443d0f00",
+    "tuc.cdx.json": "f2c7f3a94f831d399db6d92bab339d7e84174b7bb130a442efd94a5bc7c07649"
+  },
+  "closed_file_count": 10,
+  "cryptographic_verification": "PASS; eight checks in provenance-verification.json",
+  "historical_delta_receipt_unchanged": true,
+  "independent_operator_acceptance": false,
+  "native_execution_performed": false,
+  "oci_archive_verification": {
+    "archive_digest": "sha256:8c358279315933b968c84451f67e11527ab8d951be21c500a553d4735e1ac00d",
+    "archive_size_bytes": 67736576,
+    "config_digest": "sha256:3c899c77b53a4a055f57ed120e7f6b882f292e81c4668efc430cf1dcdea39ac0",
+    "entrypoint": [
+      "python",
+      "-I",
+      "/opt/tuc/src/tuc/frontend/_isolated_source_ingestion_worker.py",
+      "--oci"
+    ],
+    "image_manifest_digest": "sha256:b58d9d994cb1a2ff676c2b79f1a870183b6bf3e0741c026f7920d18f4d7cceb4",
+    "layer_count": 8,
+    "platform": "linux/amd64",
+    "rootfs_diff_id_count": 8,
+    "schema_version": "tuc.source_worker_oci_archive_verification.v0",
+    "status": "PASS",
+    "user": "10001:10001",
+    "working_dir": "/run/tuc"
+  },
+  "sbom_materials_match_source": true,
+  "source": "8044760f5e474d71ac10f22f20f2f2fd0883fef3",
+  "status": "PASS",
+  "transport_sha256": "11208363756d63c917f47cc802abe5ad41bfc83ebd8c0573434a168da848107d",
+  "wheel_and_sdist_version": "0.2.0",
+  "wheel_file_count": 176,
+  "workflow_run": 43441263934
+}
