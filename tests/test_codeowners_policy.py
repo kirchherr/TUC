@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+REQUIRED_CODEOWNERS = {"@kirchherr", "@mailactiveblue-blip"}
+
 REQUIRED_CODEOWNER_PATTERNS = {
     "*",
     "/.github/CODEOWNERS",
@@ -41,11 +43,11 @@ def test_codeowners_covers_security_critical_paths() -> None:
     entries = _codeowners_entries()
 
     assert entries.keys() >= REQUIRED_CODEOWNER_PATTERNS
-    for pattern in REQUIRED_CODEOWNER_PATTERNS:
-        assert entries[pattern] == ["@kirchherr"]
+    for pattern, owners in entries.items():
+        assert set(owners) == REQUIRED_CODEOWNERS, pattern
 
 
 def test_codeowners_owns_itself() -> None:
     entries = _codeowners_entries()
 
-    assert entries["/.github/CODEOWNERS"] == ["@kirchherr"]
+    assert set(entries["/.github/CODEOWNERS"]) == REQUIRED_CODEOWNERS
