@@ -1,0 +1,280 @@
+{
+  "count_unit": "advisory/package matches; not confirmed exploitable defects",
+  "current_research_image_rebuild_and_rescan": "required after refresh; base-only scan does not substitute",
+  "database_metadata": {
+    "DownloadedAt": "2026-11-13T14:54:58.3055444Z",
+    "NextUpdate": "2026-11-14T12:56:33.451543367Z",
+    "UpdatedAt": "2026-11-13T12:56:33.451543713Z",
+    "Version": 2
+  },
+  "database_sha256": "0fd2fd4973456c9b16d70db3105f111995ed8896f4238b8724bfeb2e48a58932",
+  "recorded_utc": "2026-11-13T15:16:41.753606+00:00",
+  "release_security_acceptance": false,
+  "scanner": {
+    "archive_sha256": "691f737a7e5566a673c3a74dab9160552ec32101e953b659e5c77443d16dddb6",
+    "executable_sha256": "dd07adf881a72b54d1a922191d62fa939938df2155be85a727da93b67b24e617",
+    "system_installation": false,
+    "vendor_checksums_sha256": "802e4ac1418ed967cd3c4b901f4f71ca00b7363ede67778665a22d9f13f58c83",
+    "vendor_release": "https://github.com/aquasecurity/trivy/releases/tag/v0.76.2",
+    "version": "0.76.2"
+  },
+  "scans": [
+    {
+      "created_at": "2026-11-13T15:56:04.309632+01:00",
+      "image_config_digest": "sha256:3c899c77b53a4a055f57ed120e7f6b882f292e81c4668efc430cf1dcdea39ac0",
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "report_bytes": 1795934,
+      "report_sha256": "a11db9a95a06450adc89f1851a8fa627e849af4260fb0775030f217b5430944b",
+      "scope": "actual-8044760-worker",
+      "targets": [
+        {
+          "advisory_package_match_counts": {
+            "CRITICAL": 5,
+            "HIGH": 108,
+            "LOW": 118,
+            "MEDIUM": 160,
+            "UNKNOWN": 11
+          },
+          "critical_or_fixable_high_matches": [
+            {
+              "FixedVersion": "2.6.2",
+              "InstalledVersion": "2.6.1",
+              "PkgName": "apt",
+              "Severity": "HIGH",
+              "SeveritySource": null,
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-109518"
+            },
+            {
+              "FixedVersion": "2.6.2",
+              "InstalledVersion": "2.6.1",
+              "PkgName": "libapt-pkg6.0",
+              "Severity": "HIGH",
+              "SeveritySource": null,
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-109518"
+            },
+            {
+              "FixedVersion": "10.42-1+deb12u2",
+              "InstalledVersion": "10.42-1",
+              "PkgName": "libpcre2-8-0",
+              "Severity": "HIGH",
+              "SeveritySource": null,
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-103111"
+            },
+            {
+              "FixedVersion": "10.42-1+deb12u1",
+              "InstalledVersion": "10.42-1",
+              "PkgName": "libpcre2-8-0",
+              "Severity": "HIGH",
+              "SeveritySource": null,
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-86145"
+            },
+            {
+              "FixedVersion": "10.42-1+deb12u1",
+              "InstalledVersion": "10.42-1",
+              "PkgName": "libpcre2-8-0",
+              "Severity": "HIGH",
+              "SeveritySource": "nvd",
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-89157"
+            },
+            {
+              "FixedVersion": "10.42-1+deb12u1",
+              "InstalledVersion": "10.42-1",
+              "PkgName": "libpcre2-8-0",
+              "Severity": "HIGH",
+              "SeveritySource": "nvd",
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-89161"
+            },
+            {
+              "FixedVersion": null,
+              "InstalledVersion": "3.40.1-2+deb12u2",
+              "PkgName": "libsqlite3-0",
+              "Severity": "CRITICAL",
+              "SeveritySource": "nvd",
+              "Status": "affected",
+              "VulnerabilityID": "CVE-2025-7458"
+            },
+            {
+              "FixedVersion": "3.0.22-1~deb12u2",
+              "InstalledVersion": "3.0.20-1~deb12u2",
+              "PkgName": "libssl3",
+              "Severity": "HIGH",
+              "SeveritySource": null,
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-84782"
+            },
+            {
+              "FixedVersion": "3.0.22-1~deb12u2",
+              "InstalledVersion": "3.0.20-1~deb12u2",
+              "PkgName": "openssl",
+              "Severity": "HIGH",
+              "SeveritySource": null,
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-84782"
+            },
+            {
+              "FixedVersion": "5.36.0-7+deb12u4",
+              "InstalledVersion": "5.36.0-7+deb12u3",
+              "PkgName": "perl-base",
+              "Severity": "CRITICAL",
+              "SeveritySource": "nvd",
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-13221"
+            },
+            {
+              "FixedVersion": "5.36.0-7+deb12u4",
+              "InstalledVersion": "5.36.0-7+deb12u3",
+              "PkgName": "perl-base",
+              "Severity": "CRITICAL",
+              "SeveritySource": "nvd",
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-42496"
+            },
+            {
+              "FixedVersion": "5.36.0-7+deb12u4",
+              "InstalledVersion": "5.36.0-7+deb12u3",
+              "PkgName": "perl-base",
+              "Severity": "CRITICAL",
+              "SeveritySource": "nvd",
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-8376"
+            },
+            {
+              "FixedVersion": "5.36.0-7+deb12u4",
+              "InstalledVersion": "5.36.0-7+deb12u3",
+              "PkgName": "perl-base",
+              "Severity": "HIGH",
+              "SeveritySource": "nvd",
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-42497"
+            },
+            {
+              "FixedVersion": "5.36.0-7+deb12u4",
+              "InstalledVersion": "5.36.0-7+deb12u3",
+              "PkgName": "perl-base",
+              "Severity": "HIGH",
+              "SeveritySource": null,
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-48962"
+            },
+            {
+              "FixedVersion": "5.36.0-7+deb12u4",
+              "InstalledVersion": "5.36.0-7+deb12u3",
+              "PkgName": "perl-base",
+              "Severity": "HIGH",
+              "SeveritySource": "nvd",
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-57432"
+            },
+            {
+              "FixedVersion": "5.36.0-7+deb12u4",
+              "InstalledVersion": "5.36.0-7+deb12u3",
+              "PkgName": "perl-base",
+              "Severity": "HIGH",
+              "SeveritySource": null,
+              "Status": "fixed",
+              "VulnerabilityID": "CVE-2026-57433"
+            },
+            {
+              "FixedVersion": null,
+              "InstalledVersion": "1:1.2.13.dfsg-1",
+              "PkgName": "zlib1g",
+              "Severity": "CRITICAL",
+              "SeveritySource": "nvd",
+              "Status": "will_not_fix",
+              "VulnerabilityID": "CVE-2023-45853"
+            }
+          ],
+          "matches_with_available_fix": {
+            "CRITICAL": 3,
+            "HIGH": 12,
+            "LOW": 10,
+            "MEDIUM": 21,
+            "UNKNOWN": 7
+          },
+          "package_count": 105,
+          "type": "debian"
+        },
+        {
+          "advisory_package_match_counts": {
+            "LOW": 1,
+            "MEDIUM": 5
+          },
+          "critical_or_fixable_high_matches": [],
+          "matches_with_available_fix": {
+            "LOW": 1,
+            "MEDIUM": 5
+          },
+          "package_count": 3,
+          "type": "python-pkg"
+        }
+      ]
+    },
+    {
+      "created_at": "2026-11-13T15:59:20.5184411+01:00",
+      "image_config_digest": "sha256:313cf8f190a1abab00472c1f0c950c10486c22114bcd8aef2a8198fb587a6d18",
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "report_bytes": 1570698,
+      "report_sha256": "783479ab6faa148c0ce7015eb78e58e0b11570d28905deb77f6592143eceb1b4",
+      "scope": "replacement-base-only",
+      "targets": [
+        {
+          "advisory_package_match_counts": {
+            "CRITICAL": 2,
+            "HIGH": 96,
+            "LOW": 108,
+            "MEDIUM": 139,
+            "UNKNOWN": 4
+          },
+          "critical_or_fixable_high_matches": [
+            {
+              "FixedVersion": null,
+              "InstalledVersion": "3.40.1-2+deb12u2",
+              "PkgName": "libsqlite3-0",
+              "Severity": "CRITICAL",
+              "SeveritySource": "nvd",
+              "Status": "affected",
+              "VulnerabilityID": "CVE-2025-7458"
+            },
+            {
+              "FixedVersion": null,
+              "InstalledVersion": "1:1.2.13.dfsg-1",
+              "PkgName": "zlib1g",
+              "Severity": "CRITICAL",
+              "SeveritySource": "nvd",
+              "Status": "will_not_fix",
+              "VulnerabilityID": "CVE-2023-45853"
+            }
+          ],
+          "matches_with_available_fix": {},
+          "package_count": 105,
+          "type": "debian"
+        },
+        {
+          "advisory_package_match_counts": {
+            "LOW": 1,
+            "MEDIUM": 5
+          },
+          "critical_or_fixable_high_matches": [],
+          "matches_with_available_fix": {
+            "LOW": 1,
+            "MEDIUM": 5
+          },
+          "package_count": 1,
+          "type": "python-pkg"
+        }
+      ]
+    }
+  ]
+}

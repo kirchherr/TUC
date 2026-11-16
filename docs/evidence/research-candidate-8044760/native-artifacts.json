@@ -1,0 +1,150 @@
+{
+  "independent_operator_acceptance": false,
+  "job_id": 131936838036,
+  "members": [
+    {
+      "artifact_id": 14044263687,
+      "bytes": 7268,
+      "file": "native-cli-ci-record.json",
+      "sha256": "42babf4014581367e4225dead44e631d39f3a14af09b003e6a78d03bf106e2f7"
+    },
+    {
+      "artifact_id": 14044263687,
+      "bytes": 255,
+      "file": "native-cli-cli-observation.json",
+      "sha256": "ac739bebc07690e3006a4898707992b4f86a1e51704230437e05192cec224c22"
+    },
+    {
+      "artifact_id": 14044418979,
+      "bytes": 7268,
+      "file": "native-session-ci-record.json",
+      "sha256": "5c1be07aa137b3a69f0145d0db2ba49220b2b34420d7920049e7e47ab11df32c"
+    },
+    {
+      "artifact_id": 14044418979,
+      "bytes": 347,
+      "file": "native-session-session-observation.json",
+      "sha256": "60bf225bc984d8cfbf48c071345b041bb94d371933927cb016bc500414afccec"
+    },
+    {
+      "artifact_id": 14044288743,
+      "bytes": 7464,
+      "file": "native-operator-operator-observation.json",
+      "sha256": "ad462cb4541ee503bce4fe7a6b50a2910359910fe378753b438af0a4654f08b8"
+    },
+    {
+      "artifact_id": 14044123943,
+      "bytes": 6944,
+      "file": "native-core-ci-record.json",
+      "sha256": "faa76a0223898916716c8b4497393e7e602ca3c6fca1d9bf75779b159a7a85d7"
+    }
+  ],
+  "offline_audits": [
+    {
+      "packet": "core",
+      "result": {
+        "model_checks": 3,
+        "native_execution_performed": false,
+        "record_sha256": "6a77307516b633d45b45f8efa4581076c854549491960652026b7219a3ff8bd8",
+        "rejection_checks": 4,
+        "request_checks": 3,
+        "response_checks": 3,
+        "scalar_checks": 18,
+        "schema_version": "tuc.bounded_model_application_native_audit.v0",
+        "status": "PASS",
+        "tuc_imported": false
+      }
+    },
+    {
+      "packet": "cli",
+      "result": {
+        "model_checks": 3,
+        "native_execution_performed": false,
+        "record_sha256": "6a77307516b633d45b45f8efa4581076c854549491960652026b7219a3ff8bd8",
+        "rejection_checks": 4,
+        "request_checks": 3,
+        "response_checks": 3,
+        "scalar_checks": 18,
+        "schema_version": "tuc.bounded_model_application_native_audit.v0",
+        "status": "PASS",
+        "tuc_imported": false
+      }
+    },
+    {
+      "packet": "session",
+      "result": {
+        "model_checks": 3,
+        "native_execution_performed": false,
+        "record_sha256": "6a77307516b633d45b45f8efa4581076c854549491960652026b7219a3ff8bd8",
+        "rejection_checks": 4,
+        "request_checks": 3,
+        "response_checks": 3,
+        "scalar_checks": 18,
+        "schema_version": "tuc.bounded_model_application_native_audit.v0",
+        "status": "PASS",
+        "tuc_imported": false
+      }
+    }
+  ],
+  "origin_zip_artifacts": [
+    {
+      "id": 14044263687,
+      "members": [
+        {
+          "bytes": 7268,
+          "name": "ci-record.json"
+        },
+        {
+          "bytes": 255,
+          "name": "cli-observation.json"
+        }
+      ],
+      "name": "cli",
+      "sha256": "cf50843ad5e13baef93b68c84b61682fdea6d4c5add8d764e83e7954cfc96d5e",
+      "size": 2197
+    },
+    {
+      "id": 14044418979,
+      "members": [
+        {
+          "bytes": 7268,
+          "name": "ci-record.json"
+        },
+        {
+          "bytes": 347,
+          "name": "session-observation.json"
+        }
+      ],
+      "name": "session",
+      "sha256": "934e00da70854fc5c54b225339e90edcb4deb13e6e61e7c407d18d8a7aefe674",
+      "size": 2267
+    },
+    {
+      "id": 14044288743,
+      "members": [
+        {
+          "bytes": 7464,
+          "name": "operator-observation.json"
+        }
+      ],
+      "name": "operator",
+      "sha256": "3fe9450a8acdea435e5fe9fd42c60b94eff541b39b7ad062511f368b73d0f7da",
+      "size": 2143
+    },
+    {
+      "id": 14044123943,
+      "members": [
+        {
+          "bytes": 6944,
+          "name": "ci-record.json"
+        }
+      ],
+      "name": "core",
+      "sha256": "6e25b1203ae8f5aea6300252bf3bdae217b9b883bab0bb981454a408f1a0e0b3",
+      "size": 1870
+    }
+  ],
+  "run_id": 43440580110,
+  "source": "8044760f5e474d71ac10f22f20f2f2fd0883fef3",
+  "wheel_sha256": "ee31224150fcd7c25054f176f9e8ebdf5545224a141fefcf780ce9ef3bf5d88b"
+}

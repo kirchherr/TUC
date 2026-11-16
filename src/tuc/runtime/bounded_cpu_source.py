@@ -42,7 +42,7 @@ _MAX_RESPONSE_BYTES = 256 * 1024
 _WORKER = "/opt/tuc/src/tuc/frontend/_isolated_source_ingestion_worker.py"
 _PYTHON_IMAGE = (
     "python:3.12-slim-bookworm@sha256:"
-    "4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2"
+    "0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4"
 )
 _FRONTEND = (
     "docker/dockerfile:1.7@sha256:"

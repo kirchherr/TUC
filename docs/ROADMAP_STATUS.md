@@ -9,11 +9,18 @@ research release are open. The [completion review and plan](PROJECT_COMPLETION_P
 defines findings, owners and exit artifacts under
 [RFC0343](../rfcs/0343-acceptance-led-roadmap.md).
 
+Update 2026-11-13: [#143's normally merged `8044760` dry-run](evidence/RESEARCH_CANDIDATE_8044760.md)
+passed all 35 checks (33 success, two expected skips), built/attested 0.2.0 and
+passed eight fresh signature/SBOM checks. Effective protections and the normal
+Codeowner path are verified; the old publisher was disabled with owner
+approval. The actual image review found available security corrections, so a
+worker/build-tool refresh and new candidate pin are required before freeze.
+
 | Milestone | Status |
 | --- | --- |
-| M0: candidate preparation and freeze | Engineering implementation proven; branch-policy enforcement, eligible review ownership and release preparation require owner/maintainer action. |
+| M0: candidate preparation and freeze | Protections/normal review verified; 0.2.0 engineering dry-run and signatures passed; legacy publisher disabled. Security refresh, rebuilt-image review and a new protected candidate freeze remain open. |
 | M1: independent reproduction | Open; needs an independently controlled operator and the exact M0 candidate. |
-| M2: accepted research release | Open; depends on M0/M1 and protected release approval. |
+| M2: accepted research release | Open; depends on M0/M1, replacement publisher/actual PyPI binding and protected release approval. |
 | M3: independent backend author | Open human integration milestone; installed Gamma/Delta contracts are available. |
 | M4: distinct physical vendor/ISA | Future bounded proof; current same-project CPU/GPU evidence retains its original scope. |
 | M5: performance | Future separate protocol; existing performance claim gates remain in force. |

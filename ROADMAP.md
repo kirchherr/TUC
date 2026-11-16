@@ -11,6 +11,12 @@ protected release remain open. The [completion review and plan](docs/PROJECT_COM
 defines the reviewed gaps, owner roles and required exit artifacts under
 [RFC0343](rfcs/0343-acceptance-led-roadmap.md).
 
+The [0.2.0 engineering dry-run at `8044760`](docs/evidence/RESEARCH_CANDIDATE_8044760.md)
+has verified normal Codeowner review, protected builds, checksums and
+signatures. The old publisher is disabled with owner approval. Security review
+requires a refreshed worker/build toolchain and a new candidate pin before
+M0 freeze; M1/M2 acceptance remains open.
+
 | Order | Milestone | Exit requirement |
 | --- | --- | --- |
 | M0 | Prepare and freeze the candidate | Resolve findings, verify actual CI/review/publishing controls, record exact candidate/artifact identities and passing required checks. |

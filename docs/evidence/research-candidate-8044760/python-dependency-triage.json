@@ -1,0 +1,179 @@
+{
+  "observed_utc": "2026-11-13T13:44:42.623357+00:00",
+  "source": "a46c87d3ee32bbe6974af2156c4c79c741dfc553",
+  "lock_sha256": {
+    "requirements\\research-release.txt": "88847096f470feeb70f9e14bd61d2e9a7ab6f1ebf48b4beb069d1be08f05ab1f",
+    "requirements\\source-worker.txt": "68be807613300c9c5932f2c970e251a15974718fc38df68d03faf41efcac0602"
+  },
+  "packages": [
+    {
+      "name": "ast-serialize",
+      "version": "0.8.0",
+      "source": "https://pypi.org/pypi/ast-serialize/0.8.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "build",
+      "version": "1.5.0",
+      "source": "https://pypi.org/pypi/build/1.5.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "execnet",
+      "version": "2.1.2",
+      "source": "https://pypi.org/pypi/execnet/2.1.2/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "hypothesis",
+      "version": "6.165.3",
+      "source": "https://pypi.org/pypi/hypothesis/6.165.3/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0",
+      "source": "https://pypi.org/pypi/iniconfig/2.3.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "librt",
+      "version": "0.15.0",
+      "source": "https://pypi.org/pypi/librt/0.15.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "mypy",
+      "version": "2.3.0",
+      "source": "https://pypi.org/pypi/mypy/2.3.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "mypy-extensions",
+      "version": "1.1.0",
+      "source": "https://pypi.org/pypi/mypy-extensions/1.1.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "numpy",
+      "version": "2.4.4",
+      "source": "https://pypi.org/pypi/numpy/2.4.4/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "source": "https://pypi.org/pypi/packaging/26.3/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "pathspec",
+      "version": "1.1.1",
+      "source": "https://pypi.org/pypi/pathspec/1.1.1/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "source": "https://pypi.org/pypi/pluggy/1.6.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "pygments",
+      "version": "2.20.0",
+      "source": "https://pypi.org/pypi/pygments/2.20.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "pyproject-hooks",
+      "version": "1.2.0",
+      "source": "https://pypi.org/pypi/pyproject-hooks/1.2.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1",
+      "source": "https://pypi.org/pypi/pytest/9.1.1/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "pytest-xdist",
+      "version": "3.8.0",
+      "source": "https://pypi.org/pypi/pytest-xdist/3.8.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "ruff",
+      "version": "0.16.2",
+      "source": "https://pypi.org/pypi/ruff/0.16.2/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "setuptools",
+      "version": "84.1.0",
+      "source": "https://pypi.org/pypi/setuptools/84.1.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "sortedcontainers",
+      "version": "2.4.0",
+      "source": "https://pypi.org/pypi/sortedcontainers/2.4.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "source": "https://pypi.org/pypi/typing-extensions/4.16.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    },
+    {
+      "name": "wheel",
+      "version": "0.48.0",
+      "source": "https://pypi.org/pypi/wheel/0.48.0/json",
+      "locked_hashes_match_assets": true,
+      "active_advisories": [],
+      "withdrawn_advisories": []
+    }
+  ],
+  "scope": "Current PyPI known-advisory metadata and release-asset hash membership only. Not an exhaustive security assessment or an image/action scan. This report covers the patched candidate lock, not historical ci.txt. Dependabot is enabled and its open low-severity setuptools alert in that historical lock remains visible."
+}
