@@ -7,7 +7,8 @@ Decision: [RFC0343](../rfcs/0343-acceptance-led-roadmap.md).
 Updated on 2026-11-16 with normally merged #144 source `fdfcc19` and its
 [protected candidate, fresh security review and retained evidence](evidence/RESEARCH_CANDIDATE_FDFCC19.md).
 The exact candidate and supplied-wheel handoff are proposed for normal freeze
-review. Project-controlled rehearsal supplies readiness; M1 independent
+review; the actual supplied-wheel core/session/CLI rehearsal passed.
+Project-controlled rehearsal supplies readiness; M1 independent
 acceptance and M2 publication remain open. The
 [8044760 engineering dry-run](evidence/RESEARCH_CANDIDATE_8044760.md) remains historical.
 
@@ -46,10 +47,10 @@ runtime defect was identified in this scope.
 | --- | --- | --- |
 | R1 | P2: Roadmap entries describe merged RFC0341/0342 as candidates with validation still delegated to the PR; implementation status and independent acceptance are not separated. | Corrected with merge/source evidence and explicit open acceptance state. |
 | R2 | P2: The priority list mixes maintenance, older completed increments and future research without an ordered release completion test. | Replaced by M0-M6, owners, dependencies and required exit artifacts. |
-| R3 | P2: New CLI/session observations are retained in 14-day CI artifacts; the existing offline kit retains the older original numerical observation. Rebuilding that kit cannot recreate the actual new lifecycle observation. | Four actual baseline JSON files are retained byte-for-byte with artifact/source bindings and offline audits in the [evidence index](evidence/BOUNDED_MODEL_APPLICATION_3324F72.md). |
+| R3 | P2: New CLI/session observations are retained in 14-day CI artifacts; the existing offline kit retains the older original numerical observation. Rebuilding that kit cannot recreate the actual new lifecycle observation. | Four actual baseline JSON files are retained byte-for-byte with artifact/source bindings and offline audits in the [evidence index](evidence/BOUNDED_MODEL_APPLICATION_3324F72.md). Current main and supplied-wheel members are also retained in the [candidate packet](evidence/RESEARCH_CANDIDATE_FDFCC19.md), with source/wheel/member hashes and fresh audits. |
 | R4 | P1 for release readiness: effective `main` rules enforce PR review, deletion and non-fast-forward protection, but omit `required_status_checks` and linear-history enforcement required by the documented branch policy. | Resolved. Owner-approved ruleset `17319611` enforces strict Actions-bound required checks, linear history, Squash/Rebase and Codeowner review, with no bypass actors. #143 merged normally; actual rule suite `5098619497` passed all five evaluations. |
 | R5 | P2: The only listed codeowner is `@kirchherr`, also author of the recent PRs. The active rule requires one codeowner approval; technical self-comments did not satisfy it, and #139/#140 used separately authorized exceptions. | Resolved. The owner's selected Write-enabled Codeowner `mailactiveblue-blip` formally approved #143's exact final head. The ordinary Squash merge passed the active rules without bypass. Consumed exceptions confer no future permission. |
-| R6 | P1 for candidate freeze: the attested engineering worker still uses the older Python/OS image; its actual scan has vendor-fixable package findings. BuildKit 0.30.0 also matches two published advisories. | Refresh normally merged in #144. The protected `fdfcc19` candidate passed 7,778 tests, eight fresh signature checks and the actual rebuilt-worker scan. No available-fix or Python-package matches remain in that worker scan; 2 critical and 100 high OS matches remain visible with scoped dispositions. Main CI tests the same source profile on cgroup v2; the local exact-image canary passed, while its protocol request correctly failed on unsupported cgroup v1. Freeze-packet review and supplied-wheel readiness validation remain the final M0 work. |
+| R6 | P1 for candidate freeze: the attested engineering worker still uses the older Python/OS image; its actual scan has vendor-fixable package findings. BuildKit 0.30.0 also matches two published advisories. | Refresh normally merged in #144. The protected `fdfcc19` candidate passed 7,778 tests, eight fresh signature checks and the actual rebuilt-worker scan. No available-fix or Python-package matches remain in that worker scan; 2 critical and 100 high OS matches remain visible with scoped dispositions. Main CI tests the same source profile on cgroup v2; the local exact-image canary passed, while its protocol request correctly failed on unsupported cgroup v1. The supplied-wheel project rehearsal passed; normal Codeowner merge of this packet after required checks adopts the scoped freeze. |
 
 R4/R5 are verified through the ordinary #143 and #144 merges. The owner-approved tag,
 alert and PyPI environment controls were also read back on 2026-11-13: required
@@ -57,8 +58,9 @@ reviewers, no self-review, no administrator bypass and unchanged deployment
 filters. The separately approved historical publisher retirement was also
 verified: its Actions state is `disabled_manually`, while CI and the candidate
 workflow remain active. R6's refreshed candidate and scoped residual assessment
-are recorded for normal freeze review; M0 still requires that review and the
-supplied-wheel readiness result. Consumed merge exceptions
+are recorded for normal freeze review, including the passing supplied-wheel
+readiness result. Normal Codeowner merge after required checks adopts the M0
+pin and its documented scope. Consumed merge exceptions
 confer no future permission.
 The observed effective-rule endpoint was
 `GET /repos/kirchherr/TUC/rules/branches/main`, backed by active ruleset
@@ -106,7 +108,7 @@ responsibility; an external operator or author has not yet been assigned.
 
 | ID | Outcome and owner | Required exit artifact | Current state |
 | --- | --- | --- | --- |
-| M0 | Prepare and freeze the next research release candidate. Maintainer and repository owner. | No unresolved blocking findings; actual branch/review/publishing controls verified; version/support scope and exact source, lock, wheel, image and verifier identities recorded; exact-revision required CI passed. | Refreshed `fdfcc19` candidate and exact identities recorded; protected CI, eight signature checks and current actual-image/residual review passed. Supplied-wheel project rehearsal and normal freeze-packet review complete the proposal. Legacy publisher remains disabled. |
+| M0 | Prepare and freeze the next research release candidate. Maintainer and repository owner. | No unresolved blocking findings; actual branch/review/publishing controls verified; version/support scope and exact source, lock, wheel, image and verifier identities recorded; exact-revision required CI passed. | Refreshed `fdfcc19` identities, protected CI, eight signature checks, current actual-image/residual review and actual supplied-wheel project rehearsal passed. Normal Codeowner merge of this packet after required checks adopts the freeze. Legacy publisher remains disabled. |
 | M1 | Reproduce the frozen candidate outside project control. Independent operator, reviewed by maintainer. | Attributable fresh core, session and CLI observations, source/wheel bindings, command/run origin and passing offline audits; independence and scope accepted in review. | Open; exact candidate and supplied-wheel procedure are prepared. The owner has no independent operator assigned; project rehearsal does not supply that role. |
 | M2 | Publish the accepted bounded research release. Release owner and eligible approver. | Protected exact-source release, wheel/sdist, checksums, SBOM and verified provenance; release notes bind M1's result and state the supported boundary. | Open; requires M0/M1, a reviewed replacement publisher and actual PyPI binding, then normal release/publishing approvals. |
 | M3 | Have another developer integrate a data-only backend through the installed contract. Independent backend author. | Author-owned package, negative conformance and inspectable plan, installed reproduction, no TUC core modification. | Open external author milestone; existing Gamma/Delta CI provides the starting contract. |

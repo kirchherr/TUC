@@ -25,7 +25,8 @@ verified through #143 and #144. The refreshed protected candidate at `fdfcc19`
 passed main and candidate regressions with 7,778 tests each, checksums,
 SBOM/OCI checks and eight fresh cryptographic checks. Its
 [exact identities, full current scan and scoped residual review](evidence/RESEARCH_CANDIDATE_FDFCC19.md)
-are retained for normal M0 freeze review and supplied-wheel readiness validation.
+are retained for normal M0 freeze review. The actual supplied-wheel project
+rehearsal passed the unchanged core, session and CLI consumers and audits.
 The candidate worker scan has zero available-fix or Python-package matches;
 remaining OS matches and the unused installer files inherited by the copy-only
 converter remain explicitly recorded. This does not claim general vulnerability

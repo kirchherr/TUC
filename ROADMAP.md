@@ -15,8 +15,9 @@ The [refreshed 0.2.0 candidate at `fdfcc19`](docs/evidence/RESEARCH_CANDIDATE_FD
 normally merged #144, passed main and protected-candidate regressions with
 7,778 tests each, and has verified checksums, SBOM/OCI bindings and eight fresh
 signature checks. The current image scan and scoped residual review are
-retained. M0's exact candidate pin and supplied-wheel handoff are proposed for
-normal Codeowner review; the project rehearsal verifies readiness. The
+retained. The actual supplied-wheel project rehearsal passed core, session and
+CLI checks. Normal Codeowner merge of this packet after required checks adopts
+M0's exact candidate pin and handoff. The
 [operator procedure](docs/SUPPLIED_CANDIDATE_OPERATOR.md) installs that exact
 wheel without rebuilding TUC. M1 still needs an independently controlled
 operator, and M2 still needs the reviewed publisher/binding and release approval.

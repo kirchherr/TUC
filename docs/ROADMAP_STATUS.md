@@ -15,12 +15,13 @@ main/candidate regressions and eight fresh signature/SBOM checks. The actual
 updated worker scan has no available-fix or Python-package matches; remaining
 OS findings have explicit scoped dispositions and the full scan is retained.
 The exact pin and [supplied-wheel procedure](SUPPLIED_CANDIDATE_OPERATOR.md) are
-prepared for normal M0 review and project readiness validation. The old
+prepared, and the actual supplied-wheel project rehearsal passed. Normal
+Codeowner merge of this packet after required checks adopts the M0 pin. The old
 publisher remains disabled. An independent M1 operator is still unassigned.
 
 | Milestone | Status |
 | --- | --- |
-| M0: candidate preparation and freeze | Refreshed `fdfcc19` pin, protected builds, signatures and current image/residual review recorded. Supplied-wheel project validation and normal freeze-packet review complete the proposal; legacy publisher disabled. |
+| M0: candidate preparation and freeze | Refreshed `fdfcc19` pin, protected builds, signatures, current image/residual review and actual supplied-wheel project rehearsal passed. Normal Codeowner merge of this packet after required checks adopts the freeze; legacy publisher disabled. |
 | M1: independent reproduction | Open; exact candidate and supplied-wheel procedure prepared. No independently controlled operator is assigned; project CI supplies readiness only. |
 | M2: accepted research release | Open; depends on M0/M1, replacement publisher/actual PyPI binding and protected release approval. |
 | M3: independent backend author | Open human integration milestone; installed Gamma/Delta contracts are available. |

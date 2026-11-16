@@ -90,6 +90,52 @@ producer-written predicates and bundle-only repository names do not establish
 those facts by themselves. The subsequent handoff controller has its own
 recorded source/digest and leaves the candidate wheel and consumers unchanged.
 
+## Supplied-wheel project rehearsal
+
+The [actual supplied-wheel job](https://github.com/kirchherr/TUC/actions/runs/43832760341/job/133181809983)
+passed thirteen rejection/pin tests, provenance/certificate/current-repository
+checks and all three native model consumers with candidate wheel `db258c3...`.
+It installed the authenticated local wheel with `--no-deps --no-index` and
+did not build a replacement TUC wheel. Its controller revision is
+`b57bcee8cf217fccda362f8dbb21fc7099fe74e6`, with LF Git/source digest
+`78a1e585b4d3f7cae3504bad607f9aea75445941fdd70305b22a280652c58f78`;
+the package/consumer source remains the separately identified `fdfcc19`.
+
+The [observation index](research-candidate-fdfcc19/supplied-wheel-observations.json)
+binds actual artifact `14209496688`, 22,548 ZIP bytes, transport SHA-256
+`f8e45618395f6411d9670d4f24c15c962570921a139b147fd64c381e5900c3c3`,
+all fourteen original members and three fresh offline audits. The run used
+Linux x86-64, CPython 3.12.16, Docker 28.0.4/API 1.48 and cgroup v2.
+The actual [rehearsal record](research-candidate-fdfcc19/supplied-wheel/rehearsal.json)
+retains the fixed source/material identities, original record digest and
+`tuc_wheel_rebuilt=false`.
+
+- [Core packet](research-candidate-fdfcc19/supplied-wheel/core/ci-record.json),
+  [original record](research-candidate-fdfcc19/supplied-wheel/core/record.json)
+  and [audit](research-candidate-fdfcc19/supplied-wheel/core/audit.json).
+- [Session packet](research-candidate-fdfcc19/supplied-wheel/session/ci-record.json)
+  and [actual lifecycle](research-candidate-fdfcc19/supplied-wheel/session/session-observation.json):
+  two builds, four native calls, three successes, `[1,2,1]`, one closed-session
+  rejection and clean workspaces.
+- [CLI packet](research-candidate-fdfcc19/supplied-wheel/cli/ci-record.json)
+  and [actual observation](research-candidate-fdfcc19/supplied-wheel/cli/cli-observation.json):
+  three successes, seven rejected commands, batch `[1,2]`, single `1`, installed
+  execution outside the checkout and clean workspaces.
+
+All three original numerical records have digest `6a773075...`; three fresh
+stdlib-only audits each passed eighteen scalars and four rejection controls,
+with `tuc_imported=false` and `native_execution_performed=false`. Original
+JSON bytes are retained; the producer's native execution and lifecycle are
+separate facts tied to its actual source/run. This is project-controlled
+readiness evidence, with independent acceptance explicitly false.
+
+M0 adoption uses this exact candidate, recorded scopes and passing supplied-wheel
+rehearsal when the packet is normally Codeowner-approved and merged after its
+required checks. It authorizes no tag or publication. M1 next needs an
+attributable independently controlled operator; none is assigned. M2 still
+requires M1, its reviewed replacement publisher/actual PyPI binding and the
+normal release/environment approvals.
+
 ## Current actual-image review
 
 The [scan summary](research-candidate-fdfcc19/image-security-triage.json) and

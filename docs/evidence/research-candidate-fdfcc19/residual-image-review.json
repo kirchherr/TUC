@@ -121,7 +121,14 @@
       "job_id": 133147660704,
       "scope": "Actual fdfcc19 main CI image build; separately built image with the same reviewed Docker/source inputs; positive request, context exclusion and denied host-network entitlement"
     },
-    "source_converter_base_pip": "Retained unused installer findings and closed import/dispatch assessment are separate in source-converter-base-security.json"
+    "source_converter_base_pip": "Retained unused installer findings and closed import/dispatch assessment are separate in source-converter-base-security.json",
+    "supplied_candidate_wheel_rehearsal": {
+      "status": "PASS",
+      "run_id": 43832760341,
+      "procedure_source": "b57bcee8cf217fccda362f8dbb21fc7099fe74e6",
+      "candidate_wheel_sha256": "db258c3ca5cb2861779ebdfbb6b2d6d6991d99ec27c1f40616a3f85d6a8ebf85",
+      "scope": "project-controlled core/session/CLI; no independent acceptance"
+    }
   },
   "limitations": [
     "Static reachability inference and fixed probes do not prove general vulnerability absence or every transitive component's safety.",
@@ -129,9 +136,10 @@
     "The cgroup-v2 positive profile result identifies the separately built main CI image, not the exact candidate archive.",
     "Production source ingestion, arbitrary executable plugins and general native backend admission remain closed.",
     "A source, imported-module set, base image, network, filesystem or execution-authority change requires renewed review.",
-    "The supplied candidate wheel still requires its separate project rehearsal; independent M1 operator acceptance and M2 publication approval remain open."
+    "The supplied-wheel project rehearsal passed as separately indexed; independent M1 operator acceptance and M2 publication approval remain open."
   ],
   "suppression_files_changed": false,
   "release_security_approval": false,
-  "independent_operator_acceptance": false
+  "independent_operator_acceptance": false,
+  "assessment_updated_utc": "2026-11-16T08:46:15.230778+00:00"
 }
