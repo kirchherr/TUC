@@ -1,0 +1,63 @@
+{
+  "status": "CANARY_PASS_PROTOCOL_UNSUPPORTED",
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "candidate_run_id": 43826307479,
+  "artifact_id": 14207209811,
+  "observed_utc": "2026-11-16T08:22:40.593847+00:00",
+  "archive_sha256": "3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+  "image_config_digest": "sha256:e860fa5016c6a7650bc61d4f460a9c77202917c7e9c164aae6ca2877f32c7408",
+  "transport_adaptation": {
+    "source_oci_sha256": "3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+    "docker_archive_sha256": "d1bf2677a7f0045ff1ddfef54d17cafa42842237af68fb8f9fd16d21a948f31a",
+    "image_config_digest": "sha256:e860fa5016c6a7650bc61d4f460a9c77202917c7e9c164aae6ca2877f32c7408",
+    "preserved_uncompressed_layer_diff_ids": [
+      "sha256:1d7b9dd8778ebc4d9bf2f64436dd358640718cb349f5640b33bebaea4ffd62c2",
+      "sha256:a3cfe73133965fb536427fde3fe66b2949ea6178f568733760bf45f5c8b5c405",
+      "sha256:5e63f01f0cee6291b52c44ffeee48c9eb7b94cdb19478259bcfce37db9eb680e",
+      "sha256:311a92d269bd002ca4ff3d801c6320df734027d3b425ff1ec860368f12b07a26",
+      "sha256:9d8a13930489a700dd3742e35f91d77e49916ac73c2fbdaf7652cf0fd126ca68",
+      "sha256:46a40f7db846c97e1f3aa6f7053a21a175a10ec656ac4d79b25f1ebe6c362c72",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+    ],
+    "layer_count": 7,
+    "image_rebuilt": false,
+    "image_layers_extracted_to_host_filesystem": false,
+    "purpose": "Transport-only adaptation for classic Docker load; original signed config and all uncompressed layer bytes preserved"
+  },
+  "local_endpoint": "Docker Desktop Linux named pipe; no remote endpoint",
+  "daemon_version": "29.6.2",
+  "daemon_os": "linux",
+  "daemon_arch": "amd64",
+  "canary": {
+    "status": "PASS",
+    "python": "3.12.16",
+    "uid": 10001,
+    "gid": 10001,
+    "numpy_present": false,
+    "pip_present": false,
+    "ensurepip_present": false,
+    "context_marker_absent": true,
+    "seccomp": 2,
+    "no_new_privileges": 1,
+    "effective_capabilities": "0000000000000000",
+    "rootfs_readonly": true,
+    "network_interfaces": [
+      "lo"
+    ],
+    "cgroup_version": 1,
+    "memory_max": "1073741824",
+    "pids_max": "32",
+    "cpu_max": "100000 100000"
+  },
+  "request_sha256": "92d7c9cce0d0c64939290aade74ebaf1cf5ab6edf8becacd8ffb16f1f110551e",
+  "response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "protocol_result": "UNSUPPORTED_CGROUP_V1; unchanged worker requires cgroup v2 before parsing",
+  "host_graph_decoder": "NOT_RUN",
+  "containers_removed": true,
+  "preexisting_image_preserved": false,
+  "newly_loaded_image_removed": true,
+  "container_execution_performed": true,
+  "native_model_execution_performed": false,
+  "independent_operator_acceptance": false,
+  "context_exclusion_injection_probe": "Separate fdfcc19 main image job; this artifact probe only observes marker absence"
+}

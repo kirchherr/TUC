@@ -1,0 +1,176 @@
+{
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "run_id": 43822210153,
+  "job_id": 133147661433,
+  "selected_tests_passed": 552,
+  "wheel_sha256": "965bfa94fdc06241fb1bd9d2d2fa9ba2822b5de4fdffb33c677b6aaa7dd28ad6",
+  "origin_zip_artifacts": [
+    {
+      "id": 14204712905,
+      "name": "bounded-model-application-receipt",
+      "size_in_bytes": 1867,
+      "url": "https://api.github.com/repos/kirchherr/TUC/actions/artifacts/14204712905",
+      "archive_download_url": "https://api.github.com/repos/kirchherr/TUC/actions/artifacts/14204712905/zip",
+      "expired": false,
+      "created_at": "2026-11-16T07:16:30Z",
+      "expires_at": "2026-11-30T07:16:29Z",
+      "updated_at": "2026-11-16T07:16:30Z",
+      "digest": "sha256:67503e55be0295f3f889333cd522aab7aa1da4f6058050b9d6cb21fb51f92561",
+      "workflow_run": {
+        "id": 43822210153,
+        "repository_id": 1260144654,
+        "head_repository_id": 1260144654,
+        "head_branch": "main",
+        "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536"
+      },
+      "file_name": "main-fdfcc19-14204712905.zip"
+    },
+    {
+      "id": 14204933406,
+      "name": "bounded-model-application-session-receipt",
+      "size_in_bytes": 2265,
+      "url": "https://api.github.com/repos/kirchherr/TUC/actions/artifacts/14204933406",
+      "archive_download_url": "https://api.github.com/repos/kirchherr/TUC/actions/artifacts/14204933406/zip",
+      "expired": false,
+      "created_at": "2026-11-16T07:16:16Z",
+      "expires_at": "2026-11-30T07:16:14Z",
+      "updated_at": "2026-11-16T07:16:16Z",
+      "digest": "sha256:4cff276a764ac918544b84df393ecfd9f503679f67d3d412c0f66273983a938a",
+      "workflow_run": {
+        "id": 43822210153,
+        "repository_id": 1260144654,
+        "head_repository_id": 1260144654,
+        "head_branch": "main",
+        "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536"
+      },
+      "file_name": "main-fdfcc19-14204933406.zip"
+    },
+    {
+      "id": 14205635233,
+      "name": "bounded-model-application-cli-receipt",
+      "size_in_bytes": 2196,
+      "url": "https://api.github.com/repos/kirchherr/TUC/actions/artifacts/14205635233",
+      "archive_download_url": "https://api.github.com/repos/kirchherr/TUC/actions/artifacts/14205635233/zip",
+      "expired": false,
+      "created_at": "2026-11-16T07:16:27Z",
+      "expires_at": "2026-11-30T07:16:26Z",
+      "updated_at": "2026-11-16T07:16:27Z",
+      "digest": "sha256:b5a205d8aebefdbb2001755fa25350e60ceb8f146a8c2a6dc246653f3f1e5154",
+      "workflow_run": {
+        "id": 43822210153,
+        "repository_id": 1260144654,
+        "head_repository_id": 1260144654,
+        "head_branch": "main",
+        "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536"
+      },
+      "file_name": "main-fdfcc19-14205635233.zip"
+    },
+    {
+      "id": 14205381111,
+      "name": "bounded-model-application-operator-rehearsal",
+      "size_in_bytes": 2141,
+      "url": "https://api.github.com/repos/kirchherr/TUC/actions/artifacts/14205381111",
+      "archive_download_url": "https://api.github.com/repos/kirchherr/TUC/actions/artifacts/14205381111/zip",
+      "expired": false,
+      "created_at": "2026-11-16T07:16:11Z",
+      "expires_at": "2026-11-30T07:16:10Z",
+      "updated_at": "2026-11-16T07:16:11Z",
+      "digest": "sha256:334d2c0ba5aeb15e2bd13e93b2168cc3919515566f7300253073e67909283631",
+      "workflow_run": {
+        "id": 43822210153,
+        "repository_id": 1260144654,
+        "head_repository_id": 1260144654,
+        "head_branch": "main",
+        "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536"
+      },
+      "file_name": "main-fdfcc19-14205381111.zip"
+    }
+  ],
+  "members": [
+    {
+      "file": "native-core-ci-record.json",
+      "bytes": 6944,
+      "sha256": "9b856ba77244a54a094dec506295872731ea60790fd59a811ccc895a72831216",
+      "artifact_id": 14204712905
+    },
+    {
+      "file": "native-session-ci-record.json",
+      "bytes": 7268,
+      "sha256": "fb3a48a1c9b208c163ec940e033fa45885572c1a8d661699c913b11c47195f96",
+      "artifact_id": 14204933406
+    },
+    {
+      "file": "native-session-session-observation.json",
+      "bytes": 347,
+      "sha256": "60bf225bc984d8cfbf48c071345b041bb94d371933927cb016bc500414afccec",
+      "artifact_id": 14204933406
+    },
+    {
+      "file": "native-cli-ci-record.json",
+      "bytes": 7268,
+      "sha256": "00da148228baa86c7b9fd7554bf6eb0b91e1be6f6234a4388a648585e6ea85ff",
+      "artifact_id": 14205635233
+    },
+    {
+      "file": "native-cli-cli-observation.json",
+      "bytes": 255,
+      "sha256": "ac739bebc07690e3006a4898707992b4f86a1e51704230437e05192cec224c22",
+      "artifact_id": 14205635233
+    },
+    {
+      "file": "native-operator-operator-observation.json",
+      "bytes": 7464,
+      "sha256": "fe1c4f2e24db40bb4388908b29d96f9f6046bcd3b4edf4f207a3b373dfa9d54e",
+      "artifact_id": 14205381111
+    }
+  ],
+  "offline_audits": [
+    {
+      "packet": "core",
+      "result": {
+        "model_checks": 3,
+        "native_execution_performed": false,
+        "record_sha256": "6a77307516b633d45b45f8efa4581076c854549491960652026b7219a3ff8bd8",
+        "rejection_checks": 4,
+        "request_checks": 3,
+        "response_checks": 3,
+        "scalar_checks": 18,
+        "schema_version": "tuc.bounded_model_application_native_audit.v0",
+        "status": "PASS",
+        "tuc_imported": false
+      }
+    },
+    {
+      "packet": "session",
+      "result": {
+        "model_checks": 3,
+        "native_execution_performed": false,
+        "record_sha256": "6a77307516b633d45b45f8efa4581076c854549491960652026b7219a3ff8bd8",
+        "rejection_checks": 4,
+        "request_checks": 3,
+        "response_checks": 3,
+        "scalar_checks": 18,
+        "schema_version": "tuc.bounded_model_application_native_audit.v0",
+        "status": "PASS",
+        "tuc_imported": false
+      }
+    },
+    {
+      "packet": "cli",
+      "result": {
+        "model_checks": 3,
+        "native_execution_performed": false,
+        "record_sha256": "6a77307516b633d45b45f8efa4581076c854549491960652026b7219a3ff8bd8",
+        "rejection_checks": 4,
+        "request_checks": 3,
+        "response_checks": 3,
+        "scalar_checks": 18,
+        "schema_version": "tuc.bounded_model_application_native_audit.v0",
+        "status": "PASS",
+        "tuc_imported": false
+      }
+    }
+  ],
+  "candidate_wheel_execution": false,
+  "independent_operator_acceptance": false
+}

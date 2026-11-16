@@ -1,0 +1,13 @@
+{
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "run_id": 43826307479,
+  "job_id": 133160867738,
+  "passed": 7778,
+  "skipped": 2,
+  "pytest_seconds": 1291.59,
+  "ruff": "PASS",
+  "mypy_source_files": 169,
+  "distribution_and_isolated_wheel_check": "PASS",
+  "oci_sbom_attestations_upload": "PASS",
+  "publishing_job": false
+}

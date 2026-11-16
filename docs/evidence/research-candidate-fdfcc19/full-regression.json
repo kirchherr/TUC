@@ -1,0 +1,11 @@
+{
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "run_id": 43822210038,
+  "job_id": 133147661429,
+  "passed": 7778,
+  "skipped": 2,
+  "pytest_seconds": 1732.59,
+  "ruff": "PASS",
+  "mypy_files": 169,
+  "post_pytest_proof_gates": "PASS"
+}

@@ -9,17 +9,20 @@ research release are open. The [completion review and plan](PROJECT_COMPLETION_P
 defines findings, owners and exit artifacts under
 [RFC0343](../rfcs/0343-acceptance-led-roadmap.md).
 
-Update 2026-11-13: [#143's normally merged `8044760` dry-run](evidence/RESEARCH_CANDIDATE_8044760.md)
-passed all 35 checks (33 success, two expected skips), built/attested 0.2.0 and
-passed eight fresh signature/SBOM checks. Effective protections and the normal
-Codeowner path are verified; the old publisher was disabled with owner
-approval. The actual image review found available security corrections, so a
-worker/build-tool refresh and new candidate pin are required before freeze.
+Update 2026-11-16: [#144's normally merged `fdfcc19` candidate](evidence/RESEARCH_CANDIDATE_FDFCC19.md)
+passed all 34 source checks (32 success, two expected skips), two 7,778-test
+main/candidate regressions and eight fresh signature/SBOM checks. The actual
+updated worker scan has no available-fix or Python-package matches; remaining
+OS findings have explicit scoped dispositions and the full scan is retained.
+The exact pin and [supplied-wheel procedure](SUPPLIED_CANDIDATE_OPERATOR.md) are
+prepared, and the actual supplied-wheel project rehearsal passed. Normal
+Codeowner merge of this packet after required checks adopts the M0 pin. The old
+publisher remains disabled. An independent M1 operator is still unassigned.
 
 | Milestone | Status |
 | --- | --- |
-| M0: candidate preparation and freeze | Protections/normal review verified; 0.2.0 engineering dry-run and signatures passed; legacy publisher disabled. Security refresh, rebuilt-image review and a new protected candidate freeze remain open. |
-| M1: independent reproduction | Open; needs an independently controlled operator and the exact M0 candidate. |
+| M0: candidate preparation and freeze | Refreshed `fdfcc19` pin, protected builds, signatures, current image/residual review and actual supplied-wheel project rehearsal passed. Normal Codeowner merge of this packet after required checks adopts the freeze; legacy publisher disabled. |
+| M1: independent reproduction | Open; exact candidate and supplied-wheel procedure prepared. No independently controlled operator is assigned; project CI supplies readiness only. |
 | M2: accepted research release | Open; depends on M0/M1, replacement publisher/actual PyPI binding and protected release approval. |
 | M3: independent backend author | Open human integration milestone; installed Gamma/Delta contracts are available. |
 | M4: distinct physical vendor/ISA | Future bounded proof; current same-project CPU/GPU evidence retains its original scope. |

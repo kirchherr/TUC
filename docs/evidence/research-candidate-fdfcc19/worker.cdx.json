@@ -1,0 +1,122 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "version": 1,
+  "serialNumber": "urn:uuid:65208c56-2912-50cb-a60e-d9f515ac0409",
+  "metadata": {
+    "component": {
+      "type": "container",
+      "bom-ref": "pkg:oci/tuc-source-ingestion-worker@research-0.2.0",
+      "name": "tuc-source-ingestion-worker",
+      "version": "research-0.2.0",
+      "purl": "pkg:oci/tuc-source-ingestion-worker@research-0.2.0",
+      "properties": [
+        {
+          "name": "tuc:platform",
+          "value": "linux/amd64"
+        },
+        {
+          "name": "tuc:material:build_context_policy:sha256",
+          "value": "f5dc47c8ae5fba6eccfae875418e51fe8e9fb6b1d3de7478dd9cc8678f66b244"
+        },
+        {
+          "name": "tuc:material:dockerfile:sha256",
+          "value": "40dc8ad28db3b59e526219350c2b2ec4a5bd631330b566aa2121aaf603c0aea8"
+        },
+        {
+          "name": "tuc:material:research_ingress:sha256",
+          "value": "0dfd769a279d46808f7004b47ba79d82cfecc14df077b13698b8aa7b7d6ec2a8"
+        },
+        {
+          "name": "tuc:material:research_parser:sha256",
+          "value": "45dd48739ec508444c883635f4b4f69340090f7aee815f4e80f2a8b817070257"
+        },
+        {
+          "name": "tuc:material:source_intent:sha256",
+          "value": "bf2952799714865c8de38b709e8729f4a2d094ecd12bb44793827c972297565a"
+        },
+        {
+          "name": "tuc:material:source_intent_intake:sha256",
+          "value": "e7cf85921e7f1905eb681d1b90817a0af2e64a981f2953e2bed97f2cea28a58d"
+        },
+        {
+          "name": "tuc:material:triton_source:sha256",
+          "value": "be6dfa43004b1a63c7953eb2e8b129bf3f6d229ae008fb0eb7880c122c5e3bcd"
+        },
+        {
+          "name": "tuc:material:worker_source:sha256",
+          "value": "bf97478f2694989db8b3cafacec872516864e16595348cc6e1ef9a0b926250ba"
+        },
+        {
+          "name": "tuc:material:build_context_policy:path",
+          "value": "docker/research-source-worker/Dockerfile.dockerignore"
+        },
+        {
+          "name": "tuc:material:dockerfile:path",
+          "value": "docker/research-source-worker/Dockerfile"
+        },
+        {
+          "name": "tuc:material:research_ingress:path",
+          "value": "src/tuc/frontend/source_to_intent_research_kernel_ingress.py"
+        },
+        {
+          "name": "tuc:material:research_parser:path",
+          "value": "src/tuc/frontend/source_to_intent_research_parser.py"
+        },
+        {
+          "name": "tuc:material:source_intent:path",
+          "value": "src/tuc/frontend/source_intent.py"
+        },
+        {
+          "name": "tuc:material:source_intent_intake:path",
+          "value": "src/tuc/frontend/source_intent_intake.py"
+        },
+        {
+          "name": "tuc:material:triton_source:path",
+          "value": "src/tuc/frontend/triton_source.py"
+        },
+        {
+          "name": "tuc:material:worker_source:path",
+          "value": "src/tuc/frontend/_isolated_source_ingestion_worker.py"
+        }
+      ]
+    },
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "tuc-generate-research-worker-sbom",
+          "version": "0"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "container",
+      "bom-ref": "pkg:oci/python@sha256:0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4",
+      "name": "python",
+      "version": "3.12-slim-bookworm",
+      "purl": "pkg:oci/python@sha256:0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:oci/tuc-source-ingestion-worker@research-0.2.0",
+      "dependsOn": [
+        "pkg:oci/python@sha256:0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4"
+      ]
+    },
+    {
+      "ref": "pkg:oci/python@sha256:0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4",
+      "dependsOn": []
+    }
+  ]
+}

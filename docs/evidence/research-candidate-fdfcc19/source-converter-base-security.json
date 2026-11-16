@@ -1,0 +1,89 @@
+{
+  "observed_utc": "2026-11-16T07:59:42.328364+00:00",
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "scope": "Fresh remote scan of the exact base inherited by the copy-only installed converter; not a rebuilt converter or packaged research-worker scan",
+  "base_manifest": "sha256:0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4",
+  "image_config": "sha256:313cf8f190a1abab00472c1f0c950c10486c22114bcd8aef2a8198fb587a6d18",
+  "report_sha256": "c47d5f04e2a4f04d4166fce0069fe46b51d5f2991cab5f3f3e25292ae2c68c8f",
+  "scanner_version": "0.76.2",
+  "database_metadata": {
+    "Version": 2,
+    "NextUpdate": "2026-11-17T01:11:02.624122856Z",
+    "UpdatedAt": "2026-11-16T01:11:02.624123452Z",
+    "DownloadedAt": "2026-11-16T07:25:43.1364398Z"
+  },
+  "targets": [
+    {
+      "type": "debian",
+      "package_count": 105,
+      "counts": {
+        "LOW": 108,
+        "HIGH": 100,
+        "MEDIUM": 142,
+        "UNKNOWN": 5,
+        "CRITICAL": 2
+      },
+      "matches_with_available_fix": []
+    },
+    {
+      "type": "python-pkg",
+      "package_count": 1,
+      "counts": {
+        "MEDIUM": 5,
+        "LOW": 1
+      },
+      "matches_with_available_fix": [
+        {
+          "VulnerabilityID": "CVE-2025-8869",
+          "PkgName": "pip",
+          "InstalledVersion": "25.0.1",
+          "FixedVersion": "25.3",
+          "Severity": "MEDIUM"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-13346",
+          "PkgName": "pip",
+          "InstalledVersion": "25.0.1",
+          "FixedVersion": "26.2.0",
+          "Severity": "MEDIUM"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-3219",
+          "PkgName": "pip",
+          "InstalledVersion": "25.0.1",
+          "FixedVersion": "26.1",
+          "Severity": "MEDIUM"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-6357",
+          "PkgName": "pip",
+          "InstalledVersion": "25.0.1",
+          "FixedVersion": "26.1",
+          "Severity": "MEDIUM"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-8643",
+          "PkgName": "pip",
+          "InstalledVersion": "25.0.1",
+          "FixedVersion": "26.1.2",
+          "Severity": "MEDIUM"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-1703",
+          "PkgName": "pip",
+          "InstalledVersion": "25.0.1",
+          "FixedVersion": "26.0",
+          "Severity": "LOW"
+        }
+      ]
+    }
+  ],
+  "scoped_reachability_assessment": {
+    "base_pip": "pip/ensurepip files are inherited but never invoked or admitted by the fixed six-module import closure; no installer/package/archive input path is exposed",
+    "os_updates": "Current database adds PAM namespace, libstdc++ stream and dpkg source-unpacking matches; those paths are not dispatched by the fixed worker",
+    "inference_limit": "Static code/path assessment and existing constrained execution probes; does not establish general vulnerability absence or release approval"
+  },
+  "image_executed_by_scan": false,
+  "suppression_files_changed": false,
+  "release_security_approval": false
+}

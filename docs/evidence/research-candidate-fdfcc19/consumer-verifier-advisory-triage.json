@@ -1,0 +1,18 @@
+{
+  "observed_utc": "2026-11-16T08:02:44.174315+00:00",
+  "scope": "Consumer verification/scanner main-module versions only; indexed reviewed GHSA; excludes transitive components",
+  "packages": [
+    {
+      "module": "github.com/cli/cli/v2",
+      "version": "v2.104.0",
+      "source": "https://api.github.com/advisories?ecosystem=go&affects=github.com%2Fcli%2Fcli%2Fv2%40v2.104.0&per_page=100",
+      "active_advisories": []
+    },
+    {
+      "module": "github.com/aquasecurity/trivy",
+      "version": "v0.76.2",
+      "source": "https://api.github.com/advisories?ecosystem=go&affects=github.com%2Faquasecurity%2Ftrivy%40v0.76.2&per_page=100",
+      "active_advisories": []
+    }
+  ]
+}

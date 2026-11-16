@@ -8,7 +8,7 @@ approved disabling the historical tag publisher; workflow `289849327` was
 verified as `disabled_manually`. The active manual research-candidate workflow
 has no publisher. M2 requires a reviewed replacement, actual PyPI binding and
 protected release approval. See the
-[current candidate evidence](evidence/RESEARCH_CANDIDATE_8044760.md).
+[current candidate evidence](evidence/RESEARCH_CANDIDATE_FDFCC19.md).
 
 ## Release Trigger
 
@@ -80,6 +80,44 @@ account-side configuration:
 Before M2, review the replacement publisher and verify its actual PyPI
 repository/workflow/environment binding. The candidate build is not a
 publisher and must not be granted publishing authority implicitly.
+
+The public PyPI project lookup on 2026-11-16 returned `tuc` version `0.1.0`
+with project links to `kirchherr/TUC`. This confirms the public package identity;
+it does not establish account-side ownership, current Trusted Publisher rules
+or authority to publish 0.2.0.
+
+### Replacement publisher preparation
+
+The proposed replacement is a separate main-only manual workflow,
+`.github/workflows/publish-research-release.yml`. No replacement workflow or
+PyPI binding is activated by this proposal. Its implementation must:
+
+1. Select the explicitly reviewed candidate source and exact wheel/sdist
+   hashes from a protected, Codeowner-reviewed acceptance record. Require
+   accepted M0/M1 results and the recorded independent operator's attributable
+   origin; a project rehearsal's `PASS` field is insufficient.
+2. Download the fixed protected candidate by immutable run/artifact identity.
+   Verify its closed manifest, wheel/sdist checksums, signed provenance/SBOM,
+   source/ref/workflow and numeric repository/owner identities in a read-only
+   job. Preserve the supplied bytes; rebuilding would produce a different
+   artifact from the independently accepted wheel.
+3. Verify that the intended immutable `v0.2.0` tag identifies that exact
+   candidate source, even when the publishing workflow lives at a later
+   reviewed `main` revision. Record both identities. An ordinary PR, branch
+   push or "latest successful build" lookup must not select a release.
+4. Transfer only the authenticated distributions to a separate `pypi` job.
+   Obtain publishing OIDC authority only after environment approval, with no
+   self-review or administrator bypass, and no build/test/consumer execution
+   in that publishing job. Use the reviewed pinned PyPA action and no stored
+   PyPI token.
+5. Verify the actual PyPI Trusted Publisher binding to `kirchherr/TUC`,
+   `publish-research-release.yml` and environment `pypi`, retire any obsolete
+   binding with owner approval, rehearse without publication, and obtain the
+   separate release/publishing approval before activating the real operation.
+
+M0's candidate workflow and the disabled historical workflow retain their
+existing roles. This plan does not authorize a tag, public release, namespace
+setting change or package upload.
 
 Do not add a PyPI token or password as a repository secret.
 

@@ -11,11 +11,18 @@ protected release remain open. The [completion review and plan](docs/PROJECT_COM
 defines the reviewed gaps, owner roles and required exit artifacts under
 [RFC0343](rfcs/0343-acceptance-led-roadmap.md).
 
-The [0.2.0 engineering dry-run at `8044760`](docs/evidence/RESEARCH_CANDIDATE_8044760.md)
-has verified normal Codeowner review, protected builds, checksums and
-signatures. The old publisher is disabled with owner approval. Security review
-requires a refreshed worker/build toolchain and a new candidate pin before
-M0 freeze; M1/M2 acceptance remains open.
+The [refreshed 0.2.0 candidate at `fdfcc19`](docs/evidence/RESEARCH_CANDIDATE_FDFCC19.md)
+normally merged #144, passed main and protected-candidate regressions with
+7,778 tests each, and has verified checksums, SBOM/OCI bindings and eight fresh
+signature checks. The current image scan and scoped residual review are
+retained. The actual supplied-wheel project rehearsal passed core, session and
+CLI checks. Normal Codeowner merge of this packet after required checks adopts
+M0's exact candidate pin and handoff. The
+[operator procedure](docs/SUPPLIED_CANDIDATE_OPERATOR.md) installs that exact
+wheel without rebuilding TUC. M1 still needs an independently controlled
+operator, and M2 still needs the reviewed publisher/binding and release approval.
+The old publisher remains disabled. The
+[8044760 dry-run](docs/evidence/RESEARCH_CANDIDATE_8044760.md) is historical evidence.
 
 | Order | Milestone | Exit requirement |
 | --- | --- | --- |

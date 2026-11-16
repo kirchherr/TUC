@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "workflow_run": 43826307479,
+  "artifact_id": 14207209811,
+  "transport_sha256": "209fa2ccff119b22aced513bf66b37f7c1d4b8ad0f5e2f7cf7463ce804b76f72",
+  "checksums": {
+    "tuc-0.2.0-py3-none-any.whl": "db258c3ca5cb2861779ebdfbb6b2d6d6991d99ec27c1f40616a3f85d6a8ebf85",
+    "tuc-0.2.0.tar.gz": "f02d70a296bf3f16fe68eaa0a59e37da35d10e8197be9aab08620555df76ab62",
+    "tuc-objective-delta-reproduction-kit-v0.zip": "ddbe9d7e347ef03aa047a27df0272b8991380f20426c1e8be38205421c8ab42e",
+    "tuc-objective-delta-reproduction-receipt.v0.json": "f52f416fc2b894e833a051f7408b4157afefc4ce64f274f2552980e8eff2ec78",
+    "tuc-source-ingestion-worker.cdx.json": "ac7ab494d928128aced3a9deb79de0e547dc88e633bc8ec087197e779214fb3b",
+    "tuc-source-ingestion-worker.oci-verification.json": "0b96720a4ff272096052dcf343d63fed94c6b528c5cb3f997e85125f3d693d56",
+    "tuc-source-ingestion-worker.oci.tar": "3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+    "tuc-source-ingestion-worker.research-attestation-verification.json": "06fa8771f79243b272b7ad3b6c27a8627f15a94a6cc2fe6b7971ac7a3717205a",
+    "tuc.cdx.json": "db4ba48b755f9ae70b34939d79a10e7b4bcb84068a884d6bd85aa75a443c92d6"
+  },
+  "closed_file_count": 10,
+  "wheel_file_count": 176,
+  "wheel_and_sdist_version": "0.2.0",
+  "sbom_materials_match_source": true,
+  "oci_archive_verification": {
+    "archive_digest": "sha256:3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+    "archive_size_bytes": 45314560,
+    "config_digest": "sha256:e860fa5016c6a7650bc61d4f460a9c77202917c7e9c164aae6ca2877f32c7408",
+    "entrypoint": [
+      "python",
+      "-I",
+      "/opt/tuc/src/tuc/frontend/_isolated_source_ingestion_worker.py",
+      "--oci"
+    ],
+    "image_manifest_digest": "sha256:755d79589185ef522cee006d5597a4d9b9c4692b271ed906a626d3ff590243fc",
+    "layer_count": 7,
+    "platform": "linux/amd64",
+    "rootfs_diff_id_count": 7,
+    "schema_version": "tuc.source_worker_oci_archive_verification.v0",
+    "status": "PASS",
+    "user": "10001:10001",
+    "working_dir": "/run/tuc"
+  },
+  "historical_delta_receipt_unchanged": true,
+  "cryptographic_verification": "PASS; eight independent consumer-side CLI checks",
+  "native_execution_performed": false,
+  "independent_operator_acceptance": false,
+  "candidate_state": "security-scoped M0 freeze proposal; normal packet review pending"
+}

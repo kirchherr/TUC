@@ -1,0 +1,16 @@
+{
+  "observed_utc": "2026-11-16T07:43:48.217231+00:00",
+  "url": "https://pypi.org/pypi/tuc/json",
+  "publishing_authority_verified": false,
+  "http_status": 200,
+  "name": "tuc",
+  "version": "0.1.0",
+  "project_urls": {
+    "Homepage": "https://github.com/kirchherr/TUC",
+    "Issues": "https://github.com/kirchherr/TUC/issues",
+    "Repository": "https://github.com/kirchherr/TUC"
+  },
+  "release_versions": [
+    "0.1.0"
+  ]
+}

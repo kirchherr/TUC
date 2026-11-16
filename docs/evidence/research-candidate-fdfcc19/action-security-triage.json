@@ -1,0 +1,49 @@
+{
+  "observed_utc": "2026-11-16T07:25:57.976758+00:00",
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "scope": "Exact active candidate Actions/Buildx/BuildKit versions; indexed reviewed GHSA entries only; excludes transitive builder components",
+  "packages": [
+    {
+      "package": "actions/checkout",
+      "version": "6.0.2",
+      "source": "https://api.github.com/advisories?ecosystem=actions&affects=actions%2Fcheckout%406.0.2&per_page=100",
+      "active_advisories": []
+    },
+    {
+      "package": "actions/setup-python",
+      "version": "6.2.0",
+      "source": "https://api.github.com/advisories?ecosystem=actions&affects=actions%2Fsetup-python%406.2.0&per_page=100",
+      "active_advisories": []
+    },
+    {
+      "package": "docker/setup-buildx-action",
+      "version": "4.2.0",
+      "source": "https://api.github.com/advisories?ecosystem=actions&affects=docker%2Fsetup-buildx-action%404.2.0&per_page=100",
+      "active_advisories": []
+    },
+    {
+      "package": "actions/attest",
+      "version": "4.1.0",
+      "source": "https://api.github.com/advisories?ecosystem=actions&affects=actions%2Fattest%404.1.0&per_page=100",
+      "active_advisories": []
+    },
+    {
+      "package": "actions/upload-artifact",
+      "version": "7.0.1",
+      "source": "https://api.github.com/advisories?ecosystem=actions&affects=actions%2Fupload-artifact%407.0.1&per_page=100",
+      "active_advisories": []
+    },
+    {
+      "package": "github.com/moby/buildkit",
+      "version": "v0.35.0",
+      "source": "https://api.github.com/advisories?ecosystem=go&affects=github.com%2Fmoby%2Fbuildkit%40v0.35.0&per_page=100",
+      "active_advisories": []
+    },
+    {
+      "package": "github.com/docker/buildx",
+      "version": "v0.34.1",
+      "source": "https://api.github.com/advisories?ecosystem=go&affects=github.com%2Fdocker%2Fbuildx%40v0.34.1&per_page=100",
+      "active_advisories": []
+    }
+  ]
+}
