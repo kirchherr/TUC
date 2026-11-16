@@ -1,0 +1,134 @@
+{
+  "observed_utc": "2026-11-16T07:39:58Z",
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "open_pulls": [
+    {
+      "number": 93,
+      "title": "Bump mypy from 2.3.0 to 2.3.1",
+      "head": "f758645c87ac884613bfcc3868425a1ea70801ab",
+      "url": "https://github.com/kirchherr/TUC/pull/93",
+      "files": [
+        "requirements/ci.txt"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches proof-bound historical dependency locks; active candidate uses the separately reviewed hash lock."
+    },
+    {
+      "number": 92,
+      "title": "Bump pygments from 2.20.0 to 2.21.0",
+      "head": "039c5e22a9ccb2128d62b339e3ef187ef59e5b0e",
+      "url": "https://github.com/kirchherr/TUC/pull/92",
+      "files": [
+        "requirements/ci.txt"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches proof-bound historical dependency locks; active candidate uses the separately reviewed hash lock."
+    },
+    {
+      "number": 91,
+      "title": "Bump ruff from 0.16.2 to 0.16.3",
+      "head": "054cfdabe0a7d6005691352986de0db8d22e1dda",
+      "url": "https://github.com/kirchherr/TUC/pull/91",
+      "files": [
+        "requirements/ci.txt"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches proof-bound historical dependency locks; active candidate uses the separately reviewed hash lock."
+    },
+    {
+      "number": 90,
+      "title": "Bump hypothesis from 6.165.3 to 6.165.10",
+      "head": "a26378678708cc04d7c4e20cee04a397ddbb9c0e",
+      "url": "https://github.com/kirchherr/TUC/pull/90",
+      "files": [
+        "requirements/ci.txt"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches proof-bound historical dependency locks; active candidate uses the separately reviewed hash lock."
+    },
+    {
+      "number": 84,
+      "title": "Bump numpy from 2.4.4 to 2.4.6",
+      "head": "1d9d72319494fec200f278f97723d3498d7e01e4",
+      "url": "https://github.com/kirchherr/TUC/pull/84",
+      "files": [
+        "requirements/ci.txt",
+        "requirements/source-worker.txt"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches proof-bound historical dependency locks; active candidate uses the separately reviewed hash lock."
+    },
+    {
+      "number": 80,
+      "title": "Bump ossf/scorecard-action from 2.4.3 to 2.4.4",
+      "head": "c8df05b9bc3480797738d5f8375c249062ab41d9",
+      "url": "https://github.com/kirchherr/TUC/pull/80",
+      "files": [
+        ".github/workflows/security.yml"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Separate security-workflow update; not a candidate-builder input."
+    },
+    {
+      "number": 79,
+      "title": "Bump pypa/gh-action-pypi-publish from 1.14.0 to 1.14.1",
+      "head": "025538416d515d3b6f3b2d3deb73ba75cdfa9965",
+      "url": "https://github.com/kirchherr/TUC/pull/79",
+      "files": [
+        ".github/workflows/release-artifacts.yml"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches the disabled historical publisher and/or proof-bound historical CI; active candidate uses separately reviewed pinned actions."
+    },
+    {
+      "number": 78,
+      "title": "Bump actions/setup-python from 6 to 7",
+      "head": "3bd6616ae1ad7e048654672b8283711627f4d39b",
+      "url": "https://github.com/kirchherr/TUC/pull/78",
+      "files": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release-artifacts.yml"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches the disabled historical publisher and/or proof-bound historical CI; active candidate uses separately reviewed pinned actions."
+    },
+    {
+      "number": 77,
+      "title": "Bump actions/attest from 4.1.0 to 4.2.2",
+      "head": "0cf71ec4a687819cdbf5c28ff0a13d013858e180",
+      "url": "https://github.com/kirchherr/TUC/pull/77",
+      "files": [
+        ".github/workflows/release-artifacts.yml"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches the disabled historical publisher and/or proof-bound historical CI; active candidate uses separately reviewed pinned actions."
+    },
+    {
+      "number": 75,
+      "title": "Bump actions/checkout from 6 to 7",
+      "head": "ded906171ca5db14579cfc960ef4af5692b144b0",
+      "url": "https://github.com/kirchherr/TUC/pull/75",
+      "files": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release-artifacts.yml",
+        ".github/workflows/security.yml"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Touches the disabled historical publisher and/or proof-bound historical CI; active candidate uses separately reviewed pinned actions."
+    },
+    {
+      "number": 24,
+      "title": "Bump ubuntu from 24.04 to 26.04 in /docker/dev",
+      "head": "023ada51d73f501b60b21e1ea3df98bbab9a8014",
+      "url": "https://github.com/kirchherr/TUC/pull/24",
+      "files": [
+        "docker/dev/Dockerfile"
+      ],
+      "decision": "defer_to_separate_review",
+      "reason": "Development image update; does not change the bounded candidate worker."
+    }
+  ],
+  "scope": "Review of actual changed paths, against active candidate advisory triage; version availability alone is not vulnerability evidence.",
+  "historical_inputs_changed": false,
+  "merges_performed": false
+}

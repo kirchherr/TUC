@@ -1,0 +1,68 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:710a8fce-1cc4-4200-be53-b49080088220",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-16T08:10:09Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "tuc-generate-sbom",
+          "version": "0"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:pypi/tuc@0.2.0",
+      "name": "tuc",
+      "version": "0.2.0",
+      "purl": "pkg:pypi/tuc@0.2.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/kirchherr/TUC"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/kirchherr/TUC"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/kirchherr/TUC/issues"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/numpy@2.4.4",
+      "name": "numpy",
+      "purl": "pkg:pypi/numpy@2.4.4",
+      "scope": "required",
+      "version": "2.4.4"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/tuc@0.2.0",
+      "dependsOn": [
+        "pkg:pypi/numpy@2.4.4"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/numpy@2.4.4",
+      "dependsOn": []
+    }
+  ]
+}

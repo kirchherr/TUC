@@ -1,0 +1,12 @@
+{
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "reviewed_tree": "13808f2e8cd586efb8e20075020564a371682686",
+  "sha256": {
+    ".github/workflows/research-release-candidate.yml": "dad8a860fdb2d5f04c28b0974ace8795c45d1bb005f933cf9d40f41bb9a4e9b3",
+    "docker/research-source-worker/Dockerfile": "40dc8ad28db3b59e526219350c2b2ec4a5bd631330b566aa2121aaf603c0aea8",
+    "docker/research-source-worker/Dockerfile.dockerignore": "f5dc47c8ae5fba6eccfae875418e51fe8e9fb6b1d3de7478dd9cc8678f66b244",
+    "scripts/generate_research_source_worker_sbom.py": "4cd14c0df0bd97cf3340d3ef2a738d1c8c42934df853ed1cf1229a1e7a40ae82",
+    "requirements/research-release.txt": "88847096f470feeb70f9e14bd61d2e9a7ab6f1ebf48b4beb069d1be08f05ab1f",
+    "scripts/verify_source_worker_oci_archive.py": "08b7eaefd32e2366c50f9727e8d73ca7a6405b1c084803b5abfb9ebac081a33c"
+  }
+}

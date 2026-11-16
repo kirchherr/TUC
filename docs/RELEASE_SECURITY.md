@@ -20,16 +20,18 @@ not evidence that the full native execution path has been validated everywhere
 it can be installed. C11/CUDA/mixed planning remains hardware-neutral; actual
 model execution admits only the stated all-C11 boundary.
 
-All four owner-approved repository protections and the normal Codeowner path
-were verified through #143. Its protected engineering dry-run at `8044760`
-passed the full suite, checksums, SBOM/OCI checks and eight fresh cryptographic
-checks; [actual identities and retained evidence](evidence/RESEARCH_CANDIDATE_8044760.md)
-record the result. The subsequent image/security review requires a refreshed
-candidate before M0 freeze. Record the accepted new source, lock, wheel, image
-and verifier identities after that run and residual-finding review. M1 requires fresh observations
-from an independently controlled operator; project CI and the historical
-Objective Delta receipt do not supply that acceptance. M2 then governs
-publication and its separate approvals.
+The owner-approved repository protections and ordinary Codeowner path were
+verified through #143 and #144. The refreshed protected candidate at `fdfcc19`
+passed main and candidate regressions with 7,778 tests each, checksums,
+SBOM/OCI checks and eight fresh cryptographic checks. Its
+[exact identities, full current scan and scoped residual review](evidence/RESEARCH_CANDIDATE_FDFCC19.md)
+are retained for normal M0 freeze review and supplied-wheel readiness validation.
+The candidate worker scan has zero available-fix or Python-package matches;
+remaining OS matches and the unused installer files inherited by the copy-only
+converter remain explicitly recorded. This does not claim general vulnerability
+absence. M1 requires fresh attributable observations from an independently
+controlled operator; project CI and the historical Objective Delta receipt do
+not supply that acceptance. M2 governs publication and its separate approvals.
 
 The 0.2.0 preparation adds a separate
 [research-candidate workflow](../.github/workflows/research-release-candidate.yml)
@@ -39,8 +41,8 @@ worker attestation against its own workflow/source identity, and retains the
 GitHub CLI verification JSON. It has no publishing job or tag/PR trigger.
 The historical workflow, lock, v0 receipt writer and proof corpus remain intact.
 Their v0 readiness report describes that historical path. The successful
-`8044760` dry-run has its own workflow/source-bound verification record; the
-current security refresh needs a new protected run.
+`8044760` dry-run has its own historical workflow/source-bound record. The
+refreshed protected run `43826307479` supplies the proposed `fdfcc19` pin.
 
 The owner separately approved disabling historical workflow `289849327`.
 Its `disabled_manually` state was read back on 2026-11-13; both legacy tag
@@ -65,7 +67,7 @@ byte-identical. The image CI compares the loaded image ID to the verified OCI
 config, observes Python and dependency/installer absence, and exercises a fixed
 source request under the existing constrained, network-disabled protocol.
 
-Active research build workflows use BuildKit 0.35.0, pinned to Linux/amd64
+The candidate and research-worker image workflows use BuildKit 0.35.0, pinned to Linux/amd64
 manifest `a521fc1fd903a46c611c733dd692548512232fba2e0386d6055846a903d05a71`,
 with CDI disabled. Active builds use `--network=none` without extra client
 entitlements. Buildx adds a daemon-side `network.host` allowance for container
@@ -131,12 +133,14 @@ Current controls:
 - Release workflow permissions are least-privilege by default.
 - Only the artifact-build job receives `attestations: write`; its OIDC token is
   used only for GitHub artifact attestations.
-- The PyPI publishing job receives a separate OIDC token and no attestation
-  permission.
-- The PyPI publishing job is isolated from artifact building and test execution.
+- The disabled historical PyPI job defines separate OIDC authority without
+  attestation permission. The replacement must preserve that separation.
+- Publishing approval and authority must remain isolated from artifact
+  building and test execution; the active candidate has no publishing job.
 - Release workflow actions are pinned to reviewed commit SHAs.
 - Buildx is version-pinned and BuildKit is version- and digest-pinned with CDI
-  disabled and no insecure build entitlement allowlist.
+  disabled. Active builds use `--network=none` without extra client grants;
+  the daemon-side host-network allowance and negative probe are described above.
 - The workflow uses GitHub OIDC-backed artifact attestations rather than stored
   signing secrets.
 - The workflow builds artifacts from repository source and does not run dynamic
@@ -151,7 +155,9 @@ Current controls:
   validates it without extraction, replays it through the installed release
   wheel, and compares the receipt byte for byte with reviewed evidence before
   attestation.
-- Manual workflow runs are dry-runs. Publishing is restricted to `v*` tag pushes.
+- Active manual candidate runs produce artifacts without publication. The
+  disabled historical publisher accepted `v*` tag pushes. The replacement's
+  trigger, exact-candidate policy and actual PyPI binding require M2 review.
 
 ## Required For Publishing
 
@@ -178,7 +184,7 @@ gh attestation verify dist/tuc-objective-delta-reproduction-kit-v0.zip -R kirchh
 gh attestation verify dist/tuc-objective-delta-reproduction-receipt.v0.json -R kirchherr/TUC
 ```
 
-The release workflow also performs policy-bound, same-run provenance
+The active candidate workflow also performs policy-bound, same-run provenance
 verification for the worker archive and adds a bounded verification receipt to
 the checksum manifest. This confirms that the attestation fetched by that run
 matches the archive digest, repository, signer workflow, commit, ref, OIDC
@@ -195,9 +201,12 @@ sha256sum -c SHA256SUMS
 ## SBOM Format
 
 The SBOM format is CycloneDX JSON 1.6. The package SBOM describes the Python
-project and direct runtime dependencies from `pyproject.toml`. The worker SBOM
-separately binds its digest-pinned Python base image, hash-locked NumPy wheel,
-Dockerfile, requirements, worker source, and target platform.
+project and direct runtime dependencies from `pyproject.toml`. The current
+research-worker SBOM binds the Python base digest, research Dockerfile/context
+policy, all six named source digests and target platform. Its single dependency
+component is the Python base; the worker contains no NumPy or package installer.
+The byte-frozen v0 worker SBOM generator still describes its historical NumPy
+wheel, Dockerfile and requirements. That profile remains historical evidence.
 
 Future native backends, bundled binaries, generated compiler plugins, or runtime
 artifacts must extend this SBOM model before release.

@@ -1,0 +1,137 @@
+{
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "run_id": 43826307479,
+  "reviewed_utc": "2026-11-16T08:23:32.124751+00:00",
+  "assessment": "Maintainer/AI-assisted static reachability review for the fixed bounded research profile; normal Codeowner packet review pending",
+  "decision": "bounded_research_candidate_freeze_recommended; requires normal Codeowner packet review",
+  "image_config_digest": "sha256:e860fa5016c6a7650bc61d4f460a9c77202917c7e9c164aae6ca2877f32c7408",
+  "image_archive_sha256": "3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+  "scan_report_sha256": "64d29e454f563b1af0a6e132666e0970417b1117dec7923f936f9a016ed47fa4",
+  "finding_counts": {
+    "LOW": 108,
+    "HIGH": 100,
+    "MEDIUM": 142,
+    "UNKNOWN": 5,
+    "CRITICAL": 2
+  },
+  "count_unit": "advisory/package matches; not demonstrated exploits or distinct CVE counts",
+  "available_fix_matches": 0,
+  "python_package_matches": 0,
+  "scanned_os_package_count": 105,
+  "critical_dispositions": [
+    {
+      "cve": "CVE-2023-45853",
+      "package": "zlib1g 1:1.2.13.dfsg-1",
+      "primary_source": "https://security-tracker.debian.org/tracker/CVE-2023-45853",
+      "vendor_scope": "Debian bookworm zlib binary does not build the affected contrib/minizip code; separate minizip packaging is fixed",
+      "image_check": "No minizip/libminizip/pyminizip package is present in the scanned package inventory",
+      "disposition": "Source-package severity match does not identify affected code in this binary package"
+    },
+    {
+      "cve": "CVE-2025-7458",
+      "package": "libsqlite3-0 3.40.1-2+deb12u2",
+      "primary_source": "https://security-tracker.debian.org/tracker/CVE-2025-7458",
+      "vendor_scope": "Affected SQL expression-list processing; arbitrary SQL execution is required; Debian labels bookworm no-dsa/minor",
+      "code_scope_inference": "The fixed six-module worker neither imports SQLite nor exposes SQL, database access, user imports or source execution",
+      "disposition": "Affected package retained visibly; no SQL execution path in this declared worker boundary"
+    }
+  ],
+  "high_finding_groups": [
+    {
+      "packages": "Kerberos/GSSAPI libraries",
+      "scope_inference": "No Kerberos/GSSAPI importer, authentication protocol, external connection or credential input in the fixed closure"
+    },
+    {
+      "packages": "util-linux/mount/blkid/uuid/bsdutils/systemd/udev/acl",
+      "scope_inference": "No user command dispatch, device/mount operation or service management; no shell, read-only rootfs, capability drop and fixed UID"
+    },
+    {
+      "packages": "ncurses/tinfo",
+      "scope_inference": "Noninteractive isolated Python with bounded JSON stdin/stdout; no terminal or curses importer"
+    },
+    {
+      "packages": "Perl/gzip/zlib",
+      "scope_inference": "No Perl/compression importer or subprocess dispatch; request source remains plain bounded UTF-8 data"
+    },
+    {
+      "packages": "SQLite",
+      "scope_inference": "No SQL/database importer or executable query input"
+    }
+  ],
+  "new_database_finding_dispositions": [
+    {
+      "cve": "CVE-2025-6020",
+      "package_matches": 4,
+      "severity": "HIGH",
+      "primary_sources": [
+        "https://github.com/linux-pam/linux-pam/security/advisories/GHSA-f9p8-gjr4-j9gx",
+        "https://security-tracker.debian.org/tracker/CVE-2025-6020"
+      ],
+      "vendor_scope": "pam_namespace path traversal; Bookworm's previous patch was incomplete and no fixed Bookworm version is listed",
+      "scope_inference": "No PAM authentication/session initialization, local-user login, user path polyinstantiation or command dispatch; fixed UID 10001, no capabilities and read-only rootfs"
+    },
+    {
+      "cve": "CVE-2026-125709",
+      "package_matches": 3,
+      "severity": "MEDIUM",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-125709"
+      ],
+      "vendor_scope": "libstdc++ stream buffer handling on repeated failed writes; no Bookworm fix listed",
+      "scope_inference": "The six-module stdlib-only Python worker has no C++ stream consumer, extension/plugin import or native compiler dispatch"
+    },
+    {
+      "cve": "CVE-2026-91094",
+      "package_matches": 1,
+      "severity": "UNKNOWN",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-91094"
+      ],
+      "vendor_scope": "dpkg 3.0 quilt source-package extraction; fixed in sid, no Bookworm fixed version listed",
+      "scope_inference": "No dpkg invocation or source/package archive intake; request input is bounded plain UTF-8 JSON/source data and build operations are fixed"
+    }
+  ],
+  "evidence": {
+    "candidate_checksums_oci_material_sbom_verified": true,
+    "eight_fresh_crypto_policy_checks_passed": true,
+    "exact_candidate_python_and_dependency_absence_canary": {
+      "status": "PASS",
+      "python": "3.12.16",
+      "uid": 10001,
+      "gid": 10001,
+      "numpy_present": false,
+      "pip_present": false,
+      "ensurepip_present": false,
+      "context_marker_absent": true,
+      "seccomp": 2,
+      "no_new_privileges": 1,
+      "effective_capabilities": "0000000000000000",
+      "rootfs_readonly": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "cgroup_version": 1,
+      "memory_max": "1073741824",
+      "pids_max": "32",
+      "cpu_max": "100000 100000"
+    },
+    "exact_candidate_local_protocol_result": "UNSUPPORTED_CGROUP_V1; unchanged worker requires cgroup v2 before parsing",
+    "same_source_cgroup_v2_profile_probe": {
+      "run_id": 43822209929,
+      "job_id": 133147660704,
+      "scope": "Actual fdfcc19 main CI image build; separately built image with the same reviewed Docker/source inputs; positive request, context exclusion and denied host-network entitlement"
+    },
+    "source_converter_base_pip": "Retained unused installer findings and closed import/dispatch assessment are separate in source-converter-base-security.json"
+  },
+  "limitations": [
+    "Static reachability inference and fixed probes do not prove general vulnerability absence or every transitive component's safety.",
+    "The local exact-image canary ran on cgroup v1; the worker rejected that unsupported protocol environment before parsing. It is not a positive cgroup-v2 protocol result.",
+    "The cgroup-v2 positive profile result identifies the separately built main CI image, not the exact candidate archive.",
+    "Production source ingestion, arbitrary executable plugins and general native backend admission remain closed.",
+    "A source, imported-module set, base image, network, filesystem or execution-authority change requires renewed review.",
+    "The supplied candidate wheel still requires its separate project rehearsal; independent M1 operator acceptance and M2 publication approval remain open."
+  ],
+  "suppression_files_changed": false,
+  "release_security_approval": false,
+  "independent_operator_acceptance": false
+}

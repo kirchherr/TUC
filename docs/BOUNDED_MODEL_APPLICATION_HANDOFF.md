@@ -12,6 +12,18 @@ Model and capabilities -> portable bundle -> concrete request
 The master plan remains active. This handoff defines the acceptance boundary
 for this bounded path and makes its retained evidence available to reviewers.
 
+## Current supplied research candidate
+
+The [0.2.0 candidate evidence](evidence/RESEARCH_CANDIDATE_FDFCC19.md) identifies
+source `fdfcc193b0b42405e3e48ea6ace1bdfbea066536`, protected run `43826307479`
+and the exact supplied wheel. Use the [supplied-wheel procedure](SUPPLIED_CANDIDATE_OPERATOR.md)
+for this candidate: it authenticates the wheel, installs it without rebuilding
+TUC and runs the unchanged core, session and CLI consumers outside the checkout.
+The controller's own revision/digest is recorded separately. The baseline
+self-building probes below retain their original engineering scope.
+An independently controlled operator remains unassigned; project CI establishes
+readiness and cannot close M1.
+
 ## Reviewed engineering baseline after sessions and CLI
 
 [PR #139](https://github.com/kirchherr/TUC/pull/139) adds bounded build-reusing

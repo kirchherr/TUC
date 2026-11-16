@@ -1,0 +1,138 @@
+name: Supplied research candidate model rehearsal
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/research-candidate-model.yml"
+      - "scripts/rehearse_supplied_model_wheel.py"
+      - "tests/test_supplied_model_wheel_rehearsal.py"
+      - "docs/SUPPLIED_CANDIDATE_OPERATOR.md"
+      - "docs/evidence/research-candidate-fdfcc19/candidate-artifacts.json"
+      - "docs/evidence/research-candidate-fdfcc19/provenance-bundles.jsonl"
+  push:
+    branches:
+      - main
+      - "kirchherr/**"
+    paths:
+      - ".github/workflows/research-candidate-model.yml"
+      - "scripts/rehearse_supplied_model_wheel.py"
+      - "tests/test_supplied_model_wheel_rehearsal.py"
+      - "docs/SUPPLIED_CANDIDATE_OPERATOR.md"
+      - "docs/evidence/research-candidate-fdfcc19/candidate-artifacts.json"
+      - "docs/evidence/research-candidate-fdfcc19/provenance-bundles.jsonl"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supplied-research-candidate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  supplied-wheel-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+      - name: Check supplied-wheel rejection boundaries
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r requirements/research-release.txt
+          ruff check scripts/rehearse_supplied_model_wheel.py tests/test_supplied_model_wheel_rehearsal.py
+          mypy scripts/rehearse_supplied_model_wheel.py
+          python -m pytest -q tests/test_supplied_model_wheel_rehearsal.py
+      - name: Fetch the fixed candidate source objects
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 https://github.com/kirchherr/TUC.git \
+            fdfcc193b0b42405e3e48ea6ace1bdfbea066536
+      - name: Download the protected candidate without rebuilding
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 43826307479 --repo kirchherr/TUC \
+            --name tuc-research-candidate --dir "$RUNNER_TEMP/supplied-candidate"
+      - name: Verify the supplied wheel provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh attestation verify "$RUNNER_TEMP/supplied-candidate/tuc-0.2.0-py3-none-any.whl" \
+            --bundle docs/evidence/research-candidate-fdfcc19/provenance-bundles.jsonl \
+            --repo kirchherr/TUC \
+            --signer-workflow kirchherr/TUC/.github/workflows/research-release-candidate.yml \
+            --signer-digest fdfcc193b0b42405e3e48ea6ace1bdfbea066536 \
+            --source-digest fdfcc193b0b42405e3e48ea6ace1bdfbea066536 \
+            --source-ref refs/heads/main \
+            --cert-oidc-issuer https://token.actions.githubusercontent.com \
+            --predicate-type https://slsa.dev/provenance/v1 \
+            --deny-self-hosted-runners --format json \
+            > "$RUNNER_TEMP/supplied-wheel-provenance.json"
+          gh api repos/kirchherr/TUC \
+            --jq '{id: .id, owner_id: .owner.id, full_name: .full_name}' \
+            > "$RUNNER_TEMP/supplied-wheel-repository-identity.json"
+          python -I -S - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"])
+          identity = json.loads((root / "supplied-wheel-repository-identity.json").read_bytes())
+          assert identity == {"id": 1260144654, "owner_id": 159765997, "full_name": "kirchherr/TUC"}
+          raw = (root / "supplied-wheel-provenance.json").read_bytes()
+          assert 0 < len(raw) < 1024 * 1024
+          entries = json.loads(raw)
+          assert 1 <= len(entries) <= 8
+          expected = {
+              "sourceRepositoryIdentifier": "1260144654",
+              "sourceRepositoryOwnerIdentifier": "159765997",
+              "sourceRepositoryDigest": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+              "buildSignerDigest": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+              "sourceRepositoryRef": "refs/heads/main",
+              "runnerEnvironment": "github-hosted",
+              "buildTrigger": "workflow_dispatch",
+              "runInvocationURI": "https://github.com/kirchherr/TUC/actions/runs/43826307479/attempts/1",
+          }
+          for entry in entries:
+              verified = entry["verificationResult"]
+              certificate = verified["signature"]["certificate"]
+              assert all(certificate.get(key) == value for key, value in expected.items())
+              assert verified["verifiedTimestamps"]
+          print("Supplied-wheel certificate and current repository identity: PASS")
+          PY
+      - name: Run core, session and installed CLI with the exact supplied wheel
+        run: |
+          set -euo pipefail
+          python -I -S scripts/rehearse_supplied_model_wheel.py run \
+            --wheel "$RUNNER_TEMP/supplied-candidate/tuc-0.2.0-py3-none-any.whl" \
+            --output "$RUNNER_TEMP/supplied-model-rehearsal"
+      - name: Retain the actual supplied-wheel observations
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: supplied-research-candidate-model-observations
+          path: |
+            ${{ runner.temp }}/supplied-model-rehearsal/rehearsal.json
+            ${{ runner.temp }}/supplied-model-rehearsal/core/record.json
+            ${{ runner.temp }}/supplied-model-rehearsal/core/audit.json
+            ${{ runner.temp }}/supplied-model-rehearsal/core/ci-record.json
+            ${{ runner.temp }}/supplied-model-rehearsal/session/record.json
+            ${{ runner.temp }}/supplied-model-rehearsal/session/audit.json
+            ${{ runner.temp }}/supplied-model-rehearsal/session/ci-record.json
+            ${{ runner.temp }}/supplied-model-rehearsal/session/session-observation.json
+            ${{ runner.temp }}/supplied-model-rehearsal/cli/record.json
+            ${{ runner.temp }}/supplied-model-rehearsal/cli/audit.json
+            ${{ runner.temp }}/supplied-model-rehearsal/cli/ci-record.json
+            ${{ runner.temp }}/supplied-model-rehearsal/cli/cli-observation.json
+            ${{ runner.temp }}/supplied-wheel-provenance.json
+            ${{ runner.temp }}/supplied-wheel-repository-identity.json
+          if-no-files-found: error
+          retention-days: 30

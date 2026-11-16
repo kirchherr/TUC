@@ -1,0 +1,237 @@
+{
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "scope": "all main checks completed before candidate dispatch",
+  "checks": [
+    {
+      "name": "full-model-application-regression",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "skipped",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210153/job/133147663558"
+    },
+    {
+      "name": "Dependency Review",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "skipped",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209927/job/133147661779"
+    },
+    {
+      "name": "installed-model-application",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210153/job/133147661433"
+    },
+    {
+      "name": "python",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210038/job/133147661429"
+    },
+    {
+      "name": "oci-source-ingestion",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210038/job/133147661413"
+    },
+    {
+      "name": "installed-gating",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209820/job/133147661367"
+    },
+    {
+      "name": "installed-scaling",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210022/job/133147661120"
+    },
+    {
+      "name": "fixed-cpu-portfolio",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210063/job/133147661114"
+    },
+    {
+      "name": "native-fanout",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147661036"
+    },
+    {
+      "name": "plan-native-bridge",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147661020"
+    },
+    {
+      "name": "installed-entrypoint",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210091/job/133147661013"
+    },
+    {
+      "name": "native-fanin",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147660997"
+    },
+    {
+      "name": "native-placement-matrix",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147660926"
+    },
+    {
+      "name": "compiler-emitted-c11",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147660885"
+    },
+    {
+      "name": "composed-chain",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147660843"
+    },
+    {
+      "name": "installed-wheel",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210029/job/133147660796"
+    },
+    {
+      "name": "installed-batch",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209878/job/133147660793"
+    },
+    {
+      "name": "installed-model",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822210046/job/133147660774"
+    },
+    {
+      "name": "mixed-native-residency",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147660763"
+    },
+    {
+      "name": "native-io",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147660749"
+    },
+    {
+      "name": "worker",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209929/job/133147660704"
+    },
+    {
+      "name": "installed-c11",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209930/job/133147660679"
+    },
+    {
+      "name": "CodeQL",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209927/job/133147660629"
+    },
+    {
+      "name": "installed-json-cli",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209922/job/133147660579"
+    },
+    {
+      "name": "paired-fma",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209797/job/133147660500"
+    },
+    {
+      "name": "installed-linear",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209945/job/133147660454"
+    },
+    {
+      "name": "installed-add-bias",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209811/job/133147660389"
+    },
+    {
+      "name": "installed-model-session",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209769/job/133147660370"
+    },
+    {
+      "name": "installed-application",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209780/job/133147660358"
+    },
+    {
+      "name": "OpenSSF Scorecard",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209927/job/133147660295"
+    },
+    {
+      "name": "fixed-cpu-schedules",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209942/job/133147660201"
+    },
+    {
+      "name": "installed-softmax",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209832/job/133147660081"
+    },
+    {
+      "name": "installed-source-cpu",
+      "head_sha": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/kirchherr/TUC/actions/runs/43822209767/job/133147660060"
+    }
+  ]
+}

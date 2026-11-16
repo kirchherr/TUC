@@ -1,0 +1,18 @@
+{
+  "source_oci_sha256": "3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+  "docker_archive_sha256": "d1bf2677a7f0045ff1ddfef54d17cafa42842237af68fb8f9fd16d21a948f31a",
+  "image_config_digest": "sha256:e860fa5016c6a7650bc61d4f460a9c77202917c7e9c164aae6ca2877f32c7408",
+  "preserved_uncompressed_layer_diff_ids": [
+    "sha256:1d7b9dd8778ebc4d9bf2f64436dd358640718cb349f5640b33bebaea4ffd62c2",
+    "sha256:a3cfe73133965fb536427fde3fe66b2949ea6178f568733760bf45f5c8b5c405",
+    "sha256:5e63f01f0cee6291b52c44ffeee48c9eb7b94cdb19478259bcfce37db9eb680e",
+    "sha256:311a92d269bd002ca4ff3d801c6320df734027d3b425ff1ec860368f12b07a26",
+    "sha256:9d8a13930489a700dd3742e35f91d77e49916ac73c2fbdaf7652cf0fd126ca68",
+    "sha256:46a40f7db846c97e1f3aa6f7053a21a175a10ec656ac4d79b25f1ebe6c362c72",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+  ],
+  "layer_count": 7,
+  "image_rebuilt": false,
+  "image_layers_extracted_to_host_filesystem": false,
+  "purpose": "Transport-only adaptation for classic Docker load; original signed config and all uncompressed layer bytes preserved"
+}

@@ -6,6 +6,7 @@
 *.md text eol=lf
 *.json text eol=lf
 *.jsonl text eol=lf
+SHA256SUMS text eol=lf
 *.cu text eol=lf
 *.cuh text eol=lf
 *.c text eol=lf

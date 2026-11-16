@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "python": "3.12.16",
+  "uid": 10001,
+  "gid": 10001,
+  "numpy_present": false,
+  "pip_present": false,
+  "ensurepip_present": false,
+  "context_marker_absent": true,
+  "seccomp": 2,
+  "no_new_privileges": 1,
+  "effective_capabilities": "0000000000000000",
+  "rootfs_readonly": true,
+  "network_interfaces": [
+    "lo"
+  ],
+  "cgroup_version": 1,
+  "memory_max": "1073741824",
+  "pids_max": "32",
+  "cpu_max": "100000 100000"
+}
