@@ -105,6 +105,41 @@ or a project-controlled CI probe cannot authenticate operator independence.
 An eligible reviewer must assess the attributable external origin and scope
 separately before M1 can close. No independent operator is currently assigned.
 
+### Offline packet consistency check
+
+A reviewer can check the twelve returned JSON files without TUC, Docker, Git,
+pip or network access. Use a trusted checkout containing the reviewed checker
+and the unchanged original numerical auditor:
+
+```bash
+python3.12 -I -S scripts/audit_supplied_model_candidate.py \
+  /absolute/path/returned/tuc-supplied-fdfcc19 > offline-audit.json
+```
+
+The checker binds the source, wheel, procedure, lock and all nine source-material
+claims to the fixed reviewed identities. It checks the envelope against the raw
+core/session/CLI records, reruns all three original eighteen-scalar/four-control
+audits and checks the complete session/CLI lifecycle claims. It records the
+digests of the twelve files actually read. Logs and additional files are ignored.
+Each required file is a bounded regular file; symlinks, reparse points, FIFOs,
+duplicate JSON keys, nonfinite/fractional numbers, excessive nesting and changed
+identities are rejected. Counts distinguish booleans from integers.
+
+Only a digest-verified snapshot of the repository-owned stdlib numerical auditor
+is run, with isolated Python, no site packages, a clean environment and a timeout.
+No executable is selected from the returned directory. The checker rejects
+changed local auditor bytes and never imports TUC or executes the native model.
+The [boundary tests](../tests/test_supplied_model_candidate_audit.py) use the
+unchanged retained CI packet and altered copies; the original observations are
+not regenerated or edited to make a test pass.
+
+`PASS` means consistency with this fixed candidate's claimed observations.
+It does not prove that a producer actually installed the wheel, authenticate
+their command log or verify their environment or identity. The output retains
+`external_origin_verified=false` and `independent_operator_acceptance=false`.
+Verify the wheel provenance and attributable external origin separately before
+accepting M1; copying the project CI packet cannot satisfy that requirement.
+
 This procedure supplies no publishing authorization. M2 still requires M0/M1
 acceptance, a reviewed replacement publisher, actual PyPI binding and the normal
 release/environment approvals. The historical publisher remains disabled.
