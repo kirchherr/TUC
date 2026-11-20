@@ -179,6 +179,11 @@ procedure digests, with no automatic independence claim. The owner currently
 has no independent operator assigned. No outreach is authorized by preparing
 this packet.
 
+The [offline packet checker](SUPPLIED_CANDIDATE_OPERATOR.md#offline-packet-consistency-check)
+now validates the fixed candidate bindings, the three raw numerical packets and
+session/CLI lifecycle claims without TUC or native execution. Its result remains
+data consistency evidence; it cannot authenticate external origin or close M1.
+
 The [older operator procedure](../integration/bounded_model_application/README.md)
 and [baseline handoff](BOUNDED_MODEL_APPLICATION_HANDOFF.md) remain useful for
 their stated engineering scope: they build their own wheel with the historical
