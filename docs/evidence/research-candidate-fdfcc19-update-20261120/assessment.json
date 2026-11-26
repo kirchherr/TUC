@@ -1,0 +1,374 @@
+{
+  "schema_version": "tuc.research_candidate_security_update.v0",
+  "observed_utc": "2026-11-20T09:36:41.331907+00:00",
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "run_id": 43826307479,
+  "image_archive_sha256": "3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+  "image_config_digest": "sha256:e860fa5016c6a7650bc61d4f460a9c77202917c7e9c164aae6ca2877f32c7408",
+  "scan_report_sha256": "065d1ad4724ebb7ff32b22ab3dee43a068deac9da8ada9c5b70cd2a21c3905a4",
+  "database_metadata": {
+    "Version": 2,
+    "NextUpdate": "2026-11-21T07:09:47.681202098Z",
+    "UpdatedAt": "2026-11-20T07:09:47.681202359Z",
+    "DownloadedAt": "2026-11-20T09:36:41.0668324Z"
+  },
+  "database_sha256": "440991152386d7eff303ffe997cef9a9280fa5f8bc02e5daf5f1563fe7473d3c",
+  "assessment": "Maintainer/AI-assisted static reassessment for the existing fixed bounded research worker; requires normal Codeowner review",
+  "previous_report_sha256": "64d29e454f563b1af0a6e132666e0970417b1117dec7923f936f9a016ed47fa4",
+  "finding_counts": {
+    "LOW": 110,
+    "HIGH": 99,
+    "MEDIUM": 142,
+    "UNKNOWN": 12,
+    "CRITICAL": 2
+  },
+  "count_unit": "advisory/package matches; not demonstrated exploits or distinct CVE counts",
+  "available_fix_matches": 0,
+  "python_package_matches": 0,
+  "new_matches": [
+    {
+      "VulnerabilityID": "CVE-2026-107493",
+      "PkgName": "libssl3",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-107493",
+      "PkgName": "openssl",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-121757",
+      "PkgName": "libc-bin",
+      "InstalledVersion": "2.36-9+deb12u14",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-121757",
+      "PkgName": "libc6",
+      "InstalledVersion": "2.36-9+deb12u14",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-121758",
+      "PkgName": "libc-bin",
+      "InstalledVersion": "2.36-9+deb12u14",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-121758",
+      "PkgName": "libc6",
+      "InstalledVersion": "2.36-9+deb12u14",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-124024",
+      "PkgName": "libc-bin",
+      "InstalledVersion": "2.36-9+deb12u14",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-124024",
+      "PkgName": "libc6",
+      "InstalledVersion": "2.36-9+deb12u14",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-126765",
+      "PkgName": "libc-bin",
+      "InstalledVersion": "2.36-9+deb12u14",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-126765",
+      "PkgName": "libc6",
+      "InstalledVersion": "2.36-9+deb12u14",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-127039",
+      "PkgName": "libgnutls30",
+      "InstalledVersion": "3.7.9-2+deb12u7",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-127040",
+      "PkgName": "libgnutls30",
+      "InstalledVersion": "3.7.9-2+deb12u7",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-127231",
+      "PkgName": "libgnutls30",
+      "InstalledVersion": "3.7.9-2+deb12u7",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-84786",
+      "PkgName": "libssl3",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-84786",
+      "PkgName": "openssl",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-95690",
+      "PkgName": "libssl3",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-95690",
+      "PkgName": "openssl",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    }
+  ],
+  "removed_database_matches": [
+    {
+      "VulnerabilityID": "CVE-2026-76844",
+      "PkgName": "zlib1g",
+      "InstalledVersion": "1:1.2.13.dfsg-1",
+      "Severity": "HIGH",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-88822",
+      "PkgName": "libssl3",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-88822",
+      "PkgName": "openssl",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-88823",
+      "PkgName": "libssl3",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-88823",
+      "PkgName": "openssl",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-95691",
+      "PkgName": "libssl3",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-95691",
+      "PkgName": "openssl",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-95692",
+      "PkgName": "libssl3",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-95692",
+      "PkgName": "openssl",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    }
+  ],
+  "changed_classifications": [
+    {
+      "cve": "CVE-2026-100290",
+      "package": "libc-bin",
+      "changes": {
+        "Severity": {
+          "previous": "UNKNOWN",
+          "current": "LOW"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-100290",
+      "package": "libc6",
+      "changes": {
+        "Severity": {
+          "previous": "UNKNOWN",
+          "current": "LOW"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-115819",
+      "package": "libc-bin",
+      "changes": {
+        "Severity": {
+          "previous": "UNKNOWN",
+          "current": "MEDIUM"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-115819",
+      "package": "libc6",
+      "changes": {
+        "Severity": {
+          "previous": "UNKNOWN",
+          "current": "MEDIUM"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-15534",
+      "package": "perl-base",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-82560",
+      "package": "perl-base",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    }
+  ],
+  "new_finding_groups": [
+    {
+      "cves": [
+        "CVE-2026-121757",
+        "CVE-2026-121758",
+        "CVE-2026-124024"
+      ],
+      "package_matches": 6,
+      "affected_surface": "glibc iconv conversion for CP949, ISO-2022-CN-EXT and UCS-4 to IBM1390/1399",
+      "scope_inference": "Fixed worker decodes bounded source/JSON as strict UTF-8 through CPython; no user-selected encoding or iconv API/command dispatch",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-121757",
+        "https://security-tracker.debian.org/tracker/CVE-2026-121758",
+        "https://security-tracker.debian.org/tracker/CVE-2026-124024"
+      ]
+    },
+    {
+      "cves": [
+        "CVE-2026-126765"
+      ],
+      "package_matches": 2,
+      "affected_surface": "glibc glob/globfree cleanup after allocation failure",
+      "scope_inference": "Finite imports and exact control-file reads; no glob expansion API, shell/command dispatch or attacker-controlled filesystem enumeration",
+      "primary_sources": [
+        "https://www.openwall.com/lists/oss-security/2026/11/19/9"
+      ]
+    },
+    {
+      "cves": [
+        "CVE-2026-107493",
+        "CVE-2026-84786",
+        "CVE-2026-95690"
+      ],
+      "package_matches": 6,
+      "affected_surface": "OpenSSL existing-stack PEM parsing, DANE TLS and DTLS reassembly",
+      "scope_inference": "No TLS/DTLS, DANE or certificate importer, PEM input or external network connection in the closed worker; network disabled",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-107493",
+        "https://security-tracker.debian.org/tracker/CVE-2026-84786",
+        "https://security-tracker.debian.org/tracker/CVE-2026-95690"
+      ]
+    },
+    {
+      "cves": [
+        "CVE-2026-127039",
+        "CVE-2026-127040",
+        "CVE-2026-127231"
+      ],
+      "package_matches": 3,
+      "affected_surface": "GnuTLS certificate/authentication/PSK failure cleanup under memory pressure",
+      "scope_inference": "No GnuTLS importer, certificate-chain/authentication input, TLS/PSK endpoint or command dispatch; network disabled",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-127039",
+        "https://security-tracker.debian.org/tracker/CVE-2026-127040",
+        "https://security-tracker.debian.org/tracker/CVE-2026-127231"
+      ]
+    }
+  ],
+  "critical_findings_unchanged": true,
+  "prior_critical_and_high_dispositions": "../research-candidate-fdfcc19/residual-image-review.json",
+  "classification_change_assessment": "glibc regex UNKNOWN to LOW and wide-scanf UNKNOWN to MEDIUM remain outside the fixed closure: no libc POSIX-regex or wide-scanf call; CPython re uses its own engine. Two Perl statuses changed to fix_deferred; no Perl dispatch.",
+  "removed_matches_assessment": "Scanner database removals are not package fixes; the frozen image bytes are unchanged and no suppression was added.",
+  "decision": "No new reachable path identified by this bounded static review; maintain existing freeze recommendation subject to normal Codeowner review",
+  "scope_limits": [
+    "Not a general vulnerability-free or production approval",
+    "No new image build or native image execution performed",
+    "Source-converter base/pip findings retain their separate prior scope; not rescanned here",
+    "M1 independent operator acceptance and M2 publication remain open"
+  ],
+  "image_executed_by_scan": false,
+  "independent_operator_acceptance": false,
+  "package_publication_performed": false
+}

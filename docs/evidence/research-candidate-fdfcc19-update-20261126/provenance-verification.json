@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "run_id": 43826307479,
+  "run_attempt": 1,
+  "verifier_version": "2.106.0",
+  "verifier_executable_sha256": "478be94eef02a4e71d2858b886f6f224494be0cc728668b7071a8e0a05fcaf7a",
+  "trusted_roots_sha256": "65ca537f6ed8a47fd0e560c421baa1f6c1efb8b25fc200d8c5c02c0e92eb2b9c",
+  "repository_id": 1260144654,
+  "owner_id": 159765997,
+  "checks": [
+    {
+      "artifact": "tuc-0.2.0-py3-none-any.whl",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS",
+      "output": "tuc-0.2.0-py3-none-any.whl.provenance.local-verification.json"
+    },
+    {
+      "artifact": "tuc-0.2.0-py3-none-any.whl",
+      "predicate_type": "https://cyclonedx.org/bom",
+      "status": "PASS",
+      "output": "tuc-0.2.0-py3-none-any.whl.sbom.local-verification.json"
+    },
+    {
+      "artifact": "tuc-0.2.0.tar.gz",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS",
+      "output": "tuc-0.2.0.tar.gz.provenance.local-verification.json"
+    },
+    {
+      "artifact": "tuc-0.2.0.tar.gz",
+      "predicate_type": "https://cyclonedx.org/bom",
+      "status": "PASS",
+      "output": "tuc-0.2.0.tar.gz.sbom.local-verification.json"
+    },
+    {
+      "artifact": "tuc-objective-delta-reproduction-kit-v0.zip",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS",
+      "output": "tuc-objective-delta-reproduction-kit-v0.zip.provenance.local-verification.json"
+    },
+    {
+      "artifact": "tuc-objective-delta-reproduction-receipt.v0.json",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS",
+      "output": "tuc-objective-delta-reproduction-receipt.v0.json.provenance.local-verification.json"
+    },
+    {
+      "artifact": "tuc-source-ingestion-worker.oci.tar",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "status": "PASS",
+      "output": "tuc-source-ingestion-worker.oci.tar.provenance.local-verification.json"
+    },
+    {
+      "artifact": "tuc-source-ingestion-worker.oci.tar",
+      "predicate_type": "https://cyclonedx.org/bom",
+      "status": "PASS",
+      "output": "tuc-source-ingestion-worker.oci.tar.sbom.local-verification.json"
+    }
+  ],
+  "certificate_identity_policy_enforced": true,
+  "signed_sboms_equal_downloaded_files": true,
+  "package_publication_performed": false,
+  "independent_operator_acceptance": false,
+  "verified_utc": "2026-11-26T12:10:56.002605+00:00"
+}

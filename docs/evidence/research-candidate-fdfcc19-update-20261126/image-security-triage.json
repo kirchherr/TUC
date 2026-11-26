@@ -1,0 +1,93 @@
+{
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "run_id": 43826307479,
+  "observed_utc": "2026-11-26T11:55:22.713066+00:00",
+  "scanner": {
+    "version": "0.76.2",
+    "vendor_release": "https://github.com/aquasecurity/trivy/releases/tag/v0.76.2",
+    "archive_sha256": "691f737a7e5566a673c3a74dab9160552ec32101e953b659e5c77443d16dddb6",
+    "vendor_checksums_sha256": "802e4ac1418ed967cd3c4b901f4f71ca00b7363ede67778665a22d9f13f58c83",
+    "executable_sha256": "dd07adf881a72b54d1a922191d62fa939938df2155be85a727da93b67b24e617",
+    "system_installation": false
+  },
+  "database_metadata": {
+    "Version": 2,
+    "NextUpdate": "2026-11-27T07:04:32.419054034Z",
+    "UpdatedAt": "2026-11-26T07:04:32.419054275Z",
+    "DownloadedAt": "2026-11-26T11:55:22.564821Z"
+  },
+  "database_sha256": "f3fce68fa5d0352f2afbc7e1a1e0f5a07efe0eba5786eef2da0f5996ddb8b9a0",
+  "archive_sha256": "3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+  "image_config_digest": "sha256:e860fa5016c6a7650bc61d4f460a9c77202917c7e9c164aae6ca2877f32c7408",
+  "os": {
+    "Family": "debian",
+    "Name": "12.15"
+  },
+  "report_sha256": "2d5c8e0faf8ae25dc52dbe3c5cfbbcc05733ef5ebaf49138bc002f211a665fd7",
+  "report_bytes": 1996770,
+  "count_unit": "advisory/package matches; not demonstrated exploits or distinct CVE counts",
+  "advisory_package_match_counts": {
+    "LOW": 114,
+    "HIGH": 100,
+    "MEDIUM": 148,
+    "UNKNOWN": 18,
+    "CRITICAL": 2
+  },
+  "matches_with_available_fix": [],
+  "critical_matches": [
+    {
+      "VulnerabilityID": "CVE-2025-7458",
+      "PkgName": "libsqlite3-0",
+      "InstalledVersion": "3.40.1-2+deb12u2",
+      "FixedVersion": null,
+      "Severity": "CRITICAL",
+      "Status": "affected",
+      "SeveritySource": "nvd"
+    },
+    {
+      "VulnerabilityID": "CVE-2023-45853",
+      "PkgName": "zlib1g",
+      "InstalledVersion": "1:1.2.13.dfsg-1",
+      "FixedVersion": null,
+      "Severity": "CRITICAL",
+      "Status": "will_not_fix",
+      "SeveritySource": "nvd"
+    }
+  ],
+  "high_package_match_counts": {
+    "bsdutils": 3,
+    "gzip": 1,
+    "libacl1": 1,
+    "libblkid1": 3,
+    "libgssapi-krb5-2": 14,
+    "libk5crypto3": 14,
+    "libkrb5-3": 14,
+    "libkrb5support0": 14,
+    "libmount1": 3,
+    "libncursesw6": 1,
+    "libpam-modules": 1,
+    "libpam-modules-bin": 1,
+    "libpam-runtime": 1,
+    "libpam0g": 1,
+    "libsmartcols1": 3,
+    "libsqlite3-0": 5,
+    "libsystemd0": 1,
+    "libtinfo6": 1,
+    "libudev1": 1,
+    "libuuid1": 3,
+    "libzstd1": 1,
+    "mount": 3,
+    "ncurses-base": 1,
+    "ncurses-bin": 1,
+    "perl-base": 1,
+    "util-linux": 3,
+    "util-linux-extra": 3,
+    "zlib1g": 1
+  },
+  "python_package_matches": 0,
+  "image_executed_by_scan": false,
+  "ambient_trivy_environment_discarded": true,
+  "residual_reachability_review": "pending actual finding assessment",
+  "package_publication_performed": false,
+  "independent_operator_acceptance": false
+}

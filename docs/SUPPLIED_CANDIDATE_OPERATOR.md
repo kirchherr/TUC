@@ -29,10 +29,32 @@ Download `tuc-research-candidate` from protected workflow run `43826307479`.
 Its artifact ID, ZIP digest/size and closed file manifest are recorded in the
 candidate evidence. Authenticate those bytes and verify the supplied wheel's
 provenance before installation, using a separately trusted GitHub CLI and its
-managed trust roots:
+managed trust roots. The reviewed verifier is now 2.106.0, which fixes the
+[seven advisories published on 2026-11-25](https://github.com/cli/cli/releases/tag/v2.106.0).
+The read-only rehearsal prepares that exact version per job; it does not rely
+on the runner's ambient `gh`. A later version needs its own review.
+
+On Linux x86-64, download the official fixed archive and prepare it from a
+trusted checkout. The archive and extracted executable have separate fixed
+digests; authentication precedes tar parsing and creation of the new directory.
+The stdlib preparer copies only the fixed executable, without running it or
+installing anything globally. The output's parent must exist, and the output
+directory must be new:
 
 ```bash
-gh attestation verify /absolute/path/tuc-0.2.0-py3-none-any.whl \
+curl --proto '=https' --proto-redir '=https' --tlsv1.2 --location --fail \
+  --output /absolute/path/gh_2.106.0_linux_amd64.tar.gz \
+  https://github.com/cli/cli/releases/download/v2.106.0/gh_2.106.0_linux_amd64.tar.gz
+python3.12 -I -S scripts/prepare_research_verifier.py \
+  --archive /absolute/path/gh_2.106.0_linux_amd64.tar.gz \
+  --output /absolute/path/verified-gh
+```
+
+The resulting `tool.json` records the authenticated tool identities. Verify
+the supplied wheel with that executable:
+
+```bash
+/absolute/path/verified-gh/gh attestation verify /absolute/path/tuc-0.2.0-py3-none-any.whl \
   --bundle docs/evidence/research-candidate-fdfcc19/provenance-bundles.jsonl \
   --repo kirchherr/TUC \
   --signer-workflow kirchherr/TUC/.github/workflows/research-release-candidate.yml \
@@ -51,6 +73,29 @@ Check those numeric IDs against the current GitHub repository to detect name
 reuse. Producer-written predicate fields alone do not authenticate build origin.
 The [complete verification record](evidence/research-candidate-fdfcc19/provenance-verification.json)
 also covers the sdist, worker and signed SBOM predicates.
+
+## Host filter review
+
+The [2026-11-26 follow-up](evidence/RESEARCH_CANDIDATE_FDFCC19_UPDATE_20261126.md)
+records libseccomp filter-generation advisories. The image's package inventory
+and a `Seccomp: 2` observation do not identify the daemon's actual filter
+generator or establish its patch status. The fixed Python worker does not call
+the image's libseccomp library; host runtime assessment remains separate.
+
+For M1, return attributable evidence for the daemon's configured runtime,
+linked libseccomp version and vendor backports, together with the actual seccomp
+profile. Review libseccomp 2.6.2 or the relevant fixes/backports, or retain a
+specific policy assessment with exported BPF and behavioral evidence as
+required by the upstream advisories. Bind the evidence to the actual daemon
+and operator-controlled host. Package-version strings alone cannot establish
+that binding or identify downstream backports.
+
+The CI rehearsal retains `supplied-host-runtime.json` with fixed read-only
+`runc --version`, package-query and local Docker inventory commands. It records
+`OBSERVATION_ONLY` and `host_filter_patch_accepted=false`; a passing native
+model probe does not change those fields. An external operator must supply
+the corresponding host facts and patch/policy evidence for review. The
+original supplied-wheel producer schema and its recorded digest are unchanged.
 
 ## Execute the supplied-wheel probe
 
@@ -104,6 +149,41 @@ revision/digest, exact source/wheel identity and the agreed return channel.
 or a project-controlled CI probe cannot authenticate operator independence.
 An eligible reviewer must assess the attributable external origin and scope
 separately before M1 can close. No independent operator is currently assigned.
+
+### Offline packet consistency check
+
+A reviewer can check the twelve returned JSON files without TUC, Docker, Git,
+pip or network access. Use a trusted checkout containing the reviewed checker
+and the unchanged original numerical auditor:
+
+```bash
+python3.12 -I -S scripts/audit_supplied_model_candidate.py \
+  /absolute/path/returned/tuc-supplied-fdfcc19 > offline-audit.json
+```
+
+The checker binds the source, wheel, procedure, lock and all nine source-material
+claims to the fixed reviewed identities. It checks the envelope against the raw
+core/session/CLI records, reruns all three original eighteen-scalar/four-control
+audits and checks the complete session/CLI lifecycle claims. It records the
+digests of the twelve files actually read. Logs and additional files are ignored.
+Each required file is a bounded regular file; symlinks, reparse points, FIFOs,
+duplicate JSON keys, nonfinite/fractional numbers, excessive nesting and changed
+identities are rejected. Counts distinguish booleans from integers.
+
+Only a digest-verified snapshot of the repository-owned stdlib numerical auditor
+is run, with isolated Python, no site packages, a clean environment and a timeout.
+No executable is selected from the returned directory. The checker rejects
+changed local auditor bytes and never imports TUC or executes the native model.
+The [boundary tests](../tests/test_supplied_model_candidate_audit.py) use the
+unchanged retained CI packet and altered copies; the original observations are
+not regenerated or edited to make a test pass.
+
+`PASS` means consistency with this fixed candidate's claimed observations.
+It does not prove that a producer actually installed the wheel, authenticate
+their command log or verify their environment or identity. The output retains
+`external_origin_verified=false` and `independent_operator_acceptance=false`.
+Verify the wheel provenance and attributable external origin separately before
+accepting M1; copying the project CI packet cannot satisfy that requirement.
 
 This procedure supplies no publishing authorization. M2 still requires M0/M1
 acceptance, a reviewed replacement publisher, actual PyPI binding and the normal

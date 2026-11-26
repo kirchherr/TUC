@@ -5,7 +5,11 @@ on:
     paths:
       - ".github/workflows/research-candidate-model.yml"
       - "scripts/rehearse_supplied_model_wheel.py"
+      - "scripts/audit_supplied_model_candidate.py"
+      - "scripts/prepare_research_verifier.py"
       - "tests/test_supplied_model_wheel_rehearsal.py"
+      - "tests/test_supplied_model_candidate_audit.py"
+      - "tests/test_research_verifier_preparation.py"
       - "docs/SUPPLIED_CANDIDATE_OPERATOR.md"
       - "docs/evidence/research-candidate-fdfcc19/candidate-artifacts.json"
       - "docs/evidence/research-candidate-fdfcc19/provenance-bundles.jsonl"
@@ -16,7 +20,11 @@ on:
     paths:
       - ".github/workflows/research-candidate-model.yml"
       - "scripts/rehearse_supplied_model_wheel.py"
+      - "scripts/audit_supplied_model_candidate.py"
+      - "scripts/prepare_research_verifier.py"
       - "tests/test_supplied_model_wheel_rehearsal.py"
+      - "tests/test_supplied_model_candidate_audit.py"
+      - "tests/test_research_verifier_preparation.py"
       - "docs/SUPPLIED_CANDIDATE_OPERATOR.md"
       - "docs/evidence/research-candidate-fdfcc19/candidate-artifacts.json"
       - "docs/evidence/research-candidate-fdfcc19/provenance-bundles.jsonl"
@@ -33,6 +41,12 @@ jobs:
   supplied-wheel-model:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      GH_HOST: github.com
+      GH_PROMPT_DISABLED: "1"
+      GH_NO_UPDATE_NOTIFIER: "1"
+      GH_NO_EXTENSION_UPDATE_NOTIFIER: "1"
+      GH_DEBUG: ""
     permissions:
       contents: read
       actions: read
@@ -47,9 +61,26 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --require-hashes -r requirements/research-release.txt
-          ruff check scripts/rehearse_supplied_model_wheel.py tests/test_supplied_model_wheel_rehearsal.py
-          mypy scripts/rehearse_supplied_model_wheel.py
-          python -m pytest -q tests/test_supplied_model_wheel_rehearsal.py
+          ruff check scripts/rehearse_supplied_model_wheel.py scripts/audit_supplied_model_candidate.py \
+            scripts/prepare_research_verifier.py tests/test_supplied_model_wheel_rehearsal.py \
+            tests/test_supplied_model_candidate_audit.py tests/test_research_verifier_preparation.py
+          mypy scripts/rehearse_supplied_model_wheel.py scripts/audit_supplied_model_candidate.py \
+            scripts/prepare_research_verifier.py
+          python -m pytest -q tests/test_supplied_model_wheel_rehearsal.py \
+            tests/test_supplied_model_candidate_audit.py tests/test_research_verifier_preparation.py
+      - name: Prepare the checksum-pinned patched verifier
+        run: |
+          set -euo pipefail
+          export GH_CONFIG_DIR="$RUNNER_TEMP/tuc-research-gh-config"
+          curl --proto '=https' --proto-redir '=https' --tlsv1.2 --location \
+            --fail --silent --show-error --connect-timeout 15 --max-time 120 \
+            --retry 2 --retry-max-time 180 --max-filesize 15101741 \
+            --output "$RUNNER_TEMP/gh_2.106.0_linux_amd64.tar.gz" \
+            https://github.com/cli/cli/releases/download/v2.106.0/gh_2.106.0_linux_amd64.tar.gz
+          python -I -S scripts/prepare_research_verifier.py \
+            --archive "$RUNNER_TEMP/gh_2.106.0_linux_amd64.tar.gz" \
+            --output "$RUNNER_TEMP/tuc-research-verifier"
+          "$RUNNER_TEMP/tuc-research-verifier/gh" --version
       - name: Fetch the fixed candidate source objects
         run: |
           set -euo pipefail
@@ -60,14 +91,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh run download 43826307479 --repo kirchherr/TUC \
+          export GH_CONFIG_DIR="$RUNNER_TEMP/tuc-research-gh-config"
+          "$RUNNER_TEMP/tuc-research-verifier/gh" run download 43826307479 --repo kirchherr/TUC \
             --name tuc-research-candidate --dir "$RUNNER_TEMP/supplied-candidate"
       - name: Verify the supplied wheel provenance
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh attestation verify "$RUNNER_TEMP/supplied-candidate/tuc-0.2.0-py3-none-any.whl" \
+          export GH_CONFIG_DIR="$RUNNER_TEMP/tuc-research-gh-config"
+          "$RUNNER_TEMP/tuc-research-verifier/gh" attestation verify "$RUNNER_TEMP/supplied-candidate/tuc-0.2.0-py3-none-any.whl" \
             --bundle docs/evidence/research-candidate-fdfcc19/provenance-bundles.jsonl \
             --repo kirchherr/TUC \
             --signer-workflow kirchherr/TUC/.github/workflows/research-release-candidate.yml \
@@ -78,7 +111,7 @@ jobs:
             --predicate-type https://slsa.dev/provenance/v1 \
             --deny-self-hosted-runners --format json \
             > "$RUNNER_TEMP/supplied-wheel-provenance.json"
-          gh api repos/kirchherr/TUC \
+          "$RUNNER_TEMP/tuc-research-verifier/gh" api repos/kirchherr/TUC \
             --jq '{id: .id, owner_id: .owner.id, full_name: .full_name}' \
             > "$RUNNER_TEMP/supplied-wheel-repository-identity.json"
           python -I -S - <<'PY'
@@ -109,12 +142,58 @@ jobs:
               assert verified["verifiedTimestamps"]
           print("Supplied-wheel certificate and current repository identity: PASS")
           PY
+      - name: Retain host runtime inventory for separate filter review
+        run: |
+          set -euo pipefail
+          python -I -S - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+          commands = {
+              "runc_version": ["/usr/bin/runc", "--version"],
+              "libseccomp_package": ["/usr/bin/dpkg-query", "-W", "-f=${Version}\n", "libseccomp2"],
+              "docker_security_options": ["/usr/bin/docker", "--host", "unix:///var/run/docker.sock",
+                                          "info", "--format", "{{json .SecurityOptions}}"],
+              "docker_runtimes": ["/usr/bin/docker", "--host", "unix:///var/run/docker.sock",
+                                  "info", "--format", "{{json .Runtimes}}"],
+              "docker_default_runtime": ["/usr/bin/docker", "--host", "unix:///var/run/docker.sock",
+                                         "info", "--format", "{{json .DefaultRuntime}}"],
+          }
+          observations = {}
+          for name, command in commands.items():
+              try:
+                  process = subprocess.run(command, stdin=subprocess.DEVNULL, capture_output=True,
+                                           timeout=15, env={"PATH": "/usr/bin:/bin", "LANG": "C.UTF-8"})
+                  observations[name] = {
+                      "returncode": process.returncode,
+                      "stdout": process.stdout[:32768].decode("utf-8", errors="replace"),
+                      "stderr": process.stderr[:32768].decode("utf-8", errors="replace"),
+                      "truncated": len(process.stdout) > 32768 or len(process.stderr) > 32768,
+                  }
+              except (OSError, subprocess.SubprocessError):
+                  observations[name] = {"available": False}
+          record = {
+              "schema_version": "tuc.research_host_runtime_inventory.v0",
+              "status": "OBSERVATION_ONLY", "observations": observations,
+              "scope": "Local CLI/package inventory; actual daemon linkage and backports require review",
+              "host_filter_patch_accepted": False, "independent_operator_acceptance": False,
+          }
+          path = Path(os.environ["RUNNER_TEMP"]) / "supplied-host-runtime.json"
+          path.write_text(json.dumps(record, sort_keys=True, ensure_ascii=True) + "\n", encoding="ascii")
+          PY
       - name: Run core, session and installed CLI with the exact supplied wheel
         run: |
           set -euo pipefail
           python -I -S scripts/rehearse_supplied_model_wheel.py run \
             --wheel "$RUNNER_TEMP/supplied-candidate/tuc-0.2.0-py3-none-any.whl" \
             --output "$RUNNER_TEMP/supplied-model-rehearsal"
+      - name: Audit the returned packet without TUC or native execution
+        run: |
+          set -euo pipefail
+          python -I -S scripts/audit_supplied_model_candidate.py \
+            "$RUNNER_TEMP/supplied-model-rehearsal" \
+            > "$RUNNER_TEMP/supplied-model-offline-audit.json"
       - name: Retain the actual supplied-wheel observations
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -134,5 +213,8 @@ jobs:
             ${{ runner.temp }}/supplied-model-rehearsal/cli/cli-observation.json
             ${{ runner.temp }}/supplied-wheel-provenance.json
             ${{ runner.temp }}/supplied-wheel-repository-identity.json
+            ${{ runner.temp }}/supplied-model-offline-audit.json
+            ${{ runner.temp }}/supplied-host-runtime.json
+            ${{ runner.temp }}/tuc-research-verifier/tool.json
           if-no-files-found: error
           retention-days: 30

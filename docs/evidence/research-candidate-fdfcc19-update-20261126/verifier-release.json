@@ -1,0 +1,26 @@
+{
+  "tag_name": "v2.106.0",
+  "html_url": "https://github.com/cli/cli/releases/tag/v2.106.0",
+  "published_at": "2026-11-25T22:48:46Z",
+  "immutable": true,
+  "assets": [
+    {
+      "name": "gh_2.106.0_checksums.txt",
+      "size": 1971,
+      "digest": "sha256:1822d8b8c11a6df22d90f4d3b81312aa7b1c3a45a38d6c22407f00ec0ad09a5f",
+      "browser_download_url": "https://github.com/cli/cli/releases/download/v2.106.0/gh_2.106.0_checksums.txt"
+    },
+    {
+      "name": "gh_2.106.0_linux_amd64.tar.gz",
+      "size": 15101741,
+      "digest": "sha256:a476449fa9625413c54a3734eded62e9e480e49f421ff08e7f3b3879c059a033",
+      "browser_download_url": "https://github.com/cli/cli/releases/download/v2.106.0/gh_2.106.0_linux_amd64.tar.gz"
+    },
+    {
+      "name": "gh_2.106.0_windows_amd64.zip",
+      "size": 15265298,
+      "digest": "sha256:d406f442ca0baa3d3e9c695e9cded1aa48e67dad3294b8947e5ab84f980b4844",
+      "browser_download_url": "https://github.com/cli/cli/releases/download/v2.106.0/gh_2.106.0_windows_amd64.zip"
+    }
+  ]
+}
