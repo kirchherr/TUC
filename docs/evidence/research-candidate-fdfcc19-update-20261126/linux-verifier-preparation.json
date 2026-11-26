@@ -1,0 +1,14 @@
+{
+  "archive_bytes": 15101741,
+  "archive_sha256": "a476449fa9625413c54a3734eded62e9e480e49f421ff08e7f3b3879c059a033",
+  "archive_url": "https://github.com/cli/cli/releases/download/v2.106.0/gh_2.106.0_linux_amd64.tar.gz",
+  "executable_bytes": 41373856,
+  "executable_run_by_preparation": false,
+  "executable_sha256": "8b9e0e460b7373a42296b83d2683b12af7f2c6e0c7007d01252fc066acbf83cb",
+  "platform": "linux_amd64",
+  "schema_version": "tuc.research_verifier_preparation.v0",
+  "status": "PASS",
+  "system_installation": false,
+  "vendor_checksums_sha256": "1822d8b8c11a6df22d90f4d3b81312aa7b1c3a45a38d6c22407f00ec0ad09a5f",
+  "version": "2.106.0"
+}

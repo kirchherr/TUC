@@ -26,6 +26,15 @@ bindings, three numerical audits and the complete session/CLI claims. The
 unchanged retained packet passes; consistency does not authenticate an external
 operator. #145 still awaits formal Codeowner approval, and M1 remains open.
 
+Update 2026-11-26: the [current security follow-up](evidence/RESEARCH_CANDIDATE_FDFCC19_UPDATE_20261126.md)
+retains a new scan of the unchanged image and eight passing signature/SBOM
+checks using patched GitHub CLI 2.106.0. The handoff now prepares that exact
+archive/executable pair. R7 records the host-filter acceptance gap raised by
+libseccomp advisories; runtime inventory is observation-only. M1 must review
+the actual daemon/runtime fixes or a specific BPF/policy assessment alongside
+operator provenance. #145 still awaits normal Codeowner approval; no independent
+operator is assigned and no release has been published.
+
 | Milestone | Status |
 | --- | --- |
 | M0: candidate preparation and freeze | Refreshed `fdfcc19` pin, protected builds, signatures, current image/residual review and actual supplied-wheel project rehearsal passed. Normal Codeowner merge of this packet after required checks adopts the freeze; legacy publisher disabled. |

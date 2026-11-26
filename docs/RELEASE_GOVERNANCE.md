@@ -119,6 +119,15 @@ M0's candidate workflow and the disabled historical workflow retain their
 existing roles. This plan does not authorize a tag, public release, namespace
 setting change or package upload.
 
+The current supplied-wheel handoff pins GitHub CLI 2.106.0 by both archive and
+executable digest after the November 25 security release. Its preparer performs
+no global installation or execution; the read-only CI job explicitly invokes
+the prepared binary for downloads, identity queries and signature verification.
+The original candidate and historical verification records retain their dated
+identities. A future publisher must use a separately reviewed verification
+toolchain and satisfy the current M1 host-filter assessment under R7 as well as
+the existing signature, source and approval gates.
+
 Do not add a PyPI token or password as a repository secret.
 
 ## Release Action Pinning

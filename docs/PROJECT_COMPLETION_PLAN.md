@@ -51,6 +51,7 @@ runtime defect was identified in this scope.
 | R4 | P1 for release readiness: effective `main` rules enforce PR review, deletion and non-fast-forward protection, but omit `required_status_checks` and linear-history enforcement required by the documented branch policy. | Resolved. Owner-approved ruleset `17319611` enforces strict Actions-bound required checks, linear history, Squash/Rebase and Codeowner review, with no bypass actors. #143 merged normally; actual rule suite `5098619497` passed all five evaluations. |
 | R5 | P2: The only listed codeowner is `@kirchherr`, also author of the recent PRs. The active rule requires one codeowner approval; technical self-comments did not satisfy it, and #139/#140 used separately authorized exceptions. | Resolved. The owner's selected Write-enabled Codeowner `mailactiveblue-blip` formally approved #143's exact final head. The ordinary Squash merge passed the active rules without bypass. Consumed exceptions confer no future permission. |
 | R6 | P1 for candidate freeze: the attested engineering worker still uses the older Python/OS image; its actual scan has vendor-fixable package findings. BuildKit 0.30.0 also matches two published advisories. | Refresh normally merged in #144. The protected `fdfcc19` candidate passed 7,778 tests, eight fresh signature checks and the actual rebuilt-worker scan. No available-fix or Python-package matches remain in that worker scan; 2 critical and 100 high OS matches remain visible with scoped dispositions. Main CI tests the same source profile on cgroup v2; the local exact-image canary passed, while its protocol request correctly failed on unsupported cgroup v1. The supplied-wheel project rehearsal passed; normal Codeowner merge of this packet after required checks adopts the scoped freeze. |
+| R7 | P1 for M1/M2 native acceptance: libseccomp filter-generation advisories require evidence about the actual host generator and policy. An image package inventory or `Seccomp: 2` is insufficient. | Open. The [November 26 assessment](evidence/RESEARCH_CANDIDATE_FDFCC19_UPDATE_20261126.md) distinguishes the unused image library from the host runtime. Read-only CI inventory is retained without patch acceptance. M1 must bind the real daemon/runtime, relevant fixes or vendor backports, or a reviewed BPF/policy assessment to the attributable operator environment. |
 
 R4/R5 are verified through the ordinary #143 and #144 merges. The owner-approved tag,
 alert and PyPI environment controls were also read back on 2026-11-13: required
@@ -204,6 +205,9 @@ Acceptance requires all of the following in one review:
 - Attributable operator/environment control and a retained reviewed result.
   Arithmetic verifiers check consistency and numbers; operator independence
   and execution origin require separate provenance review.
+- Host filter assessment under R7: actual runtime/libseccomp provenance,
+  applicable patches/backports or a specific reviewed BPF/policy assessment.
+  A CI inventory is observation-only and does not supply host patch acceptance.
 
 Record discrepancies as reproducible findings. A pass covers the named source,
 environment and corpus. A changed release candidate needs explicit scope and

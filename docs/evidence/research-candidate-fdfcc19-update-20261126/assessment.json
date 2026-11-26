@@ -1,0 +1,500 @@
+{
+  "schema_version": "tuc.research_candidate_security_update.v0",
+  "observed_utc": "2026-11-26T11:55:22.713066+00:00",
+  "source": "fdfcc193b0b42405e3e48ea6ace1bdfbea066536",
+  "run_id": 43826307479,
+  "image_archive_sha256": "3ab4ade87e13549ed16a30427b454a64cbb6cb7b41f3bf3eac37f0f0c52e16d7",
+  "image_config_digest": "sha256:e860fa5016c6a7650bc61d4f460a9c77202917c7e9c164aae6ca2877f32c7408",
+  "scan_report_sha256": "2d5c8e0faf8ae25dc52dbe3c5cfbbcc05733ef5ebaf49138bc002f211a665fd7",
+  "previous_report_sha256": "065d1ad4724ebb7ff32b22ab3dee43a068deac9da8ada9c5b70cd2a21c3905a4",
+  "database_metadata": {
+    "Version": 2,
+    "NextUpdate": "2026-11-27T07:04:32.419054034Z",
+    "UpdatedAt": "2026-11-26T07:04:32.419054275Z",
+    "DownloadedAt": "2026-11-26T11:55:22.564821Z"
+  },
+  "database_sha256": "f3fce68fa5d0352f2afbc7e1a1e0f5a07efe0eba5786eef2da0f5996ddb8b9a0",
+  "assessment": "Maintainer/AI-assisted bounded worker reachability review; normal Codeowner review required",
+  "finding_counts": {
+    "LOW": 114,
+    "HIGH": 100,
+    "MEDIUM": 148,
+    "UNKNOWN": 18,
+    "CRITICAL": 2
+  },
+  "count_unit": "advisory/package matches; not demonstrated exploits or distinct CVE counts",
+  "available_fix_matches": 0,
+  "python_package_matches": 0,
+  "new_matches": [
+    {
+      "VulnerabilityID": "CVE-2024-22365",
+      "PkgName": "libpam-modules",
+      "InstalledVersion": "1.5.2-6+deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2024-22365",
+      "PkgName": "libpam-modules-bin",
+      "InstalledVersion": "1.5.2-6+deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2024-22365",
+      "PkgName": "libpam-runtime",
+      "InstalledVersion": "1.5.2-6+deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2024-22365",
+      "PkgName": "libpam0g",
+      "InstalledVersion": "1.5.2-6+deb12u2",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-104357",
+      "PkgName": "libtirpc-common",
+      "InstalledVersion": "1.3.3+ds-1",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-104357",
+      "PkgName": "libtirpc3",
+      "InstalledVersion": "1.3.3+ds-1",
+      "Severity": "MEDIUM",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-121481",
+      "PkgName": "libssl3",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "LOW",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-121481",
+      "PkgName": "openssl",
+      "InstalledVersion": "3.0.22-1~deb12u2",
+      "Severity": "LOW",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-124851",
+      "PkgName": "libzstd1",
+      "InstalledVersion": "1.5.4+dfsg2-5",
+      "Severity": "HIGH",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-135901",
+      "PkgName": "login",
+      "InstalledVersion": "1:4.13+dfsg1-1+deb12u2",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-135901",
+      "PkgName": "passwd",
+      "InstalledVersion": "1:4.13+dfsg1-1+deb12u2",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-40558",
+      "PkgName": "perl-base",
+      "InstalledVersion": "5.36.0-7+deb12u4",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "TEMP-0000000-402D17",
+      "PkgName": "libseccomp2",
+      "InstalledVersion": "2.5.4-1+deb12u1",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "TEMP-0000000-414660",
+      "PkgName": "libseccomp2",
+      "InstalledVersion": "2.5.4-1+deb12u1",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "TEMP-0000000-43231F",
+      "PkgName": "libseccomp2",
+      "InstalledVersion": "2.5.4-1+deb12u1",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "TEMP-0000000-AE2C66",
+      "PkgName": "libseccomp2",
+      "InstalledVersion": "2.5.4-1+deb12u1",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "TEMP-0000000-ED49F3",
+      "PkgName": "libseccomp2",
+      "InstalledVersion": "2.5.4-1+deb12u1",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "TEMP-0000000-F88C7E",
+      "PkgName": "libseccomp2",
+      "InstalledVersion": "2.5.4-1+deb12u1",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "TEMP-0000000-FCA4C0",
+      "PkgName": "libseccomp2",
+      "InstalledVersion": "2.5.4-1+deb12u1",
+      "Severity": "UNKNOWN",
+      "Status": "affected",
+      "FixedVersion": null
+    }
+  ],
+  "removed_database_matches": [
+    {
+      "VulnerabilityID": "CVE-2026-40228",
+      "PkgName": "libsystemd0",
+      "InstalledVersion": "252.39-1~deb12u2",
+      "Severity": "LOW",
+      "Status": "affected",
+      "FixedVersion": null
+    },
+    {
+      "VulnerabilityID": "CVE-2026-40228",
+      "PkgName": "libudev1",
+      "InstalledVersion": "252.39-1~deb12u2",
+      "Severity": "LOW",
+      "Status": "affected",
+      "FixedVersion": null
+    }
+  ],
+  "changed_classifications": [
+    {
+      "cve": "CVE-2026-102010",
+      "package": "gcc-12-base",
+      "changes": {
+        "Status": {
+          "previous": "will_not_fix",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-102010",
+      "package": "libgcc-s1",
+      "changes": {
+        "Status": {
+          "previous": "will_not_fix",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-102010",
+      "package": "libstdc++6",
+      "changes": {
+        "Status": {
+          "previous": "will_not_fix",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-107493",
+      "package": "libssl3",
+      "changes": {
+        "Severity": {
+          "previous": "MEDIUM",
+          "current": "LOW"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-107493",
+      "package": "openssl",
+      "changes": {
+        "Severity": {
+          "previous": "MEDIUM",
+          "current": "LOW"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-115456",
+      "package": "gcc-12-base",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-115456",
+      "package": "libgcc-s1",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-115456",
+      "package": "libstdc++6",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-121757",
+      "package": "libc-bin",
+      "changes": {
+        "Severity": {
+          "previous": "UNKNOWN",
+          "current": "MEDIUM"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-121757",
+      "package": "libc6",
+      "changes": {
+        "Severity": {
+          "previous": "UNKNOWN",
+          "current": "MEDIUM"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-125709",
+      "package": "gcc-12-base",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-125709",
+      "package": "libgcc-s1",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-125709",
+      "package": "libstdc++6",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-126765",
+      "package": "libc-bin",
+      "changes": {
+        "Severity": {
+          "previous": "UNKNOWN",
+          "current": "LOW"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-126765",
+      "package": "libc6",
+      "changes": {
+        "Severity": {
+          "previous": "UNKNOWN",
+          "current": "LOW"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-127039",
+      "package": "libgnutls30",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-127040",
+      "package": "libgnutls30",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-127231",
+      "package": "libgnutls30",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    },
+    {
+      "cve": "CVE-2026-91094",
+      "package": "dpkg",
+      "changes": {
+        "Status": {
+          "previous": "affected",
+          "current": "fix_deferred"
+        }
+      }
+    }
+  ],
+  "new_finding_groups": [
+    {
+      "ids": [
+        "CVE-2024-22365"
+      ],
+      "package_matches": 4,
+      "surface": "PAM namespace/login path handling",
+      "worker_scope_inference": "No PAM login/session invocation or user-controlled filesystem/command dispatch; fixed UID, no capabilities, read-only rootfs",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2024-22365"
+      ]
+    },
+    {
+      "ids": [
+        "CVE-2026-104357"
+      ],
+      "package_matches": 2,
+      "surface": "libtirpc SunRPC UDP receive-buffer decoding",
+      "worker_scope_inference": "No RPC/UDP service or importer; no external network connection",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-104357"
+      ]
+    },
+    {
+      "ids": [
+        "CVE-2026-121481"
+      ],
+      "package_matches": 2,
+      "surface": "OpenSSL EVP_EncodeBlock length overflow near INT_MAX",
+      "worker_scope_inference": "No EVP base64 encoding path; bounded plain UTF-8 input and memory limits. SHA-256 use is not the affected API.",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-121481"
+      ]
+    },
+    {
+      "ids": [
+        "CVE-2026-124851"
+      ],
+      "package_matches": 1,
+      "surface": "Zstandard decompression context information disclosure",
+      "worker_scope_inference": "No zstd importer, compressed-input protocol or decompression/command dispatch in the fixed worker",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-124851"
+      ]
+    },
+    {
+      "ids": [
+        "CVE-2026-135901"
+      ],
+      "package_matches": 2,
+      "surface": "shadow newgidmap helper",
+      "worker_scope_inference": "No login, UID/GID mapping helper or command dispatch; fixed UID and capability drop. Host helpers require their own assessment.",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-135901"
+      ]
+    },
+    {
+      "ids": [
+        "CVE-2026-40558"
+      ],
+      "package_matches": 1,
+      "surface": "Perl Net::FTP module; scanner title unavailable",
+      "worker_scope_inference": "No Perl interpreter/module/FTP or command dispatch; no external network connection",
+      "primary_sources": [
+        "https://security-tracker.debian.org/tracker/CVE-2026-40558"
+      ]
+    },
+    {
+      "ids": [
+        "GHSA-4q85-33p6-j5g6",
+        "GHSA-35x7-vh54-jvqf",
+        "GHSA-2hqh-5c36-grrm",
+        "GHSA-84vx-jqqr-h4f2",
+        "GHSA-q75f-27j4-2h7j",
+        "GHSA-qxh5-4cq9-6mjx",
+        "GHSA-46fr-jh49-xvhx"
+      ],
+      "package_matches": 7,
+      "surface": "libseccomp filter construction, BPF generation and transaction handling",
+      "scanned_package": "libseccomp2 2.5.4-1+deb12u1",
+      "worker_scope_inference": "The six-module Python worker does not load or call libseccomp. The kernel applies filters installed by the host runtime.",
+      "host_scope": "OPEN: the image package is not evidence of the host generator version, backports, configured policy or actual generated BPF. Seccomp:2 and passing native observations cannot establish patch acceptance.",
+      "required_followup": "M1 must bind the daemon runtime/library and applicable fixes/backports (including relevant 2.6.2 fixes), or a specifically reviewed generated-BPF/policy assessment, to the attributable operator-controlled host. CI inventory remains observation-only.",
+      "primary_sources": [
+        "https://github.com/seccomp/libseccomp/security/advisories/GHSA-4q85-33p6-j5g6",
+        "https://github.com/seccomp/libseccomp/security/advisories/GHSA-35x7-vh54-jvqf",
+        "https://github.com/seccomp/libseccomp/security/advisories/GHSA-2hqh-5c36-grrm",
+        "https://github.com/seccomp/libseccomp/security/advisories/GHSA-84vx-jqqr-h4f2",
+        "https://github.com/seccomp/libseccomp/security/advisories/GHSA-q75f-27j4-2h7j",
+        "https://github.com/seccomp/libseccomp/security/advisories/GHSA-qxh5-4cq9-6mjx",
+        "https://github.com/seccomp/libseccomp/security/advisories/GHSA-46fr-jh49-xvhx"
+      ]
+    }
+  ],
+  "critical_findings_unchanged": true,
+  "previous_assessment": "../research-candidate-fdfcc19-update-20261120/assessment.json",
+  "removed_matches_assessment": "Two systemd package matches were removed by the database; no package bytes were changed and no suppression was added.",
+  "decision": "Artifact identities retained. No new worker invocation path identified by this static review. Host-filter patch/policy acceptance remains OPEN under R7 for M1/M2.",
+  "scope_limits": [
+    "Not a general vulnerability-free or production approval",
+    "No new image build or image execution performed by this scan",
+    "No claim that the host uses the image libseccomp package or that host filters are patched",
+    "No independent M1 operator or M2 publication acceptance"
+  ],
+  "image_executed_by_scan": false,
+  "host_filter_patch_accepted": false,
+  "independent_operator_acceptance": false,
+  "package_publication_performed": false
+}
