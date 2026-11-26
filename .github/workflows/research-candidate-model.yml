@@ -42,8 +42,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
-      RESEARCH_GH: ${{ runner.temp }}/tuc-research-verifier/gh
-      GH_CONFIG_DIR: ${{ runner.temp }}/tuc-research-gh-config
       GH_HOST: github.com
       GH_PROMPT_DISABLED: "1"
       GH_NO_UPDATE_NOTIFIER: "1"
@@ -73,6 +71,7 @@ jobs:
       - name: Prepare the checksum-pinned patched verifier
         run: |
           set -euo pipefail
+          export GH_CONFIG_DIR="$RUNNER_TEMP/tuc-research-gh-config"
           curl --proto '=https' --proto-redir '=https' --tlsv1.2 --location \
             --fail --silent --show-error --connect-timeout 15 --max-time 120 \
             --retry 2 --retry-max-time 180 --max-filesize 15101741 \
@@ -81,7 +80,7 @@ jobs:
           python -I -S scripts/prepare_research_verifier.py \
             --archive "$RUNNER_TEMP/gh_2.106.0_linux_amd64.tar.gz" \
             --output "$RUNNER_TEMP/tuc-research-verifier"
-          "$RESEARCH_GH" --version
+          "$RUNNER_TEMP/tuc-research-verifier/gh" --version
       - name: Fetch the fixed candidate source objects
         run: |
           set -euo pipefail
@@ -92,14 +91,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          "$RESEARCH_GH" run download 43826307479 --repo kirchherr/TUC \
+          export GH_CONFIG_DIR="$RUNNER_TEMP/tuc-research-gh-config"
+          "$RUNNER_TEMP/tuc-research-verifier/gh" run download 43826307479 --repo kirchherr/TUC \
             --name tuc-research-candidate --dir "$RUNNER_TEMP/supplied-candidate"
       - name: Verify the supplied wheel provenance
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          "$RESEARCH_GH" attestation verify "$RUNNER_TEMP/supplied-candidate/tuc-0.2.0-py3-none-any.whl" \
+          export GH_CONFIG_DIR="$RUNNER_TEMP/tuc-research-gh-config"
+          "$RUNNER_TEMP/tuc-research-verifier/gh" attestation verify "$RUNNER_TEMP/supplied-candidate/tuc-0.2.0-py3-none-any.whl" \
             --bundle docs/evidence/research-candidate-fdfcc19/provenance-bundles.jsonl \
             --repo kirchherr/TUC \
             --signer-workflow kirchherr/TUC/.github/workflows/research-release-candidate.yml \
@@ -110,7 +111,7 @@ jobs:
             --predicate-type https://slsa.dev/provenance/v1 \
             --deny-self-hosted-runners --format json \
             > "$RUNNER_TEMP/supplied-wheel-provenance.json"
-          "$RESEARCH_GH" api repos/kirchherr/TUC \
+          "$RUNNER_TEMP/tuc-research-verifier/gh" api repos/kirchherr/TUC \
             --jq '{id: .id, owner_id: .owner.id, full_name: .full_name}' \
             > "$RUNNER_TEMP/supplied-wheel-repository-identity.json"
           python -I -S - <<'PY'
